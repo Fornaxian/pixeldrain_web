@@ -1,0 +1,19 @@
+/* 
+    Created on : Jul 1, 2015, 8:02:38 PM
+    Author     : Fornax
+*/
+
+.textarea{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	box-sizing: border-box;
+	padding: 10px;
+	background-color: #222;
+	color: #eee;
+	font-family: 'Ubuntu Mono' , sans-serif;
+	font-size: 18px;
+}

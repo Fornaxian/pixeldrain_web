@@ -1,0 +1,152 @@
+{{define "home"}}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PixelDrain ~ Free file sharing service</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="/res/style/home.css"/>
+		<link rel="stylesheet" href="/res/style/layout.css"/>
+		<link rel="stylesheet" href="/res/style/history.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
+		<link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css"/>
+		<link rel="shortcut icon" href="/res/img/tray32.png"/>
+		<meta name="theme-color" content="#9FCF6C"/>
+		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
+		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
+		
+		{{template "bgpattern"}}
+
+		<script src="/res/script/jquery-2.1.4.min.js"></script>
+
+		<meta name="description" content="PixelDrain is a free file sharing service, you 
+			  can upload any file and you will be given a shareable link right away. 
+			  PixelDrain also supports previews for images, videos, audio, PDFs and much more.
+			  Uncensored, unmonitored and unmoderated."/>
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Home ~ PixelDrain" />
+		<meta property="og:site_name" content="PixelDrain" />
+		<meta property="og:description" content="Instant file and screenshot sharing." />
+		<meta property="og:url" content="http://pixeldra.in/" />
+		<meta property="og:image" content="/res/img/pixeldrain_big.png" />
+		<meta property="og:image:type" content="image/png" />
+	</head>
+
+	<body>
+		<img id="header-image" src="/res/img/header_blackchancery.png" alt="Header image"/>
+		<div id="body" class="body">
+			{{template "menu"}}
+			<div class="highlight bg-middle border-bottom">
+				<input id="fileInputField" type="file" name="file" multiple='multiple'/>
+				<button id="selectFileButton" class="big-button">Upload Files</button>
+				<button id="textButton" class="big-button" onClick="window.location.href = '/t/'">Upload Text</button><br/>
+				
+				<div id="progress-bar" class="progress-bar">
+					<span class="progress-text"></span>
+					<div id="upload-progress" class="progressbar-inner">
+						<span class="progress-text"></span>
+					</div>
+				</div>
+				
+				<div id="uploads-completed"></div>
+			</div>
+			<div class="highlight bg-dark border-bottom">
+				<a id="btnOpenAsList" href="#">Open uploaded files as list</a>
+			</div>
+			
+			<h1>Pixeldrain Public Beta<img src="/res/img/sia.png" style="height: 40px;"/></h1>
+			<p>
+				Note that this is an experimental version of Pixeldrain server, 
+				the Pixeldrain backend has been completely redesigned from the 
+				ground up to be more extensible, efficient and scalable. The 
+				server this web application runs on is considered a testing 
+				environment. Database resets can happen at any moment when 
+				architectural changes need to be applied.
+			</p>
+			<p>
+				The Sia integration is still very experimental and could 
+				fail at any moment resulting in data loss. Do not upload files 
+				to this server that you cannot afford to lose. Use the stable 
+				main server instead: 
+				<a href="https://pixeldrain.com">https://pixeldrain.com</a>.
+			</p>
+			<p>
+				But don't let all that stop you from trying the new Pixeldrain! 
+				The upload restrictions that the main site has haven't been 
+				implemented in this version yet, so you can upload as much as 
+				you want. The server only has 256 GiB of space available, if it 
+				runs out before the Sia integration is stable I won't hesitate 
+				to wipe the database and start over.
+			</p>
+			<h2>Legality</h2>
+			<p>
+				I cannot be held liable for any illegal and / or copyrighted 
+				material that's uploaded by the users of this application.
+				Files uploaded to this website are subjected to local laws. If 
+				laws are being broken, and I've been notified of the fact I'll 
+				have to delete the offending content (as the server does not 
+				support geo filtering yet). If you find any files on this domain
+				that break the law, please contact me at
+				<a href="mailto:abuse@pixeldrain.com">abuse@pixeldrain.com</a>,
+				and I'll take care of it.
+				<br/>Please share responsibly. 
+			</p>
+			<h2>Funding</h2>
+			<p>
+				I'm currently paying for the Sia storage myself, since the site
+				doesn't have a revenue model yet. I'd appreciate it if you could
+				send some Siacoins my way:
+				26117c19ca3975b315d663dcbbc19cf9c07274f441689d4392ed380b2337589ef1aacfbdc93f.
+				This address goes directly to the wallet on this server which is
+				used for uploading files to Sia :). I promise you it will be put
+				to good use!
+			</p>
+			<h2>Features</h2>
+			<p>
+				Here's a list of features this version of Pixeldrain has.
+			</p>
+			<h3>New</h3>
+			<ul>
+				<li>Files are replicated to the Sia network</li>
+				<li>New API and documentation (<a href="/api">Check it out!</a>)</li>
+				<li>Overhauled design, no ugly white glow around the site body</li>
+			</ul>
+			<h3>Upcoming</h3>
+			<ul>
+				<li>File and list management API</li>
+				<li>File metadata, allowing applications to attach their own properties to a file (descriptions, icons, views, etc)</li>
+				<li>Buttons to favorite and copy files to your account, so you can find them back later</li>
+				<li>Pasting files from the clipboard</li>
+				<li>Current viewer count on files/lists</li>
+				<li>File revisions (update a file without changing the URL)</li>
+				<li>Proper file manager with directories (still far away)</li>
+				<li>Plenty more!</li>
+			</ul>
+			<h3>Missing</h3>
+			<p>
+				Features which are in 
+				<a href="https://pixeldrain.com">https://pixeldrain.com</a>, but
+				not in <a href="https://sia.pixeldrain.com">https://sia.pixeldrain.com</a>.
+				These will be added soon enough.
+			</p>
+			<ul>
+				<li>File lists</li>
+				<li>Zip explorer</li>
+				<li>Text file viewer (yes, you can upload text but not view it yet)</li>
+				<li>Some video formats (mime type detection is not complete)</li>
+				<li>Registration / Login system</li>
+				<li>Bandwidth Tracker</li>
+				<li>View counter</li>
+				<li>Seasonal themes</li>
+			</ul>
+			{{template "footer"}}
+		</div>
+
+		<script type="text/javascript">var API_URL = "/api";</script>
+		<script src="/res/script/Cookie.js"></script>
+		<script src="/res/script/home.js"></script>
+		<script src="/res/script/openlist.js"></script>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

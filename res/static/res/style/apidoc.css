@@ -1,0 +1,89 @@
+/* 
+    Created on : Feb 19, 2017, 11:21:45 AM
+    Author     : Fornax <fornax@pixeldrain.com>
+*/
+
+/* Global Definitions */
+.api_doc_details{
+	border: 2px solid;
+	border-radius: 4px;
+	margin-top: 10px;
+}
+
+.api_doc_details > summary {
+	padding: 2px;
+	font-family: monospace;
+}
+
+.api_doc_details > div {
+	padding: 5px;
+}
+
+table{
+	border-collapse: collapse;
+	width: 100%;
+}
+
+tr{
+	border-bottom: 1px #333 solid;
+}
+
+tr > td {
+	padding: 6px;
+}
+
+pre{
+	padding: 2px;
+	border-bottom: 1px #333 solid;
+	overflow-x: scroll;
+}
+
+h3{
+	border-bottom: 1px #777 solid;
+}
+
+/* GET requests */
+.api_doc_details.request_get{
+	border-color: #0000F0;
+}
+
+.api_doc_details.request_get > summary{
+	background-color: #000040;
+}
+
+/* POST requests */
+.api_doc_details.request_post{
+	border-color: #009000;
+}
+
+.api_doc_details.request_post > summary{
+	background-color: #004000;
+}
+
+/* DELETE requests */
+.api_doc_details.request_delete{
+	border-color: #B00000;
+}
+
+.api_doc_details.request_delete > summary{
+	background-color: #400000;
+}
+
+/* PUT requests */
+.api_doc_details.request_put{
+	border-color: #B06000;
+}
+
+.api_doc_details.request_put > summary{
+	background-color: #804000;
+}
+
+/* PATCH requests */
+.api_doc_details.request_patch{
+	border-color: #6000B0;
+}
+
+.api_doc_details.request_patch > summary{
+	background-color: #400080;
+}
+

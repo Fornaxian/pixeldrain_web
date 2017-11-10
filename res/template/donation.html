@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Thank you for supporting Pixeldrain!</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="/res/style/layout.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
+		<link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css"/>
+		<link rel="shortcut icon" href="/res/img/tray32.png"/>
+		<meta name="theme-color" content="#9FCF6C"/>
+		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
+		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
+		
+		<style>
+			body, .checkers{
+				background-image: url("/res/img/checker6.png");
+				background-attachment: fixed;
+			}
+		</style>
+
+		<meta name="description" content="PixelDrain is a free file sharing service, you 
+			  can upload any file and you will be given a shareable link right away. 
+			  PixelDrain also supports previews for images, videos, audio, PDFs and much more.
+			  Uncensored, unmonitored and unmoderated."/>
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Thanks! ~ PixelDrain" />
+		<meta property="og:site_name" content="PixelDrain" />
+		<meta property="og:description" content="Instant file and screenshot sharing." />
+		<meta property="og:url" content="http://pixeldra.in/" />
+		<meta property="og:image" content="/res/img/pixeldrain_big.png" />
+		<meta property="og:image:type" content="image/png" />
+	</head>
+
+	<body>
+		<div id="body" class="body">
+			<div th:replace="fragments :: menu"></div>
+			<br/><br/>
+			<span th:switch="${donation_success}">
+				<span th:case="true">
+					<span th:switch="${user_authenticated}">
+						<span th:case="false">
+							Thank you for your donation! You are amazing.
+							<br/><br/>
+							Sincerely,<br/>
+							Fornax
+						</span>
+						<span th:case="true">
+							Dear <span th:text="${user.getUsername()}"></span>, 
+							<br/><br/>
+							Thank you for your donation. I really appreciate it!
+							<br/><br/>
+							Sincerely,<br/>
+							Fornax
+						</span>
+					</span>
+				</span>
+				
+				<span th:case="false">
+					It seems you have canceled your donation. I don't blame you, money is expensive :)
+					<br/><br/>
+					Sincerely,<br/>
+					Fornax</span>
+			</span>
+			{{template "footer"}}
+		</div>
+		
+		<!-- Google Analytics Tracking Code -->
+		<script>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-24463738-4', 'auto');
+		ga('send', 'pageview');
+		</script>
+	</body>
+</html>

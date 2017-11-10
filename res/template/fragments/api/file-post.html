@@ -1,0 +1,86 @@
+{{define "api-file-post"}}
+<details th:fragment="details" class="api_doc_details request_post">
+	<summary>POST: /file</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Upload a file.
+		</p>
+
+		<h3>Parameters</h3>
+		<table>
+			<tr>
+				<td>Param</td>
+				<td>Required</td>
+				<td>Maximum Size</td>
+				<td>Default</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td>file</td>
+				<td>true</td>
+				<td>5 000 000 000 Bytes</td>
+				<td>none</td>
+				<td>Multipart file to upload</td>
+			</tr>
+			<tr>
+				<td>name</td>
+				<td>false</td>
+				<td>300 Characters</td>
+				<td>Name of file param</td>
+				<td>Name of the file to upload</td>
+			</tr>
+			<tr>
+				<td>description</td>
+				<td>false</td>
+				<td>5000 Characters</td>
+				<td>Pixeldrain File</td>
+				<td>Description of the file</td>
+			</tr>
+		</table>
+
+		<h3>Returns</h3>
+<pre>HTTP 200: OK
+{
+	"success": true,
+	"id": "abc123" // ID of the newly uploaded file
+}</pre>
+<pre>HTTP 422: Unprocessable Entity
+{
+	"success": false,
+	"value": "no_file",
+	"message": "The file does not exist or is empty."
+}</pre>
+<pre>HTTP 500: Internal Server Error
+{
+	"success": false,
+	"value": "internal",
+	"message": "An internal server error occurred."
+}</pre>
+<pre>HTTP 413: Payload Too Large
+{
+	"success": false,
+	"value": "file_too_large",
+	"message": "The file you tried to upload is too large. Max 5000 MB allowed."
+}</pre>
+<pre>HTTP 500: Internal Server Error
+{
+	"success": false,
+	"value": "writing",
+	"message": "Something went wrong while writing the file to disk, the server may be out of storage space."
+}</pre>
+<pre>HTTP 413: Payload Too Large
+{
+	"success": false,
+	"value": "name_too_long",
+	"message": "File Name is too long, Max 300 characters allowed."
+}</pre>
+<pre>HTTP 413: Payload Too Large
+{
+	"success": false,
+	"value": "description_too_long",
+	"message": "File Description is too long, Max 5000 characters allowed."
+}</pre>
+	</div>
+</details>
+{{end}}

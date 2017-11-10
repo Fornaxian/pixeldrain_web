@@ -1,0 +1,300 @@
+/* 
+    Created on : May 22, 2015, 1:20:02 PM
+    Author     : Fornax
+*/
+
+body{
+	background-color: #111;
+	/*background-image: url("img/checker3.png"); Defined in viewer.html*/
+	background-repeat: repeat;
+	color: #eeeeee;
+	font-size: 16px;
+	font-family: 'Ubuntu', sans-serif;
+	margin: 0;
+	overflow: hidden;
+}
+
+a{
+	color: #9FCF6C;
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+	color: #9FCF6C;
+}
+
+::-webkit-scrollbar{
+	width: 10px;  /* for vertical scrollbars */
+	height: 10px; /* for horizontal scrollbars */
+}
+::-webkit-scrollbar-track{
+	background: #000;
+}
+::-webkit-scrollbar-thumb{
+	background-color: #444;
+}
+::-webkit-scrollbar-corner{
+	background: transparent;
+}
+
+button{
+	background-color: #333;
+	border: #777 outset 2px;
+	color: #eeeeee;
+	font-size: 16px;
+	font-family: 'Ubuntu', sans-serif;
+	cursor: pointer;
+	padding: 2px;
+}
+button:active{
+	background-color: #111;
+}
+button:hover{
+	background-color: #444;
+}
+button:focus{
+	background-color: #444;
+	outline: none;
+}
+
+#filepreview{
+	position: absolute;
+	display: inline-block;
+	top: 0px;
+	left: 122px;
+	right: 0px;
+	bottom: 0px;
+	min-height: 100px;
+	min-width: 100px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* =====================
+   == FILE CONTAINERS ==
+   =====================*/
+.image-container{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+}
+
+.image{
+	position: relative;
+	display: block;
+	margin: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.text-container{
+	background: #333 none;
+	position: absolute;
+	overflow-y: scroll;
+	overflow-x: auto;
+	text-align: left;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 5px 5px 5px 20px;
+	box-sizing: border-box;
+}
+
+.pre-container{
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.pannable{
+	position: relative;
+	display: inline-block;
+	margin: auto;
+	max-width: 100%;
+	max-height: 100%;
+	cursor: move;
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+}
+
+.center{
+	position: relative;
+	display: block;
+	margin: auto;
+	max-width: 100%;
+	max-height: 100%;
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+}
+
+.drop-shadow{
+	box-shadow: #000 10px 10px 50px;
+}
+
+/* ========================
+   || TOOLBAR COMPONENTS ||
+   ======================== */
+
+#toolbar {
+	position: absolute;
+	width: 120px;
+	z-index: 12;
+	overflow: hidden;
+	float: left;
+	background-color: #000;
+	left: 0;
+	bottom: 0;
+	top: 0;
+	padding: 0;
+	text-align: center;
+	border-right: 2px ridge #9FCF6C;
+}
+
+/* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
+#toolbar > div {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: -30px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+#toolbar > div > div {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 120px;
+	height: auto;
+}
+
+.toolbar-button {
+	text-align: left;
+	width: 100%;
+	margin-bottom: 3px;
+}
+
+.toolbar-button > img {
+	width: 24px; 
+	height: 24px;
+}
+
+.toolbar-button > span {
+	vertical-align: 5px;
+}
+
+#sponsors{
+	position: relative;
+	height: 600px;
+	width: 120px;
+	margin: 0;
+	border: none;
+	z-index: 9;
+}
+
+/* =========================
+   || SHAREBAR COMPONENTS ||
+   ========================= */
+
+#sharebar{
+	position: absolute;
+	width: 100px;
+	left: -120px;
+	bottom: 0;
+	top: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	float: left;
+	background-color: #000;
+	text-align: center;
+	border-right: 2px ridge #9FCF6C;
+	z-index: 11;
+	overflow: hidden;
+}
+
+.sharebar-button {
+	text-align: center;
+	width: 100%;
+	margin-bottom: 3px;
+}
+
+/* =====================
+   || MISC COMPONENTS ||
+   ===================== */
+
+.full-popup{
+	position: fixed;
+	display: none;
+	background-color: #000;
+	left: 142px;
+	right: 20px;
+	bottom: 20px;
+	top: 20px;
+	overflow-y: scroll;
+	padding: 10px;
+	box-sizing: border-box;
+
+	box-shadow: #eee 0px 0px 50px;
+	z-index: 100;
+}
+
+.corner-popup{
+	position: fixed;
+	background-color: #000;
+	right: 20px;
+	bottom: 20px;
+	width: fit-content;
+	height: fit-content;
+	overflow: hidden;
+	padding: 5px;
+
+	box-shadow: #eee 0px 0px 50px;
+	z-index: 200;
+}
+
+#frmDownload{
+	display: none;
+	width: 1px;
+	height: 0px;
+	position: relative;
+}
+
+#copy-text{
+	left: -100px;
+	width: 0px;
+	height: 0px;
+	position: fixed;
+}
+
+.button-collapse{
+	width: 100px;
+	left: 0;
+	height: 12px;
+	position: relative;
+	display: block;
+	cursor: pointer;
+}
+
+.bytecounter{
+	color: #eeeeee;
+	font-size: 16px;
+	font-family: 'Ubuntu', sans-serif;
+	text-align: right;
+	display: inline-block;
+	background-image: url("/res/img/bytecounter.png");
+	/*background-attachment: fixed;*/
+	background-position: top right;
+	width: 108px;
+	height: 36px;
+	padding: 0;
+	padding-right: 1px;
+}

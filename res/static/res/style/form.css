@@ -1,0 +1,35 @@
+/* 
+    Created on : Aug 27, 2015, 9:31:34 PM
+    Author     : Fornax
+*/
+
+
+.text-warning{
+	position: relative;
+	width: auto;
+	height: auto;
+	background: #656762 no-repeat top center;
+	border: #9FCF6C ridge 4px;
+	margin: 10px;
+	font-size: 18px;
+	color: #ff9090;
+}
+
+.text-info{
+	position: relative;
+	width: auto;
+	height: auto;
+	background: #656762 no-repeat top center;
+	border: #9FCF6C ridge 4px;
+	margin: 10px;
+}
+
+.g-recaptcha{
+	overflow:hidden;
+	width:298px;
+	height:74px;
+}
+
+.g-recaptcha > div > div > iframe{
+	margin:-1px 0px 0px -2px; 
+}

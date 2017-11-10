@@ -1,0 +1,36 @@
+/* 
+    Created on : Dec 1, 2015, 9:54:01 PM
+    Author     : Fornax
+*/
+
+.progress-bar{
+	position: relative;
+	margin: 3px;
+	height: 20px;
+	background-color: #555;
+	border: #999 groove 2px;
+	overflow: hidden;
+	color: #eeeeee;
+	z-index: 100;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.progress-bar div{
+	position: absolute;
+	top: 0;
+	width: 0%;
+	left: 0;
+	height: 100%;
+	background-color: #9FCF6C;
+	overflow: hidden;
+	color: #000;
+	white-space: nowrap;
+}
+
+.progress-bar span,
+.progress-bar div span {
+	overflow: hidden;
+	width: 100%;
+	white-space: nowrap;
+}

@@ -1,0 +1,82 @@
+{{define "paste"}}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Paste ~ PixelDrain</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="/res/style/viewer.css"/>
+		<link rel="stylesheet" href="/res/style/season.css"/>
+		<link rel="stylesheet" href="/res/style/paste.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
+		<link rel="shortcut icon" href="/res/img/tray32.png"/>
+		<meta name="theme-color" content="#9FCF6C"/>
+		<link rel="icon" sizes="180x180" href="res/img/pixeldrain.png"/>
+		<link rel="icon" sizes="256x256" href="res/img/pixeldrain_big.png"/>
+		
+		<style th:include="fragments :: background-pattern" th:inline="text"></style>
+		
+		<script src="/res/script/jquery-2.1.4.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Paste ~ PixelDrain" />
+		<meta property="og:site_name" content="PixelDrain" />
+		<meta property="og:description" content="Upload text to PixelDrain" />
+		<meta property="article:author" content="Fornax96" />
+	</head>
+
+	<body>
+		<div id="filepreview">
+			<textarea id="textarea" 
+				  class="textarea" 
+				  placeholder="Your text here..." 
+				  autofocus="autofocus"></textarea>
+		</div>
+		<div id="toolbar">
+			<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
+			<div>
+				<div>
+					<button class="toolbar-button" onClick="uploadText();">
+						<img src="/res/img/upload_small.png" alt="Start Upload"/>
+						<span>Upload</span>
+					</button>
+					<form action="/">
+						<button class="toolbar-button">
+							<img src="/res/img/pixeldrain_small.png" alt="Visit the home page" style="width:22px; height: 22px;"/>
+							<span>Home</span>
+						</button>
+					</form>
+					<iframe id='sponsors' data-aa='73974'
+						src='//ad.a-ads.com/73974?size=120x600&amp;background_color=000000&amp;text_color=eeeeee&amp;title_color=eeeeee&amp;link_color=9fcf6c&amp;link_hover_color=d2ffa1&amp;title_hover_color=d2ffa1' 
+						scrolling='no' allowtransparency='true' seamless="seamless">		
+					</iframe>
+
+				</div>
+			</div>
+		</div>
+
+		<script src="/res/script/Cookie.js"></script>
+		<script src="/res/script/paste.js"></script>
+
+		<!-- Google Analytics Tracking code -->
+		<script>
+			(function (i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;
+				i[r] = i[r] || function () {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date();
+				a = s.createElement(o),
+					m = s.getElementsByTagName(o)[0];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore(a, m)
+			})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+			ga('create', 'UA-24463738-4', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</body>
+</html>
+{{end}}

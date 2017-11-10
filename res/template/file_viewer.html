@@ -1,0 +1,166 @@
+{{define "file_viewer"}}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{.FileName}} ~ PixelDrain File</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="/res/style/viewer.css"/>
+		<link rel="stylesheet" href="/res/style/season.css"/>
+		<link rel="stylesheet" href="/res/style/listview.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
+		<link rel="shortcut icon" href="/res/img/tray32.png"/>
+		<meta name="theme-color" content="#9FCF6C"/>
+		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
+		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
+		
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
+		
+		<link rel="alternate" type="application/json+oembed" th:href="*{oEmbedHref}" th:title="*{ogTitle}" />
+		
+		{{template "bgpattern"}}
+		
+		<meta name="twitter:creator" content="@Fornax96" />
+		<meta name="twitter:image" th:content="*{ogImage}" />
+		<meta property="og:title" th:content="*{ogTitle}" />
+		<meta property="og:type" th:content="*{ogType}" />
+		<meta property="og:site_name" th:content="*{ogSiteName}" />
+		<meta property="og:description" th:content="*{ogDescription}" />
+		<meta property="description" th:content="*{description}" />
+		<meta property="og:url" th:content="*{ogUrl}" />
+		<meta property="og:image" th:content="*{ogImage}" />
+		<meta property="og:image:url" th:content="*{ogImage}" />
+		<meta property="article:author" content="Fornax96" />
+		<link rel="image_src" th:href="*{ogImage}" />
+	</head>
+
+	<body>
+		<div id="listNavigator">
+			<img src="/res/img/arrow-left.png" id="arrow-left" alt="Previous Item" onClick="ListNavigator.previousItem();" />
+			<img src="/res/img/arrow-right.png" id="arrow-right" alt="Next Item" onClick="ListNavigator.nextItem();" />
+			<div id="listNavigatorItems"></div>
+		</div>
+		<div id="toolbar">
+			<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
+			<div>
+				<div>
+					<img id="button-expand-toolbar" src="/res/img/toolbar_show.png" alt="Expand Menu" 
+						 onClick="Toolbar.toggle();" 
+						 style="position: fixed; visibility:hidden; left: 0px; cursor: pointer" />
+					
+					<button class="toolbar-button" onClick="Toolbar.toggle();">Hide Toolbar</button>
+
+					Views: <span id="views" th:text="${data.views}">0</span><br/>
+
+					<button id="btnDownload" class="toolbar-button" onClick="Toolbar.download();">
+						<img src="/res/img/floppy_small.png" alt="Download this file"/>
+						<span>Download</span>
+					</button>
+
+					<button id="btnCopy" class="toolbar-button" onClick="Toolbar.copyUrl();">
+						<img src="/res/img/clipboard_small.png" alt="Copy file URL to clipboard"/>
+						<span>Copy</span>
+					</button>
+
+					<button id="btnShare" onClick="Sharebar.toggle();" class="toolbar-button">
+						<img src="/res/img/share_small.png" alt="Share this file on social media"/>
+						<span>Share</span>
+					</button>
+
+					<form action="/" target="_blank">
+						<button id="btnHome" class="toolbar-button">
+							<img src="/res/img/pixeldrain_small.png" alt="Back to the Home page"/>
+							<span>Home</span>
+						</button>
+					</form>
+
+					<button id="btnDetails" class="toolbar-button" onClick="DetailsWindow.toggle();">
+						<img src="/res/img/info_small.png" alt="Help"/>
+						<span>Details</span>
+					</button>
+
+					<iframe id='sponsors' data-aa='73974'
+						src='//ad.a-ads.com/73974?size=120x600&amp;background_color=000000&amp;text_color=eeeeee&amp;title_color=eeeeee&amp;link_color=9fcf6c&amp;link_hover_color=d2ffa1&amp;title_hover_color=d2ffa1' 
+						scrolling='no' allowtransparency='true' seamless="seamless">		
+					</iframe>
+
+					<iframe id="frmDownload">
+					</iframe>
+					<textarea id="copy-text"></textarea>
+				</div>
+			</div>
+		</div>
+		
+		<div id="sharebar" class="sidebar">
+			<img src="/res/img/arrows-collapse.png" alt="Slide Menu" 
+			     onClick="Sharebar.toggle();" class="button-collapse"/>
+			
+			Share on:<br/>
+			<button class="sharebar-button" th:onclick="'window.open(\'' + ${reddit} + '\');'">
+				<img src="/res/img/social_reddit.png" alt="Share on Reddit" style="width:40px; height: 40px;"/>
+				<br/>Reddit
+			</button>
+			<button class="sharebar-button" th:onClick="'window.open(\'' + ${voat} + '\');'">
+				<img src="/res/img/social_voat.png" alt="Share on Voat" style="width:40px; height: 40px;"/>
+				<br/>Voat
+			</button>
+			<button class="sharebar-button" th:onClick="'window.open(\'' + ${facebook} + '\');'">
+				<img src="/res/img/social_facebook.png" alt="Share on Facebook" style="width:40px; height: 40px;"/>
+				<br/>Facebook
+			</button>
+			<button class="sharebar-button" th:onClick="'window.open(\'' + ${twitter} + '\');'">
+				<img src="/res/img/social_twitter.png" alt="Share on Twitter" style="width:40px; height: 40px;"/>
+				<br/>Twitter
+			</button>
+			<button class="sharebar-button" th:onClick="'window.open(\'' + ${googleplus} + '\');'">
+				<img src="/res/img/social_googleplus.png" alt="Share on Google Plus" style="width:40px; height: 40px;"/>
+				<br/>Google+
+			</button>
+			<button class="sharebar-button" th:onClick="'window.open(\'' + ${tumblr} + '\');'">
+				<img src="/res/img/social_tumblr.png" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
+				<br/>Tumblr
+			</button>
+			<button class="sharebar-button" th:onClick="'window.open(\'' + ${stumbleupon} + '\');'">
+				<img src="/res/img/social_stumbleupon.png" alt="Share on StumbleUpon" style="width:40px; height: 40px;"/>
+				<br/>StumbleUpon
+			</button>
+			<button class="sharebar-button" th:onClick="'window.open(\'' + ${email} + '\');'">
+				<img src="/res/img/social_email.png" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
+				<br/>E-Mail
+			</button>
+		</div>
+
+		<div id="info-popup" class="full-popup">
+			<img alt="Close" src="/res/img/cross.png" 
+			     style="position: absolute; top: 5px; right: 5px; width: 40px; height: 40px; cursor: pointer;"
+			     onclick="DetailsWindow.toggle();"/>
+			Click the help button again to close this overlay.<br/>
+			
+			<h3>File Info</h3>
+			<span id="info-fileDetails"></span>
+			<span id="info-about">{{template "file_info_popup"}}</span>
+		</div>
+		
+		<div id="filepreview">
+			Loading...
+		</div>
+		
+		<script src="/res/script/jquery-2.1.4.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+		<script src="/res/script/Keyboard.js"></script>
+		<script src="/res/script/Toolbar.js"></script>
+		<script src="/res/script/Sharebar.js"></script>
+		<script src="/res/script/DetailsWindow.js"></script>
+		<script src="/res/script/Viewer.js"></script>
+		<script src="/res/script/ListNavigator.js"></script>
+		
+		<script>
+			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.
+			// Just to slice another few milliseconds from the load time :)
+			Viewer.init('{{.Type}}', {{.APIResponse}});
+		</script>
+
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

@@ -1,0 +1,13 @@
+{{define "api-file-id-download-get"}}
+<details th:fragment="details" class="api_doc_details request_get">
+	<summary>GET: /file/{id}/download</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Same as GET /file/{id}, but with File Transfer HTTP 
+			headers. Will trigger a save file dialog when opened in 
+			a web browser. Does not support byte range requests.
+		</p>
+	</div>
+</details>
+{{end}}

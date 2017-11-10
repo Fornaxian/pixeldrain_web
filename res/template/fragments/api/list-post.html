@@ -1,0 +1,52 @@
+{{define "api-list-post"}}
+<details th:fragment="details" class="api_doc_details request_post">
+	<summary>POST: /list</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Creates a list of files that can be viewed together on the file 
+			viewer page.
+		</p>
+		<h3>Parameters</h3>
+		<table>
+			<tr>
+				<td>Param</td>
+				<td>Required</td>
+				<td>Location</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>true</td>
+				<td>URL</td>
+				<td>ID of the file to delete</td>
+			</tr>
+		</table>
+		<h3>Returns</h3>
+<pre>HTTP 200: OK
+{
+	"success": true,
+	"value": "file_deleted",
+	"message": "The file has been deleted."
+}</pre>
+<pre>HTTP 404: Not Found
+{
+	"success": false,
+	"value": "file_not_found",
+	"message": "File ID was not found in the database."
+}</pre>
+<pre>HTTP 401: Unauthorized
+{
+	"success": false,
+	"value": "unauthorized",
+	"message": "You are not logged in."
+}</pre>
+<pre>HTTP 403: Forbidden
+{
+	"success": false,
+	"value": "forbidden",
+	"message": "This is not your file."
+}</pre>
+	</div>
+</details>
+{{end}}

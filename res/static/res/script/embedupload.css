@@ -1,0 +1,22 @@
+/* 
+    Created on : Oct 21, 2015, 1:15:03 PM
+    Author     : Fornax
+*/
+.uploadQueueSideBar{
+	
+}
+
+.uploadQueueToggleButton{
+	
+}
+
+.uploadNotification{
+	position: fixed;
+	background-color: #333;
+	border: 2px #555 outset;
+	
+	height: 100px;
+	width: 200px;
+	right: 10px;
+	bottom: 10px;
+}
