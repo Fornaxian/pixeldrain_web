@@ -1,5 +1,5 @@
 {{define "api-list-post"}}
-<details th:fragment="details" class="api_doc_details request_post">
+<details class="api_doc_details request_post">
 	<summary>POST: /list</summary>
 	<div>
 		<h3>Description</h3>
@@ -8,45 +8,70 @@
 			viewer page.
 		</p>
 		<h3>Parameters</h3>
-		<table>
-			<tr>
-				<td>Param</td>
-				<td>Required</td>
-				<td>Location</td>
-				<td>Description</td>
-			</tr>
-			<tr>
-				<td>id</td>
-				<td>true</td>
-				<td>URL</td>
-				<td>ID of the file to delete</td>
-			</tr>
-		</table>
+		<p>
+			POST body should be a JSON object, example below. A list can contain
+			maximally 5000 files. If you try to add more the request will fail.
+		</p>
+		<h4>Example</h4>
+<pre>
+{
+	"title": "My beautiful photos",
+	"description": "An album of photos from my vacation in Austria",
+	"files": [ // Ordered array of files to add to the list
+		{
+			"id": "abc123",
+			"description": "First photo of the week, such a beautiful valley"
+		},
+		{
+			"id": "123abc",
+			"description": "The week went by so quickly, here's a photo from the plane back"
+		}
+	]
+}
+</pre>
 		<h3>Returns</h3>
 <pre>HTTP 200: OK
 {
 	"success": true,
-	"value": "file_deleted",
-	"message": "The file has been deleted."
-}</pre>
-<pre>HTTP 404: Not Found
+	"id": "yay137" // ID of the newly created list
+}
+</pre>
+<pre>HTTP 422: Unprocessable Entity
 {
 	"success": false,
 	"value": "file_not_found",
-	"message": "File ID was not found in the database."
-}</pre>
-<pre>HTTP 401: Unauthorized
+	"id": "Oh42No", // The file you tried to add with this ID does not exist
+	"message": "File Oh42No was not found in the database."
+}
+</pre>
+<pre>HTTP 413: Payload too large
 {
 	"success": false,
-	"value": "unauthorized",
-	"message": "You are not logged in."
-}</pre>
-<pre>HTTP 403: Forbidden
+	"value": "too_many_files",
+	"message": "This list contains too many files, max 5000 allowed."
+}
+</pre>
+<pre>HTTP 422: Unprocessable Entity
 {
 	"success": false,
-	"value": "forbidden",
-	"message": "This is not your file."
-}</pre>
+	"value": "json_parse_failed",
+	"message": "The JSON object in the request body could not be read."
+}
+</pre>
+<pre>HTTP 413: Payload too large
+{
+	"success": false,
+	"value": "title_too_long",
+	"message": "The title of this list is too long, max 300 characters allowed."
+}
+</pre>
+<pre>HTTP 413: Payload too large
+{
+	"success": false,
+	"value": "description_too_long",
+	"message": "The description of this list or one of the files in the list is too long, max 3000 characters allowed."
+}
+</pre>
 	</div>
 </details>
 {{end}}

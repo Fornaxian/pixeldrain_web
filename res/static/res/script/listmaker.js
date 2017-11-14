@@ -1,6 +1,10 @@
 
 var listItems = new Array();
 
+$("#btnCreateList").click(function (evt) {
+	createList();
+});
+
 function addToList(id, desc){
 	var listEntry = {id: id, desc: desc};
 
@@ -8,7 +12,7 @@ function addToList(id, desc){
 }
 
 function createList(){
-	var url = "/api/createlist/";
+	var url = "/api/list";
 	
 	var postData = {};
 	
@@ -20,17 +24,29 @@ function createList(){
 	if(title === null){
 		return;
 	}
-	
-	postData["title" ] = title;
+
+	var postData = {
+		"title": title,
+		"description": "yo",
+		"files": new Array()
+	};
 	
 	var arrayLength = listItems.length;
 	for (var i = 0; i < arrayLength; i++) {
-		postData["id" + i] = listItems[i]["id"];
-		postData["desc" + i] = listItems[i]["desc"];
+		postData.files[i] = {
+			"id": listItems[i]["id"],
+			"description": listItems[i]["desc"]
+		};
 	}
 	
-	$.post(url, postData, function(response){
-		listCreated(response);
+	$.ajax({
+		url: url,
+		contentType: "application/json",
+		method: "POST",
+		data: JSON.stringify(postData),
+		dataType: "json",
+		success: listCreated,
+		error: listCreated
 	});
 }
 
@@ -38,7 +54,7 @@ function listCreated(response){
 	if(response.status === "success"){
 		resultString = "<div class=\"uploadHistory\">List creation finished!<br/>"
 			+ "Your List URL: <br/>"
-			+ "<a href=\"" + response.url + "\" target=\"_blank\" style=\"font-weight: bold;\">" + response.url + "</a>"
+			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\" style=\"font-weight: bold;\">/l/" + response.id + "</a>"
 			+ "</div>";
 		
 		$('#uploads-container').prepend(
@@ -67,7 +83,3 @@ function listCreated(response){
 //	$("#txtListId").val("");
 //	$("#txtListDesc").val("");
 //});
-
-$("#btnListCreate").click(function (evt) {
-	createList();
-});
