@@ -127,9 +127,9 @@ var ListNavigator = {
 			var thumb = this.data[i].thumbnail;
 			var name = this.data[i].file_name;
 			
-			var itemHtml = name + "<br>"
+			var itemHtml = escapeHTML(name) + "<br>"
 				+ "<img src=\"" + thumb + "\" "
-				+ "class=\"listItemThumbnail lazy\" alt=\"" + name + "\"/>";
+				+ "class=\"listItemThumbnail lazy\" alt=\"" + escapeHTML(name) + "\"/>";
 			
 			navigatorItems[i].innerHTML = itemHtml;
 		}
@@ -150,7 +150,7 @@ var ListNavigator = {
 
 			var itemHtml = "<div class=\"listItem\" "
 				+ "onClick=\"ListNavigator.setItem('" + i + "')\">"
-				+ filename + "<br>"
+				+ escapeHTML(filename) + "<br>"
 			//	+ "<img src=\"/api/thumbnail/" + item.id + "\" " // Lazy Loading
 			//	+ "class=\"listItemThumbnail lazy\" alt=\"" + filename + "\"/>"
 				+ "</div>";

@@ -43,3 +43,12 @@ var Viewer = {
 		Toolbar.setViews(file.views);
 	}
 };
+
+// Against XSS attacks
+function escapeHTML(str) {
+    return String(str)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;');
+}
