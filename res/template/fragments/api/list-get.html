@@ -1,0 +1,80 @@
+{{define "api-list-get"}}
+<details class="api_doc_details request_get">
+	<summary><span class="method">GET</span>/list/{id}</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Returns information about a file list and the files in it.
+		</p>
+		<h3>Parameters</h3>
+		<table>
+			<tr>
+				<td>Param</td>
+				<td>Required</td>
+				<td>Location</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>true</td>
+				<td>URL</td>
+				<td>ID of the list</td>
+			</tr>
+		</table>
+		<h3>Returns</h3>
+			<p>
+				The API will return some basic information about every file.
+				Every file also has a "detail_href" field which contains a URL
+				to the info API of the file. Follow that link to get more
+				information about the file like size, checksum, mime type, etc.
+				The address is relative to the API URL and should be appended to
+				the end.
+			</p>
+<pre>HTTP 200: OK
+{
+	{
+		"success": true,
+		"id": "L8bhwx",
+		"title": "Rust in Peace",
+		"date_created": 1513033315,
+		"files": [
+			{
+				"detail_href": "/file/_SqVWi/info",
+				"id": "_SqVWi",
+				"file_name": "01 Holy Wars... The Punishment Due.mp3",
+				"description": "",
+				"date_created": 1513033304,
+				"date_last_view": 1513033304,
+				"list_description": ""
+			},
+			{
+				"detail_href": "/file/RKwgZb/info",
+				"id": "RKwgZb",
+				"file_name": "02 Hangar 18.mp3",
+				"description": "",
+				"date_created": 1513033304,
+				"date_last_view": 1513033304,
+				"list_description": ""
+			},
+			{
+				"detail_href": "/file/DRaL_e/info",
+				"id": "DRaL_e",
+				"file_name": "03 Take No Prisoners.mp3",
+				"description": "",
+				"date_created": 1513033304,
+				"date_last_view": 1513033304,
+				"list_description": ""
+			}
+		]
+	}
+}
+</pre>
+<pre>HTTP 404: Not Found
+{
+	"success": false,
+	"value": "list_not_found",
+}
+</pre>
+</div>
+</details>
+{{end}}
