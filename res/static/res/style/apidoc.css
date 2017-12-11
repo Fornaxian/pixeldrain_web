@@ -5,18 +5,21 @@
 
 /* Global Definitions */
 .api_doc_details{
-	border: 2px solid;
-	border-radius: 4px;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
 	margin-top: 10px;
+	margin: 15px -8px 15px -8px;
 }
-
 .api_doc_details > summary {
 	padding: 2px;
 	font-family: monospace;
 }
-
+.api_doc_details > summary > .method {
+	display: inline-block;
+	width: 80px;
+}
 .api_doc_details > div {
-	padding: 5px;
+	padding: 8px;
 }
 
 table{
@@ -44,46 +47,30 @@ h3{
 
 /* GET requests */
 .api_doc_details.request_get{
-	border-color: #0000F0;
-}
-
-.api_doc_details.request_get > summary{
-	background-color: #000040;
+	border-color: rgb(54, 54, 255);
+	background-color: rgba(32, 32, 255, 0.2);
 }
 
 /* POST requests */
 .api_doc_details.request_post{
-	border-color: #009000;
-}
-
-.api_doc_details.request_post > summary{
-	background-color: #004000;
+	border-color: #00d000;
+	background-color: rgba(0, 255, 0, 0.05);
 }
 
 /* DELETE requests */
 .api_doc_details.request_delete{
 	border-color: #B00000;
-}
-
-.api_doc_details.request_delete > summary{
-	background-color: #400000;
+	background-color: rgba(255, 0, 0, 0.05);
 }
 
 /* PUT requests */
 .api_doc_details.request_put{
 	border-color: #B06000;
-}
-
-.api_doc_details.request_put > summary{
-	background-color: #804000;
+	background-color: rgba(255, 128, 0, 0.05);
 }
 
 /* PATCH requests */
 .api_doc_details.request_patch{
 	border-color: #6000B0;
+	background-color: rgba(128, 0, 255, 0.1);
 }
-
-.api_doc_details.request_patch > summary{
-	background-color: #400080;
-}
-
