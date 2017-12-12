@@ -28,6 +28,7 @@ func Init(r *httprouter.Router, prefix string) {
 	r.GET(prefix+"/history", webcontroller.ServeHistory)
 	r.GET(prefix+"/u/:id", webcontroller.ServeFileViewer)
 	r.GET(prefix+"/u/:id/preview", webcontroller.ServeFilePreview)
+	r.GET(prefix+"/l/:id", webcontroller.ServeListViewer)
 	r.GET(prefix+"/t", webcontroller.ServePaste)
 
 	r.NotFound = http.HandlerFunc(webcontroller.ServeNotFound)

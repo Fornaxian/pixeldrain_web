@@ -51,27 +51,26 @@ function createList(){
 }
 
 function listCreated(response){
-	if(response.status === "success"){
-		resultString = "<div class=\"uploadHistory\">List creation finished!<br/>"
+	if(response.success){
+		resultString = "<div class=\"uploadItem\">List creation finished!<br/>"
 			+ "Your List URL: <br/>"
-			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\" style=\"font-weight: bold;\">/l/" + response.id + "</a>"
+			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\" style=\"font-weight: bold;\">"+window.location.hostname+"/l/" + response.id + "</a>"
 			+ "</div>";
 		
-		$('#uploads-container').prepend(
+		$('#uploads-completed').prepend(
 			$(resultString).hide().fadeIn('slow')
 		);
 	}else{
-		resultString = "<div class=\"uploadHistory\">List creation failed<br/>"
+		resultString = "<div class=\"uploadItem\">List creation failed<br/>"
 			+ "The server responded with this: <br/>"
 			+ response.type + ": " + response.value
 			+ "</div>";
 		
-		$('#uploads-container').prepend(
+		$('#uploads-completed').prepend(
 			$(resultString).hide().fadeIn('slow')
 		);
 	}
 }
-
 //$("#btnAddToList").click(function (evt) {
 //	var fileId = $("#txtListId").val();
 //	var fileDesc = $("#txtListDesc").val();

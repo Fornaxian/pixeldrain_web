@@ -124,7 +124,7 @@ var ListNavigator = {
 		var navigatorItems = $("#listNavigatorItems").children().toArray();
 		
 		for (i = startPos; i <= endPos; i++){
-			var thumb = this.data[i].thumbnail;
+			var thumb = "/api/file/" + this.data[i].id + "/thumbnail";
 			var name = this.data[i].file_name;
 			
 			var itemHtml = escapeHTML(name) + "<br>"

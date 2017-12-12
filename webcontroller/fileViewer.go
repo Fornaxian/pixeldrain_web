@@ -1,6 +1,7 @@
 package webcontroller
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -50,11 +51,13 @@ func ServeFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 			"views":         0,
 		}
 		err = templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
+			"Title":       fmt.Sprintf("%d files in Pixeldrain", len(finfo)),
 			"APIResponse": listdata,
 			"Type":        "list",
 		})
 	} else {
 		err = templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
+			"Title":       fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].FileName),
 			"APIResponse": finfo[0],
 			"Type":        "file",
 		})
