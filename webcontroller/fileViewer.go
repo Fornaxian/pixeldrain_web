@@ -41,6 +41,7 @@ func ServeFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 		return
 	}
 
+	var ogData OGData
 	var err error
 	if list {
 		listdata := map[string]interface{}{
@@ -54,12 +55,14 @@ func ServeFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 			"Title":       fmt.Sprintf("%d files in Pixeldrain", len(finfo)),
 			"APIResponse": listdata,
 			"Type":        "list",
+			"OGData":      ogData.FromFile(*finfo[0]),
 		})
 	} else {
 		err = templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
 			"Title":       fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].FileName),
 			"APIResponse": finfo[0],
 			"Type":        "file",
+			"OGData":      ogData.FromFile(*finfo[0]),
 		})
 	}
 	if err != nil {

@@ -15,22 +15,22 @@
 		
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
 		
-		<link rel="alternate" type="application/json+oembed" th:href="*{oEmbedHref}" th:title="*{ogTitle}" />
+		<!-- <link rel="alternate" type="application/json+oembed" th:href="*{oEmbedHref}" th:title="*{ogTitle}" /> OEmbed will return soon -->
 		
 		{{template "bgpattern"}}
 		
 		<meta name="theme-color"        content="#202020"/>
-		<meta name="twitter:image"      content="*{ogImage}" />
-		<meta property="og:title"       content="*{ogTitle}" />
-		<meta property="og:type"        content="*{ogType}" />
-		<meta property="og:site_name"   content="*{ogSiteName}" />
-		<meta property="og:description" content="*{ogDescription}" />
-		<meta property="description"    content="*{description}" />
-		<meta property="og:url"         content="*{ogUrl}" />
-		<meta property="og:image"       content="*{ogImage}" />
-		<meta property="og:image:url"   content="*{ogImage}" />
+		<meta name="twitter:image"      content="{{.OGData.Image}}" />
+		<meta property="og:title"       content="{{.OGData.Title}}" />
+		<meta property="og:type"        content="{{.OGData.Type}}" />
+		<meta property="og:site_name"   content="{{.OGData.SiteName}}" />
+		<meta property="og:description" content="{{.OGData.Description}}" />
+		<meta property="description"    content="{{.OGData.Description}}" />
+		<meta property="og:url"         content="{{.OGData.URL}}" />
+		<meta property="og:image"       content="{{.OGData.Image}}" />
+		<meta property="og:image:url"   content="{{.OGData.Image}}" />
 		<meta property="article:author" content="Fornax96" />
-		<link rel="image_src" th:href="*{ogImage}" />
+		<link rel="image_src"              href="{{.OGData.Image}}" />
 	</head>
 
 	<body>
@@ -95,35 +95,35 @@
 			     onClick="Sharebar.toggle();" class="button-collapse"/>
 			
 			Share on:<br/>
-			<button class="sharebar-button" th:onclick="'window.open(\'' + ${reddit} + '\');'">
+			<button class="sharebar-button" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
 				<img src="/res/img/social_reddit.png" alt="Share on Reddit" style="width:40px; height: 40px;"/>
 				<br/>Reddit
 			</button>
-			<button class="sharebar-button" th:onClick="'window.open(\'' + ${voat} + '\');'">
+			<button class="sharebar-button" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
 				<img src="/res/img/social_voat.png" alt="Share on Voat" style="width:40px; height: 40px;"/>
 				<br/>Voat
 			</button>
-			<button class="sharebar-button" th:onClick="'window.open(\'' + ${facebook} + '\');'">
+			<button class="sharebar-button" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
 				<img src="/res/img/social_facebook.png" alt="Share on Facebook" style="width:40px; height: 40px;"/>
 				<br/>Facebook
 			</button>
-			<button class="sharebar-button" th:onClick="'window.open(\'' + ${twitter} + '\');'">
+			<button class="sharebar-button" onClick="window.open('https://twitter.com/share?text=Check%20out%20this%20file%20on%20%23Pixeldrain&url=' + window.location.href);">
 				<img src="/res/img/social_twitter.png" alt="Share on Twitter" style="width:40px; height: 40px;"/>
 				<br/>Twitter
 			</button>
-			<button class="sharebar-button" th:onClick="'window.open(\'' + ${googleplus} + '\');'">
+			<button class="sharebar-button" onClick="window.open('https://plus.google.com/share?url=' + window.location.href);">
 				<img src="/res/img/social_googleplus.png" alt="Share on Google Plus" style="width:40px; height: 40px;"/>
 				<br/>Google+
 			</button>
-			<button class="sharebar-button" th:onClick="'window.open(\'' + ${tumblr} + '\');'">
+			<button class="sharebar-button" onClick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
 				<img src="/res/img/social_tumblr.png" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
 				<br/>Tumblr
 			</button>
-			<button class="sharebar-button" th:onClick="'window.open(\'' + ${stumbleupon} + '\');'">
+			<button class="sharebar-button" onClick="window.open('http://www.stumbleupon.com/submit?url=' + window.location.href);">
 				<img src="/res/img/social_stumbleupon.png" alt="Share on StumbleUpon" style="width:40px; height: 40px;"/>
 				<br/>StumbleUpon
 			</button>
-			<button class="sharebar-button" th:onClick="'window.open(\'' + ${email} + '\');'">
+			<button class="sharebar-button" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=You%20can%20view%20it%20here%20' + window.location.href);">
 				<img src="/res/img/social_email.png" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
 				<br/>E-Mail
 			</button>
