@@ -35,6 +35,6 @@ func (d *OGData) FromList(l pixelapi.List) *OGData {
 	d.SiteName = "Pixeldrain"
 	d.Description = "View " + l.Title + " on Pixeldrain"
 	d.URL = "/l/" + l.ID
-	d.Image = "/api/list/" + l.ID + "/thumbnail"
+	d.Image = "/api/file/" + l.Files[0].ID + "/thumbnail"
 	return d
 }

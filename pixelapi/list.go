@@ -28,7 +28,7 @@ type ListFile struct {
 
 // GetList get a List from the pixeldrain API
 func GetList(id string) *List {
-	body, err := get(conf.ApiURL() + "/list/" + id)
+	body, err := get(conf.ApiUrlInternal() + "/list/" + id)
 
 	if err != nil {
 		log.Error("req failed: %v", err)

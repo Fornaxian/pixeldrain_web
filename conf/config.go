@@ -11,7 +11,8 @@ import (
 var vi *viper.Viper
 
 var defaultConfig = `# Pixeldrain Web UI server configuration
-api_url = "http://127.0.0.1:8080/api"
+api_url_external = "/api" # Used in the web browser, can be a relative path
+api_url_internal = "http://127.0.0.1:8080/api" # Used for internal API requests to the pixeldrain server, not visible to users
 static_resource_dir = "res/static"
 template_dir = "res/template"
 debug_mode = false`
@@ -32,7 +33,8 @@ func Init() {
 	vi.AddConfigPath("/etc")
 	vi.AddConfigPath("/usr/local/etc")
 
-	vi.SetDefault("api_url", "http://127.0.0.1:8080/api")
+	vi.SetDefault("api_url_external", "/api")
+	vi.SetDefault("api_url_internal", "http://127.0.0.1:8080/api")
 	vi.SetDefault("static_resource_dir", "./res/static")
 	vi.SetDefault("template_dir", "./res/template")
 	vi.SetDefault("debug_mode", false)
@@ -76,9 +78,11 @@ func writeCfg() {
 	file.Close()
 }
 
-// ApiURL returns the API URL
-func ApiURL() string {
-	return vi.GetString("api_url")
+func ApiUrlExternal() string {
+	return vi.GetString("api_url_external")
+}
+func ApiUrlInternal() string {
+	return vi.GetString("api_url_internal")
 }
 func StaticResourceDir() string {
 	return vi.GetString("static_resource_dir")

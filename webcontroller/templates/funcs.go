@@ -10,6 +10,7 @@ import (
 var funcMap = template.FuncMap{
 	"bgPatternCount": bgPatternCount,
 	"debugMode":      debugMode,
+	"apiUrl":         apiURL,
 }
 
 func bgPatternCount() uint8 {
@@ -18,4 +19,8 @@ func bgPatternCount() uint8 {
 
 func debugMode() bool {
 	return conf.DebugMode()
+}
+
+func apiURL() string {
+	return conf.ApiUrlExternal()
 }

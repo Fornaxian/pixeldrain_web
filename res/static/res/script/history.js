@@ -17,7 +17,7 @@ $(document).ready(function () {
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url: "/api/file/" + id + "/info",
+				url: APIURL + "/file/" + id + "/info",
 				async: true,
 				success: function(data) {
 					historyAddItem(data);
@@ -54,7 +54,7 @@ function historyAddItem(json) {
 
 	var uploadItem = "<div class=\"uploadItem\" >"
 		+ "<a href=\"/u/" + json.id + "\" target=\"_blank\">"
-		+ "<img src=\"" + json.thumbnail + "\" "
+		+ "<img src=\"" + APIURL + json.thumbnail_href + "\" "
 		+ "alt=\"" + json.file_name + "\" "
 		+ "class=\"uploadItemImage\" />"
 		+ json.file_name

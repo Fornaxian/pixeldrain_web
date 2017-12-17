@@ -9,22 +9,22 @@ import (
 
 // FileInfo File information object from the pixeldrain API
 type FileInfo struct {
-	ID           string `json:"id"`
-	FileName     string `json:"file_name"`
-	DateUpload   int64  `json:"date_upload"`
-	DateLastview int64  `json:"date_last_view"`
-	DaysValid    uint16 `json:"days_valid"`
-	FileSize     uint64 `json:"file_size"`
-	Views        uint   `json:"views"`
-	MimeType     string `json:"mime_type"`
-	Description  string `json:"description"`
-	MimeImage    string `json:"mime_image"`
-	Thumbnail    string `json:"thumbnail"`
+	ID            string `json:"id"`
+	FileName      string `json:"file_name"`
+	DateUpload    int64  `json:"date_upload"`
+	DateLastview  int64  `json:"date_last_view"`
+	DaysValid     uint16 `json:"days_valid"`
+	FileSize      uint64 `json:"file_size"`
+	Views         uint   `json:"views"`
+	MimeType      string `json:"mime_type"`
+	Description   string `json:"description"`
+	MimeImage     string `json:"mime_image"`
+	ThumbnailHREF string `json:"thumbnail_href"`
 }
 
 // GetFileInfo gets the FileInfo from the pixeldrain API
 func GetFileInfo(id string) *FileInfo {
-	body, err := get(conf.ApiURL() + "/file/" + id + "/info")
+	body, err := get(conf.ApiUrlInternal() + "/file/" + id + "/info")
 
 	if err != nil {
 		log.Error("req failed: %v", err)
