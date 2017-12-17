@@ -17,6 +17,8 @@ func ServeListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 		ServeNotFound(w, r)
 		return
 	}
+
+	var ogData OGData
 	var err error
 	listdata := map[string]interface{}{
 		"data":         list.Files,
@@ -28,6 +30,7 @@ func ServeListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 		"Title":       fmt.Sprintf("%s ~ Pixeldrain list", list.Title),
 		"APIResponse": listdata,
 		"Type":        "list",
+		"OGData":      ogData.FromList(*list),
 	})
 	if err != nil {
 		log.Error("Error executing template file_viewer: %s", err)
