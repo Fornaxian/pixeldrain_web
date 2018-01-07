@@ -4,58 +4,7 @@
 */
 
 body{
-	background-color: #111;
-	/*background-image: url("img/checker3.png"); Defined in viewer.html*/
-	background-repeat: repeat;
-	color: #eeeeee;
-	font-size: 16px;
-	font-family: 'Ubuntu', sans-serif;
-	margin: 0;
 	overflow: hidden;
-}
-
-a{
-	color: #9FCF6C;
-	text-decoration: none;
-}
-
-a:hover{
-	text-decoration: underline;
-	color: #9FCF6C;
-}
-
-::-webkit-scrollbar{
-	width: 10px;  /* for vertical scrollbars */
-	height: 10px; /* for horizontal scrollbars */
-}
-::-webkit-scrollbar-track{
-	background: #000;
-}
-::-webkit-scrollbar-thumb{
-	background-color: #444;
-}
-::-webkit-scrollbar-corner{
-	background: transparent;
-}
-
-button{
-	background-color: #333;
-	border: #777 outset 2px;
-	color: #eeeeee;
-	font-size: 16px;
-	font-family: 'Ubuntu', sans-serif;
-	cursor: pointer;
-	padding: 2px;
-}
-button:active{
-	background-color: #111;
-}
-button:hover{
-	background-color: #444;
-}
-button:focus{
-	background-color: #444;
-	outline: none;
 }
 
 #filepreview{
@@ -147,7 +96,7 @@ button:focus{
 #toolbar {
 	position: absolute;
 	width: 120px;
-	z-index: 12;
+	z-index: 52;
 	overflow: hidden;
 	float: left;
 	background-color: #000;
@@ -155,8 +104,9 @@ button:focus{
 	bottom: 0;
 	top: 0;
 	padding: 0;
-	text-align: center;
-	border-right: 2px ridge #9FCF6C;
+	text-align: left;
+	border-right: 2px ridge var(--highlight_color);
+	box-shadow: 2px 2px 8px #000000;
 }
 
 /* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
@@ -177,19 +127,24 @@ button:focus{
 	height: auto;
 }
 
-.toolbar-button {
-	text-align: left;
-	width: 100%;
-	margin-bottom: 3px;
+#button-expand-toolbar{
+	position: absolute;
+	visibility: hidden;
+	left: 0;
+	top: 0;
+	cursor: pointer;
+	z-index: 51;
 }
 
-.toolbar-button > img {
+.toolbar_button{
+	text-align: left;
+}
+.toolbar_button > img {
 	width: 24px; 
 	height: 24px;
 }
-
-.toolbar-button > span {
-	vertical-align: 5px;
+.toolbar_button > span {
+	vertical-align: 6px;
 }
 
 #sponsors{
@@ -215,17 +170,13 @@ button:focus{
 	overflow-x: hidden;
 	float: left;
 	background-color: #000;
+	box-shadow: 2px 2px 8px #000000;
 	text-align: center;
-	border-right: 2px ridge #9FCF6C;
-	z-index: 11;
+	border-right: 2px ridge var(--highlight_color);
+	z-index: 50;
 	overflow: hidden;
 }
-
-.sharebar-button {
-	text-align: center;
-	width: 100%;
-	margin-bottom: 3px;
-}
+.sharebar-button {text-align: center;}
 
 /* =====================
    || MISC COMPONENTS ||
@@ -242,7 +193,7 @@ button:focus{
 	overflow-y: scroll;
 	padding: 10px;
 	box-sizing: border-box;
-
+	text-align: left;
 	box-shadow: #eee 0px 0px 50px;
 	z-index: 100;
 }
@@ -273,15 +224,6 @@ button:focus{
 	width: 0px;
 	height: 0px;
 	position: fixed;
-}
-
-.button-collapse{
-	width: 100px;
-	left: 0;
-	height: 12px;
-	position: relative;
-	display: block;
-	cursor: pointer;
 }
 
 .bytecounter{

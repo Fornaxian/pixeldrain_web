@@ -102,8 +102,10 @@ var ListNavigator = {
 		
 		if(this.shuffle){
 			$("#btnShuffle > span").html("&nbsp;Shuffle&nbsp;&#x2611;"); // Check icon
+			$("#btnShuffle").addClass("button_highlight");
 		}else{
 			$("#btnShuffle > span").html("&nbsp;Shuffle&nbsp;&#x2610;"); // Empty checkbox
+			$("#btnShuffle").removeClass("button_highlight");
 		}
 	},
 	
@@ -187,7 +189,7 @@ var ListNavigator = {
 		// Add the shuffle button to the toolbar
 		var btnShuffle = document.createElement("button");
 		btnShuffle.setAttribute("id", "btnShuffle");
-		btnShuffle.setAttribute("class", "toolbar-button");
+		btnShuffle.setAttribute("class", "toolbar_button button_full_width");
 		btnShuffle.setAttribute("onClick", "ListNavigator.toggleShuffle();");
 		
 		var btnShuffleImg = document.createElement("img");
@@ -205,22 +207,11 @@ var ListNavigator = {
 		// We need to adjust the height of some elements to make the navigation bar fit
 		var navHeight = $("#listNavigator").height() + 2;
 		window.setTimeout(function(){
-			$("#listNavigator").animate(
-				{"top": "0"}, 
-				{"duration": 800, "queue": false}
-			);
-			$("#filepreview").animate(
-				{top: navHeight}, 
-				{"duration": 1200, "queue": false}
-			);
-			$("#toolbar").animate(
-				{top: navHeight}, 
-				{"duration": 1200, "queue": false}
-			);
-			$("#sharebar").animate(
-				{top: navHeight}, 
-				{"duration": 1200, "queue": false}
-			);
+			$("#listNavigator").animate(        {top: 0},        {"duration": 1500, "queue": false});
+			$("#filepreview").animate(          {top: navHeight},{"duration": 1500, "queue": false});
+			$("#toolbar").animate(              {top: navHeight},{"duration": 1500, "queue": false});
+			$("#button-expand-toolbar").animate({top: navHeight},{"duration": 1500, "queue": false});
+			$("#sharebar").animate(             {top: navHeight},{"duration": 1500, "queue": false});
 			$("#info-popup").css("top", "120px");
 		}, 100);
 	}

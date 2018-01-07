@@ -28,11 +28,12 @@
 	top: -100px;
 	height: 98px;
 	background-color: #000;
-	border-bottom: 2px ridge #9FCF6C;
+	box-shadow: 2px 2px 8px #000000;
+	border-bottom: 2px ridge var(--highlight_color);
 	text-align: center;
 	overflow-x: hidden;
 	overflow-y: hidden;
-	z-index: 1000;
+	z-index: 50;
 }
 
 #listNavigatorItems{
@@ -46,8 +47,6 @@
 	overflow-y: hidden;
 	border: none;
 	padding: 0 40px;
-	z-index: 1001;
-	
 }
 
 .listItem{
@@ -70,18 +69,22 @@
 	margin: 0;
 }
 
-#arrow-left{
-	position: fixed;
-	height: 92px;
-	width: 35px;
-	left: 0;
-	z-index: 1002;
-}
-
+#arrow-left,
 #arrow-right{
-	position: fixed;
-	height: 92px;
-	width: 35px;
-	right: 0;
-	z-index: 1002;
+	position: absolute;
+	display: block;
+	border-top: 30px solid transparent;
+	border-bottom: 30px solid transparent;
+	height: 0;
+	width: 0;
+	top: 20px;
+	cursor: pointer;
+}
+#arrow-left{
+	border-right: 40px solid var(--highlight_color);
+	left: 10px;
+}
+#arrow-right{
+	border-left: 40px solid var(--highlight_color);
+	right: 10px;
 }

@@ -16,7 +16,7 @@ var Toolbar = {
 				Sharebar.toggle();
 			}
 
-			$("#toolbar").animate({left: "-122"}, 400);
+			$("#toolbar").animate({left: "-132"}, 400);
 			$("#filepreview").animate({left: "0"}, 400);
 
 			$("#button-expand-toolbar").css("visibility", "visible");
@@ -26,7 +26,11 @@ var Toolbar = {
 			$("#toolbar").animate({left: "0"}, 400);
 			$("#filepreview").animate({left: "122"}, 400);
 
-			$("#button-expand-toolbar").css("visibility", "hidden");
+			setTimeout(function(){
+				if(this.visible){
+					$("#button-expand-toolbar").css("visibility", "hidden");
+				}
+			}, 1000)
 
 			this.visible = true;
 		}
@@ -49,6 +53,7 @@ var Toolbar = {
 			var success = document.execCommand('copy');
 			console.log('Text copied');
 			$("#btnCopy>span").text("Copied!");
+			$("#btnCopy").addClass("button_highlight");
 		} catch (err) {
 			console.log('Copying not supported');
 			$("#btnCopy>span").text("Error!");
@@ -56,7 +61,10 @@ var Toolbar = {
 		}
 		
 		// Return to normal
-		setTimeout(function(){$("#btnCopy>span").text("Copy")}, 5000);
+		setTimeout(function(){
+			$("#btnCopy>span").text("Copy");
+			$("#btnCopy").removeClass("button_highlight");
+		}, 10000);
 	},
 	setViews: function(amount){
 		$("#views").html(amount);

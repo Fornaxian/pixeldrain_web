@@ -2,16 +2,20 @@ package webcontroller
 
 import (
 	"fmt"
+	"html"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"path/filepath"
 	"strings"
 
+	"fornaxian.com/pixeldrain-api/log"
 	"fornaxian.com/pixeldrain-web/conf"
 	"fornaxian.com/pixeldrain-web/pixelapi"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/timakin/gonvert"
 )
 
 // ServeFilePreview controller for GET /u/:id/preview
@@ -50,6 +54,9 @@ func (f FilePreview) Run(inf *pixelapi.FileInfo) string {
 	}
 	if strings.HasPrefix(f.FileInfo.MimeType, "audio") {
 		return f.audio()
+	}
+	if strings.HasPrefix(f.FileInfo.MimeType, "text") {
+		return f.text()
 	}
 
 	switch f.FileInfo.MimeType {
@@ -119,6 +126,53 @@ Your web browser does not support the HTML video tag.
 func (f FilePreview) pdf() string {
 	u, _ := url.Parse(f.FileURL)
 	return f.frame("/res/misc/pdf-viewer/web/viewer.html?file=" + u.String())
+}
+
+func (f FilePreview) text() string {
+	htmlOut := `<div class="text-container">
+<pre class="pre-container %s" style="width: 100%%;">%s</pre>
+</div>`
+
+	if f.FileInfo.FileSize > 1e6 { // Prevent out of memory errors
+		return fmt.Sprintf(htmlOut, "",
+			"File is too large to view online.\nPlease download and view it locally.",
+		)
+	}
+
+	body, err := pixelapi.GetFile(f.FileInfo.ID)
+	if err != nil {
+		log.Error("Can't download text file for preview: %s", err)
+		return fmt.Sprintf(htmlOut, "",
+			"An error occurred while downloading this file.",
+		)
+	}
+	defer body.Close()
+
+	bodyBytes, err := ioutil.ReadAll(body)
+	if err != nil {
+		log.Error("Can't read text file for preview: %s", err)
+		return fmt.Sprintf(htmlOut, "",
+			"An error occurred while reading this file.",
+		)
+	}
+
+	converter := gonvert.New(string(bodyBytes), gonvert.UTF8)
+	result, err := converter.Convert()
+	if err != nil {
+		log.Debug("Unable to decode text file: %s", err)
+		return fmt.Sprintf(htmlOut, "",
+			"This file is using an unknown character encoding.\nPlease download it and view it locally.",
+		)
+	}
+
+	result = html.EscapeString(result)
+
+	var prettyPrint string
+	if f.FileInfo.MimeType != "text/plain" {
+		prettyPrint = "prettyprint linenums"
+		htmlOut += `<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>`
+	}
+	return fmt.Sprintf(htmlOut, prettyPrint, result)
 }
 
 func (f FilePreview) frame(url string) string {

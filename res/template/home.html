@@ -5,6 +5,7 @@
 		<title>PixelDrain ~ Free file sharing service</title>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="/global.css"/>
 		<link rel="stylesheet" href="/res/style/home.css"/>
 		<link rel="stylesheet" href="/res/style/layout.css"/>
 		<link rel="stylesheet" href="/res/style/history.css"/>
@@ -36,10 +37,10 @@
 		<img id="header-image" src="/res/img/header_blackchancery.png" alt="Header image"/>
 		<div id="body" class="body">
 			{{template "menu"}}
-			<div class="highlight bg-middle border-bottom">
+			<div class="highlight_middle border-bottom">
 				<input id="fileInputField" type="file" name="file" multiple='multiple'/>
-				<button id="selectFileButton" class="big-button">Upload Files</button>
-				<button id="textButton" class="big-button" onClick="window.location.href = '/t/'">Upload Text</button><br/>
+				<button id="selectFileButton" class="big_button button_highlight">Upload Files</button>
+				<button id="textButton" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button><br/>
 				
 				<div id="progress-bar" class="progress-bar">
 					<span class="progress-text"></span>
@@ -50,8 +51,8 @@
 				
 				<div id="uploads-completed"></div>
 			</div>
-			<div class="highlight bg-dark border-bottom">
-				<a id="btnCreateList" href="#">Create list with uploaded files</a>
+			<div class="highlight_dark border-bottom">
+				<button id="btnCreateList">Create list with uploaded files</button>
 			</div>
 			
 			<h1>Pixeldrain Public Beta<img src="/res/img/sia.png" style="height: 40px;"/></h1>
@@ -75,8 +76,8 @@
 				The upload restrictions that the main site has haven't been 
 				implemented in this version yet, so you can upload as much as 
 				you want. The server only has 256 GiB of space available, if it 
-				runs out before the Sia integration is stable I won't hesitate 
-				to wipe the database and start over.
+				starts running out os space files will be purged from the local
+				filesystem and served from Sia on the next request.
 			</p>
 			<h2>Legality</h2>
 			<p>
@@ -130,7 +131,6 @@
 				These will be added soon enough.
 			</p>
 			<ul>
-				<li>File lists</li>
 				<li>Zip explorer</li>
 				<li>Text file viewer (yes, you can upload text but not view it yet)</li>
 				<li>Some video formats (mime type detection is not complete)</li>

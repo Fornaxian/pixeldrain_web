@@ -2,10 +2,17 @@ package pixelapi
 
 import (
 	"encoding/json"
+	"io"
 
 	"fornaxian.com/pixeldrain-web/conf"
 	"fornaxian.com/pixeldrain-web/log"
 )
+
+// GetFile makes a file download request and returns a readcloser. Don't forget
+// to close it!
+func GetFile(id string) (io.ReadCloser, error) {
+	return getRaw(conf.ApiUrlInternal() + "/file/" + id)
+}
 
 // FileInfo File information object from the pixeldrain API
 type FileInfo struct {
@@ -24,7 +31,7 @@ type FileInfo struct {
 
 // GetFileInfo gets the FileInfo from the pixeldrain API
 func GetFileInfo(id string) *FileInfo {
-	body, err := get(conf.ApiUrlInternal() + "/file/" + id + "/info")
+	body, err := getString(conf.ApiUrlInternal() + "/file/" + id + "/info")
 
 	if err != nil {
 		log.Error("req failed: %v", err)

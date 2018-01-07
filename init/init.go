@@ -24,6 +24,7 @@ func Init(r *httprouter.Router, prefix string) {
 
 	r.GET(prefix+"/", webcontroller.ServeHome)
 	r.GET(prefix+"/favicon.ico", webcontroller.ServeFavicon)
+	r.GET(prefix+"/global.css", webcontroller.GlobalCSSHandler)
 	r.GET(prefix+"/api", webcontroller.ServeAPIDoc)
 	r.GET(prefix+"/history", webcontroller.ServeHistory)
 	r.GET(prefix+"/u/:id", webcontroller.ServeFileViewer)

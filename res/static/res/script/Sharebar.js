@@ -1,12 +1,3 @@
-/* 
- * Time for a more Java-like approach.
- *  - Fornax
- *  
- *  Feel free to use this of course
- */
-
-/* global Toolbar */
-
 var Sharebar = {
 	visible: false,
 	
@@ -16,11 +7,13 @@ var Sharebar = {
 		}
 		
 		if(this.visible){
-			$("#sharebar").animate({left: "-102"}, 600);
+			$("#sharebar").animate({left: "-112"}, 600);
+			$("#btnShare").removeClass("button_highlight");
 
 			this.visible = false;
 		}else{
 			$("#sharebar").animate({left: "120"}, 400);
+			$("#btnShare").addClass("button_highlight");
 
 			this.visible = true;
 		}

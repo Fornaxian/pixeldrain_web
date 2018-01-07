@@ -6,6 +6,7 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="stylesheet" href="/res/style/viewer.css"/>
+		<link rel="stylesheet" href="/res/style/layout.css"/>
 		<link rel="stylesheet" href="/res/style/season.css"/>
 		<link rel="stylesheet" href="/res/style/paste.css"/>
 		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
@@ -29,21 +30,18 @@
 
 	<body>
 		<div id="filepreview">
-			<textarea id="textarea" 
-				  class="textarea" 
-				  placeholder="Your text here..." 
-				  autofocus="autofocus"></textarea>
+			<textarea id="textarea" class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
 		</div>
 		<div id="toolbar">
 			<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
 			<div>
 				<div>
-					<button class="toolbar-button" onClick="uploadText();">
+					<button class="toolbar_button button_full_width" onClick="uploadText();">
 						<img src="/res/img/upload_small.png" alt="Start Upload"/>
 						<span>Upload</span>
 					</button>
 					<form action="/">
-						<button class="toolbar-button">
+						<button class="toolbar_button button_full_width">
 							<img src="/res/img/pixeldrain_small.png" alt="Visit the home page" style="width:22px; height: 22px;"/>
 							<span>Home</span>
 						</button>

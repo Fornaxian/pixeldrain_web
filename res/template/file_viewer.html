@@ -5,8 +5,9 @@
 		<title>{{.Title}}</title>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link rel="stylesheet" href="/global.css"/>
 		<link rel="stylesheet" href="/res/style/viewer.css"/>
-		<link rel="stylesheet" href="/res/style/season.css"/>
+		<link rel="stylesheet" href="/res/style/layout.css"/>
 		<link rel="stylesheet" href="/res/style/listview.css"/>
 		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
 		<link rel="shortcut icon" href="/res/img/tray32.png"/>
@@ -35,45 +36,42 @@
 
 	<body>
 		<div id="listNavigator">
-			<img src="/res/img/arrow-left.png" id="arrow-left" alt="Previous Item" onClick="ListNavigator.previousItem();" />
-			<img src="/res/img/arrow-right.png" id="arrow-right" alt="Next Item" onClick="ListNavigator.nextItem();" />
 			<div id="listNavigatorItems"></div>
+			<div id="arrow-left" alt="Previous Item" onClick="ListNavigator.previousItem();"></div>
+			<div id="arrow-right" alt="Next Item" onClick="ListNavigator.nextItem();"></div>
 		</div>
+		<button id="button-expand-toolbar" onClick="Toolbar.toggle();">Show Toolbar</button>
 		<div id="toolbar">
 			<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
 			<div>
 				<div>
-					<img id="button-expand-toolbar" src="/res/img/toolbar_show.png" alt="Expand Menu" 
-						 onClick="Toolbar.toggle();" 
-						 style="position: fixed; visibility:hidden; left: 0px; cursor: pointer" />
-					
-					<button class="toolbar-button" onClick="Toolbar.toggle();">Hide Toolbar</button>
+					<button class="toolbar_button button_full_width" onClick="Toolbar.toggle();">Hide Toolbar</button>
 
 					<!--Views: <span id="views" th:text="${data.views}">0</span>--><br/>
 
-					<button id="btnDownload" class="toolbar-button" onClick="Toolbar.download();">
-						<img src="/res/img/floppy_small.png" alt="Download this file"/>
-						<span>Download</span>
-					</button>
-
-					<button id="btnCopy" class="toolbar-button" onClick="Toolbar.copyUrl();">
-						<img src="/res/img/clipboard_small.png" alt="Copy file URL to clipboard"/>
-						<span>Copy</span>
-					</button>
-
-					<button id="btnShare" onClick="Sharebar.toggle();" class="toolbar-button">
-						<img src="/res/img/share_small.png" alt="Share this file on social media"/>
-						<span>Share</span>
-					</button>
-
-					<form action="/" target="_blank">
-						<button id="btnHome" class="toolbar-button">
+					<form action="/" target="_self">
+						<button id="btnHome" class="toolbar_button button_full_width">
 							<img src="/res/img/pixeldrain_small.png" alt="Back to the Home page"/>
 							<span>Home</span>
 						</button>
 					</form>
 
-					<button id="btnDetails" class="toolbar-button" onClick="DetailsWindow.toggle();">
+					<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
+						<img src="/res/img/floppy_small.png" alt="Download this file"/>
+						<span>Download</span>
+					</button>
+
+					<button id="btnCopy" class="toolbar_button button_full_width" onClick="Toolbar.copyUrl();">
+						<img src="/res/img/clipboard_small.png" alt="Copy file URL to clipboard"/>
+						<span>Copy</span>
+					</button>
+
+					<button id="btnShare" class="toolbar_button button_full_width" onClick="Sharebar.toggle();">
+						<img src="/res/img/share_small.png" alt="Share this file on social media"/>
+						<span>Share</span>
+					</button>
+
+					<button id="btnDetails" class="toolbar_button button_full_width" onClick="DetailsWindow.toggle();">
 						<img src="/res/img/info_small.png" alt="Help"/>
 						<span>Details</span>
 					</button>
@@ -91,39 +89,36 @@
 		</div>
 		
 		<div id="sharebar" class="sidebar">
-			<img src="/res/img/arrows-collapse.png" alt="Slide Menu" 
-			     onClick="Sharebar.toggle();" class="button-collapse"/>
-			
 			Share on:<br/>
-			<button class="sharebar-button" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
+			<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
 				<img src="/res/img/social_reddit.png" alt="Share on Reddit" style="width:40px; height: 40px;"/>
 				<br/>Reddit
 			</button>
-			<button class="sharebar-button" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
+			<button class="sharebar-button button_full_width" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
 				<img src="/res/img/social_voat.png" alt="Share on Voat" style="width:40px; height: 40px;"/>
 				<br/>Voat
 			</button>
-			<button class="sharebar-button" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
+			<button class="sharebar-button button_full_width" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
 				<img src="/res/img/social_facebook.png" alt="Share on Facebook" style="width:40px; height: 40px;"/>
 				<br/>Facebook
 			</button>
-			<button class="sharebar-button" onClick="window.open('https://twitter.com/share?text=Check%20out%20this%20file%20on%20%23Pixeldrain&url=' + window.location.href);">
+			<button class="sharebar-button button_full_width" onClick="window.open('https://twitter.com/share?text=Check%20out%20this%20file%20on%20%23Pixeldrain&url=' + window.location.href);">
 				<img src="/res/img/social_twitter.png" alt="Share on Twitter" style="width:40px; height: 40px;"/>
 				<br/>Twitter
 			</button>
-			<button class="sharebar-button" onClick="window.open('https://plus.google.com/share?url=' + window.location.href);">
+			<button class="sharebar-button button_full_width" onClick="window.open('https://plus.google.com/share?url=' + window.location.href);">
 				<img src="/res/img/social_googleplus.png" alt="Share on Google Plus" style="width:40px; height: 40px;"/>
 				<br/>Google+
 			</button>
-			<button class="sharebar-button" onClick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
+			<button class="sharebar-button button_full_width" onClick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
 				<img src="/res/img/social_tumblr.png" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
 				<br/>Tumblr
 			</button>
-			<button class="sharebar-button" onClick="window.open('http://www.stumbleupon.com/submit?url=' + window.location.href);">
+			<button class="sharebar-button button_full_width" onClick="window.open('http://www.stumbleupon.com/submit?url=' + window.location.href);">
 				<img src="/res/img/social_stumbleupon.png" alt="Share on StumbleUpon" style="width:40px; height: 40px;"/>
 				<br/>StumbleUpon
 			</button>
-			<button class="sharebar-button" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=You%20can%20view%20it%20here%20' + window.location.href);">
+			<button class="sharebar-button button_full_width" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=You%20can%20view%20it%20here%20' + window.location.href);">
 				<img src="/res/img/social_email.png" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
 				<br/>E-Mail
 			</button>
@@ -144,7 +139,7 @@
 			Loading...
 		</div>
 		
-		<script src="/res/script/jquery-2.1.4.min.js"></script>
+		<script src="/res/script/jquery.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 		<script src="/res/script/Keyboard.js"></script>
 		<script src="/res/script/Toolbar.js"></script>
