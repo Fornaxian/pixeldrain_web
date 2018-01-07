@@ -1,7 +1,18 @@
 {{define "menu"}}
-<div class="highlight_light border-top border-bottom menu">
-	<a href="/">Home</a> ~ 
-	<a href="/history">My&nbsp;Files</a> ~ 
+<div id="navigation" class="highlight_light border-top border-bottom navigation">
+	<a href="/">Home</a>
+	<a href="/history">My&nbsp;Files</a>
 	<a href="/api">API&nbsp;Documentation</a>
+	<a href="javascript:void(0);" class="icon" onclick="expandNavigation()">&#9776;</a>
+	<script>
+	function expandNavigation() {
+		var x = document.getElementById("navigation");
+		if (!x.className.includes("responsive")) {
+			x.className += " responsive";
+		} else {
+			x.className = x.className.replace(" responsive", "");
+		}
+	}
+	</script>
 </div>
 {{end}}

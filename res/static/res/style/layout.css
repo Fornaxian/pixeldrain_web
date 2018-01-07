@@ -70,6 +70,46 @@ html{
 	word-break: break-word;
 }
 
+.navigation a {
+	float: none;
+	display: inline-block;
+	color: var(--text_color);
+	text-align: center;
+	padding: 4px 6px;
+	margin: 0 4px;
+	text-decoration: none;
+	font-family: "Lato", sans-serif;
+	font-weight: bold; 
+	font-size: 26px;
+}
+.navigation a:hover {
+	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
+	box-shadow: 2px 2px 8px #000000;
+	color: #000000;
+	text-decoration: none;
+}
+.navigation .icon {
+	display: none;
+}
+@media screen and (max-width: 500px) {
+	.navigation a:not(:first-child) {display: none;}
+	.navigation a.icon {
+		float: right;
+		display: block;
+	}
+	.navigation.responsive {position: relative;}
+	.navigation.responsive .icon {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	.navigation.responsive a {
+		float: none;
+		display: block;
+		text-align: left;
+	}
+}
+
 .highlight_dark,
 .highlight_middle,
 .highlight_light,
@@ -92,12 +132,6 @@ html{
 
 .border-top    {border-top:    #686868 1px solid;}
 .border-bottom {border-bottom: #686868 1px solid;}
-
-.menu{
-	font-family: "Lato", sans-serif;
-	font-weight: bold; 
-	font-size: 26px;
-}
 
 /* Common elements */
 
