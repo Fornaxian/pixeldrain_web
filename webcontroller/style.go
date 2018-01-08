@@ -9,7 +9,7 @@ import (
 )
 
 func GlobalCSSHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	w.Header().Add("COntent-Type", "text/css; charset=utf-8")
+	w.Header().Add("Content-Type", "text/css; charset=utf-8")
 
 	var textColor = "c0c0c0"
 
