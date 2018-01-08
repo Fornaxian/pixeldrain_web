@@ -44,7 +44,7 @@ func Init() {
 	if err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			writeCfg()
-			log.Warn("Generated config file \"pdapiconf.toml\", please edit and run again.")
+			log.Warn("Generated config file \"pdwebconf.toml\", please edit and run again.")
 			os.Exit(0)
 		} else if _, ok := err.(viper.ConfigParseError); ok {
 			log.Error("Could not parse config file: ", err)
