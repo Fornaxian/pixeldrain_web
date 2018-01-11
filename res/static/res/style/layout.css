@@ -60,12 +60,12 @@ html{
 	width: 100%;
 	height: auto;
 	padding: 0px 8px 0px 8px;
-	box-sizing: border-box; 
+	box-sizing: border-box;
 	background-color: #242424;
 	margin-top: 30px;
 	margin-bottom: 30px;
 	text-align: left;
-	box-shadow: #000 8px 8px 50px;
+	box-shadow: #000000 8px 8px 50px 5px;
 	z-index: 1;
 	word-break: break-word;
 }

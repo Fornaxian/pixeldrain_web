@@ -21,6 +21,7 @@ func ServeListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 	var ogData OGData
 	var err error
 	listdata := map[string]interface{}{
+		"id":           list.ID,
 		"data":         list.Files,
 		"date_created": list.DateCreated,
 		"title":        list.Title,

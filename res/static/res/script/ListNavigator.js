@@ -169,22 +169,21 @@ var ListNavigator = {
 		}
 		
 		// Add the list download button to the toolbar
-		// var btnDownloadList = document.createElement("button");
-		// btnDownloadList.setAttribute("id", "btnDownloadList");
-		// btnDownloadList.setAttribute("class", "toolbar-button");
-		// btnDownloadList.setAttribute("onClick", "Toolbar.downloadList();");
+		var btnDownloadList = document.createElement("button");
+		btnDownloadList.setAttribute("id", "btnDownloadList");
+		btnDownloadList.setAttribute("class", "toolbar_button button_full_width");
+		btnDownloadList.setAttribute("onClick", "Toolbar.downloadList();");
 		
-		// var btnDownloadListImg = document.createElement("img");
-		// btnDownloadListImg.setAttribute("src", "/res/img/floppy_small.png");
-		// btnDownloadListImg.setAttribute("alt", "Download List");
+		var btnDownloadListImg = document.createElement("img");
+		btnDownloadListImg.setAttribute("src", "/res/img/floppy_small.png");
+		btnDownloadListImg.setAttribute("alt", "Download List");
 		
-		// var btnDownloadListText = document.createElement("span");
-		// btnDownloadListText.innerHTML = "&nbsp;All Files";
+		var btnDownloadListText = document.createElement("span");
+		btnDownloadListText.innerHTML = "&nbsp;All Files";
 		
-		// btnDownloadList.appendChild(btnDownloadListImg);
-		// btnDownloadList.appendChild(btnDownloadListText);
-		
-		// $("#btnDownload").after(btnDownloadList);
+		btnDownloadList.appendChild(btnDownloadListImg);
+		btnDownloadList.appendChild(btnDownloadListText);
+		$("#btnDownload").after(btnDownloadList);
 		
 		// Add the shuffle button to the toolbar
 		var btnShuffle = document.createElement("button");
