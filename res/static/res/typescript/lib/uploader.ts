@@ -1,17 +1,29 @@
+
 class UploadManager {
-	private uploadQueue:   Array<File>;
-	private uploadThreads: Array<UploadWorker>;
+	private uploadQueue:   Array<File>         = new Array();
+	private uploadThreads: Array<UploadWorker> = new Array();
 	private maxThreads:    4;
 
 	public uploadFile(file: File) {
+		console.debug("Adding upload to queue")
 		this.uploadQueue.push(file);
 
 		if (this.uploadThreads.length < 4) {
-			setTimeout(new UploadWorker(this), 0) // Start a new upload thread
+			console.debug("Starting upload thread")
+			setTimeout(new UploadWorker(this).start(), 0) // Start a new upload thread
 		}
 	}
-	public grabFile(): File | null {
-		return null
+	public uploadFileList(files: FileList) {
+		for (var i = 0; i < files.length; i++) {
+			this.uploadFile(files.item(i))
+		}
+	}
+	public grabFile(): File | undefined {
+		if (this.uploadQueue.length > 0) {
+			return this.uploadQueue.pop()
+		} else {
+			return undefined
+		}
 	}
 }
 
@@ -26,14 +38,17 @@ class UploadWorker {
 	public start() {
 		var file = this.manager.grabFile()
 		if (file === null) {
+			console.debug("No file")
 			return // Stop the thread
 		}
 
 		this.tries = 0
-		this.upload(file)
+		this.upload(<File>file)
 	}
 
 	private upload(file: File){
+		console.debug("Starting upload of " + file.name)
+
 		var formData = new FormData()
 		formData.append('file', file)
 		formData.append("name", file.name)

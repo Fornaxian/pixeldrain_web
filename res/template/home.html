@@ -38,7 +38,7 @@
 		<div id="body" class="body">
 			{{template "menu"}}
 			<div class="highlight_middle border-bottom">
-				<input id="fileInputField" type="file" name="file" multiple='multiple'/>
+				<input id="fileInputField" type="file" name="file" multiple="multiple" onchange="fileInputChange(this, event);"/>
 				<button id="selectFileButton" class="big_button button_highlight">Upload Files</button>
 				<button id="textButton" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button><br/>
 				

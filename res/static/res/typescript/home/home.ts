@@ -1,4 +1,5 @@
 
+var uploader: UploadManager|null = null;
 
 /*
  * Form upload handlers
@@ -8,18 +9,20 @@ $("#selectFileButton").click(function(event){
 	$("#fileInputField").click();
 });
 
-$("#fileInputField").on('change', null, (e) => {
-	let field = <FileList> e.target
+function fileInputChange(dom: HTMLInputElement, files: FileList) {
+	if (uploader === null){
+		uploader = new UploadManager()
+	}
 	
-	//pushUploads($("#fileInputField")[0].files);
+	uploader.uploadFileList(files);
 	
 	// This resets the file input field
 	// http://stackoverflow.com/questions/1043957/clearing-input-type-file-using-jquery
 	$('#fileName').html("");
 	$("#fileUploadButton").css("visibility", "hidden");
-	$("#fileInputField").wrap("<form>").closest("form").get(0).reset();
+	(<HTMLFormElement>$("#fileInputField").wrap("<form>").closest("form").get(0)).reset();
 	$("#fileInputField").unwrap();
-});
+}
 
 /*
  * Drag 'n Drop upload handlers
@@ -32,18 +35,18 @@ $(document).on('dragenter', function (e) {
 	e.preventDefault();
 	e.stopPropagation();
 });
-// $(document).on('drop', function (e) {
-// 	if (e.originalEvent.dataTransfer) {
-// 		var len = e.originalEvent.dataTransfer.files.length;
+document.addEventListener('drop', function(e: DragEvent){
+	if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (uploader === null){
+			uploader = new UploadManager()
+		}
 		
-// 		if (len) {
-// 			e.preventDefault();
-// 			e.stopPropagation();
-			
-// 			pushUploads(e.originalEvent.dataTransfer.files);
-// 		}
-// 	}
-// });
+		uploader.uploadFileList(e.dataTransfer.files);
+	}
+})
 
 /*
  * Upload functions

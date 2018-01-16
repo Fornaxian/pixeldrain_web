@@ -1,20 +1,23 @@
 "use strict";
+var uploader = null;
 /*
  * Form upload handlers
  */
 $("#selectFileButton").click(function (event) {
     $("#fileInputField").click();
 });
-$("#fileInputField").change(function () {
-    alert(typeof ($("#fileInputField")[0]));
-    //pushUploads($("#fileInputField")[0].files);
+function fileInputChange(dom, files) {
+    if (uploader === null) {
+        uploader = new UploadManager();
+    }
+    uploader.uploadFileList(files);
     // This resets the file input field
     // http://stackoverflow.com/questions/1043957/clearing-input-type-file-using-jquery
     $('#fileName').html("");
     $("#fileUploadButton").css("visibility", "hidden");
-    //$("#fileInputField").wrap("<form>").closest("form").get(0).reset();
+    $("#fileInputField").wrap("<form>").closest("form").get(0).reset();
     $("#fileInputField").unwrap();
-});
+}
 /*
  * Drag 'n Drop upload handlers
  */
@@ -26,16 +29,16 @@ $(document).on('dragenter', function (e) {
     e.preventDefault();
     e.stopPropagation();
 });
-// $(document).on('drop', function (e) {
-// 	if (e.originalEvent.dataTransfer) {
-// 		var len = e.originalEvent.dataTransfer.files.length;
-// 		if (len) {
-// 			e.preventDefault();
-// 			e.stopPropagation();
-// 			pushUploads(e.originalEvent.dataTransfer.files);
-// 		}
-// 	}
-// });
+document.addEventListener('drop', function (e) {
+    if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (uploader === null) {
+            uploader = new UploadManager();
+        }
+        uploader.uploadFileList(e.dataTransfer.files);
+    }
+});
 /*
  * Upload functions
  */
@@ -70,15 +73,29 @@ var Cookie;
 })(Cookie || (Cookie = {}));
 var UploadManager = /** @class */ (function () {
     function UploadManager() {
+        this.uploadQueue = new Array();
+        this.uploadThreads = new Array();
     }
     UploadManager.prototype.uploadFile = function (file) {
+        console.debug("Adding upload to queue");
         this.uploadQueue.push(file);
         if (this.uploadThreads.length < 4) {
-            setTimeout(new UploadWorker(this), 0); // Start a new upload thread
+            console.debug("Starting upload thread");
+            setTimeout(new UploadWorker(this).start(), 0); // Start a new upload thread
+        }
+    };
+    UploadManager.prototype.uploadFileList = function (files) {
+        for (var i = 0; i < files.length; i++) {
+            this.uploadFile(files.item(i));
         }
     };
     UploadManager.prototype.grabFile = function () {
-        return null;
+        if (this.uploadQueue.length > 0) {
+            return this.uploadQueue.pop();
+        }
+        else {
+            return undefined;
+        }
     };
     return UploadManager;
 }());
@@ -89,12 +106,14 @@ var UploadWorker = /** @class */ (function () {
     UploadWorker.prototype.start = function () {
         var file = this.manager.grabFile();
         if (file === null) {
+            console.debug("No file");
             return; // Stop the thread
         }
         this.tries = 0;
         this.upload(file);
     };
     UploadWorker.prototype.upload = function (file) {
+        console.debug("Starting upload of " + file.name);
         var formData = new FormData();
         formData.append('file', file);
         formData.append("name", file.name);
