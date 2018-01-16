@@ -1,16 +1,17 @@
-run: ts
-	go run main.go
-runboth: ts
-	cd ../pixeldrain-server-launcher && go run main.go
-
-build: ts
+run: 
+	${MAKE} -j2 backgroundrun backgroundts
+build:
+	tsc res/static/res/typescript/lib/*.ts --outFile res/static/res/script/pixellib.js \
+	    res/static/res/typescript/home/*.ts \
+	    res/static/res/typescript/lib/*.ts --outFile res/static/res/script/home.js
 	go build main.go -o pixeldrain-web
 
 deps:
 	npm install -g typescript
 
-ts:
-	tsc --strict res/static/res/typescript/lib/*.ts  --outFile res/static/res/script/pixellib.js
-	tsc --strict res/static/res/typescript/home/*.ts \
-	             res/static/res/typescript/lib/*.ts  \
-	             --outFile res/static/res/script/home.js
+backgroundrun:
+	go run main.go
+backgroundts:
+	tsc --watch res/static/res/typescript/lib/*.ts --outFile res/static/res/script/pixellib.js \
+	            res/static/res/typescript/home/*.ts \
+	            res/static/res/typescript/lib/*.ts --outFile res/static/res/script/home.js
