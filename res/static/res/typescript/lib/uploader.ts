@@ -18,10 +18,10 @@ class UploadManager {
 			console.debug("Starting upload thread")
 			let thread = new UploadWorker(this)
 			this.uploadThreads.push(thread)
-			setTimeout(thread.start(), 0) // Start a new upload thread
+			setTimeout(function(){thread.start()}, 0) // Start a new upload thread
 		} else {
 			for (var i = 0; i < this.uploadThreads.length; i++) {
-				setTimeout(this.uploadThreads[i].start(), 0)
+				setTimeout(function(){this.uploadThreads[i].start()}, 0)
 			}
 		}
 	}
@@ -101,13 +101,13 @@ class UploadWorker {
 					alert("Upload failed: " + status);
 					file.onFailure(status, error)
 
-					setTimeout(that.newFile(), 2000) // Try to continue
+					setTimeout(function(){that.newFile()}, 2000) // Try to continue
 					return; // Upload failed
 				}
 
 				// Try again
 				that.tries++
-				setTimeout(that.upload(file), that.tries*3000)
+				setTimeout(function(){that.upload(file)}, that.tries*3000)
 			}
 		});
 	}
