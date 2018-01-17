@@ -21,7 +21,7 @@ class UploadManager {
 			setTimeout(thread.start(), 0) // Start a new upload thread
 		} else {
 			for (var i = 0; i < this.uploadThreads.length; i++) {
-				this.uploadThreads[i].startIfInactive()
+				setTimeout(this.uploadThreads[i].start(), 0)
 			}
 		}
 	}
@@ -42,8 +42,13 @@ class UploadWorker {
 	constructor(manager: UploadManager) {
 		this.manager = manager
 	}
+	public start(){
+		if (!this.uploading) {
+			this.newFile()
+		}
+	}
 
-	public start() {
+	private newFile() {
 		var file = this.manager.grabFile()
 		if (file === undefined) {
 			this.uploading = false
@@ -54,11 +59,6 @@ class UploadWorker {
 		this.uploading = true
 		this.tries = 0
 		this.upload(<FileUpload>file)
-	}
-	public startIfInactive(){
-		if (!this.uploading) {
-			this.start()
-		}
 	}
 
 	private upload(file: FileUpload){
@@ -89,27 +89,25 @@ class UploadWorker {
 			},
 			success: function (data) {
 				file.onFinished(data.id)
-				console.log("Done: " + data.id)
 				that.setHistoryCookie(data.id)
+				console.log("Done: " + data.id)
 
-				that.start() // Continue uploading on this thread
+				that.newFile() // Continue uploading on this thread
 			},
 			error: function (xhr, status, error){
-				console.log(status)
-				console.log(error)
+				console.log("status: "+status+" error: "+error)
 
 				if (that.tries === 3) {
 					alert("Upload failed: " + status);
-					that.uploading = false
 					file.onFailure(status, error)
 
-					that.start() // Try to continue
+					setTimeout(that.newFile(), 2000) // Try to continue
 					return; // Upload failed
 				}
 
 				// Try again
 				that.tries++
-				that.upload(file)
+				setTimeout(that.upload(file), that.tries*3000)
 			}
 		});
 	}

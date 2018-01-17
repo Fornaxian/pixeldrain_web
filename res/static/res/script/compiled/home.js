@@ -116,7 +116,7 @@ var UploadManager = /** @class */ (function () {
         }
         else {
             for (var i = 0; i < this.uploadThreads.length; i++) {
-                this.uploadThreads[i].startIfInactive();
+                setTimeout(this.uploadThreads[i].start(), 0);
             }
         }
     };
@@ -137,6 +137,11 @@ var UploadWorker = /** @class */ (function () {
         this.manager = manager;
     }
     UploadWorker.prototype.start = function () {
+        if (!this.uploading) {
+            this.newFile();
+        }
+    };
+    UploadWorker.prototype.newFile = function () {
         var file = this.manager.grabFile();
         if (file === undefined) {
             this.uploading = false;
@@ -146,11 +151,6 @@ var UploadWorker = /** @class */ (function () {
         this.uploading = true;
         this.tries = 0;
         this.upload(file);
-    };
-    UploadWorker.prototype.startIfInactive = function () {
-        if (!this.uploading) {
-            this.start();
-        }
     };
     UploadWorker.prototype.upload = function (file) {
         console.debug("Starting upload of " + file.file.name);
@@ -177,23 +177,21 @@ var UploadWorker = /** @class */ (function () {
             },
             success: function (data) {
                 file.onFinished(data.id);
-                console.log("Done: " + data.id);
                 that.setHistoryCookie(data.id);
-                that.start(); // Continue uploading on this thread
+                console.log("Done: " + data.id);
+                that.newFile(); // Continue uploading on this thread
             },
             error: function (xhr, status, error) {
-                console.log(status);
-                console.log(error);
+                console.log("status: " + status + " error: " + error);
                 if (that.tries === 3) {
                     alert("Upload failed: " + status);
-                    that.uploading = false;
                     file.onFailure(status, error);
-                    that.start(); // Try to continue
+                    setTimeout(that.newFile(), 2000); // Try to continue
                     return; // Upload failed
                 }
                 // Try again
                 that.tries++;
-                that.upload(file);
+                setTimeout(that.upload(file), that.tries * 3000);
             }
         });
     };
