@@ -54,16 +54,17 @@ function listCreated(response){
 			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\" style=\"font-weight: bold;\">"+window.location.hostname+"/l/" + response.id + "</a>"
 			+ "</div>";
 		
-		$('#uploads_completed').prepend(
+		$('#uploads_queue').prepend(
 			$(resultString).hide().fadeIn('slow')
 		);
+		window.open('/l/'+response.id, '_blank');
 	}else{
 		resultString = "<div class=\"uploadItem\">List creation failed<br/>"
 			+ "The server responded with this: <br/>"
 			+ response.type + ": " + response.value
 			+ "</div>";
 		
-		$('#uploads-completed').prepend(
+		$('#uploads_queue').prepend(
 			$(resultString).hide().fadeIn('slow')
 		);
 	}
