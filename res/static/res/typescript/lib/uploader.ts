@@ -2,6 +2,7 @@ interface FileUpload {
 	file: File
 	onProgress(progress: number)
 	onFinished(id: string)
+	onFailure(response: JQuery.Ajax.ErrorTextStatus, error: string)
 }
 
 class UploadManager {
@@ -100,6 +101,9 @@ class UploadWorker {
 				if (that.tries === 3) {
 					alert("Upload failed: " + status);
 					that.uploading = false
+					file.onFailure(status, error)
+
+					that.start() // Try to continue
 					return; // Upload failed
 				}
 

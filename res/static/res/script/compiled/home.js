@@ -29,6 +29,11 @@ var UploadProgressBar = /** @class */ (function () {
             + this.file.name + '<br/>'
             + '<span style="color: var(--highlight_color);">' + window.location.hostname + '/u/' + id + '</span>');
     };
+    UploadProgressBar.prototype.onFailure = function (response, error) {
+        this.uploadDiv.setAttribute('style', 'background: #821C40');
+        this.uploadDivJQ.html(this.file.name + '<br/>'
+            + 'Upload failed after three tries!');
+    };
     return UploadProgressBar;
 }());
 function handleUploads(files) {
@@ -182,6 +187,8 @@ var UploadWorker = /** @class */ (function () {
                 if (that.tries === 3) {
                     alert("Upload failed: " + status);
                     that.uploading = false;
+                    file.onFailure(status, error);
+                    that.start(); // Try to continue
                     return; // Upload failed
                 }
                 // Try again

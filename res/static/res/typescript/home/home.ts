@@ -47,6 +47,13 @@ class UploadProgressBar implements FileUpload {
 			+ '<span style="color: var(--highlight_color);">'+window.location.hostname+'/u/'+id+'</span>'
 		)
 	}
+	public onFailure(response: JQuery.Ajax.ErrorTextStatus, error: string) {
+		this.uploadDiv.setAttribute('style', 'background: #821C40')
+		this.uploadDivJQ.html(
+			this.file.name+'<br/>'
+			+ 'Upload failed after three tries!'
+		)
+	}
 }
 
 function handleUploads(files: FileList) {
