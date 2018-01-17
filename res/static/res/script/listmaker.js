@@ -1,23 +1,22 @@
-
-var listItems = new Array();
-
-$("#btnCreateList").click(function (evt) {
+$("#btn_create_list").click(function (evt) {
 	createList();
 });
 
-function addToList(id, desc){
-	var listEntry = {id: id, desc: desc};
-
-	listItems.push(listEntry);
-}
-
 function createList(){
+	let listfiles = new Array()
+	for (var i = 0; i < finishedUploads.length; i++) {
+		if (finishedUploads[i] === undefined) {
+			continue;
+		}
+		listfiles.push(finishedUploads[i]);
+	}
+
 	var url = "/api/list";
 	
 	var postData = {};
 	
 	var title = prompt(
-		"You are creating a list containing " + listItems.length + " files.\n"
+		"You are creating a list containing " + listfiles.length + " files.\n"
 		+ "What do you want to call it?", "My New Album"
 	);
 
@@ -31,12 +30,10 @@ function createList(){
 		"files": new Array()
 	};
 	
-	var arrayLength = listItems.length;
-	for (var i = 0; i < arrayLength; i++) {
-		postData.files[i] = {
-			"id": listItems[i]["id"],
-			"description": listItems[i]["desc"]
-		};
+	for (var i = 0; i < listfiles.length; i++) {
+		postData.files.push({
+			"id": listfiles[i]
+		});
 	}
 	
 	$.ajax({
@@ -57,7 +54,7 @@ function listCreated(response){
 			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\" style=\"font-weight: bold;\">"+window.location.hostname+"/l/" + response.id + "</a>"
 			+ "</div>";
 		
-		$('#uploads-completed').prepend(
+		$('#uploads_completed').prepend(
 			$(resultString).hide().fadeIn('slow')
 		);
 	}else{

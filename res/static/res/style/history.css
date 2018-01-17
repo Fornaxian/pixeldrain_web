@@ -6,9 +6,10 @@
 	display: inline-block;
 }
 
-.uploadItem{
+.uploadItem, .uploadItem:hover{
 	position: relative;
-	width: 238px;
+	box-sizing: border-box;
+	width: 322px;
 	max-width: 90%;
 	height: 60px;
 	float: left;
@@ -17,6 +18,7 @@
 	border: 1px #555 solid;
 	overflow: hidden;
 	background-color: #111;
+	color: var(--text_color);
 	word-break: break-all;
 	text-align: left;
 	line-height: 120%;

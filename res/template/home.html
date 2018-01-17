@@ -34,25 +34,18 @@
 	</head>
 
 	<body>
-		<img id="header-image" src="/res/img/header_neuropol.png" alt="Header image"/>
+		<img id="header_image" src="/res/img/header_neuropol.png" alt="Header image"/>
 		<div id="body" class="body">
 			{{template "menu"}}
 			<div class="highlight_middle border-bottom">
-				<input id="fileInputField" type="file" name="file" multiple="multiple" onchange="fileInputChange(this, event);"/>
-				<button id="selectFileButton" class="big_button button_highlight">Upload Files</button>
-				<button id="textButton" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button><br/>
+				<input id="file_input_field" type="file" name="file" multiple="multiple"/>
+				<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
+				<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button><br/>
 				
-				<div id="progress-bar" class="progress-bar">
-					<span class="progress-text"></span>
-					<div id="upload-progress" class="progressbar-inner">
-						<span class="progress-text"></span>
-					</div>
-				</div>
-				
-				<div id="uploads-completed"></div>
+				<div id="uploads_queue"></div>
 			</div>
 			<div class="highlight_dark border-bottom">
-				<button id="btnCreateList">Create list with uploaded files</button>
+				<button id="btn_create_list">Create list with uploaded files</button>
 			</div>
 			
 			<h1>Pixeldrain Public Beta<img src="/res/img/sia.png" style="height: 40px;"/></h1>
@@ -144,7 +137,7 @@
 
 		<script type="text/javascript">var API_URL = "/api";</script>
 		<script src="/res/script/listmaker.js"></script>
-		<script src="/res/script/home.js"></script>
+		<script src="/res/script/compiled/home.js"></script>
 		{{template "analytics"}}
 	</body>
 </html>

@@ -35,13 +35,13 @@ html{
 	border-bottom: #606060 solid 1px;
 }
 
-#header-image{
+#header_image{
 	width: 100%;
 	max-width: 1000px;
 	margin-top: 15px;
 }
 
-#uploads-completed{
+#uploads_queue{
 	position: relative;
 	width: 100%;
 	height: 0;
@@ -178,7 +178,7 @@ a:hover{
 	line-height: 8px;
 }
 
-.progress-bar{
+.progress_bar{
 	position: relative;
 	width: 100%;
 	height: 0;
@@ -188,7 +188,7 @@ a:hover{
 	text-align: left;
 	white-space: nowrap;
 }
-.progressbar-inner{
+.progressbar_inner{
 	position: absolute;
 	top: 0;
 	width: 0%;
@@ -199,7 +199,7 @@ a:hover{
 	color: #000;
 	white-space: nowrap;
 }
-.progress-text{
+.progress_text{
 	overflow: hidden;
 	width: 100%;
 	white-space: nowrap;

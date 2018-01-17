@@ -1,26 +1,32 @@
+interface FileUpload {
+	file: File
+	onProgress(progress: number)
+	onFinished(id: string)
+}
 
 class UploadManager {
-	private uploadQueue:   Array<File>         = new Array();
+	private uploadQueue:   Array<FileUpload>   = new Array();
 	private uploadThreads: Array<UploadWorker> = new Array();
-	private maxThreads:    4;
+	private maxThreads:    number              = 2;
 
-	public uploadFile(file: File) {
+	public uploadFile(file: FileUpload) {
 		console.debug("Adding upload to queue")
 		this.uploadQueue.push(file);
 
-		if (this.uploadThreads.length < 4) {
+		if (this.uploadThreads.length < this.maxThreads) {
 			console.debug("Starting upload thread")
-			setTimeout(new UploadWorker(this).start(), 0) // Start a new upload thread
+			let thread = new UploadWorker(this)
+			this.uploadThreads.push(thread)
+			setTimeout(thread.start(), 0) // Start a new upload thread
+		} else {
+			for (var i = 0; i < this.uploadThreads.length; i++) {
+				this.uploadThreads[i].startIfInactive()
+			}
 		}
 	}
-	public uploadFileList(files: FileList) {
-		for (var i = 0; i < files.length; i++) {
-			this.uploadFile(files.item(i))
-		}
-	}
-	public grabFile(): File | undefined {
+	public grabFile(): FileUpload | undefined {
 		if (this.uploadQueue.length > 0) {
-			return this.uploadQueue.pop()
+			return this.uploadQueue.shift()
 		} else {
 			return undefined
 		}
@@ -28,8 +34,9 @@ class UploadManager {
 }
 
 class UploadWorker {
-	private manager: UploadManager
-	private tries: number
+	private manager:   UploadManager
+	private tries:     number  = 0
+	private uploading: boolean = false
 
 	constructor(manager: UploadManager) {
 		this.manager = manager
@@ -37,21 +44,30 @@ class UploadWorker {
 
 	public start() {
 		var file = this.manager.grabFile()
-		if (file === null) {
-			console.debug("No file")
+		if (file === undefined) {
+			this.uploading = false
+			console.debug("No files left in queue")
 			return // Stop the thread
 		}
-
+		
+		this.uploading = true
 		this.tries = 0
-		this.upload(<File>file)
+		this.upload(<FileUpload>file)
+	}
+	public startIfInactive(){
+		if (!this.uploading) {
+			this.start()
+		}
 	}
 
-	private upload(file: File){
-		console.debug("Starting upload of " + file.name)
+	private upload(file: FileUpload){
+		console.debug("Starting upload of " + file.file.name)
 
 		var formData = new FormData()
-		formData.append('file', file)
-		formData.append("name", file.name)
+		formData.append('file', file.file)
+		formData.append("name", file.file.name)
+
+		var that = this // jquery changes the definiton of "this"
 
 		$.ajax({
 			url: "/api/file",
@@ -61,22 +77,35 @@ class UploadWorker {
 			contentType: false,
 			processData: false,
 			type: 'POST',
+			xhr: function () {
+				var xhr = new XMLHttpRequest();
+				xhr.upload.addEventListener("progress", function (evt) {
+					if (evt.lengthComputable) {
+						file.onProgress(evt.loaded / evt.total)
+					}
+				}, false);
+				return xhr;
+			},
 			success: function (data) {
+				file.onFinished(data.id)
 				console.log("Done: " + data.id)
-				this.setHistoryCookie(data.id)
+				that.setHistoryCookie(data.id)
+
+				that.start() // Continue uploading on this thread
 			},
 			error: function (xhr, status, error){
 				console.log(status)
 				console.log(error)
 
-				if (this.tries === 3) {
+				if (that.tries === 3) {
 					alert("Upload failed: " + status);
+					that.uploading = false
 					return; // Upload failed
 				}
 
 				// Try again
-				this.tries++
-				this.upload(file)
+				that.tries++
+				that.upload(file)
 			}
 		});
 	}

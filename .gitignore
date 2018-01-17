@@ -1,5 +1,5 @@
 .vscode
 main
 pdwebconfig.toml
-res/script/pixellib.js
-res/script/home.js
+res/static/res/script/pixellib.js
+res/static/res/script/home.js

@@ -12,6 +12,4 @@ deps:
 backgroundrun:
 	go run main.go
 backgroundts:
-	tsc --watch res/static/res/typescript/lib/*.ts --outFile res/static/res/script/pixellib.js \
-	            res/static/res/typescript/home/*.ts \
-	            res/static/res/typescript/lib/*.ts --outFile res/static/res/script/home.js
+	tsc --watch --project res/static/res/typescript/home
