@@ -8,7 +8,7 @@ interface FileUpload {
 class UploadManager {
 	private uploadQueue:   Array<FileUpload>   = new Array();
 	private uploadThreads: Array<UploadWorker> = new Array();
-	private maxThreads:    number              = 2;
+	private maxThreads:    number              = 3;
 
 	public uploadFile(file: FileUpload) {
 		console.debug("Adding upload to queue")
@@ -21,7 +21,7 @@ class UploadManager {
 			setTimeout(function(){thread.start()}, 0) // Start a new upload thread
 		} else {
 			for (var i = 0; i < this.uploadThreads.length; i++) {
-				setTimeout(function(){this.uploadThreads[i].start()}, 0)
+				this.uploadThreads[i].start()
 			}
 		}
 	}

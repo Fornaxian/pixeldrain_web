@@ -103,7 +103,7 @@ var UploadManager = /** @class */ (function () {
     function UploadManager() {
         this.uploadQueue = new Array();
         this.uploadThreads = new Array();
-        this.maxThreads = 2;
+        this.maxThreads = 3;
     }
     UploadManager.prototype.uploadFile = function (file) {
         console.debug("Adding upload to queue");
@@ -116,7 +116,7 @@ var UploadManager = /** @class */ (function () {
         }
         else {
             for (var i = 0; i < this.uploadThreads.length; i++) {
-                setTimeout(function () { this.uploadThreads[i].start(); }, 0);
+                this.uploadThreads[i].start();
             }
         }
     };
