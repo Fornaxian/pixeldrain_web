@@ -1,5 +1,6 @@
 interface FileUpload {
-	file: File
+	file: Blob
+	name: string
 	onProgress(progress: number)
 	onFinished(id: string)
 	onFailure(response: JQuery.Ajax.ErrorTextStatus, error: string)
@@ -62,11 +63,11 @@ class UploadWorker {
 	}
 
 	private upload(file: FileUpload){
-		console.debug("Starting upload of " + file.file.name)
+		console.debug("Starting upload of " + file.name)
 
 		var formData = new FormData()
 		formData.append('file', file.file)
-		formData.append("name", file.file.name)
+		formData.append("name", file.name)
 
 		var that = this // jquery changes the definiton of "this"
 

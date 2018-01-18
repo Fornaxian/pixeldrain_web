@@ -12,4 +12,5 @@ deps:
 backgroundrun:
 	go run main.go
 backgroundts:
-	tsc --watch --project res/static/res/typescript/home
+	tsc --watch --project res/static/res/typescript/home 
+	            --project res/static/res/typescript/textupload

@@ -49,7 +49,7 @@ function createList(){
 
 function listCreated(response){
 	if(response.success){
-		resultString = "<div class=\"uploadItem\">List creation finished!<br/>"
+		resultString = "<div class=\"file_button\">List creation finished!<br/>"
 			+ "Your List URL: <br/>"
 			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\" style=\"font-weight: bold;\">"+window.location.hostname+"/l/" + response.id + "</a>"
 			+ "</div>";
@@ -59,7 +59,7 @@ function listCreated(response){
 		);
 		window.open('/l/'+response.id, '_blank');
 	}else{
-		resultString = "<div class=\"uploadItem\">List creation failed<br/>"
+		resultString = "<div class=\"file_button\">List creation failed<br/>"
 			+ "The server responded with this: <br/>"
 			+ response.type + ": " + response.value
 			+ "</div>";

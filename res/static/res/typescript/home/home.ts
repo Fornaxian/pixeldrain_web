@@ -9,11 +9,12 @@ class UploadProgressBar implements FileUpload {
 
 	constructor(file: File){
 		this.file = file
+		this.name = file.name
 		this.queueNum = totalUploads
 		totalUploads++
 
 		this.uploadDiv = document.createElement("a");
-		this.uploadDiv.setAttribute("class", "uploadItem");
+		this.uploadDiv.setAttribute("class", "file_button");
 		this.uploadDiv.innerText = "Queued\n" + this.file.name
 		this.uploadDivJQ = $(this.uploadDiv)
 
@@ -24,6 +25,7 @@ class UploadProgressBar implements FileUpload {
 
 	// Interface stuff
 	public file: File;
+	public name: string
 	public onProgress(progress: number){
 		this.uploadDiv.innerText = "Uploading... " + Math.round(progress*1000)/10 + "%\n" + this.file.name
 		this.uploadDiv.setAttribute(
@@ -42,7 +44,7 @@ class UploadProgressBar implements FileUpload {
 		this.uploadDiv.setAttribute('href', '/u/'+id)
 		this.uploadDiv.setAttribute("target", "_blank");
 		this.uploadDivJQ.html(
-			'<img src="/api/file/'+id+'/thumbnail" alt="'+this.file.name+'" class="uploadItemImage"/>'
+			'<img src="/api/file/'+id+'/thumbnail" alt="'+this.file.name+'"/>'
 			+ this.file.name+'<br/>'
 			+ '<span style="color: var(--highlight_color);">'+window.location.hostname+'/u/'+id+'</span>'
 		)

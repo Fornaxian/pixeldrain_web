@@ -1,81 +1,55 @@
 var uploader = null;
-var finishedUploads = new Array();
-var totalUploads = 0;
-var UploadProgressBar = /** @class */ (function () {
-    function UploadProgressBar(file) {
+var TextUpload = /** @class */ (function () {
+    function TextUpload(file, name) {
         this.file = file;
-        this.name = file.name;
-        this.queueNum = totalUploads;
-        totalUploads++;
-        this.uploadDiv = document.createElement("a");
-        this.uploadDiv.setAttribute("class", "file_button");
-        this.uploadDiv.innerText = "Queued\n" + this.file.name;
-        this.uploadDivJQ = $(this.uploadDiv);
-        $("#uploads_queue").append(this.uploadDivJQ.hide().fadeIn('slow'));
+        this.name = name;
     }
-    UploadProgressBar.prototype.onProgress = function (progress) {
-        this.uploadDiv.innerText = "Uploading... " + Math.round(progress * 1000) / 10 + "%\n" + this.file.name;
-        this.uploadDiv.setAttribute('style', 'background: linear-gradient('
-            + 'to right, '
-            + '#111 0%, '
-            + 'var(--highlight_color) ' + ((progress * 100)) + '%, '
-            + '#111 ' + ((progress * 100) + 1) + '%)');
+    TextUpload.prototype.onProgress = function (progress) { return; };
+    TextUpload.prototype.onFinished = function (id) {
+        setTimeout(window.location.href = "/u/" + id, 100);
     };
-    UploadProgressBar.prototype.onFinished = function (id) {
-        finishedUploads[this.queueNum] = id;
-        this.uploadDiv.setAttribute('style', 'background: #111');
-        this.uploadDiv.setAttribute('href', '/u/' + id);
-        this.uploadDiv.setAttribute("target", "_blank");
-        this.uploadDivJQ.html('<img src="/api/file/' + id + '/thumbnail" alt="' + this.file.name + '"/>'
-            + this.file.name + '<br/>'
-            + '<span style="color: var(--highlight_color);">' + window.location.hostname + '/u/' + id + '</span>');
+    TextUpload.prototype.onFailure = function (response, error) {
+        alert("File upload failed! The server told us this: " + response);
     };
-    UploadProgressBar.prototype.onFailure = function (response, error) {
-        this.uploadDiv.setAttribute('style', 'background: #821C40');
-        this.uploadDivJQ.html(this.file.name + '<br/>'
-            + 'Upload failed after three tries!');
-    };
-    return UploadProgressBar;
+    return TextUpload;
 }());
-function handleUploads(files) {
+function uploadText() {
+    var text = $("#textarea").val();
+    var blob = new Blob([text], { type: "text/plain" });
+    var filename = prompt("What do you want to call this piece of textual art?\n\n"
+        + "Please add your own file extension, if you want.", "Pixeldrain_Text_File.txt");
+    if (filename === null) {
+        return;
+    }
     if (uploader === null) {
         uploader = new UploadManager();
-        $("#uploads_queue").animate({ "height": "340px" }, { "duration": 2000, queue: false });
     }
-    for (var i = 0; i < files.length; i++) {
-        uploader.uploadFile(new UploadProgressBar(files.item(i)));
-    }
+    uploader.uploadFile(new TextUpload(blob, filename));
 }
-/*
- * Form upload handlers
+/**
+ * Prevent the Tab key from moving the cursor outside of the text area
  */
-// Relay click event to hidden file field
-$("#select_file_button").click(function () { $("#file_input_field").click(); });
-$("#file_input_field").change(function (evt) {
-    handleUploads(evt.target.files);
-    // This resets the file input field
-    // http://stackoverflow.com/questions/1043957/clearing-input-type-file-using-jquery
-    $('#file_name').html("");
-    $("#file_upload_button").css("visibility", "hidden");
-    $("#file_input_field").wrap("<form>").closest("form").get(0).reset();
-    $("#file_input_field").unwrap();
-});
-/*
- * Drag 'n Drop upload handlers
- */
-$(document).on('dragover', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-});
-$(document).on('dragenter', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-});
-document.addEventListener('drop', function (e) {
-    if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+$(document).delegate('#textarea', 'keydown', function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode === 9) {
         e.preventDefault();
-        e.stopPropagation();
-        handleUploads(e.dataTransfer.files);
+        var start = $(this).get(0).selectionStart;
+        var end = $(this).get(0).selectionEnd;
+        // set textarea value to: text before caret + tab + text after caret
+        $(this).val($(this).val().substring(0, start)
+            + "\t"
+            + $(this).val().substring(end));
+        // put caret at right position again
+        $(this).get(0).selectionStart =
+            $(this).get(0).selectionEnd = start + 1;
+    }
+});
+// Upload the file when ctrl + s is pressed
+$(document).bind('keydown', function (e) {
+    if (e.ctrlKey && (e.which === 83)) {
+        e.preventDefault();
+        uploadText();
+        return false;
     }
 });
 var Cookie;
