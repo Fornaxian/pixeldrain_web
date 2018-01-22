@@ -64,6 +64,12 @@ func Init() {
 			log.Info("├%21s: %v", v, vi.Get(v))
 		}
 	}
+
+	if DebugMode() {
+		log.SetLogLevel(4)
+	} else {
+		log.SetLogLevel(3)
+	}
 }
 
 func writeCfg() {
