@@ -3,6 +3,10 @@
     Author     : Fornax
 */
 
+:root {
+	--highlight_border: inset 0px 0px 5px 1px var(--highlight_color), 0px 0px 1px 0px var(--highlight_color);
+}
+
 body{
 	background-color: #111;
 	background-repeat: repeat;
@@ -73,7 +77,7 @@ html{
 }
 .navigation a:hover {
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
-	box-shadow: 2px 2px 8px #000000;
+	box-shadow: var(--highlight_border), 2px 2px 8px #000000;
 	color: #000000;
 	text-decoration: none;
 }
@@ -244,10 +248,10 @@ input[type="button"],
 input[type="color"],
 select{
 	border-radius: 4px;
-	border: 1px hidden transparent;
+	border: none;
+	margin: 2px;
 	background: linear-gradient(#606060, #404040);
 	padding: 6px 10px 6px 10px;
-	margin: 2px;
 	box-shadow: 2px 2px 8px #000000;
 	font-weight: bold;
 	color: #FFFFFF;
@@ -265,16 +269,13 @@ input[type="submit"]:focus,
 input[type="button"]:focus,
 input[type="color"]:focus,
 select:focus{
-	border: 1px solid var(--highlight_color);
-	margin: 1px;
+	box-shadow: var(--highlight_border), 2px 2px 8px #000000;
 }
 button:active,
 input[type="submit"]:active, 
 input[type="button"]:active,
 input[type="color"]:active,
 select:active{
-	border: 1px solid var(--highlight_color);
-	margin: 1px;
 	background: linear-gradient(#404040, #606060);
 	box-shadow: inset 3px 3px 6px #000000;
 	padding: 8px 8px 4px 12px;
@@ -320,8 +321,7 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus{
-	border: 1px solid var(--highlight_color);
-	padding: 3px 4px;
+	box-shadow: var(--highlight_border), inset 3px 3px 6px #000000;
 }
 
 input[type=file]{
