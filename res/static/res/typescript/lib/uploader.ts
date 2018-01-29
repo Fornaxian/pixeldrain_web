@@ -72,13 +72,15 @@ class UploadWorker {
 		var that = this // jquery changes the definiton of "this"
 
 		$.ajax({
+			type: 'POST',
 			url: "/api/file",
 			data: formData,
+			timeout: 300000, // 5 minutes
 			cache: false,
+			async: true,
 			crossDomain: false,
 			contentType: false,
 			processData: false,
-			type: 'POST',
 			xhr: function () {
 				var xhr = new XMLHttpRequest();
 				xhr.upload.addEventListener("progress", function (evt) {
