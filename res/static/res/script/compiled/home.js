@@ -163,7 +163,7 @@ var UploadWorker = /** @class */ (function () {
             type: 'POST',
             url: "/api/file",
             data: formData,
-            timeout: 300000,
+            timeout: 7200000,
             cache: false,
             async: true,
             crossDomain: false,

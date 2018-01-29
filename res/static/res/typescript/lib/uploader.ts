@@ -75,7 +75,7 @@ class UploadWorker {
 			type: 'POST',
 			url: "/api/file",
 			data: formData,
-			timeout: 300000, // 5 minutes
+			timeout: 7200000, // 2 hours
 			cache: false,
 			async: true,
 			crossDomain: false,
