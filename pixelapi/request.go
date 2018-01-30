@@ -1,8 +1,37 @@
 package pixelapi
 
-import "net/http"
-import "io/ioutil"
-import "io"
+import (
+	"encoding/json"
+	"io"
+	"io/ioutil"
+	"net/http"
+)
+
+type ErrorResponse struct {
+	ReqError bool
+	Success  bool    `json:"success"`
+	Value    string  `json:"value"`
+	Message  *string `json:"message"`
+	ID       *string `json:"id"`
+}
+
+func errorResponseFromJSON(j string) *ErrorResponse {
+	var r = &ErrorResponse{}
+	var err = json.Unmarshal([]byte(j), r)
+	if err != nil {
+		r.Success = false
+		r.ReqError = true
+		r.Value = err.Error()
+	}
+	return r
+}
+func errorResponseFromError(e error) *ErrorResponse {
+	var r = &ErrorResponse{}
+	r.Success = false
+	r.ReqError = true
+	r.Value = e.Error()
+	return r
+}
 
 func getString(url string) (string, error) {
 	req, err := http.NewRequest("GET", url, nil)
