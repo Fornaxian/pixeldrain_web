@@ -223,7 +223,7 @@ a:hover{
 	margin: 6px;
 	padding: 0;
 	overflow: hidden;
-	box-shadow: 2px 2px 5px 2px #111;
+	box-shadow: 0px 0px 5px 2px #111;
 	background-color: #111;
 	color: var(--text_color);
 	word-break: break-all;
