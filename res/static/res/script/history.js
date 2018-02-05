@@ -38,10 +38,9 @@ $(document).ready(function () {
 
 function historyAddItem(json) {
 	if(!json.success){
-		var uploadItem = "<div class=\"uploadItem\" >"
+		var uploadItem = "<div class=\"file_button\" >"
 		+ "<img src=\"/res/img/cross.png\" "
-		+ "alt=\"File has expired\" "
-		+ "class=\"uploadItemImage\" />"
+		+ "alt=\"File has expired\" />"
 		+ "File has expired"
 		+ "</div>";
 
@@ -52,16 +51,13 @@ function historyAddItem(json) {
 	
 	var date = new Date(json.date_upload * 1000);
 
-	var uploadItem = "<div class=\"uploadItem\" >"
-		+ "<a href=\"/u/" + json.id + "\" target=\"_blank\">"
-		+ "<img src=\"" + APIURL + json.thumbnail_href + "\" "
-		+ "alt=\"" + json.file_name + "\" "
-		+ "class=\"uploadItemImage\" />"
-		+ json.file_name
-		+ "</a>"
+	var uploadItem =  '<a href="/u/'+ json.id +'" target="_blank" class="file_button">'
+		+ '<img src="'+ APIURL + json.thumbnail_href + '"'
+		+ "alt=\"" + json.file_name + "\" />"
+		+ '<span style="color: var(--highlight_color);">'+json.file_name+'</span>'
 		+ "<br/>"
 		+ date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
-		+ "</div>";
+		+ "</a>";
 
 	$("#uploadedFiles").append($(uploadItem).hide().fadeIn(400));
 }

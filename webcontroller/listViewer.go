@@ -13,13 +13,16 @@ import (
 // ServeListViewer controller for GET /l/:id
 func ServeListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	var list = pixelapi.GetList(p.ByName("id"))
-	if list == nil {
+	if list.Error != nil {
+		if list.Error.ReqError {
+			log.Error("API request error occurred: %s", list.Error.Value)
+		}
 		ServeNotFound(w, r)
 		return
 	}
 
-	var ogData OGData
 	var err error
+	var ogData OGData
 	listdata := map[string]interface{}{
 		"id":           list.ID,
 		"data":         list.Files,

@@ -3,6 +3,10 @@
     Author     : Fornax
 */
 
+:root {
+	--highlight_border: inset 0px 0px 5px 1px var(--highlight_color), 0px 0px 1px 0px var(--highlight_color);
+}
+
 body{
 	background-color: #111;
 	background-repeat: repeat;
@@ -20,7 +24,7 @@ html{
 	height: 100%;
 }
 
-/* HEAD */
+/* Page layout elements */
 
 #header{
 	position: relative;
@@ -35,22 +39,11 @@ html{
 	border-bottom: #606060 solid 1px;
 }
 
-#header-image{
+#header_image{
 	width: 100%;
 	max-width: 1000px;
 	margin-top: 15px;
 }
-
-#uploads-completed{
-	position: relative;
-	width: 100%;
-	height: 0;
-	overflow-x: hidden;
-	overflow-y: scroll;
-}
-
-
-/* Layout elements */
 
 .body{
 	position: relative;
@@ -84,7 +77,7 @@ html{
 }
 .navigation a:hover {
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
-	box-shadow: 2px 2px 8px #000000;
+	box-shadow: var(--highlight_border), 2px 2px 8px #000000;
 	color: #000000;
 	text-decoration: none;
 }
@@ -178,7 +171,7 @@ a:hover{
 	line-height: 8px;
 }
 
-.progress-bar{
+.progress_bar{
 	position: relative;
 	width: 100%;
 	height: 0;
@@ -188,7 +181,7 @@ a:hover{
 	text-align: left;
 	white-space: nowrap;
 }
-.progressbar-inner{
+.progressbar_inner{
 	position: absolute;
 	top: 0;
 	width: 0%;
@@ -199,10 +192,51 @@ a:hover{
 	color: #000;
 	white-space: nowrap;
 }
-.progress-text{
+.progress_text{
 	overflow: hidden;
 	width: 100%;
 	white-space: nowrap;
+}
+
+.uploads_queue{
+	position: relative;
+	width: 100%;
+	height: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.files_container{
+	position: relative;
+	width: 100%;
+	margin: 0;
+	height: auto;
+	display: inline-block;
+}
+
+.file_button, .file_button:hover{
+	position: relative;
+	box-sizing: border-box;
+	width: 316px;
+	max-width: 90%;
+	height: 60px;
+	float: left;
+	margin: 6px;
+	padding: 0;
+	overflow: hidden;
+	box-shadow: 0px 0px 5px 2px #111;
+	background-color: #111;
+	color: var(--text_color);
+	word-break: break-all;
+	text-align: left;
+	line-height: 120%;
+	display: block;
+}
+.file_button > img{
+	max-height: 60px;
+	max-width: 120px;
+	margin-right: 5px;
+	float: left;
+	display: block;
 }
 
 /* Form fields */
@@ -214,10 +248,10 @@ input[type="button"],
 input[type="color"],
 select{
 	border-radius: 4px;
-	border: 1px hidden transparent;
+	border: none;
+	margin: 2px;
 	background: linear-gradient(#606060, #404040);
 	padding: 6px 10px 6px 10px;
-	margin: 2px;
 	box-shadow: 2px 2px 8px #000000;
 	font-weight: bold;
 	color: #FFFFFF;
@@ -235,16 +269,13 @@ input[type="submit"]:focus,
 input[type="button"]:focus,
 input[type="color"]:focus,
 select:focus{
-	border: 1px solid var(--highlight_color);
-	margin: 1px;
+	box-shadow: var(--highlight_border), 2px 2px 8px #000000;
 }
 button:active,
 input[type="submit"]:active, 
 input[type="button"]:active,
 input[type="color"]:active,
 select:active{
-	border: 1px solid var(--highlight_color);
-	margin: 1px;
 	background: linear-gradient(#404040, #606060);
 	box-shadow: inset 3px 3px 6px #000000;
 	padding: 8px 8px 4px 12px;
@@ -290,8 +321,7 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus{
-	border: 1px solid var(--highlight_color);
-	padding: 3px 4px;
+	box-shadow: var(--highlight_border), inset 3px 3px 6px #000000;
 }
 
 input[type=file]{

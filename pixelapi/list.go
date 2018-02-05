@@ -4,11 +4,17 @@ import (
 	"encoding/json"
 
 	"fornaxian.com/pixeldrain-web/conf"
-	"fornaxian.com/pixeldrain-web/log"
+)
+
+// API error constants
+const (
+	ListNotFoundError = "list_not_found"
 )
 
 // List information object from the pixeldrain API
 type List struct {
+	Error       *ErrorResponse
+	Success     bool   `json:"success"`
 	ID          string `json:"id"`
 	Title       string `json:"title"`
 	DateCreated int64  `json:"date_created"`
@@ -26,19 +32,24 @@ type ListFile struct {
 	ListDescription string `json:"list_description"`
 }
 
-// GetList get a List from the pixeldrain API
+// GetList get a List from the pixeldrain API. Errors will be available through
+// List.Error. Standard error checks apply.
 func GetList(id string) *List {
+	var list = &List{}
 	body, err := getString(conf.ApiUrlInternal() + "/list/" + id)
+	if err != nil {
+		list.Error = errorResponseFromError(err)
+		return list
+	}
 
+	err = json.Unmarshal([]byte(body), list)
 	if err != nil {
-		log.Error("req failed: %v", err)
-		return nil
+		list.Error = errorResponseFromError(err)
+		return list
 	}
-	var list List
-	err = json.Unmarshal([]byte(body), &list)
-	if err != nil {
-		log.Error("unmarshal failed: %v. json: %s", err, body)
-		return nil
+
+	if !list.Success {
+		list.Error = errorResponseFromJSON(body)
 	}
-	return &list
+	return list
 }

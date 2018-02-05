@@ -1,23 +1,22 @@
-
-var listItems = new Array();
-
-$("#btnCreateList").click(function (evt) {
+$("#btn_create_list").click(function (evt) {
 	createList();
 });
 
-function addToList(id, desc){
-	var listEntry = {id: id, desc: desc};
-
-	listItems.push(listEntry);
-}
-
 function createList(){
+	let listfiles = new Array()
+	for (var i = 0; i < finishedUploads.length; i++) {
+		if (finishedUploads[i] === undefined) {
+			continue;
+		}
+		listfiles.push(finishedUploads[i]);
+	}
+
 	var url = "/api/list";
 	
 	var postData = {};
 	
 	var title = prompt(
-		"You are creating a list containing " + listItems.length + " files.\n"
+		"You are creating a list containing " + listfiles.length + " files.\n"
 		+ "What do you want to call it?", "My New Album"
 	);
 
@@ -31,12 +30,10 @@ function createList(){
 		"files": new Array()
 	};
 	
-	var arrayLength = listItems.length;
-	for (var i = 0; i < arrayLength; i++) {
-		postData.files[i] = {
-			"id": listItems[i]["id"],
-			"description": listItems[i]["desc"]
-		};
+	for (var i = 0; i < listfiles.length; i++) {
+		postData.files.push({
+			"id": listfiles[i]
+		});
 	}
 	
 	$.ajax({
@@ -52,21 +49,22 @@ function createList(){
 
 function listCreated(response){
 	if(response.success){
-		resultString = "<div class=\"uploadItem\">List creation finished!<br/>"
+		resultString = "<div class=\"file_button\">List creation finished!<br/>"
 			+ "Your List URL: <br/>"
 			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\" style=\"font-weight: bold;\">"+window.location.hostname+"/l/" + response.id + "</a>"
 			+ "</div>";
 		
-		$('#uploads-completed').prepend(
+		$('#uploads_queue').prepend(
 			$(resultString).hide().fadeIn('slow')
 		);
+		window.open('/l/'+response.id, '_blank');
 	}else{
-		resultString = "<div class=\"uploadItem\">List creation failed<br/>"
+		resultString = "<div class=\"file_button\">List creation failed<br/>"
 			+ "The server responded with this: <br/>"
 			+ response.type + ": " + response.value
 			+ "</div>";
 		
-		$('#uploads-completed').prepend(
+		$('#uploads_queue').prepend(
 			$(resultString).hide().fadeIn('slow')
 		);
 	}

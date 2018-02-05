@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"outFile": "../../script/compiled/textupload.js"
+	},
+	"files": [
+		"text.ts",
+		"../lib/cookie.ts",
+		"../lib/jquery.d.ts",
+		"../lib/uploader.ts"
+	]
+}
