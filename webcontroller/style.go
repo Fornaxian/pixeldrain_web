@@ -14,8 +14,8 @@ func GlobalCSSHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 	var textColor = "hsl(0, 0%, 75%)"
 
 	// Originals
-	var highlightColor = "hsl(89, 51%, 62%)"
-	var highlightColorDark = "hsl(89, 51%, 50%)"
+	var highlightColor = "hsl(89, 51%, 50%)"
+	var highlightColorDark = "hsl(89, 51%, 40%)"
 
 	// Purple scheme
 	// var highlightColor = "843384"
