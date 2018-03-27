@@ -11,11 +11,11 @@ import (
 func GlobalCSSHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Add("Content-Type", "text/css; charset=utf-8")
 
-	var textColor = "c0c0c0"
+	var textColor = "hsl(0, 0%, 75%)"
 
 	// Originals
-	var highlightColor = "9FCF6C"
-	var highlightColorDark = "729749"
+	var highlightColor = "hsl(89, 51%, 62%)"
+	var highlightColorDark = "hsl(89, 51%, 50%)"
 
 	// Purple scheme
 	// var highlightColor = "843384"
@@ -23,9 +23,9 @@ func GlobalCSSHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 
 	var response = fmt.Sprintf(
 		`:root {
-	--text_color: #%s;
-	--highlight_color: #%s;
-	--highlight_color_dark: #%s;
+	--text_color: %s;
+	--highlight_color: %s;
+	--highlight_color_dark: %s;
 }
 `,
 		textColor,
