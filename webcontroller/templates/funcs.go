@@ -14,7 +14,7 @@ var funcMap = template.FuncMap{
 }
 
 func bgPatternCount() uint8 {
-	return uint8(time.Now().UnixNano() % 16)
+	return uint8(time.Now().UnixNano() % 17)
 }
 
 func debugMode() bool {
