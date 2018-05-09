@@ -54,7 +54,7 @@ html{
 	height: auto;
 	padding: 0px 8px 0px 8px;
 	box-sizing: border-box;
-	background-color: #242424;
+	background-color: hsl(20, 5%, 14%);;
 	margin-top: 30px;
 	margin-bottom: 30px;
 	text-align: left;
