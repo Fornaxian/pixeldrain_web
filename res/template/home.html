@@ -46,21 +46,20 @@
 			<div class="highlight_dark border-bottom">
 				<button id="btn_create_list">Create list with uploaded files</button>
 			</div>
-			
-			<h1>Pixeldrain Public Beta<img src="/res/img/sia.png" style="height: 40px;"/></h1>
+
+			<h1>Pixeldrain Public Beta</h1>
 			<p>
 				Note that this is an experimental version of Pixeldrain server, 
 				the Pixeldrain backend has been completely redesigned from the 
 				ground up to be more extensible, efficient and scalable. The 
 				server this web application runs on is considered a testing 
-				environment. Database resets can happen at any moment when 
-				architectural changes need to be applied.
+				environment. Database resets can happen when architectural
+				changes need to be applied.
 			</p>
 			<p>
 				The Sia integration is still very experimental and could 
-				fail at any moment resulting in data loss. Do not upload files 
-				to this server that you cannot afford to lose. Use the stable 
-				main server instead: 
+				fail, resulting in data loss. Do not upload files to this server
+				that you cannot afford to lose. Use the stable main server instead: 
 				<a href="https://pixeldrain.com">https://pixeldrain.com</a>.
 			</p>
 			<p>
@@ -71,6 +70,39 @@
 				starts running out of space files will be purged from the local
 				filesystem and served from Sia on the next request.
 			</p>
+
+			<h2>News</h2>
+			<h3>Data loss has occurred</h3>
+			<p>
+				As noted below, the integration with Sia cloud storage is highly
+				experimental, everyone who uses this service should be aware of
+				that fact.
+			</p>
+			<p>
+				I recently discovered that the Sia node that is storing the
+				files for this website had crashed because of a memory leak. The
+				Sia team is currently trying to figure out how this memory leak
+				occurred. It's likely the contract renewal went wrong which
+				caused the Sia node to become unstable. Now when I start the Sia
+				daemon it eats up about 1 GB of RAM per minute, so I've turned
+				it off for the time being.
+			</p>
+			<p>
+				In the short period that the Sia daemon keeps running I managed
+				to request a file listing. It seems that because of the failed
+				contracts about 80% of the stored files have dropped far below
+				1x redundancy, meaning that they are lost. The upside of all
+				this is that the bug has been discovered before version 1.3.3
+				has come out so it might be fixed in the next release, bringing
+				the Sia platform as a whole another step closer to being a
+				reliable data storage solution.
+			</p>
+			<p>
+				Anyway, don't be surprised if your previously uploaded files are
+				gone now. I will soon start purging all unrecoverable files from
+				the database so we can start over with a clean slate.
+			</p>
+
 			<h2>Legality</h2>
 			<p>
 				I cannot be held liable for any illegal and / or copyrighted 
