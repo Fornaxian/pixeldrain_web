@@ -10,7 +10,7 @@
 		<h3>Parameters</h3>
 		<p>
 			POST body should be a JSON object, example below. A list can contain
-			maximally 5000 files. If you try to add more the request will fail.
+			maximally 10000 files. If you try to add more the request will fail.
 		</p>
 		<h4>Example</h4>
 <pre>
@@ -48,7 +48,7 @@
 {
 	"success": false,
 	"value": "too_many_files",
-	"message": "This list contains too many files, max 5000 allowed."
+	"message": "This list contains too many files, max 10000 allowed."
 }
 </pre>
 <pre>HTTP 422: Unprocessable Entity
