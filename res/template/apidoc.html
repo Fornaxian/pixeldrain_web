@@ -43,7 +43,20 @@
 				resource <strong>do</strong> require an API key.
 				<br/>
 				<br/>
-				Though API keys have not been implemented yet.
+				Though API keys have not been implemented yet, so you can't use
+				those methods yet.
+			</p>
+			<p>
+				Some JSON responses include fields which end in "_href" (some
+				people don't know this, but "href" stands for "Hypertext
+				Reference", the more you know). These point to different places
+				in the API, which you can retrieve with a GET request. The path
+				is to be appended to the API URL, so "/file/someid/thumbnail"
+				becomes "{{apiUrl}}/file/someid/thumbnail".
+			</p>
+			<p>
+				The base URL for the API is "{{apiUrl}}", all paths below are
+				relative to that URL.
 			</p>
 			
 			<h2>File Methods</h2>

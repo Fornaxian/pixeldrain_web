@@ -10,9 +10,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"fornaxian.com/pixeldrain-api/log"
 	"fornaxian.com/pixeldrain-web/conf"
 	"fornaxian.com/pixeldrain-web/pixelapi"
+	"github.com/Fornaxian/log"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/timakin/gonvert"

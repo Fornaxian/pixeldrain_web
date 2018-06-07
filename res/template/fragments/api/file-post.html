@@ -26,16 +26,9 @@
 			<tr>
 				<td>name</td>
 				<td>false</td>
-				<td>300 Characters</td>
-				<td>Name of file param</td>
+				<td>255 Characters</td>
+				<td>Multipart file name</td>
 				<td>Name of the file to upload</td>
-			</tr>
-			<tr>
-				<td>description</td>
-				<td>false</td>
-				<td>5000 Characters</td>
-				<td>Pixeldrain File</td>
-				<td>Description of the file</td>
 			</tr>
 		</table>
 
@@ -73,13 +66,7 @@
 {
 	"success": false,
 	"value": "name_too_long",
-	"message": "File Name is too long, Max 300 characters allowed."
-}</pre>
-<pre>HTTP 413: Payload Too Large
-{
-	"success": false,
-	"value": "description_too_long",
-	"message": "File Description is too long, Max 5000 characters allowed."
+	"message": "File Name is too long, Max 255 characters allowed."
 }</pre>
 	</div>
 </details>
