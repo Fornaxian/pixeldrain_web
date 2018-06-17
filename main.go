@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	web "fornaxian.com/pixeldrain-web/init"
-	"fornaxian.com/pixeldrain-web/log"
 
+	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
 

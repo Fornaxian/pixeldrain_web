@@ -8,7 +8,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func GlobalCSSHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (wc *WebController) globalCSSHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Add("Content-Type", "text/css; charset=utf-8")
 
 	var textColor = "hsl(0, 0%, 75%)"

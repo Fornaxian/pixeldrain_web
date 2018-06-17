@@ -3,24 +3,24 @@ package templates
 import (
 	"html/template"
 	"time"
-
-	"fornaxian.com/pixeldrain-web/conf"
 )
 
-var funcMap = template.FuncMap{
-	"bgPatternCount": bgPatternCount,
-	"debugMode":      debugMode,
-	"apiUrl":         apiURL,
+func (tm *TemplateManager) funcMap() template.FuncMap {
+	return template.FuncMap{
+		"bgPatternCount": tm.bgPatternCount,
+		"debugMode":      tm.debugMode,
+		"apiUrl":         tm.apiURL,
+	}
 }
 
-func bgPatternCount() uint8 {
+func (tm *TemplateManager) bgPatternCount() uint8 {
 	return uint8(time.Now().UnixNano() % 17)
 }
 
-func debugMode() bool {
-	return conf.DebugMode()
+func (tm *TemplateManager) debugMode() bool {
+	return tm.debugModeEnabled
 }
 
-func apiURL() string {
-	return conf.ApiUrlExternal()
+func (tm *TemplateManager) apiURL() string {
+	return tm.externalAPIEndpoint
 }

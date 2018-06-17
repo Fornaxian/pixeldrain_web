@@ -4,14 +4,13 @@ import (
 	"encoding/json"
 	"io"
 
-	"fornaxian.com/pixeldrain-web/conf"
-	"fornaxian.com/pixeldrain-web/log"
+	"github.com/Fornaxian/log"
 )
 
 // GetFile makes a file download request and returns a readcloser. Don't forget
 // to close it!
-func GetFile(id string) (io.ReadCloser, error) {
-	return getRaw(conf.ApiUrlInternal() + "/file/" + id)
+func (p *PixelAPI) GetFile(id string) (io.ReadCloser, error) {
+	return getRaw(p.apiEndpoint + "/file/" + id)
 }
 
 // FileInfo File information object from the pixeldrain API
@@ -30,8 +29,8 @@ type FileInfo struct {
 }
 
 // GetFileInfo gets the FileInfo from the pixeldrain API
-func GetFileInfo(id string) *FileInfo {
-	body, err := getString(conf.ApiUrlInternal() + "/file/" + id + "/info")
+func (p *PixelAPI) GetFileInfo(id string) *FileInfo {
+	body, err := getString(p.apiEndpoint + "/file/" + id + "/info")
 
 	if err != nil {
 		log.Error("req failed: %v", err)

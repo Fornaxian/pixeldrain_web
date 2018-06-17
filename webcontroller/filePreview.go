@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"fornaxian.com/pixeldrain-web/conf"
 	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
 
@@ -19,19 +18,22 @@ import (
 )
 
 // ServeFilePreview controller for GET /u/:id/preview
-func ServeFilePreview(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	if p.ByName("id") == "demo" {
-		ServeFilePreviewDemo(w) // Required for a-ads.com quality check
+		serveFilePreviewDemo(w) // Required for a-ads.com quality check
 		return
 	}
 
-	inf := pixelapi.GetFileInfo(p.ByName("id")) // TODO: Error handling
+	inf := wc.api.GetFileInfo(p.ByName("id")) // TODO: Error handling
 	if inf == nil {
-		ServeNotFound(w, r)
+		wc.serveNotFound(w, r)
 		return
 	}
 
-	var fp FilePreview
+	var fp = FilePreview{
+		APIURL:   wc.conf.APIURLExternal,
+		PixelAPI: wc.api,
+	}
 	io.WriteString(w, fp.Run(inf))
 }
 
@@ -39,12 +41,15 @@ type FilePreview struct {
 	FileInfo    *pixelapi.FileInfo
 	FileURL     string
 	DownloadURL string
+
+	APIURL   string
+	PixelAPI *pixelapi.PixelAPI
 }
 
 func (f FilePreview) Run(inf *pixelapi.FileInfo) string {
 	f.FileInfo = inf
-	f.FileURL = conf.ApiUrlExternal() + "/file/" + f.FileInfo.ID
-	f.DownloadURL = conf.ApiUrlExternal() + "/file/" + f.FileInfo.ID + "/download"
+	f.FileURL = f.APIURL + "/file/" + f.FileInfo.ID
+	f.DownloadURL = f.APIURL + "/file/" + f.FileInfo.ID + "/download"
 
 	if strings.HasPrefix(f.FileInfo.MimeType, "image") {
 		return f.image()
@@ -139,7 +144,7 @@ func (f FilePreview) text() string {
 		)
 	}
 
-	body, err := pixelapi.GetFile(f.FileInfo.ID)
+	body, err := f.PixelAPI.GetFile(f.FileInfo.ID)
 	if err != nil {
 		log.Error("Can't download text file for preview: %s", err)
 		return fmt.Sprintf(htmlOut, "",
@@ -189,6 +194,29 @@ func (f FilePreview) def() string {
 		f.FileInfo.FileName,
 		f.FileInfo.MimeType,
 		f.DownloadURL,
-		conf.ApiUrlExternal()+f.FileInfo.ThumbnailHREF,
+		f.APIURL+f.FileInfo.ThumbnailHREF,
 	)
+}
+
+// ServeFilePreviewDemo serves the content of the demo file. It contains a nice
+// message to the human reviewers of the a-ads ad network so they can properly
+// categorize the website.
+func serveFilePreviewDemo(w http.ResponseWriter) {
+	io.WriteString(w,
+		`<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+<div class="text-container"><pre class="pre-container linenums" style="width: 100%">
+ , __              _
+/|/  \o           | |    |              o
+ |___/         _  | |  __|   ,_    __,      _  _
+ |    |  /\/  |/  |/  /  |  /  |  /  |  |  / |/ |
+ |    |_/ /\_/|__/|__/\_/|_/   |_/\_/|_/|_/  |  |_/
+
+This is a demonstration of Pixeldrain's file viewer.
+
+The website automatically detects what kind of file you requested and prepares a page for viewing it properly. This is what a text file would look like on Pixeldrain. You can upload your own text file at pixeldrain.com/t.
+
+Pixeldrain is a free service for sharing files with large or small groups of people. For more information visit the home page by pressing the home button on the toolbar at the left side of the screen.
+
+Press the Details button or "i" for more info about Pixeldrain's file viewer.
+</pre></div>`)
 }

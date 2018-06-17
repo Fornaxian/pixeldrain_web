@@ -5,16 +5,15 @@ import (
 	"net/http"
 	"strings"
 
-	"fornaxian.com/pixeldrain-web/log"
 	"fornaxian.com/pixeldrain-web/pixelapi"
-	"fornaxian.com/pixeldrain-web/webcontroller/templates"
+	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
 
 // ServeFileViewer controller for GET /u/:id
-func ServeFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	if p.ByName("id") == "demo" {
-		ServeFileViewerDemo(w) // Required for a-ads.com quality check
+		wc.serveFileViewerDemo(w) // Required for a-ads.com quality check
 		return
 	}
 
@@ -29,7 +28,7 @@ func ServeFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 
 	var finfo []*pixelapi.FileInfo
 	for _, id := range ids {
-		inf := pixelapi.GetFileInfo(id)
+		inf := wc.api.GetFileInfo(id)
 		if inf == nil {
 			continue
 		}
@@ -37,7 +36,7 @@ func ServeFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 	}
 
 	if len(finfo) == 0 {
-		ServeNotFound(w, r)
+		wc.serveNotFound(w, r)
 		return
 	}
 
@@ -51,14 +50,14 @@ func ServeFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 			"date_lastview": "now",
 			"views":         0,
 		}
-		err = templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
+		err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
 			"Title":       fmt.Sprintf("%d files in Pixeldrain", len(finfo)),
 			"APIResponse": listdata,
 			"Type":        "list",
 			"OGData":      ogData.FromFile(*finfo[0]),
 		})
 	} else {
-		err = templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
+		err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
 			"Title":       fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].FileName),
 			"APIResponse": finfo[0],
 			"Type":        "file",
@@ -68,4 +67,25 @@ func ServeFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params
 	if err != nil {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
+}
+
+// ServeFileViewerDemo is a dummy API response that responds with info about a
+// non-existent demo file. This is required by the a-ads ad network to allow for
+// automatic checking of the presence of the ad unit on this page.
+func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter) {
+	wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
+		"APIResponse": map[string]interface{}{
+			"id":            "demo",
+			"file_name":     "Demo file",
+			"date_upload":   "2017-01-01 12:34:56",
+			"date_lastview": "2017-01-01 12:34:56",
+			"file_size":     123456789,
+			"views":         1,
+			"mime_type":     "text/demo",
+			"description":   "A file to demonstrate the viewer page",
+			"mime_image":    "/res/img/mime/text.png",
+			"thumbnail":     "/res/img/mime/text.png",
+		},
+		"Type": "file",
+	})
 }

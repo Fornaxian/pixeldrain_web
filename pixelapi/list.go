@@ -2,8 +2,6 @@ package pixelapi
 
 import (
 	"encoding/json"
-
-	"fornaxian.com/pixeldrain-web/conf"
 )
 
 // API error constants
@@ -34,9 +32,9 @@ type ListFile struct {
 
 // GetList get a List from the pixeldrain API. Errors will be available through
 // List.Error. Standard error checks apply.
-func GetList(id string) *List {
+func (p *PixelAPI) GetList(id string) *List {
 	var list = &List{}
-	body, err := getString(conf.ApiUrlInternal() + "/list/" + id)
+	body, err := getString(p.apiEndpoint + "/list/" + id)
 	if err != nil {
 		list.Error = errorResponseFromError(err)
 		return list
