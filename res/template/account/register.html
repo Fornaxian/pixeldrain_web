@@ -1,26 +1,22 @@
+{{define "register"}}
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>Register ~ PixelDrain</title>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="stylesheet" href="/res/style/home.css"/>
-		<link rel="stylesheet" href="/res/style/season.css"/>
-		<link rel="stylesheet" href="/res/style/form.css"/>
-		<link rel="stylesheet" href="/res/style/menu.css"/>
+		<link rel="stylesheet" href="/global.css"/>
+		<link rel="stylesheet" href="/res/style/layout.css"/>
 		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
 		<link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css"/>
 		<link rel="shortcut icon" href="/res/img/tray32.png"/>
 		<meta name="theme-color" content="#9FCF6C"/>
 		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
 		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
-		
-		<style th:include="fragments :: background-pattern" th:inline="text"></style>
+		{{template "bgpattern"}}
 
-		<script src='https://www.google.com/recaptcha/api.js'></script>
-
-		<meta name="description" content="PixelDrain is a free file sharing service, you 
-			  can upload any file and you will be given a shareable link right away. 
+		<meta name="description" content="PixelDrain is a free file sharing service, you
+			  can upload any file and you will be given a shareable link right away.
 			  PixelDrain also supports previews for images, videos, audio, PDFs and much more.
 			  Uncensored, unmonitored and unmoderated."/>
 		<meta property="og:type" content="website" />
@@ -30,53 +26,39 @@
 		<meta property="og:url" content="http://pixeldra.in/" />
 		<meta property="og:image" content="/res/img/pixeldrain_big.png" />
 		<meta property="og:image:type" content="image/png" />
+
+		<script src="https://www.google.com/recaptcha/api.js"></script>
 	</head>
 
 	<body>
 		<div id='body' class="body">
-			<div th:replace="fragments :: menu"></div>
-			<br/>
+			{{template "menu"}}
 
-			<h3>Register a new PixelDrain account</h3>
-			<div id="message" th:switch="${messageType}">
-				<div th:case="'info'" th:utext="${message}" id="text-info" class="text-info"></div>
-				<div th:case="'warn'" th:utext="${message}" id="text-warning" class="text-warning"></div>
-			</div>
-			<form action="/register" method="POST">
-
-
-				Username (Used to log in)<br/>
-				<input name="username" type="text" th:value="${username}"/><br/>
-				<br/>
-				Enter your password twice (Why twice? So we can verify that you have not made any typing errors)<br/>
-				<input name="password1" type="password" th:value="${password1}"/><br/>
-				<input name="password2" type="password" th:value="${password2}"/><br/>
-				<br/>
-				Prove that you're not a robot (Click the white box)
-				<div class="g-recaptcha" data-theme="dark" 
-					 data-sitekey="6LdEeQ0TAAAAALBmDF_k_2LgbpuJM66PGspByViS">
-				</div><br/>
-				<br/>
-				<input type="submit" value="Register"/>
+			<h1>Register a new Pixeldrain account</h1>
+			<form action="/login" method="POST" class="highlight_dark border_top border_bottom">
+				<table style="margin-left: auto; margin-right: auto; text-align: left; max-width: 30em;">
+					<tr><td>Username (Used to log in)</td></tr>
+					<tr><td><input name="username" type="text" class="form_input"/></td></tr>
+					<tr><td>
+						Enter your password twice:<br/>
+						(So we can verify that you have not made any typing errors)
+					</td></tr>
+					<tr><td><input name="password1" type="password" class="form_input"/></td></tr>
+					<tr><td><input name="password2" type="password" class="form_input"/></td></tr>
+					<tr><td>Prove that you're not a robot (Click the white box)</td></tr>
+					<tr><td style="text-align: center;">
+						<div class="g-recaptcha" data-theme="dark" data-sitekey="6LdEeQ0TAAAAALBmDF_k_2LgbpuJM66PGspByViS"></div>
+					</td></tr>
+					</tr>
+					<tr><td colspan=2 style="text-align: right;"><input type="submit" value="Register" class="button_highlight"/></td></tr>
+				</table>
 			</form>
+			<br/>
+			Welcome to the club!<br/>
+			{{template "footer"}}
 		</div>
 
-		<!-- Google Analytics Tracking Code -->
-		<script>
-	    (function (i, s, o, g, r, a, m) {
-		    i['GoogleAnalyticsObject'] = r;
-		    i[r] = i[r] || function () {
-			    (i[r].q = i[r].q || []).push(arguments)
-		    }, i[r].l = 1 * new Date();
-		    a = s.createElement(o),
-			    m = s.getElementsByTagName(o)[0];
-		    a.async = 1;
-		    a.src = g;
-		    m.parentNode.insertBefore(a, m)
-	    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-	    ga('create', 'UA-24463738-4', 'auto');
-	    ga('send', 'pageview');
-		</script>
+		{{template "analytics"}}
 	</body>
 </html>
+{{end}}

@@ -1,9 +1,5 @@
 package pixelapi
 
-import (
-	"encoding/json"
-)
-
 // API error constants
 const (
 	ListNotFoundError = "list_not_found"
@@ -11,7 +7,6 @@ const (
 
 // List information object from the pixeldrain API
 type List struct {
-	Error       *ErrorResponse
 	Success     bool   `json:"success"`
 	ID          string `json:"id"`
 	Title       string `json:"title"`
@@ -32,22 +27,11 @@ type ListFile struct {
 
 // GetList get a List from the pixeldrain API. Errors will be available through
 // List.Error. Standard error checks apply.
-func (p *PixelAPI) GetList(id string) *List {
-	var list = &List{}
-	body, err := getString(p.apiEndpoint + "/list/" + id)
+func (p *PixelAPI) GetList(id string) (resp *List, err *Error) {
+	resp = &List{}
+	err = getJSON(p.apiEndpoint+"/list/"+id, resp)
 	if err != nil {
-		list.Error = errorResponseFromError(err)
-		return list
+		return nil, err
 	}
-
-	err = json.Unmarshal([]byte(body), list)
-	if err != nil {
-		list.Error = errorResponseFromError(err)
-		return list
-	}
-
-	if !list.Success {
-		list.Error = errorResponseFromJSON(body)
-	}
-	return list
+	return resp, nil
 }

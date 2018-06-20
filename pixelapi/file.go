@@ -1,10 +1,7 @@
 package pixelapi
 
 import (
-	"encoding/json"
 	"io"
-
-	"github.com/Fornaxian/log"
 )
 
 // GetFile makes a file download request and returns a readcloser. Don't forget
@@ -29,18 +26,11 @@ type FileInfo struct {
 }
 
 // GetFileInfo gets the FileInfo from the pixeldrain API
-func (p *PixelAPI) GetFileInfo(id string) *FileInfo {
-	body, err := getString(p.apiEndpoint + "/file/" + id + "/info")
-
+func (p *PixelAPI) GetFileInfo(id string) (resp *FileInfo, err *Error) {
+	resp = &FileInfo{}
+	err = getJSON(p.apiEndpoint+"/file/"+id+"/info", resp)
 	if err != nil {
-		log.Error("req failed: %v", err)
-		return nil
+		return nil, err
 	}
-	var fileInfo FileInfo
-	err = json.Unmarshal([]byte(body), &fileInfo)
-	if err != nil {
-		log.Error("unmarshal failed: %v. json: %s", err, body)
-		return nil
-	}
-	return &fileInfo
+	return resp, nil
 }

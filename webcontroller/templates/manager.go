@@ -26,8 +26,9 @@ func New(templateDir, externalAPIEndpoint string, debugMode bool) *TemplateManag
 }
 
 // ParseTemplates parses the templates in the template directory which is
-// defined in the config file
-func (tm *TemplateManager) ParseTemplates() {
+// defined in the config file.
+// If silent is false it will print an info log message for every template found
+func (tm *TemplateManager) ParseTemplates(silent bool) {
 	var templatePaths []string
 
 	filepath.Walk(tm.templateDir, func(path string, f os.FileInfo, err error) error {
@@ -35,7 +36,9 @@ func (tm *TemplateManager) ParseTemplates() {
 			return nil
 		}
 		templatePaths = append(templatePaths, path)
-		log.Info("Template found: %s", path)
+		if !silent {
+			log.Info("Template found: %s", path)
+		}
 		return nil
 	})
 
@@ -57,5 +60,8 @@ func (tm *TemplateManager) ParseTemplates() {
 
 // Get returns the templates, so they can be used to render views
 func (tm *TemplateManager) Get() *template.Template {
+	if tm.debugModeEnabled {
+		tm.ParseTemplates(true)
+	}
 	return tm.templates
 }

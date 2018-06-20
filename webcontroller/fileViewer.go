@@ -28,8 +28,8 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	var finfo []*pixelapi.FileInfo
 	for _, id := range ids {
-		inf := wc.api.GetFileInfo(id)
-		if inf == nil {
+		inf, err := wc.api.GetFileInfo(id)
+		if err != nil {
 			continue
 		}
 		finfo = append(finfo, inf)

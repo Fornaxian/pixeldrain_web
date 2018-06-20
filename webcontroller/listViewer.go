@@ -10,10 +10,10 @@ import (
 
 // ServeListViewer controller for GET /l/:id
 func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	var list = wc.api.GetList(p.ByName("id"))
-	if list.Error != nil {
-		if list.Error.ReqError {
-			log.Error("API request error occurred: %s", list.Error.Value)
+	var list, aerr = wc.api.GetList(p.ByName("id"))
+	if aerr != nil {
+		if aerr.ReqError {
+			log.Error("API request error occurred: %s", aerr.Value)
 		}
 		wc.serveNotFound(w, r)
 		return

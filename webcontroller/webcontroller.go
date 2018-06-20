@@ -28,7 +28,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 		conf.APIURLExternal,
 		conf.DebugMode,
 	)
-	wc.templates.ParseTemplates()
+	wc.templates.ParseTemplates(false)
 
 	// Serve static files
 	r.ServeFiles(prefix+"/res/*filepath", http.Dir(wc.staticResourceDir+"/res"))
@@ -43,13 +43,16 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(prefix+"/l/:id" /*        */, wc.serveListViewer)
 	r.GET(prefix+"/t" /*            */, wc.serveTemplate("paste"))
 
+	r.GET(prefix+"/register" /*     */, wc.serveTemplate("register"))
+	r.GET(prefix+"/login" /*        */, wc.serveTemplate("login"))
+
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 
 	return wc
 }
 
 func (wc *WebController) ReloadTemplates() {
-	wc.templates.ParseTemplates()
+	wc.templates.ParseTemplates(false)
 }
 
 func (wc *WebController) serveTemplate(tpl string) httprouter.Handle {

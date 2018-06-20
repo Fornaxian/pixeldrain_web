@@ -24,8 +24,8 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	inf := wc.api.GetFileInfo(p.ByName("id")) // TODO: Error handling
-	if inf == nil {
+	inf, err := wc.api.GetFileInfo(p.ByName("id")) // TODO: Error handling
+	if err != nil {
 		wc.serveNotFound(w, r)
 		return
 	}

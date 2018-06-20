@@ -1,4 +1,4 @@
-/* 
+/*
     Created on : Jun 3, 2015, 9:33:11 AM
     Author     : Fornax
 */
@@ -72,7 +72,7 @@ html{
 	margin: 0 4px;
 	text-decoration: none;
 	font-family: "Lato", sans-serif;
-	font-weight: bold; 
+	font-weight: bold;
 	font-size: 26px;
 }
 .navigation a:hover {
@@ -123,8 +123,8 @@ html{
 .highlight_middle {background-color: #3a3a3a;}
 .highlight_dark   {background-color: #303030;}
 
-.border-top    {border-top:    #686868 1px solid;}
-.border-bottom {border-bottom: #686868 1px solid;}
+.border_top    {border-top:    #686868 1px solid;}
+.border_bottom {border-bottom: #686868 1px solid;}
 
 /* Common elements */
 
@@ -241,9 +241,13 @@ a:hover{
 
 /* Form fields */
 
+.form_input {
+	width: 100%;
+}
+
 /* BUTTONS */
 button,
-input[type="submit"], 
+input[type="submit"],
 input[type="button"],
 input[type="color"],
 select{
@@ -260,19 +264,19 @@ select{
 	cursor: pointer;
 }
 button:hover,
-input[type="submit"]:hover, 
+input[type="submit"]:hover,
 input[type="button"]:hover,
 input[type="color"]:hover,
 select:hover,
 button:focus,
-input[type="submit"]:focus, 
+input[type="submit"]:focus,
 input[type="button"]:focus,
 input[type="color"]:focus,
 select:focus{
 	box-shadow: var(--highlight_border), 2px 2px 8px #000000;
 }
 button:active,
-input[type="submit"]:active, 
+input[type="submit"]:active,
 input[type="button"]:active,
 input[type="color"]:active,
 select:active{
@@ -281,10 +285,10 @@ select:active{
 	padding: 8px 8px 4px 12px;
 }
 .button_full_width      {width: calc(100% - 4px);}
-.button_highlight       {background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));}
-.button_highlight:active{background: linear-gradient(var(--highlight_color_dark), var(--highlight_color));}
-.button_red             {background: linear-gradient(#821C40, #61152F);}
-.button_red:active      {background: linear-gradient(#61152F, #821C40);}
+.button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: #000000 !important;}
+.button_highlight:active{background: linear-gradient(var(--highlight_color_dark), var(--highlight_color)) !important;      color: #000000 !important;}
+.button_red             {background: linear-gradient(#821C40, #61152F) !important;}
+.button_red:active      {background: linear-gradient(#61152F, #821C40) !important;}
 
 /* Dropdown list of the select tag */
 option{
