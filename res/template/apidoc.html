@@ -14,11 +14,11 @@
 		<meta name="theme-color" content="#9FCF6C"/>
 		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
 		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
-		
+
 		{{template "bgpattern"}}
 
-		<meta name="description" content="PixelDrain is a free file sharing service, you 
-		      can upload any file and you will be given a shareable link right away. 
+		<meta name="description" content="PixelDrain is a free file sharing service, you
+		      can upload any file and you will be given a shareable link right away.
 		      PixelDrain also supports previews for images, videos, audio, PDFs and much more.
 		      Uncensored, unmonitored and unmoderated."/>
 		<meta property="og:type" content="website" />
@@ -32,14 +32,14 @@
 
 	<body>
 		<div id='body' class="body">
-			{{template "menu"}}
+			{{template "menu" .}}
 			<h1>PixelDrain API Documentation</h1>
 			<p>
 				Welcome to the Pixeldrain API documentation.
 				<br/>
-				The methods for uploading and retrieving files don't require an 
-				API key. The methods for creating and retrieving lists also 
-				don't require an API key. All methods which delete or modify a 
+				The methods for uploading and retrieving files don't require an
+				API key. The methods for creating and retrieving lists also
+				don't require an API key. All methods which delete or modify a
 				resource <strong>do</strong> require an API key.
 				<br/>
 				<br/>
@@ -58,7 +58,7 @@
 				The base URL for the API is "{{apiUrl}}", all paths below are
 				relative to that URL.
 			</p>
-			
+
 			<h2>File Methods</h2>
 			{{template "api-file-post"}}
 			{{template "api-file-id-get"}}
@@ -66,7 +66,7 @@
 			{{template "api-file-id-info-get"}}
 			{{template "api-file-id-thumbnail-get"}}
 			{{template "api-file-id-delete"}}
-			
+
 			<h2>List Methods</h2>
 			{{template "api-list-post"}}
 			{{template "api-list-get"}}

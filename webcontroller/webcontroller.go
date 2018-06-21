@@ -61,7 +61,7 @@ func (wc *WebController) serveTemplate(tpl string) httprouter.Handle {
 		r *http.Request,
 		p httprouter.Params,
 	) {
-		err := wc.templates.Get().ExecuteTemplate(w, tpl, nil)
+		err := wc.templates.Get().ExecuteTemplate(w, tpl, wc.newTemplateData(r))
 		if err != nil {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
@@ -80,5 +80,5 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 
 func (wc *WebController) serveNotFound(w http.ResponseWriter, r *http.Request) {
 	log.Debug("Not Found: %s", r.URL)
-	wc.templates.Get().ExecuteTemplate(w, "error", nil)
+	wc.templates.Get().ExecuteTemplate(w, "error", wc.newTemplateData(r))
 }

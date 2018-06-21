@@ -13,17 +13,17 @@
 		<meta name="theme-color" content="#9FCF6C"/>
 		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
 		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
-		
+
 		{{template "bgpattern"}}
-		
+
 		<script src="res/script/jquery.js"></script>
 		<script src="res/script/jquery-cookie.js"></script>
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 		<script>var APIURL = "{{apiUrl}}";</script>
-		
-		<meta name="description" content="PixelDrain is a free file sharing service, you 
-		      can upload any file and you will be given a shareable link right away. 
+
+		<meta name="description" content="PixelDrain is a free file sharing service, you
+		      can upload any file and you will be given a shareable link right away.
 		      PixelDrain also supports previews for images, videos, audio, PDFs and much more.
 		      Uncensored, unmonitored and unmoderated."/>
 		<meta property="og:type" content="website" />
@@ -37,12 +37,12 @@
 
 	<body>
 		<div id='body' class="body">
-			{{template "menu"}}
+			{{template "menu" .}}
 			<br/>
 			Here are all files you have previously uploaded to PixelDrain using this computer.
 			This data is saved locally in your web browser and gets updated every time you upload a file through your current browser.
 			<br/><br/>
-			
+
 			<div id="uploadedFiles" class="files_container"></div>
 			{{template "footer"}}
 		</div>

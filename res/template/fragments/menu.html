@@ -3,7 +3,7 @@
 	<a href="/">Home</a>
 	<a href="/history">My&nbsp;Files</a>
 	<a href="/api">API&nbsp;Documentation</a>
-	<a href="/user">Account</a>
+	<a href="/user">{{if .Authenticated}}{{.Username}}{{else}}Account{{end}}</a>
 	<a href="javascript:void(0);" class="icon" onclick="expandNavigation()">&#9776;</a>
 	<script>
 	function expandNavigation() {

@@ -1,6 +1,7 @@
 package webcontroller
 
 import (
+	"html/template"
 	"net/http"
 )
 
@@ -9,6 +10,7 @@ import (
 type TemplateData struct {
 	Authenticated bool
 	Username      string
+	APIEndpoint   template.URL
 
 	Recaptcha struct {
 		Enabled bool
@@ -18,8 +20,12 @@ type TemplateData struct {
 	Other interface{}
 }
 
-func (wc *WebController) newTemplateData(r http.Request) *TemplateData {
-	var t = &TemplateData{}
+func (wc *WebController) newTemplateData(r *http.Request) *TemplateData {
+	var t = &TemplateData{
+		Authenticated: false,
+		Username:      "Fornax",
+		APIEndpoint:   template.URL(wc.conf.APIURLExternal),
+	}
 
 	return t
 }
