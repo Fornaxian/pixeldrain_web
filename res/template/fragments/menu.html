@@ -2,8 +2,11 @@
 <div id="navigation" class="highlight_light border_top border_bottom navigation">
 	<a href="/">Home</a>
 	<a href="/history">My&nbsp;Files</a>
-	<a href="/api">API&nbsp;Documentation</a>
-	<a href="/user">{{if .Authenticated}}{{.Username}}{{else}}Account{{end}}</a>
+	<a href="/api">API</a>
+	{{if .Authenticated}}<a href="/user">{{.Username}}</a>{{else}}
+	<a href="/login">Login</a>
+	<a href="/register">Register</a>
+	{{end}}
 	<a href="javascript:void(0);" class="icon" onclick="expandNavigation()">&#9776;</a>
 	<script>
 	function expandNavigation() {

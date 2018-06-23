@@ -1,20 +1,11 @@
 {{define "register"}}
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 	<head>
 		<title>Register ~ PixelDrain</title>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="stylesheet" href="/global.css"/>
-		<link rel="stylesheet" href="/res/style/layout.css"/>
-		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
-		<link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css"/>
-		<link rel="shortcut icon" href="/res/img/tray32.png"/>
-		<meta name="theme-color" content="#9FCF6C"/>
-		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
-		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
-		{{template "bgpattern"}}
-
+		<meta name="theme-color" content="#82C13E"/>
 		<meta name="description" content="PixelDrain is a free file sharing service, you
 			  can upload any file and you will be given a shareable link right away.
 			  PixelDrain also supports previews for images, videos, audio, PDFs and much more.
@@ -27,7 +18,17 @@
 		<meta property="og:image" content="/res/img/pixeldrain_big.png" />
 		<meta property="og:image:type" content="image/png" />
 
+		<link rel="stylesheet" href="/global.css"/>
+		<link rel="stylesheet" href="/res/style/layout.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
+		<link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css"/>
+		<link rel="shortcut icon" href="/res/img/tray32.png"/>
+		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
+		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
+
 		<script src="https://www.google.com/recaptcha/api.js"></script>
+
+		{{template "bgpattern"}}
 		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 
@@ -36,32 +37,55 @@
 			{{template "menu" .}}
 
 			<h1>Register a new Pixeldrain account</h1>
+			<div id="submit_result"></div>
 			<form onSubmit="return submitForm();" class="highlight_dark border_top border_bottom">
 				<table style="margin-left: auto; margin-right: auto; text-align: left; max-width: 30em;">
-					<tr><td>Username (Used to log in)</td></tr>
-					<tr><td><input id="register_username" type="text" autocomplete="username" class="form_input"/></td></tr>
-					<tr><td>used for logging into your account</td></tr>
-					<tr><td><hr/></td></tr>
-					<tr><td>E-mail address (optional):</td></tr>
-					<tr><td><input id="register_email" type="text" autocomplete="email" class="form_input"/></td></tr>
-					<tr><td>
-						your e-mail address will only be used for password
-						resets and important account notifications.
+					<tr>
+						<td>Username</td>
+						<td><input id="register_username" type="text" autocomplete="username" class="form_input"/></td>
+					</tr>
+					<tr><td colspan="2">used for logging into your account<br/><hr/></td></tr>
+					<tr>
+						<td>E-mail address</td>
+						<td><input id="register_email" type="text" autocomplete="email" class="form_input"/></td>
+					</tr>
+					<tr><td colspan="2">
+						not required. your e-mail address will only be used for
+						password resets and important account notifications<br/>
+						<hr/>
 					</td></tr>
-					<tr><td><hr/></td></tr>
-					<tr><td>
-						Enter your password twice:<br/>
-						(so we can verify that you have not made any typing errors)
-					</td></tr>
-					<tr><td><input id="register_password1" type="password" autocomplete="new-password" class="form_input"/></td></tr>
-					<tr><td><input id="register_password2" type="password" autocomplete="new-password" class="form_input"/></td></tr>
-					<tr><td><hr/></td></tr>
-					<tr><td>Prove that you're not a robot (Click the white box)</td></tr>
-					<tr><td style="text-align: center;">
-						<div class="g-recaptcha" data-theme="dark" data-sitekey="6LdEeQ0TAAAAALBmDF_k_2LgbpuJM66PGspByViS"></div>
-					</td></tr>
-					<tr><td><hr/></td></tr>
-					<tr><td colspan=2 style="text-align: right;"><input type="submit" value="Register" class="button_highlight"/></td></tr>
+					<tr>
+						<td>Password</td>
+						<td><input id="register_password1" type="password" autocomplete="new-password" class="form_input"/></td>
+					</tr>
+					<tr>
+						<td>Password verification</td>
+						<td><input id="register_password2" type="password" autocomplete="new-password" class="form_input"/></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							you need to enter your password twice so we can
+							verify that you have not made any typing errors<br/>
+							<hr/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Turing test<br/>
+							(Click the white box)
+						</td>
+						<td style="text-align: center;">
+							<div class="g-recaptcha" data-theme="dark" data-sitekey="6LdEeQ0TAAAAALBmDF_k_2LgbpuJM66PGspByViS"></div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							the reCaptcha turing test verifies that you are not
+							an evil robot that is trying to flood the website
+							with fake accounts<br/><hr/>
+						</td>
+					</tr>
+					<tr><td colspan="2" style="text-align: right;"><input type="submit" value="Register" class="button_highlight"/></td></tr>
 				</table>
 			</form>
 			<br/>
@@ -86,6 +110,21 @@
 			req.onreadystatechange = function(){
 				if (this.readyState === 4) {
 					var response = JSON.parse(req.responseText);
+					var resultDiv = document.getElementById("submit_result");
+					if (response.success) {
+						resultDiv.className = "border_top border_bottom highlight_green";
+						resultDiv.innerHTML = 'Registration completed! You can now <a href="/login">log in to your account</a>.<br/>'
+							+ "We're glad to have you on board, have fun sharing!";
+					} else {
+						resultDiv.className = "border_top border_bottom highlight_red";
+						var resultHtml = "Something went wrong, please correct these problems and try again:<br/><ul>";
+						for (err in response.errors) {
+							resultHtml += "<li>"+ response.errors[err].message +"</li>";
+						}
+						resultHtml += "</ul>";
+						resultDiv.innerHTML = resultHtml;
+					}
+
 					console.log(response);
 				}
 			}

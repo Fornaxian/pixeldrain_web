@@ -29,7 +29,7 @@ type ListFile struct {
 // List.Error. Standard error checks apply.
 func (p *PixelAPI) GetList(id string) (resp *List, err *Error) {
 	resp = &List{}
-	err = getJSON(p.apiEndpoint+"/list/"+id, resp)
+	err = p.jsonRequest("GET", p.apiEndpoint+"/list/"+id, resp)
 	if err != nil {
 		return nil, err
 	}

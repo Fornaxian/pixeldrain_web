@@ -5,7 +5,7 @@ type Recaptcha struct {
 }
 
 func (p *PixelAPI) GetRecaptcha() (resp *Recaptcha, err *Error) {
-	err = getJSON(p.apiEndpoint+"/misc/recpatcha", resp)
+	err = p.jsonRequest("GET", p.apiEndpoint+"/misc/recpatcha", resp)
 	if err != nil {
 		return nil, err
 	}

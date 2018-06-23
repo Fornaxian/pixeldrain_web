@@ -1,7 +1,10 @@
 package webcontroller
 
 import (
+	"errors"
 	"net/http"
+
+	"github.com/google/uuid"
 
 	"fornaxian.com/pixeldrain-web/init/conf"
 	"fornaxian.com/pixeldrain-web/pixelapi"
@@ -12,7 +15,7 @@ import (
 
 type WebController struct {
 	conf              *conf.PixelWebConfig
-	api               *pixelapi.PixelAPI
+	api               *pixelapi.PixelAPI // Shared instance, only used for unauthenticated requests
 	templates         *templates.TemplateManager
 	staticResourceDir string
 }
@@ -22,7 +25,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 		conf:              conf,
 		staticResourceDir: conf.StaticResourceDir,
 	}
-	wc.api = pixelapi.New(conf.APIURLInternal)
+	wc.api = pixelapi.New(conf.APIURLInternal, "")
 	wc.templates = templates.New(
 		conf.TemplateDir,
 		conf.APIURLExternal,
@@ -45,6 +48,8 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 
 	r.GET(prefix+"/register" /*     */, wc.serveTemplate("register"))
 	r.GET(prefix+"/login" /*        */, wc.serveTemplate("login"))
+	r.GET(prefix+"/logout" /*       */, wc.serveTemplate("logout"))
+	r.POST(prefix+"/logout" /*       */, wc.serveLogout)
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 
@@ -61,7 +66,7 @@ func (wc *WebController) serveTemplate(tpl string) httprouter.Handle {
 		r *http.Request,
 		p httprouter.Params,
 	) {
-		err := wc.templates.Get().ExecuteTemplate(w, tpl, wc.newTemplateData(r))
+		err := wc.templates.Get().ExecuteTemplate(w, tpl, wc.newTemplateData(w, r))
 		if err != nil {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
@@ -80,5 +85,14 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 
 func (wc *WebController) serveNotFound(w http.ResponseWriter, r *http.Request) {
 	log.Debug("Not Found: %s", r.URL)
-	wc.templates.Get().ExecuteTemplate(w, "error", wc.newTemplateData(r))
+	wc.templates.Get().ExecuteTemplate(w, "error", wc.newTemplateData(w, r))
+}
+
+func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {
+	if cookie, err := r.Cookie("pd_auth_key"); err == nil {
+		if _, err := uuid.Parse(cookie.Value); err == nil {
+			return cookie.Value, nil
+		}
+	}
+	return "", errors.New("not a valid pixeldrain authentication cookie")
 }

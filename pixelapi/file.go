@@ -7,7 +7,7 @@ import (
 // GetFile makes a file download request and returns a readcloser. Don't forget
 // to close it!
 func (p *PixelAPI) GetFile(id string) (io.ReadCloser, error) {
-	return getRaw(p.apiEndpoint + "/file/" + id)
+	return p.getRaw(p.apiEndpoint + "/file/" + id)
 }
 
 // FileInfo File information object from the pixeldrain API
@@ -28,7 +28,7 @@ type FileInfo struct {
 // GetFileInfo gets the FileInfo from the pixeldrain API
 func (p *PixelAPI) GetFileInfo(id string) (resp *FileInfo, err *Error) {
 	resp = &FileInfo{}
-	err = getJSON(p.apiEndpoint+"/file/"+id+"/info", resp)
+	err = p.jsonRequest("GET", p.apiEndpoint+"/file/"+id+"/info", resp)
 	if err != nil {
 		return nil, err
 	}

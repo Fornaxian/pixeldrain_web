@@ -119,12 +119,15 @@ html{
 	padding: 4px 0px 4px 0px;
 	z-index: 101;
 }
-.highlight_light  {background-color: #484848;}
-.highlight_middle {background-color: #3a3a3a;}
-.highlight_dark   {background-color: #303030;}
+.highlight_light  {background-color: #484848;                border-color: #686868;}
+.highlight_middle {background-color: #3a3a3a;                border-color: #686868;}
+.highlight_dark   {background-color: #303030;                border-color: #686868;}
+.highlight_green  {background-color: rgba(0, 255, 0, 0.05);  border-color: #00d000;}
+.highlight_blue   {background-color: rgba(32, 32, 255, 0.2); border-color: rgb(54, 54, 255);}
+.highlight_red    {background-color: rgba(255, 0, 0, 0.05);  border-color: #B00000;}
 
-.border_top    {border-top:    #686868 1px solid;}
-.border_bottom {border-bottom: #686868 1px solid;}
+.border_top    {border-top-width:    1px; border-top-style:    solid;}
+.border_bottom {border-bottom-width: 1px; border-bottom-style: solid;}
 
 /* Common elements */
 

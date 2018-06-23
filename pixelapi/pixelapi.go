@@ -14,11 +14,12 @@ import (
 // PixelAPI is the Pixeldrain API client
 type PixelAPI struct {
 	apiEndpoint string
+	apiKey      string
 }
 
 // New creates a new Pixeldrain API client to query the Pixeldrain API with
-func New(apiEndpoint string) *PixelAPI {
-	return &PixelAPI{apiEndpoint}
+func New(apiEndpoint, apiKey string) *PixelAPI {
+	return &PixelAPI{apiEndpoint, apiKey}
 }
 
 // Error is either an error that occurred during the API request
@@ -30,15 +31,22 @@ func New(apiEndpoint string) *PixelAPI {
 // it's false it will contain a Pixeldrain API error code.
 type Error struct {
 	ReqError bool
-	Success  bool   `json:"success"`
-	Value    string `json:"value"`
-	Message  string `json:"message"`
+	Success  bool        `json:"success"`
+	Value    string      `json:"value"`
+	Message  string      `json:"message"`
+	Extra    interface{} `json:"extra,omitempty"`
 }
 
 func (e Error) Error() string { return e.Value }
 
-func getJSON(url string, target interface{}) *Error {
-	req, err := http.NewRequest("GET", url, nil)
+// SuccessResponse is a generic response the API returns when the action was
+// successful and there is nothing interesting to report
+type SuccessResponse struct {
+	Success bool `json:"success"`
+}
+
+func (p *PixelAPI) jsonRequest(method, url string, target interface{}) *Error {
+	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		return &Error{
 			ReqError: true,
@@ -46,6 +54,9 @@ func getJSON(url string, target interface{}) *Error {
 			Value:    err.Error(),
 			Message:  err.Error(),
 		}
+	}
+	if p.apiKey != "" {
+		req.SetBasicAuth("", p.apiKey)
 	}
 
 	client := &http.Client{}
@@ -63,10 +74,13 @@ func getJSON(url string, target interface{}) *Error {
 	return parseJSONResponse(resp, target)
 }
 
-func getString(url string) (string, error) {
+func (p *PixelAPI) getString(url string) (string, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err
+	}
+	if p.apiKey != "" {
+		req.SetBasicAuth("", p.apiKey)
 	}
 
 	client := &http.Client{}
@@ -83,10 +97,13 @@ func getString(url string) (string, error) {
 	return string(bodyBytes), err
 }
 
-func getRaw(url string) (io.ReadCloser, error) {
+func (p *PixelAPI) getRaw(url string) (io.ReadCloser, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
+	}
+	if p.apiKey != "" {
+		req.SetBasicAuth("", p.apiKey)
 	}
 
 	client := &http.Client{}
@@ -99,7 +116,7 @@ func getRaw(url string) (io.ReadCloser, error) {
 	return resp.Body, err
 }
 
-func postForm(url string, vals url.Values, target interface{}) *Error {
+func (p *PixelAPI) postForm(url string, vals url.Values, target interface{}) *Error {
 	req, err := http.NewRequest("POST", url, strings.NewReader(vals.Encode()))
 	if err != nil {
 		return &Error{
@@ -108,6 +125,9 @@ func postForm(url string, vals url.Values, target interface{}) *Error {
 			Value:    err.Error(),
 			Message:  err.Error(),
 		}
+	}
+	if p.apiKey != "" {
+		req.SetBasicAuth("", p.apiKey)
 	}
 
 	client := &http.Client{}
