@@ -16,12 +16,8 @@ type TemplateData struct {
 	Username      string
 	APIEndpoint   template.URL
 
-	Recaptcha struct {
-		Enabled bool
-		PubKey  string
-	}
-
 	Other interface{}
+	Title string
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) *TemplateData {

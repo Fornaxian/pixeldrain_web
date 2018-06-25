@@ -1,3 +1,5 @@
+declare var apiEndpoint: string;
+
 interface FileUpload {
 	file: Blob
 	name: string
@@ -56,7 +58,7 @@ class UploadWorker {
 			console.debug("No files left in queue")
 			return // Stop the thread
 		}
-		
+
 		this.uploading = true
 		this.tries = 0
 		this.upload(<FileUpload>file)
@@ -73,7 +75,7 @@ class UploadWorker {
 
 		$.ajax({
 			type: 'POST',
-			url: "/api/file",
+			url: apiEndpoint+"/file",
 			data: formData,
 			timeout: 7200000, // 2 hours
 			cache: false,
@@ -117,13 +119,13 @@ class UploadWorker {
 
 	private setHistoryCookie(id: string){
 		var uc = Cookie.read("pduploads")
-	
+
 		// First upload in this browser
 		if (uc === null) {
 			Cookie.write("pduploads", id + ".", undefined)
 			return
 		}
-	
+
 		if (uc.length > 2000){
 			// Cookie is becoming too long, drop the oldest two files
 			uc = uc.substring(
@@ -132,7 +134,7 @@ class UploadWorker {
 				uc.indexOf(".") + 1
 			)
 		}
-		
+
 		Cookie.write("pduploads", uc + id + ".", undefined)
 	}
 }

@@ -40,7 +40,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(prefix+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
 	r.GET(prefix+"/global.css" /*   */, wc.globalCSSHandler)
 	r.GET(prefix+"/api" /*          */, wc.serveTemplate("apidoc"))
-	r.GET(prefix+"/history" /*      */, wc.serveTemplate("history-cookies"))
+	r.GET(prefix+"/history" /*      */, wc.serveTemplate("history_cookies"))
 	r.GET(prefix+"/u/:id" /*        */, wc.serveFileViewer)
 	r.GET(prefix+"/u/:id/preview" /**/, wc.serveFilePreview)
 	r.GET(prefix+"/l/:id" /*        */, wc.serveListViewer)
@@ -49,7 +49,9 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(prefix+"/register" /*     */, wc.serveTemplate("register"))
 	r.GET(prefix+"/login" /*        */, wc.serveTemplate("login"))
 	r.GET(prefix+"/logout" /*       */, wc.serveTemplate("logout"))
-	r.POST(prefix+"/logout" /*       */, wc.serveLogout)
+	r.POST(prefix+"/logout" /*      */, wc.serveLogout)
+	r.GET(prefix+"/user" /*         */, wc.serveTemplate("user_home"))
+	r.GET(prefix+"/files" /*        */, wc.serveTemplate("file_manager"))
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 

@@ -1,3 +1,4 @@
+declare var apiEndpoint: string;
 var uploader:        UploadManager|null = null;
 var finishedUploads: Array<string>      = new Array()
 var totalUploads:    number             = 0
@@ -29,7 +30,7 @@ class UploadProgressBar implements FileUpload {
 	public onProgress(progress: number){
 		this.uploadDiv.innerText = "Uploading... " + Math.round(progress*1000)/10 + "%\n" + this.file.name
 		this.uploadDiv.setAttribute(
-			'style', 
+			'style',
 			'background: linear-gradient('
 				+'to right, '
 				+'#111 0%, '
@@ -44,7 +45,7 @@ class UploadProgressBar implements FileUpload {
 		this.uploadDiv.setAttribute('href', '/u/'+id)
 		this.uploadDiv.setAttribute("target", "_blank");
 		this.uploadDivJQ.html(
-			'<img src="/api/file/'+id+'/thumbnail" alt="'+this.file.name+'"/>'
+			'<img src="'+apiEndpoint+'/file/'+id+'/thumbnail" alt="'+this.file.name+'"/>'
 			+ this.file.name+'<br/>'
 			+ '<span style="color: var(--highlight_color);">'+window.location.hostname+'/u/'+id+'</span>'
 		)
@@ -82,7 +83,7 @@ $("#select_file_button").click(function(){$("#file_input_field").click()})
 
 $("#file_input_field").change(function(evt){
 	handleUploads((<HTMLInputElement>evt.target).files)
-	
+
 	// This resets the file input field
 	// http://stackoverflow.com/questions/1043957/clearing-input-type-file-using-jquery
 	$('#file_name').html("")

@@ -26,7 +26,7 @@ var UploadProgressBar = /** @class */ (function () {
         this.uploadDiv.setAttribute('style', 'background: #111');
         this.uploadDiv.setAttribute('href', '/u/' + id);
         this.uploadDiv.setAttribute("target", "_blank");
-        this.uploadDivJQ.html('<img src="/api/file/' + id + '/thumbnail" alt="' + this.file.name + '"/>'
+        this.uploadDivJQ.html('<img src="' + apiEndpoint + '/file/' + id + '/thumbnail" alt="' + this.file.name + '"/>'
             + this.file.name + '<br/>'
             + '<span style="color: var(--highlight_color);">' + window.location.hostname + '/u/' + id + '</span>');
     };
@@ -161,7 +161,7 @@ var UploadWorker = /** @class */ (function () {
         var that = this; // jquery changes the definiton of "this"
         $.ajax({
             type: 'POST',
-            url: "/api/file",
+            url: apiEndpoint + "/file",
             data: formData,
             timeout: 7200000,
             cache: false,

@@ -1,26 +1,20 @@
-{{define "file_not_found"}}
-<!DOCTYPE html>
+{{define "file_not_found"}}<!DOCTYPE html>
 <html>
 	<head>
-		<title>File not found ~ PixelDrain</title>
-		<meta charset="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="stylesheet" href="/res/style/viewer.css"/>
-		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
-		<link rel="shortcut icon" href="/res/img/tray32.png"/>
-		<meta name="theme-color" content="#9FCF6C"/>
-		<link rel="icon" sizes="180x180" href="res/img/pixeldrain.png"/>
-		<link rel="icon" sizes="256x256" href="res/img/pixeldrain_big.png"/>
+		{{template "meta_tags" "File Not Found"}}
 	</head>
-
 	<body>
-		<h1>File not Found</h1>
-		I'm sorry, but this file does not exist!<br/>
-		It may have expired, or taken down by the owner.<br/>
-		You can <a href='/'>Visit the homepage to upload your own files</a>.
-		<br/><br/>
-		It was fun having you, bye for now!
-		
+		<div id="body">
+			{{template "menu"}}
+			<h1>File not Found</h1>
+			I'm sorry, but this file does not exist!<br/>
+			It may have expired, or taken down by the owner.<br/>
+			You can <a href='/'>Visit the homepage to upload your own files</a>.
+			<br/><br/>
+			It was fun having you, bye for now!
+			<br/>
+			{{template "footer"}}
+		</div>
 		{{template "analytics"}}
 	</body>
 </html>

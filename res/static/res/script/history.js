@@ -1,6 +1,3 @@
-
-/* global API_URL */
-
 var uploads;
 
 $(document).ready(function () {
@@ -17,7 +14,7 @@ $(document).ready(function () {
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url: APIURL + "/file/" + id + "/info",
+				url: apiEndpoint + "/file/" + id + "/info",
 				async: true,
 				success: function(data) {
 					historyAddItem(data);
@@ -45,18 +42,20 @@ function historyAddItem(json) {
 		+ "</div>";
 
 		$("#uploadedFiles").append($(uploadItem).hide().fadeIn(400));
-		
+
 		return;
 	}
-	
-	var date = new Date(json.date_upload * 1000);
+
+	var date = new Date(json.date_upload);
 
 	var uploadItem =  '<a href="/u/'+ json.id +'" target="_blank" class="file_button">'
-		+ '<img src="'+ APIURL + json.thumbnail_href + '"'
+		+ '<img src="'+ apiEndpoint + json.thumbnail_href + '"'
 		+ "alt=\"" + json.file_name + "\" />"
 		+ '<span style="color: var(--highlight_color);">'+json.file_name+'</span>'
 		+ "<br/>"
-		+ date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+		+ date.getFullYear() + "-"
+		+ ("00" + (date.getMonth() + 1)).slice(-2) + "-"
+		+ ("00" + date.getDate()).slice(-2)
 		+ "</a>";
 
 	$("#uploadedFiles").append($(uploadItem).hide().fadeIn(400));

@@ -1,0 +1,20 @@
+{{define "file_manager"}}<!DOCTYPE html>
+<html>
+	<head>
+		{{template "meta_tags" "File Manager"}}
+		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+	</head>
+
+	<body>
+		{{template "menu" .}}
+		<div class="highlight_dark border_bottom">
+			These files were uploaded while logged in to your pixeldrain account,
+			<a href="/history">click here</a> to view files uploaded anonymously
+			in this browser.
+		</div>
+
+
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}
