@@ -1,0 +1,249 @@
+{{define "api-file-post"}}
+<details class="api_doc_details request_post">
+	<summary><span class="method">POST</span>/file</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Upload a file.
+		</p>
+
+		<h3>Parameters</h3>
+		<table>
+			<tr>
+				<td>Param</td>
+				<td>Required</td>
+				<td>Maximum Size</td>
+				<td>Default</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td>file</td>
+				<td>true</td>
+				<td>5 000 000 000 Bytes</td>
+				<td>none</td>
+				<td>Multipart file to upload</td>
+			</tr>
+			<tr>
+				<td>name</td>
+				<td>false</td>
+				<td>255 Characters</td>
+				<td>Multipart file name</td>
+				<td>Name of the file to upload</td>
+			</tr>
+		</table>
+
+		<h3>Returns</h3>
+<pre>HTTP 200: OK
+{
+	"success": true,
+	"id": "abc123" // ID of the newly uploaded file
+}</pre>
+<pre>HTTP 422: Unprocessable Entity
+{
+	"success": false,
+	"value": "no_file",
+	"message": "The file does not exist or is empty."
+}</pre>
+<pre>HTTP 500: Internal Server Error
+{
+	"success": false,
+	"value": "internal",
+	"message": "An internal server error occurred."
+}</pre>
+<pre>HTTP 413: Payload Too Large
+{
+	"success": false,
+	"value": "file_too_large",
+	"message": "The file you tried to upload is too large. Max 5000 MB allowed."
+}</pre>
+<pre>HTTP 500: Internal Server Error
+{
+	"success": false,
+	"value": "writing",
+	"message": "Something went wrong while writing the file to disk, the server may be out of storage space."
+}</pre>
+<pre>HTTP 413: Payload Too Large
+{
+	"success": false,
+	"value": "name_too_long",
+	"message": "File Name is too long, Max 255 characters allowed."
+}</pre>
+	</div>
+</details>
+{{end}}
+{{define "api-file-id-get"}}
+<details class="api_doc_details request_get">
+	<summary><span class="method">GET</span>/file/{id}</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Returns the full file associated with the ID. Supports
+			byte range requests.
+		</p>
+		<h3>Parameters</h3>
+		<table>
+			<tr>
+				<td>Param</td>
+				<td>Required</td>
+				<td>Location</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>true</td>
+				<td>URL</td>
+				<td>ID of the file to request</td>
+			</tr>
+		</table>
+		<h3>Returns</h3>
+		A file output stream.
+	</div>
+</details>
+{{end}}
+{{define "api-file-id-download-get"}}
+<details class="api_doc_details request_get">
+	<summary><span class="method">GET</span>/file/{id}/download</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Same as GET /file/{id}, but with File Transfer HTTP
+			headers. Will trigger a save file dialog when opened in
+			a web browser. Also supports byte range requests.
+		</p>
+	</div>
+</details>
+{{end}}
+{{define "api-file-id-info-get"}}
+<details class="api_doc_details request_get">
+	<summary><span class="method">GET</span>/file/{id}/info</summary>
+		<div>
+			<h3>Description</h3>
+			<p>
+				Returns information about one or more files.
+				You can also put a comma separated list of file IDs in
+				the URL and it will return an array of file info,
+				instead of a single object.
+			</p>
+			<h3>Parameters</h3>
+			<table>
+				<tr>
+					<td>Param</td>
+					<td>Required</td>
+					<td>Location</td>
+					<td>Description</td>
+				</tr>
+				<tr>
+					<td>id</td>
+					<td>true</td>
+					<td>URL</td>
+					<td>ID(s) of the file</td>
+				</tr>
+			</table>
+			<h3>Returns</h3>
+<pre>HTTP 200: OK
+{
+	"success": true,
+	"id": "123abc",
+	"file_name": "screenshot.png",
+	"date_upload": 1485894987, // Timestamp
+	"date_last_view": 1485894987, // Timestamp
+	"file_size": 5694837, // Bytes
+	"views" 1234, // Amount of unique file views
+	"mime_type" "image/png",
+	"description": "File description",
+	"mime_image": "http://pixeldra.in/res/img/mime/image-png.png", // Image associated with the mime type
+	"thumbnail": "http://pixeldra.in/api/thumbnail/123abc" // Link to a thumbnail of this file
+}</pre>
+<pre>HTTP 404: Not Found
+{
+	"success": false,
+	"value": "file_not_found"
+}</pre>
+		</div>
+</details>
+{{end}}
+{{define "api-file-id-thumbnail-get"}}
+<details class="api_doc_details request_get">
+	<summary><span class="method">GET</span>/file/{id}/thumbnail</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Returns a PNG thumbnail image representing the file.
+			The thumbnail is always 100*100 px. If the source file
+			is parsable by imagemagick the thumbnail will be
+			generated from the file, if not it will be a generic
+			mime type icon.
+		</p>
+		<h3>Parameters</h3>
+		<table>
+			<tr>
+				<td>Param</td>
+				<td>Required</td>
+				<td>Location</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>true</td>
+				<td>URL</td>
+				<td>ID of the file to get a thumbnail for</td>
+			</tr>
+		</table>
+		<h3>Returns</h3>
+		<p>
+			A PNG image of 100*100 px.
+		</p>
+	</div>
+</details>
+{{end}}
+{{define "api-file-id-delete"}}
+<details class="api_doc_details request_delete">
+	<summary><span class="method">DELETE</span>/file/{id}</summary>
+	<div>
+		<h3>Description</h3>
+		<p>
+			Deletes a file. Only works when the users owns the file.
+		</p>
+		<h3>Parameters</h3>
+		<table>
+			<tr>
+				<td>Param</td>
+				<td>Required</td>
+				<td>Location</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>true</td>
+				<td>URL</td>
+				<td>ID of the file to delete</td>
+			</tr>
+		</table>
+		<h3>Returns</h3>
+<pre>HTTP 200: OK
+{
+	"success": true,
+	"value": "file_deleted",
+	"message": "The file has been deleted."
+}</pre>
+<pre>HTTP 404: Not Found
+{
+	"success": false,
+	"value": "file_not_found",
+	"message": "File ID was not found in the database."
+}</pre>
+<pre>HTTP 401: Unauthorized
+{
+	"success": false,
+	"value": "unauthorized",
+	"message": "You are not logged in."
+}</pre>
+<pre>HTTP 403: Forbidden
+{
+	"success": false,
+	"value": "forbidden",
+	"message": "This is not your file."
+}</pre>
+	</div>
+</details>
+{{end}}

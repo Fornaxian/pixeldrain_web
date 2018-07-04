@@ -17,9 +17,7 @@
 				don't require an API key. All methods which delete or modify a
 				resource <strong>do</strong> require an API key.
 				<br/>
-				<br/>
-				Though API keys have not been implemented yet, so you can't use
-				those methods yet.
+				API keys can be obtained from the login API.
 			</p>
 			<p>
 				Some JSON responses include fields which end in "_href" (some
@@ -45,6 +43,11 @@
 			<h2>List Methods</h2>
 			{{template "api-list-post"}}
 			{{template "api-list-get"}}
+
+			<h2>Directory Methods</h2>
+			{{template "api-directory-path-post"}}
+			{{template "api-directory-path-get"}}
+			{{template "api-directory-path-delete"}}
 
 			{{template "footer"}}
 		</div>
