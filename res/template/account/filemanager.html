@@ -13,6 +13,15 @@
 			in this browser.
 		</div>
 
+		<br/>
+		{{range .Other.Files}}
+		<a class="file_button" href="/u/{{.ID}}" target="_blank">
+			<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.FileName}}" />
+			<span style="color: var(--highlight_color);">{{.FileName}}</span>
+			<br/>
+			{{.DateUpload}}
+		</a>
+		{{end}}
 
 		{{template "analytics"}}
 	</body>

@@ -23,7 +23,7 @@ type TemplateData struct {
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) *TemplateData {
 	var t = &TemplateData{
 		Authenticated: false,
-		Username:      "Fornax",
+		Username:      "",
 		APIEndpoint:   template.URL(wc.conf.APIURLExternal),
 	}
 

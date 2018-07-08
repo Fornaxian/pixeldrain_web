@@ -13,15 +13,14 @@ func (p *PixelAPI) GetFile(id string) (io.ReadCloser, error) {
 
 // FileInfo File information object from the pixeldrain API
 type FileInfo struct {
+	Success       bool      `json:"success"`
 	ID            string    `json:"id"`
 	FileName      string    `json:"file_name"`
 	DateUpload    time.Time `json:"date_upload"`
 	DateLastview  time.Time `json:"date_last_view"`
-	DaysValid     uint16    `json:"days_valid"`
 	FileSize      uint64    `json:"file_size"`
 	Views         uint      `json:"views"`
 	MimeType      string    `json:"mime_type"`
-	Description   string    `json:"description"`
 	MimeImage     string    `json:"mime_image"`
 	ThumbnailHREF string    `json:"thumbnail_href"`
 }

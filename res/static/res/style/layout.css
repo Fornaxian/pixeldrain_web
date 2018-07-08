@@ -219,20 +219,19 @@ a:hover{
 .file_button, .file_button:hover{
 	position: relative;
 	box-sizing: border-box;
-	width: 316px;
+	width: 310px;
 	max-width: 90%;
 	height: 60px;
-	float: left;
 	margin: 6px;
 	padding: 0;
 	overflow: hidden;
-	box-shadow: 0px 0px 5px 2px #111;
+	box-shadow: 0px 0px 10px 4px #111;
 	background-color: #111;
 	color: var(--text_color);
 	word-break: break-all;
 	text-align: left;
 	line-height: 120%;
-	display: block;
+	display: inline-block;
 }
 .file_button > img{
 	max-height: 60px;

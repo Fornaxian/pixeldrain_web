@@ -9,6 +9,20 @@
 		<div id='body' class="body">
 			{{template "menu" .}}
 			<h1>Welcome home, {{.Username}}!</h1>
+			<hr/>
+			<h2>Your most recently uploaded files:</h2>
+			<div class="highlight_dark border_top border_bottom">
+				{{range .Other.Files}}
+					<a class="file_button" href="/u/{{.ID}}" target="_blank">
+						<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.FileName}}" />
+						<span style="color: var(--highlight_color);">{{.FileName}}</span>
+						<br/>
+						{{.DateUpload}}
+					</a>
+				{{end}}
+				<a href="/files">...All my files</a>
+			</div>
+			<hr/>
 
 			{{template "footer"}}
 		</div>

@@ -1,6 +1,7 @@
 package pixelapi
 
 import (
+	"fmt"
 	"net/url"
 )
 
@@ -40,7 +41,7 @@ type UserInfo struct {
 	Username string `json:"username"`
 }
 
-// UserInfo returns information about the logged in user. Required an API key
+// UserInfo returns information about the logged in user. Requires an API key
 func (p *PixelAPI) UserInfo() (resp *UserInfo, err *Error) {
 	resp = &UserInfo{}
 	err = p.jsonRequest("GET", p.apiEndpoint+"/user", resp)
@@ -55,6 +56,24 @@ func (p *PixelAPI) UserInfo() (resp *UserInfo, err *Error) {
 func (p *PixelAPI) UserSessionDestroy(key string) (resp *SuccessResponse, err *Error) {
 	resp = &SuccessResponse{}
 	err = p.jsonRequest("DELETE", p.apiEndpoint+"/user/session", resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+type UserFiles struct {
+	Success bool       `json:"success"`
+	Files   []FileInfo `json:"files"`
+}
+
+func (p *PixelAPI) UserFiles(page, limit int) (resp *UserFiles, err *Error) {
+	resp = &UserFiles{Files: make([]FileInfo, 0)}
+	err = p.jsonRequest(
+		"GET",
+		fmt.Sprintf("%s/user/files?page=%d&limit=%d", p.apiEndpoint, page, limit),
+		resp,
+	)
 	if err != nil {
 		return nil, err
 	}
