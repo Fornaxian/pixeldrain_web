@@ -21,7 +21,7 @@ func (wc *WebController) serveLogout(
 		}
 	}
 
-	http.Redirect(w, r, "/", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (wc *WebController) serveUserHome(
@@ -32,7 +32,7 @@ func (wc *WebController) serveUserHome(
 	var key string
 	var err error
 	if key, err = wc.getAPIKey(r); err != nil {
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
