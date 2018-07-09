@@ -12,9 +12,9 @@ function createList(){
 	}
 
 	var url = "/api/list";
-	
+
 	var postData = {};
-	
+
 	var title = prompt(
 		"You are creating a list containing " + listfiles.length + " files.\n"
 		+ "What do you want to call it?", "My New Album"
@@ -29,13 +29,13 @@ function createList(){
 		"description": "yo",
 		"files": new Array()
 	};
-	
+
 	for (var i = 0; i < listfiles.length; i++) {
 		postData.files.push({
 			"id": listfiles[i]
 		});
 	}
-	
+
 	$.ajax({
 		url: url,
 		contentType: "application/json",
@@ -53,9 +53,9 @@ function listCreated(response){
 			+ "Your List URL: <br/>"
 			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\" style=\"font-weight: bold;\">"+window.location.hostname+"/l/" + response.id + "</a>"
 			+ "</div>";
-		
+
 		$('#uploads_queue').prepend(
-			$(resultString).hide().fadeIn('slow')
+			$(resultString).hide().fadeIn('slow').css("display", "")
 		);
 		window.open('/l/'+response.id, '_blank');
 	}else{
@@ -63,9 +63,9 @@ function listCreated(response){
 			+ "The server responded with this: <br/>"
 			+ response.type + ": " + response.value
 			+ "</div>";
-		
+
 		$('#uploads_queue').prepend(
-			$(resultString).hide().fadeIn('slow')
+			$(resultString).hide().fadeIn('slow').css("display", "")
 		);
 	}
 }
@@ -74,9 +74,9 @@ function listCreated(response){
 //	var fileDesc = $("#txtListDesc").val();
 //
 //	addToList(fileId, fileDesc);
-//	
+//
 //	divItems.prepend("ID: " + fileId + "<br>Description:<br>" + fileDesc + "<br><br>");
-//	
+//
 //	$("#txtListId").val("");
 //	$("#txtListDesc").val("");
 //});

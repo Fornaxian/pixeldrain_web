@@ -23,21 +23,21 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		serveFilePreviewDemo(w) // Required for a-ads.com quality check
 		return
 	}
-
-	inf, err := wc.api.GetFileInfo(p.ByName("id")) // TODO: Error handling
+	var api = pixelapi.New(wc.conf.APIURLInternal, "")
+	inf, err := api.GetFileInfo(p.ByName("id")) // TODO: Error handling
 	if err != nil {
 		wc.serveNotFound(w, r)
 		return
 	}
 
-	var fp = FilePreview{
+	var fp = filePreview{
 		APIURL:   wc.conf.APIURLExternal,
-		PixelAPI: wc.api,
+		PixelAPI: api,
 	}
-	io.WriteString(w, fp.Run(inf))
+	io.WriteString(w, fp.run(inf))
 }
 
-type FilePreview struct {
+type filePreview struct {
 	FileInfo    *pixelapi.FileInfo
 	FileURL     string
 	DownloadURL string
@@ -46,7 +46,7 @@ type FilePreview struct {
 	PixelAPI *pixelapi.PixelAPI
 }
 
-func (f FilePreview) Run(inf *pixelapi.FileInfo) string {
+func (f filePreview) run(inf *pixelapi.FileInfo) string {
 	f.FileInfo = inf
 	f.FileURL = f.APIURL + "/file/" + f.FileInfo.ID
 	f.DownloadURL = f.APIURL + "/file/" + f.FileInfo.ID + "/download"
@@ -92,7 +92,7 @@ func (f FilePreview) Run(inf *pixelapi.FileInfo) string {
 	return f.def()
 }
 
-func (f FilePreview) image() string {
+func (f filePreview) image() string {
 	return fmt.Sprintf(`<div class="image-container">
 <img id="displayImg" src="%s" class="pannable drop-shadow"/>
 </div>
@@ -100,7 +100,7 @@ func (f FilePreview) image() string {
 		f.FileURL)
 }
 
-func (f FilePreview) audio() string {
+func (f filePreview) audio() string {
 	return fmt.Sprintf(`<div class="image-container">
 <br/><br/>
 <img src="/res/img/mime/audio.png" alt="Audio"/>
@@ -115,7 +115,7 @@ func (f FilePreview) audio() string {
 	)
 }
 
-func (f FilePreview) video() string {
+func (f filePreview) video() string {
 	return fmt.Sprintf(`<div class="image-container">
 <video id="videoPlayer" autoplay="autoplay" controls="controls" class="center drop-shadow">
 <source src="%s"/>
@@ -128,12 +128,12 @@ Your web browser does not support the HTML video tag.
 
 }
 
-func (f FilePreview) pdf() string {
+func (f filePreview) pdf() string {
 	u, _ := url.Parse(f.FileURL)
 	return f.frame("/res/misc/pdf-viewer/web/viewer.html?file=" + u.String())
 }
 
-func (f FilePreview) text() string {
+func (f filePreview) text() string {
 	htmlOut := `<div class="text-container">
 <pre class="pre-container %s" style="width: 100%%;">%s</pre>
 </div>`
@@ -180,7 +180,7 @@ func (f FilePreview) text() string {
 	return fmt.Sprintf(htmlOut, prettyPrint, result)
 }
 
-func (f FilePreview) frame(url string) string {
+func (f filePreview) frame(url string) string {
 	return fmt.Sprintf(`<iframe src="%s" class="image-container"
 seamless="seamless" frameborder="0" allowtransparency="true"
 </iframe>`,
@@ -188,7 +188,7 @@ seamless="seamless" frameborder="0" allowtransparency="true"
 	)
 }
 
-func (f FilePreview) def() string {
+func (f filePreview) def() string {
 	return fmt.Sprintf(
 		`%s<br/>%s<br/><a href="%s"><img src="%s" class="image"></a>`,
 		f.FileInfo.FileName,

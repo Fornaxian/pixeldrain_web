@@ -7,25 +7,26 @@ import (
 	"github.com/google/uuid"
 
 	"fornaxian.com/pixeldrain-web/init/conf"
-	"fornaxian.com/pixeldrain-web/pixelapi"
 	"fornaxian.com/pixeldrain-web/webcontroller/templates"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
 
+// WebController controls how requests are handled and makes sure they have
+// proper context when running
 type WebController struct {
 	conf              *conf.PixelWebConfig
-	api               *pixelapi.PixelAPI // Shared instance, only used for unauthenticated requests
 	templates         *templates.TemplateManager
 	staticResourceDir string
 }
 
+// New initializes a new WebController by registering all the request handlers
+// and parsing all templates in the resource directory
 func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebController {
 	var wc = &WebController{
 		conf:              conf,
 		staticResourceDir: conf.StaticResourceDir,
 	}
-	wc.api = pixelapi.New(conf.APIURLInternal, "")
 	wc.templates = templates.New(
 		conf.TemplateDir,
 		conf.APIURLExternal,
@@ -36,22 +37,25 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	// Serve static files
 	r.ServeFiles(prefix+"/res/*filepath", http.Dir(wc.staticResourceDir+"/res"))
 
-	r.GET(prefix+"/" /*             */, wc.serveTemplate("home", false))
-	r.GET(prefix+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
-	r.GET(prefix+"/global.css" /*   */, wc.globalCSSHandler)
-	r.GET(prefix+"/api" /*          */, wc.serveTemplate("apidoc", false))
-	r.GET(prefix+"/history" /*      */, wc.serveTemplate("history_cookies", false))
-	r.GET(prefix+"/u/:id" /*        */, wc.serveFileViewer)
-	r.GET(prefix+"/u/:id/preview" /**/, wc.serveFilePreview)
-	r.GET(prefix+"/l/:id" /*        */, wc.serveListViewer)
-	r.GET(prefix+"/t" /*            */, wc.serveTemplate("paste", false))
+	// General navigation
+	r.GET(prefix+"/" /*                */, wc.serveTemplate("home", false))
+	r.GET(prefix+"/favicon.ico" /*     */, wc.serveFile("/favicon.ico"))
+	r.GET(prefix+"/global.css" /*      */, wc.globalCSSHandler)
+	r.GET(prefix+"/api" /*             */, wc.serveTemplate("apidoc", false))
+	r.GET(prefix+"/history" /*         */, wc.serveTemplate("history_cookies", false))
+	r.GET(prefix+"/u/:id" /*           */, wc.serveFileViewer)
+	r.GET(prefix+"/u/:id/preview" /*   */, wc.serveFilePreview)
+	r.GET(prefix+"/l/:id" /*           */, wc.serveListViewer)
+	r.GET(prefix+"/t" /*               */, wc.serveTemplate("paste", false))
 
-	r.GET(prefix+"/register" /*     */, wc.serveTemplate("register", false))
-	r.GET(prefix+"/login" /*        */, wc.serveTemplate("login", false))
-	r.GET(prefix+"/logout" /*       */, wc.serveTemplate("logout", true))
-	r.POST(prefix+"/logout" /*      */, wc.serveLogout)
-	r.GET(prefix+"/user" /*         */, wc.serveTemplate("user_home", true))
-	r.GET(prefix+"/user/files" /*   */, wc.serveTemplate("user_files", true))
+	// User account pages
+	r.GET(prefix+"/register" /*        */, wc.serveTemplate("register", false))
+	r.GET(prefix+"/login" /*           */, wc.serveTemplate("login", false))
+	r.GET(prefix+"/logout" /*          */, wc.serveTemplate("logout", true))
+	r.POST(prefix+"/logout" /*         */, wc.serveLogout)
+	r.GET(prefix+"/user" /*            */, wc.serveTemplate("user_home", true))
+	r.GET(prefix+"/user/files" /*      */, wc.serveTemplate("user_files", true))
+	r.GET(prefix+"/user/filemanager" /**/, wc.serveTemplate("file_manager", true))
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 

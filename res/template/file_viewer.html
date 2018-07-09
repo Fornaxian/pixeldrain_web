@@ -13,13 +13,13 @@
 		<link rel="shortcut icon" href="/res/img/tray32.png"/>
 		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
 		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
-		
+
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
-		
+
 		<!-- <link rel="alternate" type="application/json+oembed" th:href="*{oEmbedHref}" th:title="*{ogTitle}" /> OEmbed will return soon -->
-		
+
 		{{template "bgpattern"}}
-		
+
 		<meta name="theme-color"        content="#202020"/>
 		<meta name="twitter:image"      content="{{.OGData.Image}}" />
 		<meta property="og:title"       content="{{.OGData.Title}}" />
@@ -49,12 +49,10 @@
 
 					<!--Views: <span id="views" th:text="${data.views}">0</span>--><br/>
 
-					<form action="/" target="_self">
-						<button id="btnHome" class="toolbar_button button_full_width">
-							<img src="/res/img/pixeldrain_small.png" alt="Back to the Home page"/>
-							<span>Home</span>
-						</button>
-					</form>
+					<a href="/" id="btnHome" class="button toolbar_button button_full_width">
+						<img src="/res/img/pixeldrain_small.png" alt="Back to the Home page"/>
+						<span>Home</span>
+					</a>
 
 					<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
 						<img src="/res/img/floppy_small.png" alt="Download this file"/>
@@ -77,8 +75,8 @@
 					</button>
 
 					<iframe id='sponsors' data-aa='73974'
-						src='//ad.a-ads.com/73974?size=120x600&amp;background_color=000000&amp;text_color=eeeeee&amp;title_color=eeeeee&amp;link_color=9fcf6c&amp;link_hover_color=d2ffa1&amp;title_hover_color=d2ffa1' 
-						scrolling='no' allowtransparency='true' seamless="seamless">		
+						src='//ad.a-ads.com/73974?size=120x600&amp;background_color=000000&amp;text_color=eeeeee&amp;title_color=eeeeee&amp;link_color=9fcf6c&amp;link_hover_color=d2ffa1&amp;title_hover_color=d2ffa1'
+						scrolling='no' allowtransparency='true' seamless="seamless">
 					</iframe>
 
 					<iframe id="frmDownload">
@@ -87,7 +85,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div id="sharebar" class="sidebar">
 			Share on:<br/>
 			<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
@@ -125,20 +123,20 @@
 		</div>
 
 		<div id="info-popup" class="full-popup">
-			<img alt="Close" src="/res/img/cross.png" 
+			<img alt="Close" src="/res/img/cross.png"
 			     style="position: absolute; top: 5px; right: 5px; width: 40px; height: 40px; cursor: pointer;"
 			     onclick="DetailsWindow.toggle();"/>
 			Click the help button again to close this overlay.<br/>
-			
+
 			<h3>File Info</h3>
 			<span id="info-fileDetails"></span>
 			<span id="info-about">{{template "file_info_popup"}}</span>
 		</div>
-		
+
 		<div id="filepreview">
 			Loading...
 		</div>
-		
+
 		<script src="/res/script/jquery.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 		<script src="/res/script/Keyboard.js"></script>
@@ -147,7 +145,7 @@
 		<script src="/res/script/DetailsWindow.js"></script>
 		<script src="/res/script/Viewer.js"></script>
 		<script src="/res/script/ListNavigator.js"></script>
-		
+
 		<script>
 			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.
 			// Just to slice another few milliseconds from the load time :)

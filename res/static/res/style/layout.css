@@ -133,14 +133,8 @@ hr{
 ::-webkit-scrollbar-thumb {background-color: #555;}
 ::-webkit-scrollbar-corner{background: transparent;}
 
-a{
-	color: var(--highlight_color);
-	text-decoration: none;
-}
-a:hover{
-	text-decoration: underline;
-	color: var(--highlight_color);
-}
+a       {color: var(--highlight_color); text-decoration: none;}
+a:hover {color: var(--highlight_color); text-decoration: underline;}
 
 .form{
 	margin-left: auto;
@@ -243,10 +237,13 @@ pre{
 
 /* BUTTONS */
 button,
+.button,
 input[type="submit"],
 input[type="button"],
 input[type="color"],
 select{
+	display: inline-block;
+	box-sizing: border-box;
 	border-radius: 4px;
 	border: none;
 	margin: 2px;
@@ -254,24 +251,33 @@ select{
 	padding: 6px 10px 6px 10px;
 	box-shadow: 2px 2px 8px #000000;
 	font-weight: bold;
+	font-size: 0.85em;
+	line-height: 1;
+	text-decoration: none;
 	color: #FFFFFF;
 	outline: 0;
 	vertical-align: middle;
 	cursor: pointer;
+
 }
 button:hover,
+.button:hover,
 input[type="submit"]:hover,
 input[type="button"]:hover,
 input[type="color"]:hover,
 select:hover,
 button:focus,
+.button:focus,
 input[type="submit"]:focus,
 input[type="button"]:focus,
 input[type="color"]:focus,
 select:focus{
+	color: #FFFFFF;
+	text-decoration: none;
 	box-shadow: var(--highlight_border), 2px 2px 8px #000000;
 }
 button:active,
+.button:active,
 input[type="submit"]:active,
 input[type="button"]:active,
 input[type="color"]:active,
@@ -291,6 +297,7 @@ option{background-color: #404040; color: #FFFFFF;}
 
 /* TEXT FIELDS */
 textarea,
+.groove,
 input[type="text"],
 input[type="password"],
 input[type="email"],
