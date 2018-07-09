@@ -15,6 +15,7 @@ type TemplateData struct {
 	Authenticated bool
 	Username      string
 	APIEndpoint   template.URL
+	PixelAPI      *pixelapi.PixelAPI
 
 	Other interface{}
 	Title string
@@ -28,11 +29,11 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 	}
 
 	if key, err := wc.getAPIKey(r); err == nil {
-		var api = pixelapi.New(wc.conf.APIURLInternal, key)
-		uinf, err := api.UserInfo()
+		t.PixelAPI = pixelapi.New(wc.conf.APIURLInternal, key)
+		uinf, err := t.PixelAPI.UserInfo()
 		if err != nil {
 			// This session key doesn't work, delete it
-			log.Debug("Invalid API key '%s' passed", key)
+			log.Debug("Session check for key '%s' failed: %s", key, err)
 			http.SetCookie(w, &http.Cookie{
 				Name:    "pd_auth_key",
 				Value:   "",
@@ -45,6 +46,8 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		// Authentication succeeded
 		t.Authenticated = true
 		t.Username = uinf.Username
+	} else {
+		t.PixelAPI = pixelapi.New(wc.conf.APIURLInternal, "")
 	}
 
 	return t

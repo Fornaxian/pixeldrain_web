@@ -14,36 +14,36 @@
 			<div id="submit_result"></div>
 			<form onSubmit="return submitForm();" class="highlight_dark border_top border_bottom">
 				<table style="margin-left: auto; margin-right: auto; text-align: left; max-width: 30em;">
-					<tr>
+					<tr class="form">
 						<td>Username</td>
 						<td><input id="register_username" type="text" autocomplete="username" class="form_input"/></td>
 					</tr>
-					<tr><td colspan="2">used for logging into your account<br/><hr/></td></tr>
-					<tr>
+					<tr class="form"><td colspan="2">used for logging into your account<br/><hr/></td></tr>
+					<tr class="form">
 						<td>E-mail address</td>
 						<td><input id="register_email" type="text" autocomplete="email" class="form_input"/></td>
 					</tr>
-					<tr><td colspan="2">
+					<tr class="form"><td colspan="2">
 						not required. your e-mail address will only be used for
 						password resets and important account notifications<br/>
 						<hr/>
 					</td></tr>
-					<tr>
+					<tr class="form">
 						<td>Password</td>
 						<td><input id="register_password1" type="password" autocomplete="new-password" class="form_input"/></td>
 					</tr>
-					<tr>
+					<tr class="form">
 						<td>Password verification</td>
 						<td><input id="register_password2" type="password" autocomplete="new-password" class="form_input"/></td>
 					</tr>
-					<tr>
+					<tr class="form">
 						<td colspan="2">
 							you need to enter your password twice so we can
 							verify that you have not made any typing errors<br/>
 							<hr/>
 						</td>
 					</tr>
-					<tr>
+					<tr class="form">
 						<td>
 							Turing test<br/>
 							(Click the white box)
@@ -52,14 +52,18 @@
 							<div class="g-recaptcha" data-theme="dark" data-sitekey="6LdEeQ0TAAAAALBmDF_k_2LgbpuJM66PGspByViS"></div>
 						</td>
 					</tr>
-					<tr>
+					<tr class="form">
 						<td colspan="2">
 							the reCaptcha turing test verifies that you are not
 							an evil robot that is trying to flood the website
 							with fake accounts<br/><hr/>
 						</td>
 					</tr>
-					<tr><td colspan="2" style="text-align: right;"><input type="submit" value="Register" class="button_highlight"/></td></tr>
+					<tr class="form">
+						<td colspan="2" style="text-align: right;">
+							<input type="submit" value="Register" class="button_highlight"/>
+						</td>
+					</tr>
 				</table>
 			</form>
 			<br/>

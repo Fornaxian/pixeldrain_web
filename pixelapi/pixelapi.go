@@ -45,7 +45,7 @@ type SuccessResponse struct {
 	Success bool `json:"success"`
 }
 
-func (p *PixelAPI) jsonRequest(method, url string, target interface{}) *Error {
+func (p *PixelAPI) jsonRequest(method, url string, target interface{}) error {
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		return &Error{
@@ -116,7 +116,7 @@ func (p *PixelAPI) getRaw(url string) (io.ReadCloser, error) {
 	return resp.Body, err
 }
 
-func (p *PixelAPI) postForm(url string, vals url.Values, target interface{}) *Error {
+func (p *PixelAPI) postForm(url string, vals url.Values, target interface{}) error {
 	req, err := http.NewRequest("POST", url, strings.NewReader(vals.Encode()))
 	if err != nil {
 		return &Error{
@@ -145,7 +145,7 @@ func (p *PixelAPI) postForm(url string, vals url.Values, target interface{}) *Er
 	return parseJSONResponse(resp, target)
 }
 
-func parseJSONResponse(resp *http.Response, target interface{}) *Error {
+func parseJSONResponse(resp *http.Response, target interface{}) error {
 	var jdec = json.NewDecoder(resp.Body)
 	var err error
 

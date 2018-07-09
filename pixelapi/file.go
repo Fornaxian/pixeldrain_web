@@ -26,7 +26,7 @@ type FileInfo struct {
 }
 
 // GetFileInfo gets the FileInfo from the pixeldrain API
-func (p *PixelAPI) GetFileInfo(id string) (resp *FileInfo, err *Error) {
+func (p *PixelAPI) GetFileInfo(id string) (resp *FileInfo, err error) {
 	resp = &FileInfo{}
 	err = p.jsonRequest("GET", p.apiEndpoint+"/file/"+id+"/info", resp)
 	if err != nil {

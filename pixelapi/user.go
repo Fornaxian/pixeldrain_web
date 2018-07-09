@@ -21,7 +21,7 @@ type RegistrationError struct {
 // never be able to reset your password in case you forget it. captcha depends
 // on whether reCaptcha is enabled on the Pixeldrain server, this can be checked
 // through the GetRecaptcha function.
-func (p *PixelAPI) UserRegister(username, email, password, captcha string) (resp *Registration, err *Error) {
+func (p *PixelAPI) UserRegister(username, email, password, captcha string) (resp *Registration, err error) {
 	resp = &Registration{}
 	var form = url.Values{}
 	form.Add("username", username)
@@ -42,7 +42,7 @@ type UserInfo struct {
 }
 
 // UserInfo returns information about the logged in user. Requires an API key
-func (p *PixelAPI) UserInfo() (resp *UserInfo, err *Error) {
+func (p *PixelAPI) UserInfo() (resp *UserInfo, err error) {
 	resp = &UserInfo{}
 	err = p.jsonRequest("GET", p.apiEndpoint+"/user", resp)
 	if err != nil {
@@ -53,7 +53,7 @@ func (p *PixelAPI) UserInfo() (resp *UserInfo, err *Error) {
 
 // UserSessionDestroy destroys an API key so it can no longer be used to perform
 // actions
-func (p *PixelAPI) UserSessionDestroy(key string) (resp *SuccessResponse, err *Error) {
+func (p *PixelAPI) UserSessionDestroy(key string) (resp *SuccessResponse, err error) {
 	resp = &SuccessResponse{}
 	err = p.jsonRequest("DELETE", p.apiEndpoint+"/user/session", resp)
 	if err != nil {
@@ -67,7 +67,7 @@ type UserFiles struct {
 	Files   []FileInfo `json:"files"`
 }
 
-func (p *PixelAPI) UserFiles(page, limit int) (resp *UserFiles, err *Error) {
+func (p *PixelAPI) UserFiles(page, limit int) (resp *UserFiles, err error) {
 	resp = &UserFiles{Files: make([]FileInfo, 0)}
 	err = p.jsonRequest(
 		"GET",

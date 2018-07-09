@@ -1,0 +1,24 @@
+{{define "file_manager"}}<!DOCTYPE html>
+<html>
+	<head>
+		{{template "meta_tags" "File Manager"}}
+		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+	</head>
+
+	<body>
+		{{template "menu" .}}
+
+		<br/>
+		{{range .Other.Files}}
+		<a class="file_button" href="/u/{{.ID}}" target="_blank">
+			<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.FileName}}" />
+			<span style="color: var(--highlight_color);">{{.FileName}}</span>
+			<br/>
+			{{.DateUpload}}
+		</a>
+		{{end}}
+
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

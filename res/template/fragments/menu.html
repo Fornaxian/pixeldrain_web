@@ -1,7 +1,7 @@
 {{define "menu"}}
 <div id="navigation" class="highlight_light border_top border_bottom navigation">
 	<a href="/">Home</a>
-	<a href="{{if .Authenticated}}/files{{else}}/history{{end}}">My&nbsp;Files</a>
+	<a href="{{if .Authenticated}}/user/files{{else}}/history{{end}}">My&nbsp;Files</a>
 	<a href="/api">API</a>
 	{{if .Authenticated}}<a href="/user">{{.Username}}</a>
 	<a href="/logout" style="vertical-align: 0.6em; font-size: 0.9em; padding: 1px;">(Log out)</a>{{else}}

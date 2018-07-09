@@ -1,0 +1,26 @@
+{{define "500"}}<!DOCTYPE html>
+<html>
+	<head>
+		{{template "meta_tags" "Internal Server Error"}}
+	</head>
+
+	<body>
+		<div id='body' class="body">
+			{{template "menu" .}}
+			<br/>
+			<h1>You broke pixeldrain</h1>
+			Great job.
+			<br/><br/>
+			But not to worry, the engineering team has been pulled out of bed to
+			have a look at the issue. You can try again in a few minutes (maybe
+			hours, who knows?), or go back to the <a href='/'>home page</a> and
+			start over.
+			<br/>
+			<br/>
+			Bye!
+			{{template "footer"}}
+		</div>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

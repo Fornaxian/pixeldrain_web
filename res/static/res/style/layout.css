@@ -7,6 +7,8 @@
 	--highlight_border: inset 0px 0px 5px 1px var(--highlight_color), 0px 0px 1px 0px var(--highlight_color);
 }
 
+html{height: 100%;}
+
 body{
 	background-color: #111;
 	background-repeat: repeat;
@@ -20,26 +22,9 @@ body{
 	color: var(--text_color);
 }
 
-html{
-	height: 100%;
-}
-
 /* Page layout elements */
 
-#header{
-	position: relative;
-	width: auto;
-	height: auto;
-	margin: 0 -8px 0 -8px;
-	box-sizing: border-box;
-	overflow: hidden;
-	background-color: #222;
-	text-align: center;
-	z-index: 101;
-	border-bottom: #606060 solid 1px;
-}
-
-#header_image{
+.header_image{
 	width: 100%;
 	max-width: 1000px;
 	margin-top: 15px;
@@ -131,6 +116,8 @@ html{
 
 /* Common elements */
 
+h3{border-bottom: 1px #777 solid;} /* Differentiate it a bit, else it just looks like bold text */
+
 hr{
 	height: 8px;
 	border: none;
@@ -142,16 +129,9 @@ hr{
 	width: 12px;  /* for vertical scrollbars */
 	height: 12px; /* for horizontal scrollbars */
 }
-::-webkit-scrollbar-track{
-	background: rgba(0, 0, 0, 0);
-}
-::-webkit-scrollbar-thumb{
-	/*background: rgba(0, 0, 0, 0.5);*/
-	background-color: #555;
-}
-::-webkit-scrollbar-corner{
-	background: transparent;
-}
+::-webkit-scrollbar-track {background: rgba(0, 0, 0, 0);}
+::-webkit-scrollbar-thumb {background-color: #555;}
+::-webkit-scrollbar-corner{background: transparent;}
 
 a{
 	color: var(--highlight_color);
@@ -160,6 +140,22 @@ a{
 a:hover{
 	text-decoration: underline;
 	color: var(--highlight_color);
+}
+
+.form{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	max-width: 30em;
+}
+table:not(.form) {border-collapse: collapse; width: 100%;}
+tr:not(.form)    {border-bottom: 1px #333 solid;}
+tr > td          {padding: 6px;}
+
+pre{
+	padding: 2px;
+	border-bottom: 1px #333 solid;
+	overflow-x: scroll;
 }
 
 .big_button{
@@ -243,9 +239,7 @@ a:hover{
 
 /* Form fields */
 
-.form_input {
-	width: 100%;
-}
+.form_input {width: 100%;}
 
 /* BUTTONS */
 button,
@@ -293,10 +287,7 @@ select:active{
 .button_red:active      {background: linear-gradient(#61152F, #821C40) !important;}
 
 /* Dropdown list of the select tag */
-option{
-	background-color: #404040;
-	color: #FFFFFF;
-}
+option{background-color: #404040; color: #FFFFFF;}
 
 /* TEXT FIELDS */
 textarea,

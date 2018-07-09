@@ -12,7 +12,8 @@
 			<hr/>
 			<h2>Your most recently uploaded files:</h2>
 			<div class="highlight_dark border_top border_bottom">
-				{{range .Other.Files}}
+				{{$files := .PixelAPI.UserFiles 0 18}}
+				{{range $files.Files}}
 					<a class="file_button" href="/u/{{.ID}}" target="_blank">
 						<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.FileName}}" />
 						<span style="color: var(--highlight_color);">{{.FileName}}</span>
@@ -21,7 +22,7 @@
 					</a>
 				{{end}}
 				<br/>
-				<a href="/files">...All my files</a>
+				<a href="/user/files">...All my files</a>
 			</div>
 			<hr/>
 

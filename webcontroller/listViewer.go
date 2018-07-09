@@ -4,22 +4,23 @@ import (
 	"fmt"
 	"net/http"
 
+	"fornaxian.com/pixeldrain-web/pixelapi"
+
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
 
 // ServeListViewer controller for GET /l/:id
 func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	var list, aerr = wc.api.GetList(p.ByName("id"))
-	if aerr != nil {
-		if aerr.ReqError {
-			log.Error("API request error occurred: %s", aerr.Value)
+	var list, err = wc.api.GetList(p.ByName("id"))
+	if err != nil {
+		if (err.(pixelapi.Error)).ReqError {
+			log.Error("API request error occurred: %s", (err.(pixelapi.Error)).Value)
 		}
 		wc.serveNotFound(w, r)
 		return
 	}
 
-	var err error
 	var ogData OGData
 	listdata := map[string]interface{}{
 		"id":           list.ID,
