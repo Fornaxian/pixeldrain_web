@@ -14,18 +14,18 @@ class UploadProgressBar implements FileUpload {
 		this.queueNum = totalUploads
 		totalUploads++
 
-		this.uploadDiv = document.createElement("a");
-		this.uploadDiv.setAttribute("class", "file_button");
+		this.uploadDiv = document.createElement("a")
+		this.uploadDiv.setAttribute("class", "file_button")
 		this.uploadDiv.innerText = "Queued\n" + this.file.name
 		this.uploadDivJQ = $(this.uploadDiv)
 
 		$("#uploads_queue").append(
-			this.uploadDivJQ.hide().fadeIn('slow')
+			this.uploadDivJQ.hide().fadeIn('slow').css("display", "")
 		)
 	}
 
 	// Interface stuff
-	public file: File;
+	public file: File
 	public name: string
 	public onProgress(progress: number){
 		this.uploadDiv.innerText = "Uploading... " + Math.round(progress*1000)/10 + "%\n" + this.file.name
@@ -36,7 +36,7 @@ class UploadProgressBar implements FileUpload {
 				+'#111 0%, '
 				+'var(--highlight_color) '+ ((progress*100)) +'%, '
 				+'#111 '+ ((progress*100)+1) +'%)'
-			)
+		)
 	}
 	public onFinished(id: string){
 		finishedUploads[this.queueNum] = id

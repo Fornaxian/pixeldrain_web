@@ -11,7 +11,7 @@ var UploadProgressBar = /** @class */ (function () {
         this.uploadDiv.setAttribute("class", "file_button");
         this.uploadDiv.innerText = "Queued\n" + this.file.name;
         this.uploadDivJQ = $(this.uploadDiv);
-        $("#uploads_queue").append(this.uploadDivJQ.hide().fadeIn('slow'));
+        $("#uploads_queue").append(this.uploadDivJQ.hide().fadeIn('slow').css("display", ""));
     }
     UploadProgressBar.prototype.onProgress = function (progress) {
         this.uploadDiv.innerText = "Uploading... " + Math.round(progress * 1000) / 10 + "%\n" + this.file.name;
