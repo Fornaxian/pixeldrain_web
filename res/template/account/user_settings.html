@@ -1,0 +1,20 @@
+{{define "user_settings"}}<!DOCTYPE html>
+<html>
+	<head>
+		{{template "meta_tags" .Username}}
+		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+	</head>
+
+	<body>
+		<div id='body' class="body">
+			{{template "menu" .}}
+			<h1>User configuration</h1>
+
+
+
+			{{template "footer"}}
+		</div>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

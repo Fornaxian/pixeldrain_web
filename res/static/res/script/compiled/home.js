@@ -78,6 +78,11 @@ document.addEventListener('drop', function (e) {
         handleUploads(e.dataTransfer.files);
     }
 });
+// Style selector
+$("input[name=style]").change(function (evt) {
+    Cookie.write("style", evt.target.id.substring(6));
+    location.reload();
+});
 var Cookie;
 (function (Cookie) {
     function read(name) {

@@ -10,7 +10,7 @@
 html{height: 100%;}
 
 body{
-	background-color: #111;
+	background-color: var(--background_color);
 	background-repeat: repeat;
 	font-size: 16px;
 	font-family: 'Ubuntu', sans-serif;
@@ -20,6 +20,7 @@ body{
 	height: 100%;
 	overflow-x: hidden;
 	color: var(--text_color);
+	filter: hue-rotate(160);
 }
 
 /* Page layout elements */
@@ -39,11 +40,11 @@ body{
 	height: auto;
 	padding: 0px 8px 0px 8px;
 	box-sizing: border-box;
-	background-color: hsl(20, 5%, 14%);;
+	background-color: var(--body_color);
 	margin-top: 30px;
 	margin-bottom: 30px;
 	text-align: left;
-	box-shadow: #000000 8px 8px 50px 5px;
+	box-shadow: var(--shadow_color) 8px 8px var(--shadow_spread) var(--shadow_intensity);
 	z-index: 1;
 	word-break: break-word;
 }
@@ -62,8 +63,8 @@ body{
 }
 .navigation a:hover {
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
-	box-shadow: var(--highlight_border), 2px 2px 8px #000000;
-	color: #000000;
+	box-shadow: var(--highlight_border), 2px 2px 8px var(--shadow_color);
+	color: var(--highlight_text_color);
 	text-decoration: none;
 }
 .navigation .icon {
@@ -104,9 +105,9 @@ body{
 	padding: 4px 0px 4px 0px;
 	z-index: 101;
 }
-.highlight_light  {background-color: #484848;                border-color: #686868;}
-.highlight_middle {background-color: #3a3a3a;                border-color: #686868;}
-.highlight_dark   {background-color: #303030;                border-color: #686868;}
+.highlight_dark   {background-color: var(--accent_color_dark);   border-color: var(--accent_color_dark_border);}
+.highlight_middle {background-color: var(--accent_color_medium); border-color: var(--accent_color_medium_border);}
+.highlight_light  {background-color: var(--accent_color_light);  border-color: var(--accent_color_light_border);}
 .highlight_green  {background-color: rgba(0, 255, 0, 0.05);  border-color: #00d000;}
 .highlight_blue   {background-color: rgba(32, 32, 255, 0.2); border-color: rgb(54, 54, 255);}
 .highlight_red    {background-color: rgba(255, 0, 0, 0.05);  border-color: #B00000;}
@@ -116,12 +117,12 @@ body{
 
 /* Common elements */
 
-h3{border-bottom: 1px #777 solid;} /* Differentiate it a bit, else it just looks like bold text */
+h3{border-bottom: 1px var(--accent_color_light_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
 hr{
 	height: 8px;
 	border: none;
-	background: linear-gradient(#101010, #303030);
+	background: linear-gradient(var(--accent_color_dark), var(--accent_color_light));
 	margin: 16px -8px 16px -8px;
 }
 
@@ -129,8 +130,8 @@ hr{
 	width: 12px;  /* for vertical scrollbars */
 	height: 12px; /* for horizontal scrollbars */
 }
-::-webkit-scrollbar-track {background: rgba(0, 0, 0, 0);}
-::-webkit-scrollbar-thumb {background-color: #555;}
+::-webkit-scrollbar-track {background: var(--accent_color_dark);}
+::-webkit-scrollbar-thumb {background-color: var(--accent_color_light);}
 ::-webkit-scrollbar-corner{background: transparent;}
 
 a       {color: var(--highlight_color); text-decoration: none;}
@@ -143,12 +144,12 @@ a:hover {color: var(--highlight_color); text-decoration: underline;}
 	max-width: 30em;
 }
 table:not(.form) {border-collapse: collapse; width: 100%;}
-tr:not(.form)    {border-bottom: 1px #333 solid;}
+tr:not(.form)    {border-bottom: 1px var(--accent_color_medium_border) solid;}
 tr > td          {padding: 6px;}
 
 pre{
 	padding: 2px;
-	border-bottom: 1px #333 solid;
+	border-bottom: 1px var(--accent_color_medium_border) solid;
 	overflow-x: scroll;
 }
 
@@ -215,8 +216,8 @@ pre{
 	margin: 6px;
 	padding: 0;
 	overflow: hidden;
-	box-shadow: 0px 0px 10px 4px #111;
-	background-color: #111;
+	box-shadow: 0px 0px 10px 4px var(--shadow_color);
+	background-color: var(--file_background_color);
 	color: var(--text_color);
 	word-break: break-all;
 	text-align: left;
@@ -247,14 +248,14 @@ select{
 	border-radius: 4px;
 	border: none;
 	margin: 2px;
-	background: linear-gradient(#606060, #404040);
+	background: linear-gradient(var(--input_color), var(--input_color_dark));
 	padding: 6px 10px 6px 10px;
-	box-shadow: 2px 2px 8px #000000;
+	box-shadow: 2px 2px 8px var(--shadow_color);
 	font-weight: bold;
 	font-size: 0.85em;
 	line-height: 1;
 	text-decoration: none;
-	color: #FFFFFF;
+	color: var(--input_text_color);
 	outline: 0;
 	vertical-align: middle;
 	cursor: pointer;
@@ -272,9 +273,9 @@ input[type="submit"]:focus,
 input[type="button"]:focus,
 input[type="color"]:focus,
 select:focus{
-	color: #FFFFFF;
+	color: var(--input_text_color);
 	text-decoration: none;
-	box-shadow: var(--highlight_border), 2px 2px 8px #000000;
+	box-shadow: var(--highlight_border), 2px 2px 8px var(--shadow_color);
 }
 button:active,
 .button:active,
@@ -282,18 +283,18 @@ input[type="submit"]:active,
 input[type="button"]:active,
 input[type="color"]:active,
 select:active{
-	background: linear-gradient(#404040, #606060);
-	box-shadow: inset 3px 3px 6px #000000;
+	background: linear-gradient(var(--input_color_dark), var(--input_color));
+	box-shadow: inset 3px 3px 6px var(--shadow_color);
 	padding: 8px 8px 4px 12px;
 }
 .button_full_width      {width: calc(100% - 4px);}
-.button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: #000000 !important;}
-.button_highlight:active{background: linear-gradient(var(--highlight_color_dark), var(--highlight_color)) !important;      color: #000000 !important;}
-.button_red             {background: linear-gradient(#821C40, #61152F) !important;}
-.button_red:active      {background: linear-gradient(#61152F, #821C40) !important;}
+.button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: var(--highlight_text_color) !important;}
+.button_highlight:active{background: linear-gradient(var(--highlight_color_dark), var(--highlight_color)) !important;      color: var(--highlight_text_color) !important;}
+.button_red             {background: linear-gradient(var(--danger_color),         var(--danger_color_dark)) !important;}
+.button_red:active      {background: linear-gradient(var(--danger_color_dark),    var(--danger_color)) !important;}
 
 /* Dropdown list of the select tag */
-option{background-color: #404040; color: #FFFFFF;}
+option{background-color: var(--input_color_dark); color: var(--text_color)}
 
 /* TEXT FIELDS */
 textarea,
@@ -305,10 +306,10 @@ input[type="number"]{
 	border: none;
 	box-sizing: border-box;
 	border-radius: 4px;
-	background: linear-gradient(#404040, #606060);
-	box-shadow: inset 3px 3px 6px #000000;
+	background: linear-gradient(var(--input_color_dark), var(--input_color));
+	box-shadow: inset 3px 3px 6px var(--shadow_color);
 	padding: 3px 5px;
-	color: var(--text_color);
+	color: var(--input_text_color);
 	height: 26px;
 	font-size: 18px;
 	font-family: 'Ubuntu', sans-serif;
@@ -325,7 +326,7 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus{
-	box-shadow: var(--highlight_border), inset 3px 3px 6px #000000;
+	box-shadow: var(--highlight_border), inset 3px 3px 6px var(--shadow_color);
 }
 
 input[type=file]{
