@@ -16,7 +16,7 @@ body{
 	font-family: 'Ubuntu', sans-serif;
 	margin: 0;
 	text-align: center; /* Center the header and body */
-	line-height: 140%;
+	line-height: 1.5em;
 	height: 100%;
 	overflow-x: hidden;
 	color: var(--text_color);
@@ -116,6 +116,7 @@ body{
 
 /* Common elements */
 
+h1, h2, h3, h4, h5, h6 {line-height: 1em;}
 h3{border-bottom: 1px var(--accent_color_light_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
 hr{

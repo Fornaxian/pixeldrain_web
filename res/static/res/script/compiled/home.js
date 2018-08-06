@@ -33,7 +33,8 @@ var UploadProgressBar = /** @class */ (function () {
     UploadProgressBar.prototype.onFailure = function (response, error) {
         this.uploadDiv.setAttribute('style', 'background: #821C40');
         this.uploadDivJQ.html(this.file.name + '<br/>'
-            + 'Upload failed after three tries!');
+            + 'Upload failed after three tries!<br/>'
+            + "Message: " + error);
     };
     return UploadProgressBar;
 }());
@@ -161,14 +162,14 @@ var UploadWorker = /** @class */ (function () {
     UploadWorker.prototype.upload = function (file) {
         console.debug("Starting upload of " + file.name);
         var formData = new FormData();
-        formData.append('file', file.file);
         formData.append("name", file.name);
+        formData.append('file', file.file);
         var that = this; // jquery changes the definiton of "this"
         $.ajax({
             type: 'POST',
             url: apiEndpoint + "/file",
             data: formData,
-            timeout: 7200000,
+            timeout: 21600000,
             cache: false,
             async: true,
             crossDomain: false,
@@ -192,7 +193,6 @@ var UploadWorker = /** @class */ (function () {
             error: function (xhr, status, error) {
                 console.log("status: " + status + " error: " + error);
                 if (that.tries === 3) {
-                    alert("Upload failed: " + status);
                     file.onFailure(status, error);
                     setTimeout(function () { that.newFile(); }, 2000); // Try to continue
                     return; // Upload failed

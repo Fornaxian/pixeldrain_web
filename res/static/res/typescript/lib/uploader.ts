@@ -68,8 +68,8 @@ class UploadWorker {
 		console.debug("Starting upload of " + file.name)
 
 		var formData = new FormData()
-		formData.append('file', file.file)
 		formData.append("name", file.name)
+		formData.append('file', file.file)
 
 		var that = this // jquery changes the definiton of "this"
 
@@ -77,7 +77,7 @@ class UploadWorker {
 			type: 'POST',
 			url: apiEndpoint+"/file",
 			data: formData,
-			timeout: 7200000, // 2 hours
+			timeout: 21600000, // 6 hours, to account for slow connections
 			cache: false,
 			async: true,
 			crossDomain: false,
@@ -103,7 +103,6 @@ class UploadWorker {
 				console.log("status: "+status+" error: "+error)
 
 				if (that.tries === 3) {
-					alert("Upload failed: " + status);
 					file.onFailure(status, error)
 
 					setTimeout(function(){that.newFile()}, 2000) // Try to continue

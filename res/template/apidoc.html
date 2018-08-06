@@ -55,6 +55,18 @@
 				relative to that URL.
 			</p>
 
+			<h2>Form value order</h2>
+			<p>
+				I recommend you put files at the end of every file upload form.
+				By doing this the pixeldrain server can respond to malformed
+				requests before the file upload finishes and this may save you a
+				lot of time and bandwidth when uploading large files. Make sure
+				your HTTP client has support for premature responses, pixeldrain
+				uses them a lot. If the server responds before your request is
+				finished it will always indicate an error and you may abort the
+				connection.
+			</p>
+
 			<h2>File Methods</h2>
 			{{template "api-file-post"}}
 			{{template "api-file-id-get"}}

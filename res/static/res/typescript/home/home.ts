@@ -54,7 +54,8 @@ class UploadProgressBar implements FileUpload {
 		this.uploadDiv.setAttribute('style', 'background: #821C40')
 		this.uploadDivJQ.html(
 			this.file.name+'<br/>'
-			+ 'Upload failed after three tries!'
+			+ 'Upload failed after three tries!<br/>'
+			+ "Message: " + error
 		)
 	}
 }
