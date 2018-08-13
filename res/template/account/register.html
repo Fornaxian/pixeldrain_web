@@ -103,6 +103,11 @@
 						resultDiv.innerHTML = resultHtml;
 					}
 
+					// On small screens the whole form won't fit on the screen,
+					// so we need to scroll up to show the user the result of
+					// the form submission
+					window.scrollTo(0, 0);
+
 					console.log(response);
 				}
 			}

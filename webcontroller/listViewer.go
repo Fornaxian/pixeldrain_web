@@ -15,7 +15,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	var api = pixelapi.New(wc.conf.APIURLInternal, "")
 	var list, err = api.GetList(p.ByName("id"))
 	if err != nil {
-		if (err.(pixelapi.Error)).ReqError {
+		if (err.(*pixelapi.Error)).ReqError {
 			log.Error("API request error occurred: %s", (err.(pixelapi.Error)).Value)
 		}
 		wc.serveNotFound(w, r)

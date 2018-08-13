@@ -109,7 +109,7 @@ body{
 .highlight_light  {background-color: var(--accent_color_light);  border-color: var(--accent_color_light_border);}
 .highlight_green  {background-color: rgba(0, 255, 0, 0.05);  border-color: #00d000;}
 .highlight_blue   {background-color: rgba(32, 32, 255, 0.2); border-color: rgb(54, 54, 255);}
-.highlight_red    {background-color: rgba(255, 0, 0, 0.05);  border-color: #B00000;}
+.highlight_red    {background-color: rgba(255, 0, 0, 0.1);  border-color: #B00000;}
 
 .border_top    {border-top-width:    1px; border-top-style:    solid;}
 .border_bottom {border-bottom-width: 1px; border-bottom-style: solid;}
@@ -141,11 +141,19 @@ a:hover {color: var(--highlight_color); text-decoration: underline;}
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
-	max-width: 30em;
+	max-width: 35em;
 }
 table:not(.form) {border-collapse: collapse; width: 100%;}
 tr:not(.form)    {border-bottom: 1px var(--accent_color_medium_border) solid;}
-tr > td          {padding: 6px;}
+tr > td          {padding: 0.5em;}
+@media(max-width: 28em) {
+	tr > td {
+		box-sizing: border-box;
+		float: left;
+		width: 100%;
+		padding: 0.5em;
+	}
+}
 
 pre{
 	padding: 2px;
