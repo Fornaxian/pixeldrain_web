@@ -47,38 +47,6 @@
 				filesystem and served from Sia on the next request.
 			</p>
 
-			<h2>News</h2>
-			<h3>Data loss has occurred</h3>
-			<p>
-				As noted at the start of this page, the integration with Sia
-				cloud storage is highly experimental, everyone who uses this
-				service should be aware of that fact.
-			</p>
-			<p>
-				I recently discovered that the Sia node that is storing the
-				files for this website had crashed because of a memory leak. The
-				Sia team is currently trying to figure out how this memory leak
-				occurred. It's likely the contract renewal went wrong which
-				caused the Sia node to become unstable. Now when I start the Sia
-				daemon it eats up about 1 GB of RAM per minute, so I've turned
-				it off for the time being.
-			</p>
-			<p>
-				In the short period that the Sia daemon keeps running I managed
-				to request a file listing. It seems that because of the failed
-				contracts about 80% of the stored files have dropped far below
-				1x redundancy, meaning that they are lost. The upside of all
-				this is that the bug has been discovered before version 1.3.3
-				has come out so it might be fixed in the next release, bringing
-				the Sia platform as a whole another step closer to being a
-				reliable data storage solution.
-			</p>
-			<p>
-				Anyway, don't be surprised if your previously uploaded files are
-				gone now. I will soon start purging all unrecoverable files from
-				the database so we can start over with a clean slate.
-			</p>
-
 			<h2>Legality</h2>
 			<p>
 				I cannot be held liable for any illegal and / or copyrighted
@@ -91,6 +59,10 @@
 				<a href="mailto:abuse@pixeldrain.com">abuse@pixeldrain.com</a>,
 				and I'll take care of it.
 				<br/>Please share responsibly.
+			</p>
+			<p>
+				For other questions you can reach me at 
+				<a href="mailto:support@pixeldrain.com">support@pixeldrain.com</a>
 			</p>
 			<h2>Funding</h2>
 			<p>
@@ -128,7 +100,7 @@
 				<li>Pasting files from the clipboard</li>
 				<li>Current viewer count on files/lists</li>
 				<li>File revisions (update a file without changing the URL)</li>
-				<li>Proper file manager with directories (upcoming)</li>
+				<li>Proper file manager with directories (in progress)</li>
 				<li>Plenty more!</li>
 			</ul>
 			<h3>Missing</h3>
@@ -143,7 +115,7 @@
 				<li>Some video formats (mime type detection is not complete)</li>
 				<li>Bandwidth Tracker</li>
 				<li>View counter</li>
-				<li>Seasonal themes (thou shalt celebrate christmas!)</li>
+				<li>Seasonal themes</li>
 			</ul>
 
 			<h2>Style selector</h2>
