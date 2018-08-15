@@ -27,5 +27,9 @@ func Init(r *httprouter.Router, prefix string) {
 		os.Exit(1)
 	}
 
+	if !webconf.DebugMode {
+		log.SetLogLevel(log.LevelInfo)
+	}
+
 	webcontroller.New(r, prefix, webconf)
 }
