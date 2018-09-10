@@ -48,7 +48,7 @@ type SuccessResponse struct {
 func (p *PixelAPI) jsonRequest(method, url string, target interface{}) error {
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
-		return &Error{
+		return Error{
 			ReqError: true,
 			Success:  false,
 			Value:    err.Error(),
@@ -62,7 +62,7 @@ func (p *PixelAPI) jsonRequest(method, url string, target interface{}) error {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return &Error{
+		return Error{
 			ReqError: true,
 			Success:  false,
 			Value:    err.Error(),

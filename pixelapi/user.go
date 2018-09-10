@@ -79,3 +79,21 @@ func (p *PixelAPI) UserFiles(page, limit int) (resp *UserFiles, err error) {
 	}
 	return resp, nil
 }
+
+type UserLists struct {
+	Success bool   `json:"success"`
+	Lists   []List `json:"lists"`
+}
+
+func (p *PixelAPI) UserLists(page, limit int) (resp *UserLists, err error) {
+	resp = &UserLists{Lists: make([]List, 0)}
+	err = p.jsonRequest(
+		"GET",
+		fmt.Sprintf("%s/user/lists?page=%d&limit=%d", p.apiEndpoint, page, limit),
+		resp,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}

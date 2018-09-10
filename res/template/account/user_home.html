@@ -18,11 +18,26 @@
 						<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.FileName}}" />
 						<span style="color: var(--highlight_color);">{{.FileName}}</span>
 						<br/>
-						{{.DateUpload}}
+						{{.DateUpload.Format "2006-01-02 15:04:05"}}
 					</a>
 				{{end}}
 				<br/>
 				<a href="/user/files">...All my files</a>
+			</div>
+			<br/>
+			<h2>Your most recently created lists:</h2>
+			<div class="highlight_dark border_top border_bottom">
+				{{$lists := .PixelAPI.UserLists 0 18}}
+				{{range $lists.Lists}}
+					<a class="file_button" href="/l/{{.ID}}" target="_blank">
+						<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail" alt="{{.Title}}" />
+						<span style="color: var(--highlight_color);">{{.Title}}</span>
+						({{.FileCount}} Files)
+						<br/>
+						{{.DateCreated.Format "2006-01-02 15:04:05"}}
+					</a>
+				{{end}}
+				<br/>
 			</div>
 			<hr/>
 

@@ -20,7 +20,7 @@
 			<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.FileName}}" />
 			<span style="color: var(--highlight_color);">{{.FileName}}</span>
 			<br/>
-			{{.DateUpload}}
+			{{.DateUpload.Format "2006-01-02 15:04:05"}}
 		</a>
 		{{end}}
 
