@@ -11,7 +11,7 @@ import (
 )
 
 // Init initializes the Pixeldrain Web UI controllers
-func Init(r *httprouter.Router, prefix string) {
+func Init(r *httprouter.Router, prefix string, setLogLevel bool) {
 	log.Info("Starting web UI server (PID %v)", os.Getpid())
 
 	var webconf = &conf.PixelWebConfig{}
@@ -25,6 +25,10 @@ func Init(r *httprouter.Router, prefix string) {
 	if err != nil {
 		log.Error("Failed to load config file: %s", err)
 		os.Exit(1)
+	}
+
+	if !webconf.DebugMode && setLogLevel {
+		log.SetLogLevel(log.LevelInfo)
 	}
 
 	webcontroller.New(r, prefix, webconf)

@@ -15,7 +15,7 @@ import (
 func main() {
 	r := httprouter.New()
 
-	web.Init(r, "")
+	web.Init(r, "", true)
 
 	err := http.ListenAndServe(":8081", r)
 
