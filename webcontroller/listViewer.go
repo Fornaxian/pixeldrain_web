@@ -2,6 +2,7 @@ package webcontroller
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
@@ -35,7 +36,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		"APIResponse": listdata,
 		"Type":        "list",
 		"OGData":      ogData.FromList(*list),
-		"APIEndpoint": wc.conf.APIURLExternal,
+		"APIEndpoint": template.URL(wc.conf.APIURLExternal),
 	})
 	if err != nil {
 		log.Error("Error executing template file_viewer: %s", err)
