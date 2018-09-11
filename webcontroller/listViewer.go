@@ -35,6 +35,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		"APIResponse": listdata,
 		"Type":        "list",
 		"OGData":      ogData.FromList(*list),
+		"APIEndpoint": wc.conf.APIURLExternal,
 	})
 	if err != nil {
 		log.Error("Error executing template file_viewer: %s", err)

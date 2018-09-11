@@ -56,6 +56,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			"APIResponse": listdata,
 			"Type":        "list",
 			"OGData":      ogData.FromFile(*finfo[0]),
+			"APIEndpoint": wc.conf.APIURLExternal,
 		})
 	} else {
 		err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
@@ -63,6 +64,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			"APIResponse": finfo[0],
 			"Type":        "file",
 			"OGData":      ogData.FromFile(*finfo[0]),
+			"APIEndpoint": wc.conf.APIURLExternal,
 		})
 	}
 	if err != nil {

@@ -182,7 +182,7 @@ body{
    || MISC COMPONENTS ||
    ===================== */
 
-.full-popup{
+.full_popup{
 	position: fixed;
 	display: none;
 	background-color: var(--background_color);
@@ -233,6 +233,7 @@ table > tbody > tr {border: none !important;}
 	color: var(--text_color);
 	font-size: 16px;
 	font-family: 'Ubuntu', sans-serif;
+	line-height: 20px;
 	text-align: right;
 	display: inline-block;
 	background-image: url("/res/img/bytecounter.png");

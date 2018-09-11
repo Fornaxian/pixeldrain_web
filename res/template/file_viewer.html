@@ -32,6 +32,8 @@
 		<meta property="og:image:url"   content="{{.OGData.Image}}" />
 		<meta property="article:author" content="Fornax96" />
 		<link rel="image_src"              href="{{.OGData.Image}}" />
+
+		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 
 	<body>
@@ -122,15 +124,45 @@
 			</button>
 		</div>
 
-		<div id="info-popup" class="full-popup">
+		<div id="info_popup" class="full_popup">
 			<img alt="Close" src="/res/img/cross.png"
 			     style="position: absolute; top: 5px; right: 5px; width: 40px; height: 40px; cursor: pointer;"
 			     onclick="DetailsWindow.toggle();"/>
 			Click the help button again to close this overlay.<br/>
 
 			<h3>File Info</h3>
-			<span id="info-fileDetails"></span>
-			<span id="info-about">{{template "file_info_popup"}}</span>
+			<span id="info_file_details"></span>
+			<span id="info_about">
+				<h3>About</h3>
+				Pixeldrain is a file sharing platform.
+				<a href="/" target="_blank">Visit the home page for more information.</a>
+
+				<h3>Keyboard Controls</h3>
+				<table>
+					<tr><td colspan="2">File Shortcuts</td></tr>
+					<tr><td>c</td><td> = Copy URL of this page</td></tr>
+					<tr><td>i</td><td> = Toggle details window (this window)</td></tr>
+					<tr><td>s</td><td> = Download the file you are currently viewing</td></tr>
+					<tr><td colspan="2">List Shortcuts</td></tr>
+					<tr><td>a or &#8592;</td><td> = View previous item in list</td></tr>
+					<tr><td>d or &#8594;</td><td> = View next item in list</td></tr>
+					<tr><td>r</td><td> = Toggle shuffle (<b><u>r</u></b>andom)</td></tr>
+					<tr><td>SHIFT + s</td><td> = Download all the files in the list as a zip archive</td></tr>
+				</table>
+
+				<h3>Credits</h3>
+				All server side code written by
+				<a target="_blank" href="https://fornaxian.com/">Fornax (me)</a>.
+				<br/>
+				<br/>
+				Code syntax highlighting is by
+				<a target="_blank" href="https://github.com/google/code-prettify">Google Code-prettify</a>.
+				<br/>
+				<br/>
+				Thanks to the Mozilla team for their wonderful PDF viewer
+				<a target="_blank" href="https://github.com/mozilla/pdf.js">pdf.js</a>.
+				<br/>
+			</span>
 		</div>
 
 		<div id="filepreview">
