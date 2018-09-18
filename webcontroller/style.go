@@ -188,7 +188,7 @@ var SolarizedDarkStyle = PixeldrainStyleSheet{
 	AccentColorMedium: HSL{192, .81, .14},
 	AccentColorLight:  HSL{192, .95, .17},
 
-	ShadowColor:     HSL{192, .87, .05},
+	ShadowColor:     HSL{192, .87, 0},
 	ShadowSpread:    50,
 	ShadowIntensity: 5,
 }

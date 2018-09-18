@@ -207,13 +207,6 @@ pre{
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
-.files_container{
-	position: relative;
-	width: 100%;
-	margin: 0;
-	height: auto;
-	display: inline-block;
-}
 
 .file_button, .file_button:hover{
 	position: relative;
@@ -224,7 +217,7 @@ pre{
 	margin: 6px;
 	padding: 0;
 	overflow: hidden;
-	box-shadow: 0px 0px 6px 2px var(--shadow_color);
+	box-shadow: 0px 0px 6px 2px var(--file_background_color);
 	background-color: var(--file_background_color);
 	color: var(--text_color);
 	word-break: break-all;

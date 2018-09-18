@@ -17,13 +17,13 @@ var UploadProgressBar = /** @class */ (function () {
         this.uploadDiv.innerText = "Uploading... " + Math.round(progress * 1000) / 10 + "%\n" + this.file.name;
         this.uploadDiv.setAttribute('style', 'background: linear-gradient('
             + 'to right, '
-            + '#111 0%, '
+            + 'var(--file_background_color) 0%, '
             + 'var(--highlight_color) ' + ((progress * 100)) + '%, '
-            + '#111 ' + ((progress * 100) + 1) + '%)');
+            + 'var(--file_background_color) ' + ((progress * 100) + 1) + '%)');
     };
     UploadProgressBar.prototype.onFinished = function (id) {
         finishedUploads[this.queueNum] = id;
-        this.uploadDiv.setAttribute('style', 'background: #111');
+        this.uploadDiv.setAttribute('style', 'background: var(--file_background_color)');
         this.uploadDiv.setAttribute('href', '/u/' + id);
         this.uploadDiv.setAttribute("target", "_blank");
         this.uploadDivJQ.html('<img src="' + apiEndpoint + '/file/' + id + '/thumbnail" alt="' + this.file.name + '"/>'
@@ -31,7 +31,7 @@ var UploadProgressBar = /** @class */ (function () {
             + '<span style="color: var(--highlight_color);">' + window.location.hostname + '/u/' + id + '</span>');
     };
     UploadProgressBar.prototype.onFailure = function (response, error) {
-        this.uploadDiv.setAttribute('style', 'background: #821C40');
+        this.uploadDiv.setAttribute('style', 'background: var(--danger_color)');
         this.uploadDivJQ.html(this.file.name + '<br/>'
             + 'Upload failed after three tries!<br/>'
             + "Message: " + error);

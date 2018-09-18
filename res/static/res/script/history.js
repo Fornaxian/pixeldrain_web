@@ -58,5 +58,5 @@ function historyAddItem(json) {
 		+ ("00" + date.getDate()).slice(-2)
 		+ "</a>";
 
-	$("#uploadedFiles").append($(uploadItem).hide().fadeIn(400));
+	$("#uploadedFiles").append($(uploadItem).hide().fadeIn(2000));
 }
