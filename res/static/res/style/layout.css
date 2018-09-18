@@ -104,9 +104,9 @@ body{
 	padding: 4px 0px 4px 0px;
 	z-index: 101;
 }
-.highlight_dark   {background-color: var(--accent_color_dark);   border-color: var(--accent_color_dark_border);}
-.highlight_middle {background-color: var(--accent_color_medium); border-color: var(--accent_color_medium_border);}
-.highlight_light  {background-color: var(--accent_color_light);  border-color: var(--accent_color_light_border);}
+.highlight_dark   {background-color: var(--accent_color_dark);   border-color: var(--accent_color_dark_border);   box-shadow: inset 1px 1px 12px -1px var(--shadow_color);}
+.highlight_middle {background-color: var(--accent_color_medium); border-color: var(--accent_color_medium_border); box-shadow: inset 1px 1px 8px -1px var(--shadow_color);}
+.highlight_light  {background-color: var(--accent_color_light);  border-color: var(--accent_color_light_border);  box-shadow: 1px 1px 4px var(--shadow_color);}
 .highlight_green  {background-color: rgba(0, 255, 0, 0.05);  border-color: #00d000;}
 .highlight_blue   {background-color: rgba(32, 32, 255, 0.2); border-color: rgb(54, 54, 255);}
 .highlight_red    {background-color: rgba(255, 0, 0, 0.1);  border-color: #B00000;}
