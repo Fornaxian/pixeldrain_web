@@ -1,6 +1,10 @@
 /* global ListNavigator, Toolbar */
 
 $(document).keydown(function(event){
+	if (event.ctrlKey || event.altKey) {
+		return // prevent custom shortcuts from interfering with system shortcuts
+	}
+
 	if(event.which === 65 || event.which === 37){ // A or left arrow key go to previous file
 		ListNavigator.previousItem();
 	}else if(event.which === 68 || event.which === 39){ // D or right arrow key go to next file
