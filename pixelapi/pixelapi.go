@@ -11,6 +11,8 @@ import (
 	"github.com/Fornaxian/log"
 )
 
+var client = &http.Client{}
+
 // PixelAPI is the Pixeldrain API client
 type PixelAPI struct {
 	apiEndpoint string
@@ -59,7 +61,6 @@ func (p *PixelAPI) jsonRequest(method, url string, target interface{}) error {
 		req.SetBasicAuth("", p.apiKey)
 	}
 
-	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		return Error{
@@ -106,8 +107,6 @@ func (p *PixelAPI) getRaw(url string) (io.ReadCloser, error) {
 		req.SetBasicAuth("", p.apiKey)
 	}
 
-	client := &http.Client{}
-
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -130,7 +129,6 @@ func (p *PixelAPI) postForm(url string, vals url.Values, target interface{}) err
 		req.SetBasicAuth("", p.apiKey)
 	}
 
-	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		return &Error{

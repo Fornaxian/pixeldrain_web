@@ -117,6 +117,13 @@ class UploadWorker {
 	}
 
 	private setHistoryCookie(id: string){
+		// Make sure the user is not logged in, for privacy. This keeps the
+		// files uploaded while logged in and anonymously uploaded files
+		// separated
+		if (Cookie.read("pd_auth_key") !== null) {
+			return;
+		}
+
 		var uc = Cookie.read("pduploads")
 
 		// First upload in this browser

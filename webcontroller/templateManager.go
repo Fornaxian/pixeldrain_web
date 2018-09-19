@@ -1,9 +1,10 @@
-package templates
+package webcontroller
 
 import (
 	"html/template"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/Fornaxian/log"
 )
@@ -17,7 +18,7 @@ type TemplateManager struct {
 	debugModeEnabled    bool
 }
 
-func New(templateDir, externalAPIEndpoint string, debugMode bool) *TemplateManager {
+func NewTemplateManager(templateDir, externalAPIEndpoint string, debugMode bool) *TemplateManager {
 	return &TemplateManager{
 		templateDir:         templateDir,
 		externalAPIEndpoint: externalAPIEndpoint,
@@ -64,4 +65,24 @@ func (tm *TemplateManager) Get() *template.Template {
 		tm.ParseTemplates(true)
 	}
 	return tm.templates
+}
+
+func (tm *TemplateManager) funcMap() template.FuncMap {
+	return template.FuncMap{
+		"bgPatternCount": tm.bgPatternCount,
+		"debugMode":      tm.debugMode,
+		"apiUrl":         tm.apiURL,
+	}
+}
+
+func (tm *TemplateManager) bgPatternCount() uint8 {
+	return uint8(time.Now().UnixNano() % 17)
+}
+
+func (tm *TemplateManager) debugMode() bool {
+	return tm.debugModeEnabled
+}
+
+func (tm *TemplateManager) apiURL() string {
+	return tm.externalAPIEndpoint
 }

@@ -7,7 +7,6 @@ import (
 	"github.com/google/uuid"
 
 	"fornaxian.com/pixeldrain-web/init/conf"
-	"fornaxian.com/pixeldrain-web/webcontroller/templates"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -16,8 +15,11 @@ import (
 // proper context when running
 type WebController struct {
 	conf              *conf.PixelWebConfig
-	templates         *templates.TemplateManager
+	templates         *TemplateManager
 	staticResourceDir string
+
+	// page-specific variables
+	captchaSiteKey string
 }
 
 // New initializes a new WebController by registering all the request handlers
@@ -27,7 +29,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 		conf:              conf,
 		staticResourceDir: conf.StaticResourceDir,
 	}
-	wc.templates = templates.New(
+	wc.templates = NewTemplateManager(
 		conf.TemplateDir,
 		conf.APIURLExternal,
 		conf.DebugMode,
@@ -49,7 +51,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(prefix+"/t" /*               */, wc.serveTemplate("paste", false))
 
 	// User account pages
-	r.GET(prefix+"/register" /*        */, wc.serveTemplate("register", false))
+	r.GET(prefix+"/register" /*        */, wc.serveRegister)
 	r.GET(prefix+"/login" /*           */, wc.serveTemplate("login", false))
 	r.GET(prefix+"/logout" /*          */, wc.serveTemplate("logout", true))
 	r.POST(prefix+"/logout" /*         */, wc.serveLogout)

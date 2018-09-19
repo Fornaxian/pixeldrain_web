@@ -204,6 +204,12 @@ var UploadWorker = /** @class */ (function () {
         });
     };
     UploadWorker.prototype.setHistoryCookie = function (id) {
+        // Make sure the user is not logged in, for privacy. This keeps the
+        // files uploaded while logged in and anonymously uploaded files
+        // separated
+        if (Cookie.read("pd_auth_key") !== null) {
+            return;
+        }
         var uc = Cookie.read("pduploads");
         // First upload in this browser
         if (uc === null) {

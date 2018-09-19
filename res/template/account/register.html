@@ -43,13 +43,13 @@
 							<hr/>
 						</td>
 					</tr>
-					<tr class="form">
+					{{if ne .Other "none"}}<tr class="form">
 						<td>
 							Turing test<br/>
 							(Click the white box)
 						</td>
 						<td style="text-align: center;">
-							<div class="g-recaptcha" data-theme="dark" data-sitekey="6Lfbzz4UAAAAAAaBgox1R7jU0axiGneLDkOA-PKf"></div>
+							<div class="g-recaptcha" data-theme="dark" data-sitekey="{{.Other}}"></div>
 						</td>
 					</tr>
 					<tr class="form">
@@ -58,7 +58,7 @@
 							an evil robot that is trying to flood the website
 							with fake accounts<br/><hr/>
 						</td>
-					</tr>
+					</tr>{{end}}
 					<tr class="form">
 						<td colspan="2" style="text-align: right;">
 							<input type="submit" value="Register" class="button_highlight"/>

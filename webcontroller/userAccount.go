@@ -8,6 +8,37 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+func (wc *WebController) serveRegister(
+	w http.ResponseWriter,
+	r *http.Request,
+	p httprouter.Params,
+) {
+	var tpld = wc.newTemplateData(w, r)
+
+	// This only runs on the first request
+	if wc.captchaSiteKey == "" {
+		var api = pixelapi.New(wc.conf.APIURLInternal, "")
+		capt, err := api.GetRecaptcha()
+		if err != nil {
+			log.Error("Error getting recaptcha key: %s", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		if capt.SiteKey == "" {
+			wc.captchaSiteKey = "none"
+		} else {
+			wc.captchaSiteKey = capt.SiteKey
+		}
+	}
+
+	tpld.Other = wc.captchaSiteKey
+
+	err := wc.templates.Get().ExecuteTemplate(w, "register", tpld)
+	if err != nil {
+		log.Error("Error executing template '%s': %s", "register", err)
+	}
+}
+
 func (wc *WebController) serveLogout(
 	w http.ResponseWriter,
 	r *http.Request,
