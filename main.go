@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"net/http"
 
 	web "fornaxian.com/pixeldrain-web/init"
@@ -13,11 +14,15 @@ import (
 // be directly embedded by another Go project. And when deployed it will run
 // independently.
 func main() {
+	var listen = flag.String("listen", ":8081", "The address which the API server will listen on")
+	var prefix = flag.String("prefix", "", "Prefix that comes before the API URL")
+	flag.Parse()
+
 	r := httprouter.New()
 
-	web.Init(r, "", true)
+	web.Init(r, *prefix, true)
 
-	err := http.ListenAndServe(":8081", r)
+	err := http.ListenAndServe(*listen, r)
 
 	if err != nil {
 		log.Error("Can't listen and serve Pixeldrain Web: %v", err)
