@@ -18,10 +18,10 @@ type OGData struct {
 // FromFile populates the OGData object from FileInfo. It returns itself for
 // compactness.
 func (d *OGData) FromFile(f pixelapi.FileInfo) *OGData {
-	d.Title = f.FileName
+	d.Title = f.Name
 	d.Type = "website"
 	d.SiteName = "Pixeldrain"
-	d.Description = "View " + f.FileName + " on Pixeldrain"
+	d.Description = "View " + f.Name + " on Pixeldrain"
 	d.URL = "/u/" + f.ID
 	d.Image = "/api/file/" + f.ID + "/thumbnail"
 	return d

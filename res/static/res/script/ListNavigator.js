@@ -127,7 +127,7 @@ var ListNavigator = {
 
 		for (i = startPos; i <= endPos; i++){
 			var thumb = "/api/file/" + this.data[i].id + "/thumbnail";
-			var name = this.data[i].file_name;
+			var name = this.data[i].name;
 
 			var itemHtml = escapeHTML(name) + "<br>"
 				+ "<img src=\"" + thumb + "\" "
@@ -144,8 +144,8 @@ var ListNavigator = {
 
 		$.each(data, function(i, item){
 			var filename;
-			if(item.file_name !== "null"){
-				filename = item.file_name;
+			if(item.name !== "null"){
+				filename = item.name;
 			}else{
 				filename = "Removed File";
 			}

@@ -36,28 +36,30 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	)
 	wc.templates.ParseTemplates(false)
 
+	var p = prefix
+
 	// Serve static files
-	r.ServeFiles(prefix+"/res/*filepath", http.Dir(wc.staticResourceDir+"/res"))
+	r.ServeFiles(p+"/res/*filepath", http.Dir(wc.staticResourceDir+"/res"))
 
 	// General navigation
-	r.GET(prefix+"/" /*                */, wc.serveTemplate("home", false))
-	r.GET(prefix+"/favicon.ico" /*     */, wc.serveFile("/favicon.ico"))
-	r.GET(prefix+"/global.css" /*      */, wc.globalCSSHandler)
-	r.GET(prefix+"/api" /*             */, wc.serveTemplate("apidoc", false))
-	r.GET(prefix+"/history" /*         */, wc.serveTemplate("history_cookies", false))
-	r.GET(prefix+"/u/:id" /*           */, wc.serveFileViewer)
-	r.GET(prefix+"/u/:id/preview" /*   */, wc.serveFilePreview)
-	r.GET(prefix+"/l/:id" /*           */, wc.serveListViewer)
-	r.GET(prefix+"/t" /*               */, wc.serveTemplate("paste", false))
+	r.GET(p+"/" /*                */, wc.serveTemplate("home", false))
+	r.GET(p+"/favicon.ico" /*     */, wc.serveFile("/favicon.ico"))
+	r.GET(p+"/global.css" /*      */, wc.globalCSSHandler)
+	r.GET(p+"/api" /*             */, wc.serveTemplate("apidoc", false))
+	r.GET(p+"/history" /*         */, wc.serveTemplate("history_cookies", false))
+	r.GET(p+"/u/:id" /*           */, wc.serveFileViewer)
+	r.GET(p+"/u/:id/preview" /*   */, wc.serveFilePreview)
+	r.GET(p+"/l/:id" /*           */, wc.serveListViewer)
+	r.GET(p+"/t" /*               */, wc.serveTemplate("paste", false))
 
 	// User account pages
-	r.GET(prefix+"/register" /*        */, wc.serveRegister)
-	r.GET(prefix+"/login" /*           */, wc.serveTemplate("login", false))
-	r.GET(prefix+"/logout" /*          */, wc.serveTemplate("logout", true))
-	r.POST(prefix+"/logout" /*         */, wc.serveLogout)
-	r.GET(prefix+"/user" /*            */, wc.serveTemplate("user_home", true))
-	r.GET(prefix+"/user/files" /*      */, wc.serveTemplate("user_files", true))
-	r.GET(prefix+"/user/filemanager" /**/, wc.serveTemplate("file_manager", true))
+	r.GET(p+"/register" /*        */, wc.serveRegister)
+	r.GET(p+"/login" /*           */, wc.serveTemplate("login", false))
+	r.GET(p+"/logout" /*          */, wc.serveTemplate("logout", true))
+	r.POST(p+"/logout" /*         */, wc.serveLogout)
+	r.GET(p+"/user" /*            */, wc.serveTemplate("user_home", true))
+	r.GET(p+"/user/files" /*      */, wc.serveTemplate("user_files", true))
+	r.GET(p+"/user/filemanager" /**/, wc.serveTemplate("file_manager", true))
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 
@@ -97,6 +99,7 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 
 func (wc *WebController) serveNotFound(w http.ResponseWriter, r *http.Request) {
 	log.Debug("Not Found: %s", r.URL)
+	w.WriteHeader(http.StatusNotFound)
 	wc.templates.Get().ExecuteTemplate(w, "404", wc.newTemplateData(w, r))
 }
 

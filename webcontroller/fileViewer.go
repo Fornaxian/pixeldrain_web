@@ -61,7 +61,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		})
 	} else {
 		err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
-			"Title":       fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].FileName),
+			"Title":       fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].Name),
 			"APIResponse": finfo[0],
 			"Type":        "file",
 			"OGData":      ogData.FromFile(*finfo[0]),
@@ -80,10 +80,10 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter) {
 	wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
 		"APIResponse": map[string]interface{}{
 			"id":            "demo",
-			"file_name":     "Demo file",
+			"name":          "Demo file",
 			"date_upload":   "2017-01-01 12:34:56",
 			"date_lastview": "2017-01-01 12:34:56",
-			"file_size":     123456789,
+			"size":          123456789,
 			"views":         1,
 			"mime_type":     "text/demo",
 			"description":   "A file to demonstrate the viewer page",

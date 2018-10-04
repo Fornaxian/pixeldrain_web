@@ -39,9 +39,11 @@
 <pre>HTTP 422: Unprocessable Entity
 {
 	"success": false,
-	"value": "file_not_found",
-	"id": "Oh42No", // The file you tried to add with this ID does not exist
-	"message": "File Oh42No was not found in the database."
+	"value": "list_file_not_found",
+	"message": "File Oh42No was not found in the database.",
+	"extra": {
+		"file_not_found": "0h42No" // The file you tried to add with this ID does not exist
+	}
 }
 </pre>
 <pre>HTTP 413: Payload too large
@@ -124,7 +126,7 @@
 		{
 			"detail_href": "/file/_SqVWi/info",
 			"id": "_SqVWi",
-			"file_name": "01 Holy Wars... The Punishment Due.mp3",
+			"name": "01 Holy Wars... The Punishment Due.mp3",
 			"description": "",
 			"date_created": 1513033304,
 			"date_last_view": 1513033304
@@ -132,7 +134,7 @@
 		{
 			"detail_href": "/file/RKwgZb/info",
 			"id": "RKwgZb",
-			"file_name": "02 Hangar 18.mp3",
+			"name": "02 Hangar 18.mp3",
 			"description": "",
 			"date_created": 1513033304,
 			"date_last_view": 1513033304
@@ -140,7 +142,7 @@
 		{
 			"detail_href": "/file/DRaL_e/info",
 			"id": "DRaL_e",
-			"file_name": "03 Take No Prisoners.mp3",
+			"name": "03 Take No Prisoners.mp3",
 			"description": "",
 			"date_created": 1513033304,
 			"date_last_view": 1513033304

@@ -50,8 +50,8 @@
 				{{$files := .PixelAPI.UserFiles 0 20}}
 				{{range $files.Files}}
 				<a class="file_button" href="/u/{{.ID}}" target="_blank">
-					<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.FileName}}" />
-					{{.FileName}}
+					<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.File}}" />
+					{{.File}}
 				</a>
 				{{end}}
 			</div>

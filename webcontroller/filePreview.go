@@ -78,7 +78,7 @@ func (f filePreview) run(inf *pixelapi.FileInfo) string {
 		return f.pdf()
 	case
 		"application/octet-stream": // Fallback for when mime type not recognized
-		switch filepath.Ext(f.FileInfo.FileName) {
+		switch filepath.Ext(f.FileInfo.Name) {
 		case
 			".mp3":
 			return f.audio()
@@ -110,7 +110,7 @@ func (f filePreview) audio() string {
 </audio>
 </div>
 <script src="/res/viewer-scripts/audio.js"></script>`,
-		f.FileInfo.FileName,
+		f.FileInfo.Name,
 		f.FileURL,
 	)
 }
@@ -138,7 +138,7 @@ func (f filePreview) text() string {
 <pre class="pre-container %s" style="width: 100%%;">%s</pre>
 </div>`
 
-	if f.FileInfo.FileSize > 1e6 { // Prevent out of memory errors
+	if f.FileInfo.Size > 1e6 { // Prevent out of memory errors
 		return fmt.Sprintf(htmlOut, "",
 			"File is too large to view online.\nPlease download and view it locally.",
 		)
@@ -191,7 +191,7 @@ seamless="seamless" frameborder="0" allowtransparency="true"
 func (f filePreview) def() string {
 	return fmt.Sprintf(
 		`%s<br/>%s<br/><a href="%s"><img src="%s" class="image"></a>`,
-		f.FileInfo.FileName,
+		f.FileInfo.Name,
 		f.FileInfo.MimeType,
 		f.DownloadURL,
 		f.APIURL+f.FileInfo.ThumbnailHREF,

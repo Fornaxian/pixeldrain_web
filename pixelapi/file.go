@@ -15,11 +15,11 @@ func (p *PixelAPI) GetFile(id string) (io.ReadCloser, error) {
 type FileInfo struct {
 	Success       bool      `json:"success"`
 	ID            string    `json:"id"`
-	FileName      string    `json:"file_name"`
+	Name          string    `json:"name"`
+	Size          uint64    `json:"size"`
+	Views         int       `json:"views"`
 	DateUpload    time.Time `json:"date_upload"`
-	DateLastview  time.Time `json:"date_last_view"`
-	FileSize      uint64    `json:"file_size"`
-	Views         uint      `json:"views"`
+	DateLastView  time.Time `json:"date_last_view"`
 	MimeType      string    `json:"mime_type"`
 	MimeImage     string    `json:"mime_image"`
 	ThumbnailHREF string    `json:"thumbnail_href"`

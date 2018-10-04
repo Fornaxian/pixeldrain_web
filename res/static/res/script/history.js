@@ -50,8 +50,8 @@ function historyAddItem(json) {
 
 	var uploadItem =  '<a href="/u/'+ json.id +'" target="_blank" class="file_button">'
 		+ '<img src="'+ apiEndpoint + json.thumbnail_href + '"'
-		+ "alt=\"" + json.file_name + "\" />"
-		+ '<span style="color: var(--highlight_color);">'+json.file_name+'</span>'
+		+ "alt=\"" + json.name + "\" />"
+		+ '<span style="color: var(--highlight_color);">'+json.name+'</span>'
 		+ "<br/>"
 		+ date.getFullYear() + "-"
 		+ ("00" + (date.getMonth() + 1)).slice(-2) + "-"
