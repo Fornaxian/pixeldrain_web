@@ -208,7 +208,7 @@ pre{
 	overflow-y: scroll;
 }
 
-.file_button, .file_button:hover{
+.file_button{
 	position: relative;
 	box-sizing: border-box;
 	width: 310px;
@@ -224,6 +224,11 @@ pre{
 	text-align: left;
 	line-height: 120%;
 	display: inline-block;
+}
+.file_button:hover{
+	box-shadow: 0px 0px 10px 3px var(--highlight_color);
+	text-decoration: none;
+	color: var(--text_color);
 }
 .file_button > img{
 	max-height: 60px;
