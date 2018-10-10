@@ -166,7 +166,7 @@
 		</div>
 
 		<div id="filepreview">
-			Loading...
+			<img src="/res/img/misc/loadthink.gif" style="margin-top: 20%; width: 200px; height: 200px;" />
 		</div>
 
 		<script src="/res/script/jquery.js"></script>
@@ -181,7 +181,7 @@
 		<script>
 			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.
 			// Just to slice another few milliseconds from the load time :)
-			Viewer.init('{{.Type}}', {{.APIResponse}});
+			//Viewer.init('{{.Type}}', {{.APIResponse}});
 		</script>
 
 		{{template "analytics"}}

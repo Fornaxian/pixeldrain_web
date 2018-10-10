@@ -13,7 +13,7 @@
 				top:100px;
 				right: 100px;
 				min-width: 600px;
-				max-width: 1400px;
+				max-width: 1000px;
 			}
 			.file_manager > .nav_bar {
 				display: flex;
@@ -24,9 +24,22 @@
 			.file_manager > .nav_bar > button       {flex: 0;}
 			.file_manager > .nav_bar > .breadcrumbs {flex: 1; margin: 1px 10px; min-width: 100px;}
 			.file_manager > .status_bar             {text-align: left;}
+			.file_manager > .directory_area {
+				margin: 0 -8px 0 -8px;
+				padding: 5px;
+				max-height: 500px;
+				overflow-x: hidden;
+				overflow-y: scroll;
+				text-align: left;
+			}
 
-			.file_button       {height: 40px !important;}
-			.file_button > img {max-height: 40px !important;}
+			.file_button {
+				height: 20px;
+				box-shadow: none;
+				background: none;
+				margin: 2px;
+			}
+			.file_button > img {height: 100% !important;}
 		</style>
 	</head>
 
@@ -47,11 +60,11 @@
 				<button class="button_red">✕</button>
 			</div>
 			<div class="directory_area">
-				{{$files := .PixelAPI.UserFiles 0 20}}
+				{{$files := .PixelAPI.UserFiles 0 1000}}
 				{{range $files.Files}}
 				<a class="file_button" href="/u/{{.ID}}" target="_blank">
-					<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.File}}" />
-					{{.File}}
+					<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.Name}}" />
+					{{.Name}}
 				</a>
 				{{end}}
 			</div>

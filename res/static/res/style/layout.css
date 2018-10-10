@@ -291,7 +291,7 @@ input[type="color"]:active,
 select:active{
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 3px 3px 6px var(--shadow_color);
-	padding: 8px 8px 4px 12px;
+	padding: 9px 5px 3px 11px; /* Exactly 3px offset compared to the inactive padding to give a depth effect */
 }
 .button_full_width      {width: calc(100% - 4px);}
 .button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: var(--highlight_text_color) !important;}
