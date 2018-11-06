@@ -39,7 +39,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	var p = prefix
 
 	// Serve static files
-	r.ServeFiles(p+"/res/*filepath", http.Dir(wc.staticResourceDir+"/res"))
+	r.ServeFiles(p+"/res/*filepath", http.Dir(wc.staticResourceDir))
 
 	// General navigation
 	r.GET(p+"/" /*                */, wc.serveTemplate("home", false))
