@@ -80,6 +80,11 @@
 			Returns the full file associated with the ID. Supports
 			byte range requests.
 		</p>
+		<p>
+				When '?download' is added to the URL the server will send an
+				attachment header instead of inline rendering, which causes the
+				browser to show a 'Save File' dialog.
+		</p>
 		<h3>Parameters</h3>
 		<table>
 			<tr>
@@ -94,22 +99,15 @@
 				<td>URL</td>
 				<td>ID of the file to request</td>
 			</tr>
+			<tr>
+				<td>download</td>
+				<td>false</td>
+				<td>URL</td>
+				<td>Sends file attachment instead of inline</td>
+			</tr>
 		</table>
 		<h3>Returns</h3>
 		A file output stream.
-	</div>
-</details>
-{{end}}
-{{define "api-file-id-download-get"}}
-<details class="api_doc_details request_get">
-	<summary><span class="method">GET</span>/file/{id}/download</summary>
-	<div>
-		<h3>Description</h3>
-		<p>
-			Same as GET /file/{id}, but with File Transfer HTTP
-			headers. Will trigger a save file dialog when opened in
-			a web browser. Also supports byte range requests.
-		</p>
 	</div>
 </details>
 {{end}}

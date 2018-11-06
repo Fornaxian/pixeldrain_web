@@ -1,8 +1,8 @@
-/* 
+/*
  * Time for a more Java-like approach.
- *  
+ *
  *  Feel free to use this of course
- *  
+ *
  *  Made by Fornax
  */
 
@@ -36,13 +36,13 @@ var Toolbar = {
 		}
 	},
 	download: function () {
-		$("#frmDownload").attr("src", "/api/file/" + Viewer.currentFile + "/download");
+		$("#frmDownload").attr("src", "/api/file/" + Viewer.currentFile + "?download");
 	},
 	downloadList: function(){
 		if(!Viewer.isList){
 			return;
 		}
-		
+
 		$("#frmDownload").attr("src", "/api/list/" + Viewer.listId + "/zip");
 	},
 	copyUrl: function () {
@@ -59,7 +59,7 @@ var Toolbar = {
 			$("#btnCopy>span").text("Error!");
 			alert("Your browser does not support copying text.");
 		}
-		
+
 		// Return to normal
 		setTimeout(function(){
 			$("#btnCopy>span").text("Copy");

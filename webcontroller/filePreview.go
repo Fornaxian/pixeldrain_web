@@ -49,7 +49,7 @@ type filePreview struct {
 func (f filePreview) run(inf *pixelapi.FileInfo) string {
 	f.FileInfo = inf
 	f.FileURL = f.APIURL + "/file/" + f.FileInfo.ID
-	f.DownloadURL = f.APIURL + "/file/" + f.FileInfo.ID + "/download"
+	f.DownloadURL = f.APIURL + "/file/" + f.FileInfo.ID + "?download"
 
 	if strings.HasPrefix(f.FileInfo.MimeType, "image") {
 		return f.image()
