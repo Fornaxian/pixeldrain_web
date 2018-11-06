@@ -7,13 +7,31 @@
 	--highlight_border: inset 0px 0px 5px 1px var(--highlight_color), 0px 0px 1px 0px var(--highlight_color);
 }
 
+/* Fonts */
+
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Ubuntu Regular'), local('Ubuntu-Regular'), local('Ubuntu'), url(/res/misc/Ubuntu-R.ttf) format('ttf');
+	unicode-range: U+0000-FFFF;
+}
+@font-face {
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 100;
+	src: local('Lato Hairline'), local('Lato-Hairline'), url(/res/misc/Lato.woff2) format('woff2');
+}
+
+/* Page rendering configuration */
+
 html{height: 100%;}
 
 body{
 	background-color: var(--background_color);
 	background-repeat: repeat;
 	font-size: 16px;
-	font-family: 'Ubuntu', sans-serif;
+	font-family: 'Ubuntu';
 	margin: 0;
 	text-align: center; /* Center the header and body */
 	line-height: 1.5em;
