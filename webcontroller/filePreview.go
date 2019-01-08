@@ -53,14 +53,11 @@ func (f filePreview) run(inf *pixelapi.FileInfo) string {
 
 	if strings.HasPrefix(f.FileInfo.MimeType, "image") {
 		return f.image()
-	}
-	if strings.HasPrefix(f.FileInfo.MimeType, "video") {
+	} else if strings.HasPrefix(f.FileInfo.MimeType, "video") {
 		return f.video()
-	}
-	if strings.HasPrefix(f.FileInfo.MimeType, "audio") {
+	} else if strings.HasPrefix(f.FileInfo.MimeType, "audio") {
 		return f.audio()
-	}
-	if strings.HasPrefix(f.FileInfo.MimeType, "text") {
+	} else if strings.HasPrefix(f.FileInfo.MimeType, "text") {
 		return f.text()
 	}
 
