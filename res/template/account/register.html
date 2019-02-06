@@ -77,7 +77,12 @@
 			var email   = document.getElementById("register_email").value;
 			var passwd1 = document.getElementById("register_password1").value;
 			var passwd2 = document.getElementById("register_password2").value;
-			var capt    = grecaptcha.getResponse();
+			var capt;
+			try {
+				capt = grecaptcha.getResponse();
+			} catch (err) {
+				console.log("Error occurred while reading captcha: "+err);
+			}
 
 			if (passwd1 !== passwd2) {
 				alert("Passwords do not match! Good thing we checked.");
