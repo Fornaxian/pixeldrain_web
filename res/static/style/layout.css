@@ -86,7 +86,7 @@ body{
 .navigation .icon {
 	display: none;
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 35em) {
 	.navigation a:not(:first-child) {display: none;}
 	.navigation a.icon {
 		float: right;
@@ -163,7 +163,7 @@ a:hover {color: var(--highlight_color); text-decoration: underline;}
 table:not(.form) {border-collapse: collapse; width: 100%;}
 tr:not(.form)    {border-bottom: 1px var(--accent_color_medium_border) solid;}
 tr > td          {padding: 0.5em;}
-@media(max-width: 28em) {
+@media(max-width: 30em) {
 	tr > td {
 		box-sizing: border-box;
 		float: left;

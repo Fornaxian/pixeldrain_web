@@ -4,11 +4,14 @@ import (
 	"html/template"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/Fornaxian/log"
 )
 
+// TemplateManager parses templates and provides utility functions to the
+// templates' scripting language
 type TemplateManager struct {
 	templates *template.Template
 
@@ -18,6 +21,7 @@ type TemplateManager struct {
 	debugModeEnabled    bool
 }
 
+// NewTemplateManager creates a new template manager
 func NewTemplateManager(templateDir, externalAPIEndpoint string, debugMode bool) *TemplateManager {
 	return &TemplateManager{
 		templateDir:         templateDir,
@@ -72,17 +76,31 @@ func (tm *TemplateManager) funcMap() template.FuncMap {
 		"bgPatternCount": tm.bgPatternCount,
 		"debugMode":      tm.debugMode,
 		"apiUrl":         tm.apiURL,
+		"pageNr":         tm.pageNr,
+		"add":            tm.add,
+		"sub":            tm.sub,
 	}
 }
 
 func (tm *TemplateManager) bgPatternCount() uint8 {
 	return uint8(time.Now().UnixNano() % 17)
 }
-
 func (tm *TemplateManager) debugMode() bool {
 	return tm.debugModeEnabled
 }
-
 func (tm *TemplateManager) apiURL() string {
 	return tm.externalAPIEndpoint
+}
+func (tm *TemplateManager) pageNr(s string) (nr int) {
+	// Atoi returns 0 on error, which is fine for page numbers
+	if nr, _ = strconv.Atoi(s); nr < 0 {
+		return 0
+	}
+	return nr
+}
+func (tm *TemplateManager) add(a, b int) int {
+	return a + b
+}
+func (tm *TemplateManager) sub(a, b int) int {
+	return a - b
 }

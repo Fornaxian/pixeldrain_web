@@ -3,6 +3,7 @@ package webcontroller
 import (
 	"html/template"
 	"net/http"
+	"net/url"
 	"time"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
@@ -17,8 +18,9 @@ type TemplateData struct {
 	APIEndpoint   template.URL
 	PixelAPI      *pixelapi.PixelAPI
 
-	Other interface{}
-	Title string
+	Other    interface{}
+	URLQuery url.Values
+	Title    string
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) *TemplateData {
@@ -26,6 +28,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		Authenticated: false,
 		Username:      "",
 		APIEndpoint:   template.URL(wc.conf.APIURLExternal),
+		URLQuery:      r.URL.Query(),
 	}
 
 	if key, err := wc.getAPIKey(r); err == nil {

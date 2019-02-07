@@ -1,21 +1,15 @@
-{{define "user_files"}}<!DOCTYPE html>
+{{define "user_lists"}}<!DOCTYPE html>
 <html>
 	<head>
-		{{template "meta_tags" "Files"}}
+		{{template "meta_tags" "Lists"}}
 		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 
 	<body>
 		{{template "menu" .}}
-		<div class="highlight_middle border_bottom">
-			These files were uploaded while logged in to your pixeldrain account,
-			<a href="/history">click here</a> to view files uploaded anonymously
-			in this browser.
-		</div>
-
 		{{$limit := 100}}
 		{{$page := .URLQuery.Get "page" | pageNr}}
-		{{$files := .PixelAPI.UserFiles $page $limit}}
+		{{$lists := .PixelAPI.UserLists $page $limit}}
 		<div class="highlight_dark">
 			{{if ne $page 0}}
 				<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
@@ -23,7 +17,7 @@
 				<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
 			{{end}}
 			Page {{$page}}
-			{{if len $files.Files | eq $limit}}
+			{{if len $lists.Lists | eq $limit}}
 				<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
 				<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
 				<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
@@ -31,12 +25,13 @@
 		</div>
 		<br/>
 
-		{{range $files.Files}}
-		<a class="file_button" href="/u/{{.ID}}" target="_blank">
-			<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.Name}}" />
-			<span style="color: var(--highlight_color);">{{.Name}}</span>
+		{{range $lists.Lists}}
+		<a class="file_button" href="/l/{{.ID}}" target="_blank">
+			<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail" alt="{{.Title}}" />
+			<span style="color: var(--highlight_color);">{{.Title}}</span>
+			({{.FileCount}} Files)
 			<br/>
-			{{.DateUpload.Format "2006-01-02 15:04:05"}}
+			{{.DateCreated.Format "2006-01-02 15:04:05"}}
 		</a>
 		{{end}}
 
@@ -48,7 +43,7 @@
 				<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
 			{{end}}
 			Page {{$page}}
-			{{if len $files.Files | eq $limit}}
+			{{if len $lists.Lists | eq $limit}}
 				<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
 				<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
 				<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>

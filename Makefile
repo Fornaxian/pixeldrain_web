@@ -1,9 +1,9 @@
 run:
 	${MAKE} -j2 backgroundrun backgroundts
 build:
-	tsc res/static/res/typescript/lib/*.ts --outFile res/static/res/script/pixellib.js \
-	    res/static/res/typescript/home/*.ts \
-	    res/static/res/typescript/lib/*.ts --outFile res/static/res/script/home.js
+	tsc res/static/typescript/lib/*.ts --outFile res/static/script/pixellib.js \
+	    res/static/typescript/home/*.ts \
+	    res/static/typescript/lib/*.ts --outFile res/static/script/home.js
 	go build main.go -o pixeldrain-web
 
 deps:
@@ -12,8 +12,8 @@ deps:
 backgroundrun:
 	go run main.go
 backgroundts:
-	tsc --watch --project res/static/res/typescript/home
-	            --project res/static/res/typescript/textupload
+	tsc --watch --project res/static/typescript/home
+	            --project res/static/typescript/textupload
 
 docker:
 	go build -o docker/pixeldrain-web docker/main.go
