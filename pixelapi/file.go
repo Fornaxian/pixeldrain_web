@@ -17,7 +17,7 @@ type FileInfo struct {
 	ID            string    `json:"id"`
 	Name          string    `json:"name"`
 	Size          uint64    `json:"size"`
-	Views         int       `json:"views"`
+	Views         int64     `json:"views"`
 	DateUpload    time.Time `json:"date_upload"`
 	DateLastView  time.Time `json:"date_last_view"`
 	MimeType      string    `json:"mime_type"`
@@ -26,9 +26,9 @@ type FileInfo struct {
 }
 
 // GetFileInfo gets the FileInfo from the pixeldrain API
-func (p *PixelAPI) GetFileInfo(id string) (resp *FileInfo, err error) {
+func (p *PixelAPI) GetFileInfo(id string, urlParam string) (resp *FileInfo, err error) {
 	resp = &FileInfo{}
-	err = p.jsonRequest("GET", p.apiEndpoint+"/file/"+id+"/info", resp)
+	err = p.jsonRequest("GET", p.apiEndpoint+"/file/"+id+"/info"+urlParam, resp)
 	if err != nil {
 		return nil, err
 	}

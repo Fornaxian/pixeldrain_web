@@ -67,6 +67,6 @@ var Toolbar = {
 		}, 10000);
 	},
 	setViews: function(amount){
-		$("#views").html(amount);
+		$("#views").html("Views: "+amount);
 	}
 };

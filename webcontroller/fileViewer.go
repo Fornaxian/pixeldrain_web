@@ -30,7 +30,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	var api = pixelapi.New(wc.conf.APIURLInternal, "")
 	var finfo []*pixelapi.FileInfo
 	for _, id := range ids {
-		inf, err := api.GetFileInfo(id)
+		inf, err := api.GetFileInfo(id, "")
 		if err != nil {
 			continue
 		}

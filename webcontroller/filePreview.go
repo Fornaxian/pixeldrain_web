@@ -24,7 +24,7 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		return
 	}
 	var api = pixelapi.New(wc.conf.APIURLInternal, "")
-	inf, err := api.GetFileInfo(p.ByName("id")) // TODO: Error handling
+	inf, err := api.GetFileInfo(p.ByName("id"), "?should_a_view_be_added=yes_gimme") // TODO: Error handling
 	if err != nil {
 		wc.serveNotFound(w, r)
 		return
