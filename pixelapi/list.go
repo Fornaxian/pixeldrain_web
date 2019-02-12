@@ -25,6 +25,7 @@ type ListFile struct {
 	Description  string    `json:"description"`
 	DateCreated  time.Time `json:"date_created"`
 	DateLastView time.Time `json:"date_last_view"`
+	Views        int64     `json:"views"`
 }
 
 // GetList get a List from the pixeldrain API. Errors will be available through

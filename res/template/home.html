@@ -16,6 +16,8 @@
 				<input id="file_input_field" type="file" name="file" multiple="multiple"/>
 				<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
 				<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button><br/>
+				By uploading files to Pixeldrain you accept that a cookie will
+				be placed in your web browser. More information below.
 
 				<div id="uploads_queue" class="uploads_queue"></div>
 			</div>
@@ -23,29 +25,92 @@
 				<button id="btn_create_list">Create list with uploaded files</button>
 			</div>
 
-			<h1>Pixeldrain Public Beta</h1>
+			<h1>What is Pixeldrain?</h1>
 			<p>
-				Note that this is an experimental version of Pixeldrain server,
-				the Pixeldrain backend has been completely redesigned from the
-				ground up to be more extensible, efficient and scalable. The
-				server this web application runs on is considered a testing
-				environment. Database resets can happen when architectural
-				changes need to be applied.
+				Pixeldrain is a file sharing website built for speed and ease of
+				use.
+			</p>
+
+			<h2>Questions and Answers</h2>
+
+			<h3>For how long will my files be stored?</h3>
+			<p>
+				Files will be removed if they have not been viewed for 90 days.
+				A view is counted when someone visits the file's download page
+				(pixeldrain.com/u/somefile) or views the file through a list the
+				file is included in (pixeldrain.com/l/somelist).
 			</p>
 			<p>
-				The Sia integration is still very experimental and could
-				fail, resulting in data loss. Do not upload files to this server
-				that you cannot afford to lose. Use the stable main server instead:
-				<a href="https://pixeldrain.com">https://pixeldrain.com</a>.
+				You cannot delete files yourself. Once a file has been uploaded
+				to pixeldrain it will stay there for at least 90 days. If you
+				accidentally upload something you shouldn't have, just don't
+				share the link. The file will expire eventually. File links are
+				not indexed or published anywhere. As long as you don't share it
+				nobody will see it.
+			</p>
+
+			<h3>What cookies does pixeldrain use?</h3>
+			<p>
+				When uploading a file pixeldrain will install a cookie named
+				'pduploads'. This cookie keeps a dot-separated list of all files
+				you have uploaded anonymously in this browser. This cookie is
+				<b>only</b> used for viewing your upload history.
 			</p>
 			<p>
-				But don't let all that stop you from trying the new Pixeldrain!
-				The upload restrictions that the main site has haven't been
-				implemented in this version yet, so you can upload as much as
-				you want. The server only has 256 GiB of space available, if it
-				starts running out of space files will be purged from the local
-				filesystem and served from Sia on the next request.
+				When logging in to a pixeldrain account a cookie named
+				'pd_auth_key' will be installed. This cookie keeps your login
+				session active. When you delete it you will be logged out of
+				your account.
 			</p>
+			<p>
+				When you use the style selector at the bottom of this page a
+				cookie called 'style' will be set. This cookie controls the
+				appearance of the website for you.
+			</p>
+
+			<h3>Do I need to register an account?</h3>
+			<p>
+				Not if you don't want to. You're free to use pixeldrain
+				completely anonymously. Without a pixeldrain account you can
+				upload files, download files and create lists of files. And view
+				your uploaded files on the <a href="/history">history page</a>.
+				This page only shows files which were uploaded anonymously in
+				this web browser.
+			</p>
+			<p>
+				By registering an account on pixeldrain you will be able to
+				access your files from any device with a web browser. Files you
+				upload and lists you create will be linked to your pixeldrain
+				account and will show up on your <a href="/user">personal home
+				page</a>.
+			</p>
+
+			<h3>Does pixeldrain cost any money?</h3>
+			<p>
+				No, pixeldrain is completely free at the moment. While there is
+				an advertisement on the file downloading page, it doesn't
+				generate nearly enough revenue to pay for maintaining this
+				service. That's why I'd really appreciate it if you could spare
+				some coins. Possible methods for donating are:
+			</p>
+			<ul>
+				<li>Bitcoin: <a href="bitcoin:1Ne7hGuvnfz9EFTRD3PLWVeaJTX9oA1QUr?label=Pixeldrain%20Donation">1Ne7hGuvnfz9EFTRD3PLWVeaJTX9oA1QUr</a></li>
+				<li>
+					Siacoin:
+					26117c19ca3975b315d663dcbbc19cf9c07274f441689d4392ed380b2337589ef1aacfbdc93f
+					(this address points directly at the storage backend.
+					Donations will be used for paying storage contracts with Sia
+					hosts)
+				</li>
+				<li>PayPal:
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+						<input type="hidden" name="cmd" value="_s-xclick" />
+						<input type="hidden" name="hosted_button_id" value="WU49A5NHPAZ9G" />
+						<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!" />
+						<img alt="" border="0" src="https://www.paypalobjects.com/nl_NL/i/scr/pixel.gif" width="1" height="1" />
+					</form>
+				</li>
+			</ul>
 
 			<h2>Legality</h2>
 			<p>
@@ -64,59 +129,6 @@
 				For other questions you can reach me at
 				<a href="mailto:support@pixeldrain.com">support@pixeldrain.com</a>
 			</p>
-			<h2>Funding</h2>
-			<p>
-				I'm currently paying for the Sia storage myself, since the site
-				doesn't have a revenue model yet. I'd appreciate it if you could
-				send some Siacoins my way:
-				26117c19ca3975b315d663dcbbc19cf9c07274f441689d4392ed380b2337589ef1aacfbdc93f.
-				This address goes directly to the wallet on this server which is
-				used for uploading files to Sia :). I promise you it will be put
-				to good use!
-			</p>
-			<h2>Features</h2>
-			<p>
-				Here's a list of features this version of Pixeldrain has.
-			</p>
-			<h3>New</h3>
-			<ul>
-				<li>Files are replicated to the Sia network</li>
-				<li>New API and documentation (<a href="/api">Check it out!</a>)</li>
-				<li>Overhauled design, no ugly white glow around the site body</li>
-				<li>Directory management API</li>
-				<li>Multiple complete website styles</li>
-			</ul>
-			<h3>Completed</h3>
-			<ul>
-				<li>File upload / Text upload</li>
-				<li>List creation</li>
-				<li>Registration / Login system</li>
-			</ul>
-			<h3>Upcoming</h3>
-			<ul>
-				<li>File and list management API</li>
-				<li>File metadata, allowing applications to attach their own properties to a file (descriptions, icons, views, etc)</li>
-				<li>Buttons to favorite and copy files to your account, so you can find them back later</li>
-				<li>Pasting files from the clipboard</li>
-				<li>Current viewer count on files/lists</li>
-				<li>File revisions (update a file without changing the URL)</li>
-				<li>Proper file manager with directories (in progress)</li>
-				<li>Plenty more!</li>
-			</ul>
-			<h3>Missing</h3>
-			<p>
-				Features which are in
-				<a href="https://pixeldrain.com">https://pixeldrain.com</a>, but
-				not in <a href="https://sia.pixeldrain.com">https://sia.pixeldrain.com</a>.
-				These will be added soon enough.
-			</p>
-			<ul>
-				<li>Zip explorer</li>
-				<li>Some video formats (mime type detection is not complete)</li>
-				<li>Bandwidth Tracker</li>
-				<li>View counter</li>
-				<li>Seasonal themes</li>
-			</ul>
 
 			<h2>Style selector</h2>
 			<input type="radio" id="style_default" name="style"><label for="style_default">Default Pixeldrain Style</label><br/>
