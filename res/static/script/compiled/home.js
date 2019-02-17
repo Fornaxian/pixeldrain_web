@@ -1,3 +1,8 @@
+var FinishedUpload = /** @class */ (function () {
+    function FinishedUpload() {
+    }
+    return FinishedUpload;
+}());
 var uploader = null;
 var finishedUploads = new Array();
 var totalUploads = 0;
@@ -22,7 +27,10 @@ var UploadProgressBar = /** @class */ (function () {
             + 'var(--file_background_color) ' + ((progress * 100) + 1) + '%)');
     };
     UploadProgressBar.prototype.onFinished = function (id) {
-        finishedUploads[this.queueNum] = id;
+        finishedUploads[this.queueNum] = {
+            id: id,
+            name: this.file.name
+        };
         this.uploadDiv.setAttribute('style', 'background: var(--file_background_color)');
         this.uploadDiv.setAttribute('href', '/u/' + id);
         this.uploadDiv.setAttribute("target", "_blank");
@@ -47,9 +55,60 @@ function handleUploads(files) {
         uploader.uploadFile(new UploadProgressBar(files.item(i)));
     }
 }
-/*
- * Form upload handlers
- */
+// List creation
+function createList(title, anonymous) {
+    if (uploader.uploading()) {
+        var cont = confirm("Some files have not finished uploading yet. Creating a list now " +
+            "will exclude those files.\n\nContinue?");
+        if (!cont) {
+            return;
+        }
+    }
+    var postData = {
+        "title": title,
+        "anonymous": anonymous,
+        "files": new Array()
+    };
+    for (var i = 0; i < finishedUploads.length; i++) {
+        postData.files.push({
+            "id": finishedUploads[i].id
+        });
+    }
+    $.ajax({
+        url: "/api/list",
+        contentType: "application/json",
+        method: "POST",
+        data: JSON.stringify(postData),
+        dataType: "json",
+        success: function (response) {
+            var resultString = "<div class=\"file_button\">"
+                + '<img src="' + apiEndpoint + '/list/' + response.id + '/thumbnail"/>'
+                + "List creation finished!<br/>"
+                + title + "<br/>"
+                + "<a href=\"/l/" + response.id + "\" target=\"_blank\">" + window.location.hostname + "/l/" + response.id + "</a>"
+                + "</div>";
+            $('#uploads_queue').append($(resultString).hide().fadeIn('slow').css("display", ""));
+            $("#uploads_queue").animate({
+                scrollTop: $("#uploads_queue").prop("scrollHeight")
+            }, 1000);
+            window.open('/l/' + response.id, '_blank');
+        },
+        error: function (xhr, status, error) {
+            console.log("xhr:");
+            console.log(xhr);
+            console.log("status:");
+            console.log(status);
+            console.log("error:");
+            console.log(error);
+            var resultString = "<div class=\"file_button\">List creation failed<br/>"
+                + "The server responded with this: <br/>"
+                + xhr.responseJSON.message
+                + "</div>";
+            $('#uploads_queue').append($(resultString).hide().fadeIn('slow').css("display", ""));
+        }
+    });
+}
+// Form upload handlers
 // Relay click event to hidden file field
 $("#select_file_button").click(function () { $("#file_input_field").click(); });
 $("#file_input_field").change(function (evt) {
@@ -83,6 +142,88 @@ document.addEventListener('drop', function (e) {
 $("input[name=style]").change(function (evt) {
     Cookie.write("style", evt.target.id.substring(6));
     location.reload();
+});
+function copyText(text) {
+    // Create a textarea to copy the text from
+    var ta = document.createElement("textarea");
+    ta.setAttribute("readonly", "readonly");
+    ta.style.position = "absolute";
+    ta.style.left = "-9999px";
+    ta.value = text; // Put the text in the textarea
+    // Add the textarea to the DOM so it can be seleted by the user
+    document.body.appendChild(ta);
+    ta.select(); // Select the contents of the textarea
+    var success = document.execCommand("copy"); // Copy the selected text
+    document.body.removeChild(ta); // Remove the textarea
+    return success;
+}
+// Create list button
+document.getElementById("btn_create_list").addEventListener("click", function (evt) {
+    var title = prompt("You are creating a list containing " + finishedUploads.length + " files.\n"
+        + "What do you want to call it?", "My New Album");
+    if (title === null) {
+        return;
+    }
+    createList(title, false);
+});
+var btnCopyLinks = document.getElementById("btn_copy_links");
+btnCopyLinks.addEventListener("click", function () {
+    var text = "";
+    // Add the text to the textarea
+    for (var i = 0; i < finishedUploads.length; i++) {
+        // Example: https://pixeldrain.com/u/abcd1234: Some_file.png
+        text += window.location.protocol + "//" + window.location.hostname + "/u/" + finishedUploads[i].id +
+            ": " + finishedUploads[i].name + "\n";
+    }
+    var defaultButtonText = btnCopyLinks.innerHTML;
+    // Copy the selected text
+    if (copyText(text)) {
+        btnCopyLinks.classList.add("button_highlight");
+        btnCopyLinks.innerHTML = "Links copied to clipboard!";
+        // Return to normal
+        setTimeout(function () {
+            btnCopyLinks.innerHTML = defaultButtonText;
+            btnCopyLinks.classList.remove("button_highlight");
+        }, 60000);
+    }
+    else {
+        btnCopyLinks.classList.add("button_red");
+        btnCopyLinks.innerHTML = "Copying links failed";
+        setTimeout(function () {
+            btnCopyLinks.innerHTML = defaultButtonText;
+            btnCopyLinks.classList.remove("button_red");
+        }, 60000);
+    }
+});
+var btnCopyBBCode = document.getElementById("btn_copy_bbcode");
+btnCopyBBCode.addEventListener("click", function () {
+    var text = "";
+    // Add the text to the textarea
+    for (var i = 0; i < finishedUploads.length; i++) {
+        // Example: [url=https://pixeldrain.com/u/abcd1234]Some_file.png[/url]
+        text += "[url=" + window.location.protocol + "//" + window.location.hostname +
+            "/u/" + finishedUploads[i].id + "]" +
+            finishedUploads[i].name + "[/url]\n";
+    }
+    var defaultButtonText = btnCopyBBCode.innerHTML;
+    // Copy the selected text
+    if (copyText(text)) {
+        btnCopyBBCode.classList.add("button_highlight");
+        btnCopyBBCode.innerHTML = "BBCode copied to clipboard!";
+        // Return to normal
+        setTimeout(function () {
+            btnCopyBBCode.innerHTML = defaultButtonText;
+            btnCopyBBCode.classList.remove("button_highlight");
+        }, 60000);
+    }
+    else {
+        btnCopyBBCode.classList.add("button_red");
+        btnCopyBBCode.innerHTML = "Copying links failed";
+        setTimeout(function () {
+            btnCopyBBCode.innerHTML = defaultButtonText;
+            btnCopyBBCode.classList.remove("button_red");
+        }, 60000);
+    }
 });
 var Cookie;
 (function (Cookie) {
@@ -127,6 +268,14 @@ var UploadManager = /** @class */ (function () {
             }
         }
     };
+    UploadManager.prototype.uploading = function () {
+        for (var i = 0; i < this.uploadThreads.length; i++) {
+            if (this.uploadThreads[i].isUploading()) {
+                return true;
+            }
+        }
+        return false;
+    };
     UploadManager.prototype.grabFile = function () {
         if (this.uploadQueue.length > 0) {
             return this.uploadQueue.shift();
@@ -143,6 +292,7 @@ var UploadWorker = /** @class */ (function () {
         this.uploading = false;
         this.manager = manager;
     }
+    UploadWorker.prototype.isUploading = function () { return this.uploading; };
     UploadWorker.prototype.start = function () {
         if (!this.uploading) {
             this.newFile();

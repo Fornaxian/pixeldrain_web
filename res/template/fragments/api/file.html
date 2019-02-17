@@ -11,6 +11,7 @@
 		<table>
 			<tr>
 				<td>Param</td>
+				<td>Type</td>
 				<td>Required</td>
 				<td>Maximum Size</td>
 				<td>Default</td>
@@ -18,15 +19,25 @@
 			</tr>
 			<tr>
 				<td>name</td>
+				<td>string</td>
 				<td>false</td>
 				<td>255 Characters</td>
 				<td>Multipart file name</td>
 				<td>Name of the file to upload</td>
 			</tr>
 			<tr>
+				<td>anonymous</td>
+				<td>boolean</td>
+				<td>false</td>
+				<td>N/A</td>
+				<td>false</td>
+				<td>If the file should be uploaded anonymously</td>
+			</tr>
+			<tr>
 				<td>file</td>
+				<td>multipart file</td>
 				<td>true</td>
-				<td>5 000 000 000 Bytes</td>
+				<td>10 000 000 000 Bytes</td>
 				<td>none</td>
 				<td>Multipart file to upload</td>
 			</tr>

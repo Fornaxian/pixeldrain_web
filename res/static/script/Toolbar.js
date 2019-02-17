@@ -64,7 +64,7 @@ var Toolbar = {
 		setTimeout(function(){
 			$("#btnCopy>span").text("Copy");
 			$("#btnCopy").removeClass("button_highlight");
-		}, 10000);
+		}, 60000);
 	},
 	setViews: function(amount){
 		$("#views").html("Views: "+amount);

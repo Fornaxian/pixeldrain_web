@@ -28,6 +28,16 @@ class UploadManager {
 			}
 		}
 	}
+
+	public uploading(): boolean {
+		for (var i = 0; i < this.uploadThreads.length; i++) {
+			if (this.uploadThreads[i].isUploading()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public grabFile(): FileUpload | undefined {
 		if (this.uploadQueue.length > 0) {
 			return this.uploadQueue.shift()
@@ -41,6 +51,7 @@ class UploadWorker {
 	private manager:   UploadManager
 	private tries:     number  = 0
 	private uploading: boolean = false
+	public  isUploading(): boolean {return this.uploading;}
 
 	constructor(manager: UploadManager) {
 		this.manager = manager
@@ -53,7 +64,7 @@ class UploadWorker {
 
 	private newFile() {
 		var file = this.manager.grabFile()
-		if (file === undefined) {
+		if (file === undefined) { // No more files in the queue. We're finished
 			this.uploading = false
 			console.debug("No files left in queue")
 			return // Stop the thread
