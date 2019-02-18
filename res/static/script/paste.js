@@ -5,6 +5,10 @@
 
 function uploadText() {
 	var text = $("#textarea").val();
+	if(!text.endsWith("\n")){
+		text += "\n";
+	}
+
 	var blob = new Blob([text], {type: "text/plain"});
 
 	startFileUpload(blob);

@@ -13,13 +13,27 @@
 	font-family: 'Ubuntu';
 	font-style: normal;
 	font-weight: 400;
-	src: local('Ubuntu Regular'), local('Ubuntu-Regular'), local('Ubuntu'), url(/res/misc/Ubuntu-R.ttf) format('truetype');
+	font-display: auto;
+	src:
+		local('Ubuntu'),
+		local('Ubuntu Regular'),
+		local('Ubuntu, Regular'),
+		local('Ubuntu-Regular'),
+		url(/res/misc/Ubuntu-R.ttf) format('truetype');
 }
 @font-face {
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 100;
-	src: local('Lato Hairline'), local('Lato-Hairline'), url(/res/misc/Lato-Hairline.ttf) format('truetype');
+	font-display: auto;
+	src:
+		local('Lato Thin'),
+		local('Lato, Thin'),
+		local('Lato-Thin'),
+		local('Lato Hairline'),
+		local('Lato, Hairline'),
+		local('Lato-Hairline'),
+		url(/res/misc/Lato-Hairline.ttf) format('truetype');
 }
 
 /* Page rendering configuration */

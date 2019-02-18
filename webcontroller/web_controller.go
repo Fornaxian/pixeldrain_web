@@ -44,7 +44,6 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	// General navigation
 	r.GET(p+"/" /*                */, wc.serveTemplate("home", false))
 	r.GET(p+"/favicon.ico" /*     */, wc.serveFile("/favicon.ico"))
-	r.GET(p+"/global.css" /*      */, wc.globalCSSHandler)
 	r.GET(p+"/api" /*             */, wc.serveTemplate("apidoc", false))
 	r.GET(p+"/history" /*         */, wc.serveTemplate("history_cookies", false))
 	r.GET(p+"/u/:id" /*           */, wc.serveFileViewer)

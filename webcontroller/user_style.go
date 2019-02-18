@@ -2,15 +2,11 @@ package webcontroller
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
-	"strings"
-
-	"github.com/julienschmidt/httprouter"
 )
 
-func (wc *WebController) globalCSSHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	w.Header().Add("Content-Type", "text/css; charset=utf-8")
-
+func userStyle(r *http.Request) (style template.CSS) {
 	var selectedStyle PixeldrainStyleSheet
 
 	if cookie, err := r.Cookie("style"); err != nil {
@@ -32,7 +28,7 @@ func (wc *WebController) globalCSSHandler(w http.ResponseWriter, r *http.Request
 	// var highlightColor = "843384"
 	// var highlightColorDark = "672867"
 
-	var response = fmt.Sprintf(
+	return template.CSS(fmt.Sprintf(
 		`:root {
 	--text_color:            %s;
 	--input_color:           %s;
@@ -57,8 +53,7 @@ func (wc *WebController) globalCSSHandler(w http.ResponseWriter, r *http.Request
 	--shadow_color:     %s;
 	--shadow_spread:    %s;
 	--shadow_intensity: %s;
-}
-`,
+}`,
 		selectedStyle.TextColor.CSSString(),
 		selectedStyle.InputColor.CSSString(),
 		selectedStyle.InputColor.Add(0, 0, -.1).CSSString(),
@@ -80,9 +75,7 @@ func (wc *WebController) globalCSSHandler(w http.ResponseWriter, r *http.Request
 		selectedStyle.ShadowColor.CSSString(),
 		fmt.Sprintf("%dpx", selectedStyle.ShadowSpread),
 		fmt.Sprintf("%dpx", selectedStyle.ShadowIntensity),
-	)
-
-	strings.NewReader(response).WriteTo(w)
+	))
 }
 
 type PixeldrainStyleSheet struct {
