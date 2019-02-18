@@ -39,7 +39,12 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	var p = prefix
 
 	// Serve static files
-	r.ServeFiles(p+"/res/*filepath", http.Dir(wc.staticResourceDir))
+	var fs = http.FileServer(http.Dir(wc.staticResourceDir))
+	r.GET(p+"/res/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		w.Header().Set("Cache-Control", "public, max-age=86400") // Cache for one day
+		r.URL.Path = p.ByName("filepath")
+		fs.ServeHTTP(w, r)
+	})
 
 	// General navigation
 	r.GET(p+"/" /*                */, wc.serveTemplate("home", false))
