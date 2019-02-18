@@ -54,6 +54,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		}
 		err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
 			"Title":       fmt.Sprintf("%d files in Pixeldrain", len(finfo)),
+			"UserStyle":   userStyle(r),
 			"APIResponse": listdata,
 			"Type":        "list",
 			"OGData":      ogData.FromFile(*finfo[0]),
@@ -62,6 +63,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	} else {
 		err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
 			"Title":       fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].Name),
+			"UserStyle":   userStyle(r),
 			"APIResponse": finfo[0],
 			"Type":        "file",
 			"OGData":      ogData.FromFile(*finfo[0]),
