@@ -33,6 +33,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
 		"Title":       fmt.Sprintf("%s ~ Pixeldrain list", list.Title),
+		"UserStyle":   userStyle(r),
 		"APIResponse": listdata,
 		"Type":        "list",
 		"OGData":      ogData.FromList(*list),
