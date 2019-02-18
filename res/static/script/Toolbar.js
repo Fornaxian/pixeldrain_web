@@ -16,15 +16,17 @@ var Toolbar = {
 				Sharebar.toggle();
 			}
 
-			$("#toolbar").animate({left: "-132"}, 400);
-			$("#filepreview").animate({left: "0"}, 400);
+			$("#toolbar").animate(    {left: "-132"}, 400);
+			$("#filepreview").animate({left: "0"},    400);
+			$("#info_popup").animate( {left: "20"},   400);
 
 			$("#button-expand-toolbar").css("visibility", "visible");
 
 			this.visible = false;
 		} else {
-			$("#toolbar").animate({left: "0"}, 400);
+			$("#toolbar").animate(    {left: "0"},   400);
 			$("#filepreview").animate({left: "122"}, 400);
+			$("#info_popup").animate( {left: "142"}, 400);
 
 			setTimeout(function(){
 				if(this.visible){

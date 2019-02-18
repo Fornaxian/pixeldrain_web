@@ -55,6 +55,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/u/:id/preview" /*   */, wc.serveFilePreview)
 	r.GET(p+"/l/:id" /*           */, wc.serveListViewer)
 	r.GET(p+"/t" /*               */, wc.serveTemplate("paste", false))
+	r.GET(p+"/donation" /*        */, wc.serveTemplate("donation", false))
 
 	// User account pages
 	r.GET(p+"/register" /*        */, wc.serveRegister)

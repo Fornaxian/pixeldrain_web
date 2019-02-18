@@ -13,7 +13,8 @@
 	font-family: 'Ubuntu';
 	font-style: normal;
 	font-weight: 400;
-	font-display: auto;
+	font-display: fallback;
+    text-rendering: optimizeLegibility;
 	src:
 		local('Ubuntu'),
 		local('Ubuntu Regular'),
@@ -22,10 +23,11 @@
 		url(/res/misc/Ubuntu-R.ttf) format('truetype');
 }
 @font-face {
-	font-family: 'Lato';
-	font-style: normal;
-	font-weight: 100;
-	font-display: auto;
+	font-family: 'Lato Thin';
+	font-display: fallback;
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
 	src:
 		local('Lato Thin'),
 		local('Lato, Thin'),
@@ -33,7 +35,19 @@
 		local('Lato Hairline'),
 		local('Lato, Hairline'),
 		local('Lato-Hairline'),
-		url(/res/misc/Lato-Hairline.ttf) format('truetype');
+		url(/res/misc/LatoLatin-Thin.ttf) format('truetype');
+}
+@font-face {
+	font-family: 'Lato';
+	font-display: fallback;
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+	src:
+		local('Lato Regular'),
+		local('Lato, Regular'),
+		local('Lato-Regular'),
+		url(/res/misc/Lato-Regular.ttf) format('truetype');
 }
 
 /* Page rendering configuration */
@@ -87,7 +101,7 @@ body{
 	padding: 4px 6px;
 	margin: 0 4px;
 	text-decoration: none;
-	font-family: "Lato", sans-serif;
+	font-family: "Lato Thin", sans-serif;
 	font-weight: bold;
 	font-size: 26px;
 }
@@ -148,6 +162,12 @@ body{
 /* Common elements */
 
 h1, h2, h3, h4, h5, h6 {line-height: 1em;}
+h1{font-size: 2em;    font-family: "Lato Thin";}
+h2{font-size: 1.75em; font-family: "Lato Thin";}
+h3{font-size: 1.5em;  font-family: "Lato Thin";}
+h4{font-size: 1.25em; font-family: "Lato";}
+h5{font-size: 1em;    font-family: "Lato";}
+h6{font-size: .75em;  font-family: "Lato";}
 h3{border-bottom: 1px var(--accent_color_light_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
 hr{

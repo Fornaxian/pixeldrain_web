@@ -4,7 +4,6 @@
 	<head>
 		{{template "meta_tags" "Free file sharing service"}}
 		{{template "user_style" .}}
-		<script src="/res/script/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 
@@ -105,14 +104,7 @@
 					Donations will be used for paying storage contracts with Sia
 					hosts)
 				</li>
-				<li>PayPal:
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-						<input type="hidden" name="cmd" value="_s-xclick" />
-						<input type="hidden" name="hosted_button_id" value="WU49A5NHPAZ9G" />
-						<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!" />
-						<img alt="" border="0" src="https://www.paypalobjects.com/nl_NL/i/scr/pixel.gif" width="1" height="1" />
-					</form>
-				</li>
+				<li><a class="button button_highlight" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">Donate with PayPal</a></li>
 			</ul>
 
 			<h2>Legality</h2>
@@ -140,6 +132,7 @@
 			{{template "footer"}}
 		</div>
 
+		<script src="/res/script/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">var API_URL = "/api";</script>
 		<script src="/res/script/compiled/home.js"></script>
 		{{template "analytics"}}
