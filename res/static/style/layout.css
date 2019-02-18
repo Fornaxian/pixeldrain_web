@@ -168,7 +168,7 @@ h3{font-size: 1.5em;  font-family: "Lato Thin";}
 h4{font-size: 1.25em; font-family: "Lato";}
 h5{font-size: 1em;    font-family: "Lato";}
 h6{font-size: .75em;  font-family: "Lato";}
-h3{border-bottom: 1px var(--accent_color_light_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
+h3, h2{border-bottom: 1px var(--accent_color_light_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
 hr{
 	height: 8px;

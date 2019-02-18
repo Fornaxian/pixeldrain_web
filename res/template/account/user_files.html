@@ -14,7 +14,7 @@
 			in this browser.
 		</div>
 
-		{{$limit := 100}}
+		{{$limit := 200}}
 		{{$page := .URLQuery.Get "page" | pageNr}}
 		{{$files := .PixelAPI.UserFiles $page $limit}}
 		<div class="highlight_dark">

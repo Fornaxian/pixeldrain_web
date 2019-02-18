@@ -8,7 +8,7 @@
 
 	<body>
 		{{template "menu" .}}
-		{{$limit := 100}}
+		{{$limit := 200}}
 		{{$page := .URLQuery.Get "page" | pageNr}}
 		{{$lists := .PixelAPI.UserLists $page $limit}}
 		<div class="highlight_dark">

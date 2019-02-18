@@ -7,26 +7,25 @@ import (
 )
 
 func userStyle(r *http.Request) (style template.CSS) {
-	var selectedStyle PixeldrainStyleSheet
+	var selectedStyle pixeldrainStyleSheet
 
 	if cookie, err := r.Cookie("style"); err != nil {
-		selectedStyle = DefaultPixeldrainStyle
+		selectedStyle = defaultPixeldrainStyle
 	} else {
 		switch cookie.Value {
 		case "solarized_dark":
-			selectedStyle = SolarizedDarkStyle
+			selectedStyle = solarizedDarkStyle
+			break
+		case "maroon":
+			selectedStyle = maroonStyle
 			break
 		case "default":
 			fallthrough // use default case
 		default:
-			selectedStyle = DefaultPixeldrainStyle
+			selectedStyle = defaultPixeldrainStyle
 			break
 		}
 	}
-
-	// Purple scheme
-	// var highlightColor = "843384"
-	// var highlightColorDark = "672867"
 
 	return template.CSS(fmt.Sprintf(
 		`:root {
@@ -54,71 +53,71 @@ func userStyle(r *http.Request) (style template.CSS) {
 	--shadow_spread:    %s;
 	--shadow_intensity: %s;
 }`,
-		selectedStyle.TextColor.CSSString(),
-		selectedStyle.InputColor.CSSString(),
-		selectedStyle.InputColor.Add(0, 0, -.1).CSSString(),
-		selectedStyle.InputTextColor.CSSString(),
-		selectedStyle.HighlightColor.CSSString(),
-		selectedStyle.HighlightColor.Add(0, 0, -.1).CSSString(),
-		selectedStyle.HighlightTextColor.CSSString(),
-		selectedStyle.DangerColor.CSSString(),
-		selectedStyle.DangerColorDark.CSSString(),
-		selectedStyle.FileBackgroundColor.CSSString(),
-		selectedStyle.BackgroundColor.CSSString(),
-		selectedStyle.BodyColor.CSSString(),
-		selectedStyle.AccentColorDark.CSSString(),
-		selectedStyle.AccentColorDark.Add(0, 0, .15).CSSString(),
-		selectedStyle.AccentColorMedium.CSSString(),
-		selectedStyle.AccentColorMedium.Add(0, 0, .15).CSSString(),
-		selectedStyle.AccentColorLight.CSSString(),
-		selectedStyle.AccentColorLight.Add(0, 0, .15).CSSString(),
-		selectedStyle.ShadowColor.CSSString(),
+		selectedStyle.TextColor.cssString(),
+		selectedStyle.InputColor.cssString(),
+		selectedStyle.InputColor.add(0, 0, -.08).cssString(),
+		selectedStyle.InputTextColor.cssString(),
+		selectedStyle.HighlightColor.cssString(),
+		selectedStyle.HighlightColor.add(0, 0, -.08).cssString(),
+		selectedStyle.HighlightTextColor.cssString(),
+		selectedStyle.DangerColor.cssString(),
+		selectedStyle.DangerColorDark.cssString(),
+		selectedStyle.FileBackgroundColor.cssString(),
+		selectedStyle.BackgroundColor.cssString(),
+		selectedStyle.BodyColor.cssString(),
+		selectedStyle.AccentColorDark.cssString(),
+		selectedStyle.AccentColorDark.add(0, 0, .15).cssString(),
+		selectedStyle.AccentColorMedium.cssString(),
+		selectedStyle.AccentColorMedium.add(0, 0, .15).cssString(),
+		selectedStyle.AccentColorLight.cssString(),
+		selectedStyle.AccentColorLight.add(0, 0, .15).cssString(),
+		selectedStyle.ShadowColor.cssString(),
 		fmt.Sprintf("%dpx", selectedStyle.ShadowSpread),
 		fmt.Sprintf("%dpx", selectedStyle.ShadowIntensity),
 	))
 }
 
-type PixeldrainStyleSheet struct {
-	TextColor           HSL
-	InputColor          HSL
-	InputTextColor      HSL
-	HighlightColor      HSL
-	HighlightTextColor  HSL
-	DangerColor         HSL
-	DangerColorDark     HSL
-	FileBackgroundColor HSL
+type pixeldrainStyleSheet struct {
+	TextColor           hsl
+	InputColor          hsl // Buttons, text fields
+	InputTextColor      hsl
+	HighlightColor      hsl // Links, highlighted buttons, list navigation
+	HighlightTextColor  hsl // Text on buttons
+	DangerColor         hsl
+	DangerColorDark     hsl
+	FileBackgroundColor hsl
 
-	BackgroundColor   HSL
-	BodyColor         HSL
-	AccentColorDark   HSL
-	AccentColorMedium HSL
-	AccentColorLight  HSL
+	BackgroundColor   hsl
+	BodyColor         hsl
+	AccentColorDark   hsl
+	AccentColorMedium hsl
+	AccentColorLight  hsl
 
-	ShadowColor     HSL
+	ShadowColor     hsl
 	ShadowSpread    int // Pixels
 	ShadowIntensity int // Pixels
 }
-type HSL struct {
+type hsl struct {
 	Hue        int
 	Saturation float64
 	Lightness  float64
 }
 
-func (hsl HSL) CSSString() string {
+func (h hsl) cssString() string {
 	return fmt.Sprintf(
 		"hsl(%d, %.3f%%, %.3f%%)",
-		hsl.Hue,
-		hsl.Saturation*100,
-		hsl.Lightness*100,
+		h.Hue,
+		h.Saturation*100,
+		h.Lightness*100,
 	)
 }
 
 // Add returns a NEW HSL struct, it doesn't modify the current one
-func (hsl HSL) Add(hue int, saturation float64, lightness float64) HSL {
-	var new = HSL{
-		hsl.Hue + hue,
-		hsl.Saturation + saturation,
-		hsl.Lightness + lightness,
+func (h hsl) add(hue int, saturation float64, lightness float64) hsl {
+	var new = hsl{
+		h.Hue + hue,
+		h.Saturation + saturation,
+		h.Lightness + lightness,
 	}
 	// Hue bounds correction
 	if new.Hue < 0 {
@@ -144,44 +143,65 @@ func (hsl HSL) Add(hue int, saturation float64, lightness float64) HSL {
 
 // Following are all the available styles
 
-var DefaultPixeldrainStyle = PixeldrainStyleSheet{
-	TextColor:           HSL{0, 0, .75},
-	InputColor:          HSL{0, 0, .38},
-	InputTextColor:      HSL{0, 0, 1},
-	HighlightColor:      HSL{89, .51, .5},
-	HighlightTextColor:  HSL{0, 0, 0},
-	DangerColor:         HSL{339, .65, .31},
-	DangerColorDark:     HSL{339, .64, .23},
-	FileBackgroundColor: HSL{0, 0, 0},
+var defaultPixeldrainStyle = pixeldrainStyleSheet{
+	TextColor:           hsl{0, 0, .75},
+	InputColor:          hsl{0, 0, .38},
+	InputTextColor:      hsl{0, 0, 1},
+	HighlightColor:      hsl{89, .51, .5},
+	HighlightTextColor:  hsl{0, 0, 0},
+	DangerColor:         hsl{339, .65, .31},
+	DangerColorDark:     hsl{339, .64, .23},
+	FileBackgroundColor: hsl{0, 0, 0},
 
-	BackgroundColor:   HSL{0, 0, .05},
-	BodyColor:         HSL{20, .05, .14},
-	AccentColorDark:   HSL{0, 0, .19},
-	AccentColorMedium: HSL{0, 0, .23},
-	AccentColorLight:  HSL{0, 0, .28},
+	BackgroundColor:   hsl{0, 0, .05},
+	BodyColor:         hsl{20, .05, .14},
+	AccentColorDark:   hsl{0, 0, .19},
+	AccentColorMedium: hsl{0, 0, .23},
+	AccentColorLight:  hsl{0, 0, .28},
 
-	ShadowColor:     HSL{0, 0, 0},
+	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    50,
 	ShadowIntensity: 5,
 }
 
-var SolarizedDarkStyle = PixeldrainStyleSheet{
-	TextColor:           HSL{0, 0, .75},
-	InputColor:          HSL{192, .95, .30},
-	InputTextColor:      HSL{0, 0, 1},
-	HighlightColor:      HSL{145, .63, .42},
-	HighlightTextColor:  HSL{0, 0, 1},
-	DangerColor:         HSL{343, .63, .42},
-	DangerColorDark:     HSL{343, .63, .36},
-	FileBackgroundColor: HSL{192, .87, .05},
+var solarizedDarkStyle = pixeldrainStyleSheet{
+	TextColor:           hsl{0, 0, .75},
+	InputColor:          hsl{192, .95, .30},
+	InputTextColor:      hsl{0, 0, 1},
+	HighlightColor:      hsl{145, .63, .42},
+	HighlightTextColor:  hsl{0, 0, 1},
+	DangerColor:         hsl{343, .63, .42},
+	DangerColorDark:     hsl{343, .63, .36},
+	FileBackgroundColor: hsl{192, .87, .05},
 
-	BackgroundColor:   HSL{192, 1, .05},
-	BodyColor:         HSL{192, 1, .11},
-	AccentColorDark:   HSL{192, .87, .09},
-	AccentColorMedium: HSL{192, .81, .14},
-	AccentColorLight:  HSL{192, .95, .17},
+	BackgroundColor:   hsl{192, 1, .05},
+	BodyColor:         hsl{192, 1, .11},
+	AccentColorDark:   hsl{192, .87, .09},
+	AccentColorMedium: hsl{192, .81, .14},
+	AccentColorLight:  hsl{192, .95, .17},
 
-	ShadowColor:     HSL{192, .87, 0},
+	ShadowColor:     hsl{192, .87, 0},
+	ShadowSpread:    50,
+	ShadowIntensity: 5,
+}
+
+var maroonStyle = pixeldrainStyleSheet{
+	TextColor:           hsl{0, 0, .7},
+	InputColor:          hsl{0, .75, .2},
+	InputTextColor:      hsl{0, 0, 1},
+	HighlightColor:      hsl{0, 1, .4},
+	HighlightTextColor:  hsl{0, 0, 1},
+	DangerColor:         hsl{0, .1, .1},
+	DangerColorDark:     hsl{0, 0, 0},
+	FileBackgroundColor: hsl{0, 1, .03},
+
+	BackgroundColor:   hsl{0, 1, .05},
+	BodyColor:         hsl{0, .6, .1},
+	AccentColorDark:   hsl{0, .5, .07},
+	AccentColorMedium: hsl{0, .8, .15},
+	AccentColorLight:  hsl{0, .9, .2},
+
+	ShadowColor:     hsl{192, .87, 0},
 	ShadowSpread:    50,
 	ShadowIntensity: 5,
 }
