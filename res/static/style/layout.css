@@ -312,6 +312,7 @@ select{
 	box-shadow: 2px 2px 8px var(--shadow_color);
 	font-weight: bold;
 	font-size: 0.85em;
+	overflow: hidden;
 	line-height: 1;
 	text-decoration: none;
 	color: var(--input_text_color);
