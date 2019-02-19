@@ -318,7 +318,7 @@ select{
 	outline: 0;
 	vertical-align: middle;
 	cursor: pointer;
-	transition: padding 0.3s, box-shadow 0.3s;
+	transition: padding 0.25s, box-shadow 0.25s;
 }
 button:hover,
 .button:hover,
@@ -344,7 +344,7 @@ input[type="color"]:active,
 select:active{
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 3px 3px 6px var(--shadow_color);
-	padding: 9px 5px 3px 11px; /* Exactly 3px offset compared to the inactive padding to give a depth effect */
+	padding: 11px 3px 1px 13px; /* Exactly 5px offset compared to the inactive padding to give a depth effect */
 }
 .button_full_width      {width: calc(100% - 4px);}
 .button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: var(--highlight_text_color) !important;}
