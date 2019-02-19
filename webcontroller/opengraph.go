@@ -15,26 +15,24 @@ type OGData struct {
 	Image       string
 }
 
-// FromFile populates the OGData object from FileInfo. It returns itself for
-// compactness.
-func (d *OGData) FromFile(f pixelapi.FileInfo) *OGData {
-	d.Title = f.Name
-	d.Type = "website"
-	d.SiteName = "Pixeldrain"
-	d.Description = "View " + f.Name + " on Pixeldrain"
-	d.URL = "/u/" + f.ID
-	d.Image = "/api/file/" + f.ID + "/thumbnail"
-	return d
+// OpenGraphFromFile populates the OGData object from FileInfo
+func OpenGraphFromFile(f pixelapi.FileInfo) (og OGData) {
+	og.Title = f.Name
+	og.Type = "website"
+	og.SiteName = "Pixeldrain"
+	og.Description = "View " + f.Name + " on Pixeldrain"
+	og.URL = "/u/" + f.ID
+	og.Image = "/api/file/" + f.ID + "/thumbnail"
+	return og
 }
 
-// FromList populated the OGData object from a List. It returns itself for
-// compactness.
-func (d *OGData) FromList(l pixelapi.List) *OGData {
-	d.Title = l.Title
-	d.Type = "website"
-	d.SiteName = "Pixeldrain"
-	d.Description = "View " + l.Title + " on Pixeldrain"
-	d.URL = "/l/" + l.ID
-	d.Image = "/api/file/" + l.Files[0].ID + "/thumbnail"
-	return d
+// OpenGraphFromList populates the OGData object from a List
+func OpenGraphFromList(l pixelapi.List) (og OGData) {
+	og.Title = l.Title
+	og.Type = "website"
+	og.SiteName = "Pixeldrain"
+	og.Description = "View " + l.Title + " on Pixeldrain"
+	og.URL = "/l/" + l.ID
+	og.Image = "/api/file/" + l.Files[0].ID + "/thumbnail"
+	return og
 }

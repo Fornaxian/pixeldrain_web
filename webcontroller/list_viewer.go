@@ -2,7 +2,6 @@ package webcontroller
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
@@ -23,22 +22,20 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	var ogData OGData
-	listdata := map[string]interface{}{
-		"id":           list.ID,
-		"data":         list.Files,
-		"date_created": list.DateCreated,
-		"title":        list.Title,
-		"views":        0,
+	var templateData = wc.newTemplateData(w, r)
+	templateData.Title = fmt.Sprintf("%s ~ Pixeldrain list", list.Title)
+	templateData.OGData = OpenGraphFromList(*list)
+	templateData.Other = viewerData{
+		Type: "list",
+		APIResponse: map[string]interface{}{
+			"id":           list.ID,
+			"data":         list.Files,
+			"date_created": list.DateCreated,
+			"title":        list.Title,
+			"views":        0,
+		},
 	}
-	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", map[string]interface{}{
-		"Title":       fmt.Sprintf("%s ~ Pixeldrain list", list.Title),
-		"UserStyle":   userStyle(r),
-		"APIResponse": listdata,
-		"Type":        "list",
-		"OGData":      ogData.FromList(*list),
-		"APIEndpoint": template.URL(wc.conf.APIURLExternal),
-	})
+	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", templateData)
 	if err != nil {
 		log.Error("Error executing template file_viewer: %s", err)
 	}

@@ -21,7 +21,10 @@ type TemplateData struct {
 
 	Other    interface{}
 	URLQuery url.Values
-	Title    string
+
+	// Only used on file viewer page
+	Title  string
+	OGData OGData
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) *TemplateData {

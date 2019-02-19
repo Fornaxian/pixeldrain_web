@@ -300,7 +300,7 @@ var UploadWorker = /** @class */ (function () {
     };
     UploadWorker.prototype.newFile = function () {
         var file = this.manager.grabFile();
-        if (file === undefined) {
+        if (file === undefined) { // No more files in the queue. We're finished
             this.uploading = false;
             console.debug("No files left in queue");
             return; // Stop the thread
