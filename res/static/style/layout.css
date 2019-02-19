@@ -104,6 +104,7 @@ body{
 	font-family: "Lato Thin", sans-serif;
 	font-weight: bold;
 	font-size: 26px;
+	transition: box-shadow 0.5s;
 }
 .navigation a:hover {
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
@@ -275,6 +276,7 @@ pre{
 	text-align: left;
 	line-height: 120%;
 	display: inline-block;
+	transition: box-shadow 0.3s;
 }
 .file_button:hover{
 	box-shadow: 0px 0px 10px 3px var(--highlight_color), inset 0px 0px 6px 1px var(--highlight_color);
@@ -316,7 +318,7 @@ select{
 	outline: 0;
 	vertical-align: middle;
 	cursor: pointer;
-
+	transition: padding 0.3s, box-shadow 0.3s;
 }
 button:hover,
 .button:hover,
@@ -372,6 +374,7 @@ input[type="number"]{
 	font-family: 'Ubuntu', sans-serif;
 	vertical-align: bottom;
 	outline: 0;
+	transition: box-shadow 0.3s;
 }
 textarea:active,
 input[type="text"]:active,
