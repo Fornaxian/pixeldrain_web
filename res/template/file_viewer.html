@@ -6,9 +6,8 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		{{template "user_style" .}}
-		<link rel="stylesheet" href="/res/style/viewer.css"/>
-		<link rel="stylesheet" href="/res/style/layout.css"/>
-		<link rel="stylesheet" href="/res/style/listview.css"/>
+		<link rel="stylesheet" href="/res/style/viewer.css?v1"/>
+		<link rel="stylesheet" href="/res/style/layout.css?v1"/>
 		<link rel="shortcut icon" href="/res/img/tray32.png"/>
 		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
 		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
@@ -78,9 +77,8 @@
 						scrolling='no' allowtransparency='true' seamless="seamless">
 					</iframe>
 
-					<iframe id="frmDownload">
-					</iframe>
-					<textarea id="copy-text"></textarea>
+					<!-- This frame will load the download URL when a download button is pressed -->
+					<iframe id="download_frame" style="display: none; width: 1px; height: 1px;"></iframe>
 				</div>
 			</div>
 		</div>
@@ -170,8 +168,6 @@
 		<script src="/res/script/jquery.js"></script>
 		<script src="/res/script/Keyboard.js"></script>
 		<script src="/res/script/Toolbar.js"></script>
-		<script src="/res/script/Sharebar.js"></script>
-		<script src="/res/script/DetailsWindow.js"></script>
 		<script src="/res/script/Viewer.js"></script>
 		<script src="/res/script/ListNavigator.js"></script>
 

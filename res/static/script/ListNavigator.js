@@ -123,7 +123,7 @@ var ListNavigator = {
 		}
 		console.log(endPos);
 
-		var navigatorItems = $("#listNavigatorItems").children().toArray();
+		var navigatorItems = document.getElementById("listNavigatorItems").children
 
 		for (i = startPos; i <= endPos; i++){
 			var thumb = "/api/file/" + this.data[i].id + "/thumbnail";
@@ -142,7 +142,8 @@ var ListNavigator = {
 		this.data = data;
 		this.length = data.length;
 
-		$.each(data, function(i, item){
+		var listHTML = "";
+		data.forEach(function(item, i){
 			var filename;
 			if(item.name !== "null"){
 				filename = item.name;
@@ -150,16 +151,12 @@ var ListNavigator = {
 				filename = "Removed File";
 			}
 
-			var itemHtml = "<div class=\"listItem\" "
+			listHTML += "<div class=\"listItem\" "
 				+ "onClick=\"ListNavigator.setItem('" + i + "')\">"
 				+ escapeHTML(filename) + "<br>"
-			//	+ "<img src=\"/api/thumbnail/" + item.id + "\" " // Lazy Loading
-			//	+ "class=\"listItemThumbnail lazy\" alt=\"" + filename + "\"/>"
 				+ "</div>";
-
-			$("#listNavigatorItems").append(itemHtml);
-
 		});
+		document.getElementById("listNavigatorItems").innerHTML = listHTML;
 
 		// Skip to this file if the parameter is set
 		if(Number.isInteger(parseInt(hashPos))){
@@ -183,7 +180,7 @@ var ListNavigator = {
 
 		btnDownloadList.appendChild(btnDownloadListImg);
 		btnDownloadList.appendChild(btnDownloadListText);
-		$("#btnDownload").after(btnDownloadList);
+		document.getElementById("btnDownload").after(btnDownloadList);
 
 		// Add the shuffle button to the toolbar
 		var btnShuffle = document.createElement("button");
@@ -200,19 +197,25 @@ var ListNavigator = {
 
 		btnShuffle.appendChild(btnShuffleImg);
 		btnShuffle.appendChild(btnShuffleText);
-
-		$("#btnShare").after(btnShuffle);
+		document.getElementById("btnShare").after(btnShuffle);
 
 		// We need to adjust the height of some elements to make the navigation bar fit
 		var navHeight = $("#listNavigator").height() + 2;
+
 		window.setTimeout(function(){
-			$("#listNavigator").animate(        {top: 0},        {"duration": 1500, "queue": false});
-			$("#filepreview").animate(          {top: navHeight},{"duration": 1500, "queue": false});
-			$("#toolbar").animate(              {top: navHeight},{"duration": 1500, "queue": false});
-			$("#button-expand-toolbar").animate({top: navHeight},{"duration": 1500, "queue": false});
-			$("#sharebar").animate(             {top: navHeight},{"duration": 1500, "queue": false});
-			$("#info_popup").css("top", "120px");
-		}, 100);
+			document.getElementById("listNavigator").style.top         = "0px";
+			document.getElementById("filepreview").style.top           = navHeight+"px";
+			document.getElementById("toolbar").style.top               = navHeight+"px";
+			document.getElementById("button-expand-toolbar").style.top = navHeight+"px";
+			document.getElementById("sharebar").style.top              = navHeight+"px";
+			document.getElementById("info_popup").style.top            = (navHeight+20)+"px";
+			// $("#listNavigator").animate(        {top: 0},        {"duration": 1500, "queue": false});
+			// $("#filepreview").animate(          {top: navHeight},{"duration": 1500, "queue": false});
+			// $("#toolbar").animate(              {top: navHeight},{"duration": 1500, "queue": false});
+			// $("#button-expand-toolbar").animate({top: navHeight},{"duration": 1500, "queue": false});
+			// $("#sharebar").animate(             {top: navHeight},{"duration": 1500, "queue": false});
+			// $("#info_popup").css("top", "120px");
+		}, 200);
 	}
 };
 

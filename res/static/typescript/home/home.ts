@@ -1,48 +1,47 @@
-declare var apiEndpoint: string;
+declare var apiEndpoint: string
 
 class FinishedUpload {
-	public id:   string;
-	public name: string;
+	public id:   string
+	public name: string
 }
 
-var uploader:        UploadManager|null = null;
+var uploader:        UploadManager|null = null
 var finishedUploads: Array<FinishedUpload> = new Array()
 var totalUploads:    number = 0
+var queueDiv = document.getElementById("uploads_queue")
 
 class UploadProgressBar implements FileUpload {
-	private uploadDiv:   HTMLAnchorElement
-	private uploadDivJQ: JQuery<HTMLElement>
-	private queueNum:    number
+	public  file:      File
+	public  name:      string
+	private queueNum:  number
+	private uploadDiv: HTMLAnchorElement
 
 	constructor(file: File){
 		this.file = file
 		this.name = file.name
 		this.queueNum = totalUploads
+		this.uploadDiv = document.createElement("a")
 		totalUploads++
 
-		this.uploadDiv = document.createElement("a")
-		this.uploadDiv.setAttribute("class", "file_button")
+		this.uploadDiv.classList.add("file_button")
+		this.uploadDiv.style.opacity = "0";
 		this.uploadDiv.innerText = "Queued\n" + this.file.name
-		this.uploadDivJQ = $(this.uploadDiv)
+		queueDiv.appendChild(this.uploadDiv)
 
-		$("#uploads_queue").append(
-			this.uploadDivJQ.hide().fadeIn('slow').css("display", "")
-		)
+		// Browsers don't render the transition if the opacity is set and
+		// updated in the same frame. So we have to wait a frame (or more)
+		// before changing the opacity to make sure the transition triggers
+		var d = this.uploadDiv // `this` stops working after constructor ends
+		window.setTimeout(function(){d.style.opacity = "1";}, 100)
 	}
 
-	// Interface stuff
-	public file: File
-	public name: string
 	public onProgress(progress: number){
 		this.uploadDiv.innerText = "Uploading... " + Math.round(progress*1000)/10 + "%\n" + this.file.name
-		this.uploadDiv.setAttribute(
-			'style',
-			'background: linear-gradient('
-				+'to right, '
-				+'var(--file_background_color) 0%, '
-				+'var(--highlight_color) '+ ((progress*100)) +'%, '
-				+'var(--file_background_color) '+ ((progress*100)+1) +'%)'
-		)
+		this.uploadDiv.style.background = 'linear-gradient('
+			+'to right, '
+			+'var(--file_background_color) 0%, '
+			+'var(--highlight_color) '+ ((progress*100)) +'%, '
+			+'var(--file_background_color) '+ ((progress*100)+1) +'%)'
 	}
 	public onFinished(id: string){
 		finishedUploads[this.queueNum] = {
@@ -50,33 +49,38 @@ class UploadProgressBar implements FileUpload {
 			name: this.file.name
 		};
 
-		this.uploadDiv.setAttribute('style', 'background: var(--file_background_color)')
-		this.uploadDiv.setAttribute('href', '/u/'+id)
-		this.uploadDiv.setAttribute("target", "_blank");
-		this.uploadDivJQ.html(
-			'<img src="'+apiEndpoint+'/file/'+id+'/thumbnail" alt="'+this.file.name+'"/>'
-			+ this.file.name+'<br/>'
-			+ '<span style="color: var(--highlight_color);">'+window.location.hostname+'/u/'+id+'</span>'
-		)
+		this.uploadDiv.style.background = 'var(--file_background_color)'
+		this.uploadDiv.href = '/u/'+id
+		this.uploadDiv.target= "_blank"
+
+		var fileImg = document.createElement("img")
+		fileImg.src = apiEndpoint+'/file/'+id+'/thumbnail'
+		fileImg.alt = this.file.name
+
+		var linkSpan = document.createElement("span")
+		linkSpan.style.color = "var(--highlight_color)"
+		linkSpan.innerText = window.location.hostname+"/u/"+id
+
+		this.uploadDiv.innerHTML = "" // Remove uploading progress
+		this.uploadDiv.appendChild(fileImg)
+		this.uploadDiv.appendChild(document.createTextNode(this.file.name))
+		this.uploadDiv.appendChild(document.createElement("br"))
+		this.uploadDiv.appendChild(linkSpan)
 	}
 	public onFailure(response: JQuery.Ajax.ErrorTextStatus, error: string) {
-		this.uploadDiv.setAttribute('style', 'background: var(--danger_color)')
-		this.uploadDivJQ.html(
-			this.file.name+'<br/>'
-			+ 'Upload failed after three tries!<br/>'
-			+ "Message: " + error
-		)
+		this.uploadDiv.style.background = 'var(--danger_color)'
+		this.uploadDiv.appendChild(document.createTextNode(this.file.name))
+		this.uploadDiv.appendChild(document.createElement("br"))
+		this.uploadDiv.appendChild(document.createTextNode("Upload failed after three tries:"))
+		this.uploadDiv.appendChild(document.createElement("br"))
+		this.uploadDiv.appendChild(document.createTextNode(error))
 	}
 }
 
 function handleUploads(files: FileList) {
 	if (uploader === null){
 		uploader = new UploadManager()
-
-		$("#uploads_queue").animate(
-			{"height": "340px"},
-			{"duration": 2000, queue: false}
-		);
+		queueDiv.style.height = "340px"
 	}
 
 	for (var i = 0; i < files.length; i++) {
@@ -148,30 +152,29 @@ function createList(title: string, anonymous: boolean){
 // Form upload handlers
 
 // Relay click event to hidden file field
-$("#select_file_button").click(function(){$("#file_input_field").click()})
+document.getElementById("select_file_button").onclick = function(){
+	document.getElementById("file_input_field").click()
+}
 
-$("#file_input_field").change(function(evt){
+document.getElementById("file_input_field").onchange = function(evt){
 	handleUploads((<HTMLInputElement>evt.target).files)
 
 	// This resets the file input field
-	// http://stackoverflow.com/questions/1043957/clearing-input-type-file-using-jquery
-	$('#file_name').html("")
-	$("#file_upload_button").css("visibility", "hidden");
-	(<HTMLFormElement>$("#file_input_field").wrap("<form>").closest("form").get(0)).reset()
-	$("#file_input_field").unwrap()
-})
+	document.getElementById("file_input_field").nodeValue = ""
+}
 
 /*
  * Drag 'n Drop upload handlers
  */
-$(document).on('dragover', function (e) {
+document.ondragover = function (e) {
 	e.preventDefault()
 	e.stopPropagation()
-})
-$(document).on('dragenter', function (e) {
+}
+document.ondragenter = function (e) {
 	e.preventDefault()
 	e.stopPropagation()
-})
+}
+
 document.addEventListener('drop', function(e: DragEvent){
 	if (e.dataTransfer && e.dataTransfer.files.length > 0) {
 		e.preventDefault()

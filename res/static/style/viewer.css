@@ -18,6 +18,7 @@ body{
 	min-width: 100px;
 	text-align: center;
 	vertical-align: middle;
+	transition: left 1s, top 1.5s;
 }
 
 /* =====================
@@ -107,6 +108,7 @@ body{
 	text-align: left;
 	border-right: 2px ridge var(--highlight_color);
 	box-shadow: 2px 2px 8px var(--shadow_color);
+	transition: left 1s, top 1.5s;
 }
 
 /* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
@@ -129,7 +131,6 @@ body{
 
 #button-expand-toolbar{
 	position: absolute;
-	visibility: hidden;
 	left: 0;
 	top: 0;
 	cursor: pointer;
@@ -175,6 +176,7 @@ body{
 	border-right: 2px ridge var(--highlight_color);
 	z-index: 50;
 	overflow: hidden;
+	transition: left 1s, top 1.5s;
 }
 .sharebar-button {text-align: center;}
 
@@ -184,7 +186,9 @@ body{
 
 .full_popup{
 	position: fixed;
-	display: none;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 1s, opacity 1s, left 1s;
 	background-color: var(--background_color);
 	left: 142px;
 	right: 20px;
@@ -215,20 +219,6 @@ table > tbody > tr {border: none !important;}
 	z-index: 200;
 }
 
-#frmDownload{
-	display: none;
-	width: 1px;
-	height: 0px;
-	position: relative;
-}
-
-#copy-text{
-	left: -100px;
-	width: 0px;
-	height: 0px;
-	position: fixed;
-}
-
 .bytecounter{
 	color: var(--text_color);
 	font-size: 16px;
@@ -237,10 +227,100 @@ table > tbody > tr {border: none !important;}
 	text-align: right;
 	display: inline-block;
 	background-image: url("/res/img/bytecounter.png");
-	/*background-attachment: fixed;*/
 	background-position: top right;
 	width: 108px;
 	height: 36px;
 	padding: 0;
 	padding-right: 1px;
+}
+
+/* ====================
+   || LIST NAVIGATOR ||
+   ==================== */
+
+.file-container{
+	position: absolute;
+	top: 100px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	width: 100%;
+	overflow: hidden;
+	border: none;
+}
+
+.file-container-frame{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+#listNavigator{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -100px;
+	height: 98px;
+	background-color: #000;
+	box-shadow: 2px 2px 8px #000000;
+	border-bottom: 2px ridge var(--highlight_color);
+	text-align: center;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	z-index: 50;
+	transition: top 1.5s;
+}
+
+#listNavigatorItems{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	white-space: nowrap;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	border: none;
+	padding: 0 40px;
+}
+
+.listItem{
+	display: inline-block;
+	position: relative;
+	height: 95%;
+	width: 100px;
+	margin-right: 5px;
+	text-align: center;
+	border: #333 solid 2px;
+	font-size: 12px;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.listItemThumbnail{
+	position: relative;
+	max-width: 100%;
+	max-height: 84%;
+	margin: 0;
+}
+
+#arrow-left,
+#arrow-right{
+	position: absolute;
+	display: block;
+	border-top: 30px solid transparent;
+	border-bottom: 30px solid transparent;
+	height: 0;
+	width: 0;
+	top: 20px;
+	cursor: pointer;
+}
+#arrow-left{
+	border-right: 40px solid var(--highlight_color);
+	left: 10px;
+}
+#arrow-right{
+	border-left: 40px solid var(--highlight_color);
+	right: 10px;
 }
