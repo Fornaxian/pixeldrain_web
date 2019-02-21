@@ -67,6 +67,9 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/user/files" /*      */, wc.serveTemplate("user_files", true))
 	r.GET(p+"/user/lists" /*      */, wc.serveTemplate("user_lists", true))
 	r.GET(p+"/user/filemanager" /**/, wc.serveTemplate("file_manager", true))
+	r.GET(p+"/user/password" /*   */, wc.serveTemplate("user_password", true))
+
+	r.GET(p+"/testform", wc.formPassword)
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 

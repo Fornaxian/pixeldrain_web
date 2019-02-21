@@ -1,9 +1,11 @@
 package webcontroller
 
 import (
+	"html/template"
 	"net/http"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-web/webcontroller/forms"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -53,4 +55,39 @@ func (wc *WebController) serveLogout(
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (wc *WebController) formPassword(
+	w http.ResponseWriter,
+	r *http.Request,
+	p httprouter.Params,
+) {
+	td := wc.newTemplateData(w, r)
+	td.Form = forms.Form{
+		Title:       "Test Form",
+		PreFormHTML: template.HTML("preform"),
+		Fields: []forms.Field{
+			forms.Field{
+				Name:         "field_1",
+				DefaultValue: "def val 1",
+				Label:        "Field 1",
+				Description:  "Description of field one",
+				Separator:    false,
+				Type:         forms.FieldTypeUsername,
+			},
+		},
+		BackLink:       "/",
+		SubmitLabel:    "ayy lmao send",
+		SubmitRed:      false,
+		PostFormHTML:   template.HTML("postform"),
+		Submit:         true,
+		SubmitSuccess:  true,
+		SubmitMessages: []string{"yay success"},
+	}
+
+	err := wc.templates.Get().ExecuteTemplate(w, "form_page", td)
+	if err != nil {
+		log.Error("Error executing template '%s': %s", "register", err)
+	}
+
 }

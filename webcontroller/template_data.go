@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-web/webcontroller/forms"
 	"github.com/Fornaxian/log"
 )
 
@@ -19,12 +20,15 @@ type TemplateData struct {
 	APIEndpoint   template.URL
 	PixelAPI      *pixelapi.PixelAPI
 
-	Other    interface{}
-	URLQuery url.Values
-
 	// Only used on file viewer page
 	Title  string
 	OGData OGData
+
+	Other    interface{}
+	URLQuery url.Values
+
+	// Only used for pages containing forms
+	Form forms.Form
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) *TemplateData {
