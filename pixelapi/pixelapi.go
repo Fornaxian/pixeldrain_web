@@ -44,7 +44,8 @@ func (e Error) Error() string { return e.Value }
 // SuccessResponse is a generic response the API returns when the action was
 // successful and there is nothing interesting to report
 type SuccessResponse struct {
-	Success bool `json:"success"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
 }
 
 func (p *PixelAPI) jsonRequest(method, url string, target interface{}) error {
@@ -72,7 +73,7 @@ func (p *PixelAPI) jsonRequest(method, url string, target interface{}) error {
 	}
 
 	defer resp.Body.Close()
-	return parseJSONResponse(resp, target)
+	return parseJSONResponse(resp, target, true)
 }
 
 func (p *PixelAPI) getString(url string) (string, error) {
@@ -83,8 +84,6 @@ func (p *PixelAPI) getString(url string) (string, error) {
 	if p.apiKey != "" {
 		req.SetBasicAuth("", p.apiKey)
 	}
-
-	client := &http.Client{}
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -115,10 +114,16 @@ func (p *PixelAPI) getRaw(url string) (io.ReadCloser, error) {
 	return resp.Body, err
 }
 
-func (p *PixelAPI) postForm(url string, vals url.Values, target interface{}) error {
-	req, err := http.NewRequest("POST", url, strings.NewReader(vals.Encode()))
+func (p *PixelAPI) form(
+	method string,
+	url string,
+	vals url.Values,
+	target interface{},
+	catchErrors bool,
+) error {
+	req, err := http.NewRequest(method, url, strings.NewReader(vals.Encode()))
 	if err != nil {
-		return &Error{
+		return Error{
 			ReqError: true,
 			Success:  false,
 			Value:    err.Error(),
@@ -129,9 +134,11 @@ func (p *PixelAPI) postForm(url string, vals url.Values, target interface{}) err
 		req.SetBasicAuth("", p.apiKey)
 	}
 
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
 	resp, err := client.Do(req)
 	if err != nil {
-		return &Error{
+		return Error{
 			ReqError: true,
 			Success:  false,
 			Value:    err.Error(),
@@ -140,22 +147,22 @@ func (p *PixelAPI) postForm(url string, vals url.Values, target interface{}) err
 	}
 
 	defer resp.Body.Close()
-	return parseJSONResponse(resp, target)
+	return parseJSONResponse(resp, target, catchErrors)
 }
 
-func parseJSONResponse(resp *http.Response, target interface{}) error {
+func parseJSONResponse(resp *http.Response, target interface{}, catchErrors bool) error {
 	var jdec = json.NewDecoder(resp.Body)
 	var err error
 
 	// Test for client side and server side errors
-	if resp.StatusCode >= 400 {
-		var errResp = &Error{
+	if catchErrors && resp.StatusCode >= 400 {
+		var errResp = Error{
 			ReqError: false,
 		}
 		err = jdec.Decode(&errResp)
 		if err != nil {
 			log.Error("Can't decode this: %v", err)
-			return &Error{
+			return Error{
 				ReqError: true,
 				Success:  false,
 				Value:    err.Error(),
@@ -169,7 +176,7 @@ func parseJSONResponse(resp *http.Response, target interface{}) error {
 	if err != nil {
 		r, _ := ioutil.ReadAll(resp.Body)
 		log.Error("Can't decode this: %v. %s", err, r)
-		return &Error{
+		return Error{
 			ReqError: true,
 			Success:  false,
 			Value:    err.Error(),

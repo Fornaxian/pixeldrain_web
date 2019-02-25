@@ -1,0 +1,21 @@
+{{define "widgets"}}
+<!DOCTYPE html>
+<html>
+	<head>
+		{{template "meta_tags" "Administrator panel"}}
+		{{template "user_style" .}}
+		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+	</head>
+	<body>
+		<img id="header_image" class="header_image" src="/res/img/header_neuropol.png" alt="Header image"/>
+		<br/>
+		<div id="body" class="body">
+			{{template "menu" .}}
+
+			<h1>System statistics</h1>
+
+			{{template "footer"}}
+		</div>
+	</body>
+</html>
+{{end}}

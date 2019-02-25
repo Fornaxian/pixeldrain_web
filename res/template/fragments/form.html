@@ -1,8 +1,7 @@
 {{define "form"}}
 	<h1>{{.Title}}</h1>
 	{{.PreFormHTML}}
-	<br/><br/>
-	{{if eq .Submit true}}
+	{{if eq .Submitted true}}
 		{{if eq .SubmitSuccess true}}
 			<div id="submit_result" class="highlight_green border_top border_bottom">
 				{{index .SubmitMessages 0}}
@@ -19,7 +18,12 @@
 		{{end}}
 	{{end}}
 
-	<form class="highlight_dark border_top border_bottom">
+	<form class="highlight_dark border_top border_bottom" method="POST">
+		<input type="text" name="form" value="{{.Name}}" style="display: none;" readonly="readonly"/>
+		{{if ne .Username ""}}
+			<!-- The invisible username field is so browsers know which user the form was for -->
+			<input type="text" autocomplete="username" value="{{.Username}}" style="display: none;" readonly="readonly"/>
+		{{end}}
 		<table style="margin-left: auto; margin-right: auto; text-align: left; max-width: 30em;">
 			{{range $index, $field := .Fields}}
 				<tr class="form">
@@ -40,13 +44,15 @@
 							<div class="g-recaptcha" data-theme="dark" data-sitekey="{{$field.CaptchaSiteKey}}"></div>
 						{{end}}
 					</td>
-					{{if ne $field.Description ""}}
+					{{if or (ne $field.Description "") (eq $field.Separator true)}}
 						<tr class="form">
-							<td colspan="2">{{$field.Description}}</td>
+							<td colspan="2">
+								{{$field.Description}}
+								{{if eq $field.Separator true}}
+									<hr/>
+								{{end}}
+							</td>
 						</tr>
-					{{end}}
-					{{if eq $field.Separator true}}
-						<tr class="form"><td colspan="2"><hr/></td></tr>
 					{{end}}
 				</tr>
 			{{end}}
@@ -74,9 +80,7 @@
 			</tr>
 		</table>
 	</form>
-	<br/>
 	{{.PostFormHTML}}
-	<br/>
 {{end}}
 {{define "form_page"}}
 <!DOCTYPE html>

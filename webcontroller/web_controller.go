@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 
 	"fornaxian.com/pixeldrain-web/init/conf"
+	"fornaxian.com/pixeldrain-web/webcontroller/forms"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -47,19 +48,21 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	})
 
 	// General navigation
-	r.GET(p+"/" /*                */, wc.serveTemplate("home", false))
-	r.GET(p+"/favicon.ico" /*     */, wc.serveFile("/favicon.ico"))
-	r.GET(p+"/api" /*             */, wc.serveTemplate("apidoc", false))
-	r.GET(p+"/history" /*         */, wc.serveTemplate("history_cookies", false))
-	r.GET(p+"/u/:id" /*           */, wc.serveFileViewer)
-	r.GET(p+"/u/:id/preview" /*   */, wc.serveFilePreview)
-	r.GET(p+"/l/:id" /*           */, wc.serveListViewer)
-	r.GET(p+"/t" /*               */, wc.serveTemplate("paste", false))
-	r.GET(p+"/donation" /*        */, wc.serveTemplate("donation", false))
-	r.GET(p+"/widgets" /*         */, wc.serveTemplate("widgets", false))
+	r.GET(p+"/" /*             */, wc.serveTemplate("home", false))
+	r.GET(p+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
+	r.GET(p+"/api" /*          */, wc.serveTemplate("apidoc", false))
+	r.GET(p+"/history" /*      */, wc.serveTemplate("history_cookies", false))
+	r.GET(p+"/u/:id" /*        */, wc.serveFileViewer)
+	r.GET(p+"/u/:id/preview" /**/, wc.serveFilePreview)
+	r.GET(p+"/l/:id" /*        */, wc.serveListViewer)
+	r.GET(p+"/t" /*            */, wc.serveTemplate("paste", false))
+	r.GET(p+"/donation" /*     */, wc.serveTemplate("donation", false))
+	r.GET(p+"/widgets" /*      */, wc.serveTemplate("widgets", false))
 
 	// User account pages
-	r.GET(p+"/register" /*        */, wc.serveRegister)
+	r.GET(p+"/register_old" /*    */, wc.serveRegister)
+	r.GET(p+"/register" /*        */, wc.serveForm(wc.registerForm, false))
+	r.POST(p+"/register" /*       */, wc.serveForm(wc.registerForm, false))
 	r.GET(p+"/login" /*           */, wc.serveTemplate("login", false))
 	r.GET(p+"/logout" /*          */, wc.serveTemplate("logout", true))
 	r.POST(p+"/logout" /*         */, wc.serveLogout)
@@ -67,9 +70,11 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/user/files" /*      */, wc.serveTemplate("user_files", true))
 	r.GET(p+"/user/lists" /*      */, wc.serveTemplate("user_lists", true))
 	r.GET(p+"/user/filemanager" /**/, wc.serveTemplate("file_manager", true))
-	r.GET(p+"/user/password" /*   */, wc.serveTemplate("user_password", true))
 
-	r.GET(p+"/testform", wc.formPassword)
+	// User account settings
+	r.GET(p+"/user/settings" /*        */, wc.serveTemplate("user_settings", true))
+	r.GET(p+"/user/change_password" /* */, wc.serveForm(wc.passwordForm, true))
+	r.POST(p+"/user/change_password" /**/, wc.serveForm(wc.passwordForm, true))
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 
@@ -104,6 +109,56 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 		p httprouter.Params,
 	) {
 		http.ServeFile(w, r, wc.staticResourceDir+"/favicon.ico")
+	}
+}
+
+func (wc *WebController) serveForm(
+	handler func(*TemplateData, *http.Request) forms.Form,
+	requireAuth bool,
+) httprouter.Handle {
+	return func(
+		w http.ResponseWriter,
+		r *http.Request,
+		p httprouter.Params,
+	) {
+		var td = wc.newTemplateData(w, r)
+		if requireAuth && !td.Authenticated {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
+		// The handler retuns the form which will be rendered
+		td.Form = handler(td, r)
+
+		td.Form.Username = td.Username
+
+		// Remove the recaptcha field if captcha is disabled
+		if wc.captchaSiteKey == "none" {
+			for i, field := range td.Form.Fields {
+				if field.Type == forms.FieldTypeCaptcha {
+					td.Form.Fields = append(
+						td.Form.Fields[:i],
+						td.Form.Fields[i+1:]...,
+					)
+				}
+			}
+		}
+
+		// Clear the entered values if the request was successful
+		if td.Form.SubmitSuccess {
+			w.WriteHeader(http.StatusOK)
+			for i, field := range td.Form.Fields {
+				field.EnteredValue = ""
+				td.Form.Fields[i] = field
+			}
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+
+		err := wc.templates.Get().ExecuteTemplate(w, "form_page", td)
+		if err != nil {
+			log.Error("Error executing form page: %s", err)
+		}
 	}
 }
 
