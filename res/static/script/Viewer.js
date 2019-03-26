@@ -40,7 +40,6 @@ var Viewer = {
 		});
 
 		DetailsWindow.setDetails(file);
-		Toolbar.setViews(file.views);
 	}
 };
 

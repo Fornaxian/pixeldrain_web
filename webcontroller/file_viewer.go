@@ -82,16 +82,17 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 	templateData.Other = viewerData{
 		Type: "file",
 		APIResponse: map[string]interface{}{
-			"id":            "demo",
-			"name":          "Demo file",
-			"date_upload":   "2017-01-01 12:34:56",
-			"date_lastview": "2017-01-01 12:34:56",
-			"size":          123456789,
-			"views":         1,
-			"mime_type":     "text/demo",
-			"description":   "A file to demonstrate the viewer page",
-			"mime_image":    "/res/img/mime/text.png",
-			"thumbnail":     "/res/img/mime/text.png",
+			"id":             "demo",
+			"name":           "Demo file",
+			"date_upload":    "2017-01-01 12:34:56",
+			"date_lastview":  "2017-01-01 12:34:56",
+			"size":           123456789,
+			"views":          1,
+			"bandwidth_used": 123456789,
+			"mime_type":      "text/demo",
+			"description":    "A file to demonstrate the viewer page",
+			"mime_image":     "/res/img/mime/text.png",
+			"thumbnail":      "/res/img/mime/text.png",
 		},
 	}
 	err := wc.templates.Get().ExecuteTemplate(w, "file_viewer", templateData)
