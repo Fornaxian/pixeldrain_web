@@ -18,6 +18,7 @@ type FileInfo struct {
 	Name          string    `json:"name"`
 	Size          uint64    `json:"size"`
 	Views         int64     `json:"views"`
+	BandwidthUsed uint64    `json:"bandwidth_used"`
 	DateUpload    time.Time `json:"date_upload"`
 	DateLastView  time.Time `json:"date_last_view"`
 	MimeType      string    `json:"mime_type"`

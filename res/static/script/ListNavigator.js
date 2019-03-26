@@ -209,12 +209,6 @@ var ListNavigator = {
 			document.getElementById("button-expand-toolbar").style.top = navHeight+"px";
 			document.getElementById("sharebar").style.top              = navHeight+"px";
 			document.getElementById("info_popup").style.top            = (navHeight+20)+"px";
-			// $("#listNavigator").animate(        {top: 0},        {"duration": 1500, "queue": false});
-			// $("#filepreview").animate(          {top: navHeight},{"duration": 1500, "queue": false});
-			// $("#toolbar").animate(              {top: navHeight},{"duration": 1500, "queue": false});
-			// $("#button-expand-toolbar").animate({top: navHeight},{"duration": 1500, "queue": false});
-			// $("#sharebar").animate(             {top: navHeight},{"duration": 1500, "queue": false});
-			// $("#info_popup").css("top", "120px");
 		}, 200);
 	}
 };

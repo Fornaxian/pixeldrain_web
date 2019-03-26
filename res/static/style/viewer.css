@@ -148,6 +148,13 @@ body{
 	vertical-align: 6px;
 }
 
+.toolbar_label {
+	text-align: left;
+	padding-left: 10px;
+	font-size: 0.8em;
+	line-height: 0.7em;
+}
+
 #sponsors{
 	position: relative;
 	height: 600px;

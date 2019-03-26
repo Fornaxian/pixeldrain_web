@@ -55,8 +55,9 @@ var Toolbar = {
 			document.getElementById("btnCopy").classList.remove("button_highlight")
 		}, 60000);
 	},
-	setViews: function(amount){
-		document.getElementById("views").innerText = "Views: "+amount;
+	setStats: function(views, downloads){
+		document.getElementById("stat_views").innerText = views
+		document.getElementById("stat_downloads").innerText = Math.round(downloads*10)/10;
 	}
 };
 
@@ -127,12 +128,14 @@ var DetailsWindow = {
 						+ "<tr><td>Name<td><td>" + escapeHTML(data.name) + "</td></tr>"
 						+ "<tr><td>Url<td><td><a href=\"/u/" + data.id + "\">/u/" + data.id + "</a></td></tr>"
 						+ "<tr><td>Mime Type<td><td>" + escapeHTML(data.mime_type) + "</td></tr>"
-						+ "<tr><td>IS<td><td>" + data.id + "</td></tr>"
+						+ "<tr><td>ID<td><td>" + data.id + "</td></tr>"
 						+ "<tr><td>Size<td><td class=\"bytecounter\">" + data.size + "</td></tr>"
+						+ "<tr><td>Bandwidth<td><td class=\"bytecounter\">" + data.bandwidth_used + "</td></tr>"
 						+ "<tr><td>Upload Date<td><td>" + data.date_upload + "</td></tr>"
 						+ "<tr><td>Description<td><td>" + escapeHTML(file.description) + "</td></tr>"
 						+ "</table>"
 					);
+					Toolbar.setStats(data.views, data.bandwidth_used/data.size);
 				}
 			});
 		} else {
@@ -142,9 +145,11 @@ var DetailsWindow = {
 				+ "<tr><td>Mime Type<td><td>" + escapeHTML(file.mime_type) + "</td></tr>"
 				+ "<tr><td>ID<td><td>" + file.id + "</td></tr>"
 				+ "<tr><td>Size<td><td class=\"bytecounter\">" + file.size + "</td></tr>"
+				+ "<tr><td>Bandwidth<td><td class=\"bytecounter\">" + file.bandwidth_used + "</td></tr>"
 				+ "<tr><td>Upload Date<td><td>" + file.date_upload + "</td></tr>"
 				+ "</table>"
 			);
+			Toolbar.setStats(file.views, file.bandwidth_used/file.size);
 		}
 	}
 };
