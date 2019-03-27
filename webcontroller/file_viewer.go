@@ -12,6 +12,7 @@ import (
 
 type viewerData struct {
 	Type        string // file or list
+	CaptchaKey  string
 	APIResponse interface{}
 }
 
@@ -52,7 +53,8 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	if list {
 		templateData.Title = fmt.Sprintf("%d files in Pixeldrain", len(finfo))
 		templateData.Other = viewerData{
-			Type: "list",
+			Type:       "list",
+			CaptchaKey: wc.captchaSiteKey,
 			APIResponse: map[string]interface{}{
 				"data":          finfo,
 				"date_created":  "now",
@@ -65,6 +67,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateData.Title = fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].Name)
 		templateData.Other = viewerData{
 			Type:        "file",
+			CaptchaKey:  wc.captchaSiteKey,
 			APIResponse: finfo[0],
 		}
 	}
@@ -80,7 +83,8 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Request) {
 	templateData := wc.newTemplateData(w, r)
 	templateData.Other = viewerData{
-		Type: "file",
+		Type:       "file",
+		CaptchaKey: wc.captchaSiteKey,
 		APIResponse: map[string]interface{}{
 			"id":             "demo",
 			"name":           "Demo file",

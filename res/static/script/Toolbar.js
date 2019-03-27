@@ -30,7 +30,45 @@ var Toolbar = {
 		}
 	},
 	download: function () {
-		document.getElementById("download_frame").src = "/api/file/" + Viewer.currentFile + "?download";
+		var triggerDL = function(){
+			document.getElementById("download_frame").src = "/api/file/" + Viewer.currentFile + "?download";
+		}
+
+		if (captchaKey === "a"){
+			// If the server doesn't support captcha there's no use in checking
+			// availability
+			triggerDL();
+			return;
+		}
+
+		$.getJSON(
+			apiEndpoint + "/file/" + Viewer.currentFile + "/availability"
+		).done(function(data){
+			if(data.success === true){
+				// Downloading is allowed, start the download
+				triggerDL();
+			}
+		}).fail(function(data){
+			console.log(data);
+			if(data.responseJSON.success === false) {
+				var popupDiv = document.getElementById("captcha_popup");
+
+				if(data.responseJSON.value === "file_rate_limited_captcha_required") {
+					popupDiv.innerHTML = '<div class="highlight_light border_top border_bottom">Rate limiting enabled!</div>'+
+						data.responseJSON.message;
+				}else if(data.responseJSON.value === "virus_detected_captcha_required"){
+					popupDiv.innerHTML = '<div class="highlight_light border_top border_bottom">Malware warning!</div>'+
+						data.responseJSON.message+
+						"<hr/>Malware type: " + data.responseJSON.extra;
+				}
+
+				popupDiv.style.opacity = "1";
+				popupDiv.style.visibility = "visible";
+			}else{
+				// No JSON, try download anyway
+				triggerDL();
+			}
+		});
 	},
 	downloadList: function(){
 		if(!Viewer.isList){

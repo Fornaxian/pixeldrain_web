@@ -29,7 +29,10 @@
 		<meta property="article:author" content="Fornax96" />
 		<link rel="image_src"              href="{{.OGData.Image}}" />
 
-		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+		<script type="text/javascript">
+			var apiEndpoint = '{{.APIEndpoint}}';
+			var captchaKey = '{{.Other.CaptchaKey}}';
+		</script>
 	</head>
 
 	<body>
@@ -163,6 +166,7 @@
 				<br/>
 			</span>
 		</div>
+		<div id="captcha_popup" class="captcha_popup"></div>
 
 		<div id="filepreview">
 			<img src="/res/img/misc/loadthink.gif" style="margin-top: 20%; width: 200px; height: 200px;" />

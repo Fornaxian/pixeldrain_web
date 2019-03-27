@@ -208,6 +208,24 @@ body{
 	box-shadow: var(--shadow_color) 0px 0px 50px;
 	z-index: 100;
 }
+.captcha_popup{
+	position: fixed;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 1s, opacity 1s, left 1s;
+	background-color: var(--background_color);
+	height: auto;
+	width: 500px;
+	max-width: 100%;
+	top: 50px;
+	left: 50%;
+	margin-left: -200px;
+	padding: 0 10px;
+	box-sizing: border-box;
+	text-align: left;
+	box-shadow: var(--shadow_color) 0px 0px 50px;
+	z-index: 100;
+}
 
 table {width: auto !important;}
 table > tbody > tr {border: none !important;}
