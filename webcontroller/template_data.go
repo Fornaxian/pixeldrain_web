@@ -44,7 +44,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 			// cannot be authenticated
 			log.Debug("Session check for key '%s' failed: %s", key, err)
 
-			if aerr, ok := err.(pixelapi.Error); ok && aerr.Value == "authentication_required" {
+			if err.Error() == "authentication_required" || err.Error() == "authentication_failed" {
 				// This key is invalid, delete it
 				log.Debug("Deleting invalid API key")
 				http.SetCookie(w, &http.Cookie{
