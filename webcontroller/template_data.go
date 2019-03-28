@@ -40,14 +40,20 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		t.PixelAPI = pixelapi.New(wc.conf.APIURLInternal, key)
 		uinf, err := t.PixelAPI.UserInfo()
 		if err != nil {
-			// This session key doesn't work, delete it
+			// This session key doesn't work, or the backend is down, user
+			// cannot be authenticated
 			log.Debug("Session check for key '%s' failed: %s", key, err)
-			http.SetCookie(w, &http.Cookie{
-				Name:    "pd_auth_key",
-				Value:   "",
-				Path:    "/",
-				Expires: time.Unix(0, 0),
-			})
+
+			if aerr, ok := err.(pixelapi.Error); ok && aerr.Value == "authentication_required" {
+				// This key is invalid, delete it
+				log.Debug("Deleting invalid API key")
+				http.SetCookie(w, &http.Cookie{
+					Name:    "pd_auth_key",
+					Value:   "",
+					Path:    "/",
+					Expires: time.Unix(0, 0),
+				})
+			}
 			return t
 		}
 
