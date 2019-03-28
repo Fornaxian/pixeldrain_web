@@ -14,24 +14,7 @@ func (wc *WebController) serveRegister(
 	p httprouter.Params,
 ) {
 	var tpld = wc.newTemplateData(w, r)
-
-	// This only runs on the first request
-	if wc.captchaSiteKey == "" {
-		var api = pixelapi.New(wc.conf.APIURLInternal, "")
-		capt, err := api.GetRecaptcha()
-		if err != nil {
-			log.Error("Error getting recaptcha key: %s", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		if capt.SiteKey == "" {
-			wc.captchaSiteKey = "none"
-		} else {
-			wc.captchaSiteKey = capt.SiteKey
-		}
-	}
-
-	tpld.Other = wc.captchaSiteKey
+	tpld.Other = wc.captchaKey()
 
 	err := wc.templates.Get().ExecuteTemplate(w, "register", tpld)
 	if err != nil {

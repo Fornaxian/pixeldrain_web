@@ -49,18 +49,29 @@ var Toolbar = {
 				triggerDL();
 			}
 		}).fail(function(data){
-			console.log(data);
 			if(data.responseJSON.success === false) {
 				var popupDiv = document.getElementById("captcha_popup");
+				var popupTitle = document.getElementById("captcha_popup_title");
+				var popupContent = document.getElementById("captcha_popup_content");
+				var popupCaptcha = document.getElementById("captcha_popup_captcha");
 
 				if(data.responseJSON.value === "file_rate_limited_captcha_required") {
-					popupDiv.innerHTML = '<div class="highlight_light border_top border_bottom">Rate limiting enabled!</div>'+
-						data.responseJSON.message;
+					popupTitle.innerText = "Rate limiting enabled!";
+					popupContent.innerText = "This file is using a suspicious "+
+						"amount of bandwidth relative to its popularity. To "+
+						"continue downloading this file you will have to "+
+						"prove that you're a human first.";
 				}else if(data.responseJSON.value === "virus_detected_captcha_required"){
-					popupDiv.innerHTML = '<div class="highlight_light border_top border_bottom">Malware warning!</div>'+
-						data.responseJSON.message+
-						"<hr/>Malware type: " + data.responseJSON.extra;
+					popupTitle.innerText = "Malware warning!";
+					popupContent.innerText = "According to our scanning "+
+						"systems this file may contain a virus (type '"+
+						data.responseJSON.extra+"'). You can continue "+
+						"downloading this file at your own risk, but you will "+
+						"have to prove that you're a human first.";
 				}
+
+				// Load the recaptcha script with a load function
+				$.getScript("https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit");
 
 				popupDiv.style.opacity = "1";
 				popupDiv.style.visibility = "visible";
@@ -133,6 +144,23 @@ function copyText(text) {
 	var success = document.execCommand("copy"); // Copy the selected text
 	document.body.removeChild(ta); // Remove the textarea
 	return success;
+}
+
+function loadCaptcha(){
+	grecaptcha.render("captcha_popup_captcha", {
+		sitekey: captchaKey,
+		theme: "dark",
+		callback: function(token){
+			document.getElementById("download_frame").src = "/api/file/" + Viewer.currentFile +
+				"?download&recaptcha_response="+token;
+	
+			setTimeout(function(){
+				var popupDiv = document.getElementById("captcha_popup");
+				popupDiv.style.opacity = "0";
+				popupDiv.style.visibility = "hidden";
+			}, 1000)
+		}
+	});
 }
 
 var DetailsWindow = {

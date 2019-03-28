@@ -54,7 +54,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateData.Title = fmt.Sprintf("%d files in Pixeldrain", len(finfo))
 		templateData.Other = viewerData{
 			Type:       "list",
-			CaptchaKey: wc.captchaSiteKey,
+			CaptchaKey: wc.captchaKey(),
 			APIResponse: map[string]interface{}{
 				"data":          finfo,
 				"date_created":  "now",
@@ -67,7 +67,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateData.Title = fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].Name)
 		templateData.Other = viewerData{
 			Type:        "file",
-			CaptchaKey:  wc.captchaSiteKey,
+			CaptchaKey:  wc.captchaKey(),
 			APIResponse: finfo[0],
 		}
 	}
