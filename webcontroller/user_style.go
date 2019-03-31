@@ -206,10 +206,10 @@ var maroonStyle = pixeldrainStyleSheet{
 }
 
 var hackerStyle = pixeldrainStyleSheet{
-	TextColor:           hsl{0, 0, 1},
+	TextColor:           hsl{0, 0, .8},
 	InputColor:          hsl{0, 0, .25},
 	InputTextColor:      hsl{0, 0, 1},
-	HighlightColor:      hsl{120, 1, .6},
+	HighlightColor:      hsl{120, 1, .5},
 	HighlightTextColor:  hsl{0, 0, 0},
 	DangerColor:         hsl{0, .65, .31},
 	DangerColorDark:     hsl{0, .64, .23},
@@ -217,11 +217,11 @@ var hackerStyle = pixeldrainStyleSheet{
 
 	BackgroundColor:   hsl{0, 0, 0},
 	BodyColor:         hsl{0, 0, 0},
-	AccentColorDark:   hsl{0, 0, .05},
-	AccentColorMedium: hsl{0, 0, .10},
-	AccentColorLight:  hsl{0, 0, .15},
+	AccentColorDark:   hsl{120, .1, .05},
+	AccentColorMedium: hsl{120, .2, .10},
+	AccentColorLight:  hsl{120, .3, .15},
 
-	ShadowColor:     hsl{120, 1, .1},
+	ShadowColor:     hsl{120, 1, .08},
 	ShadowSpread:    50,
 	ShadowIntensity: 5,
 }
