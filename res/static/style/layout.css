@@ -103,7 +103,7 @@ body{
 	font-family: "Lato Thin", sans-serif;
 	font-weight: bold;
 	font-size: 1.8em;
-	transition: box-shadow 2s;
+	transition: box-shadow 5s;
 }
 .navigation a:hover {
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));

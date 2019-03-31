@@ -29,6 +29,9 @@ type Form struct {
 
 	// Used for letting the browser know which user is logged in
 	Username string
+
+	// Actions to perform when the form is rendered
+	Extra ExtraActions
 }
 
 // Field is a single input field in a form
@@ -54,9 +57,20 @@ type Field struct {
 
 	Type FieldType
 
-	// Only used when Type = `captcha`. When using reCaptcha the field name has
-	// to be `recaptcha_response`
+	// Only used when Type == FieldTypeCaptcha
 	CaptchaSiteKey string
+}
+
+// ExtraActions contains extra actions to performs when rendering the form
+type ExtraActions struct {
+	// Redirects the browser to a different URL with a HTTP 303: See Other
+	// status. This is useful for redirecting the user to a different page if
+	// the form submission was successful
+	RedirectTo string
+
+	// A cookie to install in the browser when the form is rendered. Useful for
+	// setting / destroying user sessions or configurations
+	SetCookie *http.Cookie
 }
 
 // FieldType defines the type a form field has and how it should be rendered
@@ -82,15 +96,17 @@ func (f *Form) ReadInput(r *http.Request) (success bool) {
 	}
 	f.Submitted = true
 
-	var val string
-
 	for i, field := range f.Fields {
-		val = r.FormValue(field.Name)
-		field.EnteredValue = val
+		field.EnteredValue = r.FormValue(field.Name)
 
 		if field.DefaultValue == "" {
-			field.DefaultValue = val
+			field.DefaultValue = field.EnteredValue
 		}
+
+		if field.Type == FieldTypeCaptcha && field.EnteredValue == "" {
+			field.EnteredValue = r.FormValue("g-recaptcha-response")
+		}
+
 		f.Fields[i] = field // Update the new values in the array
 	}
 

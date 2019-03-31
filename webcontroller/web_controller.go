@@ -64,7 +64,9 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/register_old" /*    */, wc.serveRegister)
 	r.GET(p+"/register" /*        */, wc.serveForm(wc.registerForm, false))
 	r.POST(p+"/register" /*       */, wc.serveForm(wc.registerForm, false))
-	r.GET(p+"/login" /*           */, wc.serveTemplate("login", false))
+	r.GET(p+"/login" /*           */, wc.serveForm(wc.loginForm, false))
+	r.POST(p+"/login" /*           */, wc.serveForm(wc.loginForm, false))
+	// r.GET(p+"/login" /*           */, wc.serveTemplate("login", false))
 	r.GET(p+"/logout" /*          */, wc.serveTemplate("logout", true))
 	r.POST(p+"/logout" /*         */, wc.serveLogout)
 	r.GET(p+"/user" /*            */, wc.serveTemplate("user_home", true))
@@ -133,8 +135,18 @@ func (wc *WebController) serveForm(
 
 		td.Form.Username = td.Username
 
+		// Execute the extra actions if any
+		if td.Form.Extra.SetCookie != nil {
+			http.SetCookie(w, td.Form.Extra.SetCookie)
+		}
+		if td.Form.Extra.RedirectTo != "" {
+			http.Redirect(w, r, td.Form.Extra.RedirectTo, http.StatusSeeOther)
+			log.Debug("redirect: %s", td.Form.Extra.RedirectTo)
+			return // Don't need to render a form if the user is redirected
+		}
+
 		// Remove the recaptcha field if captcha is disabled
-		if wc.captchaSiteKey == "none" {
+		if wc.captchaKey() == "none" {
 			for i, field := range td.Form.Fields {
 				if field.Type == forms.FieldTypeCaptcha {
 					td.Form.Fields = append(

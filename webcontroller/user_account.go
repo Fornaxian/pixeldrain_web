@@ -3,6 +3,7 @@ package webcontroller
 import (
 	"html/template"
 	"net/http"
+	"time"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
 	"fornaxian.com/pixeldrain-web/webcontroller/forms"
@@ -99,7 +100,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f form
 					"website with fake accounts",
 				Separator:      true,
 				Type:           forms.FieldTypeCaptcha,
-				CaptchaSiteKey: wc.captchaSiteKey,
+				CaptchaSiteKey: wc.captchaKey(),
 			},
 		},
 		BackLink:     "/",
@@ -114,7 +115,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f form
 					"password in both password fields"}
 			return f
 		}
-
+		log.Debug("capt: %s", f.FieldVal("recaptcha_response"))
 		resp, err := td.PixelAPI.UserRegister(
 			f.FieldVal("username"),
 			f.FieldVal("e-mail"),
@@ -140,6 +141,57 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f form
 				`Registration completed! You can now <a href="/login">log in ` +
 					`to your account</a>.<br/>We're glad to have you on ` +
 					`board, have fun sharing!`}
+		}
+	}
+	return f
+}
+
+func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f forms.Form) {
+	td.Title = "Login"
+	f = forms.Form{
+		Name:  "login",
+		Title: "Log in to your pixeldrain account",
+		Fields: []forms.Field{
+			{
+				Name:  "username",
+				Label: "Username / e-mail",
+				Type:  forms.FieldTypeUsername,
+			}, {
+				Name:  "password",
+				Label: "Password",
+				Type:  forms.FieldTypeCurrentPassword,
+			},
+		},
+		BackLink:    "/",
+		SubmitLabel: "Login",
+		PostFormHTML: template.HTML(
+			`<br/>If you don't have a pixeldrain account yet, you can ` +
+				`<a href="/register">register here</a>. No e-mail address is ` +
+				`required.<br/>`,
+		),
+	}
+
+	if f.ReadInput(r) {
+		loginResp, err := td.PixelAPI.UserLogin(f.FieldVal("username"), f.FieldVal("password"), false)
+		if err != nil {
+			if apiErr, ok := err.(pixelapi.Error); ok {
+				f.SubmitMessages = []template.HTML{template.HTML(apiErr.Message)}
+			} else {
+				log.Error("%s", err)
+				f.SubmitMessages = []template.HTML{"Internal Server Error"}
+			}
+		} else {
+			log.Debug("key %s", loginResp.APIKey)
+			// Request was a success
+			f.SubmitSuccess = true
+			f.SubmitMessages = []template.HTML{"Success!"}
+			f.Extra.SetCookie = &http.Cookie{
+				Name:    "pd_auth_key",
+				Value:   loginResp.APIKey,
+				Path:    "/",
+				Expires: time.Now().AddDate(50, 0, 0),
+			}
+			f.Extra.RedirectTo = "/user"
 		}
 	}
 	return f
