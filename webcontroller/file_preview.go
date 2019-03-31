@@ -187,11 +187,10 @@ seamless="seamless" frameborder="0" allowtransparency="true"
 
 func (f filePreview) def() string {
 	return fmt.Sprintf(
-		`%s<br/>%s<br/><a href="%s"><img src="%s" class="image"></a>`,
+		`<br/><br/><img src="%s" class="image"><br/><br/>%s<br/>Type: '%s'`,
+		f.APIURL+f.FileInfo.ThumbnailHREF,
 		f.FileInfo.Name,
 		f.FileInfo.MimeType,
-		f.DownloadURL,
-		f.APIURL+f.FileInfo.ThumbnailHREF,
 	)
 }
 

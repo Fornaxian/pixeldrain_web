@@ -190,7 +190,6 @@ body{
 /* =====================
    || MISC COMPONENTS ||
    ===================== */
-
 .full_popup{
 	position: fixed;
 	visibility: hidden;
@@ -207,6 +206,28 @@ body{
 	text-align: left;
 	box-shadow: var(--shadow_color) 0px 0px 50px;
 	z-index: 100;
+}
+.captcha_popup{
+	position: fixed;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 1s, opacity 1s, left 1s;
+	background-color: var(--background_color);
+	border-color: var(--accent_color_dark_border);
+	height: auto;
+	width: 450px;
+	max-width: 100%;
+	top: 10%;
+	left: 50%;
+	transform: translate(-50%, -10%);
+	padding: 0 10px;
+	box-sizing: border-box;
+	text-align: left;
+	box-shadow: var(--shadow_color) 0px 0px 50px;
+	z-index: 101;
+}
+#captcha_popup_captcha > div {
+	display: inline-block;
 }
 
 table {width: auto !important;}

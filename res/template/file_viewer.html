@@ -29,7 +29,10 @@
 		<meta property="article:author" content="Fornax96" />
 		<link rel="image_src"              href="{{.OGData.Image}}" />
 
-		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+		<script type="text/javascript">
+			var apiEndpoint = '{{.APIEndpoint}}';
+			var captchaKey = '{{.Other.CaptchaKey}}';
+		</script>
 	</head>
 
 	<body>
@@ -162,6 +165,12 @@
 				<a target="_blank" href="https://github.com/mozilla/pdf.js">pdf.js</a>.
 				<br/>
 			</span>
+		</div>
+		<div id="captcha_popup" class="captcha_popup border_bottom">
+			<div id="captcha_popup_title" class="highlight_light border_top border_bottom"></div>
+			<div id="captcha_popup_content"></div>
+			<br/>
+			<div id="captcha_popup_captcha" style="text-align: center;"></div>
 		</div>
 
 		<div id="filepreview">

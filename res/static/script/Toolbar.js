@@ -30,7 +30,56 @@ var Toolbar = {
 		}
 	},
 	download: function () {
-		document.getElementById("download_frame").src = "/api/file/" + Viewer.currentFile + "?download";
+		var triggerDL = function(){
+			document.getElementById("download_frame").src = "/api/file/" + Viewer.currentFile + "?download";
+		}
+
+		if (captchaKey === "a"){
+			// If the server doesn't support captcha there's no use in checking
+			// availability
+			triggerDL();
+			return;
+		}
+
+		$.getJSON(
+			apiEndpoint + "/file/" + Viewer.currentFile + "/availability"
+		).done(function(data){
+			if(data.success === true){
+				// Downloading is allowed, start the download
+				triggerDL();
+			}
+		}).fail(function(data){
+			if(data.responseJSON.success === false) {
+				var popupDiv = document.getElementById("captcha_popup");
+				var popupTitle = document.getElementById("captcha_popup_title");
+				var popupContent = document.getElementById("captcha_popup_content");
+				var popupCaptcha = document.getElementById("captcha_popup_captcha");
+
+				if(data.responseJSON.value === "file_rate_limited_captcha_required") {
+					popupTitle.innerText = "Rate limiting enabled!";
+					popupContent.innerText = "This file is using a suspicious "+
+						"amount of bandwidth relative to its popularity. To "+
+						"continue downloading this file you will have to "+
+						"prove that you're a human first.";
+				}else if(data.responseJSON.value === "virus_detected_captcha_required"){
+					popupTitle.innerText = "Malware warning!";
+					popupContent.innerText = "According to our scanning "+
+						"systems this file may contain a virus  of type '"+
+						data.responseJSON.extra+"'. You can continue "+
+						"downloading this file at your own risk, but you will "+
+						"have to prove that you're a human first.";
+				}
+
+				// Load the recaptcha script with a load function
+				$.getScript("https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit");
+
+				popupDiv.style.opacity = "1";
+				popupDiv.style.visibility = "visible";
+			}else{
+				// No JSON, try download anyway
+				triggerDL();
+			}
+		});
 	},
 	downloadList: function(){
 		if(!Viewer.isList){
@@ -95,6 +144,23 @@ function copyText(text) {
 	var success = document.execCommand("copy"); // Copy the selected text
 	document.body.removeChild(ta); // Remove the textarea
 	return success;
+}
+
+function loadCaptcha(){
+	grecaptcha.render("captcha_popup_captcha", {
+		sitekey: captchaKey,
+		theme: "dark",
+		callback: function(token){
+			document.getElementById("download_frame").src = "/api/file/" + Viewer.currentFile +
+				"?download&recaptcha_response="+token;
+
+			setTimeout(function(){
+				var popupDiv = document.getElementById("captcha_popup");
+				popupDiv.style.opacity = "0";
+				popupDiv.style.visibility = "hidden";
+			}, 1000)
+		}
+	});
 }
 
 var DetailsWindow = {

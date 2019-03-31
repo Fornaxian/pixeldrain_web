@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 
 	"fornaxian.com/pixeldrain-web/init/conf"
+	"fornaxian.com/pixeldrain-web/pixelapi"
 	"fornaxian.com/pixeldrain-web/webcontroller/forms"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
@@ -175,4 +176,23 @@ func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {
 		}
 	}
 	return "", errors.New("not a valid pixeldrain authentication cookie")
+}
+
+func (wc *WebController) captchaKey() string {
+	// This only runs on the first request
+	if wc.captchaSiteKey == "" {
+		var api = pixelapi.New(wc.conf.APIURLInternal, "")
+		capt, err := api.GetRecaptcha()
+		if err != nil {
+			log.Error("Error getting recaptcha key: %s", err)
+			return ""
+		}
+		if capt.SiteKey == "" {
+			wc.captchaSiteKey = "none"
+		} else {
+			wc.captchaSiteKey = capt.SiteKey
+		}
+	}
+
+	return wc.captchaSiteKey
 }
