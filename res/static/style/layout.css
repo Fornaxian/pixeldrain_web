@@ -103,12 +103,13 @@ body{
 	font-family: "Lato Thin", sans-serif;
 	font-weight: bold;
 	font-size: 1.8em;
-	transition: box-shadow 0.5s;
+	transition: box-shadow 2s;
 }
 .navigation a:hover {
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
 	box-shadow: var(--highlight_border), 2px 2px 8px var(--shadow_color);
 	color: var(--highlight_text_color);
+	transition: box-shadow 0.5s;
 	text-decoration: none;
 }
 .navigation .icon {

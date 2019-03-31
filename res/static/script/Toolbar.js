@@ -64,8 +64,8 @@ var Toolbar = {
 				}else if(data.responseJSON.value === "virus_detected_captcha_required"){
 					popupTitle.innerText = "Malware warning!";
 					popupContent.innerText = "According to our scanning "+
-						"systems this file may contain a virus (type '"+
-						data.responseJSON.extra+"'). You can continue "+
+						"systems this file may contain a virus  of type '"+
+						data.responseJSON.extra+"'. You can continue "+
 						"downloading this file at your own risk, but you will "+
 						"have to prove that you're a human first.";
 				}
@@ -153,7 +153,7 @@ function loadCaptcha(){
 		callback: function(token){
 			document.getElementById("download_frame").src = "/api/file/" + Viewer.currentFile +
 				"?download&recaptcha_response="+token;
-	
+
 			setTimeout(function(){
 				var popupDiv = document.getElementById("captcha_popup");
 				popupDiv.style.opacity = "0";
