@@ -5,22 +5,24 @@ import (
 	"net/url"
 )
 
+// Registration is the response to the UserRegister API. The register API can
+// return multiple errors, which will be stored in the Errors array. Check for
+// len(Errors) == 0 to see if an error occurred
 type Registration struct {
-	Success bool                `json:"success"`
-	Message string              `json:"message,omitempty"`
-	Errors  []RegistrationError `json:"errors,omitempty"`
-}
-
-type RegistrationError struct {
-	Code    string `json:"error_code"`
-	Message string `json:"message"`
+	Success bool    `json:"success"`
+	Message string  `json:"message,omitempty"`
+	Errors  []Error `json:"errors,omitempty"`
 }
 
 // UserRegister registers a new user on the Pixeldrain server. username and
-// password are always required. email is optional, but without it you will
-// never be able to reset your password in case you forget it. captcha depends
-// on whether reCaptcha is enabled on the Pixeldrain server, this can be checked
+// password are always required. email is optional, but without it you will not
+// be able to reset your password in case you forget it. captcha depends on
+// whether reCaptcha is enabled on the Pixeldrain server, this can be checked
 // through the GetRecaptcha function.
+//
+// The register API can return multiple errors, which will be stored in the
+// Errors array. Check for len(Errors) == 0 to see if an error occurred. If err
+// != nil it means a connection error occurred
 func (p *PixelAPI) UserRegister(username, email, password, captcha string) (resp *Registration, err error) {
 	resp = &Registration{}
 	var form = url.Values{}
@@ -28,9 +30,34 @@ func (p *PixelAPI) UserRegister(username, email, password, captcha string) (resp
 	form.Add("email", email)
 	form.Add("password", password)
 	form.Add("recaptcha_response", captcha)
-	err = p.postForm(p.apiEndpoint+"/user/register", form, resp)
+	err = p.form("POST", p.apiEndpoint+"/user/register", form, resp, false)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+// Login is the success response to the `user/login` API
+type Login struct {
+	Success bool   `json:"success"`
+	APIKey  string `json:"api_key"`
+}
+
+// UserLogin logs a user in with the provided credentials. The response will
+// contain the returned API key. If saveKey is true the API key will also be
+// saved in the client and following requests with this client will be
+// autenticated
+func (p *PixelAPI) UserLogin(username, password string, saveKey bool) (resp *Login, err error) {
+	resp = &Login{}
+	var form = url.Values{}
+	form.Add("username", username)
+	form.Add("password", password)
+	err = p.form("POST", p.apiEndpoint+"/user/login", form, resp, true)
+	if err != nil {
+		return nil, err
+	}
+	if saveKey {
+		p.apiKey = resp.APIKey
 	}
 	return resp, nil
 }
@@ -92,6 +119,18 @@ func (p *PixelAPI) UserLists(page, limit int) (resp *UserLists, err error) {
 		fmt.Sprintf("%s/user/lists?page=%d&limit=%d", p.apiEndpoint, page, limit),
 		resp,
 	)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PixelAPI) UserPasswordSet(oldPW, newPW string) (resp *SuccessResponse, err error) {
+	resp = &SuccessResponse{}
+	var form = url.Values{}
+	form.Add("old_password", oldPW)
+	form.Add("new_password", newPW)
+	err = p.form("PUT", p.apiEndpoint+"/user/password", form, resp, true)
 	if err != nil {
 		return nil, err
 	}

@@ -11,6 +11,13 @@
 			{{template "menu" .}}
 
 			<h1 class="highlight_middle border_bottom">Welcome home, {{.Username}}!</h1>
+
+			<h2>Actions</h2>
+			<ul>
+				<li><a href="/user/change_password">Change my password</a></li>
+				<li><a href="/logout">Log out</a></li>
+			</ul>
+
 			<h2>Your most recently uploaded files:</h2>
 			<div class="highlight_dark border_top border_bottom">
 				{{$files := .PixelAPI.UserFiles 0 18}}

@@ -1,0 +1,106 @@
+{{define "form"}}
+	<h1>{{.Title}}</h1>
+	{{.PreFormHTML}}
+	{{if eq .Submitted true}}
+		{{if eq .SubmitSuccess true}}
+			<div id="submit_result" class="highlight_green border_top border_bottom">
+				{{index .SubmitMessages 0}}
+			</div>
+		{{else}}
+			<div id="submit_result" class="highlight_red border_top border_bottom">
+				Something went wrong, please correct these errors before continuing:<br/>
+				<ul>
+					{{range $msg := .SubmitMessages}}
+						<li>{{$msg}}</li>
+					{{end}}
+				</ul>
+			</div>
+		{{end}}
+	{{end}}
+
+	<form class="highlight_dark border_top border_bottom" method="POST">
+		<input type="text" name="form" value="{{.Name}}" style="display: none;" readonly="readonly"/>
+		{{if ne .Username ""}}
+			<!-- The invisible username field is so browsers know which user the form was for -->
+			<input type="text" autocomplete="username" value="{{.Username}}" style="display: none;" readonly="readonly"/>
+		{{end}}
+		<table style="margin-left: auto; margin-right: auto; text-align: left; max-width: 30em;">
+			{{range $index, $field := .Fields}}
+				<tr class="form">
+					<td>{{$field.Label}}</td>
+					<td>
+						{{if eq $field.Type "text"}}
+							<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="text" class="form_input"/>
+						{{else if eq $field.Type "username"}}
+							<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="text" autocomplete="username" class="form_input"/>
+						{{else if eq $field.Type "email"}}
+							<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="email" autocomplete="email" class="form_input"/>
+						{{else if eq $field.Type "current-password"}}
+							<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="password" autocomplete="current-password" class="form_input"/>
+						{{else if eq $field.Type "new-password"}}
+							<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="password" autocomplete="new-password" class="form_input"/>
+						{{else if eq $field.Type "captcha"}}
+							<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+							<div class="g-recaptcha" data-theme="dark" data-sitekey="{{$field.CaptchaSiteKey}}"></div>
+						{{end}}
+					</td>
+					{{if or (ne $field.Description "") (eq $field.Separator true)}}
+						<tr class="form">
+							<td colspan="2">
+								{{$field.Description}}
+								{{if eq $field.Separator true}}
+									<hr/>
+								{{end}}
+							</td>
+						</tr>
+					{{end}}
+				</tr>
+			{{end}}
+			<tr class="form">
+				{{if eq .BackLink ""}}
+					<td colspan="2" style="text-align: right;">
+						{{if eq .SubmitRed true}}
+							<input type="submit" value="{{.SubmitLabel}}" class="button_red"/>
+						{{else}}
+							<input type="submit" value="{{.SubmitLabel}}" class="button_highlight"/>
+						{{end}}
+					</td>
+				{{else}}
+					<td style="text-align: left;">
+							<a href="{{.BackLink}}" class="button button_red"/>Back</a>
+					</td>
+					<td style="text-align: right;">
+						{{if eq .SubmitRed true}}
+							<input type="submit" value="{{.SubmitLabel}}" class="button_red"/>
+						{{else}}
+							<input type="submit" value="{{.SubmitLabel}}" class="button_highlight"/>
+						{{end}}
+					</td>
+				{{end}}
+			</tr>
+		</table>
+	</form>
+	{{.PostFormHTML}}
+{{end}}
+{{define "form_page"}}
+<!DOCTYPE html>
+<html>
+	<head>
+		{{template "meta_tags" .Title}}
+		{{template "user_style" .}}
+		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+	</head>
+
+	<body>
+		<div id='body' class="body">
+			{{template "menu" .}}
+
+			{{template "form" .Form}}
+
+			{{template "footer"}}
+		</div>
+
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}
