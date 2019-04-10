@@ -1,6 +1,7 @@
 package webcontroller
 
 import (
+	"fmt"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -73,17 +74,21 @@ func (tm *TemplateManager) Get() *template.Template {
 
 func (tm *TemplateManager) funcMap() template.FuncMap {
 	return template.FuncMap{
-		"bgPatternCount": tm.bgPatternCount,
-		"debugMode":      tm.debugMode,
-		"apiUrl":         tm.apiURL,
-		"pageNr":         tm.pageNr,
-		"add":            tm.add,
-		"sub":            tm.sub,
+		"bgPattern": tm.bgPattern,
+		"debugMode": tm.debugMode,
+		"apiUrl":    tm.apiURL,
+		"pageNr":    tm.pageNr,
+		"add":       tm.add,
+		"sub":       tm.sub,
 	}
 }
 
-func (tm *TemplateManager) bgPatternCount() uint8 {
-	return uint8(time.Now().UnixNano() % 17)
+func (tm *TemplateManager) bgPattern() string {
+	var now = time.Now()
+	if now.Weekday() == time.Wednesday && now.UnixNano()%10 == 0 {
+		return "checker_wednesday.png"
+	}
+	return fmt.Sprintf("checker%d.png", now.UnixNano()%17)
 }
 func (tm *TemplateManager) debugMode() bool {
 	return tm.debugModeEnabled

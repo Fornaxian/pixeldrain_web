@@ -55,6 +55,7 @@
 html{height: 100%;}
 
 body{
+	background-color: #0d0d0d; /* Fallback */
 	background-color: var(--background_color);
 	background-repeat: repeat;
 	font-family: 'Ubuntu';
@@ -63,6 +64,7 @@ body{
 	line-height: 1.5em;
 	height: 100%;
 	overflow-x: hidden;
+	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 }
 
@@ -87,6 +89,7 @@ body{
 	margin-top: 30px;
 	margin-bottom: 30px;
 	text-align: left;
+	box-shadow: #000000 8px 8px 50px, 5px;
 	box-shadow: var(--shadow_color) 8px 8px var(--shadow_spread) var(--shadow_intensity);
 	z-index: 1;
 	word-break: break-word;
@@ -95,6 +98,7 @@ body{
 .navigation a {
 	float: none;
 	display: inline-block;
+	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 	text-align: center;
 	padding: 4px 6px;
@@ -106,8 +110,11 @@ body{
 	transition: box-shadow 5s;
 }
 .navigation a:hover {
+	background: linear-gradient(#82c13e, #6da234);
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
+	box-shadow: #82c13e, 2px 2px 8px #000000;
 	box-shadow: var(--highlight_border), 2px 2px 8px var(--shadow_color);
+	color: #000000;
 	color: var(--highlight_text_color);
 	transition: box-shadow 0.5s;
 	text-decoration: none;
@@ -263,6 +270,7 @@ pre{
 	overflow: hidden;
 	box-shadow: 0px 0px 6px 2px var(--file_background_color);
 	background-color: var(--file_background_color);
+	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 	word-break: break-all;
 	text-align: left;
@@ -273,6 +281,7 @@ pre{
 .file_button:hover{
 	box-shadow: 0px 0px 10px 3px var(--highlight_color), inset 0px 0px 6px 1px var(--highlight_color);
 	text-decoration: none;
+	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 }
 .file_button > img{
@@ -307,6 +316,7 @@ select{
 	overflow: hidden;
 	line-height: 1;
 	text-decoration: none;
+	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
 	outline: 0;
 	vertical-align: middle;
@@ -325,6 +335,7 @@ input[type="submit"]:focus,
 input[type="button"]:focus,
 input[type="color"]:focus,
 select:focus{
+	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
 	text-decoration: none;
 	box-shadow: var(--highlight_border), 2px 2px 8px var(--shadow_color);
@@ -346,7 +357,11 @@ select:active{
 .button_red:active      {background: linear-gradient(var(--danger_color_dark),    var(--danger_color)) !important;}
 
 /* Dropdown list of the select tag */
-option{background-color: var(--input_color_dark); color: var(--text_color)}
+option{
+	background-color: var(--input_color_dark);
+	color: #bfbfbf; /* Fallback */
+	color: var(--text_color);
+}
 
 /* TEXT FIELDS */
 textarea,
