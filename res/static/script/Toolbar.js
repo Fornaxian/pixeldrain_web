@@ -16,15 +16,15 @@ var Toolbar = {
 				Sharebar.toggle();
 			}
 
-			document.getElementById("toolbar").style.left = "-132px";
+			document.getElementById("toolbar").style.left = "-9em";
 			document.getElementById("filepreview").style.left = "0px";
-			document.getElementById("info_popup").style.left = "20px";
+			document.getElementById("info_popup").style.left = "1em";
 
 			this.visible = false;
 		} else {
 			document.getElementById("toolbar").style.left = "0px";
-			document.getElementById("filepreview").style.left = "122px";
-			document.getElementById("info_popup").style.left = "142px";
+			document.getElementById("filepreview").style.left = "8em";
+			document.getElementById("info_popup").style.left = "9em";
 
 			this.visible = true;
 		}
@@ -119,7 +119,7 @@ var Sharebar = {
 		}
 
 		if(this.visible){
-			document.getElementById("sharebar").style.left = "-7em";
+			document.getElementById("sharebar").style.left = "-8em";
 			document.getElementById("btnShare").classList.remove("button_highlight")
 			this.visible = false;
 		}else{
