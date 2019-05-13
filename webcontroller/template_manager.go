@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Fornaxian/log"
@@ -75,6 +76,7 @@ func (tm *TemplateManager) Get() *template.Template {
 func (tm *TemplateManager) funcMap() template.FuncMap {
 	return template.FuncMap{
 		"bgPattern": tm.bgPattern,
+		"isBrave":   tm.isBrave,
 		"debugMode": tm.debugMode,
 		"apiUrl":    tm.apiURL,
 		"pageNr":    tm.pageNr,
@@ -89,6 +91,9 @@ func (tm *TemplateManager) bgPattern() string {
 		return "checker_wednesday.png"
 	}
 	return fmt.Sprintf("checker%d.png", now.UnixNano()%17)
+}
+func (tm *TemplateManager) isBrave(useragent string) bool {
+	return strings.Contains(useragent, "Brave")
 }
 func (tm *TemplateManager) debugMode() bool {
 	return tm.debugModeEnabled

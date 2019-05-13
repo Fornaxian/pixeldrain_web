@@ -119,11 +119,11 @@ var Sharebar = {
 		}
 
 		if(this.visible){
-			document.getElementById("sharebar").style.left = "-112px";
+			document.getElementById("sharebar").style.left = "-7em";
 			document.getElementById("btnShare").classList.remove("button_highlight")
 			this.visible = false;
 		}else{
-			document.getElementById("sharebar").style.left = "120px";
+			document.getElementById("sharebar").style.left = "8em";
 			document.getElementById("btnShare").classList.add("button_highlight")
 			this.visible = true;
 		}

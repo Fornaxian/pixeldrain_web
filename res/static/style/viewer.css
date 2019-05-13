@@ -11,7 +11,7 @@ body{
 	position: absolute;
 	display: inline-block;
 	top: 0px;
-	left: 122px;
+	left: 8em;
 	right: 0px;
 	bottom: 0px;
 	min-height: 100px;
@@ -96,7 +96,7 @@ body{
 
 #toolbar {
 	position: absolute;
-	width: 120px;
+	width: 8em;
 	z-index: 52;
 	overflow: hidden;
 	float: left;
@@ -125,7 +125,7 @@ body{
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 120px;
+	width: 8em;
 	height: auto;
 }
 
@@ -158,7 +158,7 @@ body{
 #sponsors{
 	position: relative;
 	height: 600px;
-	width: 120px;
+	width: 8em;
 	margin: 0;
 	border: none;
 	z-index: 9;
@@ -170,8 +170,8 @@ body{
 
 #sharebar{
 	position: absolute;
-	width: 100px;
-	left: -120px;
+	width: 7em;
+	left: -8em;
 	bottom: 0;
 	top: 0;
 	overflow-y: scroll;
@@ -196,12 +196,12 @@ body{
 	opacity: 0;
 	transition: visibility 1s, opacity 1s, left 1s;
 	background-color: var(--background_color);
-	left: 142px;
-	right: 20px;
-	bottom: 20px;
-	top: 20px;
+	left: 9em;
+	right: 1em;
+	bottom: 1em;
+	top: 1em;
 	overflow-y: scroll;
-	padding: 10px;
+	padding: 1em;
 	box-sizing: border-box;
 	text-align: left;
 	box-shadow: var(--shadow_color) 0px 0px 50px;

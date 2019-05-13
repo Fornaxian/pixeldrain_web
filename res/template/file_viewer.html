@@ -53,35 +53,42 @@
 					<div id="stat_downloads_label" class="toolbar_label">Downloads</div>
 					<div id="stat_downloads" style="text-align: center;">N/A</div>
 
-					<a href="/" id="btnHome" class="button toolbar_button button_full_width">
+					<a href="/" id="btnHome" class="toolbar_button button_full_width button">
 						<img src="/res/img/pixeldrain_small.png" alt="Back to the Home page"/>
 						<span>Home</span>
 					</a>
-
 					<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
 						<img src="/res/img/floppy_small.png" alt="Download this file"/>
 						<span>Download</span>
 					</button>
-
 					<button id="btnCopy" class="toolbar_button button_full_width" onClick="Toolbar.copyUrl();">
 						<img src="/res/img/clipboard_small.png" alt="Copy file URL to clipboard"/>
 						<span>Copy</span>
 					</button>
-
 					<button id="btnShare" class="toolbar_button button_full_width" onClick="Sharebar.toggle();">
 						<img src="/res/img/share_small.png" alt="Share this file on social media"/>
 						<span>Share</span>
 					</button>
-
 					<button id="btnDetails" class="toolbar_button button_full_width" onClick="DetailsWindow.toggle();">
 						<img src="/res/img/info_small.png" alt="Help"/>
 						<span>Details</span>
 					</button>
-
-					<iframe id='sponsors' data-aa='73974'
-						src='//ad.a-ads.com/73974?size=120x600&amp;background_color=000000&amp;text_color=eeeeee&amp;title_color=eeeeee&amp;link_color=9fcf6c&amp;link_hover_color=d2ffa1&amp;title_hover_color=d2ffa1'
-						scrolling='no' allowtransparency='true' seamless="seamless">
-					</iframe>
+					<br/><hr/>
+					<div id="brave_ref" style="text-align: center; padding: 2px;">
+						{{if ne (isBrave .UserAgent) true}}
+						Use the Brave web browser for a faster and safer web!<br/>
+						<a href="https://brave.com/pix009" id="btnBrave" class="button toolbar_button button_full_width button_highlight">
+							<img src="/res/img/brave_lion.png" alt="Brave lion"/>
+							<span>Get Brave</span>
+						</a>
+						<br/>
+						or <a href="https://medium.com/@Fornax/advertising-on-pixeldrain-a-more-honest-approach-d5e00e3f0c29">learn why pixeldrain supports Brave</a>
+						{{else}}
+						Thank you for using Brave! Please consider supporting pixeldrain with a tip
+						<img src="/res/img/bat_logo_color.png" style="height: 1em; width: 1em;" />
+						{{end}}
+					</div>
+					<br/>
 
 					<!-- This frame will load the download URL when a download button is pressed -->
 					<iframe id="download_frame" style="display: none; width: 1px; height: 1px;"></iframe>
