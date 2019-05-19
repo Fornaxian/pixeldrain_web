@@ -150,7 +150,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	HighlightTextColor:  hsl{0, 0, 0},
 	DangerColor:         hsl{339, .65, .31},
 	DangerColorDark:     hsl{339, .64, .23},
-	FileBackgroundColor: hsl{0, 0, 0},
+	FileBackgroundColor: hsl{89, .51, .02},
 
 	BackgroundColor:   hsl{0, 0, .05},
 	BodyColor:         hsl{20, .05, .14},
