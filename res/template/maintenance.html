@@ -1,0 +1,33 @@
+{{define "maintenance"}}<!DOCTYPE html>
+<html>
+	<head>
+		{{template "meta_tags" "Maintenance"}}
+		{{template "user_style" .}}
+	</head>
+
+	<body>
+		<img id="header_image" class="header_image" src="/res/img/header_neuropol.png" alt="Header image"/>
+		<br/>
+		<div id='body' class="body">
+			<div id="header" class="highlight_light border_top border_bottom" style="font-size: 2em; line-height: 1.2em;">
+				Pixeldrain is under maintenanace
+			</div>
+			<p>
+				This means the website has temporarily been taken down to apply
+				changes which cannot be applied in the background (probably a
+				database upgrade).
+			</p>
+			<p>
+				The website should be back online shortly. You can check out
+				my <a href="https://twitter.com/Fornax96">Twitter</a> to get a
+				feeling for when the website will be back up.
+			</p>
+			<p>
+				I'm sorry for the inconvenience.
+			</p>
+			{{template "footer"}}
+		</div>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

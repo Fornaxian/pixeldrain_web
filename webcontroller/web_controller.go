@@ -48,10 +48,20 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 		fs.ServeHTTP(w, r)
 	})
 
-	// General navigation
-	r.GET(p+"/" /*             */, wc.serveTemplate("home", false))
+	// Static assets
 	r.GET(p+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
 	r.GET(p+"/robots.txt" /*   */, wc.serveFile("/robots.txt"))
+
+	if conf.MaintenanceMode {
+		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			wc.templates.Get().ExecuteTemplate(w, "maintenance", wc.newTemplateData(w, r))
+		})
+		return wc
+	}
+
+	// General navigation
+	r.GET(p+"/" /*             */, wc.serveTemplate("home", false))
 	r.GET(p+"/api" /*          */, wc.serveTemplate("apidoc", false))
 	r.GET(p+"/history" /*      */, wc.serveTemplate("history_cookies", false))
 	r.GET(p+"/u/:id" /*        */, wc.serveFileViewer)
