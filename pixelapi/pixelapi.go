@@ -17,11 +17,12 @@ var client = &http.Client{}
 type PixelAPI struct {
 	apiEndpoint string
 	apiKey      string
+	RealIP      string
 }
 
 // New creates a new Pixeldrain API client to query the Pixeldrain API with
 func New(apiEndpoint, apiKey string) *PixelAPI {
-	return &PixelAPI{apiEndpoint, apiKey}
+	return &PixelAPI{apiEndpoint, apiKey, ""}
 }
 
 // Error is either an error that occurred during the API request
@@ -61,6 +62,9 @@ func (p *PixelAPI) jsonRequest(method, url string, target interface{}) error {
 	if p.apiKey != "" {
 		req.SetBasicAuth("", p.apiKey)
 	}
+	if p.RealIP != "" {
+		req.Header.Set("X-Real-IP", p.RealIP)
+	}
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -84,6 +88,9 @@ func (p *PixelAPI) getString(url string) (string, error) {
 	if p.apiKey != "" {
 		req.SetBasicAuth("", p.apiKey)
 	}
+	if p.RealIP != "" {
+		req.Header.Set("X-Real-IP", p.RealIP)
+	}
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -104,6 +111,9 @@ func (p *PixelAPI) getRaw(url string) (io.ReadCloser, error) {
 	}
 	if p.apiKey != "" {
 		req.SetBasicAuth("", p.apiKey)
+	}
+	if p.RealIP != "" {
+		req.Header.Set("X-Real-IP", p.RealIP)
 	}
 
 	resp, err := client.Do(req)
@@ -132,6 +142,9 @@ func (p *PixelAPI) form(
 	}
 	if p.apiKey != "" {
 		req.SetBasicAuth("", p.apiKey)
+	}
+	if p.RealIP != "" {
+		req.Header.Set("X-Real-IP", p.RealIP)
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")

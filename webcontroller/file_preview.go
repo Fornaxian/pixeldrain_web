@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"fornaxian.com/pixeldrain-api/util"
 	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
 
@@ -23,7 +24,9 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		serveFilePreviewDemo(w) // Required for a-ads.com quality check
 		return
 	}
-	var api = pixelapi.New(wc.conf.APIURLInternal, "")
+	apikey, _ := wc.getAPIKey(r)
+	var api = pixelapi.New(wc.conf.APIURLInternal, apikey)
+	api.RealIP = util.RemoteAddress(r)
 	inf, err := api.GetFileInfo(p.ByName("id"), "?should_a_view_be_added=yes_gimme") // TODO: Error handling
 	if err != nil {
 		wc.serveNotFound(w, r)
