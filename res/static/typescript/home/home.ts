@@ -226,7 +226,7 @@ btnCopyLinks.addEventListener("click", function(){
 	for (var i = 0; i < finishedUploads.length; i++) {
 		// Example: https://pixeldrain.com/u/abcd1234: Some_file.png
 		text += window.location.protocol + "//" + window.location.hostname + "/u/" + finishedUploads[i].id +
-			": " + finishedUploads[i].name + "\n";
+			" " + finishedUploads[i].name + "\n";
 	}
 
 	var defaultButtonText = btnCopyLinks.innerHTML;
