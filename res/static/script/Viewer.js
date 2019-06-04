@@ -2,6 +2,7 @@
 
 var Viewer = {
 	currentFile: "",
+	title: "", // Contains either the file name or list title
 	listId: "",
 	isList: false,
 	isFile: false,
@@ -14,18 +15,18 @@ var Viewer = {
 
 		// On small screens the toolbar takes too much space, so it collapses automatically
 		if($("#filepreview").width() < 400 && Toolbar.visible){
-			window.setTimeout(function(){
-				Toolbar.toggle();
-			}, 800);
+			Toolbar.toggle();
 		}
 
 		if(type === "file"){
 			this.isFile = true;
 			this.currentFile = data.id;
+			this.title = data.name;
 			this.setFile(data);
 		} else if (type === "list") {
 			this.isList = true;
 			this.listId = data.id;
+			this.title = data.title;
 			ListNavigator.init(data.data);
 		}
 

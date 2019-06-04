@@ -110,10 +110,20 @@ var Toolbar = {
 	}
 };
 
+
 var Sharebar = {
 	visible: false,
 
 	toggle: function(){
+		if (navigator.share) {
+			navigator.share({
+				title: Viewer.title,
+				text: "Get this file from Pixeldrain!",
+				url: window.location.href
+			});
+			return;
+		}
+
 		if (!Toolbar.visible){
 			Toolbar.toggle();
 		}
