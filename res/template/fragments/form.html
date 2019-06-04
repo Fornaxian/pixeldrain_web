@@ -60,20 +60,18 @@
 				{{if eq .BackLink ""}}
 					<td colspan="2" style="text-align: right;">
 						{{if eq .SubmitRed true}}
-							<input type="submit" value="{{.SubmitLabel}}" class="button_red"/>
+							<input type="submit" value="{{.SubmitLabel}}" class="button_red" style="float: right;"/>
 						{{else}}
-							<input type="submit" value="{{.SubmitLabel}}" class="button_highlight"/>
+							<input type="submit" value="{{.SubmitLabel}}" class="button_highlight" style="float: right;"/>
 						{{end}}
 					</td>
 				{{else}}
-					<td style="text-align: left;">
-							<a href="{{.BackLink}}" class="button button_red"/>Back</a>
-					</td>
-					<td style="text-align: right;">
+					<td colspan="2" style="text-align: left;">
+						<a href="{{.BackLink}}" class="button button_red" style="float: left;"/>Back</a>
 						{{if eq .SubmitRed true}}
-							<input type="submit" value="{{.SubmitLabel}}" class="button_red"/>
+							<input type="submit" value="{{.SubmitLabel}}" class="button_red" style="float: right;"/>
 						{{else}}
-							<input type="submit" value="{{.SubmitLabel}}" class="button_highlight"/>
+							<input type="submit" value="{{.SubmitLabel}}" class="button_highlight" style="float: right"/>
 						{{end}}
 					</td>
 				{{end}}

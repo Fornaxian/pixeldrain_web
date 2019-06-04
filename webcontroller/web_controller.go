@@ -175,7 +175,7 @@ func (wc *WebController) serveForm(
 				field.EnteredValue = ""
 				td.Form.Fields[i] = field
 			}
-		} else {
+		} else if td.Form.Submitted {
 			w.WriteHeader(http.StatusBadRequest)
 		}
 
