@@ -131,6 +131,11 @@
 					<tr><td>SHIFT + s</td><td> = Download all the files in the list as a zip archive</td></tr>
 				</table>
 
+				<h3>Bandwidth and views</h3>
+				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: auto;">
+					<canvas id="bandwidth_chart"></canvas>
+				</div>
+
 				<h3>Credits</h3>
 				All server side code written by
 				<a target="_blank" href="https://fornaxian.com/">Fornax (me)</a>.
@@ -156,6 +161,7 @@
 			<img src="/res/img/misc/loadthink.gif" style="margin-top: 20%; width: 200px; height: 200px;" />
 		</div>
 
+		<script src="/res/misc/chartjs/Chart.min.js"></script>
 		<script src="/res/script/jquery.js"></script>
 		<script src="/res/script/Keyboard.js"></script>
 		<script src="/res/script/Toolbar.js?v1"></script>

@@ -173,6 +173,7 @@ function loadCaptcha(){
 
 var DetailsWindow = {
 	visible:       false,
+	fileID:        "",
 	popupDiv:      document.getElementById("details_popup"),
 	detailsButton: document.getElementById("btnDetails"),
 	toggle: function () {
@@ -186,6 +187,7 @@ var DetailsWindow = {
 			this.popupDiv.style.visibility = "visible"
 			this.detailsButton.classList.add("button_highlight")
 			this.visible = true;
+			this.renderGraph(this.fileID);
 		}
 	},
 	setDetails: function (file) {
@@ -197,6 +199,7 @@ var DetailsWindow = {
 				dataType: "json",
 				url: apiEndpoint + "/file/" + file.id + "/info",
 				success: function(data){
+					this.fileID = data.id;
 					$("#info_file_details").html(
 						"<table>"
 						+ "<tr><td>Name<td><td>" + escapeHTML(data.name) + "</td></tr>"
@@ -210,9 +213,13 @@ var DetailsWindow = {
 						+ "</table>"
 					);
 					Toolbar.setStats(data.views, data.bandwidth_used/data.size);
+					if(this.visible) {
+						this.renderGraph(data.id);
+					}
 				}
 			});
 		} else {
+			this.fileID = file.id;
 			$("#info_file_details").html(
 				"<table>"
 				+ "<tr><td>Name<td><td>" + escapeHTML(file.name) + "</td></tr>"
@@ -224,6 +231,65 @@ var DetailsWindow = {
 				+ "</table>"
 			);
 			Toolbar.setStats(file.views, file.bandwidth_used/file.size);
+			if(this.visible) {
+				this.renderGraph(file.id);
+			}
 		}
+	},
+	renderGraph: function(fileID) {
+		console.log("rendering graph "+fileID);
+		$.get(apiEndpoint+"/file/" + fileID + "/timeseries", function(response){
+			console.log(response);
+			if (response.success) {
+				var ctx = document.getElementById('bandwidth_chart');
+				Chart.defaults.global.defaultFontColor = "#b3b3b3";
+				Chart.defaults.global.defaultFontSize = 16;
+				Chart.defaults.global.defaultFontFamily = "Ubuntu";
+				new Chart(
+					document.getElementById('bandwidth_chart'),
+					{
+						type: 'line',
+						data: response,
+						options: {
+							stacked: false,
+							aspectRatio: 2.5,
+							tooltips: {
+								mode: "index",
+								intersect: false,
+								axis: "x"
+							},
+							scales: {
+								yAxes: [
+									{
+										type: "linear",
+										display: true,
+										position: "left",
+										id: "y_bandwidth",
+										scaleLabel: {
+											display: true,
+											labelString: "Downloads"
+										}
+									}, {
+										type: "linear",
+										display: true,
+										position: "right",
+										id: "y_views",
+										scaleLabel: {
+											display: true,
+											labelString: "Views"
+										}
+									}
+								]
+							},
+							elements: {
+								point: {
+									radius: 0
+								}
+							}
+						}
+					}
+				);
+			}
+		});
 	}
 };

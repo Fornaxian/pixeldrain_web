@@ -214,7 +214,7 @@ body{
 
 .details_popup{
 	overflow-y: scroll;
-	width: 1200px;
+	width: 1500px;
 	height: 800px;
 	z-index: 100;
 }

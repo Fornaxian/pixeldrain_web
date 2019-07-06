@@ -13,9 +13,12 @@ import (
 	"fornaxian.com/pixeldrain-api/util"
 	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
+	"github.com/microcosm-cc/bluemonday"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/timakin/gonvert"
+
+	"gopkg.in/russross/blackfriday.v2"
 )
 
 // ServeFilePreview controller for GET /u/:id/preview
@@ -61,6 +64,9 @@ func (f filePreview) run(inf *pixelapi.FileInfo) string {
 	} else if strings.HasPrefix(f.FileInfo.MimeType, "audio") {
 		return f.audio()
 	} else if strings.HasPrefix(f.FileInfo.MimeType, "text") {
+		if strings.HasSuffix(f.FileInfo.Name, ".md") || strings.HasSuffix(f.FileInfo.Name, ".markdown") {
+			return f.markdown()
+		}
 		return f.text()
 	}
 
@@ -178,6 +184,37 @@ func (f filePreview) text() string {
 		htmlOut += `<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>`
 	}
 	return fmt.Sprintf(htmlOut, prettyPrint, result)
+}
+
+func (f filePreview) markdown() string {
+	htmlOut := `<div class="text-container">%s</div>`
+
+	if f.FileInfo.Size > 1e6 { // Prevent out of memory errors
+		return fmt.Sprintf(htmlOut, "",
+			"File is too large to view online.\nPlease download and view it locally.",
+		)
+	}
+
+	body, err := f.PixelAPI.GetFile(f.FileInfo.ID)
+	if err != nil {
+		log.Error("Can't download text file for preview: %s", err)
+		return fmt.Sprintf(htmlOut, "",
+			"An error occurred while downloading this file.",
+		)
+	}
+	defer body.Close()
+
+	bodyBytes, err := ioutil.ReadAll(body)
+	if err != nil {
+		log.Error("Can't read text file for preview: %s", err)
+		return fmt.Sprintf(htmlOut, "",
+			"An error occurred while reading this file.",
+		)
+	}
+
+	md := bluemonday.UGCPolicy().SanitizeBytes(blackfriday.Run(bodyBytes))
+
+	return fmt.Sprintf(htmlOut, md)
 }
 
 func (f filePreview) frame(url string) string {
