@@ -24,7 +24,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 
 	var templateData = wc.newTemplateData(w, r)
 	templateData.Title = fmt.Sprintf("%s ~ Pixeldrain list", list.Title)
-	templateData.OGData = OpenGraphFromList(*list)
+	templateData.OGData = metadataFromList(*list)
 	templateData.Other = viewerData{
 		Type:       "list",
 		CaptchaKey: wc.captchaSiteKey,

@@ -16,18 +16,7 @@
 
 		{{template "bgpattern"}}
 
-		<meta name="theme-color"        content="#202020"/>
-		<meta name="twitter:image"      content="{{.OGData.Image}}" />
-		<meta property="og:title"       content="{{.OGData.Title}}" />
-		<meta property="og:type"        content="{{.OGData.Type}}" />
-		<meta property="og:site_name"   content="{{.OGData.SiteName}}" />
-		<meta property="og:description" content="{{.OGData.Description}}" />
-		<meta property="description"    content="{{.OGData.Description}}" />
-		<meta property="og:url"         content="{{.OGData.URL}}" />
-		<meta property="og:image"       content="{{.OGData.Image}}" />
-		<meta property="og:image:url"   content="{{.OGData.Image}}" />
-		<meta property="article:author" content="Fornax96" />
-		<link rel="image_src"              href="{{.OGData.Image}}" />
+		{{.OGData}}
 
 		<script type="text/javascript">
 			var apiEndpoint = '{{.APIEndpoint}}';

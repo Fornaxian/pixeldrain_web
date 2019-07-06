@@ -48,7 +48,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	templateData := wc.newTemplateData(w, r)
-	templateData.OGData = OpenGraphFromFile(*finfo[0])
+	templateData.OGData = metadataFromFile(*finfo[0])
 	var err error
 	if list {
 		templateData.Title = fmt.Sprintf("%d files in Pixeldrain", len(finfo))
