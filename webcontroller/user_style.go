@@ -15,10 +15,14 @@ func userStyle(r *http.Request) (style template.CSS) {
 		switch cookie.Value {
 		case "solarized_dark":
 			selectedStyle = solarizedDarkStyle
+		case "sunny":
+			selectedStyle = sunnyPixeldrainStyle
 		case "maroon":
 			selectedStyle = maroonStyle
 		case "hacker":
 			selectedStyle = hackerStyle
+		case "canta":
+			selectedStyle = cantaPixeldrainStyle
 		case "default":
 			fallthrough // use default case
 		default:
@@ -28,16 +32,18 @@ func userStyle(r *http.Request) (style template.CSS) {
 
 	return template.CSS(fmt.Sprintf(
 		`:root {
-	--text_color:            %s;
-	--input_color:           %s;
-	--input_color_dark:      %s;
-	--input_text_color:      %s;
-	--highlight_color:       %s;
-	--highlight_color_dark:  %s;
-	--highlight_text_color:  %s;
-	--danger_color:          %s;
-	--danger_color_dark:     %s;
-	--file_background_color: %s;
+	--text_color:                 %s;
+	--input_color:                %s;
+	--input_color_dark:           %s;
+	--input_text_color:           %s;
+	--highlight_color:            %s;
+	--highlight_color_dark:       %s;
+	--highlight_text_color:       %s;
+	--danger_color:               %s;
+	--danger_color_dark:          %s;
+	--file_background_color:      %s;
+	--scrollbar_foreground_color: %s;
+	--scrollbar_background_color: %s;
 
 	--background_color:           %s;
 	--body_color:                 %s;
@@ -54,22 +60,24 @@ func userStyle(r *http.Request) (style template.CSS) {
 }`,
 		selectedStyle.TextColor.cssString(),
 		selectedStyle.InputColor.cssString(),
-		selectedStyle.InputColor.add(0, 0, -.08).cssString(),
+		selectedStyle.InputColor.add(0, 0, -.05).cssString(),
 		selectedStyle.InputTextColor.cssString(),
 		selectedStyle.HighlightColor.cssString(),
-		selectedStyle.HighlightColor.add(0, 0, -.08).cssString(),
+		selectedStyle.HighlightColor.add(0, 0, -.05).cssString(),
 		selectedStyle.HighlightTextColor.cssString(),
 		selectedStyle.DangerColor.cssString(),
-		selectedStyle.DangerColorDark.cssString(),
+		selectedStyle.DangerColor.add(0, 0, -.05).cssString(),
 		selectedStyle.FileBackgroundColor.cssString(),
+		selectedStyle.ScrollbarForegroundColor.cssString(),
+		selectedStyle.ScrollbarBackgroundColor.cssString(),
 		selectedStyle.BackgroundColor.cssString(),
 		selectedStyle.BodyColor.cssString(),
 		selectedStyle.AccentColorDark.cssString(),
-		selectedStyle.AccentColorDark.add(0, 0, .15).cssString(),
+		selectedStyle.AccentColorDark.add(0, 0, .1).cssString(),
 		selectedStyle.AccentColorMedium.cssString(),
-		selectedStyle.AccentColorMedium.add(0, 0, .15).cssString(),
+		selectedStyle.AccentColorMedium.add(0, 0, .1).cssString(),
 		selectedStyle.AccentColorLight.cssString(),
-		selectedStyle.AccentColorLight.add(0, 0, .15).cssString(),
+		selectedStyle.AccentColorLight.add(0, 0, .1).cssString(),
 		selectedStyle.ShadowColor.cssString(),
 		fmt.Sprintf("%dpx", selectedStyle.ShadowSpread),
 		fmt.Sprintf("%dpx", selectedStyle.ShadowIntensity),
@@ -77,14 +85,15 @@ func userStyle(r *http.Request) (style template.CSS) {
 }
 
 type pixeldrainStyleSheet struct {
-	TextColor           hsl
-	InputColor          hsl // Buttons, text fields
-	InputTextColor      hsl
-	HighlightColor      hsl // Links, highlighted buttons, list navigation
-	HighlightTextColor  hsl // Text on buttons
-	DangerColor         hsl
-	DangerColorDark     hsl
-	FileBackgroundColor hsl
+	TextColor                hsl
+	InputColor               hsl // Buttons, text fields
+	InputTextColor           hsl
+	HighlightColor           hsl // Links, highlighted buttons, list navigation
+	HighlightTextColor       hsl // Text on buttons
+	DangerColor              hsl
+	FileBackgroundColor      hsl
+	ScrollbarForegroundColor hsl
+	ScrollbarBackgroundColor hsl
 
 	BackgroundColor   hsl
 	BodyColor         hsl
@@ -143,35 +152,59 @@ func (h hsl) add(hue int, saturation float64, lightness float64) hsl {
 // Following are all the available styles
 
 var defaultPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:           hsl{0, 0, .75},
-	InputColor:          hsl{0, 0, .38},
-	InputTextColor:      hsl{0, 0, 1},
-	HighlightColor:      hsl{89, .51, .5},
-	HighlightTextColor:  hsl{0, 0, 0},
-	DangerColor:         hsl{339, .65, .31},
-	DangerColorDark:     hsl{339, .64, .23},
-	FileBackgroundColor: hsl{89, .51, .02},
+	TextColor:                hsl{0, 0, .7},
+	InputColor:               hsl{0, 0, .25},
+	InputTextColor:           hsl{0, 0, 1},
+	HighlightColor:           hsl{89, .51, .45},
+	HighlightTextColor:       hsl{0, 0, 0},
+	DangerColor:              hsl{339, .65, .31},
+	FileBackgroundColor:      hsl{0, 0, .14},
+	ScrollbarForegroundColor: hsl{0, 0, .30},
+	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	BackgroundColor:   hsl{0, 0, .05},
-	BodyColor:         hsl{20, .05, .14},
-	AccentColorDark:   hsl{0, 0, .19},
-	AccentColorMedium: hsl{0, 0, .23},
-	AccentColorLight:  hsl{0, 0, .28},
+	BackgroundColor:   hsl{0, 0, 0},
+	BodyColor:         hsl{0, 0, .07},
+	AccentColorDark:   hsl{0, 0, .11},
+	AccentColorMedium: hsl{0, 0, .13},
+	AccentColorLight:  hsl{0, 0, .14},
 
 	ShadowColor:     hsl{0, 0, 0},
-	ShadowSpread:    50,
-	ShadowIntensity: 5,
+	ShadowSpread:    10,
+	ShadowIntensity: 0,
+}
+
+var sunnyPixeldrainStyle = pixeldrainStyleSheet{
+	TextColor:                hsl{0, 0, .1},
+	InputColor:               hsl{0, 0, 1},
+	InputTextColor:           hsl{0, 0, .1},
+	HighlightColor:           hsl{89, .51, .5},
+	HighlightTextColor:       hsl{0, 0, 0},
+	DangerColor:              hsl{339, .65, .31},
+	FileBackgroundColor:      hsl{0, 0, 1},
+	ScrollbarForegroundColor: hsl{0, 0, .30},
+	ScrollbarBackgroundColor: hsl{0, 0, 0},
+
+	BackgroundColor:   hsl{0, 0, 0},
+	BodyColor:         hsl{0, 0, 1},
+	AccentColorDark:   hsl{0, 0, 1},
+	AccentColorMedium: hsl{0, 0, 1},
+	AccentColorLight:  hsl{0, 0, 1},
+
+	ShadowColor:     hsl{0, 0, 0},
+	ShadowSpread:    10,
+	ShadowIntensity: 0,
 }
 
 var solarizedDarkStyle = pixeldrainStyleSheet{
-	TextColor:           hsl{0, 0, .75},
-	InputColor:          hsl{192, .95, .30},
-	InputTextColor:      hsl{0, 0, 1},
-	HighlightColor:      hsl{145, .63, .42},
-	HighlightTextColor:  hsl{0, 0, 1},
-	DangerColor:         hsl{343, .63, .42},
-	DangerColorDark:     hsl{343, .63, .36},
-	FileBackgroundColor: hsl{192, .87, .05},
+	TextColor:                hsl{0, 0, .75},
+	InputColor:               hsl{192, .95, .30},
+	InputTextColor:           hsl{0, 0, 1},
+	HighlightColor:           hsl{145, .63, .42},
+	HighlightTextColor:       hsl{0, 0, 1},
+	DangerColor:              hsl{343, .63, .42},
+	FileBackgroundColor:      hsl{192, .87, .05},
+	ScrollbarForegroundColor: hsl{192, .95, .30},
+	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	BackgroundColor:   hsl{192, 1, .05},
 	BodyColor:         hsl{192, 1, .11},
@@ -179,20 +212,21 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 	AccentColorMedium: hsl{192, .81, .14},
 	AccentColorLight:  hsl{192, .95, .17},
 
-	ShadowColor:     hsl{192, .87, 0},
-	ShadowSpread:    50,
-	ShadowIntensity: 5,
+	ShadowColor:     hsl{0, 0, 0},
+	ShadowSpread:    10,
+	ShadowIntensity: 0,
 }
 
 var maroonStyle = pixeldrainStyleSheet{
-	TextColor:           hsl{0, 0, .7},
-	InputColor:          hsl{0, .75, .2},
-	InputTextColor:      hsl{0, 0, 1},
-	HighlightColor:      hsl{0, 1, .4},
-	HighlightTextColor:  hsl{0, 0, 1},
-	DangerColor:         hsl{0, .1, .1},
-	DangerColorDark:     hsl{0, 0, 0},
-	FileBackgroundColor: hsl{0, 1, .03},
+	TextColor:                hsl{0, 0, .7},
+	InputColor:               hsl{0, .75, .2},
+	InputTextColor:           hsl{0, 0, 1},
+	HighlightColor:           hsl{0, 1, .4},
+	HighlightTextColor:       hsl{0, 0, 1},
+	DangerColor:              hsl{0, .1, .1},
+	FileBackgroundColor:      hsl{0, 1, .03},
+	ScrollbarForegroundColor: hsl{0, .75, .2},
+	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	BackgroundColor:   hsl{0, 1, .05},
 	BodyColor:         hsl{0, .6, .1},
@@ -200,20 +234,21 @@ var maroonStyle = pixeldrainStyleSheet{
 	AccentColorMedium: hsl{0, .8, .15},
 	AccentColorLight:  hsl{0, .9, .2},
 
-	ShadowColor:     hsl{192, .87, 0},
-	ShadowSpread:    50,
-	ShadowIntensity: 5,
+	ShadowColor:     hsl{0, 0, 0},
+	ShadowSpread:    10,
+	ShadowIntensity: 0,
 }
 
 var hackerStyle = pixeldrainStyleSheet{
-	TextColor:           hsl{0, 0, .8},
-	InputColor:          hsl{0, 0, .25},
-	InputTextColor:      hsl{0, 0, 1},
-	HighlightColor:      hsl{120, 1, .5},
-	HighlightTextColor:  hsl{0, 0, 0},
-	DangerColor:         hsl{0, .65, .31},
-	DangerColorDark:     hsl{0, .64, .23},
-	FileBackgroundColor: hsl{120, .8, .06},
+	TextColor:                hsl{0, 0, .8},
+	InputColor:               hsl{0, 0, .25},
+	InputTextColor:           hsl{0, 0, 1},
+	HighlightColor:           hsl{120, 1, .5},
+	HighlightTextColor:       hsl{0, 0, 0},
+	DangerColor:              hsl{0, .65, .31},
+	FileBackgroundColor:      hsl{120, .8, .06},
+	ScrollbarForegroundColor: hsl{0, 0, .25},
+	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	BackgroundColor:   hsl{0, 0, 0},
 	BodyColor:         hsl{0, 0, 0},
@@ -221,7 +256,29 @@ var hackerStyle = pixeldrainStyleSheet{
 	AccentColorMedium: hsl{120, .2, .10},
 	AccentColorLight:  hsl{120, .3, .15},
 
-	ShadowColor:     hsl{120, 1, .08},
-	ShadowSpread:    50,
-	ShadowIntensity: 5,
+	ShadowColor:     hsl{0, 0, 0},
+	ShadowSpread:    10,
+	ShadowIntensity: 0,
+}
+
+var cantaPixeldrainStyle = pixeldrainStyleSheet{
+	TextColor:                hsl{0, 0, .8},
+	InputColor:               hsl{167, .06, .40},
+	InputTextColor:           hsl{0, 0, 1},
+	HighlightColor:           hsl{165, 1, .40},
+	HighlightTextColor:       hsl{0, 0, 0},
+	DangerColor:              hsl{40, 1, .5},
+	FileBackgroundColor:      hsl{170, .04, .29},
+	ScrollbarForegroundColor: hsl{150, .02, .78},
+	ScrollbarBackgroundColor: hsl{170, .05, .26},
+
+	BackgroundColor:   hsl{0, 0, 0},
+	BodyColor:         hsl{172, .06, .25},
+	AccentColorDark:   hsl{170, .06, .21},
+	AccentColorMedium: hsl{160, .04, .31},
+	AccentColorLight:  hsl{170, .02, .47},
+
+	ShadowColor:     hsl{0, 0, 0},
+	ShadowSpread:    10,
+	ShadowIntensity: 0,
 }

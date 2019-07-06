@@ -117,14 +117,11 @@
 			</button>
 		</div>
 
-		<div id="info_popup" class="full_popup">
-			<img
-				alt="Close"
-				src="/res/img/cross.png"
-				style="position: absolute; top: 5px; right: 5px; width: 40px; height: 40px; cursor: pointer;"
-				onclick="DetailsWindow.toggle();"
-			/>
-			<h3>File Info</h3>
+		<div id="details_popup" class="popup details_popup border_bottom">
+			<div id="details_popup_title" class="highlight_light border_top border_bottom">
+				File Info
+				<button style="position: absolute; top: 3px; right: 3px;" class="button_red" onclick="DetailsWindow.toggle();">X</button>
+			</div>
 			<span id="info_file_details"></span>
 			<span id="info_about">
 				<h3>About</h3>
@@ -158,7 +155,7 @@
 				<br/>
 			</span>
 		</div>
-		<div id="captcha_popup" class="captcha_popup border_bottom">
+		<div id="captcha_popup" class="popup captcha_popup border_bottom">
 			<div id="captcha_popup_title" class="highlight_light border_top border_bottom"></div>
 			<div id="captcha_popup_content"></div>
 			<br/>

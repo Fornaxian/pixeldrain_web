@@ -22,7 +22,7 @@
 		<br/>
 		<div id="body" class="body">
 			{{template "menu" .}}
-			<div class="highlight_middle border_bottom" style="padding: 0;">
+			<div class="highlight_middle border_bottom">
 				<input id="file_input_field" type="file" name="file" multiple="multiple"/>
 				<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
 				<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button><br/>
@@ -46,6 +46,14 @@
 				The file size limit is 10 GB. There is no limit on the number of
 				files you can upload. A list can contain up to 10000 files.
 			</p>
+
+			<h2>Style selector</h2>
+			<input type="radio" id="style_default"        name="style"><label for="style_default">Pixeldrain Style</label><br/>
+			<input type="radio" id="style_solarized_dark" name="style"><label for="style_solarized_dark">Solarized Dark Style</label><br/>
+			<input type="radio" id="style_maroon"         name="style"><label for="style_maroon">Maroon Style</label><br/>
+			<input type="radio" id="style_hacker"         name="style"><label for="style_hacker">Hacker Style</label><br/>
+			<input type="radio" id="style_canta"          name="style"><label for="style_canta">Canta Style</label>
+			(Inspired by <a href="https://github.com/vinceliuice/Canta-theme" target="_blank">Canta GTK</a>)<br/>
 
 			<h2>Questions and Answers</h2>
 
@@ -149,12 +157,6 @@
 				For other questions you can reach me at
 				<a href="mailto:support@pixeldrain.com">support@pixeldrain.com</a>
 			</p>
-
-			<h2>Style selector</h2>
-			<input type="radio" id="style_default" name="style"><label for="style_default">Default Pixeldrain Style</label><br/>
-			<input type="radio" id="style_solarized_dark" name="style"><label for="style_solarized_dark">Solarized Dark Style</label><br/>
-			<input type="radio" id="style_maroon" name="style"><label for="style_maroon">Maroon Style</label><br/>
-			<input type="radio" id="style_hacker" name="style"><label for="style_hacker">Hacker Style</label><br/>
 
 			{{template "footer"}}
 		</div>

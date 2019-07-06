@@ -18,13 +18,11 @@ var Toolbar = {
 
 			document.getElementById("toolbar").style.left = "-9em";
 			document.getElementById("filepreview").style.left = "0px";
-			document.getElementById("info_popup").style.left = "1em";
 
 			this.visible = false;
 		} else {
 			document.getElementById("toolbar").style.left = "0px";
 			document.getElementById("filepreview").style.left = "8em";
-			document.getElementById("info_popup").style.left = "9em";
 
 			this.visible = true;
 		}
@@ -175,7 +173,7 @@ function loadCaptcha(){
 
 var DetailsWindow = {
 	visible:       false,
-	popupDiv:      document.getElementById("info_popup"),
+	popupDiv:      document.getElementById("details_popup"),
 	detailsButton: document.getElementById("btnDetails"),
 	toggle: function () {
 		if (this.visible) {

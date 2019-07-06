@@ -190,32 +190,15 @@ body{
 /* =====================
    || MISC COMPONENTS ||
    ===================== */
-.full_popup{
+
+.popup {
 	position: fixed;
 	visibility: hidden;
 	opacity: 0;
-	transition: visibility 1s, opacity 1s, left 1s;
-	background-color: var(--background_color);
-	left: 9em;
-	right: 1em;
-	bottom: 1em;
-	top: 1em;
-	overflow-y: scroll;
-	padding: 1em;
-	box-sizing: border-box;
-	text-align: left;
-	box-shadow: var(--shadow_color) 0px 0px 50px;
-	z-index: 100;
-}
-.captcha_popup{
-	position: fixed;
-	visibility: hidden;
-	opacity: 0;
-	transition: visibility 1s, opacity 1s, left 1s;
-	background-color: var(--background_color);
+	transition: visibility 1s, opacity 1s;
+	background-color: var(--body_color);
 	border-color: var(--accent_color_dark_border);
-	height: auto;
-	width: 450px;
+	max-height: 100%;
 	max-width: 100%;
 	top: 10%;
 	left: 50%;
@@ -224,6 +207,20 @@ body{
 	box-sizing: border-box;
 	text-align: left;
 	box-shadow: var(--shadow_color) 0px 0px 50px;
+}
+.popup .highlight_light {
+	font-size: 1.2em;
+}
+
+.details_popup{
+	overflow-y: scroll;
+	width: 1200px;
+	height: 800px;
+	z-index: 100;
+}
+.captcha_popup{
+	height: auto;
+	width: 450px;
 	z-index: 101;
 }
 #captcha_popup_captcha > div {

@@ -62,10 +62,11 @@ body{
 	margin: 0;
 	text-align: center; /* Center the header and body */
 	line-height: 1.5em;
-	height: 100%;
 	overflow-x: hidden;
 	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
+	box-sizing: border-box;
+	padding: 0;
 }
 
 /* Page layout elements */
@@ -83,14 +84,13 @@ body{
 	min-width: 300px;
 	width: 100%;
 	height: auto;
-	padding: 0px 8px 0px 8px;
+	padding: 0 10px 0 10px;
+	margin: 30px 0 30px 0;
 	box-sizing: border-box;
 	background-color: var(--body_color);
-	margin-top: 30px;
-	margin-bottom: 30px;
 	text-align: left;
-	box-shadow: #000000 8px 8px 50px, 5px;
-	box-shadow: var(--shadow_color) 8px 8px var(--shadow_spread) var(--shadow_intensity);
+	box-shadow: #000000 0 0 10px, 5px;
+	box-shadow: var(--shadow_color) 0 0 var(--shadow_spread) var(--shadow_intensity);
 	z-index: 1;
 	word-break: break-word;
 }
@@ -112,8 +112,8 @@ body{
 .navigation a:hover {
 	background: linear-gradient(#82c13e, #6da234);
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
-	box-shadow: #82c13e, 2px 2px 8px #000000;
-	box-shadow: var(--highlight_border), 2px 2px 8px var(--shadow_color);
+	box-shadow: #82c13e, 1px 1px 4px #000000;
+	box-shadow: var(--highlight_border), 1px 1px 4px var(--shadow_color);
 	color: #000000;
 	color: var(--highlight_text_color);
 	transition: box-shadow 0.5s;
@@ -150,19 +150,43 @@ body{
 	position: relative;
 	width: auto;
 	height: auto;
-	margin: 0 -8px 0 -8px;
+	margin: 0 -10px 0 -10px;
 	box-sizing: border-box;
 	overflow: hidden;
 	text-align: center;
-	padding: 4px 0px 4px 0px;
+	padding: .5em;
 	z-index: 101;
 }
-.highlight_dark   {background-color: var(--accent_color_dark);   border-color: var(--accent_color_dark_border);   box-shadow: inset 1px 1px 12px -1px var(--shadow_color);}
-.highlight_middle {background-color: var(--accent_color_medium); border-color: var(--accent_color_medium_border); box-shadow: inset 1px 1px 8px -1px var(--shadow_color);}
-.highlight_light  {background-color: var(--accent_color_light);  border-color: var(--accent_color_light_border);  box-shadow: 1px 1px 4px var(--shadow_color);}
-.highlight_green  {background-color: rgba(0, 255, 0, 0.05);  border-color: #00d000;}
-.highlight_blue   {background-color: rgba(32, 32, 255, 0.2); border-color: rgb(54, 54, 255);}
-.highlight_red    {background-color: rgba(255, 0, 0, 0.1);  border-color: #B00000;}
+.highlight_dark   {
+	background-color: var(--accent_color_dark);
+	border-color: var(--accent_color_dark_border);
+	box-shadow: inset 1px 1px 8px -1px var(--shadow_color);}
+.highlight_middle {
+	background-color: var(--accent_color_medium);
+	border-color: var(--accent_color_medium_border);
+	box-shadow: inset 1px 1px 6px -1px var(--shadow_color);}
+.highlight_light  {
+	background-color: var(--accent_color_light);
+	border-color: var(--accent_color_light_border);
+	box-shadow: 1px 1px 4px var(--shadow_color);}
+.highlight_green  {
+	background-color: rgba(0, 255, 0, 0.05);
+	border-color: #00d000;}
+.highlight_blue   {
+	background-color: rgba(32, 32, 255, 0.2);
+	border-color: rgb(54, 54, 255);}
+.highlight_red    {
+	background-color: rgba(255, 0, 0, 0.1);
+	border-color: #B00000;}
+
+body > .highlight_dark,
+body > .highlight_middle,
+body > .highlight_light,
+body > .highlight_green,
+body > .highlight_blue,
+body > .highlight_red {
+	margin: 0;
+}
 
 .border_top    {border-top-width:    1px; border-top-style:    solid;}
 .border_bottom {border-bottom-width: 1px; border-bottom-style: solid;}
@@ -189,8 +213,11 @@ hr{
 	width: 12px;  /* for vertical scrollbars */
 	height: 12px; /* for horizontal scrollbars */
 }
-::-webkit-scrollbar-track {background: var(--accent_color_dark);}
-::-webkit-scrollbar-thumb {background-color: var(--accent_color_light);}
+::-webkit-scrollbar-track {background: var(--scrollbar_background_color);}
+::-webkit-scrollbar-thumb {
+	background-color: var(--scrollbar_foreground_color);
+	border-radius: 6px;
+}
 ::-webkit-scrollbar-corner{background: transparent;}
 
 a       {color: var(--highlight_color); text-decoration: none;}
@@ -312,7 +339,7 @@ select{
 	margin: 2px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
 	padding: 6px 8px 6px 8px;
-	box-shadow: 2px 2px 8px var(--shadow_color);
+	box-shadow: 2px 2px 4px var(--shadow_color);
 	font-weight: bold;
 	font-size: 0.85em;
 	overflow: hidden;
@@ -340,7 +367,7 @@ select:focus{
 	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
 	text-decoration: none;
-	box-shadow: var(--highlight_border), 2px 2px 8px var(--shadow_color);
+	box-shadow: var(--highlight_border), 2px 2px 4px var(--shadow_color);
 }
 button:active,
 .button:active,
@@ -349,7 +376,7 @@ input[type="button"]:active,
 input[type="color"]:active,
 select:active{
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
-	box-shadow: inset 5px 5px 10px var(--shadow_color);
+	box-shadow: inset 4px 4px 8px var(--shadow_color);
 	padding: 11px 3px 1px 13px; /* Exactly 5px offset compared to the inactive padding to give a depth effect */
 }
 .button_full_width      {width: calc(100% - 4px);}
@@ -376,7 +403,7 @@ input[type="number"]{
 	box-sizing: border-box;
 	border-radius: 4px;
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
-	box-shadow: inset 3px 3px 6px var(--shadow_color);
+	box-shadow: inset 2px 2px 4px var(--shadow_color);
 	padding: 3px 5px;
 	color: var(--input_text_color);
 	height: 26px;

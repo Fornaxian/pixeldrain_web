@@ -190,6 +190,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f forms.F
 				Value:   loginResp.APIKey,
 				Path:    "/",
 				Expires: time.Now().AddDate(50, 0, 0),
+				Domain:  wc.conf.SessionCookieDomain,
 			}
 			f.Extra.RedirectTo = "/user"
 		}
