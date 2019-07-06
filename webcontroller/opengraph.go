@@ -37,14 +37,21 @@ func (o linkRule) HTML() template.HTML {
 func metadataFromFile(f pixelapi.FileInfo) (meta template.HTML) {
 	meta += ogRule{"og:title", f.Name}.HTML()
 	meta += ogRule{"og:site_name", "pixeldrain"}.HTML()
-	meta += ogRule{"og:description", "View '" + f.Name + "' on Pixeldrain"}.HTML()
-	meta += ogRule{"description", "View '" + f.Name + "' on Pixeldrain"}.HTML()
+	meta += ogRule{"og:description", "View '" + f.Name + "' on pixeldrain"}.HTML()
+	meta += ogRule{"description", "View '" + f.Name + "' on pixeldrain"}.HTML()
 	meta += ogRule{"og:url", "/u/" + f.ID}.HTML()
+	meta += twitterRule{"twitter:title", f.Name}.HTML()
+	meta += twitterRule{"twitter:site", "@Fornax96"}.HTML()
+	meta += twitterRule{"twitter:domain", "pixeldrain.com"}.HTML()
 
 	if strings.HasPrefix(f.MimeType, "image") {
 		meta += ogRule{"og:type", "article"}.HTML()
 		meta += ogRule{"og:image", "/api/file/" + f.ID}.HTML()
+		meta += ogRule{"og:image:url", "/api/file/" + f.ID}.HTML()
+		meta += ogRule{"og:image:secure_url", "/api/file/" + f.ID}.HTML()
+		meta += ogRule{"og:image:type", f.MimeType}.HTML()
 
+		meta += twitterRule{"twitter:card", "summary_large_image"}.HTML()
 		meta += twitterRule{"twitter:image", "/api/file/" + f.ID}.HTML()
 		meta += linkRule{"image_src", "/api/file/" + f.ID}.HTML()
 	} else if strings.HasPrefix(f.MimeType, "video") {
@@ -76,12 +83,15 @@ func metadataFromList(l pixelapi.List) (meta template.HTML) {
 	meta += ogRule{"og:type", "website"}.HTML()
 	meta += ogRule{"og:title", l.Title}.HTML()
 	meta += ogRule{"og:site_name", "pixeldrain"}.HTML()
-	meta += ogRule{"og:description", "View '" + l.Title + "' on Pixeldrain"}.HTML()
-	meta += ogRule{"description", "View '" + l.Title + "' on Pixeldrain"}.HTML()
+	meta += ogRule{"og:description", "View '" + l.Title + "' on pixeldrain"}.HTML()
+	meta += ogRule{"description", "View '" + l.Title + "' on pixeldrain"}.HTML()
 	meta += ogRule{"og:url", "/l/" + l.ID}.HTML()
 	meta += ogRule{"og:image", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
 	meta += ogRule{"og:image:url", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
 	meta += twitterRule{"twitter:image", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
+	meta += twitterRule{"twitter:title", l.Title}.HTML()
+	meta += twitterRule{"twitter:site", "@Fornax96"}.HTML()
+	meta += twitterRule{"twitter:domain", "pixeldrain.com"}.HTML()
 	meta += linkRule{"image_src", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
 	return meta
 }
