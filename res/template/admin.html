@@ -20,7 +20,7 @@
 			<script src="/res/script/jquery.js"></script>
 			<script src="/res/misc/chartjs/Chart.min.js"></script>
 			<script>
-			$.get(apiEndpoint+"/admin/files/timeseries/10", function(response){
+			$.get(apiEndpoint+"/admin/files/timeseries/14", function(response){
 				console.log(response);
 				if (response.success) {
 					var ctx = document.getElementById('bandwidth_chart');
@@ -35,7 +35,7 @@
 								labels: response.labels,
 								datasets: [
 									{
-										label: "Downloads",
+										label: "Bandwidth",
 										backgroundColor: "rgba(100, 255, 100, .1)",
 										borderColor: "rgba(100, 255, 100, .8)",
 										borderWidth: 2,
@@ -44,7 +44,7 @@
 										data: response.downloads
 									}, {
 										label: "Views",
-										backgroundColor: "rgba(128, 128, 255, .1)",
+										backgroundColor: "rgba(128, 128, 255, .2)",
 										borderColor: "rgba(128, 128, 255, .8)",
 										borderWidth: 2,
 										fill: true,
@@ -71,6 +71,14 @@
 											scaleLabel: {
 												display: true,
 												labelString: "Bandwidth"
+											},
+											ticks: {
+												callback: function(value, index, values) {
+													return (value/1e9) + " GB";
+												}
+											},
+											gridLines: {
+												color: "rgba(100, 255, 100, .1)"
 											}
 										}, {
 											type: "linear",
@@ -82,7 +90,14 @@
 												labelString: "Views"
 											},
 											gridLines: {
-												color: "rgba(0, 0, 0, 0)"
+												color: "rgba(128, 128, 255, .2)"
+											}
+										}
+									],
+									xAxes: [
+										{
+											gridLines: {
+												display: false
 											}
 										}
 									]

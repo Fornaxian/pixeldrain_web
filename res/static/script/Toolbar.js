@@ -189,6 +189,10 @@ var DetailsWindow = {
 			this.detailsButton.classList.add("button_highlight")
 			this.visible = true;
 
+			// This is a workaround for a chrome bug which makes it so hidden
+			// windows can't be scrolled after they are shown
+			this.popupDiv.focus();
+
 			if (this.graph === 0) {
 				this.renderGraph();
 			}
@@ -301,6 +305,9 @@ var DetailsWindow = {
 								scaleLabel: {
 									display: true,
 									labelString: "Downloads"
+								},
+								gridLines: {
+									color: "rgba(100, 255, 100, .1)"
 								}
 							}, {
 								type: "linear",
@@ -312,7 +319,14 @@ var DetailsWindow = {
 									labelString: "Views"
 								},
 								gridLines: {
-									color: "rgba(0, 0, 0, 0)"
+									color: "rgba(128, 128, 255, .2)"
+								}
+							}
+						],
+						xAxes: [
+							{
+								gridLines: {
+									display: false
 								}
 							}
 						]

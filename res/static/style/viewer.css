@@ -194,8 +194,10 @@ body{
 .popup {
 	position: fixed;
 	visibility: hidden;
+	display: flex;
+	flex-direction: column;
 	opacity: 0;
-	transition: visibility 1s, opacity 1s;
+	transition: visibility .5s, opacity .5s;
 	background-color: var(--body_color);
 	border-color: var(--accent_color_dark_border);
 	max-height: 100%;
@@ -207,13 +209,18 @@ body{
 	box-sizing: border-box;
 	text-align: left;
 	box-shadow: var(--shadow_color) 0px 0px 50px;
+	overflow: hidden;
 }
-.popup .highlight_light {
+.popup > .highlight_light {
 	font-size: 1.2em;
+}
+.popup > .content_area {
+	flex: 1;
+	overflow-y: scroll;
+	padding: 10px;
 }
 
 .details_popup{
-	overflow-y: scroll;
 	width: 1500px;
 	height: 800px;
 	z-index: 100;
