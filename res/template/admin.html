@@ -20,7 +20,7 @@
 			<script src="/res/script/jquery.js"></script>
 			<script src="/res/misc/chartjs/Chart.min.js"></script>
 			<script>
-			$.get(apiEndpoint+"/admin/files/timeseries/14", function(response){
+			$.get(apiEndpoint+"/admin/files/timeseries/14?interval=60", function(response){
 				console.log(response);
 				if (response.success) {
 					var ctx = document.getElementById('bandwidth_chart');

@@ -249,7 +249,7 @@ var DetailsWindow = {
 	updateGraph: function(fileID) {
 		var that = this;
 		console.log("updating graph "+fileID);
-		$.get(apiEndpoint+"/file/" + fileID + "/timeseries", function(response){
+		$.get(apiEndpoint+"/file/" + fileID + "/timeseries?interval=60", function(response){
 			console.log(response);
 			if (response.success) {
 				that.graph.data.labels = response.labels;
