@@ -174,6 +174,7 @@ function loadCaptcha(){
 var DetailsWindow = {
 	visible:       false,
 	fileID:        "",
+	graph:         0,
 	popupDiv:      document.getElementById("details_popup"),
 	detailsButton: document.getElementById("btnDetails"),
 	toggle: function () {
@@ -187,10 +188,15 @@ var DetailsWindow = {
 			this.popupDiv.style.visibility = "visible"
 			this.detailsButton.classList.add("button_highlight")
 			this.visible = true;
-			this.renderGraph(this.fileID);
+
+			if (this.graph === 0) {
+				this.renderGraph();
+			}
+			this.updateGraph(this.fileID);
 		}
 	},
 	setDetails: function (file) {
+		var that = this;
 		if (Viewer.isList) {
 			// Lists give incomplete file information, so we have to request
 			// more details in the background. File descriptions only exist in
@@ -199,7 +205,7 @@ var DetailsWindow = {
 				dataType: "json",
 				url: apiEndpoint + "/file/" + file.id + "/info",
 				success: function(data){
-					this.fileID = data.id;
+					that.fileID = data.id;
 					$("#info_file_details").html(
 						"<table>"
 						+ "<tr><td>Name<td><td>" + escapeHTML(data.name) + "</td></tr>"
@@ -213,8 +219,8 @@ var DetailsWindow = {
 						+ "</table>"
 					);
 					Toolbar.setStats(data.views, data.bandwidth_used/data.size);
-					if(this.visible) {
-						this.renderGraph(data.id);
+					if(that.visible) {
+						that.updateGraph(that.fileID);
 					}
 				}
 			});
@@ -232,88 +238,92 @@ var DetailsWindow = {
 			);
 			Toolbar.setStats(file.views, file.bandwidth_used/file.size);
 			if(this.visible) {
-				this.renderGraph(file.id);
+				this.updateGraph(file.id);
 			}
 		}
 	},
-	renderGraph: function(fileID) {
-		console.log("rendering graph "+fileID);
+	updateGraph: function(fileID) {
+		var that = this;
+		console.log("updating graph "+fileID);
 		$.get(apiEndpoint+"/file/" + fileID + "/timeseries", function(response){
 			console.log(response);
 			if (response.success) {
-				var ctx = document.getElementById('bandwidth_chart');
-				Chart.defaults.global.defaultFontColor = "#b3b3b3";
-				Chart.defaults.global.defaultFontSize = 16;
-				Chart.defaults.global.defaultFontFamily = "Ubuntu";
-				new Chart(
-					document.getElementById('bandwidth_chart'),
-					{
-						type: 'line',
-						data: {
-							labels: response.labels,
-							datasets: [
-								{
-									label: "Downloads",
-									backgroundColor: "rgba(100, 255, 100, .4)",
-									borderColor: "rgba(100, 255, 100, .8)",
-									borderWidth: 2,
-									fill: false,
-									yAxisID: "y_bandwidth",
-									data: response.downloads
-								}, {
-									label: "Views",
-									backgroundColor: "rgba(128, 128, 255, .4)",
-									borderColor: "rgba(128, 128, 255, .8)",
-									borderWidth: 2,
-									fill: false,
-									yAxisID: "y_views",
-									data: response.views
-								}
-							]
-						},
-						options: {
-							stacked: false,
-							aspectRatio: 2.5,
-							tooltips: {
-								mode: "index",
-								intersect: false,
-								axis: "x"
-							},
-							scales: {
-								yAxes: [
-									{
-										type: "linear",
-										display: true,
-										position: "left",
-										id: "y_bandwidth",
-										scaleLabel: {
-											display: true,
-											labelString: "Downloads"
-										}
-									}, {
-										type: "linear",
-										display: true,
-										position: "right",
-										id: "y_views",
-										scaleLabel: {
-											display: true,
-											labelString: "Views"
-										},
-										gridLines: {
-											color: "rgba(0, 0, 0, 0)"
-										}
-									}
-								]
-							},
-							elements: {
-								point: {
-									radius: 0
-								}
-							}
-						}
-					}
-				);
+				that.graph.data.labels = response.labels;
+				that.graph.data.datasets[0].data = response.downloads;
+				that.graph.data.datasets[1].data = response.views;
+				that.graph.update();
 			}
 		});
+	},
+	renderGraph: function() {
+		console.log("rendering graph");
+		Chart.defaults.global.defaultFontColor = "#b3b3b3";
+		Chart.defaults.global.defaultFontSize = 16;
+		Chart.defaults.global.defaultFontFamily = "Ubuntu";
+		this.graph = new Chart(
+			document.getElementById('bandwidth_chart'),
+			{
+				type: 'line',
+				data: {
+					datasets: [
+						{
+							label: "Downloads",
+							backgroundColor: "rgba(100, 255, 100, .4)",
+							borderColor: "rgba(100, 255, 100, .8)",
+							borderWidth: 2,
+							fill: false,
+							yAxisID: "y_bandwidth",
+						}, {
+							label: "Views",
+							backgroundColor: "rgba(128, 128, 255, .4)",
+							borderColor: "rgba(128, 128, 255, .8)",
+							borderWidth: 2,
+							fill: false,
+							yAxisID: "y_views",
+						}
+					]
+				},
+				options: {
+					stacked: false,
+					aspectRatio: 2.5,
+					tooltips: {
+						mode: "index",
+						intersect: false,
+						axis: "x"
+					},
+					scales: {
+						yAxes: [
+							{
+								type: "linear",
+								display: true,
+								position: "left",
+								id: "y_bandwidth",
+								scaleLabel: {
+									display: true,
+									labelString: "Downloads"
+								}
+							}, {
+								type: "linear",
+								display: true,
+								position: "right",
+								id: "y_views",
+								scaleLabel: {
+									display: true,
+									labelString: "Views"
+								},
+								gridLines: {
+									color: "rgba(0, 0, 0, 0)"
+								}
+							}
+						]
+					},
+					elements: {
+						point: {
+							radius: 0
+						}
+					}
+				}
+			}
+		);
 	}
 };

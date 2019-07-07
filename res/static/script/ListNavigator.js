@@ -208,7 +208,6 @@ var ListNavigator = {
 			document.getElementById("toolbar").style.top               = navHeight+"px";
 			document.getElementById("button-expand-toolbar").style.top = navHeight+"px";
 			document.getElementById("sharebar").style.top              = navHeight+"px";
-			document.getElementById("info_popup").style.top            = (navHeight+20)+"px";
 		}, 200);
 	}
 };
