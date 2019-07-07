@@ -77,7 +77,6 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.POST(p+"/register" /*       */, wc.serveForm(wc.registerForm, false))
 	r.GET(p+"/login" /*           */, wc.serveForm(wc.loginForm, false))
 	r.POST(p+"/login" /*           */, wc.serveForm(wc.loginForm, false))
-	// r.GET(p+"/login" /*           */, wc.serveTemplate("login", false))
 	r.GET(p+"/logout" /*          */, wc.serveTemplate("logout", true))
 	r.POST(p+"/logout" /*         */, wc.serveLogout)
 	r.GET(p+"/user" /*            */, wc.serveTemplate("user_home", true))
@@ -89,6 +88,8 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/user/settings" /*        */, wc.serveTemplate("user_settings", true))
 	r.GET(p+"/user/change_password" /* */, wc.serveForm(wc.passwordForm, true))
 	r.POST(p+"/user/change_password" /**/, wc.serveForm(wc.passwordForm, true))
+
+	r.GET(p+"/admin", wc.serveTemplate("admin_panel", true))
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 

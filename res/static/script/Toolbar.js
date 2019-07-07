@@ -249,7 +249,28 @@ var DetailsWindow = {
 					document.getElementById('bandwidth_chart'),
 					{
 						type: 'line',
-						data: response,
+						data: {
+							labels: response.labels,
+							datasets: [
+								{
+									label: "Downloads",
+									backgroundColor: "rgba(100, 255, 100, .4)",
+									borderColor: "rgba(100, 255, 100, .8)",
+									borderWidth: 2,
+									fill: false,
+									yAxisID: "y_bandwidth",
+									data: response.downloads
+								}, {
+									label: "Views",
+									backgroundColor: "rgba(128, 128, 255, .4)",
+									borderColor: "rgba(128, 128, 255, .8)",
+									borderWidth: 2,
+									fill: false,
+									yAxisID: "y_views",
+									data: response.views
+								}
+							]
+						},
 						options: {
 							stacked: false,
 							aspectRatio: 2.5,
@@ -271,7 +292,7 @@ var DetailsWindow = {
 										}
 									}, {
 										type: "linear",
-										display: true,
+										display: false,
 										position: "right",
 										id: "y_views",
 										scaleLabel: {

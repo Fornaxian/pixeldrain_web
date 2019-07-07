@@ -7,13 +7,96 @@
 		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 	<body>
-		<img id="header_image" class="header_image" src="/res/img/header_neuropol.png" alt="Header image"/>
-		<br/>
-		<div id="body" class="body">
+		{{$isAdmin := .PixelAPI.UserIsAdmin}}
+		<div id="body" class="body" style="max-width: 100%">
 			{{template "menu" .}}
+			{{if $isAdmin.IsAdmin}}
 
-			<h1>System statistics</h1>
+			<h3>Bandwidth and views</h3>
+			<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: auto;">
+				<canvas id="bandwidth_chart"></canvas>
+			</div>
 
+			<script src="/res/script/jquery.js"></script>
+			<script src="/res/misc/chartjs/Chart.min.js"></script>
+			<script>
+			$.get(apiEndpoint+"/admin/files/timeseries", function(response){
+				console.log(response);
+				if (response.success) {
+					var ctx = document.getElementById('bandwidth_chart');
+					Chart.defaults.global.defaultFontColor = "#b3b3b3";
+					Chart.defaults.global.defaultFontSize = 16;
+					Chart.defaults.global.defaultFontFamily = "Ubuntu";
+					new Chart(
+						document.getElementById('bandwidth_chart'),
+						{
+							type: 'line',
+							data: {
+								labels: response.labels,
+								datasets: [
+									{
+										label: "Downloads",
+										backgroundColor: "rgba(100, 255, 100, .4)",
+										borderColor: "rgba(100, 255, 100, .8)",
+										borderWidth: 2,
+										fill: false,
+										yAxisID: "y_bandwidth",
+										data: response.downloads
+									}, {
+										label: "Views",
+										backgroundColor: "rgba(128, 128, 255, .4)",
+										borderColor: "rgba(128, 128, 255, .8)",
+										borderWidth: 2,
+										fill: false,
+										yAxisID: "y_views",
+										data: response.views
+									}
+								]
+							},
+							options: {
+								stacked: false,
+								aspectRatio: 3,
+								tooltips: {
+									mode: "index",
+									intersect: false,
+									axis: "x"
+								},
+								scales: {
+									yAxes: [
+										{
+											type: "linear",
+											display: true,
+											position: "left",
+											id: "y_bandwidth",
+											scaleLabel: {
+												display: true,
+												labelString: "Downloads"
+											}
+										}, {
+											type: "linear",
+											display: false,
+											position: "right",
+											id: "y_views",
+											scaleLabel: {
+												display: true,
+												labelString: "Views"
+											}
+										}
+									]
+								},
+								elements: {
+									point: {
+										radius: 0
+									}
+								}
+							}
+						}
+					);
+				}
+			});
+			</script>
+
+			{{end}}
 			{{template "footer"}}
 		</div>
 	</body>
