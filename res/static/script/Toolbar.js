@@ -268,17 +268,17 @@ var DetailsWindow = {
 					datasets: [
 						{
 							label: "Downloads",
-							backgroundColor: "rgba(100, 255, 100, .4)",
+							backgroundColor: "rgba(100, 255, 100, .1)",
 							borderColor: "rgba(100, 255, 100, .8)",
 							borderWidth: 2,
-							fill: false,
+							fill: true,
 							yAxisID: "y_bandwidth",
 						}, {
 							label: "Views",
-							backgroundColor: "rgba(128, 128, 255, .4)",
+							backgroundColor: "rgba(128, 128, 255, .1)",
 							borderColor: "rgba(128, 128, 255, .8)",
 							borderWidth: 2,
-							fill: false,
+							fill: true,
 							yAxisID: "y_views",
 						}
 					]
