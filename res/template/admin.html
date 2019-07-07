@@ -20,7 +20,7 @@
 			<script src="/res/script/jquery.js"></script>
 			<script src="/res/misc/chartjs/Chart.min.js"></script>
 			<script>
-			$.get(apiEndpoint+"/admin/files/timeseries", function(response){
+			$.get(apiEndpoint+"/admin/files/timeseries/10", function(response){
 				console.log(response);
 				if (response.success) {
 					var ctx = document.getElementById('bandwidth_chart');
@@ -70,7 +70,7 @@
 											id: "y_bandwidth",
 											scaleLabel: {
 												display: true,
-												labelString: "Downloads"
+												labelString: "Bandwidth"
 											}
 										}, {
 											type: "linear",
@@ -99,6 +99,8 @@
 			});
 			</script>
 
+			{{else}}
+			<h1 style="text-align: center;">;)</h1>
 			{{end}}
 			{{template "footer"}}
 		</div>
