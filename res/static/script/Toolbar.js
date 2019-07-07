@@ -292,12 +292,15 @@ var DetailsWindow = {
 										}
 									}, {
 										type: "linear",
-										display: false,
+										display: true,
 										position: "right",
 										id: "y_views",
 										scaleLabel: {
 											display: true,
 											labelString: "Views"
+										},
+										gridLines: {
+											color: "rgba(0, 0, 0, 0)"
 										}
 									}
 								]
