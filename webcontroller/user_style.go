@@ -23,6 +23,8 @@ func userStyle(r *http.Request) (style template.CSS) {
 			selectedStyle = hackerStyle
 		case "canta":
 			selectedStyle = cantaPixeldrainStyle
+		case "arc":
+			selectedStyle = arcPixeldrainStyle
 		case "default":
 			fallthrough // use default case
 		default:
@@ -197,10 +199,10 @@ var sunnyPixeldrainStyle = pixeldrainStyleSheet{
 
 var solarizedDarkStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .75},
-	InputColor:               hsl{192, .95, .30},
+	InputColor:               hsl{192, .95, .25},
 	InputTextColor:           hsl{0, 0, 1},
 	HighlightColor:           hsl{145, .63, .42},
-	HighlightTextColor:       hsl{0, 0, 1},
+	HighlightTextColor:       hsl{0, 0, 0},
 	DangerColor:              hsl{343, .63, .42},
 	FileBackgroundColor:      hsl{192, .87, .05},
 	ScrollbarForegroundColor: hsl{192, .95, .30},
@@ -219,7 +221,7 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 
 var maroonStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .7},
-	InputColor:               hsl{0, .75, .2},
+	InputColor:               hsl{0, .75, .25},
 	InputTextColor:           hsl{0, 0, 1},
 	HighlightColor:           hsl{0, 1, .4},
 	HighlightTextColor:       hsl{0, 0, 1},
@@ -277,6 +279,28 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	AccentColorDark:   hsl{170, .06, .21},
 	AccentColorMedium: hsl{160, .04, .31},
 	AccentColorLight:  hsl{170, .02, .47},
+
+	ShadowColor:     hsl{0, 0, 0},
+	ShadowSpread:    10,
+	ShadowIntensity: 0,
+}
+
+var arcPixeldrainStyle = pixeldrainStyleSheet{
+	TextColor:                hsl{0, 0, .9},
+	InputColor:               hsl{219, .1, .27},
+	InputTextColor:           hsl{0, 0, 1},
+	HighlightColor:           hsl{212, .54, .58},
+	HighlightTextColor:       hsl{0, 0, 1},
+	DangerColor:              hsl{357, .41, .55},
+	FileBackgroundColor:      hsl{219, .1, .2},
+	ScrollbarForegroundColor: hsl{150, .02, .78},
+	ScrollbarBackgroundColor: hsl{170, .05, .26},
+
+	BackgroundColor:   hsl{0, 0, 0},
+	BodyColor:         hsl{223, .08, .33},
+	AccentColorDark:   hsl{219, .1, .27},
+	AccentColorMedium: hsl{223, .09, .3},
+	AccentColorLight:  hsl{223, .08, .33},
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    10,

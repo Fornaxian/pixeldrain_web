@@ -205,11 +205,10 @@ body{
 	top: 10%;
 	left: 50%;
 	transform: translate(-50%, -10%);
-	padding: 0 10px;
+	padding: 0;
 	box-sizing: border-box;
 	text-align: left;
 	box-shadow: var(--shadow_color) 0px 0px 50px;
-	overflow: hidden;
 }
 .popup > .highlight_light {
 	font-size: 1.2em;

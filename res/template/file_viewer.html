@@ -73,37 +73,29 @@
 
 		<div id="sharebar" class="sidebar">
 			Share on:<br/>
+			<button class="sharebar-button button_full_width" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=You%20can%20view%20it%20here%20' + window.location.href);">
+				<img src="/res/img/social_email.png" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
+				<br/>E-Mail
+			</button>
 			<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
 				<img src="/res/img/social_reddit.png" alt="Share on Reddit" style="width:40px; height: 40px;"/>
 				<br/>Reddit
-			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
-				<img src="/res/img/social_voat.png" alt="Share on Voat" style="width:40px; height: 40px;"/>
-				<br/>Voat
-			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
-				<img src="/res/img/social_facebook.png" alt="Share on Facebook" style="width:40px; height: 40px;"/>
-				<br/>Facebook
 			</button>
 			<button class="sharebar-button button_full_width" onClick="window.open('https://twitter.com/share?text=Check%20out%20this%20file%20on%20%23Pixeldrain&url=' + window.location.href);">
 				<img src="/res/img/social_twitter.png" alt="Share on Twitter" style="width:40px; height: 40px;"/>
 				<br/>Twitter
 			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('https://plus.google.com/share?url=' + window.location.href);">
-				<img src="/res/img/social_googleplus.png" alt="Share on Google Plus" style="width:40px; height: 40px;"/>
-				<br/>Google+
+			<button class="sharebar-button button_full_width" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
+				<img src="/res/img/social_facebook.png" alt="Share on Facebook" style="width:40px; height: 40px;"/>
+				<br/>Facebook
 			</button>
 			<button class="sharebar-button button_full_width" onClick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
 				<img src="/res/img/social_tumblr.png" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
 				<br/>Tumblr
 			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('http://www.stumbleupon.com/submit?url=' + window.location.href);">
-				<img src="/res/img/social_stumbleupon.png" alt="Share on StumbleUpon" style="width:40px; height: 40px;"/>
-				<br/>StumbleUpon
-			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=You%20can%20view%20it%20here%20' + window.location.href);">
-				<img src="/res/img/social_email.png" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
-				<br/>E-Mail
+			<button class="sharebar-button button_full_width" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
+				<img src="/res/img/social_voat.png" alt="Share on Voat" style="width:40px; height: 40px;"/>
+				<br/>Voat
 			</button>
 		</div>
 
@@ -157,7 +149,7 @@
 		</div>
 		<div id="captcha_popup" class="popup captcha_popup border_bottom">
 			<div id="captcha_popup_title" class="highlight_light border_top border_bottom"></div>
-			<div id="captcha_popup_content"></div>
+			<div id="captcha_popup_content" class="content_area"></div>
 			<br/>
 			<div id="captcha_popup_captcha" style="text-align: center;"></div>
 		</div>

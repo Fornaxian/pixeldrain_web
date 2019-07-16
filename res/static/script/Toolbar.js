@@ -249,7 +249,7 @@ var DetailsWindow = {
 	updateGraph: function(fileID) {
 		var that = this;
 		console.log("updating graph "+fileID);
-		$.get(apiEndpoint+"/file/" + fileID + "/timeseries?interval=60", function(response){
+		$.get(apiEndpoint+"/file/" + fileID + "/timeseries?interval=60?days=14", function(response){
 			console.log(response);
 			if (response.success) {
 				that.graph.data.labels = response.labels;
@@ -262,8 +262,13 @@ var DetailsWindow = {
 	renderGraph: function() {
 		console.log("rendering graph");
 		Chart.defaults.global.defaultFontColor = "#b3b3b3";
-		Chart.defaults.global.defaultFontSize = 16;
+		Chart.defaults.global.defaultFontSize = 15;
 		Chart.defaults.global.defaultFontFamily = "Ubuntu";
+		Chart.defaults.global.aspectRatio = 2.5;
+		Chart.defaults.global.elements.point.radius = 0;
+		Chart.defaults.global.tooltips.mode = "index";
+		Chart.defaults.global.tooltips.axis = "x";
+		Chart.defaults.global.tooltips.intersect = false;
 		this.graph = new Chart(
 			document.getElementById('bandwidth_chart'),
 			{
@@ -274,27 +279,20 @@ var DetailsWindow = {
 							label: "Downloads",
 							backgroundColor: "rgba(100, 255, 100, .1)",
 							borderColor: "rgba(100, 255, 100, .8)",
-							borderWidth: 2,
+							borderWidth: 1,
 							fill: true,
 							yAxisID: "y_bandwidth",
 						}, {
 							label: "Views",
 							backgroundColor: "rgba(128, 128, 255, .1)",
 							borderColor: "rgba(128, 128, 255, .8)",
-							borderWidth: 2,
+							borderWidth: 1,
 							fill: true,
 							yAxisID: "y_views",
 						}
 					]
 				},
 				options: {
-					stacked: false,
-					aspectRatio: 2.5,
-					tooltips: {
-						mode: "index",
-						intersect: false,
-						axis: "x"
-					},
 					scales: {
 						yAxes: [
 							{
@@ -325,16 +323,14 @@ var DetailsWindow = {
 						],
 						xAxes: [
 							{
+								ticks: {
+									maxRotation: 20
+								},
 								gridLines: {
 									display: false
 								}
 							}
 						]
-					},
-					elements: {
-						point: {
-							radius: 0
-						}
 					}
 				}
 			}

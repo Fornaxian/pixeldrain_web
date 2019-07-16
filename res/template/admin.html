@@ -13,6 +13,14 @@
 			{{if $isAdmin.IsAdmin}}
 
 			<h3>Bandwidth and views</h3>
+			<div class="highlight_dark">
+				<button onclick="days = 7; interval = 60; setData();">Week</button>
+				<button onclick="days = 14; interval = 60; setData();">Two Weeks</button>
+				<button onclick="days = 21; interval = 60; setData();">Three Weeks</button>
+				<button onclick="days = 30; interval = 1440; setData();">Month</button>
+				<button onclick="days = 60; interval = 1440; setData();">Two Months</button>
+				<button onclick="days = 91; interval = 1440; setData();">Quarter</button>
+			</div>
 			<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: auto;">
 				<canvas id="bandwidth_chart"></canvas>
 			</div>
@@ -20,98 +28,103 @@
 			<script src="/res/script/jquery.js"></script>
 			<script src="/res/misc/chartjs/Chart.min.js"></script>
 			<script>
-			$.get(apiEndpoint+"/admin/files/timeseries/14?interval=60", function(response){
-				console.log(response);
-				if (response.success) {
-					var ctx = document.getElementById('bandwidth_chart');
-					Chart.defaults.global.defaultFontColor = "#b3b3b3";
-					Chart.defaults.global.defaultFontSize = 16;
-					Chart.defaults.global.defaultFontFamily = "Ubuntu";
-					new Chart(
-						document.getElementById('bandwidth_chart'),
-						{
-							type: 'line',
-							data: {
-								labels: response.labels,
-								datasets: [
-									{
-										label: "Bandwidth",
-										backgroundColor: "rgba(100, 255, 100, .1)",
-										borderColor: "rgba(100, 255, 100, .8)",
-										borderWidth: 2,
-										fill: true,
-										yAxisID: "y_bandwidth",
-										data: response.downloads
-									}, {
-										label: "Views",
-										backgroundColor: "rgba(128, 128, 255, .2)",
-										borderColor: "rgba(128, 128, 255, .8)",
-										borderWidth: 2,
-										fill: true,
-										yAxisID: "y_views",
-										data: response.views
+			Chart.defaults.global.defaultFontColor = "#b3b3b3";
+			Chart.defaults.global.defaultFontSize = 15;
+			Chart.defaults.global.defaultFontFamily = "Ubuntu";
+			Chart.defaults.global.aspectRatio = 2.5;
+			Chart.defaults.global.elements.point.radius = 0;
+			Chart.defaults.global.tooltips.mode = "index";
+			Chart.defaults.global.tooltips.axis = "x";
+			Chart.defaults.global.tooltips.intersect = false;
+
+			var days = 7;
+			var interval = 60;
+			var graph = new Chart(
+				document.getElementById('bandwidth_chart'),
+				{
+					type: 'line',
+					data: {
+						datasets: [
+							{
+								label: "Bandwidth",
+								backgroundColor: "rgba(100, 255, 100, .1)",
+								borderColor: "rgba(100, 255, 100, .8)",
+								borderWidth: 1,
+								fill: true,
+								yAxisID: "y_bandwidth"
+							}, {
+								label: "Views",
+								backgroundColor: "rgba(128, 128, 255, .2)",
+								borderColor: "rgba(128, 128, 255, .8)",
+								borderWidth: 1,
+								fill: true,
+								yAxisID: "y_views"
+							}
+						]
+					},
+					options: {
+						scales: {
+							yAxes: [
+								{
+									type: "linear",
+									display: true,
+									position: "left",
+									id: "y_bandwidth",
+									scaleLabel: {
+										display: true,
+										labelString: "Bandwidth"
+									},
+									ticks: {
+										callback: function(value, index, values) {
+											return Math.round((value*8/1e6)/(interval*60)) + " Mbps";
+										}
+									},
+									gridLines: {
+										color: "rgba(100, 255, 100, .1)"
 									}
-								]
-							},
-							options: {
-								stacked: false,
-								aspectRatio: 3,
-								tooltips: {
-									mode: "index",
-									intersect: false,
-									axis: "x"
-								},
-								scales: {
-									yAxes: [
-										{
-											type: "linear",
-											display: true,
-											position: "left",
-											id: "y_bandwidth",
-											scaleLabel: {
-												display: true,
-												labelString: "Bandwidth"
-											},
-											ticks: {
-												callback: function(value, index, values) {
-													return (value/1e9) + " GB";
-												}
-											},
-											gridLines: {
-												color: "rgba(100, 255, 100, .1)"
-											}
-										}, {
-											type: "linear",
-											display: true,
-											position: "right",
-											id: "y_views",
-											scaleLabel: {
-												display: true,
-												labelString: "Views"
-											},
-											gridLines: {
-												color: "rgba(128, 128, 255, .2)"
-											}
-										}
-									],
-									xAxes: [
-										{
-											gridLines: {
-												display: false
-											}
-										}
-									]
-								},
-								elements: {
-									point: {
-										radius: 0
+								}, {
+									type: "linear",
+									display: true,
+									position: "right",
+									id: "y_views",
+									scaleLabel: {
+										display: true,
+										labelString: "Views"
+									},
+									gridLines: {
+										color: "rgba(128, 128, 255, .2)"
 									}
 								}
-							}
+							],
+							xAxes: [
+								{
+									ticks: {
+										maxRotation: 20
+									},
+									gridLines: {
+										display: false
+									}
+								}
+							]
 						}
-					);
+					}
 				}
-			});
+			);
+
+			function setData(){
+				this.class = "button_highlight";
+				$.get(apiEndpoint+"/admin/files/timeseries?days="+days+"&interval="+interval, function(response){
+					console.log(response);
+					if (response.success) {
+						window.graph.data.labels = response.labels;
+						window.graph.data.datasets[0].data = response.downloads;
+						window.graph.data.datasets[1].data = response.views;
+						window.graph.update();
+					}
+				});
+			}
+
+			setData();
 			</script>
 
 			{{else}}

@@ -84,7 +84,7 @@ body{
 	min-width: 300px;
 	width: 100%;
 	height: auto;
-	padding: 0 10px 0 10px;
+	padding: 0;
 	margin: 30px 0 30px 0;
 	box-sizing: border-box;
 	background-color: var(--body_color);
@@ -150,7 +150,7 @@ body{
 	position: relative;
 	width: auto;
 	height: auto;
-	margin: 0 -10px 0 -10px;
+	margin: 0;
 	box-sizing: border-box;
 	overflow: hidden;
 	text-align: center;
@@ -193,7 +193,11 @@ body > .highlight_red {
 
 /* Common elements */
 
-h1, h2, h3, h4, h5, h6 {line-height: 1em;}
+h1, h2, h3, h4, h5, h6 {
+	line-height: 1em;
+	margin-left: 10px;
+	margin-right: 10px;
+}
 h1{font-size: 2em;    font-family: "Lato Thin";}
 h2{font-size: 1.75em; font-family: "Lato Thin";}
 h3{font-size: 1.5em;  font-family: "Lato Thin";}
@@ -202,11 +206,15 @@ h5{font-size: 1em;    font-family: "Lato";}
 h6{font-size: .75em;  font-family: "Lato";}
 h3, h2{border-bottom: 1px var(--accent_color_light_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
+p, .indent {
+	margin: 10px;
+}
+
 hr{
 	height: 8px;
 	border: none;
 	background: linear-gradient(var(--accent_color_dark), var(--accent_color_light));
-	margin: 16px -8px 16px -8px;
+	margin: 16px 0 16px 0;
 }
 
 ::-webkit-scrollbar{
@@ -339,7 +347,7 @@ select{
 	margin: 2px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
 	padding: 6px 8px 6px 8px;
-	box-shadow: 2px 2px 4px var(--shadow_color);
+	box-shadow: 2px 2px 6px -2px var(--shadow_color);
 	font-weight: bold;
 	font-size: 0.85em;
 	overflow: hidden;
@@ -367,7 +375,7 @@ select:focus{
 	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
 	text-decoration: none;
-	box-shadow: var(--highlight_border), 2px 2px 4px var(--shadow_color);
+	box-shadow: var(--highlight_border), 2px 2px 6px -2px var(--shadow_color);
 }
 button:active,
 .button:active,
@@ -403,7 +411,7 @@ input[type="number"]{
 	box-sizing: border-box;
 	border-radius: 4px;
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
-	box-shadow: inset 2px 2px 4px var(--shadow_color);
+	box-shadow: inset 2px 2px 6px -2px var(--shadow_color);
 	padding: 3px 5px;
 	color: var(--input_text_color);
 	height: 26px;
@@ -423,7 +431,7 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus{
-	box-shadow: var(--highlight_border), inset 3px 3px 6px var(--shadow_color);
+	box-shadow: var(--highlight_border), inset 3px 3px 6px -2px var(--shadow_color);
 }
 
 input[type=file]{
