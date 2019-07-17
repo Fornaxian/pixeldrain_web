@@ -22,7 +22,7 @@
 		<br/>
 		<div id="body" class="body">
 			{{template "menu" .}}
-			<div class="highlight_middle border_bottom">
+			<div class="highlight_middle">
 				<input id="file_input_field" type="file" name="file" multiple="multiple"/>
 				<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
 				<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button><br/>
@@ -31,7 +31,7 @@
 
 				<div id="uploads_queue"></div>
 			</div>
-			<div class="highlight_dark border_bottom">
+			<div class="highlight_dark">
 				<button id="btn_create_list">Create list with uploaded files</button>
 				<button id="btn_copy_links">Copy links to clipboard</button>
 				<button id="btn_copy_bbcode">Copy BBCode to clipboard</button>
@@ -55,8 +55,8 @@
 				<input type="radio" id="style_hacker"         name="style"><label for="style_hacker">Hacker Style</label><br/>
 				<input type="radio" id="style_canta"          name="style"><label for="style_canta">Canta Style</label>
 				(Inspired by <a href="https://github.com/vinceliuice/Canta-theme" target="_blank">Canta GTK</a>)<br/>
-				<!--<input type="radio" id="style_arc"            name="style"><label for="style_arc">Arc Style</label>
-				(Inspired by <a href="https://github.com/horst3180/Arc-theme" target="_blank">Arc GTK</a>)<br/>-->
+				<input type="radio" id="style_arc"            name="style"><label for="style_arc">Arc Style</label>
+				(Inspired by <a href="https://github.com/horst3180/Arc-theme" target="_blank">Arc GTK</a>)<br/>
 			</div>
 
 			<h2>Questions and Answers</h2>

@@ -7,7 +7,7 @@
 		<style>
 			.file_manager {
 				position: absolute;
-				padding: 0px 8px 0px 8px;
+				padding: 0;
 				background-color: var(--body_color);
 				box-shadow: #000000 8px 8px 50px 5px;
 				left:100px;
@@ -25,7 +25,7 @@
 			.file_manager > .nav_bar > .breadcrumbs {flex: 1; margin: 1px 10px; min-width: 100px;}
 			.file_manager > .status_bar             {text-align: left;}
 			.file_manager > .directory_area {
-				margin: 0 -8px 0 -8px;
+				margin: 0;
 				padding: 5px;
 				max-height: 500px;
 				overflow-x: hidden;
@@ -47,7 +47,7 @@
 		{{template "menu" .}}
 		<br/>
 		<div class="file_manager">
-			<div class="nav_bar highlight_light border_top border_bottom">
+			<div class="nav_bar highlight_light">
 				<button>⇐</button>
 				<button>⇑</button>
 				<button style="margin-right: 16px;">⇒</button>
@@ -68,7 +68,7 @@
 				</a>
 				{{end}}
 			</div>
-			<div class="status_bar highlight_light border_top border_bottom">
+			<div class="status_bar highlight_light">
 				13 items (5 directories, 7 files). Total size: 1.23 GB
 			</div>
 		</div>

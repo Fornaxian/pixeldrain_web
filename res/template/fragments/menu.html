@@ -1,5 +1,5 @@
 {{define "menu"}}
-<div id="navigation" class="highlight_light border_top border_bottom navigation">
+<div id="navigation" class="highlight_headerbar navigation">
 	<a href="/">Home</a>
 	<a href="{{if .Authenticated}}/user/files{{else}}/history{{end}}">My&nbsp;Files</a>
 	{{if .Authenticated}}<a href="/user/lists">My&nbsp;Lists</a>{{end}}

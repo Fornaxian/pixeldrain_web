@@ -10,7 +10,7 @@
 		<div id='body' class="body">
 			{{template "menu" .}}
 
-			<h1 class="highlight_middle border_bottom">Welcome home, {{.Username}}!</h1>
+			<h1 class="highlight_middle">Welcome home, {{.Username}}!</h1>
 
 			<h2>Actions</h2>
 			<ul>
@@ -19,7 +19,7 @@
 			</ul>
 
 			<h2>Your most recently uploaded files:</h2>
-			<div class="highlight_dark border_top border_bottom">
+			<div class="highlight_dark">
 				{{$files := .PixelAPI.UserFiles 0 18}}
 				{{range $files.Files}}
 					<a class="file_button" href="/u/{{.ID}}" target="_blank">
@@ -33,7 +33,7 @@
 				<a href="/user/files" class="button">...All my files</a>
 			</div>
 			<h2>Your most recently created lists:</h2>
-			<div class="highlight_dark border_top border_bottom">
+			<div class="highlight_dark">
 				{{$lists := .PixelAPI.UserLists 0 18}}
 				{{range $lists.Lists}}
 					<a class="file_button" href="/l/{{.ID}}" target="_blank">

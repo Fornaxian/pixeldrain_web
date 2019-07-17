@@ -9,7 +9,7 @@
 /* global Viewer */
 
 var Toolbar = {
-	visible: true,
+	visible: false,
 	toggle: function () {
 		if (this.visible) {
 			if (Sharebar.visible) {
@@ -18,11 +18,13 @@ var Toolbar = {
 
 			document.getElementById("toolbar").style.left = "-9em";
 			document.getElementById("filepreview").style.left = "0px";
+			document.getElementById("button_toggle_toolbar").classList.remove("button_highlight");
 
 			this.visible = false;
 		} else {
 			document.getElementById("toolbar").style.left = "0px";
 			document.getElementById("filepreview").style.left = "8em";
+			document.getElementById("button_toggle_toolbar").classList.add("button_highlight");
 
 			this.visible = true;
 		}

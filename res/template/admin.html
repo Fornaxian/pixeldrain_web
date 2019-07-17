@@ -112,7 +112,6 @@
 			);
 
 			function setData(){
-				this.class = "button_highlight";
 				$.get(apiEndpoint+"/admin/files/timeseries?days="+days+"&interval="+interval, function(response){
 					console.log(response);
 					if (response.success) {

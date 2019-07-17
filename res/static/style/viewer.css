@@ -7,13 +7,82 @@ body{
 	overflow: hidden;
 }
 
-#filepreview{
+.file_viewer {
 	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+}
+.file_viewer > .highlight_headerbar {
+	flex-grow: 0;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	line-height: 1.9em;
+	text-align: left;
+	font-size: 1.2em;
+}
+.file_viewer > .highlight_headerbar > .button_toggle_toolbar {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+.file_viewer > .highlight_headerbar > .button_home {
+	flex-grow: 0;
+	flex-shrink: 0;
+	margin-right: .5em;
+}
+.file_viewer > .highlight_headerbar > .file_viewer_headerbar_title {
+	flex-grow: 1;
+	flex-shrink: 1;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 0.8em;
+}
+.file_viewer > .highlight_headerbar > .list_navigator_buttons {
+	flex-grow: 0;
+	flex-shrink: 0;
+	display: inline-flex;
+}
+.file_viewer > .highlight_headerbar > .button_close_file_viewer {
+	flex-grow: 0;
+	flex-shrink: 0;
+	margin-left: .5em;
+}
+.file_viewer > .list_navigator{
+	flex-grow: 0;
+	flex-shrink: 0;
+	position: relative;
+	display: none; /* Becomes visible if the page is a list */
+	width: 100%;
+	height: 100px;
+	background-color: var(--accent_color_dark);
+	box-shadow: 2px 2px 8px var(--shadow_color);
+	text-align: center;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	z-index: 50;
+	transition: top 1.5s;
+}
+.file_viewer > .file_viewer_window {
+	flex-grow: 1;
+	flex-shrink: 1;
+	position: relative;
 	display: inline-block;
-	top: 0px;
-	left: 8em;
-	right: 0px;
-	bottom: 0px;
+	width: auto;
+	height: auto;
+	margin: 0;
+}
+.file_viewer > .file_viewer_window > .file_viewer_file_preview {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	display: inline-block;
 	min-height: 100px;
 	min-width: 100px;
 	text-align: center;
@@ -21,11 +90,44 @@ body{
 	transition: left 1s, top 1.5s;
 }
 
+/* Toolbars */
+.file_viewer > .file_viewer_window > .file_viewer_toolbar {
+	position: absolute;
+	width: 8em;
+	z-index: 49;
+	overflow: hidden;
+	float: left;
+	background-color: var(--accent_color_dark);
+	left: -9em;
+	bottom: 0;
+	top: 0;
+	padding: 0;
+	text-align: left;
+	box-shadow: 2px 2px 8px var(--shadow_color);
+	transition: left 1s, top 1.5s;
+}
+.file_viewer > .file_viewer_window > .file_viewer_sharebar{
+	position: absolute;
+	width: 7em;
+	left: -8em;
+	bottom: 0;
+	top: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	float: left;
+	background-color: var(--accent_color_dark);
+	box-shadow: 2px 2px 8px var(--shadow_color);
+	text-align: center;
+	z-index: 48;
+	overflow: hidden;
+	transition: left 1s, top 1.5s;
+}
+
 /* =====================
    == FILE CONTAINERS ==
    =====================*/
 .image-container{
-	position: absolute;
+	position: relative;
 	top: 0px;
 	left: 0px;
 	right: 0px;
@@ -46,7 +148,7 @@ body{
 
 .text-container{
 	background: #333 none;
-	position: absolute;
+	position: relative;
 	overflow-y: scroll;
 	overflow-x: auto;
 	text-align: left;
@@ -94,22 +196,6 @@ body{
    || TOOLBAR COMPONENTS ||
    ======================== */
 
-#toolbar {
-	position: absolute;
-	width: 8em;
-	z-index: 52;
-	overflow: hidden;
-	float: left;
-	background-color: var(--background_color);
-	left: 0;
-	bottom: 0;
-	top: 0;
-	padding: 0;
-	text-align: left;
-	border-right: 2px ridge var(--highlight_color);
-	box-shadow: 2px 2px 8px var(--shadow_color);
-	transition: left 1s, top 1.5s;
-}
 
 /* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
 #toolbar > div {
@@ -129,14 +215,6 @@ body{
 	height: auto;
 }
 
-#button-expand-toolbar{
-	position: absolute;
-	left: 0;
-	top: 0;
-	cursor: pointer;
-	z-index: 51;
-}
-
 .toolbar_button{
 	text-align: left;
 }
@@ -153,38 +231,13 @@ body{
 	padding-left: 10px;
 	font-size: 0.8em;
 	line-height: 0.7em;
-}
-
-#sponsors{
-	position: relative;
-	height: 600px;
-	width: 8em;
-	margin: 0;
-	border: none;
-	z-index: 9;
+	margin-top: 0.5em;
 }
 
 /* =========================
    || SHAREBAR COMPONENTS ||
    ========================= */
 
-#sharebar{
-	position: absolute;
-	width: 7em;
-	left: -8em;
-	bottom: 0;
-	top: 0;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	float: left;
-	background-color: var(--background_color);
-	box-shadow: 2px 2px 8px var(--shadow_color);
-	text-align: center;
-	border-right: 2px ridge var(--highlight_color);
-	z-index: 50;
-	overflow: hidden;
-	transition: left 1s, top 1.5s;
-}
 .sharebar-button {text-align: center;}
 
 /* =====================
@@ -192,7 +245,7 @@ body{
    ===================== */
 
 .popup {
-	position: fixed;
+	position: absolute;
 	visibility: hidden;
 	display: flex;
 	flex-direction: column;
@@ -202,9 +255,9 @@ body{
 	border-color: var(--accent_color_dark_border);
 	max-height: 100%;
 	max-width: 100%;
-	top: 10%;
+	top: 20%;
 	left: 50%;
-	transform: translate(-50%, -10%);
+	transform: translate(-50%, -20%);
 	padding: 0;
 	box-sizing: border-box;
 	text-align: left;
@@ -222,12 +275,12 @@ body{
 .details_popup{
 	width: 1500px;
 	height: 800px;
-	z-index: 100;
+	z-index: 200;
 }
 .captcha_popup{
 	height: auto;
 	width: 450px;
-	z-index: 101;
+	z-index: 201;
 }
 #captcha_popup_captcha > div {
 	display: inline-block;
@@ -287,24 +340,9 @@ table > tbody > tr {border: none !important;}
 	border: none;
 }
 
-#listNavigator{
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: -100px;
-	height: 98px;
-	background-color: #000;
-	box-shadow: 2px 2px 8px #000000;
-	border-bottom: 2px ridge var(--highlight_color);
-	text-align: center;
-	overflow-x: hidden;
-	overflow-y: hidden;
-	z-index: 50;
-	transition: top 1.5s;
-}
 
 #listNavigatorItems{
-	position: absolute;
+	position: relative;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -313,7 +351,7 @@ table > tbody > tr {border: none !important;}
 	overflow-x: scroll;
 	overflow-y: hidden;
 	border: none;
-	padding: 0 40px;
+	padding: 0;
 }
 
 .listItem{
@@ -323,10 +361,14 @@ table > tbody > tr {border: none !important;}
 	width: 100px;
 	margin-right: 5px;
 	text-align: center;
-	border: #333 solid 2px;
+	border: var(--input_color) solid 2px;
+	border-radius: 2px;
 	font-size: 12px;
 	overflow: hidden;
 	cursor: pointer;
+}
+.list_item_selected{
+	border: var(--highlight_color) solid 2px;
 }
 
 .listItemThumbnail{
@@ -334,24 +376,4 @@ table > tbody > tr {border: none !important;}
 	max-width: 100%;
 	max-height: 84%;
 	margin: 0;
-}
-
-#arrow-left,
-#arrow-right{
-	position: absolute;
-	display: block;
-	border-top: 30px solid transparent;
-	border-bottom: 30px solid transparent;
-	height: 0;
-	width: 0;
-	top: 20px;
-	cursor: pointer;
-}
-#arrow-left{
-	border-right: 40px solid var(--highlight_color);
-	left: 10px;
-}
-#arrow-right{
-	border-left: 40px solid var(--highlight_color);
-	right: 10px;
 }

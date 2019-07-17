@@ -67,13 +67,13 @@ var ListNavigator = {
 
 		this.addToHistory(index);
 
-		$("#listNavigatorItems").find("*").css("border-color", "#333");
-		$("#listNavigatorItems div").eq(this.position).css("border-color", "#fff");
+		$("#listNavigatorItems").find("*").removeClass("list_item_selected");
+		$("#listNavigatorItems div").eq(this.position).addClass("list_item_selected");
 
 		// This centers the scroll bar exactly on the selected item
 		$("#listNavigatorItems").animate(
 			{
-				scrollLeft: (this.position * 109) - (($("#listNavigatorItems").width() / 2) - 55)
+				scrollLeft: ((this.position * 109) + (109/2)) - ($("#listNavigator").width() / 2)
 			}, {
 				duration: 1000,
 				queue: false
@@ -110,8 +110,8 @@ var ListNavigator = {
 	},
 
 	loadThumbnails: function(index){
-		var startPos = +index - 30;
-		var endPos = +index + 30;
+		var startPos = +index - 50;
+		var endPos = +index + 50;
 		// fyi, the + is to let javascript know it's actually a number instead of a string
 
 		if(startPos < 0){
@@ -126,12 +126,17 @@ var ListNavigator = {
 		var navigatorItems = document.getElementById("listNavigatorItems").children
 
 		for (i = startPos; i <= endPos; i++){
+			if (navigatorItems[i].innerHTML.includes("listItemThumbnail")) {
+				console.log("skip");
+				continue;
+			}
+
 			var thumb = "/api/file/" + this.data[i].id + "/thumbnail";
 			var name = this.data[i].name;
 
 			var itemHtml = escapeHTML(name) + "<br>"
 				+ "<img src=\"" + thumb + "\" "
-				+ "class=\"listItemThumbnail lazy\" alt=\"" + escapeHTML(name) + "\"/>";
+				+ "class=\"listItemThumbnail\" alt=\"" + escapeHTML(name) + "\"/>";
 
 			navigatorItems[i].innerHTML = itemHtml;
 		}
@@ -164,6 +169,22 @@ var ListNavigator = {
 		}else{
 			this.setItem(0);
 		}
+
+		var btnLastItem = document.createElement("button");
+		btnLastItem.innerText = "◀";
+		btnLastItem.setAttribute("id", "button_last_item");
+		btnLastItem.setAttribute("class", "button_highlight");
+		btnLastItem.setAttribute("onClick", "ListNavigator.previousItem();");
+
+		var btnNextItem = document.createElement("button");
+		btnNextItem.innerText = "▶";
+		btnNextItem.setAttribute("id", "button_next_item");
+		btnNextItem.setAttribute("class", "button_highlight");
+		btnNextItem.setAttribute("onClick", "ListNavigator.nextItem();");
+
+		var headerbar = document.getElementById("list_navigator_buttons");
+		headerbar.appendChild(btnLastItem);
+		headerbar.appendChild(btnNextItem);
 
 		// Add the list download button to the toolbar
 		var btnDownloadList = document.createElement("button");
@@ -199,16 +220,8 @@ var ListNavigator = {
 		btnShuffle.appendChild(btnShuffleText);
 		document.getElementById("btnShare").after(btnShuffle);
 
-		// We need to adjust the height of some elements to make the navigation bar fit
-		var navHeight = $("#listNavigator").height() + 2;
-
-		window.setTimeout(function(){
-			document.getElementById("listNavigator").style.top         = "0px";
-			document.getElementById("filepreview").style.top           = navHeight+"px";
-			document.getElementById("toolbar").style.top               = navHeight+"px";
-			document.getElementById("button-expand-toolbar").style.top = navHeight+"px";
-			document.getElementById("sharebar").style.top              = navHeight+"px";
-		}, 200);
+		// Make the navigator visible
+		document.getElementById("listNavigator").style.display = "inline-block";
 	}
 };
 

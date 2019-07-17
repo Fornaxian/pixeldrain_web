@@ -6,14 +6,12 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		{{template "user_style" .}}
-		<link rel="stylesheet" href="/res/style/viewer.css?v2"/>
-		<link rel="stylesheet" href="/res/style/layout.css?v2"/>
+		<link rel="stylesheet" href="/res/style/viewer.css?v3"/>
+		<link rel="stylesheet" href="/res/style/layout.css?v3"/>
 		<link rel="shortcut icon" href="/res/img/tray32.png"/>
 		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
 		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
 		<meta name="theme-color" content="#75AD38"/>
-
-		<!-- <link rel="alternate" type="application/json+oembed" th:href="*{oEmbedHref}" th:title="*{ogTitle}" /> OEmbed will return soon -->
 
 		{{template "bgpattern"}}
 
@@ -26,81 +24,90 @@
 	</head>
 
 	<body>
-		<div id="listNavigator">
-			<div id="listNavigatorItems"></div>
-			<div id="arrow-left" alt="Previous Item" onClick="ListNavigator.previousItem();"></div>
-			<div id="arrow-right" alt="Next Item" onClick="ListNavigator.nextItem();"></div>
-		</div>
-		<button id="button-expand-toolbar" onClick="Toolbar.toggle();">Show Toolbar</button>
-		<div id="toolbar">
-			<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
-			<div>
-				<div>
-					<button class="toolbar_button button_full_width" onClick="Toolbar.toggle();">Hide Toolbar</button>
+		<div id="file_viewer" class="file_viewer">
+			<div id="file_viewer_headerbar" class="highlight_headerbar">
+				<button id="button_toggle_toolbar" class="button_toggle_toolbar" onClick="Toolbar.toggle();">☰</button>
+				<a href="/" id="button_home" class="button button_home">
+					<img src="/res/img/tray32.png" alt="Back to the Home page" style="height: 1em;"/>
+					<!-- Yo -->
+				</a>
+				<span id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">{{.Title}}</span>
+				<div id="list_navigator_buttons" class="list_navigator_buttons"></div>
+				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onClick="window.close();">X</button>
+			</div>
+			<div id="listNavigator" class="list_navigator">
+				<div id="listNavigatorItems"></div>
+			</div>
+			<div id="file_viewer_window" class="file_viewer_window">
+				<div id="toolbar" class="file_viewer_toolbar">
+					<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
+					<div>
+						<div>
+							<div id="stat_views_label" class="toolbar_label">Views</div>
+							<div id="stat_views" style="text-align: center;">N/A</div>
+							<div id="stat_downloads_label" class="toolbar_label">Downloads</div>
+							<div id="stat_downloads" style="text-align: center;">N/A</div>
 
-					<div id="stat_views_label" class="toolbar_label">Views</div>
-					<div id="stat_views" style="text-align: center;">N/A</div>
-					<div id="stat_downloads_label" class="toolbar_label">Downloads</div>
-					<div id="stat_downloads" style="text-align: center;">N/A</div>
+							<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
+								<img src="/res/img/floppy_small.png" alt="Download this file"/>
+								<span>Download</span>
+							</button>
+							<button id="btnCopy" class="toolbar_button button_full_width" onClick="Toolbar.copyUrl();">
+								<img src="/res/img/clipboard_small.png" alt="Copy file URL to clipboard"/>
+								<span>Copy</span>
+							</button>
+							<button id="btnShare" class="toolbar_button button_full_width" onClick="Sharebar.toggle();">
+								<img src="/res/img/share_small.png" alt="Share this file on social media"/>
+								<span>Share</span>
+							</button>
+							<button id="btnDetails" class="toolbar_button button_full_width" onClick="DetailsWindow.toggle();">
+								<img src="/res/img/info_small.png" alt="Help"/>
+								<span>Details</span>
+							</button>
+							{{template "advertisement" .}}
 
-					<a href="/" id="btnHome" class="toolbar_button button_full_width button">
-						<img src="/res/img/pixeldrain_small.png" alt="Back to the Home page"/>
-						<span>Home</span>
-					</a>
-					<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
-						<img src="/res/img/floppy_small.png" alt="Download this file"/>
-						<span>Download</span>
-					</button>
-					<button id="btnCopy" class="toolbar_button button_full_width" onClick="Toolbar.copyUrl();">
-						<img src="/res/img/clipboard_small.png" alt="Copy file URL to clipboard"/>
-						<span>Copy</span>
-					</button>
-					<button id="btnShare" class="toolbar_button button_full_width" onClick="Sharebar.toggle();">
-						<img src="/res/img/share_small.png" alt="Share this file on social media"/>
-						<span>Share</span>
-					</button>
-					<button id="btnDetails" class="toolbar_button button_full_width" onClick="DetailsWindow.toggle();">
-						<img src="/res/img/info_small.png" alt="Help"/>
-						<span>Details</span>
-					</button>
-					{{template "advertisement" .}}
+							<!-- This frame will load the download URL when a download button is pressed -->
+							<iframe id="download_frame" style="display: none; width: 1px; height: 1px;"></iframe>
+						</div>
+					</div>
+				</div>
 
-					<!-- This frame will load the download URL when a download button is pressed -->
-					<iframe id="download_frame" style="display: none; width: 1px; height: 1px;"></iframe>
+				<div id="sharebar" class="file_viewer_sharebar">
+					Share on:<br/>
+					<button class="sharebar-button button_full_width" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=You%20can%20view%20it%20here%20' + window.location.href);">
+						<img src="/res/img/social_email.png" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
+						<br/>E-Mail
+					</button>
+					<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
+						<img src="/res/img/social_reddit.png" alt="Share on Reddit" style="width:40px; height: 40px;"/>
+						<br/>Reddit
+					</button>
+					<button class="sharebar-button button_full_width" onClick="window.open('https://twitter.com/share?text=Check%20out%20this%20file%20on%20%23Pixeldrain&url=' + window.location.href);">
+						<img src="/res/img/social_twitter.png" alt="Share on Twitter" style="width:40px; height: 40px;"/>
+						<br/>Twitter
+					</button>
+					<button class="sharebar-button button_full_width" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
+						<img src="/res/img/social_facebook.png" alt="Share on Facebook" style="width:40px; height: 40px;"/>
+						<br/>Facebook
+					</button>
+					<button class="sharebar-button button_full_width" onClick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
+						<img src="/res/img/social_tumblr.png" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
+						<br/>Tumblr
+					</button>
+					<button class="sharebar-button button_full_width" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
+						<img src="/res/img/social_voat.png" alt="Share on Voat" style="width:40px; height: 40px;"/>
+						<br/>Voat
+					</button>
+				</div>
+
+				<div id="filepreview" class="file_viewer_file_preview">
+					<img src="/res/img/misc/loadthink.gif" style="margin-top: 20%; width: 200px; height: 200px;" />
 				</div>
 			</div>
 		</div>
 
-		<div id="sharebar" class="sidebar">
-			Share on:<br/>
-			<button class="sharebar-button button_full_width" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=You%20can%20view%20it%20here%20' + window.location.href);">
-				<img src="/res/img/social_email.png" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
-				<br/>E-Mail
-			</button>
-			<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
-				<img src="/res/img/social_reddit.png" alt="Share on Reddit" style="width:40px; height: 40px;"/>
-				<br/>Reddit
-			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('https://twitter.com/share?text=Check%20out%20this%20file%20on%20%23Pixeldrain&url=' + window.location.href);">
-				<img src="/res/img/social_twitter.png" alt="Share on Twitter" style="width:40px; height: 40px;"/>
-				<br/>Twitter
-			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
-				<img src="/res/img/social_facebook.png" alt="Share on Facebook" style="width:40px; height: 40px;"/>
-				<br/>Facebook
-			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
-				<img src="/res/img/social_tumblr.png" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
-				<br/>Tumblr
-			</button>
-			<button class="sharebar-button button_full_width" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
-				<img src="/res/img/social_voat.png" alt="Share on Voat" style="width:40px; height: 40px;"/>
-				<br/>Voat
-			</button>
-		</div>
-
-		<div id="details_popup" class="popup details_popup border_bottom">
-			<div id="details_popup_title" class="highlight_light border_top border_bottom">
+		<div id="details_popup" class="popup details_popup">
+			<div id="details_popup_title" class="highlight_headerbar">
 				File Info
 				<button style="position: absolute; top: 3px; right: 3px;" class="button_red" onclick="DetailsWindow.toggle();">X</button>
 			</div>
@@ -147,23 +154,19 @@
 				</span>
 			</div>
 		</div>
-		<div id="captcha_popup" class="popup captcha_popup border_bottom">
-			<div id="captcha_popup_title" class="highlight_light border_top border_bottom"></div>
+		<div id="captcha_popup" class="popup captcha_popup">
+			<div id="captcha_popup_title" class="highlight_headerbar"></div>
 			<div id="captcha_popup_content" class="content_area"></div>
 			<br/>
 			<div id="captcha_popup_captcha" style="text-align: center;"></div>
 		</div>
 
-		<div id="filepreview">
-			<img src="/res/img/misc/loadthink.gif" style="margin-top: 20%; width: 200px; height: 200px;" />
-		</div>
-
 		<script src="/res/misc/chartjs/Chart.min.js"></script>
 		<script src="/res/script/jquery.js"></script>
 		<script src="/res/script/Keyboard.js"></script>
-		<script src="/res/script/Toolbar.js?v1"></script>
-		<script src="/res/script/Viewer.js?v1"></script>
-		<script src="/res/script/ListNavigator.js"></script>
+		<script src="/res/script/Toolbar.js?v2"></script>
+		<script src="/res/script/Viewer.js?v2"></script>
+		<script src="/res/script/ListNavigator.js?v2"></script>
 
 		<script>
 			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.

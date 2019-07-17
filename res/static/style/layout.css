@@ -141,6 +141,7 @@ body{
 	}
 }
 
+.highlight_headerbar,
 .highlight_dark,
 .highlight_middle,
 .highlight_light,
@@ -157,17 +158,17 @@ body{
 	padding: .5em;
 	z-index: 101;
 }
+.highlight_headerbar   {
+	background-color: var(--accent_color_headerbar);
+	box-shadow: 1px 1px 3px -1px var(--shadow_color);}
 .highlight_dark   {
 	background-color: var(--accent_color_dark);
-	border-color: var(--accent_color_dark_border);
 	box-shadow: inset 1px 1px 8px -1px var(--shadow_color);}
 .highlight_middle {
 	background-color: var(--accent_color_medium);
-	border-color: var(--accent_color_medium_border);
 	box-shadow: inset 1px 1px 6px -1px var(--shadow_color);}
 .highlight_light  {
 	background-color: var(--accent_color_light);
-	border-color: var(--accent_color_light_border);
 	box-shadow: 1px 1px 4px var(--shadow_color);}
 .highlight_green  {
 	background-color: rgba(0, 255, 0, 0.05);
@@ -179,17 +180,14 @@ body{
 	background-color: rgba(255, 0, 0, 0.1);
 	border-color: #B00000;}
 
-body > .highlight_dark,
-body > .highlight_middle,
-body > .highlight_light,
-body > .highlight_green,
-body > .highlight_blue,
-body > .highlight_red {
-	margin: 0;
+.highlight_green,
+.highlight_blue,
+.highlight_red {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
 }
-
-.border_top    {border-top-width:    1px; border-top-style:    solid;}
-.border_bottom {border-bottom-width: 1px; border-bottom-style: solid;}
 
 /* Common elements */
 
@@ -261,7 +259,7 @@ pre{
 	min-width: 200px;
 	max-width: 400px;
 	margin: 10px !important;
-	border-radius: 10px;
+	border-radius: 5px;
 	font-size: 1.9em;
 	font-weight: normal;
 	line-height: 8px;
@@ -303,8 +301,8 @@ pre{
 	margin: 6px;
 	padding: 0;
 	overflow: hidden;
-	border-radius: 0.4em;
-	box-shadow: 2px 2px 8px -1px var(--shadow_color);
+	border-radius: 5px;
+	box-shadow: 2px 2px 8px -3px var(--shadow_color);
 	/* border: 1px solid var(--accent_color_dark); */
 	background-color: var(--file_background_color);
 	color: #bfbfbf; /* Fallback */
@@ -342,12 +340,12 @@ input[type="color"],
 select{
 	display: inline-block;
 	box-sizing: border-box;
-	border-radius: 4px;
+	border-radius: 2px;
 	border: none;
-	margin: 2px;
+	margin: 3px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
 	padding: 6px 8px 6px 8px;
-	box-shadow: 2px 2px 6px -2px var(--shadow_color);
+	box-shadow: 2px 2px 6px -3px var(--shadow_color);
 	font-weight: bold;
 	font-size: 0.85em;
 	overflow: hidden;
@@ -375,7 +373,7 @@ select:focus{
 	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
 	text-decoration: none;
-	box-shadow: var(--highlight_border), 2px 2px 6px -2px var(--shadow_color);
+	box-shadow: var(--highlight_border), 2px 2px 6px -3px var(--shadow_color);
 }
 button:active,
 .button:active,
@@ -385,13 +383,13 @@ input[type="color"]:active,
 select:active{
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 4px 4px 8px var(--shadow_color);
-	padding: 11px 3px 1px 13px; /* Exactly 5px offset compared to the inactive padding to give a depth effect */
+	padding: 10px 4px 2px 12px; /* Exactly 4px offset compared to the inactive padding to give a depth effect */
 }
-.button_full_width      {width: calc(100% - 4px);}
+.button_full_width      {width: calc(100% - 6px);}
 .button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: var(--highlight_text_color) !important;}
 .button_highlight:active{background: linear-gradient(var(--highlight_color_dark), var(--highlight_color)) !important;      color: var(--highlight_text_color) !important;}
-.button_red             {background: linear-gradient(var(--danger_color),         var(--danger_color_dark)) !important;}
-.button_red:active      {background: linear-gradient(var(--danger_color_dark),    var(--danger_color)) !important;}
+.button_red             {background: linear-gradient(var(--danger_color),         var(--danger_color_dark)) !important;    color: var(--highlight_text_color) !important;}
+.button_red:active      {background: linear-gradient(var(--danger_color_dark),    var(--danger_color)) !important;         color: var(--highlight_text_color) !important;}
 
 /* Dropdown list of the select tag */
 option{
@@ -411,7 +409,7 @@ input[type="number"]{
 	box-sizing: border-box;
 	border-radius: 4px;
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
-	box-shadow: inset 2px 2px 6px -2px var(--shadow_color);
+	box-shadow: inset 2px 2px 6px -3px var(--shadow_color);
 	padding: 3px 5px;
 	color: var(--input_text_color);
 	height: 26px;
@@ -431,7 +429,7 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus{
-	box-shadow: var(--highlight_border), inset 3px 3px 6px -2px var(--shadow_color);
+	box-shadow: var(--highlight_border), inset 3px 3px 6px -3px var(--shadow_color);
 }
 
 input[type=file]{

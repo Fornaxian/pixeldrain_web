@@ -14,7 +14,7 @@ var Viewer = {
 		}
 
 		// On small screens the toolbar takes too much space, so it collapses automatically
-		if($("#filepreview").width() < 400 && Toolbar.visible){
+		if($("#filepreview").width() > 400 && !Toolbar.visible){
 			Toolbar.toggle();
 		}
 
@@ -34,7 +34,14 @@ var Viewer = {
 	},
 	setFile: function(file){
 		this.currentFile = file.id;
-		document.title = file.name + " ~ PixelDrain";
+		var title = "";
+		if (this.isList) {
+			title = this.title + " ~ " + file.name;
+		} else {
+			title = file.name;
+		}
+		document.title = title + " ~ PixelDrain";
+		document.getElementById("file_viewer_headerbar_title").innerText = title;
 
 		$.get("/u/" + file.id + "/preview", function(response){
 			$("#filepreview").html(response);

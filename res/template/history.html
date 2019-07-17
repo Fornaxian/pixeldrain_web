@@ -12,12 +12,13 @@
 	<body>
 		<div id='body' class="body">
 			{{template "menu" .}}
-			<br/>
+			<p>
 			Here are all files you have previously uploaded to PixelDrain using this computer.
 			This data is saved locally in your web browser and gets updated every time you upload a file through your current browser.
-			<br/><br/>
+			</p>
+			<br/>
 
-			<div id="uploadedFiles" class="highlight_dark border_top border_bottom"></div>
+			<div id="uploadedFiles" class="highlight_dark"></div>
 			{{template "footer"}}
 		</div>
 		<script src="/res/script/history.js"></script>

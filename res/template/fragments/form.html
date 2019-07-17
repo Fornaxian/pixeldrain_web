@@ -3,11 +3,11 @@
 	{{.PreFormHTML}}
 	{{if eq .Submitted true}}
 		{{if eq .SubmitSuccess true}}
-			<div id="submit_result" class="highlight_green border_top border_bottom">
+			<div id="submit_result" class="highlight_green">
 				{{index .SubmitMessages 0}}
 			</div>
 		{{else}}
-			<div id="submit_result" class="highlight_red border_top border_bottom">
+			<div id="submit_result" class="highlight_red">
 				Something went wrong, please correct these errors before continuing:<br/>
 				<ul>
 					{{range $msg := .SubmitMessages}}
@@ -18,7 +18,7 @@
 		{{end}}
 	{{end}}
 
-	<form class="highlight_dark border_top border_bottom" method="POST">
+	<form class="highlight_dark" method="POST">
 		<input type="text" name="form" value="{{.Name}}" style="display: none;" readonly="readonly"/>
 		{{if ne .Username ""}}
 			<!-- The invisible username field is so browsers know which user the form was for -->
