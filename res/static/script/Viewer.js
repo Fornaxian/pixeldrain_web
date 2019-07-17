@@ -14,7 +14,7 @@ var Viewer = {
 		}
 
 		// On small screens the toolbar takes too much space, so it collapses automatically
-		if($("#filepreview").width() > 400 && !Toolbar.visible){
+		if($("#filepreview").width() > 500 && !Toolbar.visible){
 			Toolbar.toggle();
 		}
 
