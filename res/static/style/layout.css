@@ -301,27 +301,28 @@ pre{
 	margin: 6px;
 	padding: 0;
 	overflow: hidden;
-	border-radius: 5px;
+	border-radius: 2px;
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
-	/* border: 1px solid var(--accent_color_dark); */
 	background-color: var(--file_background_color);
 	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 	word-break: break-all;
 	text-align: left;
-	line-height: 120%;
+	line-height: 1.2em;
 	display: inline-block;
 	transition: box-shadow 0.3s, opacity 2s;
+	white-space: normal;
 }
-.file_button:hover{
-	box-shadow: 0px 0px 10px 3px var(--highlight_color), inset 0px 0px 6px 1px var(--highlight_color);
+.file_button:hover,
+.file_button_selected {
+	box-shadow: 0px 0px 3px 3px var(--highlight_color);
 	text-decoration: none;
 	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 }
 .file_button > img{
-	max-height: 60px;
-	max-width: 120px;
+	max-height: 100%;
+	max-width: 25%;
 	margin-right: 5px;
 	float: left;
 	display: block;

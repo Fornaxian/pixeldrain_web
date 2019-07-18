@@ -6,8 +6,8 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		{{template "user_style" .}}
-		<link rel="stylesheet" href="/res/style/viewer.css?v3"/>
-		<link rel="stylesheet" href="/res/style/layout.css?v3"/>
+		<link rel="stylesheet" href="/res/style/viewer.css?v4"/>
+		<link rel="stylesheet" href="/res/style/layout.css?v4"/>
 		<link rel="shortcut icon" href="/res/img/tray32.png"/>
 		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
 		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
@@ -32,12 +32,10 @@
 					<!-- Yo -->
 				</a>
 				<span id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">{{.Title}}</span>
-				<div id="list_navigator_buttons" class="list_navigator_buttons"></div>
+				<div id="list_navigator_buttons" class="button_group"></div>
 				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onClick="window.close();">X</button>
 			</div>
-			<div id="listNavigator" class="list_navigator">
-				<div id="listNavigatorItems"></div>
-			</div>
+			<div id="list_navigator" class="list_navigator"></div>
 			<div id="file_viewer_window" class="file_viewer_window">
 				<div id="toolbar" class="file_viewer_toolbar">
 					<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
@@ -164,10 +162,10 @@
 
 		<script src="/res/misc/chartjs/Chart.min.js"></script>
 		<script src="/res/script/jquery.js"></script>
-		<script src="/res/script/Keyboard.js"></script>
-		<script src="/res/script/Toolbar.js?v2"></script>
-		<script src="/res/script/Viewer.js?v2"></script>
-		<script src="/res/script/ListNavigator.js?v2"></script>
+		<script src="/res/script/Keyboard.js?v4"></script>
+		<script src="/res/script/Toolbar.js?v4"></script>
+		<script src="/res/script/Viewer.js?v4"></script>
+		<script src="/res/script/ListNavigator.js?v4"></script>
 
 		<script>
 			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.

@@ -157,7 +157,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	HighlightColor:           hsl{89, .51, .45},
 	HighlightTextColor:       hsl{0, 0, 0},
 	DangerColor:              hsl{339, .65, .31},
-	FileBackgroundColor:      hsl{0, 0, .14},
+	FileBackgroundColor:      hsl{0, 0, .20},
 	ScrollbarForegroundColor: hsl{0, 0, .30},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 

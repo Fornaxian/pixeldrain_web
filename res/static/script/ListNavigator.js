@@ -67,17 +67,15 @@ var ListNavigator = {
 
 		this.addToHistory(index);
 
-		$("#listNavigatorItems").find("*").removeClass("list_item_selected");
-		$("#listNavigatorItems div").eq(this.position).addClass("list_item_selected");
+		$("#list_navigator").find("*").removeClass("file_button_selected");
+		var selectedItem = $("#list_navigator div").eq(this.position);
+		selectedItem.addClass("file_button_selected");
+		var itemWidth = selectedItem.outerWidth(true);
 
 		// This centers the scroll bar exactly on the selected item
-		$("#listNavigatorItems").animate(
-			{
-				scrollLeft: ((this.position * 109) + (109/2)) - ($("#listNavigator").width() / 2)
-			}, {
-				duration: 1000,
-				queue: false
-			}
+		$("#list_navigator").animate(
+			{scrollLeft: ((this.position * itemWidth) + (itemWidth / 2)) - ($("#list_navigator").width() / 2)},
+			{duration: 1000, queue: false}
 		);
 
 		this.loadThumbnails(index);
@@ -123,27 +121,25 @@ var ListNavigator = {
 		}
 		console.log(endPos);
 
-		var navigatorItems = document.getElementById("listNavigatorItems").children
+		var navigatorItems = document.getElementById("list_navigator").children
 
 		for (i = startPos; i <= endPos; i++){
-			if (navigatorItems[i].innerHTML.includes("listItemThumbnail")) {
-				console.log("skip");
-				continue;
+			if (navigatorItems[i].innerHTML.includes("list_item_thumbnail")) {
+				continue; // Thumbnail already loaded
 			}
 
 			var thumb = "/api/file/" + this.data[i].id + "/thumbnail";
 			var name = this.data[i].name;
 
-			var itemHtml = escapeHTML(name) + "<br>"
-				+ "<img src=\"" + thumb + "\" "
-				+ "class=\"listItemThumbnail\" alt=\"" + escapeHTML(name) + "\"/>";
+			var itemHtml = "<img src=\"" + thumb + "\" "
+				+ "class=\"list_item_thumbnail\" alt=\"" + escapeHTML(name) + "\"/>"
+				+ escapeHTML(name);
 
 			navigatorItems[i].innerHTML = itemHtml;
 		}
 	},
 
 	init: function(data){
-		var hashPos = getHashValue("item");
 		this.data = data;
 		this.length = data.length;
 
@@ -156,19 +152,12 @@ var ListNavigator = {
 				filename = "Removed File";
 			}
 
-			listHTML += "<div class=\"listItem\" "
+			listHTML += "<div class=\"file_button list_item\" "
 				+ "onClick=\"ListNavigator.setItem('" + i + "')\">"
 				+ escapeHTML(filename) + "<br>"
 				+ "</div>";
 		});
-		document.getElementById("listNavigatorItems").innerHTML = listHTML;
-
-		// Skip to this file if the parameter is set
-		if(Number.isInteger(parseInt(hashPos))){
-			this.setItem(hashPos);
-		}else{
-			this.setItem(0);
-		}
+		document.getElementById("list_navigator").innerHTML = listHTML;
 
 		var btnLastItem = document.createElement("button");
 		btnLastItem.innerText = "◀";
@@ -221,7 +210,14 @@ var ListNavigator = {
 		document.getElementById("btnShare").after(btnShuffle);
 
 		// Make the navigator visible
-		document.getElementById("listNavigator").style.display = "inline-block";
+		document.getElementById("list_navigator").style.display = "inline-block";
+
+		// Skip to the file defined in the link hash
+		if(Number.isInteger(parseInt(getHashValue("item")))){
+			this.setItem(parseInt(getHashValue("item")));
+		}else{
+			this.setItem(0);
+		}
 	}
 };
 
