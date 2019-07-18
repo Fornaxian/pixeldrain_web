@@ -313,6 +313,7 @@ pre{
 	transition: box-shadow 0.3s, opacity 2s;
 	white-space: normal;
 	text-overflow: ellipsis;
+	vertical-align: top;
 }
 .file_button:hover,
 .file_button_selected {
@@ -417,7 +418,7 @@ input[type="number"]{
 	height: 26px;
 	font-family: 'Ubuntu', sans-serif;
 	font-size: 1em;
-	vertical-align: bottom;
+	vertical-align: middle;
 	outline: 0;
 	transition: box-shadow 0.3s;
 }
