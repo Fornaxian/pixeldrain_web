@@ -45,6 +45,7 @@ body{
 	overflow: hidden;
 	white-space: nowrap;
 	line-height: 2em;
+	text-overflow: ellipsis;
 }
 .file_viewer > .highlight_headerbar > .button_close_file_viewer {
 	flex-grow: 0;

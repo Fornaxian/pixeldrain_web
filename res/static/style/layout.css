@@ -312,6 +312,7 @@ pre{
 	display: inline-block;
 	transition: box-shadow 0.3s, opacity 2s;
 	white-space: normal;
+	text-overflow: ellipsis;
 }
 .file_button:hover,
 .file_button_selected {
