@@ -13,6 +13,7 @@ $(document).keydown(function(event){
 	case 68: // D or right arrow key go to next file
 	case 39:
 		ListNavigator.nextItem();
+		break;
 	case 83: 
 		if (event.shiftKey) {
 			Toolbar.downloadList(); // SHIFT + S downloads all files in list
