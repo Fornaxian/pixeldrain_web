@@ -20,7 +20,7 @@ var Viewer = {
 
 		// The close button only works if the window has an opener. So we hide
 		// the button if it does not
-		if (window.opener === null) {
+		if (window.opener === null && window.history.length !== 1) {
 			$("#button_close_file_viewer").remove();
 		}
 
