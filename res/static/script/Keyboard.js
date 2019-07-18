@@ -5,17 +5,32 @@ $(document).keydown(function(event){
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
 
-	if(event.which === 65 || event.which === 37){ // A or left arrow key go to previous file
+	switch (event.which) {
+	case 65: // A or left arrow key go to previous file
+	case 37:
 		ListNavigator.previousItem();
-	}else if(event.which === 68 || event.which === 39){ // D or right arrow key go to next file
+		break;
+	case 68: // D or right arrow key go to next file
+	case 39:
 		ListNavigator.nextItem();
-	}else if(event.shiftKey && event.which === 83){ // SHIFT + S downloads all files in list
-		Toolbar.downloadList();
-	}else if(event.which === 83){ // S key downloads only selected file
-		Toolbar.download();
-	}else if(event.which === 67){ // C to copy to clipboard
+	case 83: 
+		if (event.shiftKey) {
+			Toolbar.downloadList(); // SHIFT + S downloads all files in list
+		} else {
+			Toolbar.download(); // S to download the current file
+		}
+		break;
+	case 82: // R to toggle list shuffle
+		ListNavigator.toggleShuffle();
+		break;
+	case 67: // C to copy to clipboard
 		Toolbar.copyUrl();
-	}else if(event.which === 73){ // I to open info window
+		break;
+	case 73: // I to open the details window
 		DetailsWindow.toggle();
+		break;
+	case 81: // Q to close the window
+		window.close();
+		break;
 	}
 });
