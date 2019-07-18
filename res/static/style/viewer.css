@@ -87,6 +87,7 @@ body{
 	text-align: center;
 	vertical-align: middle;
 	transition: left 1s, top 1.5s;
+	overflow: auto;
 }
 
 /* Toolbars */
@@ -148,8 +149,6 @@ body{
 .text-container{
 	background: #333 none;
 	position: relative;
-	overflow-y: scroll;
-	overflow-x: auto;
 	text-align: left;
 	top: 0;
 	bottom: 0;
