@@ -7,6 +7,7 @@ body{
 	overflow: hidden;
 }
 
+/* Viewer container */
 .file_viewer {
 	position: absolute;
 	display: flex;
@@ -17,6 +18,8 @@ body{
 	left: 0;
 	overflow: hidden;
 }
+
+/* Headerbar (row 1) */
 .file_viewer > .highlight_headerbar {
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -25,19 +28,14 @@ body{
 	text-align: left;
 	padding: 0.2em;
 }
-.file_viewer > .highlight_headerbar > .button_group {
+
+/* Headerbar components */
+.file_viewer > .highlight_headerbar > * {
 	flex-grow: 0;
 	flex-shrink: 0;
+	margin-left: .4em;
+	margin-right: .4em;
 	display: inline-flex;
-}
-.file_viewer > .highlight_headerbar > .button_toggle_toolbar {
-	flex-grow: 0;
-	flex-shrink: 0;
-}
-.file_viewer > .highlight_headerbar > .button_home {
-	flex-grow: 0;
-	flex-shrink: 0;
-	margin-right: .5em;
 }
 .file_viewer > .highlight_headerbar > .file_viewer_headerbar_title {
 	flex-grow: 1;
@@ -47,11 +45,8 @@ body{
 	line-height: 2em;
 	text-overflow: ellipsis;
 }
-.file_viewer > .highlight_headerbar > .button_close_file_viewer {
-	flex-grow: 0;
-	flex-shrink: 0;
-	margin-left: .5em;
-}
+
+/* List Navigator (row 2) */
 .file_viewer > .list_navigator {
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -71,6 +66,8 @@ body{
 	height: 40px !important;
 	width: 250px !important;
 }
+
+/* File preview area (row 3) */
 .file_viewer > .file_viewer_window {
 	flex-grow: 1;
 	flex-shrink: 1;

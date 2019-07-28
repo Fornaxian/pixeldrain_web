@@ -1,7 +1,7 @@
 {{define "500"}}<!DOCTYPE html>
 <html>
 	<head>
-		{{template "meta_tags" "Internal Server Error"}}
+		{{template "meta_tags" "500, Internal Server Error"}}
 		{{template "user_style" .}}
 	</head>
 
@@ -10,15 +10,15 @@
 			{{template "menu" .}}
 			<br/>
 			<h1>You broke pixeldrain</h1>
-			Great job.
-			<br/><br/>
-			But not to worry, the engineering team has been pulled out of bed to
-			have a look at the issue. You can try again in a few minutes (maybe
-			hours, who knows?), or go back to the <a href='/'>home page</a> and
-			start over.
-			<br/>
-			<br/>
-			Bye!
+			<p>
+				Great job.
+			</p>
+			<p>
+				Just kidding, something went wrong on the pixeldrain server and
+				it's my fault. I'll soon be notified of the problem and will
+				take a look at it. You can try again in a few minutes (or
+				hours), or go back to the <a href='/'>home page</a> and start over.
+			</p>
 			{{template "footer"}}
 		</div>
 		{{template "analytics"}}

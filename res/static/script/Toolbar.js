@@ -215,7 +215,7 @@ var DetailsWindow = {
 					$("#info_file_details").html(
 						"<table>"
 						+ "<tr><td>Name<td><td>" + escapeHTML(data.name) + "</td></tr>"
-						+ "<tr><td>Url<td><td><a href=\"/u/" + data.id + "\">/u/" + data.id + "</a></td></tr>"
+						+ "<tr><td>URL<td><td><a href=\"/u/" + data.id + "\">/u/" + data.id + "</a></td></tr>"
 						+ "<tr><td>Mime Type<td><td>" + escapeHTML(data.mime_type) + "</td></tr>"
 						+ "<tr><td>ID<td><td>" + data.id + "</td></tr>"
 						+ "<tr><td>Size<td><td class=\"bytecounter\">" + data.size + "</td></tr>"

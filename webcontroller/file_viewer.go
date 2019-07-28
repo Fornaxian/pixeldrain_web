@@ -42,12 +42,14 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		finfo = append(finfo, inf)
 	}
 
+	templateData := wc.newTemplateData(w, r)
+
 	if len(finfo) == 0 {
-		wc.serveNotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
+		wc.templates.Get().ExecuteTemplate(w, "file_not_found", templateData)
 		return
 	}
 
-	templateData := wc.newTemplateData(w, r)
 	templateData.OGData = metadataFromFile(*finfo[0])
 	var err error
 	if list {
@@ -58,7 +60,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			APIResponse: map[string]interface{}{
 				"data":          finfo,
 				"date_created":  "now",
-				"title":         "Concatenation of files",
+				"title":         "Multiple files",
 				"date_lastview": "now",
 				"views":         0,
 			},

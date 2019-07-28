@@ -14,15 +14,17 @@ import (
 func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	var api = pixelapi.New(wc.conf.APIURLInternal, "")
 	var list, err = api.GetList(p.ByName("id"))
+	var templateData = wc.newTemplateData(w, r)
 	if err != nil {
 		if err, ok := err.(pixelapi.Error); ok && err.ReqError {
 			log.Error("API request error occurred: %s", err.Value)
+
 		}
-		wc.serveNotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
+		wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
 		return
 	}
 
-	var templateData = wc.newTemplateData(w, r)
 	templateData.Title = fmt.Sprintf("%s ~ Pixeldrain list", list.Title)
 	templateData.OGData = metadataFromList(*list)
 	templateData.Other = viewerData{
