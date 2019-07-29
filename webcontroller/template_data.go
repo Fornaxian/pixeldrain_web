@@ -58,6 +58,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 					Value:   "",
 					Path:    "/",
 					Expires: time.Unix(0, 0),
+					Domain:  wc.conf.SessionCookieDomain,
 				})
 			}
 			return t
