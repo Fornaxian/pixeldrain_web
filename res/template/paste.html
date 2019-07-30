@@ -4,41 +4,53 @@
 	<head>
 		{{template "meta_tags" "Text Upload"}}
 		{{template "user_style" .}}
-		<link rel="stylesheet" href="/res/style/viewer.css"/>
 		<script src="/res/script/jquery-2.1.4.min.js"></script>
+		
 		<style>
+			#toolbar {
+				position: absolute;
+				width: 8em;
+				height: 100%;
+				background-color: var(--accent_color_medium)
+			}
 			.textarea{
 				position: absolute;
 				top: 0;
-				left: 0;
+				left: 8em;
 				height: 100%;
 				width: 100%;
 				border: none !important;
 				background: var(--accent_color_dark);
 			}
+
+			.toolbar_button{
+				text-align: left;
+			}
+			.toolbar_button > img {
+				width: 24px;
+				height: 24px;
+			}
+			.toolbar_button > span {
+				vertical-align: 6px;
+			}
 		</style>
 	</head>
 
 	<body>
-		<div id="filepreview">
-			<textarea id="textarea" class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
-		</div>
 		<div id="toolbar">
-			<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
-			<div>
-				<div>
-					<button class="toolbar_button button_full_width" onClick="uploadText();">
-						<img src="/res/img/upload_small.png" alt="Start Upload"/>
-						<span>Upload</span>
-					</button>
-					<a href="/" class="button toolbar_button button_full_width">
-						<img src="/res/img/pixeldrain_small.png" alt="Visit the home page" style="width:22px; height: 22px;"/>
-						<span>Home</span>
-					</a>
-					{{template "advertisement" .}}
-				</div>
-			</div>
+			<button class="toolbar_button button_full_width" onClick="uploadText();">
+				<img src="/res/img/upload_small.png" alt="Start Upload"/>
+				<span>Upload</span>
+			</button>
+			<a href="/" class="button toolbar_button button_full_width">
+				<img src="/res/img/pixeldrain_small.png" alt="Visit the home page" style="width:22px; height: 22px;"/>
+				<span>Home</span>
+			</a>
+			<br/><br/>
+			Tip: Save your file with extension '.md' to use markdown<br/>
+			{{template "advertisement" .}}
 		</div>
+		<textarea id="textarea" class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
 		<script src="/res/script/compiled/textupload.js"></script>
 		{{template "analytics"}}
 	</body>
