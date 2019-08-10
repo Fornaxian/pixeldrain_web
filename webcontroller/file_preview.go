@@ -144,7 +144,7 @@ func (f filePreview) text() string {
 <pre class="pre-container %s" style="width: 100%%;">%s</pre>
 </div>`
 
-	if f.FileInfo.Size > 1e6 { // Prevent out of memory errors
+	if f.FileInfo.Size > 1<<22 { // 4 MiB limit to prevent out of memory errors
 		return fmt.Sprintf(htmlOut, "",
 			"File is too large to view online.\nPlease download and view it locally.",
 		)
@@ -176,14 +176,9 @@ func (f filePreview) text() string {
 		)
 	}
 
-	result = html.EscapeString(result)
+	htmlOut += `<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>`
 
-	var prettyPrint string
-	if f.FileInfo.MimeType != "text/plain" {
-		prettyPrint = "prettyprint linenums"
-		htmlOut += `<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>`
-	}
-	return fmt.Sprintf(htmlOut, prettyPrint, result)
+	return fmt.Sprintf(htmlOut, "prettyprint linenums", html.EscapeString(result))
 }
 
 func (f filePreview) markdown() string {

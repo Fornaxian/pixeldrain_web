@@ -118,7 +118,7 @@ var Sharebar = {
 		if (navigator.share) {
 			navigator.share({
 				title: Viewer.title,
-				text: "Get this file from Pixeldrain!",
+				text: "Download " + Viewer.title + " here",
 				url: window.location.href
 			});
 			return;

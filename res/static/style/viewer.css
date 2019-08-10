@@ -152,11 +152,14 @@ body{
 	width: 100%;
 	padding: 5px 5px 5px 20px;
 	box-sizing: border-box;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
-
-.pre-container{
+.text-container > pre {
 	white-space: pre-wrap;
 	word-wrap: break-word;
+	overflow: hidden;
+
 }
 
 .pannable{
