@@ -162,15 +162,15 @@
 
 		<script src="/res/misc/chartjs/Chart.min.js"></script>
 		<script src="/res/script/jquery.js"></script>
-		<script src="/res/script/Keyboard.js?v4"></script>
-		<script src="/res/script/Toolbar.js?v4"></script>
-		<script src="/res/script/Viewer.js?v4"></script>
-		<script src="/res/script/ListNavigator.js?v4"></script>
-
+		<script src="/res/script/Toolbar.js?v6"></script>
+		<script src="/res/script/Viewer.js?v6"></script>
+		<script src="/res/script/ListNavigator.js?v6"></script>
 		<script>
 			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.
 			// Just to slice another few milliseconds from the load time :)
-			Viewer.init('{{.Other.Type}}', {{.Other.APIResponse}});
+			window.addEventListener("load", function(){
+				Viewer.init('{{.Other.Type}}', {{.Other.APIResponse}});
+			});
 		</script>
 
 		{{template "analytics"}}

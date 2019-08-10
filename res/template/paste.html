@@ -5,7 +5,7 @@
 		{{template "meta_tags" "Text Upload"}}
 		{{template "user_style" .}}
 		<script src="/res/script/jquery-2.1.4.min.js"></script>
-		
+
 		<style>
 			#toolbar {
 				position: absolute;
@@ -13,13 +13,19 @@
 				height: 100%;
 				background-color: var(--accent_color_medium)
 			}
-			.textarea{
+			.textarea_container {
 				position: absolute;
-				top: 0;
 				left: 8em;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				display: inline-block;
+			}
+			.textarea{
+				position: relative;
 				height: 100%;
 				width: 100%;
-				border: none !important;
+				/* border: none !important; */
 				background: var(--accent_color_dark);
 			}
 
@@ -43,14 +49,16 @@
 				<span>Upload</span>
 			</button>
 			<a href="/" class="button toolbar_button button_full_width">
-				<img src="/res/img/pixeldrain_small.png" alt="Visit the home page" style="width:22px; height: 22px;"/>
+				<img src="/res/img/pixeldrain_transparent.png" alt="Back to the Home page"/>
 				<span>Home</span>
 			</a>
 			<br/><br/>
-			Tip: Save your file with extension '.md' to use markdown<br/>
+			Tip: Save your file with extension '.md' to use markdown formatting<br/>
 			{{template "advertisement" .}}
 		</div>
-		<textarea id="textarea" class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
+		<div class="textarea_container">
+			<textarea id="textarea" class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
+		</div>
 		<script src="/res/script/compiled/textupload.js"></script>
 		{{template "analytics"}}
 	</body>

@@ -65,7 +65,6 @@ var UploadProgressBar = /** @class */ (function () {
 function handleUploads(files) {
     if (uploader === null) {
         uploader = new UploadManager();
-        queueDiv.style.height = "340px";
     }
     for (var i = 0; i < files.length; i++) {
         uploader.uploadFile(new UploadProgressBar(files.item(i)));

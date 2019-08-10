@@ -80,7 +80,6 @@ class UploadProgressBar implements FileUpload {
 function handleUploads(files: FileList) {
 	if (uploader === null){
 		uploader = new UploadManager()
-		queueDiv.style.height = "340px"
 	}
 
 	for (var i = 0; i < files.length; i++) {
