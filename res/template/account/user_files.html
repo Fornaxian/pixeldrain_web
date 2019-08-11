@@ -32,14 +32,14 @@
 		</div>
 		<br/>
 
-		{{range $files.Files}}
-		<a class="file_button" href="/u/{{.ID}}" target="_blank">
+		{{range $files.Files}}<!--
+		--><a class="file_button" href="/u/{{.ID}}" target="_blank">
 			<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.Name}}" />
 			<span style="color: var(--highlight_color);">{{.Name}}</span>
 			<br/>
 			{{.DateUpload.Format "2006-01-02 15:04:05"}}
-		</a>
-		{{end}}
+		</a><!--
+		-->{{end}}
 
 		<br/>
 		<div class="highlight_dark">

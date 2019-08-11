@@ -3,10 +3,6 @@
     Author     : Fornax
 */
 
-body{
-	overflow: hidden;
-}
-
 /* Viewer container */
 .file_viewer {
 	position: absolute;
@@ -26,7 +22,7 @@ body{
 	display: flex;
 	flex-direction: row;
 	text-align: left;
-	padding: 0.2em;
+	padding: 8px;
 }
 
 /* Headerbar components */
@@ -63,7 +59,7 @@ body{
 	white-space: nowrap;
 }
 .file_viewer > .list_navigator > .list_item{
-	height: 40px !important;
+	height: 2.6em !important;
 	width: 250px !important;
 }
 
@@ -195,7 +191,7 @@ body{
 
 
 /* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
-#toolbar > div {
+.file_viewer_toolbar > div {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -204,7 +200,7 @@ body{
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
-#toolbar > div > div {
+.file_viewer_toolbar > div > div {
 	position: absolute;
 	left: 0;
 	top: 0;

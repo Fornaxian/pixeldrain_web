@@ -216,13 +216,16 @@ hr{
 }
 
 ::-webkit-scrollbar{
-	width: 12px;  /* for vertical scrollbars */
-	height: 12px; /* for horizontal scrollbars */
+	width: 1em;  /* for vertical scrollbars */
+	height: 1em; /* for horizontal scrollbars */
 }
-::-webkit-scrollbar-track {background: var(--scrollbar_background_color);}
+::-webkit-scrollbar-track {
+	background: var(--scrollbar_background_color);
+}
 ::-webkit-scrollbar-thumb {
 	background-color: var(--scrollbar_foreground_color);
-	border-radius: 6px;
+	border-radius: 0.5em;
+	border: 0.22em solid var(--scrollbar_background_color);
 }
 ::-webkit-scrollbar-corner{background: transparent;}
 
@@ -293,10 +296,10 @@ pre{
 .file_button{
 	position: relative;
 	box-sizing: border-box;
-	width: 310px;
+	width: 300px;
 	max-width: 90%;
-	height: 60px;
-	margin: 6px;
+	height: 3.6em;
+	margin: 10px;
 	padding: 0;
 	overflow: hidden;
 	border-radius: 2px;

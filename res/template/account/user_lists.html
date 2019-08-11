@@ -26,15 +26,15 @@
 		</div>
 		<br/>
 
-		{{range $lists.Lists}}
-		<a class="file_button" href="/l/{{.ID}}" target="_blank">
-			<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail" alt="{{.Title}}" />
-			<span style="color: var(--highlight_color);">{{.Title}}</span>
-			({{.FileCount}} Files)
-			<br/>
-			{{.DateCreated.Format "2006-01-02 15:04:05"}}
-		</a>
-		{{end}}
+		{{range $lists.Lists}}<!--
+			--><a class="file_button" href="/l/{{.ID}}" target="_blank">
+				<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail" alt="{{.Title}}" />
+				<span style="color: var(--highlight_color);">{{.Title}}</span>
+				({{.FileCount}} Files)
+				<br/>
+				{{.DateCreated.Format "2006-01-02 15:04:05"}}
+			</a><!--
+		-->{{end}}
 
 		<br/>
 		<div class="highlight_dark">

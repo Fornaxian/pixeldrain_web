@@ -158,7 +158,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	HighlightTextColor:       hsl{0, 0, 0},
 	DangerColor:              hsl{339, .65, .31},
 	FileBackgroundColor:      hsl{0, 0, .20},
-	ScrollbarForegroundColor: hsl{0, 0, .30},
+	ScrollbarForegroundColor: hsl{0, 0, .35},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	BackgroundColor:      hsl{0, 0, 0},
@@ -227,7 +227,7 @@ var maroonStyle = pixeldrainStyleSheet{
 	HighlightTextColor:       hsl{0, 0, 1},
 	DangerColor:              hsl{0, .1, .1},
 	FileBackgroundColor:      hsl{0, 1, .03},
-	ScrollbarForegroundColor: hsl{0, .75, .2},
+	ScrollbarForegroundColor: hsl{0, .75, .3},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	BackgroundColor:      hsl{0, 1, .05},
@@ -250,7 +250,7 @@ var hackerStyle = pixeldrainStyleSheet{
 	HighlightTextColor:       hsl{0, 0, 0},
 	DangerColor:              hsl{0, .65, .31},
 	FileBackgroundColor:      hsl{120, .8, .06},
-	ScrollbarForegroundColor: hsl{0, 0, .25},
+	ScrollbarForegroundColor: hsl{120, .5, .25},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	BackgroundColor:      hsl{0, 0, 0},
@@ -297,7 +297,7 @@ var arcPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{357, .53, .57}, // hsl(357, 53%, 57%)
 	FileBackgroundColor:      hsl{219, .1, .2},
 	ScrollbarForegroundColor: hsl{222, .08, .44}, // hsl(222, 8%, 44%)
-	ScrollbarBackgroundColor: hsl{223, .12, .29}, // hsl(223, 12%, 29%)
+	ScrollbarBackgroundColor: hsl{223, .12, .2},  // hsl(223, 12%, 29%)
 
 	BackgroundColor:      hsl{0, 0, 0},
 	BodyColor:            hsl{223, .12, .29},

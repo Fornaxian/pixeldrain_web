@@ -16,7 +16,7 @@ var Toolbar = {
 				Sharebar.toggle();
 			}
 
-			document.getElementById("toolbar").style.left = "-9em";
+			document.getElementById("toolbar").style.left = "-8em";
 			document.getElementById("filepreview").style.left = "0px";
 			document.getElementById("button_toggle_toolbar").classList.remove("button_highlight");
 
