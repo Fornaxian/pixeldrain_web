@@ -227,7 +227,7 @@ hr{
 	border-radius: 0.5em;
 	border: 0.22em solid var(--scrollbar_background_color);
 }
-::-webkit-scrollbar-corner{background: transparent;}
+::-webkit-scrollbar-corner{background: var(--scrollbar_background_color);}
 
 a       {color: var(--highlight_color); text-decoration: none;}
 a:hover {color: var(--highlight_color); text-decoration: underline;}
