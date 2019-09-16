@@ -49,10 +49,15 @@ func userStyle(r *http.Request) (style template.CSS) {
 
 	--background_color:           %s;
 	--body_color:                 %s;
-	--accent_color_headerbar:     %s;
-	--accent_color_dark:          %s;
-	--accent_color_medium:        %s;
-	--accent_color_light:         %s;
+
+	--layer_1_color:  %s;
+	--layer_1_shadow: %s;
+	--layer_2_color:  %s;
+	--layer_2_shadow: %s;
+	--layer_3_color:  %s;
+	--layer_3_shadow: %s;
+	--layer_4_color:  %s;
+	--layer_4_shadow: %s;
 
 	--shadow_color:     %s;
 	--shadow_spread:    %s;
@@ -72,10 +77,14 @@ func userStyle(r *http.Request) (style template.CSS) {
 		selectedStyle.ScrollbarBackgroundColor.cssString(),
 		selectedStyle.BackgroundColor.cssString(),
 		selectedStyle.BodyColor.cssString(),
-		selectedStyle.AccentColorHeaderbar.cssString(),
-		selectedStyle.AccentColorDark.cssString(),
-		selectedStyle.AccentColorMedium.cssString(),
-		selectedStyle.AccentColorLight.cssString(),
+		selectedStyle.Layer1Color.cssString(),
+		fmt.Sprintf("%dpx", selectedStyle.Layer1Shadow),
+		selectedStyle.Layer2Color.cssString(),
+		fmt.Sprintf("%dpx", selectedStyle.Layer2Shadow),
+		selectedStyle.Layer3Color.cssString(),
+		fmt.Sprintf("%dpx", selectedStyle.Layer3Shadow),
+		selectedStyle.Layer4Color.cssString(),
+		fmt.Sprintf("%dpx", selectedStyle.Layer4Shadow),
 		selectedStyle.ShadowColor.cssString(),
 		fmt.Sprintf("%dpx", selectedStyle.ShadowSpread),
 		fmt.Sprintf("%dpx", selectedStyle.ShadowIntensity),
@@ -93,12 +102,17 @@ type pixeldrainStyleSheet struct {
 	ScrollbarForegroundColor hsl
 	ScrollbarBackgroundColor hsl
 
-	BackgroundColor      hsl
-	BodyColor            hsl
-	AccentColorHeaderbar hsl
-	AccentColorDark      hsl
-	AccentColorMedium    hsl
-	AccentColorLight     hsl
+	BackgroundColor hsl
+	BodyColor       hsl
+
+	Layer1Color  hsl // Deepest and darkest layer
+	Layer1Shadow int // Deep layers have little shadow
+	Layer2Color  hsl
+	Layer2Shadow int
+	Layer3Color  hsl
+	Layer3Shadow int
+	Layer4Color  hsl // Highest and brightest layer
+	Layer4Shadow int // High layers have lots of shadow
 
 	ShadowColor     hsl
 	ShadowSpread    int // Pixels
@@ -161,12 +175,16 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarForegroundColor: hsl{0, 0, .35},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	BackgroundColor:      hsl{0, 0, 0},
-	BodyColor:            hsl{0, 0, .07},
-	AccentColorHeaderbar: hsl{0, 0, .14},
-	AccentColorDark:      hsl{0, 0, .11},
-	AccentColorMedium:    hsl{0, 0, .13},
-	AccentColorLight:     hsl{0, 0, .14},
+	BackgroundColor: hsl{0, 0, 0},
+	BodyColor:       hsl{0, 0, .07},
+	Layer1Color:     hsl{0, 0, .11},
+	Layer1Shadow:    4,
+	Layer2Color:     hsl{0, 0, .13},
+	Layer2Shadow:    7,
+	Layer3Color:     hsl{0, 0, .14},
+	Layer3Shadow:    10,
+	Layer4Color:     hsl{0, 0, .14},
+	Layer4Shadow:    13,
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    10,
@@ -184,12 +202,16 @@ var sunnyPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarForegroundColor: hsl{0, 0, .30},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	BackgroundColor:      hsl{0, 0, 0},
-	BodyColor:            hsl{0, 0, 1},
-	AccentColorHeaderbar: hsl{0, 0, .14},
-	AccentColorDark:      hsl{0, 0, 1},
-	AccentColorMedium:    hsl{0, 0, 1},
-	AccentColorLight:     hsl{0, 0, 1},
+	BackgroundColor: hsl{0, 0, 0},
+	BodyColor:       hsl{0, 0, 1},
+	Layer1Color:     hsl{0, 0, 1},
+	Layer1Shadow:    4,
+	Layer2Color:     hsl{0, 0, 1},
+	Layer2Shadow:    5,
+	Layer3Color:     hsl{0, 0, 1},
+	Layer3Shadow:    6,
+	Layer4Color:     hsl{0, 0, 1},
+	Layer4Shadow:    7,
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    10,
@@ -207,12 +229,16 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 	ScrollbarForegroundColor: hsl{192, .95, .30},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	BackgroundColor:      hsl{192, 1, .05},
-	BodyColor:            hsl{192, .81, .14}, // hsl(192, 81%, 14%)
-	AccentColorHeaderbar: hsl{192, 1, .11},   // hsl(192, 100%, 11%)
-	AccentColorDark:      hsl{192, .87, .09},
-	AccentColorMedium:    hsl{192, .81, .14},
-	AccentColorLight:     hsl{192, .95, .17},
+	BackgroundColor: hsl{192, 1, .05},
+	BodyColor:       hsl{192, .81, .14}, // hsl(192, 81%, 14%)
+	Layer1Color:     hsl{192, .87, .09},
+	Layer1Shadow:    4,
+	Layer2Color:     hsl{192, .81, .14},
+	Layer2Shadow:    7,
+	Layer3Color:     hsl{192, .95, .17},
+	Layer3Shadow:    10,
+	Layer4Color:     hsl{192, 1, .11}, // hsl(192, 100%, 11%)
+	Layer4Shadow:    13,
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    10,
@@ -230,12 +256,16 @@ var maroonStyle = pixeldrainStyleSheet{
 	ScrollbarForegroundColor: hsl{0, .75, .3},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	BackgroundColor:      hsl{0, 1, .05},
-	BodyColor:            hsl{0, .6, .1},
-	AccentColorHeaderbar: hsl{0, .5, .07},
-	AccentColorDark:      hsl{0, .5, .07},
-	AccentColorMedium:    hsl{0, .8, .15},
-	AccentColorLight:     hsl{0, .9, .2},
+	BackgroundColor: hsl{0, 1, .05},
+	BodyColor:       hsl{0, .6, .1},
+	Layer1Color:     hsl{0, .5, .07},
+	Layer1Shadow:    4,
+	Layer2Color:     hsl{0, .8, .15},
+	Layer2Shadow:    7,
+	Layer3Color:     hsl{0, .9, .2},
+	Layer3Shadow:    10,
+	Layer4Color:     hsl{0, .5, .07},
+	Layer4Shadow:    13,
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    10,
@@ -253,12 +283,16 @@ var hackerStyle = pixeldrainStyleSheet{
 	ScrollbarForegroundColor: hsl{120, .5, .25},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	BackgroundColor:      hsl{0, 0, 0},
-	BodyColor:            hsl{0, 0, 0},
-	AccentColorHeaderbar: hsl{0, 0, .14},
-	AccentColorDark:      hsl{120, .1, .05},
-	AccentColorMedium:    hsl{120, .2, .10},
-	AccentColorLight:     hsl{120, .3, .15},
+	BackgroundColor: hsl{0, 0, 0},
+	BodyColor:       hsl{0, 0, 0},
+	Layer1Color:     hsl{120, .1, .05},
+	Layer1Shadow:    4,
+	Layer2Color:     hsl{120, .2, .10},
+	Layer2Shadow:    7,
+	Layer3Color:     hsl{120, .3, .15},
+	Layer3Shadow:    10,
+	Layer4Color:     hsl{0, 0, .14},
+	Layer4Shadow:    13,
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    10,
@@ -276,12 +310,16 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarForegroundColor: hsl{150, .02, .78},
 	ScrollbarBackgroundColor: hsl{170, .05, .26},
 
-	BackgroundColor:      hsl{0, 0, 0},
-	BodyColor:            hsl{172, .06, .25},
-	AccentColorHeaderbar: hsl{172, .06, .25}, // hsl(172, 6%, 25%)
-	AccentColorDark:      hsl{170, .06, .21},
-	AccentColorMedium:    hsl{160, .04, .31},
-	AccentColorLight:     hsl{170, .02, .47},
+	BackgroundColor: hsl{0, 0, 0},
+	BodyColor:       hsl{172, .06, .25},
+	Layer1Color:     hsl{170, .06, .21},
+	Layer1Shadow:    4,
+	Layer2Color:     hsl{160, .04, .31},
+	Layer2Shadow:    7,
+	Layer3Color:     hsl{170, .02, .47},
+	Layer3Shadow:    10,
+	Layer4Color:     hsl{172, .06, .25}, // hsl(172, 6%, 25%)
+	Layer4Shadow:    13,
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    10,
@@ -299,12 +337,16 @@ var arcPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarForegroundColor: hsl{222, .08, .44}, // hsl(222, 8%, 44%)
 	ScrollbarBackgroundColor: hsl{223, .12, .2},  // hsl(223, 12%, 29%)
 
-	BackgroundColor:      hsl{0, 0, 0},
-	BodyColor:            hsl{223, .12, .29},
-	AccentColorHeaderbar: hsl{219, .15, .22}, // hsl(219, 15%, 22%)
-	AccentColorDark:      hsl{215, .17, .19},
-	AccentColorMedium:    hsl{227, .14, .25}, // hsl(227, 14%, 25%)
-	AccentColorLight:     hsl{223, .12, .29},
+	BackgroundColor: hsl{0, 0, 0},
+	BodyColor:       hsl{223, .12, .29},
+	Layer1Color:     hsl{215, .17, .19},
+	Layer1Shadow:    4,
+	Layer2Color:     hsl{227, .14, .25}, // hsl(227, 14%, 25%)
+	Layer2Shadow:    7,
+	Layer3Color:     hsl{223, .12, .29},
+	Layer3Shadow:    10,
+	Layer4Color:     hsl{219, .15, .22}, // hsl(219, 15%, 22%)
+	Layer4Shadow:    13,
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    10,

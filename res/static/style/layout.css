@@ -56,11 +56,10 @@ html{height: 100%;}
 
 body{
 	background-color: #0d0d0d; /* Fallback */
-	background-color: var(--background_color);
+	background-color: var(--body_color);
 	background-repeat: repeat;
 	font-family: 'Ubuntu';
 	margin: 0;
-	text-align: center; /* Center the header and body */
 	line-height: 1.5em;
 	overflow-x: hidden;
 	color: #bfbfbf; /* Fallback */
@@ -71,45 +70,111 @@ body{
 
 /* Page layout elements */
 
-.header_image{
-	width: 100%;
-	max-width: 1000px;
-	margin-top: 15px;
+.page_wrapper {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+}
+.page_wrapper > .page_header {
+	flex-grow: 0;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	line-height: 2em;
+	z-index: 101;
+}
+.page_wrapper > .page_header > span {
+	margin: 0 0.5em 0 0.5em;
+}
+.page_wrapper > .page_content_wrapper {
+	flex-grow: 1;
+	flex-shrink: 1;
+	position: relative;
+	display: inline-block;
+	width: auto;
+	height: auto;
+	margin: 0;
 }
 
-.body{
+.page_wrapper > .page_content_wrapper > .page_navigation {
+	position: absolute;
+	width: 200px;
+	z-index: 100;
+	float: left;
+	background-color: var(--layer_1_color);
+	left: 0;
+	bottom: 0;
+	top: 0;
+	padding: 0.5em 0 0.5em 0;
+	text-align: left;
+	box-shadow: 2px 2px 8px var(--shadow_color);
+	transition: left 0.5s;
+}
+.page_wrapper > .page_content_wrapper > .page_content {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 200px;
+	min-width: 300px;
+	display: inline-block;
+	text-align: center; /* Center the header and body */
+	overflow-y: scroll;
+	z-index: 50;
+	transition: left 0.5s;
+}
+@media (max-width: 500px) {
+	.page_wrapper > .page_content_wrapper > .page_navigation {
+		left: -210px;
+	}
+	.page_wrapper > .page_content_wrapper > .page_content {
+		left: 0;
+	}
+}
+.page_wrapper > .page_content_wrapper > .page_content > .centered {
 	position: relative;
 	display: inline-block;
 	max-width: 1000px;
-	min-width: 300px;
 	width: 100%;
 	height: auto;
 	padding: 0;
-	margin: 30px 0 30px 0;
 	box-sizing: border-box;
-	background-color: var(--body_color);
 	text-align: left;
-	box-shadow: #000000 0 0 10px, 5px;
-	box-shadow: var(--shadow_color) 0 0 var(--shadow_spread) var(--shadow_intensity);
-	z-index: 1;
 	word-break: break-word;
+	clear: both;
 }
 
-.navigation a {
+/* Page contents */
+
+.header_image{
+	width: 100%;
+	max-width: 1000px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.page_wrapper > .page_content_wrapper > .page_navigation a {
 	float: none;
 	display: inline-block;
+	box-sizing: border-box;
 	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 	text-align: center;
 	padding: 4px 6px;
-	margin: 0 4px;
+	margin: 0.1em 0 0.1em 0;
+	width: 100%;
 	text-decoration: none;
 	font-family: "Lato Thin", sans-serif;
 	font-weight: bold;
 	font-size: 1.8em;
 	transition: box-shadow 5s;
 }
-.navigation a:hover {
+.page_wrapper > .page_content_wrapper > .page_navigation a:hover {
 	background: linear-gradient(#82c13e, #6da234);
 	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark));
 	box-shadow: #82c13e, 1px 1px 4px #000000;
@@ -119,7 +184,7 @@ body{
 	transition: box-shadow 0.5s;
 	text-decoration: none;
 }
-.navigation .icon {
+.page_wrapper > .page_content_wrapper > .page_navigation .icon {
 	display: none;
 }
 @media screen and (max-width: 35em) {
@@ -141,10 +206,17 @@ body{
 	}
 }
 
-.highlight_headerbar,
+.inset {
+	box-shadow: inset 1px 1px 10px -1px var(--shadow_color);
+}
+.checkers {
+	text-shadow: 0 0 20px #000000;
+}
+
 .highlight_dark,
 .highlight_middle,
 .highlight_light,
+.highlight_headerbar,
 .highlight_green,
 .highlight_blue,
 .highlight_red {
@@ -156,20 +228,19 @@ body{
 	overflow: hidden;
 	text-align: center;
 	padding: .5em;
-	z-index: 101;
 }
-.highlight_headerbar   {
-	background-color: var(--accent_color_headerbar);
-	box-shadow: 1px 1px 3px -1px var(--shadow_color);}
 .highlight_dark   {
-	background-color: var(--accent_color_dark);
-	box-shadow: inset 1px 1px 8px -1px var(--shadow_color);}
+	background-color: var(--layer_1_color);
+	box-shadow: 1px 1px var(--layer_1_shadow) -2px var(--shadow_color);}
 .highlight_middle {
-	background-color: var(--accent_color_medium);
-	box-shadow: inset 1px 1px 6px -1px var(--shadow_color);}
+	background-color: var(--layer_2_color);
+	box-shadow: 1px 1px var(--layer_2_shadow) -2px var(--shadow_color);}
 .highlight_light  {
-	background-color: var(--accent_color_light);
-	box-shadow: 1px 1px 4px var(--shadow_color);}
+	background-color: var(--layer_3_color);
+	box-shadow: 1px 1px var(--layer_3_shadow) -2px var(--shadow_color);}
+.highlight_headerbar   {
+	background-color: var(--layer_4_color);
+	box-shadow: 1px 1px var(--layer_4_shadow) -2px var(--shadow_color);}
 .highlight_green  {
 	background-color: rgba(0, 255, 0, 0.05);
 	border-color: #00d000;}
@@ -202,7 +273,7 @@ h3{font-size: 1.5em;  font-family: "Lato Thin";}
 h4{font-size: 1.25em; font-family: "Lato";}
 h5{font-size: 1em;    font-family: "Lato";}
 h6{font-size: .75em;  font-family: "Lato";}
-h3, h2{border-bottom: 1px var(--accent_color_light_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
+h3, h2{border-bottom: 1px var(--layer_3_color_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
 p, .indent {
 	margin: 10px;
@@ -211,7 +282,7 @@ p, .indent {
 hr{
 	height: 8px;
 	border: none;
-	background: linear-gradient(var(--accent_color_dark), var(--accent_color_light));
+	background: linear-gradient(var(--layer_1_color), var(--layer_3_color));
 	margin: 16px 0 16px 0;
 }
 
@@ -239,7 +310,7 @@ a:hover {color: var(--highlight_color); text-decoration: underline;}
 	max-width: 35em;
 }
 table:not(.form) {border-collapse: collapse; width: 100%;}
-tr:not(.form)    {border-bottom: 1px var(--accent_color_medium_border) solid;}
+tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
 tr > td          {padding: 0.5em;}
 @media(max-width: 30em) {
 	tr > td {
@@ -252,7 +323,7 @@ tr > td          {padding: 0.5em;}
 
 pre{
 	padding: 2px;
-	border-bottom: 1px var(--accent_color_medium_border) solid;
+	border-bottom: 1px var(--layer_2_color_border) solid;
 	overflow-x: scroll;
 }
 

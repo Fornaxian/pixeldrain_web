@@ -1,0 +1,56 @@
+{{define "page_top"}}
+<div id="page_wrapper" class="page_wrapper">
+	<div id="page_header" class="page_header highlight_headerbar navigation">
+		<button id="button_toggle_toolbar" class="button_toggle_toolbar" onClick="toggleMenu();">☰</button>
+		<span>Pixeldrain ~ Free file sharing</span>
+	</div>
+
+	<div id="page_content_wrapper" class="page_content_wrapper">
+		<div id="page_navigation" class="page_navigation">
+			<a href="/">Home</a>
+			<hr/>
+			{{if .Authenticated}}<a href="/user">{{.Username}}</a>
+			<a href="{{if .Authenticated}}/user/files{{else}}/history{{end}}">My&nbsp;Files</a>
+			{{if .Authenticated}}<a href="/user/lists">My&nbsp;Lists</a>{{end}}
+			<a href="/logout" style="vertical-align: 0.6em; font-size: 0.9em; padding: 1px;">(Log out)</a>{{else}}
+			<a href="/login">Login</a>
+			<a href="/register">Register</a>
+			{{end}}
+			<hr/>
+			<a href="/api">API</a>
+		</div>
+		<div id="page_content" class="page_content">
+{{end}}
+
+{{define "page_bottom"}}
+			<br/>
+			<div class="checkers inset" style="height: 100px;"></div>
+			<div class="highlight_dark">
+				Pixeldrain is a product by <a href="//fornaxian.com" target="_blank">Fornaxian Technologies</a> |
+				Twitter:&nbsp;<a href="https://twitter.com/Fornax96" target="_blank">@Fornax96</a>
+				Reddit:&nbsp;<a href="https://reddit.com/r/pixeldrain" target="_blank">/r/pixeldrain</a>
+				Medium:&nbsp;<a href="https://medium.com/pixeldrain" target="_blank">Pixeldrain</a>
+			</div>
+		</div><!-- end page_content -->
+	</div><!-- end page_content_wrapper -->
+</div><!-- end page_wrapper-->
+
+<script>
+var nav = document.getElementById("page_navigation");
+var content = document.getElementById("page_content");
+
+function toggleMenu() {
+	if (nav.offsetLeft === 0) {
+		// Menu is visible
+
+		nav.style.left = -nav.clientWidth - 10 + "px";
+		content.style.left = "0";
+	} else {
+		// Menu is hidden
+
+		nav.style.left = "0";
+		content.style.left = nav.clientWidth + "px";
+	}
+}
+</script>
+{{end}}

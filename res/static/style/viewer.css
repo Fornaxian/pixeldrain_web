@@ -49,7 +49,7 @@
 	position: relative;
 	display: none; /* Becomes visible if the page is a list */
 	width: 100%;
-	background-color: var(--accent_color_dark);
+	background-color: var(--layer_1_color);
 	box-shadow: 0 0 8px var(--shadow_color);
 	text-align: center;
 	line-height: 1em;
@@ -95,7 +95,7 @@
 	z-index: 49;
 	overflow: hidden;
 	float: left;
-	background-color: var(--accent_color_dark);
+	background-color: var(--layer_1_color);
 	left: -9em;
 	bottom: 0;
 	top: 0;
@@ -113,7 +113,7 @@
 	overflow-y: scroll;
 	overflow-x: hidden;
 	float: left;
-	background-color: var(--accent_color_dark);
+	background-color: var(--layer_1_color);
 	box-shadow: 2px 2px 8px var(--shadow_color);
 	text-align: center;
 	z-index: 48;
@@ -245,7 +245,7 @@
 	opacity: 0;
 	transition: visibility .5s, opacity .5s;
 	background-color: var(--body_color);
-	border-color: var(--accent_color_dark_border);
+	border-color: var(--layer_1_color_border);
 	max-height: 100%;
 	max-width: 100%;
 	top: 20%;

@@ -6,27 +6,30 @@
 		{{template "user_style" .}}
 		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
-
 	<body>
-		<img id="header_image" class="header_image" src="/res/img/header_neuropol.png" alt="Header image"/>
+		{{template "page_top" .}}
+
+		<div class="checkers highlight_dark">
+			<img id="header_image" class="header_image" src="/res/img/header_neuropol.png" alt="Header image"/>
+		</div>
 		<br/>
-		<div id="body" class="body">
-			{{template "menu" .}}
-			<div class="highlight_middle">
-				<input id="file_input_field" type="file" name="file" multiple="multiple"/>
-				<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
-				<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button><br/>
-				By uploading files to Pixeldrain you accept that a cookie will
-				be placed in your web browser. More information below.
+		<input id="file_input_field" type="file" name="file" multiple="multiple"/>
+		<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
+		<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button>
+		<br/><br/>
 
-				<div id="uploads_queue"></div>
-			</div>
-			<div class="highlight_dark">
-				<button id="btn_create_list">Create list with uploaded files</button>
-				<button id="btn_copy_links">Copy links to clipboard</button>
-				<button id="btn_copy_bbcode">Copy BBCode to clipboard</button>
-			</div>
+		By uploading files to Pixeldrain you accept that a cookie will be
+		placed in your web browser. More information below.
 
+		<br/><br/>
+		<div id="uploads_queue"></div>
+		<br/>
+		<button id="btn_create_list">Create list with uploaded files</button>
+		<button id="btn_copy_links">Copy links to clipboard</button>
+		<button id="btn_copy_bbcode">Copy BBCode to clipboard</button>
+
+		<br/>
+		<div class="centered">
 			<h1>What is Pixeldrain?</h1>
 			<p>
 				Pixeldrain is a file sharing website built for speed and ease of
@@ -47,6 +50,7 @@
 				(Inspired by <a href="https://github.com/vinceliuice/Canta-theme" target="_blank">Canta GTK</a>)<br/>
 				<input type="radio" id="style_arc"            name="style"><label for="style_arc">Arc Style</label>
 				(Inspired by <a href="https://github.com/horst3180/Arc-theme" target="_blank">Arc GTK</a>)<br/>
+				<input type="radio" id="style_sunny"          name="style"><label for="style_sunny">Sunny Style</label>
 			</div>
 
 			<h2>Questions and Answers</h2>
@@ -152,8 +156,9 @@
 				<a href="mailto:support@pixeldrain.com">support@pixeldrain.com</a>
 			</p>
 
-			{{template "footer"}}
 		</div>
+
+		{{template "page_bottom"}}
 
 		<script src="/res/script/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">var API_URL = "/api";</script>

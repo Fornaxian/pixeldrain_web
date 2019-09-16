@@ -7,10 +7,13 @@
 	</head>
 
 	<body>
-		<div id='body' class="body">
-			{{template "menu" .}}
+		{{template "page_top" .}}
 
-			<h1 class="highlight_middle">Welcome home, {{.Username}}!</h1>
+		<div class="checkers inset highlight_dark">
+			<h1>Welcome home, {{.Username}}!</h1>
+		</div>
+
+		<div class="centered">
 
 			<h2>Actions</h2>
 			<ul>
@@ -47,8 +50,10 @@
 				<br/>
 				<a href="/user/lists" class="button">...All my lists</a>
 			</div>
-			{{template "footer"}}
 		</div>
+
+		{{template "page_bottom" .}}
+
 		{{template "analytics"}}
 	</body>
 </html>

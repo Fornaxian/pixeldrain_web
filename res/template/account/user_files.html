@@ -7,12 +7,15 @@
 	</head>
 
 	<body>
-		{{template "menu" .}}
-		<div class="highlight_middle">
+		{{template "page_top" .}}
+		<br/>
+		<div class="centered">
 			These files were uploaded while logged in to your pixeldrain account,
 			<a href="/history">click here</a> to view files uploaded anonymously
 			in this browser.
 		</div>
+		<br/>
+		<br/>
 
 		{{$limit := 200}}
 		{{$page := .URLQuery.Get "page" | pageNr}}
@@ -55,6 +58,8 @@
 				<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
 			{{end}}
 		</div>
+
+		{{template "page_bottom" .}}
 
 		{{template "analytics"}}
 	</body>
