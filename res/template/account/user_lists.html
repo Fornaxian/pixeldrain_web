@@ -7,50 +7,53 @@
 	</head>
 
 	<body>
-		{{template "menu" .}}
-		{{$limit := 200}}
-		{{$page := .URLQuery.Get "page" | pageNr}}
-		{{$lists := .PixelAPI.UserLists $page $limit}}
-		<div class="highlight_dark">
-			{{if ne $page 0}}
-				<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
-				<a href="?page={{sub $page 2}}" class="button">⬅ 2 Pages</a>
-				<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
-			{{end}}
-			Page {{$page}}
-			{{if len $lists.Lists | eq $limit}}
-				<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
-				<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
-				<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
-			{{end}}
+		{{template "page_top" .}}
+		<h1>My Lists</h1>
+		<div class="page_content">
+			{{$limit := 200}}
+			{{$page := .URLQuery.Get "page" | pageNr}}
+			{{$lists := .PixelAPI.UserLists $page $limit}}
+			<div class="highlight_dark">
+				{{if ne $page 0}}
+					<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
+					<a href="?page={{sub $page 2}}" class="button">⬅ 2 Pages</a>
+					<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
+				{{end}}
+				Page {{$page}}
+				{{if len $lists.Lists | eq $limit}}
+					<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
+					<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
+					<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
+				{{end}}
+			</div>
+			<br/>
+
+			{{range $lists.Lists}}<!--
+				--><a class="file_button" href="/l/{{.ID}}" target="_blank">
+					<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail" alt="{{.Title}}" />
+					<span style="color: var(--highlight_color);">{{.Title}}</span>
+					({{.FileCount}} Files)
+					<br/>
+					{{.DateCreated.Format "2006-01-02 15:04:05"}}
+				</a><!--
+			-->{{end}}
+
+			<br/>
+			<div class="highlight_dark">
+				{{if ne $page 0}}
+					<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
+					<a href="?page={{sub $page 2}}" class="button">⬅ 2 Pages</a>
+					<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
+				{{end}}
+				Page {{$page}}
+				{{if len $lists.Lists | eq $limit}}
+					<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
+					<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
+					<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
+				{{end}}
+			</div>
 		</div>
-		<br/>
-
-		{{range $lists.Lists}}<!--
-			--><a class="file_button" href="/l/{{.ID}}" target="_blank">
-				<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail" alt="{{.Title}}" />
-				<span style="color: var(--highlight_color);">{{.Title}}</span>
-				({{.FileCount}} Files)
-				<br/>
-				{{.DateCreated.Format "2006-01-02 15:04:05"}}
-			</a><!--
-		-->{{end}}
-
-		<br/>
-		<div class="highlight_dark">
-			{{if ne $page 0}}
-				<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
-				<a href="?page={{sub $page 2}}" class="button">⬅ 2 Pages</a>
-				<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
-			{{end}}
-			Page {{$page}}
-			{{if len $lists.Lists | eq $limit}}
-				<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
-				<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
-				<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
-			{{end}}
-		</div>
-
+		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
 </html>

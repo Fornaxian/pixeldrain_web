@@ -6,10 +6,9 @@
 	</head>
 
 	<body>
-		<div id='body' class="body">
-			{{template "menu" .}}
-			<br/>
-			<h1>You broke pixeldrain</h1>
+		<h1>You broke pixeldrain</h1>
+		{{template "page_top" .}}
+		<div class="page_content"><div class="limit_width">
 			<p>
 				Great job.
 			</p>
@@ -19,8 +18,8 @@
 				take a look at it. You can try again in a few minutes (or
 				hours), or go back to the <a href='/'>home page</a> and start over.
 			</p>
-			{{template "footer"}}
-		</div>
+		</div></div>
+		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
 </html>

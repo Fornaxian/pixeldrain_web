@@ -5,31 +5,33 @@
 		{{template "user_style" .}}
 	</head>
 	<body>
-		<div id='body' class="body">
-			{{template "menu" .}}
+		{{template "page_top" .}}
+		<h1>Please confirm that you want to log out of your pixeldrain account</h1>
 
-			<h1>Please confirm that you want to log out of your pixeldrain account</h1>
-			<form method="POST" action="/logout" class="highlight_light">
+		<div class="page_content">
+			<br/>
+			<form method="POST" action="/logout">
 				<input type="submit" value="I want to log out of pixeldrain on this computer" class="button_highlight"/>
 			</form>
-			<br/>
-			<h2>Why do I need to confirm my logout?</h2>
-			<p>
-				We need you to confirm your action so we can be sure that you
-				really requested a logout. If we didn't do this, anyone (or any
-				website) would be able to send you to this page and you would
-				automatically get logged out of pixeldrain, which would be very
-				annoying.
-			</p>
-			<p>
-				To prevent this from happening we're verifying that you actually
-				want to log out by making you click this button. Because this
-				logout button triggers a different request type than normal
-				page visit we can confirm that you really want to log out.
-			</p>
-
-			{{template "footer"}}
+			<div class="limit_width">
+				<br/>
+				<h2>Why do I need to confirm my logout?</h2>
+				<p>
+					We need you to confirm your action so we can be sure that you
+					really requested a logout. If we didn't do this, anyone (or any
+					website) would be able to send you to this page and you would
+					automatically get logged out of pixeldrain, which would be very
+					annoying.
+				</p>
+				<p>
+					To prevent this from happening we're verifying that you actually
+					want to log out by making you click this button. Because this
+					logout button triggers a different request type than normal
+					page visit we can confirm that you really want to log out.
+				</p>
+			</div>
 		</div>
+		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
 </html>

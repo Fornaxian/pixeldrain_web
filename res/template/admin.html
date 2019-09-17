@@ -8,130 +8,130 @@
 	</head>
 	<body>
 		{{$isAdmin := .PixelAPI.UserIsAdmin}}
-		<div id="body" class="body" style="max-width: 100%">
-			{{template "menu" .}}
+		{{template "page_top" .}}
+		<div class="page_content">
 			{{if $isAdmin.IsAdmin}}
+				<h3>Bandwidth and views</h3>
+				<div class="highlight_dark">
+					<button onclick="days = 7; interval = 60; setData();">Week</button>
+					<button onclick="days = 14; interval = 60; setData();">Two Weeks</button>
+					<button onclick="days = 21; interval = 60; setData();">Three Weeks</button>
+					<button onclick="days = 30; interval = 1440; setData();">Month</button>
+					<button onclick="days = 60; interval = 1440; setData();">Two Months</button>
+					<button onclick="days = 91; interval = 1440; setData();">Quarter</button>
+				</div>
+				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: auto;">
+					<canvas id="bandwidth_chart"></canvas>
+				</div>
 
-			<h3>Bandwidth and views</h3>
-			<div class="highlight_dark">
-				<button onclick="days = 7; interval = 60; setData();">Week</button>
-				<button onclick="days = 14; interval = 60; setData();">Two Weeks</button>
-				<button onclick="days = 21; interval = 60; setData();">Three Weeks</button>
-				<button onclick="days = 30; interval = 1440; setData();">Month</button>
-				<button onclick="days = 60; interval = 1440; setData();">Two Months</button>
-				<button onclick="days = 91; interval = 1440; setData();">Quarter</button>
-			</div>
-			<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: auto;">
-				<canvas id="bandwidth_chart"></canvas>
-			</div>
+				<script src="/res/script/jquery.js"></script>
+				<script src="/res/misc/chartjs/Chart.min.js"></script>
+				<script>
+				Chart.defaults.global.defaultFontColor = "#b3b3b3";
+				Chart.defaults.global.defaultFontSize = 15;
+				Chart.defaults.global.defaultFontFamily = "Ubuntu";
+				Chart.defaults.global.aspectRatio = 2.5;
+				Chart.defaults.global.elements.point.radius = 0;
+				Chart.defaults.global.tooltips.mode = "index";
+				Chart.defaults.global.tooltips.axis = "x";
+				Chart.defaults.global.tooltips.intersect = false;
 
-			<script src="/res/script/jquery.js"></script>
-			<script src="/res/misc/chartjs/Chart.min.js"></script>
-			<script>
-			Chart.defaults.global.defaultFontColor = "#b3b3b3";
-			Chart.defaults.global.defaultFontSize = 15;
-			Chart.defaults.global.defaultFontFamily = "Ubuntu";
-			Chart.defaults.global.aspectRatio = 2.5;
-			Chart.defaults.global.elements.point.radius = 0;
-			Chart.defaults.global.tooltips.mode = "index";
-			Chart.defaults.global.tooltips.axis = "x";
-			Chart.defaults.global.tooltips.intersect = false;
-
-			var days = 7;
-			var interval = 60;
-			var graph = new Chart(
-				document.getElementById('bandwidth_chart'),
-				{
-					type: 'line',
-					data: {
-						datasets: [
-							{
-								label: "Bandwidth",
-								backgroundColor: "rgba(64, 255, 64, .05)",
-								borderColor: "rgba(128, 255, 128, 1)",
-								borderWidth: 1.5,
-								lineTension: 0.1,
-								fill: true,
-								yAxisID: "y_bandwidth"
-							}, {
-								label: "Views",
-								backgroundColor: "rgba(64, 64, 255, .1)",
-								borderColor: "rgba(128, 128, 255, 1)",
-								borderWidth: 1.5,
-								lineTension: 0.1,
-								fill: true,
-								yAxisID: "y_views"
-							}
-						]
-					},
-					options: {
-						scales: {
-							yAxes: [
+				var days = 7;
+				var interval = 60;
+				var graph = new Chart(
+					document.getElementById('bandwidth_chart'),
+					{
+						type: 'line',
+						data: {
+							datasets: [
 								{
-									type: "linear",
-									display: true,
-									position: "left",
-									id: "y_bandwidth",
-									scaleLabel: {
-										display: true,
-										labelString: "Bandwidth"
-									},
-									ticks: {
-										callback: function(value, index, values) {
-											return Math.round((value*8/1e6)/(interval*60)) + " Mbps";
-										}
-									},
-									gridLines: {
-										color: "rgba(100, 255, 100, .1)"
-									}
+									label: "Bandwidth",
+									backgroundColor: "rgba(64, 255, 64, .05)",
+									borderColor: "rgba(128, 255, 128, 1)",
+									borderWidth: 1.5,
+									lineTension: 0.1,
+									fill: true,
+									yAxisID: "y_bandwidth"
 								}, {
-									type: "linear",
-									display: true,
-									position: "right",
-									id: "y_views",
-									scaleLabel: {
-										display: true,
-										labelString: "Views"
-									},
-									gridLines: {
-										color: "rgba(128, 128, 255, .2)"
-									}
-								}
-							],
-							xAxes: [
-								{
-									ticks: {
-										maxRotation: 20
-									},
-									gridLines: {
-										display: false
-									}
+									label: "Views",
+									backgroundColor: "rgba(64, 64, 255, .1)",
+									borderColor: "rgba(128, 128, 255, 1)",
+									borderWidth: 1.5,
+									lineTension: 0.1,
+									fill: true,
+									yAxisID: "y_views"
 								}
 							]
+						},
+						options: {
+							scales: {
+								yAxes: [
+									{
+										type: "linear",
+										display: true,
+										position: "left",
+										id: "y_bandwidth",
+										scaleLabel: {
+											display: true,
+											labelString: "Bandwidth"
+										},
+										ticks: {
+											callback: function(value, index, values) {
+												return Math.round((value*8/1e6)/(interval*60)) + " Mbps";
+											}
+										},
+										gridLines: {
+											color: "rgba(100, 255, 100, .1)"
+										}
+									}, {
+										type: "linear",
+										display: true,
+										position: "right",
+										id: "y_views",
+										scaleLabel: {
+											display: true,
+											labelString: "Views"
+										},
+										gridLines: {
+											color: "rgba(128, 128, 255, .2)"
+										}
+									}
+								],
+								xAxes: [
+									{
+										ticks: {
+											maxRotation: 20
+										},
+										gridLines: {
+											display: false
+										}
+									}
+								]
+							}
 						}
 					}
+				);
+
+				function setData(){
+					$.get(apiEndpoint+"/admin/files/timeseries?days="+days+"&interval="+interval, function(response){
+						console.log(response);
+						if (response.success) {
+							window.graph.data.labels = response.labels;
+							window.graph.data.datasets[0].data = response.downloads;
+							window.graph.data.datasets[1].data = response.views;
+							window.graph.update();
+						}
+					});
 				}
-			);
 
-			function setData(){
-				$.get(apiEndpoint+"/admin/files/timeseries?days="+days+"&interval="+interval, function(response){
-					console.log(response);
-					if (response.success) {
-						window.graph.data.labels = response.labels;
-						window.graph.data.datasets[0].data = response.downloads;
-						window.graph.data.datasets[1].data = response.views;
-						window.graph.update();
-					}
-				});
-			}
+				setData();
+				</script>
 
-			setData();
-			</script>
-
-			{{else}}
-			<h1 style="text-align: center;">;)</h1>
-			{{end}}
-			{{template "footer"}}
+				{{else}}
+				<h1 style="text-align: center;">;)</h1>
+				{{end}}
+			</div>
+			{{template "page_bottom" .}}
 		</div>
 	</body>
 </html>

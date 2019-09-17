@@ -1,5 +1,14 @@
 {{define "user_style"}}
 <style>
 {{.UserStyle}}
+
+body,
+.checkers {
+	background-image: url("/res/img/{{bgPattern}}");
+}
+
+:root {
+	--background_pattern: url("/res/img/{{bgPattern}}");
+}
 </style>
 {{end}}

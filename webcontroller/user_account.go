@@ -11,20 +11,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (wc *WebController) serveRegister(
-	w http.ResponseWriter,
-	r *http.Request,
-	p httprouter.Params,
-) {
-	var tpld = wc.newTemplateData(w, r)
-	tpld.Other = wc.captchaKey()
-
-	err := wc.templates.Get().ExecuteTemplate(w, "register", tpld)
-	if err != nil {
-		log.Error("Error executing template '%s': %s", "register", err)
-	}
-}
-
 func (wc *WebController) serveLogout(
 	w http.ResponseWriter,
 	r *http.Request,

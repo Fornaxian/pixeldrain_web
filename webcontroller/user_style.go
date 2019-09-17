@@ -260,7 +260,7 @@ var maroonStyle = pixeldrainStyleSheet{
 	BodyColor:       hsl{0, .6, .1},
 	Layer1Color:     hsl{0, .5, .07},
 	Layer1Shadow:    4,
-	Layer2Color:     hsl{0, .8, .15},
+	Layer2Color:     hsl{0, .6, .1}, // hsl{0, .8, .15},
 	Layer2Shadow:    7,
 	Layer3Color:     hsl{0, .9, .2},
 	Layer3Shadow:    10,

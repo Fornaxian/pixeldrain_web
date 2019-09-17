@@ -6,10 +6,9 @@
 	</head>
 
 	<body>
-		<div id="body" class="body">
-			{{template "menu" .}}
-			<br/>
-			<h1>404, File Not Found!</h1>
+		{{template "page_top" .}}
+		<h1>404, File Not Found!</h1>
+		<div class="page_content"><div class="limit_width">
 			<p>
 				This file does not exist, or it has been removed. Possible
 				reasons for this are:
@@ -24,8 +23,8 @@
 				I'm sorry for the inconvenience.
 			</p>
 
-			{{template "footer"}}
-		</div>
+		</div></div>
+		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
 </html>
@@ -38,10 +37,9 @@
 	</head>
 
 	<body>
-		<div id="body" class="body">
-			{{template "menu" .}}
-			<br/>
-			<h1>404, List Not Found!</h1>
+		{{template "page_top" .}}
+		<h1>404, List Not Found!</h1>
+		<div class="page_content"><div class="limit_width">
 			<p>
 				This list does not exist, or it has been removed. Possible
 				reasons for this are:
@@ -56,8 +54,8 @@
 				I'm sorry for the inconvenience.
 			</p>
 
-			{{template "footer"}}
-		</div>
+		</div></div>
+		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
 </html>

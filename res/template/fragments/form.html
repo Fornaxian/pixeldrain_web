@@ -24,7 +24,7 @@
 			<!-- The invisible username field is so browsers know which user the form was for -->
 			<input type="text" autocomplete="username" value="{{.Username}}" style="display: none;" readonly="readonly"/>
 		{{end}}
-		<table style="margin-left: auto; margin-right: auto; text-align: left; max-width: 30em;">
+		<table class="form">
 			{{range $index, $field := .Fields}}
 				<tr class="form">
 					<td>{{$field.Label}}</td>
@@ -91,11 +91,12 @@
 
 	<body>
 		<div id='body' class="body">
-			{{template "menu" .}}
-
-			{{template "form" .Form}}
-
-			{{template "footer"}}
+			{{template "page_top" .}}
+			<div class="page_content"><div class="limit_width">
+				{{template "form" .Form}}
+				<br/>
+			</div></div>
+			{{template "page_bottom" .}}
 		</div>
 
 		{{template "analytics"}}

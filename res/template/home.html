@@ -9,153 +9,75 @@
 	<body>
 		{{template "page_top" .}}
 
-		<div class="checkers highlight_dark">
-			<img id="header_image" class="header_image" src="/res/img/header_neuropol.png" alt="Header image"/>
-		</div>
+		<img id="header_image" class="header_image" src="/res/img/header_neuropol.png" alt="Header image"/>
 		<br/>
-		<input id="file_input_field" type="file" name="file" multiple="multiple"/>
-		<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
-		<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button>
-		<br/><br/>
-
-		By uploading files to Pixeldrain you accept that a cookie will be
-		placed in your web browser. More information below.
-
-		<br/><br/>
-		<div id="uploads_queue"></div>
-		<br/>
-		<button id="btn_create_list">Create list with uploaded files</button>
-		<button id="btn_copy_links">Copy links to clipboard</button>
-		<button id="btn_copy_bbcode">Copy BBCode to clipboard</button>
-
-		<br/>
-		<div class="centered">
-			<h1>What is Pixeldrain?</h1>
+		<div class="page_content">
+			<input id="file_input_field" type="file" name="file" multiple="multiple"/>
+			<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
+			<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button>
+			<br/>
 			<p>
-				Pixeldrain is a file sharing website built for speed and ease of
-				use.
-			</p>
+				By uploading files to Pixeldrain you accept that a cookie will
+				be placed in your web browser. More information on the <a
+				href="/about">about</a> page
 			<p>
-				The file size limit is 10 GB. There is no limit on the number of
-				files you can upload. A list can contain up to 10000 files.
-			</p>
 
-			<h2>Style selector</h2>
-			<div class="indent">
-				<input type="radio" id="style_default"        name="style"><label for="style_default">Pixeldrain Style</label><br/>
-				<input type="radio" id="style_solarized_dark" name="style"><label for="style_solarized_dark">Solarized Dark Style</label><br/>
-				<input type="radio" id="style_maroon"         name="style"><label for="style_maroon">Maroon Style</label><br/>
-				<input type="radio" id="style_hacker"         name="style"><label for="style_hacker">Hacker Style</label><br/>
-				<input type="radio" id="style_canta"          name="style"><label for="style_canta">Canta Style</label>
-				(Inspired by <a href="https://github.com/vinceliuice/Canta-theme" target="_blank">Canta GTK</a>)<br/>
-				<input type="radio" id="style_arc"            name="style"><label for="style_arc">Arc Style</label>
-				(Inspired by <a href="https://github.com/horst3180/Arc-theme" target="_blank">Arc GTK</a>)<br/>
-				<input type="radio" id="style_sunny"          name="style"><label for="style_sunny">Sunny Style</label>
+			<div id="uploads_queue"></div>
+			<br/>
+			<button id="btn_create_list">Create list with uploaded files</button>
+			<button id="btn_copy_links">Copy links to clipboard</button>
+			<button id="btn_copy_bbcode">Copy BBCode to clipboard</button>
+
+			<br/>
+			<div class="limit_width">
+				<h1>What is Pixeldrain?</h1>
+				<p>
+					Pixeldrain is a file sharing website built for speed and
+					ease of use. Pixeldrain does not cost any money, though
+					donations are appreciated. For donation methods see the
+					<a href="/about">about</a> page.
+				</p>
+				<h2>How to use pixeldrain</h2>
+				<p>
+					Files can be uploaded by clicking the big green upload
+					button, or by dragging them onto this page from your file
+					manager. You can not upload directories at this time, only
+					files. The maximum file size you can upload is 10 GB.
+				</p>
+				<p>
+					You can also create lists, which are a collection of files.
+					Like a photo album, a music record or a video compilation.
+					To do this you need to upload a bunch of files at once. The
+					files will be saved in the order you upload them in. When
+					all files have finished uploading you click the "Create list
+					with uploaded files" button and you will be asked to enter a
+					name for your list. After picking a name the list will be
+					created and opened in a new window. If your browser blocks
+					the window you can also find a link to the list at the
+					bottom of your uploaded files.
+				</p>
+				<p>
+					For more information see the <a href="/about">about</a>
+					page.
+				</p>
+
+				<h2>Style selector</h2>
+				<p>
+					You can change how pixeldrain looks! Your theme choice will
+					be saved in a cookie.
+				</p>
+				<div class="indent">
+					<input type="radio" id="style_default"        name="style"><label for="style_default">Pixeldrain Style</label><br/>
+					<input type="radio" id="style_solarized_dark" name="style"><label for="style_solarized_dark">Solarized Dark Style</label><br/>
+					<input type="radio" id="style_maroon"         name="style"><label for="style_maroon">Maroon Style</label><br/>
+					<input type="radio" id="style_hacker"         name="style"><label for="style_hacker">Hacker Style</label><br/>
+					<input type="radio" id="style_canta"          name="style"><label for="style_canta">Canta Style</label>
+					(Inspired by <a href="https://github.com/vinceliuice/Canta-theme" target="_blank">Canta GTK</a>)<br/>
+					<input type="radio" id="style_arc"            name="style"><label for="style_arc">Arc Style</label>
+					(Inspired by <a href="https://github.com/horst3180/Arc-theme" target="_blank">Arc GTK</a>)<br/>
+					<input type="radio" id="style_sunny"          name="style"><label for="style_sunny">Sunny Style</label>
+				</div>
 			</div>
-
-			<h2>Questions and Answers</h2>
-
-			<h3>For how long will my files be stored?</h3>
-			<p>
-				Files will be removed if they have not been viewed for 60 days.
-				A view is counted when someone visits the file's download page
-				(pixeldrain.com/u/somefile) or views the file through a list the
-				file is included in (pixeldrain.com/l/somelist).
-			</p>
-			<p>
-				You cannot delete files yourself. Once a file has been uploaded
-				to pixeldrain it will stay there for at least 60 days. If you
-				accidentally upload something you shouldn't have, just don't
-				share the link. The file will expire eventually. File links are
-				not indexed or published anywhere. As long as you don't share it
-				nobody will see it.
-			</p>
-
-			<h3>Does pixeldrain cost any money?</h3>
-			<p>
-				No, pixeldrain is completely free at the moment. While there is
-				an advertisement on the file downloading page, it doesn't
-				generate nearly enough revenue to pay for maintaining this
-				service. That's why I'd really appreciate it if you could spare
-				some coins. Possible methods for donating are:
-			</p>
-			<ul>
-				<li>Bitcoin: <a href="bitcoin:1Ne7hGuvnfz9EFTRD3PLWVeaJTX9oA1QUr?label=Pixeldrain%20Donation">1Ne7hGuvnfz9EFTRD3PLWVeaJTX9oA1QUr</a></li>
-				<li>
-					BasicAttentionToken: Donate BAT by clicking the BAT icon in
-					your address bar. If you don't have Brave browser yet you
-					can download it here:
-					<a class="button button_highlight" href="https://brave.com/pix009" target="_blank">Install Brave</a>.
-					Installing and using Brave with this referral link also
-					counts as a 5$ donation.
-				</li>
-				<li>
-					Siacoin:
-					26117c19ca3975b315d663dcbbc19cf9c07274f441689d4392ed380b2337589ef1aacfbdc93f
-					(this address points directly at the storage backend.
-					Donations will be used for paying storage contracts with Sia
-					hosts)
-				</li>
-				<li>
-					PayPal:
-					<a class="button button_highlight" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">Donate with PayPal</a>
-				</li>
-			</ul>
-
-			<h3>Do I need to register an account?</h3>
-			<p>
-				Not if you don't want to. You're free to use pixeldrain
-				completely anonymously. Without a pixeldrain account you can
-				upload files, download files and create lists of files. And view
-				your uploaded files on the <a href="/history">history page</a>.
-				This page only shows files which were uploaded anonymously in
-				this web browser.
-			</p>
-			<p>
-				By registering an account on pixeldrain you will be able to
-				access your files from any device with a web browser. Files you
-				upload and lists you create will be linked to your pixeldrain
-				account and will show up on your <a href="/user">personal home
-				page</a>.
-			</p>
-
-			<h3>What cookies does pixeldrain use?</h3>
-			<p>
-				When uploading a file pixeldrain will install a cookie named
-				'pduploads'. This cookie keeps a dot-separated list of all files
-				you have uploaded anonymously in this browser. This cookie is
-				<b>only</b> used for viewing your upload history.
-			</p>
-			<p>
-				When logging in to a pixeldrain account a cookie named
-				'pd_auth_key' will be installed. This cookie keeps your login
-				session active. When you delete it you will be logged out of
-				your account.
-			</p>
-			<p>
-				When you use the style selector at the bottom of this page a
-				cookie called 'style' will be set. This cookie controls the
-				appearance of the website for you.
-			</p>
-
-			<h2>Legality</h2>
-			<p>
-				I cannot be held liable for any illegal and / or copyrighted
-				material that's uploaded by the users of this application.
-				Files uploaded to this website are subjected to local laws. If
-				laws are being broken, and I've been notified of the fact I'll
-				have to delete the offending content (as the server does not
-				support geo filtering yet). If you find any files on this domain
-				that break the law, please contact me at
-				<a href="mailto:abuse@pixeldrain.com">abuse@pixeldrain.com</a>,
-				and I'll take care of it.
-				<br/>Please share responsibly.
-			</p>
-			<p>
-				For other questions you can reach me at
-				<a href="mailto:support@pixeldrain.com">support@pixeldrain.com</a>
-			</p>
-
 		</div>
 
 		{{template "page_bottom"}}

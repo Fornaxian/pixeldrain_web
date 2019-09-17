@@ -11,16 +11,18 @@
 	</head>
 	<body>
 		<div id='body' class="body">
-			{{template "menu" .}}
-			<p>
-			Here are all files you have previously uploaded to PixelDrain using this computer.
-			This data is saved locally in your web browser and gets updated every time you upload a file through your current browser.
-			</p>
-			<br/>
+			{{template "page_top" .}}
+			<h1>Upload History</h1>
+			<div class="page_content"><div class="limit_width">
+				<p>
+				Here are all files you have previously uploaded to PixelDrain using this computer.
+				This data is saved locally in your web browser and gets updated every time you upload a file through your current browser.
+				</p>
+				<br/>
 
-			<div id="uploadedFiles" class="highlight_dark"></div>
-			{{template "footer"}}
-		</div>
+				<div id="uploadedFiles" class="highlight_dark"></div>
+			</div></div>
+			{{template "page_bottom" .}}
 		<script src="/res/script/history.js"></script>
 		{{template "analytics"}}
 	</body>

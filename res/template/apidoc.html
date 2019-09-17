@@ -30,9 +30,10 @@
 	</head>
 
 	<body>
-		<div id='body' class="body">
-			{{template "menu" .}}
-			<h1>Pixeldrain API Documentation</h1>
+		{{template "page_top" .}}
+		<h1>Pixeldrain API Documentation</h1>
+
+		<div class="page_content"><div class="limit_width">
 			<p>
 				Welcome to the Pixeldrain API documentation.
 				<br/>
@@ -83,9 +84,8 @@
 			{{template "api-filesystem-path-post"}}
 			{{template "api-filesystem-path-get"}}
 			{{template "api-filesystem-path-delete"}}
-
-			{{template "footer"}}
-		</div>
+		</div></div>
+		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
 </html>

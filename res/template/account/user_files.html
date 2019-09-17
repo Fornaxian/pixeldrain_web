@@ -8,55 +8,56 @@
 
 	<body>
 		{{template "page_top" .}}
-		<br/>
-		<div class="centered">
-			These files were uploaded while logged in to your pixeldrain account,
-			<a href="/history">click here</a> to view files uploaded anonymously
-			in this browser.
-		</div>
-		<br/>
-		<br/>
-
-		{{$limit := 200}}
-		{{$page := .URLQuery.Get "page" | pageNr}}
-		{{$files := .PixelAPI.UserFiles $page $limit}}
-		<div class="highlight_dark">
-			{{if ne $page 0}}
-				<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
-				<a href="?page={{sub $page 2}}" class="button">⬅ 2 Pages</a>
-				<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
-			{{end}}
-			Page {{$page}}
-			{{if len $files.Files | eq $limit}}
-				<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
-				<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
-				<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
-			{{end}}
-		</div>
-		<br/>
-
-		{{range $files.Files}}<!--
-		--><a class="file_button" href="/u/{{.ID}}" target="_blank">
-			<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.Name}}" />
-			<span style="color: var(--highlight_color);">{{.Name}}</span>
+		<h1>My Files</h1>
+		<div class="page_content">
+			<p>
+				These files were uploaded while logged in to your pixeldrain account,
+				<a href="/history">click here</a> to view files uploaded anonymously
+				in this browser.
+			</p>
 			<br/>
-			{{.DateUpload.Format "2006-01-02 15:04:05"}}
-		</a><!--
-		-->{{end}}
 
-		<br/>
-		<div class="highlight_dark">
-			{{if ne $page 0}}
-				<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
-				<a href="?page={{sub $page 2}}" class="button">⬅ 2 Pages</a>
-				<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
-			{{end}}
-			Page {{$page}}
-			{{if len $files.Files | eq $limit}}
-				<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
-				<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
-				<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
-			{{end}}
+			{{$limit := 200}}
+			{{$page := .URLQuery.Get "page" | pageNr}}
+			{{$files := .PixelAPI.UserFiles $page $limit}}
+			<div class="highlight_dark">
+				{{if ne $page 0}}
+					<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
+					<a href="?page={{sub $page 2}}" class="button">⬅ 2 Pages</a>
+					<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
+				{{end}}
+				Page {{$page}}
+				{{if len $files.Files | eq $limit}}
+					<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
+					<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
+					<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
+				{{end}}
+			</div>
+			<br/>
+
+			{{range $files.Files}}<!--
+			--><a class="file_button" href="/u/{{.ID}}" target="_blank">
+				<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.Name}}" />
+				<span style="color: var(--highlight_color);">{{.Name}}</span>
+				<br/>
+				{{.DateUpload.Format "2006-01-02 15:04:05"}}
+			</a><!--
+			-->{{end}}
+
+			<br/>
+			<div class="highlight_dark">
+				{{if ne $page 0}}
+					<a href="?page={{sub $page 4}}" class="button">🡄 4 Pages</a>
+					<a href="?page={{sub $page 2}}" class="button">⬅ 2 Pages</a>
+					<a href="?page={{sub $page 1}}" class="button button_highlight" style="margin-right: 2em;">← Last Page</a>
+				{{end}}
+				Page {{$page}}
+				{{if len $files.Files | eq $limit}}
+					<a href="?page={{add $page 1}}" class="button button_highlight" style="margin-left: 2em;">Next Page →</a>
+					<a href="?page={{add $page 2}}" class="button">2 Pages ⮕</a>
+					<a href="?page={{add $page 4}}" class="button">4 Pages 🡆</a>
+				{{end}}
+			</div>
 		</div>
 
 		{{template "page_bottom" .}}

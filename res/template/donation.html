@@ -6,8 +6,8 @@
 		{{template "user_style" .}}
 	</head>
 	<body>
-		<div id="body" class="body">
-			{{template "menu" .}}
+		{{template "page_top" .}}
+		<div class="page_content"><div class="limit_width">
 			<br/>
 			{{$success := .URLQuery.Get "success"}}
 			{{if eq $success "true"}}
@@ -33,8 +33,8 @@
 				Sincerely,<br/>
 				Fornax
 			{{end}}
-			{{template "footer"}}
-		</div>
+		</div></div>
+		{{template "page_bottom"}}
 		{{template "analytics"}}
 	</body>
 </html>

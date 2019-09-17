@@ -7,16 +7,17 @@
 	</head>
 
 	<body>
-		<div id='body' class="body">
-			{{template "menu" .}}
-			<h1>User configuration</h1>
+		{{template "page_top" .}}
+		<h1>User configuration</h1>
+		<div class="page_content"><div class="limit_width">
+
 			<p>What would you like to do?</p>
 			<ul>
 				<li><a href="/user/change_password">Change my password</a></li>
 			</ul>
 
-			{{template "footer"}}
-		</div>
+		</div></div>
+		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
 </html>
