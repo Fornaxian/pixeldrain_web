@@ -3,6 +3,7 @@ package webcontroller
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
 
@@ -39,7 +40,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		},
 	}
 	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", templateData)
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
 }

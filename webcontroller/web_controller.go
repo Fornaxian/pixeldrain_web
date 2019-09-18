@@ -3,6 +3,7 @@ package webcontroller
 import (
 	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 
@@ -112,7 +113,7 @@ func (wc *WebController) serveTemplate(
 			return
 		}
 		err := wc.templates.Get().ExecuteTemplate(w, tpl, tpld)
-		if err != nil {
+		if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
 	}
@@ -182,7 +183,7 @@ func (wc *WebController) serveForm(
 		}
 
 		err := wc.templates.Get().ExecuteTemplate(w, "form_page", td)
-		if err != nil {
+		if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 			log.Error("Error executing form page: %s", err)
 		}
 	}

@@ -74,7 +74,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		}
 	}
 	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", templateData)
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
 }
@@ -102,7 +102,7 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 		},
 	}
 	err := wc.templates.Get().ExecuteTemplate(w, "file_viewer", templateData)
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error rendering demo file: %s", err)
 	}
 }
