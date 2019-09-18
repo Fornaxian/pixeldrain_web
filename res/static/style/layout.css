@@ -51,9 +51,9 @@
 }
 
 /* Page rendering configuration */
-
-html{height: 100%;}
-
+html, body {
+	overflow: hidden;
+}
 body{
 	background-color: #0d0d0d; /* Fallback */
 	background-color: var(--body_color);
@@ -61,14 +61,19 @@ body{
 	font-family: 'Ubuntu';
 	margin: 0;
 	line-height: 1.5em;
-	overflow-x: hidden;
 	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
-	box-sizing: border-box;
 	padding: 0;
 }
 
 /* Page layout elements */
+.page_wrapper {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
 
 .button_toggle_navigation {
 	position: absolute;
@@ -87,8 +92,7 @@ body{
 	position: absolute;
 	z-index: 100;
 	width: 250px;
-	top: 0;
-	bottom: 0;
+	height: 100%;
 	left: 0;
 	float: left;
 	background-color: var(--layer_1_color);
