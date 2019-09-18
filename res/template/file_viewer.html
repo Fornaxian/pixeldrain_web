@@ -26,10 +26,15 @@
 			<div id="file_viewer_headerbar" class="highlight_headerbar">
 				<button id="button_toggle_toolbar" class="button_toggle_toolbar" onClick="Toolbar.toggle();">☰</button>
 				<a href="/" id="button_home" class="button button_home">
-					<img src="/res/img/pixeldrain_transparent.png" alt="Back to the Home page" style="height: 1.5em; margin: -0.3em;"/>
+					<img src="/res/img/pixeldrain_transparent.png"
+						alt="Back to the Home page"
+						style="height: 1.5em; margin: -0.2em; margin-right: 0.2em;"/>
 				</a>
-				<span id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">{{.Title}}</span>
-				<div id="list_navigator_buttons" class="button_group"></div>
+				<div id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">
+					<div id="file_viewer_list_title"></div>
+					<div id="file_viewer_file_title">{{.Title}}</div>
+				</div>
+				<div id="list_navigator_buttons" class="button_group list_navigator_buttons"></div>
 				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onClick="window.close();">🞫</button>
 			</div>
 			<div id="list_navigator" class="list_navigator"></div>

@@ -20,7 +20,7 @@
 
 			<h2>Your most recently uploaded files:</h2>
 			<div class="highlight_dark">
-				{{$files := .PixelAPI.UserFiles 0 18}}
+				{{$files := .PixelAPI.UserFiles 0 15}}
 				{{range $files.Files}}<!--
 					--><a class="file_button" href="/u/{{.ID}}" target="_blank">
 						<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.Name}}" />
@@ -34,7 +34,7 @@
 			</div>
 			<h2>Your most recently created lists:</h2>
 			<div class="highlight_dark">
-				{{$lists := .PixelAPI.UserLists 0 18}}
+				{{$lists := .PixelAPI.UserLists 0 15}}
 				{{range $lists.Lists}}<!--
 					--><a class="file_button" href="/l/{{.ID}}" target="_blank">
 						<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail" alt="{{.Title}}" />

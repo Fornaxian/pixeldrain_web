@@ -70,15 +70,6 @@ body{
 
 /* Page layout elements */
 
-.page_wrapper {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	overflow: hidden;
-}
-
 .button_toggle_navigation {
 	position: absolute;
 	z-index: 300;
@@ -92,23 +83,24 @@ body{
 	border-bottom-right-radius: 90%;
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
 }
-.page_wrapper > .page_navigation {
+.page_navigation {
 	position: absolute;
 	z-index: 100;
 	width: 250px;
+	top: 0;
+	bottom: 0;
+	left: 0;
 	float: left;
 	background-color: var(--layer_1_color);
-	left: 0;
-	bottom: 0;
-	top: 0;
 	padding: 20px 0 0.5em 0;
+	box-sizing: border-box;
 	overflow-y: auto;
 	overflow-x: hidden;
 	text-align: left;
 	box-shadow: inset -10px 0px 10px -10px var(--shadow_color);
 	transition: left 0.5s;
 }
-.page_wrapper > .page_body {
+.page_body {
 	position: absolute;
 	z-index: 200;
 	top: 0;
@@ -122,20 +114,18 @@ body{
 	overflow-x: hidden;
 	z-index: 50;
 	transition: left 0.5s;
-	padding-top: 40px;
-	background-image: var(--background_pattern);
-	background-attachment: local;
+	padding: 50px 0 50px 0;
 }
 @media (max-width: 600px) {
-	.page_wrapper > .page_navigation {
+	.page_navigation {
 		left: -250px;
 	}
-	.page_wrapper > .page_body {
+	.page_body {
 		left: 0;
 	}
 }
 
-.page_wrapper > .page_body > .page_content {
+.page_body > .page_content {
 	position: relative;
 	display: inline-block;
 	width: 100%;
@@ -146,7 +136,7 @@ body{
 	box-sizing: border-box;
 	clear: both;
 }
-.page_wrapper > .page_body > .page_content > .limit_width {
+.page_body > .page_content > .limit_width {
 	position: relative;
 	display: inline-block;
 	max-width: 1000px;
@@ -158,7 +148,7 @@ body{
 	word-break: break-word;
 	clear: both;
 }
-.page_wrapper > .page_body > h1 {
+.page_body > h1 {
 	text-shadow: 1px 1px 25px #000000;
 }
 
@@ -166,12 +156,12 @@ body{
 
 .header_image{
 	width: 100%;
-	max-width: 1000px;
+	max-width: 1200px;
 	margin-top: 30px;
 	margin-bottom: 30px;
 }
 
-.page_wrapper > .page_navigation a {
+.page_navigation a {
 	float: none;
 	display: block;
 	box-sizing: border-box;
@@ -188,8 +178,9 @@ body{
 	transition: background-color 0.5s;
 	border-radius: 5px;
 }
-.page_wrapper > .page_navigation a:hover {
+.page_navigation a:hover {
 	background-color: var(--input_color);
+	color: var(--input_text_color);
 	text-decoration: none;
 }
 
@@ -285,6 +276,9 @@ hr{
 	background-color: var(--scrollbar_foreground_color);
 	border-radius: 0.5em;
 	border: 0.22em solid var(--scrollbar_background_color);
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--scrollbar_hover_color);
 }
 ::-webkit-scrollbar-corner{background: var(--scrollbar_background_color);}
 

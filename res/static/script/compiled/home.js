@@ -151,11 +151,6 @@ document.addEventListener('drop', function (e) {
         handleUploads(e.dataTransfer.files);
     }
 });
-// Style selector
-$("input[name=style]").change(function (evt) {
-    Cookie.write("style", evt.target.id.substring(6));
-    location.reload();
-});
 function copyText(text) {
     // Create a textarea to copy the text from
     var ta = document.createElement("textarea");

@@ -42,12 +42,14 @@ var Viewer = {
 		this.currentFile = file.id;
 		var title = "";
 		if (this.isList) {
-			title = this.title + " ~ " + file.name;
+			document.getElementById("file_viewer_headerbar_title").style.lineHeight = "1em";
+			document.getElementById("file_viewer_list_title").innerText = this.title;
+			document.getElementById("file_viewer_file_title").innerText = file.name;
+			document.title = this.title + " ~ " + file.name + " ~ PixelDrain";
 		} else {
-			title = file.name;
+			document.getElementById("file_viewer_file_title").innerText = file.name;
+			document.title = file.name + " ~ PixelDrain";
 		}
-		document.title = title + " ~ PixelDrain";
-		document.getElementById("file_viewer_headerbar_title").innerText = title;
 
 		$.get("/u/" + file.id + "/preview", function(response){
 			$("#filepreview").html(response);

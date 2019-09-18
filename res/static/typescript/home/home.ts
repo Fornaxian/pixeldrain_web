@@ -183,12 +183,6 @@ document.addEventListener('drop', function(e: DragEvent){
 	}
 })
 
-// Style selector
-$("input[name=style]").change(function(evt){
-	Cookie.write("style", evt.target.id.substring(6))
-	location.reload()
-})
-
 function copyText(text: string) : boolean {
 	// Create a textarea to copy the text from
 	var ta = document.createElement("textarea");
