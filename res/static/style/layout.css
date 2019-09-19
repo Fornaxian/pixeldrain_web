@@ -51,7 +51,9 @@
 }
 
 /* Page rendering configuration */
-
+html, body {
+	overflow-x: hidden;
+}
 body{
 	background-color: #0d0d0d; /* Fallback */
 	background-color: var(--body_color);
