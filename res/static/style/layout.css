@@ -52,7 +52,7 @@
 
 /* Page rendering configuration */
 html, body {
-	overflow: hidden;
+	overflow-x: hidden;
 }
 body{
 	background-color: #0d0d0d; /* Fallback */
@@ -76,7 +76,8 @@ body{
 }
 
 .button_toggle_navigation {
-	position: absolute;
+	position: fixed;
+	backface-visibility: hidden;
 	z-index: 300;
 	top: 0;
 	left: 0;
@@ -89,7 +90,8 @@ body{
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
 }
 .page_navigation {
-	position: absolute;
+	position: fixed;
+	backface-visibility: hidden;
 	z-index: 100;
 	width: 250px;
 	height: 100%;
@@ -107,9 +109,8 @@ body{
 .page_body {
 	position: absolute;
 	z-index: 200;
-	top: 0;
 	right: 0;
-	bottom: 0;
+	height: auto;
 	left: 250px;
 	min-width: 300px;
 	display: inline-block;
@@ -126,6 +127,7 @@ body{
 	}
 	.page_body {
 		left: 0;
+		width: 100%;
 	}
 }
 
