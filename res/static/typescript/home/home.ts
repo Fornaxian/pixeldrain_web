@@ -67,7 +67,7 @@ class UploadProgressBar implements FileUpload {
 		this.uploadDiv.appendChild(document.createElement("br"))
 		this.uploadDiv.appendChild(linkSpan)
 	}
-	public onFailure(response: JQuery.Ajax.ErrorTextStatus, error: string) {
+	public onFailure(error: string) {
 		this.uploadDiv.style.background = 'var(--danger_color)'
 		this.uploadDiv.appendChild(document.createTextNode(this.file.name))
 		this.uploadDiv.appendChild(document.createElement("br"))

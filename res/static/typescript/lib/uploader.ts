@@ -78,11 +78,11 @@ class UploadWorker {
 	private upload(file: FileUpload){
 		console.debug("Starting upload of " + file.name)
 
+		var that = this // jquery changes the definiton of "this"
+
 		var formData = new FormData()
 		formData.append("name", file.name)
 		formData.append('file', file.file)
-
-		var that = this // jquery changes the definiton of "this"
 
 		$.ajax({
 			type: 'POST',

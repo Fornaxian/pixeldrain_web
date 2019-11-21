@@ -52,7 +52,7 @@ var UploadProgressBar = /** @class */ (function () {
         this.uploadDiv.appendChild(document.createElement("br"));
         this.uploadDiv.appendChild(linkSpan);
     };
-    UploadProgressBar.prototype.onFailure = function (response, error) {
+    UploadProgressBar.prototype.onFailure = function (error) {
         this.uploadDiv.style.background = 'var(--danger_color)';
         this.uploadDiv.appendChild(document.createTextNode(this.file.name));
         this.uploadDiv.appendChild(document.createElement("br"));
@@ -308,7 +308,7 @@ var UploadWorker = /** @class */ (function () {
     };
     UploadWorker.prototype.newFile = function () {
         var file = this.manager.grabFile();
-        if (file === undefined) {
+        if (file === undefined) { // No more files in the queue. We're finished
             this.uploading = false;
             console.debug("No files left in queue");
             return; // Stop the thread

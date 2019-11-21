@@ -317,20 +317,20 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	HighlightTextColor:       hsl{0, 0, 0},
 	DangerColor:              hsl{40, 1, .5},
 	FileBackgroundColor:      hsl{170, .04, .29},
-	ScrollbarForegroundColor: hsl{150, .02, .78},
-	ScrollbarHoverColor:      hsl{150, .02, .88},
-	ScrollbarBackgroundColor: hsl{170, .05, .26},
+	ScrollbarForegroundColor: hsl{204, .05, .78}, // hsl(204, 5%, 78%)
+	ScrollbarHoverColor:      hsl{204, .05, .88},
+	ScrollbarBackgroundColor: hsl{200, .13, .27}, // hsl(200, 13%, 27%)
 
 	BackgroundColor: hsl{0, 0, 0},
 	BodyColor:       hsl{172, .06, .25},
-	Layer1Color:     hsl{170, .06, .21},
+	Layer1Color:     hsl{200, .19, .18}, // hsl(200, 19%, 18%)
 	Layer1Shadow:    3,
-	Layer2Color:     hsl{160, .04, .31},
+	Layer2Color:     hsl{199, .14, .23}, // hsl(199, 14%, 23%)
 	Layer2Shadow:    5,
-	Layer3Color:     hsl{170, .02, .47},
-	Layer3Shadow:    7,
-	Layer4Color:     hsl{172, .06, .25}, // hsl(172, 6%, 25%)
-	Layer4Shadow:    9,
+	Layer3Color:     hsl{199, .14, .27}, // hsl(199, 14%, 27%)
+	Layer3Shadow:    6,
+	Layer4Color:     hsl{200, .14, .30}, // hsl(200, 14%, 30%)
+	Layer4Shadow:    7,
 
 	ShadowColor:     hsl{0, 0, 0},
 	ShadowSpread:    7,
