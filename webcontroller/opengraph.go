@@ -86,12 +86,14 @@ func metadataFromList(l pixelapi.List) (meta template.HTML) {
 	meta += ogRule{"og:description", "View '" + l.Title + "' on pixeldrain"}.HTML()
 	meta += ogRule{"description", "View '" + l.Title + "' on pixeldrain"}.HTML()
 	meta += ogRule{"og:url", "/l/" + l.ID}.HTML()
-	meta += ogRule{"og:image", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
-	meta += ogRule{"og:image:url", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
-	meta += twitterRule{"twitter:image", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
 	meta += twitterRule{"twitter:title", l.Title}.HTML()
 	meta += twitterRule{"twitter:site", "@Fornax96"}.HTML()
 	meta += twitterRule{"twitter:domain", "pixeldrain.com"}.HTML()
-	meta += linkRule{"image_src", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
+	if l.FileCount > 0 {
+		meta += ogRule{"og:image", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
+		meta += ogRule{"og:image:url", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
+		meta += twitterRule{"twitter:image", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
+		meta += linkRule{"image_src", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
+	}
 	return meta
 }

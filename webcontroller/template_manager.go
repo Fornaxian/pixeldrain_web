@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"fornaxian.com/pixeldrain-api/util"
 	"github.com/Fornaxian/log"
 )
 
@@ -75,13 +76,14 @@ func (tm *TemplateManager) Get() *template.Template {
 
 func (tm *TemplateManager) funcMap() template.FuncMap {
 	return template.FuncMap{
-		"bgPattern": tm.bgPattern,
-		"isBrave":   tm.isBrave,
-		"debugMode": tm.debugMode,
-		"apiUrl":    tm.apiURL,
-		"pageNr":    tm.pageNr,
-		"add":       tm.add,
-		"sub":       tm.sub,
+		"bgPattern":  tm.bgPattern,
+		"isBrave":    tm.isBrave,
+		"debugMode":  tm.debugMode,
+		"apiUrl":     tm.apiURL,
+		"pageNr":     tm.pageNr,
+		"add":        tm.add,
+		"sub":        tm.sub,
+		"formatData": tm.formatData,
 	}
 }
 
@@ -108,9 +110,38 @@ func (tm *TemplateManager) pageNr(s string) (nr int) {
 	}
 	return nr
 }
-func (tm *TemplateManager) add(a, b int) int {
-	return a + b
+func (tm *TemplateManager) add(a, b interface{}) int {
+	return detectInt(a) + detectInt(b)
 }
-func (tm *TemplateManager) sub(a, b int) int {
-	return a - b
+func (tm *TemplateManager) sub(a, b interface{}) int {
+	return detectInt(a) - detectInt(b)
+}
+func (tm *TemplateManager) formatData(i int) string {
+	return util.FormatData(uint64(i))
+}
+
+func detectInt(i interface{}) int {
+	switch v := i.(type) {
+	case int:
+		return int(v)
+	case int8:
+		return int(v)
+	case int16:
+		return int(v)
+	case int32:
+		return int(v)
+	case int64:
+		return int(v)
+	case uint:
+		return int(v)
+	case uint8:
+		return int(v)
+	case uint16:
+		return int(v)
+	case uint32:
+		return int(v)
+	case uint64:
+		return int(v)
+	}
+	panic(fmt.Sprintf("%v is not an int", i))
 }

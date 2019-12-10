@@ -174,15 +174,16 @@
 {{end}}
 {{define "api-file-id-thumbnail-get"}}
 <details class="api_doc_details request_get">
-	<summary><span class="method">GET</span>/file/{id}/thumbnail</summary>
+	<summary><span class="method">GET</span>/file/{id}/thumbnail?width=xxx&height=xxx</summary>
 	<div>
 		<h3>Description</h3>
 		<p>
-			Returns a PNG thumbnail image representing the file.
-			The thumbnail is always 100*100 px. If the source file
-			is parsable by imagemagick the thumbnail will be
-			generated from the file, if not it will be a generic
-			mime type icon.
+			Returns a PNG thumbnail image representing the file. The thumbnail
+			image will be 128x128 px by default. You can specify the width and
+			height with parameters in the URL. The width and height parameters
+			need to be a multiple of 16. So the allowed values are 16, 32, 48,
+			64, 80, 96, 112 and 128. If a thumbnail cannot be generated for the
+			file you will be redirected to a mime type image of 128x128 px.
 		</p>
 		<h3>Parameters</h3>
 		<table>
@@ -198,10 +199,24 @@
 				<td>URL</td>
 				<td>ID of the file to get a thumbnail for</td>
 			</tr>
+			<tr>
+				<td>width</td>
+				<td>false</td>
+				<td>URL</td>
+				<td>Width of the thumbnail image</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>false</td>
+				<td>URL</td>
+				<td>Height of the thumbnail image</td>
+			</tr>
 		</table>
 		<h3>Returns</h3>
 		<p>
-			A PNG image of 100*100 px.
+			A PNG image if a thumbnail can be generated. If a thumbnail cannot
+			be generated you will get a 301 redirect to an image representing
+			the type of the file.
 		</p>
 	</div>
 </details>

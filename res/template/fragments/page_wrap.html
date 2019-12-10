@@ -1,5 +1,4 @@
-{{define "page_top"}}
-<!-- <div id="page_wrapper"> -->
+{{define "page_menu"}}
 <button id="button_toggle_navigation" class="button_toggle_navigation" onclick="toggleMenu();">☰</button>
 <div id="page_navigation" class="page_navigation">
 	<a href="/">Home</a>
@@ -19,23 +18,10 @@
 	<a href="/api">API</a>
 	<a href="/appearance">Appearance</a>
 </div>
-<div id="page_body" class="page_body">
-{{end}}
-
-{{define "page_bottom"}}
-	<div class="highlight_dark">
-		Pixeldrain is a product by <a href="//fornaxian.com" target="_blank">Fornaxian Technologies</a> |
-		Twitter:&nbsp;<a href="https://twitter.com/Fornax96" target="_blank">@Fornax96</a>
-		Reddit:&nbsp;<a href="https://reddit.com/r/pixeldrain" target="_blank">/r/pixeldrain</a>
-		Medium:&nbsp;<a href="https://medium.com/pixeldrain" target="_blank">Pixeldrain</a>
-	</div>
-</div><!-- end page_body -->
-<!-- </div>end page_wrapper -->
 <script>
-	var nav = document.getElementById("page_navigation");
-	var body = document.getElementById("page_body");
-
 	function toggleMenu() {
+		var nav = document.getElementById("page_navigation");
+		var body = document.getElementById("page_body");
 		if (nav.offsetLeft === 0) {
 			// Menu is visible
 
@@ -49,4 +35,19 @@
 		}
 	}
 </script>
+{{end}}
+
+{{define "page_top"}}
+{{template "page_menu" .}}
+<div id="page_body" class="page_body">
+{{end}}
+
+{{define "page_bottom"}}
+	<div class="highlight_dark">
+		Pixeldrain is a product by <a href="//fornaxian.com" target="_blank">Fornaxian Technologies</a> |
+		Twitter:&nbsp;<a href="https://twitter.com/Fornax96" target="_blank">@Fornax96</a>
+		Reddit:&nbsp;<a href="https://reddit.com/r/pixeldrain" target="_blank">/r/pixeldrain</a>
+		Medium:&nbsp;<a href="https://medium.com/pixeldrain" target="_blank">Pixeldrain</a>
+	</div>
+</div><!-- end page_body -->
 {{end}}

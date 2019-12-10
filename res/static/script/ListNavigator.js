@@ -128,7 +128,7 @@ var ListNavigator = {
 				continue; // Thumbnail already loaded
 			}
 
-			var thumb = "/api/file/" + this.data[i].id + "/thumbnail";
+			var thumb = "/api/file/" + this.data[i].id + "/thumbnail?width=48&height=48";
 			var name = this.data[i].name;
 
 			var itemHtml = "<img src=\"" + thumb + "\" "

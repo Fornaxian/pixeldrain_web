@@ -34,22 +34,12 @@ $(document).ready(function () {
 });
 
 function historyAddItem(json) {
-	if(!json.success){
-		var uploadItem = "<div class=\"file_button\" >"
-		+ "<img src=\"/res/img/cross.png\" "
-		+ "alt=\"File has expired\" />"
-		+ "File has expired"
-		+ "</div>";
-
-		$("#uploadedFiles").append($(uploadItem).hide().fadeIn(400));
-
-		return;
-	}
+	if(!json.success){return;}
 
 	var date = new Date(json.date_upload);
 
 	var uploadItem =  '<a href="/u/'+ json.id +'" target="_blank" class="file_button">'
-		+ '<img src="'+ apiEndpoint + json.thumbnail_href + '"'
+		+ '<img src="'+ apiEndpoint + json.thumbnail_href + '?width=80&height=80"'
 		+ "alt=\"" + json.name + "\" />"
 		+ '<span style="color: var(--highlight_color);">'+json.name+'</span>'
 		+ "<br/>"

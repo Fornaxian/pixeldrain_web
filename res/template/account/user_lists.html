@@ -30,7 +30,7 @@
 
 			{{range $lists.Lists}}<!--
 				--><a class="file_button" href="/l/{{.ID}}" target="_blank">
-					<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail" alt="{{.Title}}" />
+					<img src="{{$.APIEndpoint}}/list/{{.ID}}/thumbnail?width=80&height=80" alt="{{.Title}}" />
 					<span style="color: var(--highlight_color);">{{.Title}}</span>
 					({{.FileCount}} Files)
 					<br/>

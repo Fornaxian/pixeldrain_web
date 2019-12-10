@@ -5,31 +5,44 @@
 		{{template "user_style" .}}
 		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 		<style>
+			#page_body {
+				height: 100%;
+				padding: 0;
+			}
+
 			.file_manager {
 				position: absolute;
 				padding: 0;
-				background-color: var(--body_color);
+				background-color: var(--layer_1_color);
 				box-shadow: #000000 8px 8px 50px 5px;
-				left:100px;
-				top:100px;
-				right: 100px;
-				min-width: 600px;
-				max-width: 1000px;
+				left:50px;
+				top:50px;
+				right: 50px;
+				bottom: 50px;
+				display: flex;
+				flex-direction: column;
 			}
 			.file_manager > .nav_bar {
+				flex-shrink: 0;
 				display: flex;
 				flex-direction: row
 			}
 			.file_manager > .nav_bar :first-child   {margin-left:  5px;}
 			.file_manager > .nav_bar :last-child    {margin-right: 5px;}
 			.file_manager > .nav_bar > .breadcrumbs {flex: 1; margin: 1px 10px; min-width: 100px;}
-			.file_manager > .status_bar             {text-align: left;}
 			.file_manager > .directory_area {
+				flex-shrink: 1;
 				margin: 0;
 				padding: 5px;
-				max-height: 500px;
 				overflow-x: hidden;
 				overflow-y: scroll;
+				text-align: left;
+			}
+			.file_manager > .directory_area > .file_button {
+				margin: 5px;
+			}
+			.file_manager > .status_bar {
+				flex-shrink: 0;
 				text-align: left;
 			}
 
@@ -44,36 +57,42 @@
 	</head>
 
 	<body>
-		{{template "page_top" .}}
-		<br/>
-		<div class="file_manager">
-			<div class="nav_bar highlight_light">
-				<button>⇐</button>
-				<button>⇑</button>
-				<button style="margin-right: 16px;">⇒</button>
-				<button>🏠</button>
-				<input class="breadcrumbs" type="text" value="/{{.Username}}/Documents"/>
-				<button>↻</button>
-				<button>🔎</button>
-				<button style="margin-left: 16px;">_</button>
-				<button>☐</button>
-				<button class="button_red">✕</button>
-			</div>
-			<div class="directory_area">
-				{{$files := .PixelAPI.UserFiles 0 1000}}
-				{{range $files.Files}}
-				<a class="file_button" href="/u/{{.ID}}" target="_blank">
-					<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail" alt="{{.Name}}" />
-					{{.Name}}
-				</a>
-				{{end}}
-			</div>
-			<div class="status_bar highlight_light">
-				13 items (5 directories, 7 files). Total size: 1.23 GB
+		{{template "page_menu" .}}
+
+		<div id="page_body" class="page_body">
+			<div class="file_manager">
+				<div class="nav_bar highlight_light">
+					<button>⇐</button>
+					<button>⇑</button>
+					<button style="margin-right: 16px;">⇒</button>
+					<button>🏠</button>
+					<input class="breadcrumbs" type="text" value="/{{.Username}}/Documents"/>
+					<button>↻</button>
+					<button>🔎</button>
+					<button style="margin-left: 16px;">_</button>
+					<button>☐</button>
+					<button class="button_red">✕</button>
+				</div>
+				<div class="directory_area">
+					{{$size := 0}}
+					{{$count := 0}}
+
+					{{$files := .PixelAPI.UserFiles 0 10000}}
+					{{range $files.Files}}
+					{{$size = add $size .Size}}
+					{{$count = add $count 1}}
+					<a class="file_button" href="/u/{{.ID}}" target="_blank">
+						<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail?width=16&height=16" alt="{{.Name}}" />
+						{{.Name}}
+					</a>
+					{{end}}
+				</div>
+				<div class="status_bar highlight_light">
+					{{$count}} items (0 directories, {{$count}} files). Total size: {{formatData $size}}
+				</div>
 			</div>
 		</div>
 
-		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
 </html>
