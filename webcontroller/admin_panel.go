@@ -1,0 +1,97 @@
+package webcontroller
+
+import (
+	"fmt"
+	"html/template"
+	"net/http"
+
+	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-web/webcontroller/forms"
+	"github.com/Fornaxian/log"
+)
+
+func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f forms.Form) {
+	if isAdmin, err := td.PixelAPI.UserIsAdmin(); err != nil {
+		td.Title = err.Error()
+		return forms.Form{Title: td.Title}
+	} else if !isAdmin.IsAdmin {
+		td.Title = ";)"
+		return forms.Form{Title: td.Title}
+	}
+
+	td.Title = "Pixeldrain global configuration"
+	f = forms.Form{
+		Name:        "admin_globals",
+		Title:       td.Title,
+		PreFormHTML: template.HTML("<p>Careful! The slightest typing error could bring the whole website down</p>"),
+		BackLink:    "/admin",
+		SubmitLabel: "Submit",
+	}
+
+	globals, err := td.PixelAPI.AdminGetGlobals()
+	if err != nil {
+		f.SubmitMessages = []template.HTML{template.HTML(err.Error())}
+		return f
+	}
+	var globalsMap = make(map[string]string)
+	for _, v := range globals.Globals {
+		f.Fields = append(f.Fields, forms.Field{
+			Name:         v.Key,
+			DefaultValue: v.Value,
+			Label:        v.Key,
+			Type: func() forms.FieldType {
+				switch v.Key {
+				case
+					"email_address_change_body",
+					"email_password_reset_body":
+					return forms.FieldTypeTextarea
+				case
+					"api_ratelimit_limit",
+					"api_ratelimit_rate",
+					"cron_interval_seconds",
+					"file_inactive_expiry_days",
+					"max_file_size",
+					"pixelstore_min_redundancy":
+					return forms.FieldTypeNumber
+				default:
+					return forms.FieldTypeText
+				}
+			}(),
+		})
+		globalsMap[v.Key] = v.Value
+	}
+
+	if f.ReadInput(r) {
+		var successfulUpdates = 0
+		for k, v := range f.Fields {
+			if v.EnteredValue == globalsMap[v.Name] {
+				continue // Change changes, no need to update
+			}
+
+			// Value changed, try to update global setting
+			if _, err = td.PixelAPI.AdminSetGlobals(v.Name, v.EnteredValue); err != nil {
+				if apiErr, ok := err.(pixelapi.Error); ok {
+					f.SubmitMessages = append(f.SubmitMessages, template.HTML(apiErr.Message))
+				} else {
+					log.Error("%s", err)
+					f.SubmitMessages = append(f.SubmitMessages, template.HTML(
+						fmt.Sprintf("Failed to set '%s': %s", v.Name, err),
+					))
+					return f
+				}
+			} else {
+				f.Fields[k].DefaultValue = v.EnteredValue
+				successfulUpdates++
+			}
+
+		}
+		if len(f.SubmitMessages) == 0 {
+			// Request was a success
+			f.SubmitSuccess = true
+			f.SubmitMessages = []template.HTML{template.HTML(
+				fmt.Sprintf("Success! %d values updated", successfulUpdates),
+			)}
+		}
+	}
+	return f
+}

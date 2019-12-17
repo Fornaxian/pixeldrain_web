@@ -164,7 +164,6 @@ func (p *PixelAPI) form(
 }
 
 func parseJSONResponse(resp *http.Response, target interface{}, catchErrors bool) error {
-	var jdec = json.NewDecoder(resp.Body)
 	var err error
 
 	// Test for client side and server side errors
@@ -172,8 +171,7 @@ func parseJSONResponse(resp *http.Response, target interface{}, catchErrors bool
 		var errResp = Error{
 			ReqError: false,
 		}
-		err = jdec.Decode(&errResp)
-		if err != nil {
+		if err = json.NewDecoder(resp.Body).Decode(&errResp); err != nil {
 			log.Error("Can't decode this: %v", err)
 			return Error{
 				ReqError: true,
@@ -185,8 +183,11 @@ func parseJSONResponse(resp *http.Response, target interface{}, catchErrors bool
 		return errResp
 	}
 
-	err = jdec.Decode(target)
-	if err != nil {
+	if target == nil {
+		return nil
+	}
+
+	if err = json.NewDecoder(resp.Body).Decode(target); err != nil {
 		r, _ := ioutil.ReadAll(resp.Body)
 		log.Error("Can't decode this: %v. %s", err, r)
 		return Error{

@@ -8,14 +8,11 @@
 
 	<body>
 		{{template "page_top" .}}
-		<h1>User configuration</h1>
+		<h1>{{.Title}}</h1>
 		<div class="page_content"><div class="limit_width">
-
-			<p>What would you like to do?</p>
-			<ul>
-				<li><a href="/user/change_password">Change my password</a></li>
-			</ul>
-
+			{{template "form" .Other.PasswordForm}}
+			{{template "form" .Other.EmailForm}}
+			{{template "form" .Other.UsernameForm}}
 		</div></div>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}

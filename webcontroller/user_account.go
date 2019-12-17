@@ -18,9 +18,8 @@ func (wc *WebController) serveLogout(
 ) {
 	if key, err := wc.getAPIKey(r); err == nil {
 		var api = pixelapi.New(wc.conf.APIURLInternal, key)
-		_, err1 := api.UserSessionDestroy(key)
-		if err1 != nil {
-			log.Warn("logout failed for session '%s': %s", key, err1)
+		if err = api.UserSessionDestroy(key); err != nil {
+			log.Warn("logout failed for session '%s': %s", key, err)
 		}
 	}
 
@@ -151,9 +150,12 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f forms.F
 		BackLink:    "/",
 		SubmitLabel: "Login",
 		PostFormHTML: template.HTML(
-			`<br/>If you don't have a pixeldrain account yet, you can ` +
+			`<p>If you don't have a pixeldrain account yet, you can ` +
 				`<a href="/register">register here</a>. No e-mail address is ` +
-				`required.<br/>`,
+				`required.</p>` +
+				`<p>Forgot your password? If your account has a valid e-mail ` +
+				`address you can <a href="/password_reset">request a new ` +
+				`password here</a>.</p>`,
 		),
 	}
 
@@ -184,45 +186,35 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f forms.F
 	return f
 }
 
-func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f forms.Form) {
-	td.Title = "Change Password"
+func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f forms.Form) {
+	td.Title = "Recover lost password"
 	f = forms.Form{
-		Name:  "password_change",
+		Name:  "password_reset",
 		Title: td.Title,
 		Fields: []forms.Field{
 			{
-				Name:  "old_password",
-				Label: "Old Password",
-				Type:  forms.FieldTypeCurrentPassword,
+				Name:  "email",
+				Label: "E-mail address",
+				Description: "we will send a password reset link to this " +
+					"e-mail address",
+				Separator: true,
+				Type:      forms.FieldTypeEmail,
 			}, {
-				Name:  "new_password1",
-				Label: "New Password",
-				Type:  forms.FieldTypeNewPassword,
-			}, {
-				Name:  "new_password2",
-				Label: "New Password verification",
-				Type:  forms.FieldTypeCurrentPassword,
+				Name:  "recaptcha_response",
+				Label: "Turing test (click the white box)",
+				Description: "the reCaptcha turing test verifies that you " +
+					"are not an evil robot that is trying hijack accounts",
+				Separator:      true,
+				Type:           forms.FieldTypeCaptcha,
+				CaptchaSiteKey: wc.captchaKey(),
 			},
 		},
-		BackLink:    "/user",
+		BackLink:    "/login",
 		SubmitLabel: "Submit",
 	}
 
 	if f.ReadInput(r) {
-		if f.FieldVal("new_password1") != f.FieldVal("new_password2") {
-			f.SubmitMessages = []template.HTML{
-				"Password verification failed. Please enter the same " +
-					"password in both new password fields"}
-			return f
-		}
-
-		// Passwords match, send the request and fill in the response in the
-		// form
-		_, err := td.PixelAPI.UserPasswordSet(
-			f.FieldVal("old_password"),
-			f.FieldVal("new_password1"),
-		)
-		if err != nil {
+		if err := td.PixelAPI.UserPasswordReset(f.FieldVal("email"), f.FieldVal("recaptcha_response")); err != nil {
 			if apiErr, ok := err.(pixelapi.Error); ok {
 				f.SubmitMessages = []template.HTML{template.HTML(apiErr.Message)}
 			} else {
@@ -230,9 +222,8 @@ func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f form
 				f.SubmitMessages = []template.HTML{"Internal Server Error"}
 			}
 		} else {
-			// Request was a success
 			f.SubmitSuccess = true
-			f.SubmitMessages = []template.HTML{"Success! Your password has been updated"}
+			f.SubmitMessages = []template.HTML{"Success! E-mail sent"}
 		}
 	}
 	return f

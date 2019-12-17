@@ -16,6 +16,7 @@ import (
 type TemplateData struct {
 	Authenticated bool
 	Username      string
+	Email         string
 	UserAgent     string
 	UserStyle     template.CSS
 	APIEndpoint   template.URL
@@ -67,6 +68,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		// Authentication succeeded
 		t.Authenticated = true
 		t.Username = uinf.Username
+		t.Email = uinf.Email
 	} else {
 		t.PixelAPI = pixelapi.New(wc.conf.APIURLInternal, "")
 	}

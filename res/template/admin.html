@@ -77,7 +77,14 @@
 										},
 										ticks: {
 											callback: function(value, index, values) {
-												return Math.round((value*8/1e6)/(interval*60)) + " Mbps";
+												if (value > 1e12) {
+													return Math.round(value/1e9)/1e3 + " TB";
+												} else if (value > 1e9) {
+													return Math.round(value/1e6)/1e3 + " GB";
+												} else if (value > 1e6) {
+													return Math.round(value/1e3)/1e3 + " MB";
+												}
+												return value/1e3 + " kB";
 											}
 										},
 										gridLines: {
@@ -127,6 +134,10 @@
 				setData();
 				</script>
 
+				<hr/>
+				<div class="limit_width">
+					<a href="/admin/globals">Update global settings</a>
+				</div>
 				{{else}}
 				<h1 style="text-align: center;">;)</h1>
 				{{end}}

@@ -78,7 +78,9 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/register" /*        */, wc.serveForm(wc.registerForm, false))
 	r.POST(p+"/register" /*       */, wc.serveForm(wc.registerForm, false))
 	r.GET(p+"/login" /*           */, wc.serveForm(wc.loginForm, false))
-	r.POST(p+"/login" /*           */, wc.serveForm(wc.loginForm, false))
+	r.POST(p+"/login" /*          */, wc.serveForm(wc.loginForm, false))
+	r.GET(p+"/password_reset" /*  */, wc.serveForm(wc.passwordResetForm, false))
+	r.POST(p+"/password_reset" /* */, wc.serveForm(wc.passwordResetForm, false))
 	r.GET(p+"/logout" /*          */, wc.serveTemplate("logout", true))
 	r.POST(p+"/logout" /*         */, wc.serveLogout)
 	r.GET(p+"/user" /*            */, wc.serveTemplate("user_home", true))
@@ -87,11 +89,14 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/user/filemanager" /**/, wc.serveTemplate("file_manager", true))
 
 	// User account settings
-	r.GET(p+"/user/settings" /*        */, wc.serveTemplate("user_settings", true))
-	r.GET(p+"/user/change_password" /* */, wc.serveForm(wc.passwordForm, true))
-	r.POST(p+"/user/change_password" /**/, wc.serveForm(wc.passwordForm, true))
+	r.GET(p+"/user/settings" /*     */, wc.serveUserSettings)
+	r.POST(p+"/user/settings" /*    */, wc.serveUserSettings)
+	r.GET(p+"/user/confirm_email" /**/, wc.serveEmailConfirm)
 
-	r.GET(p+"/admin", wc.serveTemplate("admin_panel", true))
+	// Admin settings
+	r.GET(p+"/admin" /*         */, wc.serveTemplate("admin_panel", true))
+	r.GET(p+"/admin/globals" /* */, wc.serveForm(wc.adminGlobalsForm, true))
+	r.POST(p+"/admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true))
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 

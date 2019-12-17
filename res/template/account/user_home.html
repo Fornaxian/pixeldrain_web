@@ -12,11 +12,12 @@
 		<h1>Welcome home, {{.Username}}!</h1>
 
 		<div class="page_content"><div class="limit_width">
-			<h2>Actions</h2>
+			<h2>Account information</h2>
 			<ul>
-				<li><a href="/user/change_password" class="button">Change my password</a></li>
-				<li><a href="/logout" class="button">Log out</a></li>
+				<li>Username: {{.Username}}</li>
+				<li>E-mail address: {{.Email}}</li>
 			</ul>
+			<a href="/user/settings" class="button">Update account settings</a>
 
 			<h2>Your most recently uploaded files:</h2>
 			<div class="highlight_dark">

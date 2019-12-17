@@ -79,6 +79,8 @@ type FieldType string
 // Fields which can be in a form
 const (
 	FieldTypeText            FieldType = "text"
+	FieldTypeTextarea        FieldType = "textarea"
+	FieldTypeNumber          FieldType = "number"
 	FieldTypeUsername        FieldType = "username"
 	FieldTypeEmail           FieldType = "email"
 	FieldTypeCurrentPassword FieldType = "current-password"
