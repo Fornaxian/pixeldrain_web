@@ -29,7 +29,7 @@
 					{{if eq $field.Type "textarea"}}
 						<td colspan="2">
 							{{$field.Label}}<br/>
-							<textarea id="input_{{$field.Name}}" name="{{$field.Name}}" class="form_input" style="width: 100%; height: 5em; resize: vertical;">{{$field.DefaultValue}}</textarea>
+							<textarea id="input_{{$field.Name}}" name="{{$field.Name}}" class="form_input" style="width: 100%; height: 10em; resize: vertical;">{{$field.DefaultValue}}</textarea>
 						</td>
 					{{else}}
 						<td>{{$field.Label}}</td>

@@ -2,11 +2,10 @@ package webcontroller
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 )
 
-func userStyle(r *http.Request) (style template.CSS) {
+func userStyle(r *http.Request) (style pixeldrainStyleSheet) {
 	var selectedStyle pixeldrainStyleSheet
 
 	if cookie, err := r.Cookie("style"); err != nil {
@@ -34,7 +33,40 @@ func userStyle(r *http.Request) (style template.CSS) {
 		}
 	}
 
-	return template.CSS(fmt.Sprintf(
+	return selectedStyle
+}
+
+type pixeldrainStyleSheet struct {
+	TextColor                hsl
+	InputColor               hsl // Buttons, text fields
+	InputTextColor           hsl
+	HighlightColor           hsl // Links, highlighted buttons, list navigation
+	HighlightTextColor       hsl // Text on buttons
+	DangerColor              hsl
+	FileBackgroundColor      hsl
+	ScrollbarForegroundColor hsl
+	ScrollbarHoverColor      hsl
+	ScrollbarBackgroundColor hsl
+
+	BackgroundColor hsl
+	BodyColor       hsl
+
+	Layer1Color  hsl // Deepest and darkest layer
+	Layer1Shadow int // Deep layers have little shadow
+	Layer2Color  hsl
+	Layer2Shadow int
+	Layer3Color  hsl
+	Layer3Shadow int
+	Layer4Color  hsl // Highest and brightest layer
+	Layer4Shadow int // High layers have lots of shadow
+
+	ShadowColor     hsl
+	ShadowSpread    int // Pixels
+	ShadowIntensity int // Pixels
+}
+
+func (s pixeldrainStyleSheet) String() string {
+	return fmt.Sprintf(
 		`:root {
 	--text_color:                 %s;
 	--input_color:                %s;
@@ -66,63 +98,35 @@ func userStyle(r *http.Request) (style template.CSS) {
 	--shadow_spread:    %s;
 	--shadow_intensity: %s;
 }`,
-		selectedStyle.TextColor.cssString(),
-		selectedStyle.InputColor.cssString(),
-		selectedStyle.InputColor.add(0, 0, -.03).cssString(),
-		selectedStyle.InputTextColor.cssString(),
-		selectedStyle.HighlightColor.cssString(),
-		selectedStyle.HighlightColor.add(0, 0, -.03).cssString(),
-		selectedStyle.HighlightTextColor.cssString(),
-		selectedStyle.DangerColor.cssString(),
-		selectedStyle.DangerColor.add(0, 0, -.03).cssString(),
-		selectedStyle.FileBackgroundColor.cssString(),
-		selectedStyle.ScrollbarForegroundColor.cssString(),
-		selectedStyle.ScrollbarHoverColor.cssString(),
-		selectedStyle.ScrollbarBackgroundColor.cssString(),
-		selectedStyle.BackgroundColor.cssString(),
-		selectedStyle.BodyColor.cssString(),
-		selectedStyle.Layer1Color.cssString(),
-		fmt.Sprintf("%dpx", selectedStyle.Layer1Shadow),
-		selectedStyle.Layer2Color.cssString(),
-		fmt.Sprintf("%dpx", selectedStyle.Layer2Shadow),
-		selectedStyle.Layer3Color.cssString(),
-		fmt.Sprintf("%dpx", selectedStyle.Layer3Shadow),
-		selectedStyle.Layer4Color.cssString(),
-		fmt.Sprintf("%dpx", selectedStyle.Layer4Shadow),
-		selectedStyle.ShadowColor.cssString(),
-		fmt.Sprintf("%dpx", selectedStyle.ShadowSpread),
-		fmt.Sprintf("%dpx", selectedStyle.ShadowIntensity),
-	))
+		s.TextColor.cssString(),
+		s.InputColor.cssString(),
+		s.InputColor.add(0, 0, -.03).cssString(),
+		s.InputTextColor.cssString(),
+		s.HighlightColor.cssString(),
+		s.HighlightColor.add(0, 0, -.03).cssString(),
+		s.HighlightTextColor.cssString(),
+		s.DangerColor.cssString(),
+		s.DangerColor.add(0, 0, -.03).cssString(),
+		s.FileBackgroundColor.cssString(),
+		s.ScrollbarForegroundColor.cssString(),
+		s.ScrollbarHoverColor.cssString(),
+		s.ScrollbarBackgroundColor.cssString(),
+		s.BackgroundColor.cssString(),
+		s.BodyColor.cssString(),
+		s.Layer1Color.cssString(),
+		fmt.Sprintf("%dpx", s.Layer1Shadow),
+		s.Layer2Color.cssString(),
+		fmt.Sprintf("%dpx", s.Layer2Shadow),
+		s.Layer3Color.cssString(),
+		fmt.Sprintf("%dpx", s.Layer3Shadow),
+		s.Layer4Color.cssString(),
+		fmt.Sprintf("%dpx", s.Layer4Shadow),
+		s.ShadowColor.cssString(),
+		fmt.Sprintf("%dpx", s.ShadowSpread),
+		fmt.Sprintf("%dpx", s.ShadowIntensity),
+	)
 }
 
-type pixeldrainStyleSheet struct {
-	TextColor                hsl
-	InputColor               hsl // Buttons, text fields
-	InputTextColor           hsl
-	HighlightColor           hsl // Links, highlighted buttons, list navigation
-	HighlightTextColor       hsl // Text on buttons
-	DangerColor              hsl
-	FileBackgroundColor      hsl
-	ScrollbarForegroundColor hsl
-	ScrollbarHoverColor      hsl
-	ScrollbarBackgroundColor hsl
-
-	BackgroundColor hsl
-	BodyColor       hsl
-
-	Layer1Color  hsl // Deepest and darkest layer
-	Layer1Shadow int // Deep layers have little shadow
-	Layer2Color  hsl
-	Layer2Shadow int
-	Layer3Color  hsl
-	Layer3Shadow int
-	Layer4Color  hsl // Highest and brightest layer
-	Layer4Shadow int // High layers have lots of shadow
-
-	ShadowColor     hsl
-	ShadowSpread    int // Pixels
-	ShadowIntensity int // Pixels
-}
 type hsl struct {
 	Hue        int
 	Saturation float64

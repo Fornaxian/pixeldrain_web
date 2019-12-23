@@ -10,44 +10,29 @@
 /* Fonts */
 
 @font-face {
-	font-family: 'Ubuntu';
+	font-family: 'default';
+	font-display: fallback;
 	font-style: normal;
-	font-weight: 400;
-	font-display: fallback;
-    text-rendering: optimizeLegibility;
+	font-weight: normal;
+	text-rendering: optimizeLegibility;
 	src:
-		local('Ubuntu'),
-		local('Ubuntu Regular'),
-		local('Ubuntu, Regular'),
-		local('Ubuntu-Regular'),
-		url(/res/misc/Ubuntu-R.ttf) format('truetype');
+		local('Cantarell'),
+		local('Cantarell Regular'),
+		local('Cantarell, Regular'),
+		local('Cantarell-Regular'),
+		url("/res/misc/Cantarell-Regular.otf") format("opentype");
 }
 @font-face {
-	font-family: 'Lato Thin';
+	font-family: 'light';
 	font-display: fallback;
-    font-style: normal;
-    font-weight: normal;
-    text-rendering: optimizeLegibility;
+	font-style: normal;
+	font-weight: normal;
+	text-rendering: optimizeLegibility;
 	src:
-		local('Lato Thin'),
-		local('Lato, Thin'),
-		local('Lato-Thin'),
-		local('Lato Hairline'),
-		local('Lato, Hairline'),
-		local('Lato-Hairline'),
-		url(/res/misc/LatoLatin-Thin.ttf) format('truetype');
-}
-@font-face {
-	font-family: 'Lato';
-	font-display: fallback;
-    font-style: normal;
-    font-weight: normal;
-    text-rendering: optimizeLegibility;
-	src:
-		local('Lato Regular'),
-		local('Lato, Regular'),
-		local('Lato-Regular'),
-		url(/res/misc/Lato-Regular.ttf) format('truetype');
+		local('Cantarell Light'),
+		local('Cantarell, Light'),
+		local('Cantarell-Light'),
+		url("/res/misc/Cantarell-Light.otf") format("opentype");
 }
 
 /* Page rendering configuration */
@@ -58,7 +43,7 @@ body{
 	background-color: #0d0d0d; /* Fallback */
 	background-color: var(--body_color);
 	background-repeat: repeat;
-	font-family: 'Ubuntu';
+	font-family: "default";
 	margin: 0;
 	line-height: 1.5em;
 	color: #bfbfbf; /* Fallback */
@@ -174,11 +159,10 @@ body{
 	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 	text-align: center;
-	padding: 4px 6px;
+	padding: 6px 6px;
 	margin: 0.3em 15px 0.3em 15px;
-	font-family: "Lato Thin", sans-serif;
-	font-weight: bold;
-	font-size: 1.5em;
+	font-family: "light";
+	font-size: 1.6em;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	transition: background-color 0.5s;
@@ -196,6 +180,9 @@ body{
 .checkers {
 	text-shadow: 0 0 20px #000000;
 	padding: 30px 10px 30px 10px;
+}
+body, .checkers {
+	background-image: url("{{bgPattern}}");
 }
 
 .highlight_dark,
@@ -255,12 +242,12 @@ h1, h2, h3, h4, h5, h6 {
 	margin-left: 10px;
 	margin-right: 10px;
 }
-h1{font-size: 2em;    font-family: "Lato Thin";}
-h2{font-size: 1.75em; font-family: "Lato Thin";}
-h3{font-size: 1.5em;  font-family: "Lato Thin";}
-h4{font-size: 1.25em; font-family: "Lato";}
-h5{font-size: 1em;    font-family: "Lato";}
-h6{font-size: .75em;  font-family: "Lato";}
+h1{font-size: 2em;    font-family: "light";   font-weight: normal;}
+h2{font-size: 1.75em; font-family: "light";   font-weight: normal;}
+h3{font-size: 1.5em;  font-family: "light";   font-weight: normal;}
+h4{font-size: 1.25em; font-family: "default"; font-weight: normal;}
+h5{font-size: 1em;    font-family: "default"; font-weight: normal;}
+h6{font-size: .75em;  font-family: "default"; font-weight: normal;}
 h3, h2{border-bottom: 1px var(--layer_3_color_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
 p, .indent {
@@ -325,7 +312,6 @@ pre{
 	margin: 10px !important;
 	border-radius: 5px;
 	font-size: 1.8em;
-	font-weight: normal;
 }
 
 .progress_bar{
@@ -403,7 +389,7 @@ button,
 input[type="submit"],
 input[type="button"],
 input[type="color"],
-select{
+select {
 	display: inline-block;
 	box-sizing: border-box;
 	border-radius: 2px;
@@ -416,7 +402,6 @@ select{
 	line-height: 1em;
 	overflow: hidden;
 	text-decoration: none;
-	font-family: inherit;
 	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
 	outline: 0;
@@ -435,7 +420,7 @@ button:focus,
 input[type="submit"]:focus,
 input[type="button"]:focus,
 input[type="color"]:focus,
-select:focus{
+select:focus {
 	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
 	text-decoration: none;
@@ -479,7 +464,6 @@ input[type="number"]{
 	padding: 3px 5px;
 	color: var(--input_text_color);
 	height: 26px;
-	font-family: 'Ubuntu', sans-serif;
 	font-size: 1em;
 	vertical-align: middle;
 	outline: 0;

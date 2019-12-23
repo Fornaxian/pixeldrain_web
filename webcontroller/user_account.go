@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
-	"fornaxian.com/pixeldrain-web/webcontroller/forms"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -26,7 +25,7 @@ func (wc *WebController) serveLogout(
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f forms.Form) {
+func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form) {
 	// This only runs on the first request
 	if wc.captchaSiteKey == "" {
 		capt, err := td.PixelAPI.GetRecaptcha()
@@ -47,16 +46,16 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f form
 
 	// Construct the form
 	td.Title = "Register a new Pixeldrain account"
-	f = forms.Form{
+	f = Form{
 		Name:  "register",
 		Title: td.Title,
-		Fields: []forms.Field{
+		Fields: []Field{
 			{
 				Name:        "username",
 				Label:       "Username",
 				Description: "used for logging into your account",
 				Separator:   true,
-				Type:        forms.FieldTypeUsername,
+				Type:        FieldTypeUsername,
 			}, {
 				Name:  "e-mail",
 				Label: "E-mail address",
@@ -64,11 +63,11 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f form
 					"used for password resets and important account " +
 					"notifications",
 				Separator: true,
-				Type:      forms.FieldTypeEmail,
+				Type:      FieldTypeEmail,
 			}, {
 				Name:  "password1",
 				Label: "Password",
-				Type:  forms.FieldTypeNewPassword,
+				Type:  FieldTypeNewPassword,
 			}, {
 				Name:  "password2",
 				Label: "Password verification",
@@ -76,7 +75,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f form
 					"can verify that no typing errors were made, which would " +
 					"prevent you from logging into your new account",
 				Separator: true,
-				Type:      forms.FieldTypeNewPassword,
+				Type:      FieldTypeNewPassword,
 			}, {
 				Name:  "recaptcha_response",
 				Label: "Turing test (click the white box)",
@@ -84,7 +83,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f form
 					"are not an evil robot that is trying to flood the " +
 					"website with fake accounts",
 				Separator:      true,
-				Type:           forms.FieldTypeCaptcha,
+				Type:           FieldTypeCaptcha,
 				CaptchaSiteKey: wc.captchaKey(),
 			},
 		},
@@ -131,20 +130,20 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f form
 	return f
 }
 
-func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f forms.Form) {
+func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 	td.Title = "Login"
-	f = forms.Form{
+	f = Form{
 		Name:  "login",
 		Title: "Log in to your pixeldrain account",
-		Fields: []forms.Field{
+		Fields: []Field{
 			{
 				Name:  "username",
 				Label: "Username / e-mail",
-				Type:  forms.FieldTypeUsername,
+				Type:  FieldTypeUsername,
 			}, {
 				Name:  "password",
 				Label: "Password",
-				Type:  forms.FieldTypeCurrentPassword,
+				Type:  FieldTypeCurrentPassword,
 			},
 		},
 		BackLink:    "/",
@@ -186,26 +185,26 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f forms.F
 	return f
 }
 
-func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f forms.Form) {
+func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f Form) {
 	td.Title = "Recover lost password"
-	f = forms.Form{
+	f = Form{
 		Name:  "password_reset",
 		Title: td.Title,
-		Fields: []forms.Field{
+		Fields: []Field{
 			{
 				Name:  "email",
 				Label: "E-mail address",
 				Description: "we will send a password reset link to this " +
 					"e-mail address",
 				Separator: true,
-				Type:      forms.FieldTypeEmail,
+				Type:      FieldTypeEmail,
 			}, {
 				Name:  "recaptcha_response",
 				Label: "Turing test (click the white box)",
 				Description: "the reCaptcha turing test verifies that you " +
 					"are not an evil robot that is trying hijack accounts",
 				Separator:      true,
-				Type:           forms.FieldTypeCaptcha,
+				Type:           FieldTypeCaptcha,
 				CaptchaSiteKey: wc.captchaKey(),
 			},
 		},
@@ -223,7 +222,62 @@ func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f
 			}
 		} else {
 			f.SubmitSuccess = true
-			f.SubmitMessages = []template.HTML{"Success! E-mail sent"}
+			f.SubmitMessages = []template.HTML{
+				"Success! Check your inbox for instructions to reset your password",
+			}
+		}
+	}
+	return f
+}
+
+func (wc *WebController) passwordResetConfirmForm(td *TemplateData, r *http.Request) (f Form) {
+	td.Title = "Reset lost password"
+	f = Form{
+		Name:  "password_reset_confirm",
+		Title: td.Title,
+		Fields: []Field{
+			{
+				Name:  "password1",
+				Label: "password",
+				Type:  FieldTypeNewPassword,
+			}, {
+				Name:  "password2",
+				Label: "password again",
+				Description: "you need to enter your password twice so we " +
+					"can verify that no typing errors were made, which would " +
+					"prevent you from logging into your new account",
+				Separator: true,
+				Type:      FieldTypeNewPassword,
+			},
+		},
+		SubmitLabel: "Submit",
+	}
+
+	var resetKey = r.FormValue("key")
+	if resetKey == "" {
+		f.SubmitSuccess = false
+		f.SubmitMessages = []template.HTML{"Password reset key required"}
+		return f
+	}
+
+	if f.ReadInput(r) {
+		if f.FieldVal("password1") != f.FieldVal("password2") {
+			f.SubmitMessages = []template.HTML{
+				"Password verification failed. Please enter the same " +
+					"password in both password fields"}
+			return f
+		}
+
+		if err := td.PixelAPI.UserPasswordResetConfirm(resetKey, f.FieldVal("password1")); err != nil {
+			if err.Error() == "not_found" {
+				f.SubmitMessages = []template.HTML{template.HTML("Password reset key not found")}
+			} else {
+				log.Error("%s", err)
+				f.SubmitMessages = []template.HTML{"Internal Server Error"}
+			}
+		} else {
+			f.SubmitSuccess = true
+			f.SubmitMessages = []template.HTML{"Success! You can now log in with your new password"}
 		}
 	}
 	return f

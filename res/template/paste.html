@@ -4,7 +4,6 @@
 	<head>
 		{{template "meta_tags" "Text Upload"}}
 		{{template "user_style" .}}
-		<script src="/res/script/jquery-2.1.4.min.js"></script>
 
 		<style>
 			#toolbar {
@@ -46,11 +45,11 @@
 	<body>
 		<div id="toolbar">
 			<button class="toolbar_button button_full_width" onClick="uploadText();">
-				<img src="/res/img/upload_small.png" alt="Start Upload"/>
+				<img src="{{template `upload_small.png`}}" alt="Start Upload"/>
 				<span>Upload</span>
 			</button>
 			<a href="/" class="button toolbar_button button_full_width">
-				<img src="/res/img/pixeldrain_transparent.png" alt="Back to the Home page"/>
+				<img src="{{template `pixeldrain_icon.png`}}" alt="Back to the Home page"/>
 				<span>Home</span>
 			</a>
 			<br/><br/>
@@ -60,7 +59,10 @@
 		<div class="textarea_container">
 			<textarea id="textarea" class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
 		</div>
-		<script src="/res/script/compiled/textupload.js"></script>
+
+		<script src="/res/script/jquery.js"></script>
+		<script>{{template "textupload.js"}}</script>
+
 		{{template "analytics"}}
 	</body>
 </html>

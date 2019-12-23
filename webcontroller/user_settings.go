@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
-	"fornaxian.com/pixeldrain-web/webcontroller/forms"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -24,9 +23,9 @@ func (wc *WebController) serveUserSettings(
 
 	td.Title = "Account settings"
 	td.Other = struct {
-		PasswordForm forms.Form
-		EmailForm    forms.Form
-		UsernameForm forms.Form
+		PasswordForm Form
+		EmailForm    Form
+		UsernameForm Form
 	}{
 		PasswordForm: wc.passwordForm(td, r),
 		EmailForm:    wc.emailForm(td, r),
@@ -35,26 +34,26 @@ func (wc *WebController) serveUserSettings(
 	wc.templates.Get().ExecuteTemplate(w, "user_settings", td)
 }
 
-func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f forms.Form) {
-	f = forms.Form{
+func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f Form) {
+	f = Form{
 		Name:  "password_change",
 		Title: "Change password",
-		Fields: []forms.Field{
+		Fields: []Field{
 			{
 				Name:  "old_password",
 				Label: "Old Password",
-				Type:  forms.FieldTypeCurrentPassword,
+				Type:  FieldTypeCurrentPassword,
 			}, {
 				Name:  "new_password1",
 				Label: "New Password",
-				Type:  forms.FieldTypeNewPassword,
+				Type:  FieldTypeNewPassword,
 			}, {
 				Name:  "new_password2",
 				Label: "New Password again",
 				Description: "we need you to repeat your password so you " +
 					"won't be locked out of your account if you make a " +
 					"typing error",
-				Type: forms.FieldTypeNewPassword,
+				Type: FieldTypeNewPassword,
 			},
 		},
 		SubmitLabel: "Submit",
@@ -89,11 +88,11 @@ func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f form
 	return f
 }
 
-func (wc *WebController) emailForm(td *TemplateData, r *http.Request) (f forms.Form) {
-	f = forms.Form{
+func (wc *WebController) emailForm(td *TemplateData, r *http.Request) (f Form) {
+	f = Form{
 		Name:  "email_change",
 		Title: "Change e-mail address",
-		Fields: []forms.Field{
+		Fields: []Field{
 			{
 				Name:  "new_email",
 				Label: "New e-mail address",
@@ -101,7 +100,7 @@ func (wc *WebController) emailForm(td *TemplateData, r *http.Request) (f forms.F
 					"verify that it's real. The address will be saved once " +
 					"the link in the message is clicked. If the e-mail " +
 					"doesn't arrive right away please check your spam box too",
-				Type: forms.FieldTypeEmail,
+				Type: FieldTypeEmail,
 			},
 		},
 		SubmitLabel: "Submit",
@@ -150,11 +149,11 @@ func (wc *WebController) serveEmailConfirm(
 	wc.templates.Get().ExecuteTemplate(w, "email_confirm", td)
 }
 
-func (wc *WebController) usernameForm(td *TemplateData, r *http.Request) (f forms.Form) {
-	f = forms.Form{
+func (wc *WebController) usernameForm(td *TemplateData, r *http.Request) (f Form) {
+	f = Form{
 		Name:  "username_change",
 		Title: "Change username",
-		Fields: []forms.Field{
+		Fields: []Field{
 			{
 				Name:  "new_username",
 				Label: "New username",
@@ -162,7 +161,7 @@ func (wc *WebController) usernameForm(td *TemplateData, r *http.Request) (f form
 					"used to log in. If you forget your username you can " +
 					"still log in using your e-mail address if you have one " +
 					"configured",
-				Type: forms.FieldTypeUsername,
+				Type: FieldTypeUsername,
 			},
 		},
 		SubmitLabel: "Submit",

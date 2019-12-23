@@ -1,10 +1,6 @@
 {{define "user_style"}}
 <style>
 {{.UserStyle}}
-
-body,
-.checkers {
-	background-image: url("/res/img/{{bgPattern}}");
-}
+{{template "layout.css"}}
 </style>
 {{end}}

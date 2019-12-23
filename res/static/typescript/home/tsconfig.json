@@ -1,11 +1,10 @@
 {
 	"compilerOptions": {
-		"outFile": "../../script/compiled/home.js"
+		"outFile": "../../../include/script/compiled/home.js"
 	},
 	"files": [
 		"home.ts",
 		"../lib/cookie.ts",
-		"../lib/jquery.d.ts",
 		"../lib/uploader.ts"
 	]
 }

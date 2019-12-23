@@ -4,7 +4,6 @@
 	<head>
 		{{template "meta_tags" "Administrator panel"}}
 		{{template "user_style" .}}
-		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 	<body>
 		{{$isAdmin := .PixelAPI.UserIsAdmin}}
@@ -24,9 +23,11 @@
 					<canvas id="bandwidth_chart"></canvas>
 				</div>
 
+				<script src="/res/script/Chart.min.js"></script>
 				<script src="/res/script/jquery.js"></script>
-				<script src="/res/misc/chartjs/Chart.min.js"></script>
 				<script>
+				var apiEndpoint = '{{.APIEndpoint}}';
+
 				Chart.defaults.global.defaultFontColor = "#b3b3b3";
 				Chart.defaults.global.defaultFontSize = 15;
 				Chart.defaults.global.defaultFontFamily = "Ubuntu";

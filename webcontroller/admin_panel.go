@@ -6,21 +6,20 @@ import (
 	"net/http"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
-	"fornaxian.com/pixeldrain-web/webcontroller/forms"
 	"github.com/Fornaxian/log"
 )
 
-func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f forms.Form) {
+func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f Form) {
 	if isAdmin, err := td.PixelAPI.UserIsAdmin(); err != nil {
 		td.Title = err.Error()
-		return forms.Form{Title: td.Title}
+		return Form{Title: td.Title}
 	} else if !isAdmin.IsAdmin {
 		td.Title = ";)"
-		return forms.Form{Title: td.Title}
+		return Form{Title: td.Title}
 	}
 
 	td.Title = "Pixeldrain global configuration"
-	f = forms.Form{
+	f = Form{
 		Name:        "admin_globals",
 		Title:       td.Title,
 		PreFormHTML: template.HTML("<p>Careful! The slightest typing error could bring the whole website down</p>"),
@@ -35,16 +34,17 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 	}
 	var globalsMap = make(map[string]string)
 	for _, v := range globals.Globals {
-		f.Fields = append(f.Fields, forms.Field{
+		f.Fields = append(f.Fields, Field{
 			Name:         v.Key,
 			DefaultValue: v.Value,
 			Label:        v.Key,
-			Type: func() forms.FieldType {
+			Type: func() FieldType {
 				switch v.Key {
 				case
 					"email_address_change_body",
-					"email_password_reset_body":
-					return forms.FieldTypeTextarea
+					"email_password_reset_body",
+					"email_register_user_body":
+					return FieldTypeTextarea
 				case
 					"api_ratelimit_limit",
 					"api_ratelimit_rate",
@@ -52,9 +52,9 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 					"file_inactive_expiry_days",
 					"max_file_size",
 					"pixelstore_min_redundancy":
-					return forms.FieldTypeNumber
+					return FieldTypeNumber
 				default:
-					return forms.FieldTypeText
+					return FieldTypeText
 				}
 			}(),
 		})

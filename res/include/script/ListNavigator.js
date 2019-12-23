@@ -182,7 +182,7 @@ var ListNavigator = {
 		btnDownloadList.setAttribute("onClick", "Toolbar.downloadList();");
 
 		var btnDownloadListImg = document.createElement("img");
-		btnDownloadListImg.setAttribute("src", "/res/img/floppy_small.png");
+		btnDownloadListImg.setAttribute("src", "{{template `floppy_small.png`}}");
 		btnDownloadListImg.setAttribute("alt", "Download List");
 
 		var btnDownloadListText = document.createElement("span");
@@ -199,7 +199,7 @@ var ListNavigator = {
 		btnShuffle.setAttribute("onClick", "ListNavigator.toggleShuffle();");
 
 		var btnShuffleImg = document.createElement("img");
-		btnShuffleImg.setAttribute("src", "/res/img/shuffle_small.png");
+		btnShuffleImg.setAttribute("src", "{{template `shuffle_small.png`}}");
 		btnShuffleImg.setAttribute("alt", "Shuffle playback order");
 
 		var btnShuffleText = document.createElement("span");

@@ -6,19 +6,17 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		{{template "user_style" .}}
-		<link rel="stylesheet" href="/res/style/viewer.css?v5"/>
-		<link rel="stylesheet" href="/res/style/layout.css?v5"/>
 		<link rel="shortcut icon" href="/res/img/tray32.png"/>
 		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
 		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
 		<meta name="theme-color" content="#75AD38"/>
 
-		{{.OGData}}
+		<style>
+		{{template `viewer.css`}}
+		{{template `layout.css`}}
+		</style>
 
-		<script type="text/javascript">
-			var apiEndpoint = '{{.APIEndpoint}}';
-			var captchaKey = '{{.Other.CaptchaKey}}';
-		</script>
+		{{.OGData}}
 	</head>
 
 	<body>
@@ -26,7 +24,7 @@
 			<div id="file_viewer_headerbar" class="highlight_1 file_viewer_headerbar">
 				<button id="button_toggle_toolbar" class="button_toggle_toolbar" onClick="Toolbar.toggle();">☰</button>
 				<a href="/" id="button_home" class="button button_home">
-					<img src="/res/img/pixeldrain_transparent.png"
+					<img src="{{template `pixeldrain_icon.png`}}"
 						alt="Back to the Home page"
 						style="height: 1.5em; margin: -0.2em; margin-right: 0.2em;"/>
 				</a>
@@ -49,19 +47,19 @@
 							<div id="stat_downloads" style="text-align: center;">N/A</div>
 
 							<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
-								<img src="/res/img/floppy_small.png" alt="Download this file"/>
+								<img src="{{template `floppy_small.png`}}" alt="Download this file"/>
 								<span>Download</span>
 							</button>
 							<button id="btnCopy" class="toolbar_button button_full_width" onClick="Toolbar.copyUrl();">
-								<img src="/res/img/clipboard_small.png" alt="Copy file URL to clipboard"/>
+								<img src="{{template `clipboard_small.png`}}" alt="Copy file URL to clipboard"/>
 								<span><u>C</u>opy Link</span>
 							</button>
 							<button id="btnShare" class="toolbar_button button_full_width" onClick="Sharebar.toggle();">
-								<img src="/res/img/share_small.png" alt="Share this file on social media"/>
+								<img src="{{template `share_small.png`}}" alt="Share this file on social media"/>
 								<span>Share</span>
 							</button>
 							<button id="btnDetails" class="toolbar_button button_full_width" onClick="DetailsWindow.toggle();">
-								<img src="/res/img/info_small.png" alt="Help"/>
+								<img src="{{template `info_small.png`}}" alt="Help"/>
 								<span>Deta<u>i</u>ls</span>
 							</button>
 							{{template "advertisement" .}}
@@ -75,33 +73,34 @@
 				<div id="sharebar" class="file_viewer_sharebar">
 					Share on:<br/>
 					<button class="sharebar-button button_full_width" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=' + window.location.href);">
-						<img src="/res/img/social_email.png" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
+						<img src="{{template `social_email.png`}}" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
 						<br/>E-Mail
 					</button>
 					<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
-						<img src="/res/img/social_reddit.png" alt="Share on Reddit" style="width:40px; height: 40px;"/>
+						<img src="{{template `social_reddit.png`}}" alt="Share on Reddit" style="width:40px; height: 40px;"/>
 						<br/>Reddit
 					</button>
 					<button class="sharebar-button button_full_width" onClick="window.open('https://twitter.com/share?url=' + window.location.href);">
-						<img src="/res/img/social_twitter.png" alt="Share on Twitter" style="width:40px; height: 40px;"/>
+						<img src="{{template `social_twitter.png`}}" alt="Share on Twitter" style="width:40px; height: 40px;"/>
 						<br/>Twitter
 					</button>
 					<button class="sharebar-button button_full_width" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
-						<img src="/res/img/social_facebook.png" alt="Share on Facebook" style="width:40px; height: 40px;"/>
+						<img src="{{template `social_facebook.png`}}" alt="Share on Facebook" style="width:40px; height: 40px;"/>
 						<br/>Facebook
 					</button>
 					<button class="sharebar-button button_full_width" onClick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
-						<img src="/res/img/social_tumblr.png" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
+						<img src="{{template `social_tumblr.png`}}" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
 						<br/>Tumblr
 					</button>
 					<button class="sharebar-button button_full_width" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
-						<img src="/res/img/social_voat.png" alt="Share on Voat" style="width:40px; height: 40px;"/>
+						<img src="{{template `social_voat.png`}}" alt="Share on Voat" style="width:40px; height: 40px;"/>
 						<br/>Voat
 					</button>
 				</div>
 
 				<div id="filepreview" class="file_viewer_file_preview">
-					<img src="/res/img/misc/loadthink.gif" style="margin-top: 20%; width: 200px; height: 200px;" />
+					<!-- <img src="{{template `loadthink.gif`}}" style="margin-top: 20%; width: 200px; height: 200px;" /> -->
+					<div class="image" style="margin-top: 20%; width: 100px; height: 100px;">{{template "spinner.svg"}}</div>
 				</div>
 			</div>
 		</div>
@@ -162,12 +161,16 @@
 			<div id="captcha_popup_captcha" style="text-align: center;"></div>
 		</div>
 
-		<script src="/res/misc/chartjs/Chart.min.js"></script>
+		<script src="/res/script/Chart.min.js"></script>
 		<script src="/res/script/jquery.js"></script>
-		<script src="/res/script/Toolbar.js?v7"></script>
-		<script src="/res/script/Viewer.js?v7"></script>
-		<script src="/res/script/ListNavigator.js?v7"></script>
-		<script>
+		<script type="text/javascript">
+			var apiEndpoint = '{{.APIEndpoint}}';
+			var captchaKey = '{{.Other.CaptchaKey}}';
+
+			{{template `Toolbar.js`}}
+			{{template `Viewer.js`}}
+			{{template `ListNavigator.js`}}
+
 			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.
 			// Just to slice another few milliseconds from the load time :)
 			window.addEventListener("load", function(){

@@ -5,7 +5,7 @@ interface FileUpload {
 	name: string
 	onProgress(progress: number)
 	onFinished(id: string)
-	onFailure(response: JQuery.Ajax.ErrorTextStatus, error: string)
+	onFailure(errorID: string, errorMessage: string)
 }
 
 class UploadManager {
@@ -84,37 +84,38 @@ class UploadWorker {
 		formData.append("name", file.name)
 		formData.append('file', file.file)
 
-		$.ajax({
-			type: 'POST',
-			url: apiEndpoint+"/file",
-			data: formData,
-			timeout: 21600000, // 6 hours, to account for slow connections
-			cache: false,
-			async: true,
-			crossDomain: false,
-			contentType: false,
-			processData: false,
-			xhr: function () {
-				var xhr = new XMLHttpRequest();
-				xhr.upload.addEventListener("progress", function (evt) {
-					if (evt.lengthComputable) {
-						file.onProgress(evt.loaded / evt.total)
-					}
-				}, false);
-				return xhr;
-			},
-			success: function (data) {
-				file.onFinished(data.id)
-				that.setHistoryCookie(data.id)
-				console.log("Done: " + data.id)
+		var xhr = new XMLHttpRequest()
+		xhr.open("POST", apiEndpoint+"/file")
+		xhr.timeout = 21600000 // 6 hours, to account for slow connections
 
+		// Update progess bar on progress
+		xhr.upload.addEventListener("progress", function (evt) {
+			if (evt.lengthComputable) {
+				file.onProgress(evt.loaded / evt.total)
+			}
+		});
+
+		xhr.onreadystatechange = function(){
+			if (xhr.readyState !== 4) {return;}
+			console.log("status: "+xhr.status)
+
+			if (xhr.status >= 100 && xhr.status < 400) {
+				var resp = JSON.parse(xhr.response);
+				// Request is a success
+				file.onFinished(resp.id)
+				that.setHistoryCookie(resp.id)
 				that.newFile() // Continue uploading on this thread
-			},
-			error: function (xhr, status, error){
-				console.log("status: "+status+" error: "+error)
+			} else {
+				var value, message
+				if (xhr.status >= 400) {
+					var resp = JSON.parse(xhr.response);
+					value = resp.value
+					message = resp.message
+				}
+				console.log("Upload error. status: "+xhr.status+" response: "+xhr.response)
 
 				if (that.tries === 3) {
-					file.onFailure(status, error)
+					file.onFailure(value, message)
 
 					setTimeout(function(){that.newFile()}, 2000) // Try to continue
 					return; // Upload failed
@@ -122,9 +123,11 @@ class UploadWorker {
 
 				// Try again
 				that.tries++
-				setTimeout(function(){that.upload(file)}, that.tries*3000)
+				setTimeout(function(){that.upload(file)}, that.tries*5000)
 			}
-		});
+		}
+
+		xhr.send(formData)
 	}
 
 	private setHistoryCookie(id: string){

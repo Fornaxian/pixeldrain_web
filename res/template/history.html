@@ -5,8 +5,6 @@
 		{{template "user_style" .}}
 		<script src="res/script/jquery.js"></script>
 		<script src="res/script/jquery-cookie.js"></script>
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 	<body>
@@ -23,7 +21,7 @@
 				<div id="uploadedFiles" class="highlight_dark"></div>
 			</div></div>
 			{{template "page_bottom" .}}
-		<script src="/res/script/history.js"></script>
+		<script>{{template `history.js`}}</script>
 		{{template "analytics"}}
 	</body>
 </html>{{end}}

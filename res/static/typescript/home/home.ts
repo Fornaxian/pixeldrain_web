@@ -68,6 +68,7 @@ class UploadProgressBar implements FileUpload {
 		this.uploadDiv.appendChild(linkSpan)
 	}
 	public onFailure(error: string) {
+		this.uploadDiv.innerHTML = "" // Remove uploading progress
 		this.uploadDiv.style.background = 'var(--danger_color)'
 		this.uploadDiv.appendChild(document.createTextNode(this.file.name))
 		this.uploadDiv.appendChild(document.createElement("br"))
@@ -109,43 +110,35 @@ function createList(title: string, anonymous: boolean){
 		});
 	}
 
-	$.ajax({
-		url: "/api/list",
-		contentType: "application/json",
-		method: "POST",
-		data: JSON.stringify(postData),
-		dataType: "json",
-		success: function(response) {
-			var resultString = "<div class=\"file_button\">"
-				+ '<img src="'+apiEndpoint+'/list/'+response.id+'/thumbnail"/>'
+	var xhr = new XMLHttpRequest()
+	xhr.open("POST", apiEndpoint+"/list")
+	xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8")
+	xhr.onreadystatechange = function(){
+		if (xhr.readyState !== 4) {return;}
+		var resp = JSON.parse(xhr.response);
+
+		if (xhr.status < 400) {
+			// Request is a success
+			var div = document.createElement("div")
+			div.className = "file_button";
+			div.innerHTML = '<img src="'+apiEndpoint+'/list/'+resp.id+'/thumbnail"/>'
 				+ "List creation finished!<br/>"
 				+ title + "<br/>"
-				+ "<a href=\"/l/" + response.id + "\" target=\"_blank\">"+window.location.hostname+"/l/" + response.id + "</a>"
-				+ "</div>";
-			$('#uploads_queue').append(
-				$(resultString).hide().fadeIn('slow').css("display", "")
-			);
-			$("#uploads_queue").animate({
-				scrollTop: $("#uploads_queue").prop("scrollHeight")
-			}, 1000);
-			window.open('/l/'+response.id, '_blank');
-		},
-		error: function(xhr, status, error) {
-			console.log("xhr:");
-			console.log(xhr);
-			console.log("status:");
-			console.log(status);
-			console.log("error:");
-			console.log(error);
-			var resultString = "<div class=\"file_button\">List creation failed<br/>"
-				+ "The server responded with this: <br/>"
-				+ xhr.responseJSON.message
-				+ "</div>";
-			$('#uploads_queue').append(
-				$(resultString).hide().fadeIn('slow').css("display", "")
-			);
+				+ '<a href="/l/'+resp.id+'" target="_blank">'+window.location.hostname+'/l/'+resp.id+'</a>';
+			document.getElementById("uploads_queue").appendChild(div);
+			window.open('/l/'+resp.id, '_blank');
+		} else {
+			console.log("status: "+xhr.status+" response: "+xhr.response)
+			var div = document.createElement("div")
+			div.className = "file_button";
+			div.innerHTML = "List creation failed<br/>"
+				+ "The server responded with:<br/>"
+				+ resp.message;
+			document.getElementById("uploads_queue").append(div);
 		}
-	});
+	}
+
+	xhr.send(JSON.stringify(postData));
 }
 
 // Form upload handlers

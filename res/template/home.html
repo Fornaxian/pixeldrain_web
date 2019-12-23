@@ -4,7 +4,6 @@
 	<head>
 		{{template "meta_tags" "Free file sharing service"}}
 		{{template "user_style" .}}
-		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 	<body>
 		{{template "page_top" .}}
@@ -65,9 +64,12 @@
 
 		{{template "page_bottom"}}
 
-		<script src="/res/script/jquery-2.1.4.min.js"></script>
-		<script type="text/javascript">var API_URL = "/api";</script>
-		<script src="/res/script/compiled/home.js"></script>
+		<script type="text/javascript">
+		var apiEndpoint = '{{.APIEndpoint}}';
+		var API_URL = "/api";
+		{{template "home.js"}}
+		</script>
+
 		{{template "analytics"}}
 	</body>
 </html>

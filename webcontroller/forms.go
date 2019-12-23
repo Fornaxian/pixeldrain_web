@@ -1,4 +1,4 @@
-package forms
+package webcontroller
 
 import (
 	"fmt"

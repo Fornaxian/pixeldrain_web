@@ -53,6 +53,7 @@ var UploadProgressBar = /** @class */ (function () {
         this.uploadDiv.appendChild(linkSpan);
     };
     UploadProgressBar.prototype.onFailure = function (error) {
+        this.uploadDiv.innerHTML = ""; // Remove uploading progress
         this.uploadDiv.style.background = 'var(--danger_color)';
         this.uploadDiv.appendChild(document.createTextNode(this.file.name));
         this.uploadDiv.appendChild(document.createElement("br"));
@@ -96,61 +97,29 @@ function createList(title, anonymous) {
         if (xhr.readyState !== 4) {
             return;
         }
-        if (xhr.status == 200 || xhr.status == 0) {
+        var resp = JSON.parse(xhr.response);
+        if (xhr.status < 400) {
             // Request is a success
-            var resultString = "<div class=\"file_button\">"
-                + '<img src="' + apiEndpoint + '/list/' + xhr.response.id + '/thumbnail"/>'
+            var div = document.createElement("div");
+            div.className = "file_button";
+            div.innerHTML = '<img src="' + apiEndpoint + '/list/' + resp.id + '/thumbnail"/>'
                 + "List creation finished!<br/>"
                 + title + "<br/>"
-                + "<a href=\"/l/" + xhr.response.id + "\" target=\"_blank\">" + window.location.hostname + "/l/" + xhr.response.id + "</a>"
-                + "</div>";
-            document.getElementById("uploads_queue").append(resultString);
-            window.open('/l/' + xhr.response.id, '_blank');
+                + '<a href="/l/' + resp.id + '" target="_blank">' + window.location.hostname + '/l/' + resp.id + '</a>';
+            document.getElementById("uploads_queue").appendChild(div);
+            window.open('/l/' + resp.id, '_blank');
         }
         else {
             console.log("status: " + xhr.status + " response: " + xhr.response);
-            var resultString = "<div class=\"file_button\">List creation failed<br/>"
-                + "The server responded with this: <br/>"
-                + xhr.response.message
-                + "</div>";
-            document.getElementById("uploads_queue").append(resultString);
+            var div = document.createElement("div");
+            div.className = "file_button";
+            div.innerHTML = "List creation failed<br/>"
+                + "The server responded with:<br/>"
+                + resp.message;
+            document.getElementById("uploads_queue").append(div);
         }
     };
     xhr.send(JSON.stringify(postData));
-    // $.ajax({
-    // 	url: "/api/list",
-    // 	contentType: "application/json",
-    // 	method: "POST",
-    // 	data: JSON.stringify(postData),
-    // 	dataType: "json",
-    // 	success: function(response) {
-    // 		var resultString = "<div class=\"file_button\">"
-    // 			+ '<img src="'+apiEndpoint+'/list/'+response.id+'/thumbnail"/>'
-    // 			+ "List creation finished!<br/>"
-    // 			+ title + "<br/>"
-    // 			+ "<a href=\"/l/" + response.id + "\" target=\"_blank\">"+window.location.hostname+"/l/" + response.id + "</a>"
-    // 			+ "</div>";
-    // 		$('#uploads_queue').append(
-    // 			$(resultString).hide().fadeIn('slow').css("display", "")
-    // 		);
-    // 		window.open('/l/'+response.id, '_blank');
-    // 	},
-    // 	error: function(xhr, status, error) {
-    // 		console.log("xhr:");
-    // 		console.log(xhr);
-    // 		console.log("status:");
-    // 		console.log(status);
-    // 		console.log("error:");
-    // 		console.log(error);
-    // 		var resultString = "<div class=\"file_button\">List creation failed<br/>"
-    // 			+ "The server responded with this: <br/>"
-    // 			+ xhr.responseJSON.message
-    // 			+ "</div>";
-    // 		$('#uploads_queue').append(
-    // 			$(resultString).hide().fadeIn('slow').css("display", "")
-    // 		);
-    // 	}
-    // });
 }
 // Form upload handlers
 // Relay click event to hidden file field
@@ -355,74 +324,43 @@ var UploadWorker = /** @class */ (function () {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", apiEndpoint + "/file");
         xhr.timeout = 21600000; // 6 hours, to account for slow connections
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         // Update progess bar on progress
-        xhr.onprogress = function (evt) {
+        xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
                 file.onProgress(evt.loaded / evt.total);
             }
-        };
+        });
         xhr.onreadystatechange = function () {
             if (xhr.readyState !== 4) {
                 return;
             }
-            if (xhr.status == 200 || xhr.status == 0) {
+            console.log("status: " + xhr.status);
+            if (xhr.status >= 100 && xhr.status < 400) {
+                var resp = JSON.parse(xhr.response);
                 // Request is a success
-                file.onFinished(xhr.response.id);
-                that.setHistoryCookie(xhr.response.id);
-                console.log("Done: " + xhr.response.id);
+                file.onFinished(resp.id);
+                that.setHistoryCookie(resp.id);
                 that.newFile(); // Continue uploading on this thread
             }
             else {
-                console.log("status: " + xhr.status + " response: " + xhr.response);
+                var value, message;
+                if (xhr.status >= 400) {
+                    var resp = JSON.parse(xhr.response);
+                    value = resp.value;
+                    message = resp.message;
+                }
+                console.log("Upload error. status: " + xhr.status + " response: " + xhr.response);
                 if (that.tries === 3) {
-                    file.onFailure(xhr.response.value, xhr.response.message);
+                    file.onFailure(value, message);
                     setTimeout(function () { that.newFile(); }, 2000); // Try to continue
                     return; // Upload failed
                 }
                 // Try again
                 that.tries++;
-                setTimeout(function () { that.upload(file); }, that.tries * 3000);
+                setTimeout(function () { that.upload(file); }, that.tries * 5000);
             }
         };
         xhr.send(formData);
-        // $.ajax({
-        // 	type: 'POST',
-        // 	url: apiEndpoint+"/file",
-        // 	data: formData,
-        // 	timeout: 21600000, // 6 hours, to account for slow connections
-        // 	cache: false,
-        // 	async: true,
-        // 	crossDomain: false,
-        // 	contentType: false,
-        // 	processData: false,
-        // 	xhr: function () {
-        // 		var xhr = new XMLHttpRequest();
-        // 		xhr.upload.addEventListener("progress", function (evt) {
-        // 			if (evt.lengthComputable) {
-        // 				file.onProgress(evt.loaded / evt.total)
-        // 			}
-        // 		}, false);
-        // 		return xhr;
-        // 	},
-        // 	success: function (data) {
-        // 		file.onFinished(data.id)
-        // 		that.setHistoryCookie(data.id)
-        // 		console.log("Done: " + data.id)
-        // 		that.newFile() // Continue uploading on this thread
-        // 	},
-        // 	error: function (xhr, status, error){
-        // 		console.log("status: "+status+" error: "+error)
-        // 		if (that.tries === 3) {
-        // 			file.onFailure(status, error)
-        // 			setTimeout(function(){that.newFile()}, 2000) // Try to continue
-        // 			return; // Upload failed
-        // 		}
-        // 		// Try again
-        // 		that.tries++
-        // 		setTimeout(function(){that.upload(file)}, that.tries*3000)
-        // 	}
-        // });
     };
     UploadWorker.prototype.setHistoryCookie = function (id) {
         // Make sure the user is not logged in, for privacy. This keeps the

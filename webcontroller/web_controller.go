@@ -9,7 +9,6 @@ import (
 
 	"fornaxian.com/pixeldrain-web/init/conf"
 	"fornaxian.com/pixeldrain-web/pixelapi"
-	"fornaxian.com/pixeldrain-web/webcontroller/forms"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -17,9 +16,8 @@ import (
 // WebController controls how requests are handled and makes sure they have
 // proper context when running
 type WebController struct {
-	conf              *conf.PixelWebConfig
-	templates         *TemplateManager
-	staticResourceDir string
+	conf      *conf.PixelWebConfig
+	templates *TemplateManager
 
 	// page-specific variables
 	captchaSiteKey string
@@ -29,11 +27,10 @@ type WebController struct {
 // and parsing all templates in the resource directory
 func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebController {
 	var wc = &WebController{
-		conf:              conf,
-		staticResourceDir: conf.StaticResourceDir,
+		conf: conf,
 	}
 	wc.templates = NewTemplateManager(
-		conf.TemplateDir,
+		conf.ResourceDir,
 		conf.APIURLExternal,
 		conf.DebugMode,
 	)
@@ -42,7 +39,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	var p = prefix
 
 	// Serve static files
-	var fs = http.FileServer(http.Dir(wc.staticResourceDir))
+	var fs = http.FileServer(http.Dir(wc.conf.ResourceDir + "/static"))
 	r.GET(p+"/res/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		w.Header().Set("Cache-Control", "public, max-age=86400") // Cache for one day
 		r.URL.Path = p.ByName("filepath")
@@ -89,9 +86,11 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/user/filemanager" /**/, wc.serveTemplate("file_manager", true))
 
 	// User account settings
-	r.GET(p+"/user/settings" /*     */, wc.serveUserSettings)
-	r.POST(p+"/user/settings" /*    */, wc.serveUserSettings)
-	r.GET(p+"/user/confirm_email" /**/, wc.serveEmailConfirm)
+	r.GET(p+"/user/settings" /*               */, wc.serveUserSettings)
+	r.POST(p+"/user/settings" /*              */, wc.serveUserSettings)
+	r.GET(p+"/user/confirm_email" /*          */, wc.serveEmailConfirm)
+	r.GET(p+"/user/password_reset_confirm" /* */, wc.serveForm(wc.passwordResetConfirmForm, false))
+	r.POST(p+"/user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false))
 
 	// Admin settings
 	r.GET(p+"/admin" /*         */, wc.serveTemplate("admin_panel", true))
@@ -130,12 +129,12 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 		r *http.Request,
 		p httprouter.Params,
 	) {
-		http.ServeFile(w, r, wc.staticResourceDir+path)
+		http.ServeFile(w, r, wc.conf.ResourceDir+"/static"+path)
 	}
 }
 
 func (wc *WebController) serveForm(
-	handler func(*TemplateData, *http.Request) forms.Form,
+	handler func(*TemplateData, *http.Request) Form,
 	requireAuth bool,
 ) httprouter.Handle {
 	return func(
@@ -167,7 +166,7 @@ func (wc *WebController) serveForm(
 		// Remove the recaptcha field if captcha is disabled
 		if wc.captchaKey() == "none" {
 			for i, field := range td.Form.Fields {
-				if field.Type == forms.FieldTypeCaptcha {
+				if field.Type == FieldTypeCaptcha {
 					td.Form.Fields = append(
 						td.Form.Fields[:i],
 						td.Form.Fields[i+1:]...,
