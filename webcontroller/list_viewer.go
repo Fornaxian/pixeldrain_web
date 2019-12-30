@@ -13,7 +13,7 @@ import (
 
 // ServeListViewer controller for GET /l/:id
 func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	var api = pixelapi.New(wc.conf.APIURLInternal, "")
+	var api = pixelapi.New(wc.apiURLInternal, "")
 	var list, err = api.GetList(p.ByName("id"))
 	var templateData = wc.newTemplateData(w, r)
 	if err != nil {

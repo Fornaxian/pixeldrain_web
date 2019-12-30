@@ -28,7 +28,7 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		return
 	}
 	apikey, _ := wc.getAPIKey(r)
-	var api = pixelapi.New(wc.conf.APIURLInternal, apikey)
+	var api = pixelapi.New(wc.apiURLInternal, apikey)
 	api.RealIP = util.RemoteAddress(r)
 	inf, err := api.GetFileInfo(p.ByName("id"), "?should_a_view_be_added=yes_gimme") // TODO: Error handling
 	if err != nil {
@@ -37,7 +37,7 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 	}
 
 	var fp = filePreview{
-		APIURL:   wc.conf.APIURLExternal,
+		APIURL:   wc.apiURLExternal,
 		PixelAPI: api,
 	}
 	io.WriteString(w, fp.run(inf))

@@ -49,12 +49,12 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		UserAgent:     r.UserAgent(),
 		Style:         userStyle(r),
 		UserStyle:     template.CSS(userStyle(r).String()),
-		APIEndpoint:   template.URL(wc.conf.APIURLExternal),
+		APIEndpoint:   template.URL(wc.apiURLExternal),
 		URLQuery:      r.URL.Query(),
 	}
 
 	if key, err := wc.getAPIKey(r); err == nil {
-		t.PixelAPI = pixelapi.New(wc.conf.APIURLInternal, key)
+		t.PixelAPI = pixelapi.New(wc.apiURLInternal, key)
 		uinf, err := t.PixelAPI.UserInfo()
 		if err != nil {
 			// This session key doesn't work, or the backend is down, user
@@ -69,7 +69,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 					Value:   "",
 					Path:    "/",
 					Expires: time.Unix(0, 0),
-					Domain:  wc.conf.SessionCookieDomain,
+					Domain:  wc.sessionCookieDomain,
 				})
 			}
 			return t
@@ -80,7 +80,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		t.Username = uinf.Username
 		t.Email = uinf.Email
 	} else {
-		t.PixelAPI = pixelapi.New(wc.conf.APIURLInternal, "")
+		t.PixelAPI = pixelapi.New(wc.apiURLInternal, "")
 	}
 
 	return t

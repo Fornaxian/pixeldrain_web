@@ -16,7 +16,7 @@ func (wc *WebController) serveLogout(
 	p httprouter.Params,
 ) {
 	if key, err := wc.getAPIKey(r); err == nil {
-		var api = pixelapi.New(wc.conf.APIURLInternal, key)
+		var api = pixelapi.New(wc.apiURLInternal, key)
 		if err = api.UserSessionDestroy(key); err != nil {
 			log.Warn("logout failed for session '%s': %s", key, err)
 		}
@@ -177,7 +177,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 				Value:   loginResp.APIKey,
 				Path:    "/",
 				Expires: time.Now().AddDate(50, 0, 0),
-				Domain:  wc.conf.SessionCookieDomain,
+				Domain:  wc.sessionCookieDomain,
 			}
 			f.Extra.RedirectTo = "/user"
 		}

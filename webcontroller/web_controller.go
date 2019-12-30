@@ -7,7 +7,6 @@ import (
 
 	"github.com/google/uuid"
 
-	"fornaxian.com/pixeldrain-web/init/conf"
 	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
@@ -16,8 +15,14 @@ import (
 // WebController controls how requests are handled and makes sure they have
 // proper context when running
 type WebController struct {
-	conf      *conf.PixelWebConfig
 	templates *TemplateManager
+
+	resourceDir string
+
+	apiURLInternal string
+	apiURLExternal string
+
+	sessionCookieDomain string
 
 	// page-specific variables
 	captchaSiteKey string
@@ -25,21 +30,29 @@ type WebController struct {
 
 // New initializes a new WebController by registering all the request handlers
 // and parsing all templates in the resource directory
-func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebController {
-	var wc = &WebController{
-		conf: conf,
+func New(
+	r *httprouter.Router,
+	prefix string,
+	resourceDir string,
+	apiURLInternal string,
+	apiURLExternal string,
+	sessionCookieDomain string,
+	maintenanceMode bool,
+	debugMode bool,
+) (wc *WebController) {
+	wc = &WebController{
+		resourceDir:         resourceDir,
+		apiURLInternal:      apiURLInternal,
+		apiURLExternal:      apiURLExternal,
+		sessionCookieDomain: sessionCookieDomain,
 	}
-	wc.templates = NewTemplateManager(
-		conf.ResourceDir,
-		conf.APIURLExternal,
-		conf.DebugMode,
-	)
+	wc.templates = NewTemplateManager(resourceDir, apiURLExternal, debugMode)
 	wc.templates.ParseTemplates(false)
 
 	var p = prefix
 
 	// Serve static files
-	var fs = http.FileServer(http.Dir(wc.conf.ResourceDir + "/static"))
+	var fs = http.FileServer(http.Dir(resourceDir + "/static"))
 	r.GET(p+"/res/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		w.Header().Set("Cache-Control", "public, max-age=86400") // Cache for one day
 		r.URL.Path = p.ByName("filepath")
@@ -50,7 +63,7 @@ func New(r *httprouter.Router, prefix string, conf *conf.PixelWebConfig) *WebCon
 	r.GET(p+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
 	r.GET(p+"/robots.txt" /*   */, wc.serveFile("/robots.txt"))
 
-	if conf.MaintenanceMode {
+	if maintenanceMode {
 		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusServiceUnavailable)
 			wc.templates.Get().ExecuteTemplate(w, "maintenance", wc.newTemplateData(w, r))
@@ -129,7 +142,7 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 		r *http.Request,
 		p httprouter.Params,
 	) {
-		http.ServeFile(w, r, wc.conf.ResourceDir+"/static"+path)
+		http.ServeFile(w, r, wc.resourceDir+"/static"+path)
 	}
 }
 
@@ -211,7 +224,7 @@ func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {
 func (wc *WebController) captchaKey() string {
 	// This only runs on the first request
 	if wc.captchaSiteKey == "" {
-		var api = pixelapi.New(wc.conf.APIURLInternal, "")
+		var api = pixelapi.New(wc.apiURLInternal, "")
 		capt, err := api.GetRecaptcha()
 		if err != nil {
 			log.Error("Error getting recaptcha key: %s", err)
