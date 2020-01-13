@@ -85,14 +85,18 @@ func (s pixeldrainStyleSheet) String() string {
 	--background_color:           #%s;
 	--body_color:                 #%s;
 
-	--layer_1_color:  #%s;
-	--layer_1_shadow: %s;
-	--layer_2_color:  #%s;
-	--layer_2_shadow: %s;
-	--layer_3_color:  #%s;
-	--layer_3_shadow: %s;
-	--layer_4_color:  #%s;
-	--layer_4_shadow: %s;
+	--layer_1_color:        #%s;
+	--layer_1_color_border: #%s;
+	--layer_1_shadow:       %s;
+	--layer_2_color:        #%s;
+	--layer_2_color_border: #%s;
+	--layer_2_shadow:       %s;
+	--layer_3_color:        #%s;
+	--layer_3_color_border: #%s;
+	--layer_3_shadow:       %s;
+	--layer_4_color:        #%s;
+	--layer_4_color_border: #%s;
+	--layer_4_shadow:       %s;
 
 	--shadow_color:     #%s;
 	--shadow_spread:    %s;
@@ -114,12 +118,16 @@ func (s pixeldrainStyleSheet) String() string {
 		s.BackgroundColor.RGB(),
 		s.BodyColor.RGB(),
 		s.Layer1Color.RGB(),
+		s.Layer1Color.add(0, 0, .05).RGB(),
 		fmt.Sprintf("%dpx", s.Layer1Shadow),
 		s.Layer2Color.RGB(),
+		s.Layer2Color.add(0, 0, .05).RGB(),
 		fmt.Sprintf("%dpx", s.Layer2Shadow),
 		s.Layer3Color.RGB(),
+		s.Layer3Color.add(0, 0, .05).RGB(),
 		fmt.Sprintf("%dpx", s.Layer3Shadow),
 		s.Layer4Color.RGB(),
+		s.Layer4Color.add(0, 0, .05).RGB(),
 		fmt.Sprintf("%dpx", s.Layer4Shadow),
 		s.ShadowColor.RGB(),
 		fmt.Sprintf("%dpx", s.ShadowSpread),

@@ -173,6 +173,19 @@ function loadCaptcha(){
 	});
 }
 
+function formatDataVolume(amt) {
+	if (amt > 1e12) {
+		return Math.round(amt/1e9)/1e3 + " TB";
+	} else if (amt > 1e9) {
+		return Math.round(amt/1e6)/1e3 + " GB";
+	} else if (amt > 1e6) {
+		return Math.round(amt/1e3)/1e3 + " MB";
+	} else if (amt > 1e3) {
+		return Math.round(amt)/1e3 + " kB";
+	}
+	return amt + " B"
+}
+
 var DetailsWindow = {
 	visible:       false,
 	fileID:        "",
@@ -218,8 +231,8 @@ var DetailsWindow = {
 						+ "<tr><td>URL<td><td><a href=\"/u/" + data.id + "\">/u/" + data.id + "</a></td></tr>"
 						+ "<tr><td>Mime Type<td><td>" + escapeHTML(data.mime_type) + "</td></tr>"
 						+ "<tr><td>ID<td><td>" + data.id + "</td></tr>"
-						+ "<tr><td>Size<td><td class=\"bytecounter\">" + data.size + "</td></tr>"
-						+ "<tr><td>Bandwidth<td><td class=\"bytecounter\">" + data.bandwidth_used + "</td></tr>"
+						+ "<tr><td>Size<td><td>" + formatDataVolume(data.size) + "</td></tr>"
+						+ "<tr><td>Bandwidth<td><td>" + formatDataVolume(data.bandwidth_used) + "</td></tr>"
 						+ "<tr><td>Upload Date<td><td>" + data.date_upload + "</td></tr>"
 						+ "<tr><td>Description<td><td>" + escapeHTML(file.description) + "</td></tr>"
 						+ "</table>"
@@ -237,8 +250,8 @@ var DetailsWindow = {
 				+ "<tr><td>Name<td><td>" + escapeHTML(file.name) + "</td></tr>"
 				+ "<tr><td>Mime Type<td><td>" + escapeHTML(file.mime_type) + "</td></tr>"
 				+ "<tr><td>ID<td><td>" + file.id + "</td></tr>"
-				+ "<tr><td>Size<td><td class=\"bytecounter\">" + file.size + "</td></tr>"
-				+ "<tr><td>Bandwidth<td><td class=\"bytecounter\">" + file.bandwidth_used + "</td></tr>"
+				+ "<tr><td>Size<td><td>" + formatDataVolume(file.size) + "</td></tr>"
+				+ "<tr><td>Bandwidth<td><td>" + formatDataVolume(file.bandwidth_used) + "</td></tr>"
 				+ "<tr><td>Upload Date<td><td>" + file.date_upload + "</td></tr>"
 				+ "</table>"
 			);

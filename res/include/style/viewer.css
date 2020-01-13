@@ -312,7 +312,6 @@
 }
 
 table {width: auto !important;}
-table > tbody > tr {border: none !important;}
 
 .corner-popup{
 	position: fixed;
@@ -326,21 +325,6 @@ table > tbody > tr {border: none !important;}
 
 	box-shadow: var(--shadow_color) 0px 0px 50px;
 	z-index: 200;
-}
-
-.bytecounter{
-	color: var(--text_color);
-	font-size: 16px;
-	font-family: monospace, monospace;
-	line-height: 20px;
-	text-align: right;
-	display: inline-block;
-	background-image: url("/res/img/bytecounter.png");
-	background-position: top right;
-	width: 136px;
-	height: 36px;
-	padding: 0;
-	padding-right: 1px;
 }
 
 /* ====================

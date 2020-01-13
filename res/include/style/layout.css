@@ -248,7 +248,7 @@ h3{font-size: 1.5em;  font-family: "light";   font-weight: normal;}
 h4{font-size: 1.25em; font-family: "default"; font-weight: normal;}
 h5{font-size: 1em;    font-family: "default"; font-weight: normal;}
 h6{font-size: .75em;  font-family: "default"; font-weight: normal;}
-h3, h2{border-bottom: 1px var(--layer_3_color_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
+h2, h3{border-bottom: 1px var(--layer_3_color_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
 p, .indent {
 	margin: 10px;
@@ -289,7 +289,7 @@ a:hover {color: var(--highlight_color); text-decoration: underline;}
 }
 table:not(.form) {border-collapse: collapse; width: 100%;}
 tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
-tr > td          {padding: 0.5em;}
+tr > td          {padding: 0.3em;}
 @media(max-width: 30em) {
 	tr > td {
 		box-sizing: border-box;
