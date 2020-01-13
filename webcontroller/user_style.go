@@ -68,60 +68,60 @@ type pixeldrainStyleSheet struct {
 func (s pixeldrainStyleSheet) String() string {
 	return fmt.Sprintf(
 		`:root {
-	--text_color:                 %s;
-	--input_color:                %s;
-	--input_color_dark:           %s;
-	--input_text_color:           %s;
-	--highlight_color:            %s;
-	--highlight_color_dark:       %s;
-	--highlight_text_color:       %s;
-	--danger_color:               %s;
-	--danger_color_dark:          %s;
-	--file_background_color:      %s;
-	--scrollbar_foreground_color: %s;
-	--scrollbar_hover_color:      %s;
-	--scrollbar_background_color: %s;
+	--text_color:                 #%s;
+	--input_color:                #%s;
+	--input_color_dark:           #%s;
+	--input_text_color:           #%s;
+	--highlight_color:            #%s;
+	--highlight_color_dark:       #%s;
+	--highlight_text_color:       #%s;
+	--danger_color:               #%s;
+	--danger_color_dark:          #%s;
+	--file_background_color:      #%s;
+	--scrollbar_foreground_color: #%s;
+	--scrollbar_hover_color:      #%s;
+	--scrollbar_background_color: #%s;
 
-	--background_color:           %s;
-	--body_color:                 %s;
+	--background_color:           #%s;
+	--body_color:                 #%s;
 
-	--layer_1_color:  %s;
+	--layer_1_color:  #%s;
 	--layer_1_shadow: %s;
-	--layer_2_color:  %s;
+	--layer_2_color:  #%s;
 	--layer_2_shadow: %s;
-	--layer_3_color:  %s;
+	--layer_3_color:  #%s;
 	--layer_3_shadow: %s;
-	--layer_4_color:  %s;
+	--layer_4_color:  #%s;
 	--layer_4_shadow: %s;
 
-	--shadow_color:     %s;
+	--shadow_color:     #%s;
 	--shadow_spread:    %s;
 	--shadow_intensity: %s;
 }`,
-		s.TextColor.cssString(),
-		s.InputColor.cssString(),
-		s.InputColor.add(0, 0, -.03).cssString(),
-		s.InputTextColor.cssString(),
-		s.HighlightColor.cssString(),
-		s.HighlightColor.add(0, 0, -.03).cssString(),
-		s.HighlightTextColor.cssString(),
-		s.DangerColor.cssString(),
-		s.DangerColor.add(0, 0, -.03).cssString(),
-		s.FileBackgroundColor.cssString(),
-		s.ScrollbarForegroundColor.cssString(),
-		s.ScrollbarHoverColor.cssString(),
-		s.ScrollbarBackgroundColor.cssString(),
-		s.BackgroundColor.cssString(),
-		s.BodyColor.cssString(),
-		s.Layer1Color.cssString(),
+		s.TextColor.RGB(),
+		s.InputColor.RGB(),
+		s.InputColor.add(0, 0, -.03).RGB(),
+		s.InputTextColor.RGB(),
+		s.HighlightColor.RGB(),
+		s.HighlightColor.add(0, 0, -.03).RGB(),
+		s.HighlightTextColor.RGB(),
+		s.DangerColor.RGB(),
+		s.DangerColor.add(0, 0, -.03).RGB(),
+		s.FileBackgroundColor.RGB(),
+		s.ScrollbarForegroundColor.RGB(),
+		s.ScrollbarHoverColor.RGB(),
+		s.ScrollbarBackgroundColor.RGB(),
+		s.BackgroundColor.RGB(),
+		s.BodyColor.RGB(),
+		s.Layer1Color.RGB(),
 		fmt.Sprintf("%dpx", s.Layer1Shadow),
-		s.Layer2Color.cssString(),
+		s.Layer2Color.RGB(),
 		fmt.Sprintf("%dpx", s.Layer2Shadow),
-		s.Layer3Color.cssString(),
+		s.Layer3Color.RGB(),
 		fmt.Sprintf("%dpx", s.Layer3Shadow),
-		s.Layer4Color.cssString(),
+		s.Layer4Color.RGB(),
 		fmt.Sprintf("%dpx", s.Layer4Shadow),
-		s.ShadowColor.cssString(),
+		s.ShadowColor.RGB(),
 		fmt.Sprintf("%dpx", s.ShadowSpread),
 		fmt.Sprintf("%dpx", s.ShadowIntensity),
 	)
@@ -140,6 +140,46 @@ func (h hsl) cssString() string {
 		h.Saturation*100,
 		h.Lightness*100,
 	)
+}
+
+func (orig hsl) RGB() string {
+	var r, g, b, q, p float64
+	var h, s, l = float64(orig.Hue) / 360, orig.Saturation, orig.Lightness
+
+	if s == 0 {
+		r, g, b = l, l, l
+	} else {
+		var hue2rgb = func(p, q, t float64) float64 {
+			if t < 0 {
+				t++
+			}
+			if t > 1 {
+				t--
+			}
+
+			if t < 1.0/6.0 {
+				return p + (q-p)*6*t
+			} else if t < 1.0/2.0 {
+				return q
+			} else if t < 2.0/3.0 {
+				return p + (q-p)*(2.0/3.0-t)*6
+			}
+			return p
+		}
+
+		if l < 0.5 {
+			q = l * (1 + s)
+		} else {
+			q = l + s - l*s
+		}
+
+		p = 2*l - q
+		r = hue2rgb(p, q, h+1.0/3.0)
+		g = hue2rgb(p, q, h)
+		b = hue2rgb(p, q, h-1.0/3.0)
+	}
+
+	return fmt.Sprintf("%02x%02x%02x", int(r*255), int(g*255), int(b*255))
 }
 
 // Add returns a NEW HSL struct, it doesn't modify the current one

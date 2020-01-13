@@ -24,6 +24,7 @@
 	text-align: left;
 	padding: 8px;
 	z-index: 10;
+	box-shadow: none;
 }
 
 /* Headerbar components */
@@ -68,7 +69,7 @@
 	display: none; /* Becomes visible if the page is a list */
 	width: 100%;
 	background-color: var(--layer_1_color);
-	box-shadow: 0 0 8px var(--shadow_color);
+	/* box-shadow: 0 0 8px var(--shadow_color); */
 	text-align: center;
 	line-height: 1em;
 	overflow-x: scroll;
@@ -105,6 +106,19 @@
 	vertical-align: middle;
 	transition: left 0.5s;
 	overflow: hidden;
+	box-shadow: inset 2px 2px 8px var(--shadow_color);
+}
+
+/* Sponsors (row 4) */
+.file_viewer > .sponsors {
+	background-color: var(--layer_1_color);
+	font-size: 0;
+	line-height: 0;
+}
+.file_viewer > .sponsors > iframe {
+	display: block;
+	margin: auto;
+	transform-origin: 0 0;
 }
 
 /* Toolbars */
@@ -120,7 +134,6 @@
 	top: 0;
 	padding: 0;
 	text-align: left;
-	box-shadow: 1px 1px var(--layer_1_shadow) 0 var(--shadow_color);
 	transition: left 0.5s;
 }
 .file_viewer > .file_viewer_window > .file_viewer_sharebar{
@@ -133,7 +146,7 @@
 	overflow-x: hidden;
 	float: left;
 	background-color: var(--layer_1_color);
-	box-shadow: 2px 2px 8px var(--shadow_color);
+	/* box-shadow: 2px 2px 8px var(--shadow_color); */
 	text-align: center;
 	z-index: 48;
 	overflow: hidden;
@@ -318,7 +331,7 @@ table > tbody > tr {border: none !important;}
 .bytecounter{
 	color: var(--text_color);
 	font-size: 16px;
-	font-family: 'Ubuntu', sans-serif;
+	font-family: monospace, monospace;
 	line-height: 20px;
 	text-align: right;
 	display: inline-block;

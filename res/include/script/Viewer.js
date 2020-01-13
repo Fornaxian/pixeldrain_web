@@ -14,7 +14,7 @@ var Viewer = {
 		}
 
 		// On small screens the toolbar takes too much space, so it collapses automatically
-		if($("#filepreview").width() > 500 && !Toolbar.visible){
+		if($("#filepreview").width() > 600 && !Toolbar.visible){
 			Toolbar.toggle();
 		}
 
@@ -35,6 +35,8 @@ var Viewer = {
 			this.title = data.title;
 			ListNavigator.init(data.data);
 		}
+
+		renderSponsors();
 
 		this.initialized = true;
 	},
@@ -104,3 +106,42 @@ document.addEventListener("keydown", function(event){
 		break;
 	}
 });
+
+
+window.addEventListener("resize", renderSponsors);
+function renderSponsors() {
+	var scale = 1;
+	var scaleWidth = 1;
+	var scaleHeight = 1;
+	var minWidth = 728;
+	var minHeight = 800;
+
+	if (window.innerWidth < minWidth) {
+		scaleWidth = window.innerWidth/minWidth;
+	}
+	if (window.innerHeight < minHeight) {
+		scaleHeight = window.innerHeight/minHeight;
+	}
+	scale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight;
+
+	console.log(scale, scaleWidth, scaleHeight);
+
+	// Because of the scale transformation the automatic margins don't work
+	// anymore. So we have to maunally calculate the margin. Where we take the
+	// width of the viewport - the width of the ad to calculate the amount of
+	// pixels around the ad. We multiply the ad size by the scale we calcualted
+	// to account for the smaller size.
+	var offset = (window.innerWidth - (minWidth*scale)) / 2
+	if (offset < 0) {
+		offset = 0
+	}
+	document.querySelector(".sponsors > iframe").style.marginLeft = offset+"px";
+
+	if (scale == 1) {
+		document.querySelector(".sponsors > iframe").style.transform = "none";
+		document.querySelector(".sponsors").style.height = "90px";
+	} else {
+		document.querySelector(".sponsors > iframe").style.transform = "scale("+scale+")";
+		document.querySelector(".sponsors").style.height = (scale*90)+"px";
+	}
+}

@@ -108,9 +108,9 @@ func (f filePreview) image() string {
 
 func (f filePreview) audio() string {
 	return fmt.Sprintf(`<div class="image-container">
-<br/><br/>
+<br/>
 <img src="/res/img/mime/audio.png" alt="Audio"/>
-<br/>%s<br/><br/>
+<br/>%s<br/>
 <audio id="audioPlayer" controls="controls" autoplay="autoplay" style="width:90%%;">
 <source src="%s" />
 </audio>
@@ -222,7 +222,7 @@ seamless="seamless" frameborder="0" allowtransparency="true"
 
 func (f filePreview) def() string {
 	return fmt.Sprintf(
-		`<br/><br/><img src="%s" class="image"><br/><br/>%s<br/>Type: '%s'`,
+		`<br/><img src="%s" class="image"><br/>%s<br/>Type: '%s'`,
 		f.APIURL+f.FileInfo.ThumbnailHREF,
 		f.FileInfo.Name,
 		f.FileInfo.MimeType,
