@@ -92,6 +92,14 @@ function shareButton() {
 	});
 }
 
+document.addEventListener("keydown", function(event){
+	if (event.ctrlKey || event.altKey) {
+		return // prevent custom shortcuts from interfering with system shortcuts
+	}
+	if (event.which == 67 && !uploader.uploading()) { // C to copy to clipboard
+		copyLink();
+	}
+});
 function copyLink() {
 	if(copyText(shareLink)) {
 		console.log('Text copied');
