@@ -12,6 +12,7 @@ class UploadManager {
 	private uploadQueue:   Array<FileUpload>   = new Array();
 	private uploadThreads: Array<UploadWorker> = new Array();
 	private maxThreads:    number              = 3;
+	public  finishCallback: () => void         = null;
 
 	public uploadFile(file: FileUpload) {
 		console.debug("Adding upload to queue")
@@ -40,8 +41,11 @@ class UploadManager {
 
 	public grabFile(): FileUpload | undefined {
 		if (this.uploadQueue.length > 0) {
-			return this.uploadQueue.shift()
+			return this.uploadQueue.shift();
 		} else {
+			if (!this.uploading() && this.finishCallback !== null) {
+				this.finishCallback();
+			}
 			return undefined
 		}
 	}
@@ -63,9 +67,10 @@ class UploadWorker {
 	}
 
 	private newFile() {
+		this.uploading = false
+
 		var file = this.manager.grabFile()
 		if (file === undefined) { // No more files in the queue. We're finished
-			this.uploading = false
 			console.debug("No files left in queue")
 			return // Stop the thread
 		}
@@ -97,7 +102,6 @@ class UploadWorker {
 
 		xhr.onreadystatechange = function(){
 			if (xhr.readyState !== 4) {return;}
-			console.log("status: "+xhr.status)
 
 			if (xhr.status >= 100 && xhr.status < 400) {
 				var resp = JSON.parse(xhr.response);

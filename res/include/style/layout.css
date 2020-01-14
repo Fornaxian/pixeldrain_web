@@ -127,7 +127,7 @@ body{
 	box-sizing: border-box;
 	clear: both;
 }
-.page_body > .page_content > .limit_width {
+.limit_width {
 	position: relative;
 	display: inline-block;
 	max-width: 1000px;

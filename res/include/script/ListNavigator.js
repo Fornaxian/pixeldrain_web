@@ -99,10 +99,10 @@ var ListNavigator = {
 		this.shuffle = !this.shuffle; // :P
 
 		if(this.shuffle){
-			$("#btnShuffle > span").html("&nbsp;Shuffle&nbsp;&#x2611;"); // Check icon
+			$("#btnShuffle > span").html("Shuffle&nbsp;&#x2611;"); // Check icon
 			$("#btnShuffle").addClass("button_highlight");
 		}else{
-			$("#btnShuffle > span").html("&nbsp;Shuffle&nbsp;&#x2610;"); // Empty checkbox
+			$("#btnShuffle > span").html("Shuffle&nbsp;&#x2610;"); // Empty checkbox
 			$("#btnShuffle").removeClass("button_highlight");
 		}
 	},
@@ -159,55 +159,8 @@ var ListNavigator = {
 		});
 		document.getElementById("list_navigator").innerHTML = listHTML;
 
-		var btnLastItem = document.createElement("button");
-		btnLastItem.innerText = "◀";
-		btnLastItem.setAttribute("id", "button_last_item");
-		btnLastItem.setAttribute("class", "button_highlight");
-		btnLastItem.setAttribute("onClick", "ListNavigator.previousItem();");
-
-		var btnNextItem = document.createElement("button");
-		btnNextItem.innerText = "▶";
-		btnNextItem.setAttribute("id", "button_next_item");
-		btnNextItem.setAttribute("class", "button_highlight");
-		btnNextItem.setAttribute("onClick", "ListNavigator.nextItem();");
-
-		var headerbar = document.getElementById("list_navigator_buttons");
-		headerbar.appendChild(btnLastItem);
-		headerbar.appendChild(btnNextItem);
-
-		// Add the list download button to the toolbar
-		var btnDownloadList = document.createElement("button");
-		btnDownloadList.setAttribute("id", "btnDownloadList");
-		btnDownloadList.setAttribute("class", "toolbar_button button_full_width");
-		btnDownloadList.setAttribute("onClick", "Toolbar.downloadList();");
-
-		var btnDownloadListImg = document.createElement("img");
-		btnDownloadListImg.setAttribute("src", "{{template `floppy_small.png`}}");
-		btnDownloadListImg.setAttribute("alt", "Download List");
-
-		var btnDownloadListText = document.createElement("span");
-		btnDownloadListText.innerHTML = "&nbsp;All Files";
-
-		btnDownloadList.appendChild(btnDownloadListImg);
-		btnDownloadList.appendChild(btnDownloadListText);
-		document.getElementById("btnDownload").after(btnDownloadList);
-
-		// Add the shuffle button to the toolbar
-		var btnShuffle = document.createElement("button");
-		btnShuffle.setAttribute("id", "btnShuffle");
-		btnShuffle.setAttribute("class", "toolbar_button button_full_width");
-		btnShuffle.setAttribute("onClick", "ListNavigator.toggleShuffle();");
-
-		var btnShuffleImg = document.createElement("img");
-		btnShuffleImg.setAttribute("src", "{{template `shuffle_small.png`}}");
-		btnShuffleImg.setAttribute("alt", "Shuffle playback order");
-
-		var btnShuffleText = document.createElement("span");
-		btnShuffleText.innerHTML = "&nbsp;Shuffle&nbsp;&#x2610;";
-
-		btnShuffle.appendChild(btnShuffleImg);
-		btnShuffle.appendChild(btnShuffleText);
-		document.getElementById("btnShare").after(btnShuffle);
+		document.getElementById("btnDownloadList").style.display = "";
+		document.getElementById("btnShuffle").style.display = "";
 
 		// Make the navigator visible
 		document.getElementById("list_navigator").style.display = "inline-block";

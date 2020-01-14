@@ -48,6 +48,7 @@ class UploadProgressBar implements FileUpload {
 			id: id,
 			name: this.file.name
 		};
+		console.log("Upload finished: "+this.file.name+" "+id);
 
 		this.uploadDiv.style.background = 'var(--file_background_color)'
 		this.uploadDiv.href = '/u/'+id
@@ -78,18 +79,9 @@ class UploadProgressBar implements FileUpload {
 	}
 }
 
-function handleUploads(files: FileList) {
-	if (uploader === null){
-		uploader = new UploadManager()
-	}
-
-	for (var i = 0; i < files.length; i++) {
-		uploader.uploadFile(new UploadProgressBar(files.item(i)))
-	}
-}
 
 // List creation
-function createList(title: string, anonymous: boolean){
+function createListFull(title: string, anonymous: boolean){
 	if (uploader.uploading()) {
 		var cont = confirm(
 			"Some files have not finished uploading yet. Creating a list now "+
@@ -105,6 +97,9 @@ function createList(title: string, anonymous: boolean){
 		"files": new Array()
 	};
 	for (var i = 0; i < finishedUploads.length; i++) {
+		if (finishedUploads[i].id == "") {
+			continue
+		}
 		postData.files.push({
 			"id": finishedUploads[i].id
 		});
@@ -125,7 +120,7 @@ function createList(title: string, anonymous: boolean){
 				+ "List creation finished!<br/>"
 				+ title + "<br/>"
 				+ '<a href="/l/'+resp.id+'" target="_blank">'+window.location.hostname+'/l/'+resp.id+'</a>';
-			document.getElementById("uploads_queue").appendChild(div);
+			document.getElementById("created_lists").appendChild(div);
 			window.open('/l/'+resp.id, '_blank');
 		} else {
 			console.log("status: "+xhr.status+" response: "+xhr.response)
@@ -134,47 +129,12 @@ function createList(title: string, anonymous: boolean){
 			div.innerHTML = "List creation failed<br/>"
 				+ "The server responded with:<br/>"
 				+ resp.message;
-			document.getElementById("uploads_queue").append(div);
+			document.getElementById("created_lists").append(div);
 		}
 	}
 
 	xhr.send(JSON.stringify(postData));
 }
-
-// Form upload handlers
-
-// Relay click event to hidden file field
-document.getElementById("select_file_button").onclick = function(){
-	document.getElementById("file_input_field").click()
-}
-
-document.getElementById("file_input_field").onchange = function(evt){
-	handleUploads((<HTMLInputElement>evt.target).files)
-
-	// This resets the file input field
-	document.getElementById("file_input_field").nodeValue = ""
-}
-
-/*
- * Drag 'n Drop upload handlers
- */
-document.ondragover = function (e) {
-	e.preventDefault()
-	e.stopPropagation()
-}
-document.ondragenter = function (e) {
-	e.preventDefault()
-	e.stopPropagation()
-}
-
-document.addEventListener('drop', function(e: DragEvent){
-	if (e.dataTransfer && e.dataTransfer.files.length > 0) {
-		e.preventDefault()
-		e.stopPropagation()
-
-		handleUploads(e.dataTransfer.files)
-	}
-})
 
 function copyText(text: string) : boolean {
 	// Create a textarea to copy the text from
@@ -201,7 +161,7 @@ document.getElementById("btn_create_list").addEventListener("click", function(ev
 	if(title === null){
 		return;
 	}
-	createList(title, false);
+	createListFull(title, false);
 });
 
 var btnCopyLinks = document.getElementById("btn_copy_links");

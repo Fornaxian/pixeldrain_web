@@ -32,69 +32,62 @@
 					<div id="file_viewer_list_title"></div>
 					<div id="file_viewer_file_title">{{.Title}}</div>
 				</div>
-				<div id="list_navigator_buttons" class="button_group list_navigator_buttons"></div>
-				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onClick="window.close();">🞫</button>
+				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onClick="window.close();">{{template `close.svg`}}</button>
 			</div>
 			<div id="list_navigator" class="list_navigator"></div>
 			<div id="file_viewer_window" class="file_viewer_window">
-				<div id="toolbar" class="file_viewer_toolbar">
-					<!-- Ugly workaround to get rid of the scrollbar in non-webkit browsers -->
-					<div>
-						<div>
-							<div id="stat_views_label" class="toolbar_label">Views</div>
-							<div id="stat_views" style="text-align: center;">N/A</div>
-							<div id="stat_downloads_label" class="toolbar_label">Downloads</div>
-							<div id="stat_downloads" style="text-align: center;">N/A</div>
+				<div id="toolbar" class="file_viewer_toolbar"><div><div>
+					<div id="stat_views_label" class="toolbar_label">Views</div>
+					<div id="stat_views" style="text-align: center;">N/A</div>
+					<div id="stat_downloads_label" class="toolbar_label">Downloads</div>
+					<div id="stat_downloads" style="text-align: center;">N/A</div>
 
-							<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
-								<img src="{{template `floppy_small.png`}}" alt="Download this file"/>
-								<span>Download</span>
-							</button>
-							<button id="btnCopy" class="toolbar_button button_full_width" onClick="Toolbar.copyUrl();">
-								<img src="{{template `clipboard_small.png`}}" alt="Copy file URL to clipboard"/>
-								<span><u>C</u>opy Link</span>
-							</button>
-							<button id="btnShare" class="toolbar_button button_full_width" onClick="Sharebar.toggle();">
-								<img src="{{template `share_small.png`}}" alt="Share this file on social media"/>
-								<span>Share</span>
-							</button>
-							<button id="btnDetails" class="toolbar_button button_full_width" onClick="DetailsWindow.toggle();">
-								<img src="{{template `info_small.png`}}" alt="Help"/>
-								<span>Deta<u>i</u>ls</span>
-							</button>
-							{{template "advertisement" .}}
+					<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
+						{{template `save.svg` .}}
+						<span>Download</span>
+					</button>
+					<button id="btnDownloadList" class="toolbar_button button_full_width" style="display: none" onClick="Toolbar.downloadList()">
+						{{template `save.svg` .}}
+						<span>DL all files</span>
+					</button>
+					<button id="btnCopy" class="toolbar_button button_full_width" onClick="Toolbar.copyUrl();">
+						{{template `copy.svg` .}}
+						<span><u>C</u>opy Link</span>
+					</button>
+					<button id="btnShare" class="toolbar_button button_full_width" onClick="Sharebar.toggle();">
+						{{template `share.svg` .}}
+						<span>Share</span>
+					</button>
+					<button id="btnShuffle" class="toolbar_button button_full_width" style="display: none" onClick="ListNavigator.toggleShuffle();">
+						{{template `shuffle.svg` .}}
+						<span>Shuffle &#x2610;</span>
+					</button>
+					<button id="btnDetails" class="toolbar_button button_full_width" onClick="DetailsWindow.toggle();">
+						{{template `help.svg` .}}
+						<span>Deta<u>i</u>ls</span>
+					</button>
+					{{template "advertisement" .}}
 
-							<!-- This frame will load the download URL when a download button is pressed -->
-							<iframe id="download_frame" style="display: none; width: 1px; height: 1px;"></iframe>
-						</div>
-					</div>
-				</div>
+					<!-- This frame will load the download URL when a download button is pressed -->
+					<iframe id="download_frame" style="display: none; width: 1px; height: 1px;"></iframe>
+				</div></div></div>
 
 				<div id="sharebar" class="file_viewer_sharebar">
 					Share on:<br/>
-					<button class="sharebar-button button_full_width" onClick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=' + window.location.href);">
-						<img src="{{template `social_email.png`}}" alt="Share on E-Mail" style="width:40px; height: 40px;"/>
-						<br/>E-Mail
+					<button class="sharebar-button button_full_width" onclick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=' + window.location.href);">
+						{{template `email.svg` .}}<br/>E-Mail
 					</button>
 					<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
-						<img src="{{template `social_reddit.png`}}" alt="Share on Reddit" style="width:40px; height: 40px;"/>
-						<br/>Reddit
+						{{template `reddit.svg` .}}<br/>Reddit
 					</button>
-					<button class="sharebar-button button_full_width" onClick="window.open('https://twitter.com/share?url=' + window.location.href);">
-						<img src="{{template `social_twitter.png`}}" alt="Share on Twitter" style="width:40px; height: 40px;"/>
-						<br/>Twitter
+					<button class="sharebar-button button_full_width" onclick="window.open('https://twitter.com/share?url=' + window.location.href);">
+						{{template `twitter.svg` .}}<br/>Twitter
 					</button>
-					<button class="sharebar-button button_full_width" onClick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
-						<img src="{{template `social_facebook.png`}}" alt="Share on Facebook" style="width:40px; height: 40px;"/>
-						<br/>Facebook
+					<button class="sharebar-button button_full_width" onclick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
+						{{template `facebook.svg` .}}<br/>Facebook
 					</button>
-					<button class="sharebar-button button_full_width" onClick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
-						<img src="{{template `social_tumblr.png`}}" alt="Share on Tumblr" style="width:40px; height: 40px;"/>
-						<br/>Tumblr
-					</button>
-					<button class="sharebar-button button_full_width" onClick="window.open('https://voat.co/submit?linkpost=true&url=' + window.location.href);">
-						<img src="{{template `social_voat.png`}}" alt="Share on Voat" style="width:40px; height: 40px;"/>
-						<br/>Voat
+					<button class="sharebar-button button_full_width" onclick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
+						{{template `tumblr.svg` .}}<br/>Tumblr
 					</button>
 				</div>
 

@@ -52,9 +52,6 @@
 	.file_viewer > .file_viewer_headerbar > .button_home::after {
 		content: "pd";
 	}
-	.file_viewer > .file_viewer_headerbar > .list_navigator_buttons {
-		display: none;
-	}
 }
 .file_viewer > .file_viewer_headerbar > .file_viewer_headerbar_title > span {
 	flex-grow: 0;
@@ -146,7 +143,7 @@
 	overflow-x: hidden;
 	float: left;
 	background-color: var(--layer_1_color);
-	/* box-shadow: 2px 2px 8px var(--shadow_color); */
+	box-shadow: inset 1px 1px 6px var(--shadow_color);
 	text-align: center;
 	z-index: 48;
 	overflow: hidden;
@@ -264,6 +261,11 @@
    ========================= */
 
 .sharebar-button {text-align: center;}
+.sharebar-button > svg,
+.sharebar-button > img {
+	width: 40px;
+	height: 40px;
+}
 
 /* =====================
    || MISC COMPONENTS ||

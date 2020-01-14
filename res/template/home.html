@@ -4,6 +4,44 @@
 	<head>
 		{{template "meta_tags" "Free file sharing service"}}
 		{{template "user_style" .}}
+		<style>
+		.instruction_highlight {
+			border-top: 1px solid var(--layer_2_color_border);
+			border-bottom: 1px solid var(--layer_2_color_border);
+			box-sizing: border-box;
+			margin: 10px 0;
+			padding: 5px;
+		}
+		.big_number {
+			font-size: 24px;
+			font-weight: bold;
+			text-align: center;
+			display: block;
+			box-sizing: border-box;
+			background-color: var(--highlight_color);
+			color: var(--highlight_text_color);
+			border-radius: 30px;
+			padding: 5px;
+			margin-right: 10px;
+			width: 34px;
+			height: 34px;
+			float: left;
+		}
+		.instruction_text {
+			margin: 5px;
+			font-size: 24px;
+			display: block;
+			box-sizing: border-box;
+		}
+		.social_button {
+			margin: 5px;
+		}
+		.social_button > img, .social_button > svg {
+			width: 40px;
+			height: 40px;
+			margin: 5px 15px;
+		}
+		</style>
 	</head>
 	<body>
 		{{template "page_top" .}}
@@ -11,21 +49,67 @@
 		<img id="header_image" class="header_image" src="/res/img/header_2019.png" alt="Header image"/>
 		<br/>
 		<div class="page_content">
+			<h1>How to share files with pixeldrain</h1>
+			<div id="instruction_1" class="instruction_highlight"><div class="limit_width">
+				<span class="big_number">1</span><span class="instruction_text">Select files to upload</span>
+				You can also drop files anywhere on this page from your file
+				manager
+			</div></div>
 			<input id="file_input_field" type="file" name="file" multiple="multiple"/>
 			<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
 			<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button>
 			<br/>
 			<p>
 				By uploading files to Pixeldrain you accept that a cookie will
-				be placed in your web browser. More information on the <a
-				href="/about">about</a> page
+				be placed in your web browser. More information on the
+				<a href="/about">about</a> page
 			<p>
-
+			<div id="instruction_2" class="instruction_highlight" style="display: none">
+				<div class="limit_width">
+					<span class="big_number">2</span><span class="instruction_text">Wait for the files to finish uploading</span>
+				</div>
+			</div>
 			<div id="uploads_queue"></div>
-			<br/>
-			<button id="btn_create_list">Create list with uploaded files</button>
-			<button id="btn_copy_links">Copy links to clipboard</button>
-			<button id="btn_copy_bbcode">Copy BBCode to clipboard</button>
+
+			<div id="instruction_3" class="instruction_highlight" style="display: none">
+				<div class="limit_width"><span class="big_number">3</span><span class="instruction_text">Share the files</span></div>
+			</div>
+			<div id="instruction_3_after" style="display: none">
+				<div id="navigator_share_button" style="display: inline-block">
+					<button class="social_button" onclick="shareButton()">
+						{{template `share.svg` .}}<br/>Share
+					</button>
+				</div>
+				<button id="btn_copy_link" class="social_button" style="display: inline-block" onclick="copyLink()">
+					{{template `copy.svg` .}}<br/><span>Copy link</span>
+				</button>
+				<button id="btn_open_link" class="social_button" style="display: inline-block" onclick="openLink()">
+					{{template `open_in_new.svg` .}}<br/><span>Open link</span>
+				</button>
+				<div id="social_buttons" style="display: inline-block">
+					<button class="social_button" onclick="window.open('mailto:please@set.address?subject=File%20on%20pixeldrain&body=' + shareLink);">
+						{{template `email.svg` .}}<br/>E-Mail
+					</button>
+					<button class="social_button" onclick="window.open('https://twitter.com/share?url=' + shareLink);">
+						{{template `twitter.svg` .}}<br/>Twitter
+					</button>
+					<button class="social_button" onclick="window.open('http://www.facebook.com/sharer.php?u=' + shareLink);">
+						{{template `facebook.svg` .}}<br/>Facebook
+					</button>
+					<button class="social_button" onclick="window.open('https://www.reddit.com/submit?url=' + shareLink);">
+						{{template `reddit.svg` .}}<br/>Reddit
+					</button>
+					<button class="social_button" onclick="window.open('http://www.tumblr.com/share/link?url=' + shareLink);">
+						{{template `tumblr.svg` .}}<br/>Tumblr
+					</button>
+				</div>
+				<br/>
+				<button id="btn_create_list">Create list with uploaded files</button>
+				<button id="btn_copy_links">Copy all links to clipboard</button>
+				<button id="btn_copy_bbcode">Copy BBCode to clipboard</button>
+				<br/>
+				<div id="created_lists"></div>
+			</div>
 
 			<br/>
 			<div class="limit_width">
@@ -68,6 +152,7 @@
 		var apiEndpoint = '{{.APIEndpoint}}';
 		var API_URL = "/api";
 		{{template "home.js"}}
+		{{template "home_plain.js"}}
 		</script>
 
 		{{template "analytics"}}

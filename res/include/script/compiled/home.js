@@ -37,6 +37,7 @@ var UploadProgressBar = /** @class */ (function () {
             id: id,
             name: this.file.name
         };
+        console.log("Upload finished: " + this.file.name + " " + id);
         this.uploadDiv.style.background = 'var(--file_background_color)';
         this.uploadDiv.href = '/u/' + id;
         this.uploadDiv.target = "_blank";
@@ -63,16 +64,8 @@ var UploadProgressBar = /** @class */ (function () {
     };
     return UploadProgressBar;
 }());
-function handleUploads(files) {
-    if (uploader === null) {
-        uploader = new UploadManager();
-    }
-    for (var i = 0; i < files.length; i++) {
-        uploader.uploadFile(new UploadProgressBar(files.item(i)));
-    }
-}
 // List creation
-function createList(title, anonymous) {
+function createListFull(title, anonymous) {
     if (uploader.uploading()) {
         var cont = confirm("Some files have not finished uploading yet. Creating a list now " +
             "will exclude those files.\n\nContinue?");
@@ -86,6 +79,9 @@ function createList(title, anonymous) {
         "files": new Array()
     };
     for (var i = 0; i < finishedUploads.length; i++) {
+        if (finishedUploads[i].id == "") {
+            continue;
+        }
         postData.files.push({
             "id": finishedUploads[i].id
         });
@@ -106,7 +102,7 @@ function createList(title, anonymous) {
                 + "List creation finished!<br/>"
                 + title + "<br/>"
                 + '<a href="/l/' + resp.id + '" target="_blank">' + window.location.hostname + '/l/' + resp.id + '</a>';
-            document.getElementById("uploads_queue").appendChild(div);
+            document.getElementById("created_lists").appendChild(div);
             window.open('/l/' + resp.id, '_blank');
         }
         else {
@@ -116,39 +112,11 @@ function createList(title, anonymous) {
             div.innerHTML = "List creation failed<br/>"
                 + "The server responded with:<br/>"
                 + resp.message;
-            document.getElementById("uploads_queue").append(div);
+            document.getElementById("created_lists").append(div);
         }
     };
     xhr.send(JSON.stringify(postData));
 }
-// Form upload handlers
-// Relay click event to hidden file field
-document.getElementById("select_file_button").onclick = function () {
-    document.getElementById("file_input_field").click();
-};
-document.getElementById("file_input_field").onchange = function (evt) {
-    handleUploads(evt.target.files);
-    // This resets the file input field
-    document.getElementById("file_input_field").nodeValue = "";
-};
-/*
- * Drag 'n Drop upload handlers
- */
-document.ondragover = function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-};
-document.ondragenter = function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-};
-document.addEventListener('drop', function (e) {
-    if (e.dataTransfer && e.dataTransfer.files.length > 0) {
-        e.preventDefault();
-        e.stopPropagation();
-        handleUploads(e.dataTransfer.files);
-    }
-});
 function copyText(text) {
     // Create a textarea to copy the text from
     var ta = document.createElement("textarea");
@@ -170,7 +138,7 @@ document.getElementById("btn_create_list").addEventListener("click", function (e
     if (title === null) {
         return;
     }
-    createList(title, false);
+    createListFull(title, false);
 });
 var btnCopyLinks = document.getElementById("btn_copy_links");
 btnCopyLinks.addEventListener("click", function () {
@@ -258,6 +226,7 @@ var UploadManager = /** @class */ (function () {
         this.uploadQueue = new Array();
         this.uploadThreads = new Array();
         this.maxThreads = 3;
+        this.finishCallback = null;
     }
     UploadManager.prototype.uploadFile = function (file) {
         console.debug("Adding upload to queue");
@@ -287,6 +256,9 @@ var UploadManager = /** @class */ (function () {
             return this.uploadQueue.shift();
         }
         else {
+            if (!this.uploading() && this.finishCallback !== null) {
+                this.finishCallback();
+            }
             return undefined;
         }
     };
@@ -305,9 +277,9 @@ var UploadWorker = /** @class */ (function () {
         }
     };
     UploadWorker.prototype.newFile = function () {
+        this.uploading = false;
         var file = this.manager.grabFile();
         if (file === undefined) { // No more files in the queue. We're finished
-            this.uploading = false;
             console.debug("No files left in queue");
             return; // Stop the thread
         }
@@ -334,7 +306,6 @@ var UploadWorker = /** @class */ (function () {
             if (xhr.readyState !== 4) {
                 return;
             }
-            console.log("status: " + xhr.status);
             if (xhr.status >= 100 && xhr.status < 400) {
                 var resp = JSON.parse(xhr.response);
                 // Request is a success
