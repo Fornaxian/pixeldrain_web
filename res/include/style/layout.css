@@ -121,7 +121,6 @@ body{
 	padding: 0;
 	box-sizing: border-box;
 	text-align: left;
-	word-break: break-all;
 	clear: both;
 }
 .page_body > h1 {
