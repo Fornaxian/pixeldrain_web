@@ -31,7 +31,7 @@ type linkRule struct {
 }
 
 func (o linkRule) HTML() template.HTML {
-	return template.HTML(`<link name="` + o.Rel + `" href="` + o.HREF + `"/>` + "\n")
+	return template.HTML(`<link rel="` + o.Rel + `" href="` + o.HREF + `"/>` + "\n")
 }
 
 func metadataFromFile(f pixelapi.FileInfo) (meta template.HTML) {

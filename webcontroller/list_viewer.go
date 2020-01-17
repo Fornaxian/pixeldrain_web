@@ -26,7 +26,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	templateData.Title = fmt.Sprintf("%s ~ Pixeldrain list", list.Title)
+	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
 	templateData.OGData = metadataFromList(*list)
 	templateData.Other = viewerData{
 		Type:       "list",

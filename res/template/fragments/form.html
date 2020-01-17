@@ -90,11 +90,11 @@
 {{end}}
 {{define "form_page"}}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		{{template "meta_tags" .Title}}
 		{{template "user_style" .}}
-		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 
 	<body>

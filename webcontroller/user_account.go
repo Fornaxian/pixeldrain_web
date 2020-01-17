@@ -45,7 +45,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 	}
 
 	// Construct the form
-	td.Title = "Register a new Pixeldrain account"
+	td.Title = "Register a new pixeldrain account"
 	f = Form{
 		Name:  "register",
 		Title: td.Title,

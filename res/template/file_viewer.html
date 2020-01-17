@@ -1,6 +1,6 @@
 {{define "file_viewer"}}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<title>{{.Title}}</title>
 		<meta charset="UTF-8"/>
@@ -32,7 +32,7 @@
 					<div id="file_viewer_list_title"></div>
 					<div id="file_viewer_file_title">{{.Title}}</div>
 				</div>
-				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onClick="window.close();">{{template `close.svg`}}</button>
+				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onClick="window.close();">{{template `close.svg` .}}</button>
 			</div>
 			<div id="list_navigator" class="list_navigator"></div>
 			<div id="file_viewer_window" class="file_viewer_window">
@@ -74,7 +74,7 @@
 
 				<div id="sharebar" class="file_viewer_sharebar">
 					Share on:<br/>
-					<button class="sharebar-button button_full_width" onclick="window.open('mailto:please@set.address?subject=File%20on%20PixelDrain&body=' + window.location.href);">
+					<button class="sharebar-button button_full_width" onclick="window.open('mailto:please@set.address?subject=File%20on%20pixeldrain&body=' + window.location.href);">
 						{{template `email.svg` .}}<br/>E-Mail
 					</button>
 					<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
@@ -96,18 +96,24 @@
 				</div>
 			</div>
 			<div id="sponsors" class="sponsors">
-				<iframe data-aa="73974" src="//ad.a-ads.com/73974?size=728x90&background_color={{.Style.Layer1Color.RGB}}&text_color={{.Style.TextColor.RGB}}&title_color={{.Style.HighlightColor.RGB}}&title_hover_color={{.Style.HighlightColor.RGB}}&link_color={{.Style.HighlightColor.RGB}}&link_hover_color={{.Style.HighlightColor.RGB}}" scrolling="no" style="width:728px; height:90px; border:0px; padding:0; overflow:hidden" allowtransparency="true"></iframe>
+				<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
+				<iframe
+					data-aa="73974"
+					src="//ad.a-ads.com/73974?size=728x90&background_color={{.Style.Layer1Color.RGB}}&text_color={{.Style.TextColor.RGB}}&title_color={{.Style.HighlightColor.RGB}}&title_hover_color={{.Style.HighlightColor.RGB}}&link_color={{.Style.HighlightColor.RGB}}&link_hover_color={{.Style.HighlightColor.RGB}}"
+					style="width:728px; height:90px; border:none; padding:0; overflow:hidden;"
+					scrolling="no">
+				</iframe>
 			</div>
 		</div>
 
 		<div id="details_popup" class="popup details_popup">
 			<div id="details_popup_title" class="highlight_1">
 				File Info
-				<button style="position: absolute; top: 3px; right: 3px;" class="button_red" onclick="DetailsWindow.toggle();">{{template `close.svg`}}</button>
+				<button style="position: absolute; top: 3px; right: 3px;" class="button_red" onclick="DetailsWindow.toggle();">{{template `close.svg` .}}</button>
 			</div>
 			<div class="content_area">
-				<span id="info_file_details"></span>
-				<span id="info_about">
+				<div id="info_file_details"></div>
+				<div id="info_about">
 					<h3>Downloads and views</h3>
 					<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: auto;">
 						<canvas id="bandwidth_chart"></canvas>
@@ -133,7 +139,7 @@
 						<tr><td>r</td><td> = Toggle shuffle (<b><u>r</u></b>andom)</td></tr>
 						<tr><td>SHIFT + s</td><td> = Download all the files in the list as a zip archive</td></tr>
 					</table>
-				</span>
+				</div>
 			</div>
 		</div>
 		<div id="captcha_popup" class="popup captcha_popup">
@@ -145,7 +151,7 @@
 
 		<script src="/res/script/Chart.min.js"></script>
 		<script src="/res/script/jquery.js"></script>
-		<script type="text/javascript">
+		<script>
 			var apiEndpoint = '{{.APIEndpoint}}';
 			var captchaKey = '{{.Other.CaptchaKey}}';
 

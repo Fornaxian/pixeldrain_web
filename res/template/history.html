@@ -1,11 +1,11 @@
 {{define "history_cookies"}}<!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		{{template "meta_tags" "Upload History"}}
 		{{template "user_style" .}}
 		<script src="res/script/jquery.js"></script>
 		<script src="res/script/jquery-cookie.js"></script>
-		<script type="text/javascript">var apiEndpoint = '{{.APIEndpoint}}';</script>
+		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 	<body>
 		<div id='body' class="body">
@@ -13,7 +13,7 @@
 			<h1>Upload History</h1>
 			<div class="page_content"><div class="limit_width">
 				<p>
-				Here are all files you have previously uploaded to PixelDrain using this computer.
+				Here are all files you have previously uploaded to pixeldrain using this computer.
 				This data is saved locally in your web browser and gets updated every time you upload a file through your current browser.
 				</p>
 				<br/>

@@ -242,12 +242,12 @@ func serveFilePreviewDemo(w http.ResponseWriter) {
  |    |  /\/  |/  |/  /  |  /  |  /  |  |  / |/ |
  |    |_/ /\_/|__/|__/\_/|_/   |_/\_/|_/|_/  |  |_/
 
-This is a demonstration of Pixeldrain's file viewer.
+This is a demonstration of pixeldrain's file viewer.
 
-The website automatically detects what kind of file you requested and prepares a page for viewing it properly. This is what a text file would look like on Pixeldrain. You can upload your own text file at pixeldrain.com/t.
+The website automatically detects what kind of file you requested and prepares a page for viewing it properly. This is what a text file would look like on pixeldrain. You can upload your own text file at pixeldrain.com/t.
 
 Pixeldrain is a free service for sharing files with large or small groups of people. For more information visit the home page by pressing the home button on the toolbar at the left side of the screen.
 
-Press the Details button or "i" for more info about Pixeldrain's file viewer.
+Press the Details button or "i" for more info about pixeldrain's file viewer.
 </pre></div>`)
 }

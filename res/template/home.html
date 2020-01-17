@@ -1,6 +1,6 @@
 {{define "home"}}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		{{template "meta_tags" "Free file sharing service"}}
 		{{template "user_style" .}}
@@ -60,7 +60,7 @@
 			<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button>
 			<br/>
 			<p>
-				By uploading files to Pixeldrain you accept that a cookie will
+				By uploading files to pixeldrain you accept that a cookie will
 				be placed in your web browser. More information on the
 				<a href="/about">about</a> page
 			<p>
@@ -87,19 +87,19 @@
 					{{template `open_in_new.svg` .}}<br/><span>Open link</span>
 				</button>
 				<div id="social_buttons" style="display: inline-block">
-					<button class="social_button" onclick="window.open('mailto:please@set.address?subject=File%20on%20pixeldrain&body=' + shareLink);">
+					<button class="social_button" onclick="window.open('mailto:please@set.address?subject=File%20on%20pixeldrain&body=' + getShareLink());">
 						{{template `email.svg` .}}<br/>E-Mail
 					</button>
-					<button class="social_button" onclick="window.open('https://twitter.com/share?url=' + shareLink);">
+					<button class="social_button" onclick="window.open('https://twitter.com/share?url=' + getShareLink());">
 						{{template `twitter.svg` .}}<br/>Twitter
 					</button>
-					<button class="social_button" onclick="window.open('http://www.facebook.com/sharer.php?u=' + shareLink);">
+					<button class="social_button" onclick="window.open('http://www.facebook.com/sharer.php?u=' + getShareLink());">
 						{{template `facebook.svg` .}}<br/>Facebook
 					</button>
-					<button class="social_button" onclick="window.open('https://www.reddit.com/submit?url=' + shareLink);">
+					<button class="social_button" onclick="window.open('https://www.reddit.com/submit?url=' + getShareLink());">
 						{{template `reddit.svg` .}}<br/>Reddit
 					</button>
-					<button class="social_button" onclick="window.open('http://www.tumblr.com/share/link?url=' + shareLink);">
+					<button class="social_button" onclick="window.open('http://www.tumblr.com/share/link?url=' + getShareLink());">
 						{{template `tumblr.svg` .}}<br/>Tumblr
 					</button>
 				</div>
@@ -148,7 +148,7 @@
 
 		{{template "page_bottom"}}
 
-		<script type="text/javascript">
+		<script>
 		var apiEndpoint = '{{.APIEndpoint}}';
 		var API_URL = "/api";
 		{{template "home.js"}}

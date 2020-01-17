@@ -47,10 +47,10 @@ var Viewer = {
 			document.getElementById("file_viewer_headerbar_title").style.lineHeight = "1em";
 			document.getElementById("file_viewer_list_title").innerText = this.title;
 			document.getElementById("file_viewer_file_title").innerText = file.name;
-			document.title = this.title + " ~ " + file.name + " ~ PixelDrain";
+			document.title = this.title + " ~ " + file.name + " ~ pixeldrain";
 		} else {
 			document.getElementById("file_viewer_file_title").innerText = file.name;
-			document.title = file.name + " ~ PixelDrain";
+			document.title = file.name + " ~ pixeldrain";
 		}
 
 		$.get("/u/" + file.id + "/preview", function(response){

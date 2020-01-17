@@ -53,7 +53,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	templateData.OGData = metadataFromFile(*finfo[0])
 	var err error
 	if list {
-		templateData.Title = fmt.Sprintf("%d files in Pixeldrain", len(finfo))
+		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(finfo))
 		templateData.Other = viewerData{
 			Type:       "list",
 			CaptchaKey: wc.captchaKey(),
@@ -66,7 +66,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			},
 		}
 	} else {
-		templateData.Title = fmt.Sprintf("%s ~ Pixeldrain file", finfo[0].Name)
+		templateData.Title = fmt.Sprintf("%s ~ pixeldrain", finfo[0].Name)
 		templateData.Other = viewerData{
 			Type:        "file",
 			CaptchaKey:  wc.captchaKey(),
