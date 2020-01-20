@@ -19,14 +19,9 @@ type List struct {
 
 // ListFile information object from the pixeldrain API
 type ListFile struct {
-	ID            string    `json:"id"`
-	DetailHREF    string    `json:"detail_href"`
-	Name          string    `json:"name"`
-	Description   string    `json:"description"`
-	DateCreated   time.Time `json:"date_created"`
-	DateLastView  time.Time `json:"date_last_view"`
-	Views         int64     `json:"views"`
-	BandwidthUsed uint64    `json:"bandwidth_used"`
+	DetailHREF  string `json:"detail_href"`
+	Description string `json:"description"`
+	FileInfo    `json:""`
 }
 
 // GetList get a List from the pixeldrain API. Errors will be available through

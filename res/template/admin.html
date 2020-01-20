@@ -26,7 +26,6 @@
 				</div>
 
 				<script src="/res/script/Chart.min.js"></script>
-				<script src="/res/script/jquery.js"></script>
 				<script>
 				var apiEndpoint = '{{.APIEndpoint}}';
 
@@ -80,11 +79,11 @@
 										},
 										ticks: {
 											callback: function(value, index, values) {
-												if (value > 1e12) {
+												if (value >= 1e12) {
 													return Math.round(value/1e9)/1e3 + " TB";
-												} else if (value > 1e9) {
+												} else if (value >= 1e9) {
 													return Math.round(value/1e6)/1e3 + " GB";
-												} else if (value > 1e6) {
+												} else if (value >= 1e6) {
 													return Math.round(value/1e3)/1e3 + " MB";
 												}
 												return value/1e3 + " kB";
@@ -123,15 +122,19 @@
 				);
 
 				function setData(){
-					$.get(apiEndpoint+"/admin/files/timeseries?days="+days+"&interval="+interval, function(response){
-						console.log(response);
-						if (response.success) {
-							window.graph.data.labels = response.labels;
-							window.graph.data.datasets[0].data = response.downloads;
-							window.graph.data.datasets[1].data = response.views;
+					fetch(apiEndpoint+"/admin/files/timeseries?days="+days+"&interval="+interval).then(resp => {
+						if (!resp.ok) { return Promise.reject("Error: "+resp.status);}
+						return resp.json();
+					}).then(resp => {
+						if (resp.success) {
+							window.graph.data.labels = resp.labels;
+							window.graph.data.datasets[0].data = resp.downloads;
+							window.graph.data.datasets[1].data = resp.views;
 							window.graph.update();
 						}
-					});
+					}).catch(e => {
+						alert("Error requesting time series: "+e);
+					})
 				}
 
 				setData();

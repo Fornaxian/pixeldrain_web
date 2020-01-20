@@ -66,3 +66,19 @@ function addUploadHistory(fileID) {
 	// Save the new ID
 	localStorage.setItem("uploaded_files", fileID + "," + uploads);
 }
+
+function copyText(text) {
+	// Create a textarea to copy the text from
+	let ta = document.createElement("textarea");
+	ta.setAttribute("readonly", "readonly")
+	ta.style.position = "absolute";
+	ta.style.left = "-9999px";
+	ta.value = text; // Put the text in the textarea
+
+	// Add the textarea to the DOM so it can be seleted by the user
+	document.body.appendChild(ta);
+	ta.select() // Select the contents of the textarea
+	let success = document.execCommand("copy"); // Copy the selected text
+	document.body.removeChild(ta); // Remove the textarea
+	return success;
+}

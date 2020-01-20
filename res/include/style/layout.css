@@ -347,6 +347,7 @@ pre{
 	white-space: normal;
 	text-overflow: ellipsis;
 	vertical-align: top;
+	cursor: pointer;
 }
 .file_button:hover,
 .file_button_selected {

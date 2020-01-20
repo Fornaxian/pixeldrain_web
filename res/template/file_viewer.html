@@ -22,7 +22,7 @@
 	<body>
 		<div id="file_viewer" class="file_viewer">
 			<div id="file_viewer_headerbar" class="highlight_1 file_viewer_headerbar">
-				<button id="button_toggle_toolbar" class="button_toggle_toolbar" onClick="Toolbar.toggle();">☰</button>
+				<button id="btn_toggle_toolbar" class="button_toggle_toolbar">☰</button>
 				<a href="/" id="button_home" class="button button_home">
 					<img src="{{template `pixeldrain_icon.png`}}"
 						alt="Back to the Home page"
@@ -32,7 +32,7 @@
 					<div id="file_viewer_list_title"></div>
 					<div id="file_viewer_file_title">{{.Title}}</div>
 				</div>
-				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onClick="window.close();">{{template `close.svg` .}}</button>
+				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onclick="window.close();">{{template `close.svg` .}}</button>
 			</div>
 			<div id="list_navigator" class="list_navigator"></div>
 			<div id="file_viewer_window" class="file_viewer_window">
@@ -42,27 +42,27 @@
 					<div id="stat_downloads_label" class="toolbar_label">Downloads</div>
 					<div id="stat_downloads" style="text-align: center;">N/A</div>
 
-					<button id="btnDownload" class="toolbar_button button_full_width" onClick="Toolbar.download();">
+					<button id="btn_download" class="toolbar_button button_full_width">
 						{{template `save.svg` .}}
 						<span>Download</span>
 					</button>
-					<button id="btnDownloadList" class="toolbar_button button_full_width" style="display: none" onClick="Toolbar.downloadList()">
+					<button id="btn_download_list" class="toolbar_button button_full_width" style="display: none">
 						{{template `save.svg` .}}
 						<span>DL all files</span>
 					</button>
-					<button id="btnCopy" class="toolbar_button button_full_width" onClick="Toolbar.copyUrl();">
+					<button id="btn_copy" class="toolbar_button button_full_width">
 						{{template `copy.svg` .}}
 						<span><u>C</u>opy Link</span>
 					</button>
-					<button id="btnShare" class="toolbar_button button_full_width" onClick="Sharebar.toggle();">
+					<button id="btn_share" class="toolbar_button button_full_width">
 						{{template `share.svg` .}}
 						<span>Share</span>
 					</button>
-					<button id="btnShuffle" class="toolbar_button button_full_width" style="display: none" onClick="ListNavigator.toggleShuffle();">
+					<button id="btn_shuffle" class="toolbar_button button_full_width" style="display: none">
 						{{template `shuffle.svg` .}}
 						<span>Shuffle &#x2610;</span>
 					</button>
-					<button id="btnDetails" class="toolbar_button button_full_width" onClick="DetailsWindow.toggle();">
+					<button id="btn_details" class="toolbar_button button_full_width">
 						{{template `help.svg` .}}
 						<span>Deta<u>i</u>ls</span>
 					</button>
@@ -109,7 +109,7 @@
 		<div id="details_popup" class="popup details_popup">
 			<div id="details_popup_title" class="highlight_1">
 				File Info
-				<button style="position: absolute; top: 3px; right: 3px;" class="button_red" onclick="DetailsWindow.toggle();">{{template `close.svg` .}}</button>
+				<button id="btn_close_details" style="position: absolute; top: 3px; right: 3px;" class="button_red">{{template `close.svg` .}}</button>
 			</div>
 			<div class="content_area">
 				<div id="info_file_details"></div>
@@ -150,19 +150,24 @@
 		</div>
 
 		<script src="/res/script/Chart.min.js"></script>
-		<script src="/res/script/jquery.js"></script>
 		<script>
 			var apiEndpoint = '{{.APIEndpoint}}';
 			var captchaKey = '{{.Other.CaptchaKey}}';
 
+			{{template `util.js`}}
 			{{template `Toolbar.js`}}
-			{{template `Viewer.js`}}
+			{{template `DetailsWindow.js`}}
 			{{template `ListNavigator.js`}}
+			{{template `Viewer.js`}}
+
+			{{template `ImageViewer.js`}}
+			{{template `VideoViewer.js`}}
+			{{template `AudioViewer.js`}}
 
 			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.
 			// Just to slice another few milliseconds from the load time :)
 			window.addEventListener("load", function(){
-				Viewer.init('{{.Other.Type}}', {{.Other.APIResponse}});
+				new Viewer('{{.Other.Type}}', {{.Other.APIResponse}});
 			});
 		</script>
 

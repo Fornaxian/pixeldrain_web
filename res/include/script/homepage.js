@@ -178,22 +178,6 @@ function copyLink() {
 	}
 }
 
-function copyText(text) {
-	// Create a textarea to copy the text from
-	let ta = document.createElement("textarea");
-	ta.setAttribute("readonly", "readonly")
-	ta.style.position = "absolute";
-	ta.style.left = "-9999px";
-	ta.value = text; // Put the text in the textarea
-
-	// Add the textarea to the DOM so it can be seleted by the user
-	document.body.appendChild(ta);
-	ta.select() // Select the contents of the textarea
-	let success = document.execCommand("copy"); // Copy the selected text
-	document.body.removeChild(ta); // Remove the textarea
-	return success;
-}
-
 /*
  * Upload Handlers
  */
@@ -341,6 +325,32 @@ btnCopyBBCode.addEventListener("click", function(){
 	}else{
 		btnCopyBBCode.classList.add("button_red");
 		btnCopyBBCode.innerHTML = "Copying links failed"
+	}
+});
+
+let btnCopyMarkdown = document.getElementById("btn_copy_markdown");
+btnCopyMarkdown.addEventListener("click", function(){
+	let text = "";
+	let uploads = uploader.finishedUploads();
+
+	// Add the text to the textarea
+	for (let i = 0; i < uploads.length; i++) {
+		// Example: * [Some_file.png](https://pixeldrain.com/u/abcd1234)
+
+		if (uploads.length > 1) { text += " * "; }
+		text += "["+uploads[i].fileName+"]("+domainURL()+"/u/"+uploads[i].fileID+")\n";
+	}
+	if (shareLink.includes("/l/")) {
+		text += " * [All "+uploads.length+" files]("+shareLink+")\n";
+	}
+
+	// Copy the selected text
+	if(copyText(text)){
+		btnCopyMarkdown.classList.add("button_highlight");
+		btnCopyMarkdown.innerHTML = "Markdown copied to clipboard!"
+	}else{
+		btnCopyMarkdown.classList.add("button_red");
+		btnCopyMarkdown.innerHTML = "Copying links failed"
 	}
 });
 
