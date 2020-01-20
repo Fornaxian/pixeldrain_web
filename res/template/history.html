@@ -3,9 +3,6 @@
 	<head>
 		{{template "meta_tags" "Upload History"}}
 		{{template "user_style" .}}
-		<script src="res/script/jquery.js"></script>
-		<script src="res/script/jquery-cookie.js"></script>
-		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
 	<body>
 		<div id='body' class="body">
@@ -18,10 +15,14 @@
 				</p>
 				<br/>
 
-				<div id="uploadedFiles" class="highlight_dark"></div>
+				<div id="uploaded_files" class="highlight_dark"></div>
 			</div></div>
 			{{template "page_bottom" .}}
-		<script>{{template `history.js`}}</script>
+		<script>
+			let apiEndpoint = '{{.APIEndpoint}}';
+			{{template `util.js`}}
+			{{template `history.js`}}
+		</script>
 		{{template "analytics"}}
 	</body>
 </html>{{end}}

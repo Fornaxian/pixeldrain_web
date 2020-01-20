@@ -362,6 +362,9 @@ pre{
 	float: left;
 	display: block;
 }
+.file_button > .file_button_title{
+	color: var(--highlight_color);
+}
 
 /* Form fields */
 

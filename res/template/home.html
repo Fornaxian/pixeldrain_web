@@ -56,8 +56,8 @@
 				manager
 			</div></div>
 			<input id="file_input_field" type="file" name="file" multiple="multiple"/>
-			<button id="select_file_button" class="big_button button_highlight">Upload Files</button>
-			<button id="text_button" class="big_button button_highlight" onClick="window.location.href = '/t/'">Upload Text</button>
+			<button id="upload_file_button" class="big_button button_highlight"><u>U</u>pload Files</button>
+			<button id="upload_text_button" class="big_button button_highlight">Upload <u>T</u>ext</button>
 			<br/>
 			<p>
 				By uploading files to pixeldrain you accept that a cookie will
@@ -76,30 +76,30 @@
 			</div>
 			<div id="instruction_3_after" style="display: none">
 				<div id="navigator_share_button" style="display: inline-block">
-					<button class="social_button" onclick="shareButton()">
+					<button id="btn_social_share" class="social_button">
 						{{template `share.svg` .}}<br/>Share
 					</button>
 				</div>
-				<button id="btn_copy_link" class="social_button" style="display: inline-block" onclick="copyLink()">
+				<button id="btn_copy_link" class="social_button" style="display: inline-block">
 					{{template `copy.svg` .}}<br/><span><u>C</u>opy link</span>
 				</button>
-				<button id="btn_open_link" class="social_button" style="display: inline-block" onclick="openLink()">
+				<button id="btn_open_link" class="social_button" style="display: inline-block">
 					{{template `open_in_new.svg` .}}<br/><span>Open link</span>
 				</button>
 				<div id="social_buttons" style="display: inline-block">
-					<button class="social_button" onclick="window.open('mailto:please@set.address?subject=File%20on%20pixeldrain&body=' + getShareLink());">
+					<button id="btn_social_email" class="social_button">
 						{{template `email.svg` .}}<br/>E-Mail
 					</button>
-					<button class="social_button" onclick="window.open('https://twitter.com/share?url=' + getShareLink());">
+					<button id="btn_social_twitter" class="social_button">
 						{{template `twitter.svg` .}}<br/>Twitter
 					</button>
-					<button class="social_button" onclick="window.open('http://www.facebook.com/sharer.php?u=' + getShareLink());">
+					<button id="btn_social_facebook" class="social_button">
 						{{template `facebook.svg` .}}<br/>Facebook
 					</button>
-					<button class="social_button" onclick="window.open('https://www.reddit.com/submit?url=' + getShareLink());">
+					<button id="btn_social_reddit" class="social_button">
 						{{template `reddit.svg` .}}<br/>Reddit
 					</button>
-					<button class="social_button" onclick="window.open('http://www.tumblr.com/share/link?url=' + getShareLink());">
+					<button id="btc_social_tumblr" class="social_button">
 						{{template `tumblr.svg` .}}<br/>Tumblr
 					</button>
 				</div>
@@ -149,10 +149,10 @@
 		{{template "page_bottom"}}
 
 		<script>
-		var apiEndpoint = '{{.APIEndpoint}}';
-		var API_URL = "/api";
-		{{template "home.js"}}
-		{{template "home_plain.js"}}
+		let apiEndpoint = '{{.APIEndpoint}}';
+		{{template "util.js"}}
+		{{template "UploadManager.js"}}
+		{{template "homepage.js"}}
 		</script>
 
 		{{template "analytics"}}

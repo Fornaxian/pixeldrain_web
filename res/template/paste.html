@@ -25,8 +25,8 @@
 				position: relative;
 				height: 100%;
 				width: 100%;
-				/* border: none !important; */
 				background: var(--layer_1_color);
+				color: var(--text_color);
 			}
 
 			.toolbar_button{
@@ -60,8 +60,12 @@
 			<textarea id="textarea" class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
 		</div>
 
-		<script src="/res/script/jquery.js"></script>
-		<script>{{template "textupload.js"}}</script>
+		<script>
+			let apiEndpoint = '{{.APIEndpoint}}';
+			{{template "UploadManager.js"}}
+			{{template "util.js"}}
+			{{template "textupload.js"}}
+		</script>
 
 		{{template "analytics"}}
 	</body>
