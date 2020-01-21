@@ -103,8 +103,8 @@ function uploadsFinished() {
 	let uploadLog = uploader.finishedUploads();
 
 	if (uploadLog.length === 1) {
-		shareTitle = "Download "+uploadLog[0].name+" here";
-		shareLink = domainURL()+"/u/"+uploadLog[0].id;
+		shareTitle = "Download "+uploadLog[0].fileName+" here";
+		shareLink = domainURL()+"/u/"+uploadLog[0].fileID;
 
 		showShareButtons();
 	} else if (uploadLog.length > 1) {
