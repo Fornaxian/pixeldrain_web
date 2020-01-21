@@ -83,7 +83,7 @@ class ListNavigator {
 		do {
 			rand = Math.round(Math.random() * ln.length);
 			console.log("rand is " + rand);
-		} while(ln.history.indexOf(index) > -1);
+		} while(ln.history.indexOf(rand) > -1);
 
 		ln.setItem(rand);
 	}

@@ -1,12 +1,9 @@
-class AudioViewer {
+class FileViewer {
 	viewer = null;
 	file   = null;
-	next   = null;
 
 	container = null;
 	icon      = null;
-	element   = null;
-	source    = null;
 
 	constructor(viewer, file, next) {let v = this;
 		v.viewer = viewer;
@@ -18,24 +15,18 @@ class AudioViewer {
 		v.container.appendChild(document.createElement("br"));
 
 		v.icon = document.createElement("img");
-		v.icon.src = "/res/img/mime/audio.png";
+		v.icon.src = apiEndpoint+"/"+file.thumbnail_href;
 		v.container.appendChild(v.icon);
 
 		v.container.appendChild(document.createElement("br"));
 		v.container.appendChild(document.createTextNode(file.name));
 		v.container.appendChild(document.createElement("br"));
+		v.container.appendChild(document.createTextNode("Type: "+file.mime_type));
 		v.container.appendChild(document.createElement("br"));
-
-		v.element = document.createElement("audio");
-		v.element.autoplay = "autoplay";
-		v.element.controls = "controls";
-		v.element.style.width = "90%";
-		v.element.addEventListener("ended", () => { v.next(); }, false);
-
-		v.source = document.createElement("source");
-		v.source.src = apiEndpoint+"/file/"+v.file.id;
-		v.element.appendChild(v.source);
-		v.container.appendChild(v.element);
+		v.container.appendChild(document.createElement("br"));
+		v.container.appendChild(document.createTextNode(
+			"Press the 'Download' button in the menu to download this file"
+		));
 	}
 
 	render(parent) {let v = this;

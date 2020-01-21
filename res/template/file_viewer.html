@@ -92,7 +92,7 @@
 				</div>
 
 				<div id="filepreview" class="file_viewer_file_preview">
-					<div class="image" style="margin-top: 20%; width: 100px; height: 100px;">{{template "spinner.svg" .}}</div>
+					<div class="center" style="width: 100px; height: 100px;">{{template "spinner.svg" .}}</div>
 				</div>
 			</div>
 			<div id="sponsors" class="sponsors">
@@ -163,11 +163,14 @@
 			{{template `ImageViewer.js`}}
 			{{template `VideoViewer.js`}}
 			{{template `AudioViewer.js`}}
+			{{template `PDFViewer.js`}}
+			{{template `TextViewer.js`}}
+			{{template `FileViewer.js`}}
 
 			// This info gets filled in on the server side to prevent having to make an API call right after the page loads.
 			// Just to slice another few milliseconds from the load time :)
 			window.addEventListener("load", function(){
-				new Viewer('{{.Other.Type}}', {{.Other.APIResponse}});
+				new Viewer('{{.Other.Type}}', '{{.Other.ViewToken}}', {{.Other.APIResponse}});
 			});
 		</script>
 

@@ -7,28 +7,28 @@ class VideoViewer {
 	vidElement   = null;
 	videoSource  = null;
 
-	constructor(viewer, file, next) {let vv = this;
-		vv.viewer = viewer;
-		vv.file   = file;
-		vv.next   = next;
+	constructor(viewer, file, next) {let v = this;
+		v.viewer = viewer;
+		v.file   = file;
+		v.next   = next;
 
-		vv.vidContainer = document.createElement("div");
-		vv.vidContainer.classList = "image-container";
+		v.vidContainer = document.createElement("div");
+		v.vidContainer.classList = "image-container";
 
-		vv.vidElement = document.createElement("video");
-		vv.vidElement.autoplay = "autoplay";
-		vv.vidElement.controls = "controls";
-		vv.vidElement.classList = "center drop-shadow";
-		vv.vidElement.addEventListener("ended", () => { vv.next(); }, false);
+		v.vidElement = document.createElement("video");
+		v.vidElement.autoplay = "autoplay";
+		v.vidElement.controls = "controls";
+		v.vidElement.classList = "center drop-shadow";
+		v.vidElement.addEventListener("ended", () => { v.next(); }, false);
 
-		vv.videoSource = document.createElement("source");
-		vv.videoSource.src = apiEndpoint+"/file/"+vv.file.id;
+		v.videoSource = document.createElement("source");
+		v.videoSource.src = apiEndpoint+"/file/"+v.file.id;
 
-		vv.vidElement.appendChild(vv.videoSource);
-		vv.vidContainer.appendChild(vv.vidElement);
+		v.vidElement.appendChild(v.videoSource);
+		v.vidContainer.appendChild(v.vidElement);
 	}
 
-	render(parent) {let vv = this;
-		parent.appendChild(vv.vidContainer);
+	render(parent) {let v = this;
+		parent.appendChild(v.vidContainer);
 	}
 }

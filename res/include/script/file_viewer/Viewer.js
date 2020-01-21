@@ -9,15 +9,17 @@ class Viewer {
 	currentFile = "";
 	title       = ""; // Contains either the file name or list title
 	listId      = "";
+	viewToken   = "";
 	isList      = false;
 	isFile      = false;
 	initialized = false;
 
-	constructor(type, data) {let v = this;
+	constructor(type, viewToken, data) {let v = this;
 		if(v.initialized){
 			return;
 		}
 
+		v.viewToken     = viewToken;
 		v.toolbar       = new Toolbar(v);
 		v.detailsWindow = new DetailsWindow(v);
 
@@ -72,32 +74,52 @@ class Viewer {
 		// Update the file details
 		v.detailsWindow.setDetails(file);
 
+		// Register a new view. We don't care what this returns becasue we can't
+		// do anything about it anyway
+		fetch(apiEndpoint+"/file/"+file.id+"/view",
+			{
+				method: "POST",
+				headers: {"Content-Type": "application/x-www-form-urlencoded"},
+				body: "token="+v.viewToken
+			}
+		);
+
 		// Clear the canvas
 		v.divFilepreview.innerHTML = "";
 
-		if (file.mime_type.startsWith("image")) {
+		let nextItem = () => {
+			if (v.listNavigator !== null) {
+				v.listNavigator.nextItem();
+			}
+		};
+
+		if (
+			file.mime_type.startsWith("image")
+		) {
 			new ImageViewer(v, file).render(v.divFilepreview);
-		} else if (file.mime_type.startsWith("video")) {
-			new VideoViewer(v, file, () => {
-				if (v.listNavigator !== null) {
-					v.listNavigator.nextItem();
-				}
-			}).render(v.divFilepreview);
-		} else if (file.mime_type.startsWith("audio") || file.mime_type === "application/ogg") {
-			new AudioViewer(v, file, () => {
-				if (v.listNavigator !== null) {
-					v.listNavigator.nextItem();
-				}
-			}).render(v.divFilepreview);
+		} else if (
+			file.mime_type.startsWith("video") ||
+			file.mime_type === "application/matroska" ||
+			file.mime_type === "application/x-matroska"
+		) {
+			new VideoViewer(v, file, nextItem).render(v.divFilepreview);
+		} else if (
+			file.mime_type.startsWith("audio") ||
+			file.mime_type === "application/ogg"
+		) {
+			new AudioViewer(v, file, nextItem).render(v.divFilepreview);
+		} else if (
+			file.mime_type === "application/pdf" ||
+			file.mime_type === "application/x-pdf"
+		) {
+			new PDFViewer(v, file).render(v.divFilepreview);
+		} else if (
+			file.mime_type.startsWith("text") ||
+			file.id === "demo"
+		) {
+			new TextViewer(v, file).render(v.divFilepreview);
 		} else {
-			fetch("/u/"+file.id+"/preview").then(resp => {
-				if (!resp.ok) { return Promise.reject(resp.status); }
-				return resp.text();
-			}).then(resp => {
-				v.divFilepreview.innerHTML = resp;
-			}).catch(err => {
-				v.divFilepreview.innerText = "Error loading file: "+err;
-			});
+			new FileViewer(v, file).render(v.divFilepreview);
 		}
 	}
 
