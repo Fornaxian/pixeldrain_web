@@ -134,6 +134,9 @@ class UploadManager {
 				if (typeof(job.onFinished) === "function") {
 					job.onFinished(resp.id);
 				}
+
+				// Finish the upload job
+				um.finishUpload();
 			} else if (xhr.status >= 400) {
 				// Request failed
 				console.log("Upload error. status: " + xhr.status + " response: " + xhr.response);
@@ -144,6 +147,9 @@ class UploadManager {
 					job.tries++;
 					um.uploadQueue.push(job);
 				}
+
+				// Sleep the upload thread for 5 seconds
+				window.setTimeout(() => { um.finishUpload(); }, 5000);
 			} else {
 				// Request did not arrive
 				if (job.tries === 3) { // Upload failed
@@ -154,10 +160,10 @@ class UploadManager {
 					job.tries++;
 					um.uploadQueue.push(job);
 				}
-			}
 
-			// Finish the upload job
-			um.finishUpload();
+				// Sleep the upload thread for 5 seconds
+				window.setTimeout(() => { um.finishUpload(); }, 5000);
+			}
 		};
 		xhr.send(form);
 	}
