@@ -82,3 +82,11 @@ function copyText(text) {
 	document.body.removeChild(ta); // Remove the textarea
 	return success;
 }
+
+function domainURL() {
+	let url = window.location.protocol+"//"+window.location.hostname;
+	if (window.location.port != "") {
+		url = url+":"+window.location.port;
+	}
+	return url;
+}

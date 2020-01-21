@@ -46,46 +46,25 @@ class DetailsWindow {
 	}
 
 	setDetails(file) {let dw = this;
+		let desc = "";
 		if (dw.viewer.isList) {
-			// Lists give incomplete file information, so we have to request
-			// more details in the background. File descriptions only exist in
-			// lists, so for that we use the data provided in the page source
-			fetch(apiEndpoint + "/file/" + file.id + "/info").then(resp => {
-				if (!resp.ok) {return;}
-				return resp.json();
-			}).then(resp => {
-				dw.fileID = resp.id;
-				dw.divFileDetails.innerHTML = "<table>"
-					+ "<tr><td>Name<td><td>" + escapeHTML(resp.name) + "</td></tr>"
-					+ "<tr><td>URL<td><td><a href=\"/u/" + resp.id + "\">/u/" + resp.id + "</a></td></tr>"
-					+ "<tr><td>Mime Type<td><td>" + escapeHTML(resp.mime_type) + "</td></tr>"
-					+ "<tr><td>ID<td><td>" + resp.id + "</td></tr>"
-					+ "<tr><td>Size<td><td>" + formatDataVolume(resp.size) + "</td></tr>"
-					+ "<tr><td>Bandwidth<td><td>" + formatDataVolume(resp.bandwidth_used) + "</td></tr>"
-					+ "<tr><td>Upload Date<td><td>" + resp.date_upload + "</td></tr>"
-					+ "<tr><td>Description<td><td>" + escapeHTML(file.description) + "</td></tr>"
-					+ "</table>";
+			desc = file.description;
+		}
+		dw.fileID = file.id;
+		dw.divFileDetails.innerHTML = "<table>"
+			+ "<tr><td>Name<td><td>" + escapeHTML(file.name) + "</td></tr>"
+			+ "<tr><td>URL<td><td><a href=\"/u/" + file.id + "\">"+domainURL()+"/u/" + file.id + "</a></td></tr>"
+			+ "<tr><td>Mime Type<td><td>" + escapeHTML(file.mime_type) + "</td></tr>"
+			+ "<tr><td>ID<td><td>" + file.id + "</td></tr>"
+			+ "<tr><td>Size<td><td>" + formatDataVolume(file.size) + "</td></tr>"
+			+ "<tr><td>Bandwidth<td><td>" + formatDataVolume(file.bandwidth_used) + "</td></tr>"
+			+ "<tr><td>Upload Date<td><td>" + file.date_upload + "</td></tr>"
+			+ "<tr><td>Description<td><td>" + escapeHTML(desc) + "</td></tr>"
+			+ "</table>";
 
-				dw.viewer.toolbar.setStats(resp.views, resp.bandwidth_used/resp.size);
-				if(dw.visible) {
-					dw.updateGraph(dw.fileID);
-				}
-			})
-		} else {
-			dw.fileID = file.id;
-			dw.divFileDetails.innerHTML = "<table>"
-				+ "<tr><td>Name<td><td>" + escapeHTML(file.name) + "</td></tr>"
-				+ "<tr><td>Mime Type<td><td>" + escapeHTML(file.mime_type) + "</td></tr>"
-				+ "<tr><td>ID<td><td>" + file.id + "</td></tr>"
-				+ "<tr><td>Size<td><td>" + formatDataVolume(file.size) + "</td></tr>"
-				+ "<tr><td>Bandwidth<td><td>" + formatDataVolume(file.bandwidth_used) + "</td></tr>"
-				+ "<tr><td>Upload Date<td><td>" + file.date_upload + "</td></tr>"
-				+ "</table>";
-
-			dw.viewer.toolbar.setStats(file.views, file.bandwidth_used/file.size);
-			if(dw.visible) {
-				dw.updateGraph(file.id);
-			}
+		dw.viewer.toolbar.setStats(file.views, file.bandwidth_used/file.size);
+		if(dw.visible) {
+			dw.updateGraph(file.id);
 		}
 	}
 
