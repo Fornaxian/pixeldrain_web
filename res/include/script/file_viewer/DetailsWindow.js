@@ -56,13 +56,12 @@ class DetailsWindow {
 			+ "<tr><td>URL<td><td><a href=\"/u/" + file.id + "\">"+domainURL()+"/u/" + file.id + "</a></td></tr>"
 			+ "<tr><td>Mime Type<td><td>" + escapeHTML(file.mime_type) + "</td></tr>"
 			+ "<tr><td>ID<td><td>" + file.id + "</td></tr>"
-			+ "<tr><td>Size<td><td>" + formatDataVolume(file.size) + "</td></tr>"
-			+ "<tr><td>Bandwidth<td><td>" + formatDataVolume(file.bandwidth_used) + "</td></tr>"
+			+ "<tr><td>Size<td><td>" + formatDataVolume(file.size, 4) + "</td></tr>"
+			+ "<tr><td>Bandwidth<td><td>" + formatDataVolume(file.bandwidth_used, 4) + "</td></tr>"
 			+ "<tr><td>Upload Date<td><td>" + file.date_upload + "</td></tr>"
 			+ "<tr><td>Description<td><td>" + escapeHTML(desc) + "</td></tr>"
 			+ "</table>";
 
-		dw.viewer.toolbar.setStats(file.views, file.bandwidth_used/file.size);
 		if(dw.visible) {
 			dw.updateGraph(file.id);
 		}

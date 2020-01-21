@@ -90,3 +90,17 @@ function domainURL() {
 	}
 	return url;
 }
+
+function formatDataVolume(amt = 0, precision = 3) {
+	if (precision < 3) { precision = 3; }
+	if (amt >= 1e12) {
+		return (amt/1e12).toPrecision(precision) + " TB";
+	} else if (amt >= 1e9) {
+		return (amt/1e9).toPrecision(precision) + " GB";
+	} else if (amt >= 1e6) {
+		return (amt/1e6).toPrecision(precision) + " MB";
+	} else if (amt >= 1e3) {
+		return (amt/1e3).toPrecision(precision) + " kB";
+	}
+	return amt + " B"
+}

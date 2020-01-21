@@ -73,6 +73,7 @@ class Viewer {
 
 		// Update the file details
 		v.detailsWindow.setDetails(file);
+		v.toolbar.setStats(file);
 
 		// Register a new view. We don't care what this returns becasue we can't
 		// do anything about it anyway

@@ -275,7 +275,8 @@ table:not(.form) {border-collapse: collapse; width: 100%;}
 tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
 tr > td          {padding: 0.3em;}
 @media(max-width: 30em) {
-	tr > td {
+	/* Forms will be stacked on small screens */
+	tr.form > td {
 		box-sizing: border-box;
 		float: left;
 		width: 100%;

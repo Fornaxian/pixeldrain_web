@@ -7,10 +7,11 @@ class Toolbar {
 	// Elements
 	divToolbar       = null;
 	divFilePreview   = null;
-	downloadFrame    = null
+	downloadFrame    = null;
 
 	spanViews        = null;
 	spanDownloads    = null;
+	spanSize         = null;
 
 	btnToggleToolbar = null;
 	btnDownload      = null;
@@ -27,6 +28,7 @@ class Toolbar {
 		t.downloadFrame    = document.getElementById("download_frame");
 		t.spanViews        = document.getElementById("stat_views");
 		t.spanDownloads    = document.getElementById("stat_downloads");
+		t.spanSize         = document.getElementById("stat_size");
 
 		t.btnToggleToolbar = document.getElementById("btn_toggle_toolbar");
 		t.btnDownload      = document.getElementById("btn_download");
@@ -148,9 +150,10 @@ class Toolbar {
 		}, 60000);
 	}
 
-	setStats(views, downloads) {let t = this;
-		t.spanViews.innerText = views
-		t.spanDownloads.innerText = Math.round(downloads*10)/10;
+	setStats(file) {let t = this;
+		t.spanViews.innerText = file.views
+		t.spanDownloads.innerText = Math.round((file.bandwidth_used/file.size)*10)/10;
+		t.spanSize.innerText = formatDataVolume(file.size, 3);
 	}
 }
 
@@ -170,17 +173,4 @@ function loadCaptcha(){
 			}, 1000)
 		}
 	});
-}
-
-function formatDataVolume(amt) {
-	if (amt > 1e12) {
-		return Math.round(amt/1e9)/1e3 + " TB";
-	} else if (amt > 1e9) {
-		return Math.round(amt/1e6)/1e3 + " GB";
-	} else if (amt > 1e6) {
-		return Math.round(amt/1e3)/1e3 + " MB";
-	} else if (amt > 1e3) {
-		return Math.round(amt)/1e3 + " kB";
-	}
-	return amt + " B"
 }

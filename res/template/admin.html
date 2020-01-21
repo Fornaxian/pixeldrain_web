@@ -29,6 +29,8 @@
 				<script>
 				var apiEndpoint = '{{.APIEndpoint}}';
 
+				{{template `util.js`}}
+
 				Chart.defaults.global.defaultFontColor = "#b3b3b3";
 				Chart.defaults.global.defaultFontSize = 15;
 				Chart.defaults.global.defaultFontFamily = "Ubuntu";
@@ -79,14 +81,7 @@
 										},
 										ticks: {
 											callback: function(value, index, values) {
-												if (value >= 1e12) {
-													return Math.round(value/1e9)/1e3 + " TB";
-												} else if (value >= 1e9) {
-													return Math.round(value/1e6)/1e3 + " GB";
-												} else if (value >= 1e6) {
-													return Math.round(value/1e3)/1e3 + " MB";
-												}
-												return value/1e3 + " kB";
+												return formatDataVolume(value, 3);
 											}
 										},
 										gridLines: {
