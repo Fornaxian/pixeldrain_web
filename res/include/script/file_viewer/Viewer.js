@@ -179,7 +179,7 @@ class Viewer {
 			break;
 		case 83:
 			if (evt.shiftKey) {
-				v.toolbar.downloadList(); // SHIFT + S downloads all files in list
+				v.listNavigator.downloadList(); // SHIFT + S downloads all files in list
 			} else {
 				v.toolbar.download(); // S to download the current file
 			}
