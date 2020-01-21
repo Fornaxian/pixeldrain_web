@@ -81,14 +81,29 @@ class Toolbar {
 	}
 
 	download() {let t = this;
-		let triggerDL = function(){
-			t.downloadFrame.src = apiEndpoint+"/file/"+t.viewer.currentFile+"?download";
+		let triggerDL = (captchaResp = "") => {
+			if (captchaResp === "") {
+				t.downloadFrame.src = apiEndpoint+"/file/"+
+					t.viewer.currentFile+"?download";
+			} else {
+				t.downloadFrame.src = apiEndpoint+"/file/"+
+					t.viewer.currentFile+"?download&recaptcha_response="+captchaResp;
+			}
 		}
 
-		if (captchaKey === "a"){
+		if (captchaKey === "none"){
 			// If the server doesn't support captcha there's no use in checking
 			// availability
 			triggerDL();
+			return;
+		}
+		if (recaptchaResponse !== "") {
+			// Captcha already filled in. Use the saved captcha responsse to
+			// download the file
+			triggerDL(recaptchaResponse);
+
+			// Reset the key
+			recaptchaResponse = "";
 			return;
 		}
 
@@ -99,12 +114,13 @@ class Toolbar {
 			let popupTitle = document.getElementById("captcha_popup_title");
 			let popupContent = document.getElementById("captcha_popup_content");
 
-			let showCaptcha = function() {
+			let showCaptcha = () => {
 				// Load the recaptcha script with a load function
-				var script = document.createElement("script");
+				let script = document.createElement("script");
 				script.src = "https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit";
-				document.appendChild(script);
-				// $.getScript("https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit");
+				document.body.appendChild(script);
+
+				// Show the popup
 				popupDiv.style.opacity = "1";
 				popupDiv.style.visibility = "visible";
 			}
@@ -125,9 +141,11 @@ class Toolbar {
 					"human first.";
 				showCaptcha();
 			} else {
+				console.warn("resp.value not valid: "+resp.value);
 				triggerDL();
 			}
 		}).catch(e => {
+			console.warn("fetch availability failed: "+e);
 			triggerDL();
 		});
 	}
@@ -144,7 +162,7 @@ class Toolbar {
 		}
 
 		// Return to normal
-		setTimeout(function(){
+		setTimeout(() => {
 			t.spanCopyLink.innerText = "Copy";
 			t.btnCopyLink.classList.remove("button_highlight")
 		}, 60000);
@@ -158,15 +176,17 @@ class Toolbar {
 }
 
 // Called by the google recaptcha script
+let recaptchaResponse = "";
 function loadCaptcha(){
 	grecaptcha.render("captcha_popup_captcha", {
 		sitekey: captchaKey,
 		theme: "dark",
-		callback: function(token){
-			document.getElementById("download_frame").src = "/api/file/" + Viewer.currentFile +
-				"?download&recaptcha_response="+token;
+		callback: token => {
+			recaptchaResponse = token;
+			document.getElementById("btn_download").click();
 
-			setTimeout(function(){
+			// Hide the popup
+			setTimeout(() => {
 				let popupDiv = document.getElementById("captcha_popup");
 				popupDiv.style.opacity = "0";
 				popupDiv.style.visibility = "hidden";

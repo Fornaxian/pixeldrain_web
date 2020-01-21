@@ -266,12 +266,12 @@
 	text-align: left;
 	box-shadow: var(--shadow_color) 0px 0px 50px;
 }
-.popup > .highlight_light {
+.popup > .highlight_1 {
 	font-size: 1.2em;
 }
 .popup > .content_area {
 	flex: 1;
-	overflow-y: scroll;
+	overflow: auto;
 	padding: 10px;
 }
 
@@ -291,19 +291,6 @@
 
 table {width: auto !important;}
 
-.corner-popup{
-	position: fixed;
-	background-color: var(--background_color);
-	right: 20px;
-	bottom: 20px;
-	width: fit-content;
-	height: fit-content;
-	overflow: hidden;
-	padding: 5px;
-
-	box-shadow: var(--shadow_color) 0px 0px 50px;
-	z-index: 200;
-}
 
 /* ====================
    || LIST NAVIGATOR ||
