@@ -54,7 +54,8 @@ func New(
 	// Serve static files
 	var fs = http.FileServer(http.Dir(resourceDir + "/static"))
 	r.GET(p+"/res/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		w.Header().Set("Cache-Control", "public, max-age=86400") // Cache for one day
+		// Cache resources for 4 weeks
+		w.Header().Set("Cache-Control", "public, max-age=2419200")
 		r.URL.Path = p.ByName("filepath")
 		fs.ServeHTTP(w, r)
 	})
