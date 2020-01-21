@@ -22,64 +22,40 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		serveFilePreviewDemo(w) // Required for a-ads.com quality check
 		return
 	}
+
 	apikey, _ := wc.getAPIKey(r)
-	var api = pixelapi.New(wc.apiURLInternal, apikey)
+	api := pixelapi.New(wc.apiURLInternal, apikey)
 	api.RealIP = util.RemoteAddress(r)
-	inf, err := api.GetFileInfo(p.ByName("id"), "?should_a_view_be_added=yes_gimme") // TODO: Error handling
+	file, err := api.GetFileInfo(p.ByName("id")) // TODO: Error handling
 	if err != nil {
 		wc.serveNotFound(w, r)
 		return
 	}
 
-	var fp = filePreview{
-		APIURL:   wc.apiURLExternal,
-		PixelAPI: api,
+	if strings.HasPrefix(file.MimeType, "text") &&
+		(strings.HasSuffix(file.Name, ".md") || strings.HasSuffix(file.Name, ".markdown")) {
+		if file.Size > 1e6 { // Prevent out of memory errors
+			w.Write([]byte("File is too large to view online.\nPlease download and view it locally."))
+			return
+		}
+
+		body, err := api.GetFile(file.ID)
+		if err != nil {
+			log.Error("Can't download text file for preview: %s", err)
+			w.Write([]byte("An error occurred while downloading this file."))
+			return
+		}
+		defer body.Close()
+
+		bodyBytes, err := ioutil.ReadAll(body)
+		if err != nil {
+			log.Error("Can't read text file for preview: %s", err)
+			w.Write([]byte("An error occurred while reading this file."))
+			return
+		}
+
+		w.Write(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.Run(bodyBytes)))
 	}
-	io.WriteString(w, fp.run(inf))
-}
-
-type filePreview struct {
-	FileInfo    *pixelapi.FileInfo
-	FileURL     string
-	DownloadURL string
-
-	APIURL   string
-	PixelAPI *pixelapi.PixelAPI
-}
-
-func (f filePreview) run(inf *pixelapi.FileInfo) string {
-	f.FileInfo = inf
-	f.FileURL = f.APIURL + "/file/" + f.FileInfo.ID
-	f.DownloadURL = f.APIURL + "/file/" + f.FileInfo.ID + "?download"
-
-	if strings.HasPrefix(f.FileInfo.MimeType, "text") &&
-		(strings.HasSuffix(f.FileInfo.Name, ".md") || strings.HasSuffix(f.FileInfo.Name, ".markdown")) {
-		return f.markdown()
-	}
-
-	// none of the mime type checks triggered, so we return the default page
-	return ""
-}
-
-func (f filePreview) markdown() string {
-	if f.FileInfo.Size > 1e6 { // Prevent out of memory errors
-		return "File is too large to view online.\nPlease download and view it locally."
-	}
-
-	body, err := f.PixelAPI.GetFile(f.FileInfo.ID)
-	if err != nil {
-		log.Error("Can't download text file for preview: %s", err)
-		return "An error occurred while downloading this file."
-	}
-	defer body.Close()
-
-	bodyBytes, err := ioutil.ReadAll(body)
-	if err != nil {
-		log.Error("Can't read text file for preview: %s", err)
-		return "An error occurred while reading this file."
-	}
-
-	return string(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.Run(bodyBytes)))
 }
 
 // ServeFilePreviewDemo serves the content of the demo file. It contains a nice

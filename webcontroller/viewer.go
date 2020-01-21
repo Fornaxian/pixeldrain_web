@@ -44,9 +44,9 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	templateData := wc.newTemplateData(w, r)
 
-	var finfo []*pixelapi.FileInfo
+	var finfo []pixelapi.FileInfo
 	for _, id := range ids {
-		inf, err := templateData.PixelAPI.GetFileInfo(id, "")
+		inf, err := templateData.PixelAPI.GetFileInfo(id)
 		if err != nil {
 			continue
 		}
@@ -59,7 +59,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	templateData.OGData = metadataFromFile(*finfo[0])
+	templateData.OGData = metadataFromFile(finfo[0])
 	if list {
 		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(finfo))
 		templateData.Other = viewerData{
