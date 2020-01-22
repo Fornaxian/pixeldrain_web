@@ -15,7 +15,7 @@ class Viewer {
 	initialized = false;
 
 	constructor(type, viewToken, data) {let v = this;
-		if(v.initialized){
+		if (v.initialized) {
 			return;
 		}
 
@@ -27,7 +27,7 @@ class Viewer {
 
 		// On small screens the toolbar takes too much space, so it collapses
 		// automatically
-		if(v.divFilepreview.clientWidth > 600 && !v.toolbar.visible){
+		if (v.divFilepreview.clientWidth > 600 && !v.toolbar.visible) {
 			v.toolbar.toggle();
 		}
 
@@ -38,7 +38,7 @@ class Viewer {
 		}
 
 
-		if(type === "file"){
+		if (type === "file") {
 			v.isFile = true;
 			v.currentFile = data.id;
 			v.title = data.name;
@@ -106,7 +106,8 @@ class Viewer {
 			new VideoViewer(v, file, nextItem).render(v.divFilepreview);
 		} else if (
 			file.mime_type.startsWith("audio") ||
-			file.mime_type === "application/ogg"
+			file.mime_type === "application/ogg" ||
+			file.name.endsWith(".mp3")
 		) {
 			new AudioViewer(v, file, nextItem).render(v.divFilepreview);
 		} else if (
@@ -125,11 +126,11 @@ class Viewer {
 	}
 
 	renderSponsors() {
-		let scale = 1;
-		let scaleWidth = 1;
+		let scale       = 1;
+		let scaleWidth  = 1;
 		let scaleHeight = 1;
-		let minWidth = 728;
-		let minHeight = 800;
+		let minWidth    = 728;
+		let minHeight   = 800;
 
 		if (window.innerWidth < minWidth) {
 			scaleWidth = window.innerWidth/minWidth;
