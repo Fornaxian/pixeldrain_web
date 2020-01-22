@@ -1,13 +1,4 @@
 class AudioViewer {
-	viewer = null;
-	file   = null;
-	next   = null;
-
-	container = null;
-	icon      = null;
-	element   = null;
-	source    = null;
-
 	constructor(viewer, file, next) {let v = this;
 		v.viewer = viewer;
 		v.file   = file;

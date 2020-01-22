@@ -1,18 +1,11 @@
 class ImageViewer {
-	viewer = null;
-	file   = null;
-
-	container = null;
-	element   = null;
-
-	zoomed = false;
-	x = 0;
-	y = 0;
-	dragging = false;
-
 	constructor(viewer, file) {let v = this;
-		v.viewer = viewer;
-		v.file   = file;
+		v.viewer   = viewer;
+		v.file     = file;
+		v.zoomed   = false;
+		v.x        = 0;
+		v.y        = 0;
+		v.dragging = false;
 
 		v.container = document.createElement("dv");
 		v.container.classList = "image-container";

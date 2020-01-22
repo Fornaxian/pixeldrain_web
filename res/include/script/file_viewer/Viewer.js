@@ -1,23 +1,17 @@
 class Viewer {
-	// Child components
-	toolbar       = null;
-	listNavigator = null;
-	detailsWindow = null;
-
-	divFilepreview = null;
-
-	currentFile = "";
-	title       = ""; // Contains either the file name or list title
-	listId      = "";
-	viewToken   = "";
-	isList      = false;
-	isFile      = false;
-	initialized = false;
-
 	constructor(type, viewToken, data) {let v = this;
-		if (v.initialized) {
-			return;
-		}
+		// Set defaults
+		v.toolbar       = null;
+		v.listNavigator = null;
+		v.detailsWindow = null;
+		v.divFilepreview = null;
+		v.currentFile = "";
+		v.title       = ""; // Contains either the file name or list title
+		v.listId      = "";
+		v.viewToken   = "";
+		v.isList      = false;
+		v.isFile      = false;
+		v.initialized = false;
 
 		v.viewToken     = viewToken;
 		v.toolbar       = new Toolbar(v);
@@ -36,7 +30,6 @@ class Viewer {
 		if (window.opener === null && window.history.length !== 1) {
 			document.getElementById("button_close_file_viewer").remove()
 		}
-
 
 		if (type === "file") {
 			v.isFile = true;

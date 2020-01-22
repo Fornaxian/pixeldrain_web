@@ -1,27 +1,8 @@
 class Toolbar {
-	viewer = null;
-
-	visible = false;
-	sharebarVisible = false;
-
-	// Elements
-	divToolbar       = null;
-	divFilePreview   = null;
-	downloadFrame    = null;
-
-	spanViews        = null;
-	spanDownloads    = null;
-	spanSize         = null;
-
-	btnToggleToolbar = null;
-	btnDownload      = null;
-	btnCopyLink      = null;
-	spanCopyLink     = null;
-	btnShare         = null;
-	divSharebar      = null;
-
 	constructor(viewer) {let t = this;
-		this.viewer = viewer;
+		t.viewer = viewer;
+		t.visible = false;
+		t.sharebarVisible = false;
 
 		t.divToolbar       = document.getElementById("toolbar");
 		t.divFilePreview   = document.getElementById("filepreview");

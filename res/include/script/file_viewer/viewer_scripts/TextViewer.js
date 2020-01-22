@@ -1,14 +1,9 @@
 class TextViewer {
-	viewer = null;
-	file   = null;
-
-	container = null;
-	pre       = null;
-	prettyprint = null;
-
 	constructor(viewer, file) {let v = this;
-		v.viewer = viewer;
-		v.file   = file;
+		v.viewer      = viewer;
+		v.file        = file;
+		v.pre         = null;
+		v.prettyprint = null;
 
 		v.container = document.createElement("div");
 		v.container.classList = "text-container";

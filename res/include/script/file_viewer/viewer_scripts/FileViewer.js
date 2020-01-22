@@ -1,10 +1,4 @@
 class FileViewer {
-	viewer = null;
-	file   = null;
-
-	container = null;
-	icon      = null;
-
 	constructor(viewer, file, next) {let v = this;
 		v.viewer = viewer;
 		v.file   = file;

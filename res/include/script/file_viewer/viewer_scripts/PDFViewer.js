@@ -1,8 +1,4 @@
 class PDFViewer {
-	viewer = null;
-	file   = null;
-	container = null;
-
 	constructor(viewer, file) {let v = this;
 		v.viewer = viewer;
 		v.file   = file;

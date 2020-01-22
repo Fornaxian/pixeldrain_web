@@ -91,7 +91,7 @@ function domainURL() {
 	return url;
 }
 
-function formatDataVolume(amt = 0, precision = 3) {
+function formatDataVolume(amt, precision) {
 	if (precision < 3) { precision = 3; }
 	if (amt >= 1e12) {
 		return (amt/1e12).toPrecision(precision) + " TB";

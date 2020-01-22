@@ -1,17 +1,9 @@
 class DetailsWindow {
-	viewer         = null;
-
-	visible        = false;
-	fileID         = "";
-	graph          = 0;
-
-	divPopup        = null;
-	btnDetails      = null;
-	btnCloseDetails = null;
-	divFileDetails  = null;
-
 	constructor(viewer) {let dw = this;
-		dw.viewer = viewer;
+		dw.viewer  = viewer;
+		dw.visible = false;
+		dw.fileID  = "";
+		dw.graph   = 0;
 
 		dw.divPopup        = document.getElementById("details_popup");
 		dw.btnDetails      = document.getElementById("btn_details");

@@ -1,12 +1,4 @@
 class VideoViewer {
-	viewer = null;
-	file   = null;
-	next   = null;
-
-	vidContainer = null;
-	vidElement   = null;
-	videoSource  = null;
-
 	constructor(viewer, file, next) {let v = this;
 		v.viewer = viewer;
 		v.file   = file;

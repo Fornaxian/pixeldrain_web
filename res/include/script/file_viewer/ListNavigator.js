@@ -1,19 +1,11 @@
 class ListNavigator {
-	viewer   = null;
-	length   = 0;
-	position = 0;
-	data     = [];
-	history  = [];
-	shuffle  = false;
-
-	divListNavigator = null;
-	btnDownloadList  = null;
-	btnShuffle       = null;
-
 	constructor(viewer, data){let ln = this;
-		ln.viewer = viewer;
-		ln.data   = data;
-		ln.length = data.length;
+		ln.viewer   = viewer;
+		ln.data     = data;
+		ln.length   = data.length;
+		ln.position = 0;
+		ln.history  = [];
+		ln.shuffle  = false;
 
 		ln.divListNavigator = document.getElementById("list_navigator");
 
