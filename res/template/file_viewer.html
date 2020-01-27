@@ -104,49 +104,50 @@
 					scrolling="no">
 				</iframe>
 			</div>
-		</div>
 
-		<div id="details_popup" class="popup details_popup">
-			<div id="details_popup_title" class="highlight_1">
-				File Info
-				<button id="btn_close_details" style="position: absolute; top: 3px; right: 3px;" class="button_red">{{template `close.svg` .}}</button>
-			</div>
-			<div class="content_area">
-				<div id="info_file_details"></div>
-				<div id="info_about">
-					<h3>Downloads and views</h3>
-					<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: auto;">
-						<canvas id="bandwidth_chart"></canvas>
+			<!-- Popup windows, hidden by default -->
+			<div id="details_popup" class="popup details_popup">
+				<div id="details_popup_title" class="highlight_1">
+					File Info
+					<button id="btn_close_details" style="position: absolute; top: 3px; right: 3px;" class="button_red">{{template `close.svg` .}}</button>
+				</div>
+				<div class="content_area">
+					<div id="info_file_details"></div>
+					<div id="info_about">
+						<h3>Downloads and views</h3>
+						<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: auto;">
+							<canvas id="bandwidth_chart"></canvas>
+						</div>
+						<p style="text-align: center">
+							Chart rendered by the amazing <a href="https://www.chartjs.org/" target="_blank">Chart.js</a>.
+						</p>
+
+						<h3>About</h3>
+						Pixeldrain is a file sharing platform.
+						<a href="/" target="_blank">Visit the home page for more information.</a>
+
+						<h3>Keyboard Controls</h3>
+						<table>
+							<tr><td colspan="2">File Shortcuts</td></tr>
+							<tr><td>c</td><td> = Copy URL of this page</td></tr>
+							<tr><td>i</td><td> = Toggle details window (this window) (<b><u>i</u></b>nfo)</td></tr>
+							<tr><td>s</td><td> = Download the file you are currently viewing (<b><u>s</u></b>ave)</td></tr>
+							<tr><td>q</td><td> = Close the window (<b><u>q</u></b>uit)</td></tr>
+							<tr><td colspan="2">List Shortcuts</td></tr>
+							<tr><td>a or &#8592;</td><td> = View previous item in list</td></tr>
+							<tr><td>d or &#8594;</td><td> = View next item in list</td></tr>
+							<tr><td>r</td><td> = Toggle shuffle (<b><u>r</u></b>andom)</td></tr>
+							<tr><td>SHIFT + s</td><td> = Download all the files in the list as a zip archive</td></tr>
+						</table>
 					</div>
-					<p style="text-align: center">
-						Chart rendered by the amazing <a href="https://www.chartjs.org/" target="_blank">Chart.js</a>.
-					</p>
-
-					<h3>About</h3>
-					Pixeldrain is a file sharing platform.
-					<a href="/" target="_blank">Visit the home page for more information.</a>
-
-					<h3>Keyboard Controls</h3>
-					<table>
-						<tr><td colspan="2">File Shortcuts</td></tr>
-						<tr><td>c</td><td> = Copy URL of this page</td></tr>
-						<tr><td>i</td><td> = Toggle details window (this window) (<b><u>i</u></b>nfo)</td></tr>
-						<tr><td>s</td><td> = Download the file you are currently viewing (<b><u>s</u></b>ave)</td></tr>
-						<tr><td>q</td><td> = Close the window (<b><u>q</u></b>uit)</td></tr>
-						<tr><td colspan="2">List Shortcuts</td></tr>
-						<tr><td>a or &#8592;</td><td> = View previous item in list</td></tr>
-						<tr><td>d or &#8594;</td><td> = View next item in list</td></tr>
-						<tr><td>r</td><td> = Toggle shuffle (<b><u>r</u></b>andom)</td></tr>
-						<tr><td>SHIFT + s</td><td> = Download all the files in the list as a zip archive</td></tr>
-					</table>
 				</div>
 			</div>
-		</div>
-		<div id="captcha_popup" class="popup captcha_popup">
-			<div id="captcha_popup_title" class="highlight_1"></div>
-			<div id="captcha_popup_content" class="content_area"></div>
-			<br/>
-			<div id="captcha_popup_captcha" style="text-align: center;"></div>
+			<div id="captcha_popup" class="popup captcha_popup">
+				<div id="captcha_popup_title" class="highlight_1"></div>
+				<div id="captcha_popup_content" class="content_area"></div>
+				<br/>
+				<div id="captcha_popup_captcha" style="text-align: center;"></div>
+			</div>
 		</div>
 
 		<script src="/res/script/Chart.min.js"></script>
