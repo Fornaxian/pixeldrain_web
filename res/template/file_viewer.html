@@ -24,9 +24,7 @@
 			<div id="file_viewer_headerbar" class="highlight_1 file_viewer_headerbar">
 				<button id="btn_toggle_toolbar" class="button_toggle_toolbar">☰</button>
 				<a href="/" id="button_home" class="button button_home">
-					<img src="{{template `pixeldrain_icon.png`}}"
-						alt="Back to the Home page"
-						style="height: 1.5em; margin: -0.2em; margin-right: 0.2em;"/>
+					{{template `pixeldrain.svg` .}}
 				</a>
 				<div id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">
 					<div id="file_viewer_list_title"></div>
@@ -153,8 +151,9 @@
 
 		<script src="/res/script/Chart.min.js"></script>
 		<script>
-			var apiEndpoint = '{{.APIEndpoint}}';
-			var captchaKey = '{{.Other.CaptchaKey}}';
+			'use strict';
+			let apiEndpoint = '{{.APIEndpoint}}';
+			let captchaKey = '{{.Other.CaptchaKey}}';
 
 			{{template `util.js`}}
 			{{template `Toolbar.js`}}

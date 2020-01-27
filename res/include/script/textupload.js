@@ -23,7 +23,7 @@ function uploadText() {
 
 // Upload the file when ctrl + s is pressed
 document.addEventListener("keydown", function(event) {
-	if (event.ctrlKey && (event.which === 83)) {
+	if (event.ctrlKey && (event.keyCode === 83)) {
 		event.preventDefault();
 		uploadText();
 		return false;

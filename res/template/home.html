@@ -64,14 +64,14 @@
 				be placed in your web browser. More information on the
 				<a href="/about">about</a> page
 			<p>
-			<div id="instruction_2" class="instruction_highlight" style="display: none">
+			<div id="instruction_2" class="instruction_highlight">
 				<div class="limit_width">
 					<span class="big_number">2</span><span class="instruction_text">Wait for the files to finish uploading</span>
 				</div>
 			</div>
 			<div id="uploads_queue"></div>
 
-			<div id="instruction_3" class="instruction_highlight" style="display: none">
+			<div id="instruction_3" class="instruction_highlight">
 				<div class="limit_width"><span class="big_number">3</span><span class="instruction_text">Share the files</span></div>
 			</div>
 			<div id="instruction_3_after" style="display: none">
@@ -150,10 +150,11 @@
 		{{template "page_bottom"}}
 
 		<script>
-		let apiEndpoint = '{{.APIEndpoint}}';
-		{{template "util.js"}}
-		{{template "UploadManager.js"}}
-		{{template "homepage.js"}}
+			'use strict';
+			let apiEndpoint = '{{.APIEndpoint}}';
+			{{template "util.js"}}
+			{{template "UploadManager.js"}}
+			{{template "homepage.js"}}
 		</script>
 
 		{{template "analytics"}}

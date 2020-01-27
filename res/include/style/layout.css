@@ -245,23 +245,6 @@ hr{
 	margin: 16px 16px 16px 16px;
 }
 
-::-webkit-scrollbar{
-	width: 1em;  /* for vertical scrollbars */
-	height: 1em; /* for horizontal scrollbars */
-}
-::-webkit-scrollbar-track {
-	background: var(--scrollbar_background_color);
-}
-::-webkit-scrollbar-thumb {
-	background-color: var(--scrollbar_foreground_color);
-	border-radius: 0.5em;
-	border: 0.22em solid var(--scrollbar_background_color);
-}
-::-webkit-scrollbar-thumb:hover {
-	background-color: var(--scrollbar_hover_color);
-}
-::-webkit-scrollbar-corner{background: var(--scrollbar_background_color);}
-
 a       {color: var(--highlight_color); text-decoration: none;}
 a:hover {color: var(--highlight_color); text-decoration: underline;}
 
@@ -476,4 +459,67 @@ input[type=file]{
 	position: static;
 	width: 0;
 	height: 0;
+}
+
+/* Webkit Scrollbars */
+
+::-webkit-scrollbar{
+	width: 18px;  /* for vertical scrollbars */
+	height: 18px; /* for horizontal scrollbars */
+}
+::-webkit-scrollbar-track {
+	background: var(--scrollbar_background_color);
+}
+::-webkit-scrollbar-thumb {
+	background-color: var(--scrollbar_foreground_color);
+	border-radius: 10px;
+	border: 5px solid var(--scrollbar_background_color);
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--scrollbar_hover_color);
+}
+::-webkit-scrollbar-corner{
+	background-color: var(--scrollbar_background_color);
+}
+::-webkit-scrollbar-button:single-button {
+	background-color: var(--scrollbar_background_color);
+	display: block;
+	border-style: solid;
+	height: 10px;
+	width: 10px;
+}
+::-webkit-scrollbar-button:single-button:vertical:decrement {
+	border-width: 0 8px 8px 8px;
+	border-color: transparent transparent var(--scrollbar_foreground_color) transparent;
+}
+::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
+	border-color: transparent transparent var(--scrollbar_hover_color) transparent;
+}
+::-webkit-scrollbar-button:single-button:vertical:increment {
+	border-width: 8px 8px 0 8px;
+	border-color: var(--scrollbar_foreground_color) transparent transparent transparent;
+}
+::-webkit-scrollbar-button:vertical:single-button:increment:hover {
+	border-color: var(--scrollbar_hover_color) transparent transparent transparent;
+}
+::-webkit-scrollbar-button:single-button:horizontal:decrement {
+	border-width: 8px 8px 8px 0px;
+	border-color: transparent var(--scrollbar_foreground_color) transparent transparent;
+}
+::-webkit-scrollbar-button:single-button:horizontal:decrement:hover {
+	border-color: transparent var(--scrollbar_hover_color) transparent transparent;
+}
+::-webkit-scrollbar-button:single-button:horizontal:increment {
+	border-width: 8px 0px 8px 8px;
+	border-color: transparent transparent transparent var(--scrollbar_foreground_color);
+}
+::-webkit-scrollbar-button:horizontal:single-button:increment:hover {
+    border-color: transparent transparent transparent var(--scrollbar_hover_color);
+}
+
+/* Firefox Scrollbar */
+
+* {
+	/* scrollbar-color: var(--scrollbar_foreground_color) var(--scrollbar_background_color); */
+	scrollbar-color: dark;
 }

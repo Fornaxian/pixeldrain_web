@@ -1,71 +1,69 @@
-class UploadProgressBar {
-	constructor(uploadManager, queueDiv, file){
-		this.uploadManager = uploadManager;
-		this.file = file;
-		this.name = file.name;
+function UploadProgressBar(uploadManager, queueDiv, file){let upb = this;
+	upb.uploadManager = uploadManager;
+	upb.file = file;
+	upb.name = file.name;
 
-		this.uploadDiv = document.createElement("a");
-		this.uploadDiv.classList.add("file_button");
-		this.uploadDiv.style.opacity = "0";
-		this.uploadDiv.innerText = "Queued\n" + this.file.name;
-		queueDiv.appendChild(this.uploadDiv);
+	upb.uploadDiv = document.createElement("a");
+	upb.uploadDiv.classList.add("file_button");
+	upb.uploadDiv.style.opacity = "0";
+	upb.uploadDiv.innerText = "Queued\n" + upb.file.name;
+	queueDiv.appendChild(upb.uploadDiv);
 
-		// Start uploading the file
-		let that = this;
-		this.uploadManager.addFile(
-			this.file,
-			this.name,
-			function(progress) { that.onProgress(progress); },
-			function(id)       { that.onFinished(id); },
-			function(val, msg) { that.onFailure(val, msg); }
-		);
+	// Start uploading the file
+	upb.uploadManager.addFile(
+		upb.file,
+		upb.name,
+		function(progress) { upb.onProgress(progress); },
+		function(id)       { upb.onFinished(id); },
+		function(val, msg) { upb.onFailure(val, msg); }
+	);
 
-		// Browsers don't render the transition if the opacity is set and
-		// updated in the same frame. So we have to wait a frame (or more)
-		// before changing the opacity to make sure the transition triggers
-		var d = this.uploadDiv // `this` stops working after constructor ends
-		window.setTimeout(function(){d.style.opacity = "1";}, 100)
-	}
-
-	onProgress(progress){
-		this.uploadDiv.innerText = "Uploading... " + Math.round(progress*1000)/10 + "%\n" + this.name
-		this.uploadDiv.style.background = 'linear-gradient('
-			+'to right, '
-			+'var(--file_background_color) 0%, '
-			+'var(--highlight_color) '+ ((progress*100)) +'%, '
-			+'var(--file_background_color) '+ ((progress*100)+1) +'%)'
-	}
-	onFinished(id){
-		console.log("Upload finished: "+this.file.name+" "+id);
-
-		this.uploadDiv.style.background = 'var(--file_background_color)'
-		this.uploadDiv.href = '/u/'+id
-		this.uploadDiv.target= "_blank"
-
-		let fileImg = document.createElement("img")
-		fileImg.src = apiEndpoint+'/file/'+id+'/thumbnail'
-		fileImg.alt = this.file.name
-
-		let linkSpan = document.createElement("span")
-		linkSpan.style.color = "var(--highlight_color)"
-		linkSpan.innerText = domainURL()+"/u/"+id
-
-		this.uploadDiv.innerHTML = "" // Remove uploading progress
-		this.uploadDiv.appendChild(fileImg)
-		this.uploadDiv.appendChild(document.createTextNode(this.file.name))
-		this.uploadDiv.appendChild(document.createElement("br"))
-		this.uploadDiv.appendChild(linkSpan)
-	}
-	onFailure(error) {
-		this.uploadDiv.innerHTML = "" // Remove uploading progress
-		this.uploadDiv.style.background = 'var(--danger_color)'
-		this.uploadDiv.appendChild(document.createTextNode(this.file.name))
-		this.uploadDiv.appendChild(document.createElement("br"))
-		this.uploadDiv.appendChild(document.createTextNode("Upload failed after three tries:"))
-		this.uploadDiv.appendChild(document.createElement("br"))
-		this.uploadDiv.appendChild(document.createTextNode(error))
-	}
+	// Browsers don't render the transition if the opacity is set and
+	// updated in the same frame. So we have to wait a frame (or more)
+	// before changing the opacity to make sure the transition triggers
+	var d = this.uploadDiv // `this` stops working after constructor ends
+	window.setTimeout(function(){d.style.opacity = "1";}, 100)
 }
+
+UploadProgressBar.prototype.onProgress = function(progress){
+	this.uploadDiv.innerText = "Uploading... " + Math.round(progress*1000)/10 + "%\n" + this.name
+	this.uploadDiv.style.background = 'linear-gradient('
+		+'to right, '
+		+'var(--file_background_color) 0%, '
+		+'var(--highlight_color) '+ ((progress*100)) +'%, '
+		+'var(--file_background_color) '+ ((progress*100)+1) +'%)'
+}
+UploadProgressBar.prototype.onFinished = function(id){
+	console.log("Upload finished: "+this.file.name+" "+id);
+
+	this.uploadDiv.style.background = 'var(--file_background_color)'
+	this.uploadDiv.href = '/u/'+id
+	this.uploadDiv.target= "_blank"
+
+	let fileImg = document.createElement("img")
+	fileImg.src = apiEndpoint+'/file/'+id+'/thumbnail'
+	fileImg.alt = this.file.name
+
+	let linkSpan = document.createElement("span")
+	linkSpan.style.color = "var(--highlight_color)"
+	linkSpan.innerText = domainURL()+"/u/"+id
+
+	this.uploadDiv.innerHTML = "" // Remove uploading progress
+	this.uploadDiv.appendChild(fileImg)
+	this.uploadDiv.appendChild(document.createTextNode(this.file.name))
+	this.uploadDiv.appendChild(document.createElement("br"))
+	this.uploadDiv.appendChild(linkSpan)
+}
+UploadProgressBar.prototype.onFailure = function(error) {
+	this.uploadDiv.innerHTML = "" // Remove uploading progress
+	this.uploadDiv.style.background = 'var(--danger_color)'
+	this.uploadDiv.appendChild(document.createTextNode(this.file.name))
+	this.uploadDiv.appendChild(document.createElement("br"))
+	this.uploadDiv.appendChild(document.createTextNode("Upload failed after three tries:"))
+	this.uploadDiv.appendChild(document.createElement("br"))
+	this.uploadDiv.appendChild(document.createTextNode(error))
+}
+
 
 let uploader   = null;
 let shareTitle = "";
@@ -74,6 +72,10 @@ let shareLink  = "";
 function handleUploads(files) {
 	if (uploader === null){
 		uploader = new UploadManager(apiEndpoint, uploadsFinished);
+	}
+
+	if (files.length === 0) {
+		return;
 	}
 
 	for (let i = 0; i < files.length; i++) {
@@ -143,13 +145,10 @@ function createList(title, anonymous) {
 }
 
 function hideShareButtons() {
-	document.getElementById("instruction_2").style.display = "";
-	document.getElementById("instruction_3").style.display = "none";
 	document.getElementById("instruction_3_after").style.display = "none";
 }
 
 function showShareButtons() {
-	document.getElementById("instruction_3").style.display = "";
 	document.getElementById("instruction_3_after").style.display = "";
 
 	if (window.navigator && window.navigator.share) {
@@ -350,20 +349,19 @@ btnCopyMarkdown.addEventListener("click", function(){
 /*
  * Keyboard shortcuts
  */
-
 document.addEventListener("keydown", function(event){
 	if (event.ctrlKey || event.altKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
-	if (event.which === 67 && !uploader.uploading()) { // c
+	if (event.keyCode === 67) { // c
 		// Copy links to clipboard
-		copyLink();
-	} else if (event.which === 85) { // u
+		document.getElementById("btn_copy_link").click();
+	} else if (event.keyCode === 85) { // u
 		// Click the upload button
 		document.getElementById("file_input_field").click();
-	} else if (event.which === 84) { // t
+	} else if (event.keyCode === 84) { // t
 		// Click the text button
 		document.getElementById("upload_text_button").click();
 	}
-	console.log(event.which)
+	console.log(event.keyCode)
 });

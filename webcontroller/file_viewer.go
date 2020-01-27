@@ -35,7 +35,6 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	var list = strings.Contains(p.ByName("id"), ",")
 	var ids []string
-
 	if list {
 		ids = strings.Split(p.ByName("id"), ",")
 	} else {
