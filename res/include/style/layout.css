@@ -28,7 +28,6 @@ body{
 	background-color: #111111; /* Fallback */
 	background-color: var(--body_color);
 	background-repeat: repeat;
-	font-family: sans-serif;
 	margin: 0;
 	line-height: 1.5em;
 	color: #b2b2b2; /* Fallback */
@@ -152,7 +151,7 @@ body{
 	text-align: center;
 	padding: 6px 6px;
 	margin: 0.3em 15px 0.3em 15px;
-	font-family: "light";
+	font-family: "light", sans-serif;
 	font-size: 1.6em;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -236,9 +235,9 @@ h1, h2, h3, h4, h5, h6 {
 	margin-left: 10px;
 	margin-right: 10px;
 }
-h1{font-size: 2em;    font-family: "light";   font-weight: normal;}
-h2{font-size: 1.75em; font-family: "light";   font-weight: normal;}
-h3{font-size: 1.5em;  font-family: "light";   font-weight: normal;}
+h1{font-size: 2em;    font-family: "light", sans-serif; font-weight: normal;}
+h2{font-size: 1.75em; font-family: "light", sans-serif; font-weight: normal;}
+h3{font-size: 1.5em;  font-family: "light", sans-serif; font-weight: normal;}
 h4{font-size: 1.25em; font-family: sans-serif; font-weight: normal;}
 h5{font-size: 1em;    font-family: sans-serif; font-weight: normal;}
 h6{font-size: .75em;  font-family: sans-serif; font-weight: normal;}
@@ -255,8 +254,12 @@ hr{
 	margin: 16px 16px 16px 16px;
 }
 
-a       {color: var(--highlight_color); text-decoration: none;}
-a:hover {color: var(--highlight_color); text-decoration: underline;}
+a {
+	color: #74ad38;
+	color: var(--highlight_color);
+	text-decoration: none;
+}
+a:hover {text-decoration: underline;}
 
 .form{
 	margin-left: auto;
