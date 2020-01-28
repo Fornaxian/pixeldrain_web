@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
@@ -16,6 +17,10 @@ func viewTokenOrBust(api *pixelapi.PixelAPI) (t string) {
 		log.Error("Could not get viewtoken: %s", err)
 	}
 	return t
+}
+
+func browserCompat(ua string) bool {
+	return strings.Contains(ua, "MSIE") || strings.Contains(ua, "Trident/7.0")
 }
 
 type viewerData struct {
@@ -33,23 +38,17 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	var list = strings.Contains(p.ByName("id"), ",")
-	var ids []string
-	if list {
-		ids = strings.Split(p.ByName("id"), ",")
-	} else {
-		ids = append(ids, p.ByName("id"))
-	}
+	var ids = strings.Split(p.ByName("id"), ",")
 
 	templateData := wc.newTemplateData(w, r)
 
-	var finfo []pixelapi.FileInfo
+	var finfo []pixelapi.ListFile
 	for _, id := range ids {
 		inf, err := templateData.PixelAPI.GetFileInfo(id)
 		if err != nil {
 			continue
 		}
-		finfo = append(finfo, inf)
+		finfo = append(finfo, pixelapi.ListFile{FileInfo: inf})
 	}
 
 	if len(finfo) == 0 {
@@ -58,19 +57,18 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	templateData.OGData = metadataFromFile(finfo[0])
-	if list {
+	templateData.OGData = metadataFromFile(finfo[0].FileInfo)
+	if len(ids) > 1 {
 		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(finfo))
 		templateData.Other = viewerData{
 			Type:       "list",
 			CaptchaKey: wc.captchaKey(),
 			ViewToken:  viewTokenOrBust(templateData.PixelAPI),
-			APIResponse: map[string]interface{}{
-				"data":          finfo,
-				"date_created":  "now",
-				"title":         "Multiple files",
-				"date_lastview": "now",
-				"views":         0,
+			APIResponse: pixelapi.List{
+				Success:     true,
+				Title:       "Multiple files",
+				DateCreated: time.Now(),
+				Files:       finfo,
 			},
 		}
 	} else {
@@ -79,10 +77,16 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			Type:        "file",
 			CaptchaKey:  wc.captchaKey(),
 			ViewToken:   viewTokenOrBust(templateData.PixelAPI),
-			APIResponse: finfo[0],
+			APIResponse: finfo[0].FileInfo,
 		}
 	}
-	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", templateData)
+
+	var templateName = "file_viewer"
+	if browserCompat(r.UserAgent()) {
+		templateName = "file_viewer_compat"
+	}
+
+	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
@@ -118,13 +122,11 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 
 // ServeListViewer controller for GET /l/:id
 func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	var api = pixelapi.New(wc.apiURLInternal, "")
-	var list, err = api.GetList(p.ByName("id"))
 	var templateData = wc.newTemplateData(w, r)
+	var list, err = templateData.PixelAPI.GetList(p.ByName("id"))
 	if err != nil {
 		if err, ok := err.(pixelapi.Error); ok && err.ReqError {
 			log.Error("API request error occurred: %s", err.Value)
-
 		}
 		w.WriteHeader(http.StatusNotFound)
 		wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
@@ -132,20 +134,20 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
-	templateData.OGData = metadataFromList(*list)
+	templateData.OGData = metadataFromList(list)
 	templateData.Other = viewerData{
-		Type:       "list",
-		CaptchaKey: wc.captchaSiteKey,
-		ViewToken:  viewTokenOrBust(templateData.PixelAPI),
-		APIResponse: map[string]interface{}{
-			"id":           list.ID,
-			"data":         list.Files,
-			"date_created": list.DateCreated,
-			"title":        list.Title,
-			"views":        0,
-		},
+		Type:        "list",
+		CaptchaKey:  wc.captchaSiteKey,
+		ViewToken:   viewTokenOrBust(templateData.PixelAPI),
+		APIResponse: list,
 	}
-	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer", templateData)
+
+	var templateName = "file_viewer"
+	if browserCompat(r.UserAgent()) {
+		templateName = "file_viewer_compat"
+	}
+
+	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
 	}

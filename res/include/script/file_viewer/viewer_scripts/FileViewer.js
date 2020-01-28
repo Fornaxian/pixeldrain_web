@@ -1,27 +1,27 @@
-function FileViewer(viewer, file, next) {let v = this;
-	v.viewer = viewer;
-	v.file   = file;
-	v.next   = next;
+function FileViewer(viewer, file, next) {
+	this.viewer = viewer;
+	this.file   = file;
+	this.next   = next;
 
-	v.container = document.createElement("div");
-	v.container.classList = "image-container";
-	v.container.appendChild(document.createElement("br"));
+	this.container = document.createElement("div");
+	this.container.classList = "image-container";
+	this.container.appendChild(document.createElement("br"));
 
-	v.icon = document.createElement("img");
-	v.icon.src = apiEndpoint+"/"+file.thumbnail_href;
-	v.container.appendChild(v.icon);
+	this.icon = document.createElement("img");
+	this.icon.src = apiEndpoint+"/"+file.thumbnail_href;
+	this.container.appendChild(this.icon);
 
-	v.container.appendChild(document.createElement("br"));
-	v.container.appendChild(document.createTextNode(file.name));
-	v.container.appendChild(document.createElement("br"));
-	v.container.appendChild(document.createTextNode("Type: "+file.mime_type));
-	v.container.appendChild(document.createElement("br"));
-	v.container.appendChild(document.createElement("br"));
-	v.container.appendChild(document.createTextNode(
+	this.container.appendChild(document.createElement("br"));
+	this.container.appendChild(document.createTextNode(file.name));
+	this.container.appendChild(document.createElement("br"));
+	this.container.appendChild(document.createTextNode("Type: "+file.mime_type));
+	this.container.appendChild(document.createElement("br"));
+	this.container.appendChild(document.createElement("br"));
+	this.container.appendChild(document.createTextNode(
 		"Press the 'Download' button in the menu to download this file"
 	));
 }
 
-FileViewer.prototype.render = function(parent) {let v = this;
-	parent.appendChild(v.container);
+FileViewer.prototype.render = function(parent) {
+	parent.appendChild(this.container);
 }

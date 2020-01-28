@@ -14,7 +14,7 @@ type List struct {
 	Title       string     `json:"title"`
 	DateCreated time.Time  `json:"date_created"`
 	FileCount   int        `json:"file_count"`
-	Files       []ListFile `json:"files,omitempty"`
+	Files       []ListFile `json:"files"`
 }
 
 // ListFile information object from the pixeldrain API
@@ -26,11 +26,6 @@ type ListFile struct {
 
 // GetList get a List from the pixeldrain API. Errors will be available through
 // List.Error. Standard error checks apply.
-func (p *PixelAPI) GetList(id string) (resp *List, err error) {
-	resp = &List{}
-	err = p.jsonRequest("GET", p.apiEndpoint+"/list/"+id, resp)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
+func (p *PixelAPI) GetList(id string) (resp List, err error) {
+	return resp, p.jsonRequest("GET", p.apiEndpoint+"/list/"+id, &resp)
 }

@@ -1,0 +1,66 @@
+{{define "file_viewer_compat"}}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{{.Title}}</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		{{template "user_style" .}}
+		<link rel="shortcut icon" href="/res/img/tray32.png"/>
+		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain.png"/>
+		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_big.png"/>
+		<meta name="theme-color" content="#75AD38"/>
+
+		<style>
+		{{template `viewer.css`}}
+		</style>
+
+		{{.OGData}}
+	</head>
+
+	<body>
+		{{template "page_top" .}}
+		<h1>{{.Title}}</h1>
+		<div class="page_content"><div class="limit_width">
+			{{if eq .Other.Type "file"}}
+				Download <a href="{{.APIEndpoint}}/file/{{.Other.APIResponse.ID}}?download">{{.Other.APIResponse.Name}}</a> here.
+			{{else}}
+				<ul>
+				{{$totalSize := 0}}
+				{{range $file := .Other.APIResponse.Files}}
+					{{$totalSize = add $totalSize $file.Size}}
+					<li><a href="{{$.APIEndpoint}}/file/{{$file.ID}}?download">{{$file.Name}}</a> ({{formatData $file.Size}})</li>
+				{{end}}
+				</ul>
+				{{if ne .Other.APIResponse.ID ""}}
+					<a href="{{.APIEndpoint}}/list/{{.Other.APIResponse.ID}}/zip">Download all files</a> (~{{formatData $totalSize}})
+				{{end}}
+			{{end}}
+			<h2>Compatibility file viewer</h2>
+			<p>
+				Welcome to the compatibility version of the file viewer. This
+				page is only shown to web browsers which can't properly display
+				the regular file viewer.
+			</p>
+			<p>
+				This page only allows you to download the linked files. If you
+				want more features like online video / audio players, an image
+				viewer, a PDF viewer or a text file viewer, please download any
+				of the supported web browsers:
+			</p>
+			<ul>
+				<li><a href="https://brave.com/pix009">Brave</a> (Linux, Mac OS, Windows)</li>
+				<li><a href="https://www.mozilla.org/en-US/firefox/">Firefox</a> (Linux, Mac OS, Windows)</li>
+				<li><a href="https://www.google.com/chrome/">Chrome</a> / <a href="https://www.chromium.org/Home">Chromium</a> (Linux, Mac OS, Windows)</li>
+				<li><a href="https://vivaldi.com/">Vivaldi</a> (Linux, Mac OS, Windows)</li>
+				<li><a href="https://www.opera.com/">Opera</a> (Linux, Mac OS, Windows)</li>
+				<li><a href="https://wiki.gnome.org/Apps/Web/">GNOME Web</a> (Linux)</li>
+				<li><a href="https://www.palemoon.org/">Pale Moon</a> (Linux, Windows)</li>
+				<li><a href="https://www.apple.com/safari/">Safari</a> (Mac OS)</li>
+				<li><a href="https://www.microsoft.com/en-us/edge">Edge</a> (Windows)</li>
+			</ul>
+		</div></div>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

@@ -227,8 +227,8 @@ func (tm *TemplateManager) add(a, b interface{}) int {
 func (tm *TemplateManager) sub(a, b interface{}) int {
 	return detectInt(a) - detectInt(b)
 }
-func (tm *TemplateManager) formatData(i int) string {
-	return util.FormatData(uint64(i))
+func (tm *TemplateManager) formatData(i interface{}) string {
+	return util.FormatData(uint64(detectInt(i)))
 }
 
 func detectInt(i interface{}) int {

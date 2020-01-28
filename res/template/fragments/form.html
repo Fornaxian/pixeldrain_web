@@ -24,7 +24,7 @@
 			<input type="text" autocomplete="username" value="{{.Username}}" style="display: none;" readonly="readonly"/>
 		{{end}}
 		<table class="form">
-			{{range $index, $field := .Fields}}
+			{{range $field := .Fields}}
 				<tr class="form">
 					{{if eq $field.Type "textarea"}}
 						<td colspan="2">

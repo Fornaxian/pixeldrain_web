@@ -1,48 +1,48 @@
-function DetailsWindow(viewer) {let dw = this;
-	dw.viewer  = viewer;
-	dw.visible = false;
-	dw.fileID  = "";
-	dw.graph   = 0;
+function DetailsWindow(viewer) {
+	this.viewer  = viewer;
+	this.visible = false;
+	this.fileID  = "";
+	this.graph   = 0;
 
-	dw.divPopup        = document.getElementById("details_popup");
-	dw.btnDetails      = document.getElementById("btn_details");
-	dw.btnCloseDetails = document.getElementById("btn_close_details");
-	dw.divFileDetails  = document.getElementById("info_file_details");
+	this.divPopup        = document.getElementById("details_popup");
+	this.btnDetails      = document.getElementById("btn_details");
+	this.btnCloseDetails = document.getElementById("btn_close_details");
+	this.divFileDetails  = document.getElementById("info_file_details");
 
-	dw.btnDetails.addEventListener("click", () => { dw.toggle(); });
-	dw.btnCloseDetails.addEventListener("click", () => { dw.toggle(); });
+	this.btnDetails.addEventListener("click",      () => { this.toggle(); });
+	this.btnCloseDetails.addEventListener("click", () => { this.toggle(); });
 }
 
-DetailsWindow.prototype.toggle = function() {let dw = this;
-	if (dw.visible) {
-		dw.divPopup.style.opacity = "0";
-		dw.divPopup.style.visibility = "hidden";
-		dw.btnDetails.classList.remove("button_highlight");
-		dw.visible = false;
+DetailsWindow.prototype.toggle = function() {
+	if (this.visible) {
+		this.divPopup.style.opacity = "0";
+		this.divPopup.style.visibility = "hidden";
+		this.btnDetails.classList.remove("button_highlight");
+		this.visible = false;
 	} else {
-		dw.divPopup.style.opacity = "1";
-		dw.divPopup.style.visibility = "visible";
-		dw.btnDetails.classList.add("button_highlight");
-		dw.visible = true;
+		this.divPopup.style.opacity = "1";
+		this.divPopup.style.visibility = "visible";
+		this.btnDetails.classList.add("button_highlight");
+		this.visible = true;
 
 		// This is a workaround for a chrome bug which makes it so hidden
 		// windows can't be scrolled after they are shown
-		dw.divPopup.focus();
+		this.divPopup.focus();
 
-		if (dw.graph === 0) {
-			dw.renderGraph();
+		if (this.graph === 0) {
+			this.renderGraph();
 		}
-		dw.updateGraph(dw.fileID);
+		this.updateGraph(this.fileID);
 	}
 }
 
-DetailsWindow.prototype.setDetails = function(file) {let dw = this;
+DetailsWindow.prototype.setDetails = function(file) {
 	let desc = "";
-	if (dw.viewer.isList) {
+	if (this.viewer.isList) {
 		desc = file.description;
 	}
-	dw.fileID = file.id;
-	dw.divFileDetails.innerHTML = "<table>"
+	this.fileID = file.id;
+	this.divFileDetails.innerHTML = "<table>"
 		+ "<tr><td>Name<td><td>" + escapeHTML(file.name) + "</td></tr>"
 		+ "<tr><td>URL<td><td><a href=\"/u/" + file.id + "\">"+domainURL()+"/u/" + file.id + "</a></td></tr>"
 		+ "<tr><td>Mime Type<td><td>" + escapeHTML(file.mime_type) + "</td></tr>"
@@ -53,25 +53,25 @@ DetailsWindow.prototype.setDetails = function(file) {let dw = this;
 		+ "<tr><td>Description<td><td>" + escapeHTML(desc) + "</td></tr>"
 		+ "</table>";
 
-	if(dw.visible) {
-		dw.updateGraph(file.id);
+	if(this.visible) {
+		this.updateGraph(file.id);
 	}
 }
 
-DetailsWindow.prototype.updateGraph = function(fileID) {let dw = this;
+DetailsWindow.prototype.updateGraph = function(fileID) {
 	console.log("updating graph "+fileID);
 	fetch(apiEndpoint+"/file/" + fileID + "/timeseries?interval=60?days=14").then(resp => {
 		if (!resp.ok) {return null;}
 		return resp.json();
 	}).then(resp => {
-		dw.graph.data.labels = resp.labels;
-		dw.graph.data.datasets[0].data = resp.downloads;
-		dw.graph.data.datasets[1].data = resp.views;
-		dw.graph.update();
+		this.graph.data.labels = resp.labels;
+		this.graph.data.datasets[0].data = resp.downloads;
+		this.graph.data.datasets[1].data = resp.views;
+		this.graph.update();
 	})
 }
 
-DetailsWindow.prototype.renderGraph = function() {let dw = this;
+DetailsWindow.prototype.renderGraph = function() {
 	console.log("rendering graph");
 	Chart.defaults.global.defaultFontColor = "#b3b3b3";
 	Chart.defaults.global.defaultFontSize = 15;
@@ -81,7 +81,7 @@ DetailsWindow.prototype.renderGraph = function() {let dw = this;
 	Chart.defaults.global.tooltips.mode = "index";
 	Chart.defaults.global.tooltips.axis = "x";
 	Chart.defaults.global.tooltips.intersect = false;
-	dw.graph = new Chart(
+	this.graph = new Chart(
 		document.getElementById('bandwidth_chart'),
 		{
 			type: 'line',

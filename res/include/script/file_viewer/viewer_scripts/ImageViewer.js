@@ -1,48 +1,48 @@
-function ImageViewer(viewer, file) {let v = this;
-	v.viewer   = viewer;
-	v.file     = file;
-	v.zoomed   = false;
-	v.x        = 0;
-	v.y        = 0;
-	v.dragging = false;
+function ImageViewer(viewer, file) {
+	this.viewer   = viewer;
+	this.file     = file;
+	this.zoomed   = false;
+	this.x        = 0;
+	this.y        = 0;
+	this.dragging = false;
 
-	v.container = document.createElement("dv");
-	v.container.classList = "image-container";
-	// v.container.style.lineHeight = "0";
+	this.container = document.createElement("dv");
+	this.container.classList = "image-container";
+	// this.container.style.lineHeight = "0";
 
-	v.element = document.createElement("img");
-	v.element.classList = "pannable center drop-shadow";
-	v.element.src = apiEndpoint+"/file/"+v.file.id;
-	v.element.addEventListener("dblclick",  (e) => { return v.doubleclick(e); });
-	v.element.addEventListener("doubletap", (e) => { return v.doubleclick(e); });
-	v.element.addEventListener("mousedown", (e) => { return v.mousedown(e); });
-	document.addEventListener("mousemove",  (e) => { return v.mousemove(e); });
-	document.addEventListener("mouseup",    (e) => { return v.mouseup(e); });
+	this.element = document.createElement("img");
+	this.element.classList = "pannable center drop-shadow";
+	this.element.src = apiEndpoint+"/file/"+this.file.id;
+	this.element.addEventListener("dblclick",  (e) => { return this.doubleclick(e); });
+	this.element.addEventListener("doubletap", (e) => { return this.doubleclick(e); });
+	this.element.addEventListener("mousedown", (e) => { return this.mousedown(e); });
+	document.addEventListener("mousemove",     (e) => { return this.mousemove(e); });
+	document.addEventListener("mouseup",       (e) => { return this.mouseup(e); });
 
-	v.container.appendChild(v.element);
+	this.container.appendChild(this.element);
 }
 
-ImageViewer.prototype.render = function(parent) {let v = this;
-	parent.appendChild(v.container);
+ImageViewer.prototype.render = function(parent) {
+	parent.appendChild(this.container);
 }
 
-ImageViewer.prototype.doubleclick = function(e) {let v = this;
-	if (v.zoomed) {
-		v.element.style.maxWidth = "100%";
-		v.element.style.maxHeight = "100%";
-		v.element.style.top = "50%";
-		v.element.style.left = "auto";
-		v.element.style.transform = "translateY(-50%)";
-		v.container.style.overflow = "hidden";
-		v.zoomed = false;
+ImageViewer.prototype.doubleclick = function(e) {
+	if (this.zoomed) {
+		this.element.style.maxWidth = "100%";
+		this.element.style.maxHeight = "100%";
+		this.element.style.top = "50%";
+		this.element.style.left = "auto";
+		this.element.style.transform = "translateY(-50%)";
+		this.container.style.overflow = "hidden";
+		this.zoomed = false;
 	} else {
-		v.element.style.maxWidth = "none";
-		v.element.style.maxHeight = "none";
-		v.element.style.top = "0";
-		v.element.style.left = "";
-		v.element.style.transform = "none";
-		v.container.style.overflow = "scroll";
-		v.zoomed = true;
+		this.element.style.maxWidth = "none";
+		this.element.style.maxHeight = "none";
+		this.element.style.top = "0";
+		this.element.style.left = "";
+		this.element.style.transform = "none";
+		this.container.style.overflow = "scroll";
+		this.zoomed = true;
 	}
 
 	e.preventDefault();
@@ -50,11 +50,11 @@ ImageViewer.prototype.doubleclick = function(e) {let v = this;
 	return false;
 }
 
-ImageViewer.prototype.mousedown = function(e) {let v = this;
-	if (!v.dragging && e.which === 1 && v.zoomed) {
-		v.x = e.pageX;
-		v.y = e.pageY;
-		v.dragging = true;
+ImageViewer.prototype.mousedown = function(e) {
+	if (!this.dragging && e.which === 1 && this.zoomed) {
+		this.x = e.pageX;
+		this.y = e.pageY;
+		this.dragging = true;
 
 		e.preventDefault();
 		e.stopPropagation();
@@ -62,13 +62,13 @@ ImageViewer.prototype.mousedown = function(e) {let v = this;
 	}
 }
 
-ImageViewer.prototype.mousemove = function(e) {let v = this;
-	if (v.dragging) {
-		v.container.scrollLeft = v.container.scrollLeft - (e.pageX - v.x);
-		v.container.scrollTop  = v.container.scrollTop  - (e.pageY - v.y);
+ImageViewer.prototype.mousemove = function(e) {
+	if (this.dragging) {
+		this.container.scrollLeft = this.container.scrollLeft - (e.pageX - this.x);
+		this.container.scrollTop  = this.container.scrollTop  - (e.pageY - this.y);
 
-		v.x = e.pageX;
-		v.y = e.pageY;
+		this.x = e.pageX;
+		this.y = e.pageY;
 
 		e.preventDefault();
 		e.stopPropagation();
@@ -77,9 +77,9 @@ ImageViewer.prototype.mousemove = function(e) {let v = this;
 
 }
 
-ImageViewer.prototype.mouseup = function(e) {let v = this;
-	if (v.dragging) {
-		v.dragging = false;
+ImageViewer.prototype.mouseup = function(e) {
+	if (this.dragging) {
+		this.dragging = false;
 
 		e.preventDefault();
 		e.stopPropagation();

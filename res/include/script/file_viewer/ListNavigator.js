@@ -1,23 +1,24 @@
-function ListNavigator(viewer, data) {let ln = this;
-	ln.viewer   = viewer;
-	ln.data     = data;
-	ln.length   = data.length;
-	ln.position = 0;
-	ln.history  = [];
-	ln.shuffle  = false;
+function ListNavigator(viewer, files) {
+	this.viewer   = viewer;
+	this.files    = files;
+	this.length   = files.length;
+	this.position = 0;
+	this.history  = [];
+	this.shuffle  = false;
 
-	ln.divListNavigator = document.getElementById("list_navigator");
+	this.divListNavigator = document.getElementById("list_navigator");
 
-	ln.btnDownloadList = document.getElementById("btn_download_list");
-	ln.btnDownloadList.style.display = "";
-	ln.btnDownloadList.addEventListener("click", () => { ln.downloadList(); });
-
-	ln.btnShuffle = document.getElementById("btn_shuffle");
-	ln.btnShuffle.style.display = "";
-	ln.btnShuffle.addEventListener("click", () => { ln.toggleShuffle(); });
+	this.btnDownloadList = document.getElementById("btn_download_list");
+	if (files.id !== "") {
+		this.btnDownloadList.style.display = "";
+		this.btnDownloadList.addEventListener("click", () => { this.downloadList(); });
+	}
+	this.btnShuffle = document.getElementById("btn_shuffle");
+	this.btnShuffle.style.display = "";
+	this.btnShuffle.addEventListener("click", () => { this.toggleShuffle(); });
 
 	// Render list contents in list navigator div
-	data.forEach((item, i) => {
+	files.forEach((item, i) => {
 		let filename;
 		if(item.name !== "null"){
 			filename = item.name;
@@ -27,89 +28,92 @@ function ListNavigator(viewer, data) {let ln = this;
 
 		let d = document.createElement("div");
 		d.classList = "file_button list_item";
-		d.addEventListener("click", () => { ln.setItem(i); });
+		d.addEventListener("click", () => { this.setItem(i); });
 		d.innerText = filename;
-		ln.divListNavigator.appendChild(d);
+		this.divListNavigator.appendChild(d);
 	});
 
 	// Make the navigator visible
-	ln.divListNavigator.style.display = "inline-block";
+	this.divListNavigator.style.display = "inline-block";
 
 	// Skip to the file defined in the link hash
-	if(Number.isInteger(parseInt(getHashValue("item")))){
-		ln.setItem(parseInt(getHashValue("item")));
+	let matches = location.hash.match(new RegExp('item=([^&]*)'));
+	let hashID = matches ? matches[1] : null;
+
+	if(Number.isInteger(parseInt(hashID))){
+		this.setItem(parseInt(hashID));
 	}else{
-		ln.setItem(0);
+		this.setItem(0);
 	}
 }
 
-ListNavigator.prototype.nextItem = function() {let ln = this;
-	if(ln.shuffle){
-		ln.randItem();
+ListNavigator.prototype.nextItem = function() {
+	if(this.shuffle){
+		this.randItem();
 		return;
 	}
 
-	if (ln.position >= ln.length) {
-		ln.position = 0;
+	if (this.position >= this.length) {
+		this.position = 0;
 	} else {
-		ln.position++;
+		this.position++;
 	}
 
-	ln.setItem(ln.position);
+	this.setItem(this.position);
 }
 
-ListNavigator.prototype.previousItem = function() {let ln = this;
-	if(ln.position === 0){
-		ln.position = ln.length - 1;
+ListNavigator.prototype.previousItem = function() {
+	if(this.position === 0){
+		this.position = this.length - 1;
 	}else{
-		ln.position--;
+		this.position--;
 	}
 
-	ln.setItem(ln.position);
+	this.setItem(this.position);
 }
 
-ListNavigator.prototype.randItem = function() {let ln = this;
+ListNavigator.prototype.randItem = function() {
 	// Avoid viewing the same file multiple times
 	let rand;
 	do {
-		rand = Math.round(Math.random() * ln.length);
+		rand = Math.round(Math.random() * this.length);
 		console.log("rand is " + rand);
-	} while(ln.history.indexOf(rand) > -1);
+	} while(this.history.indexOf(rand) > -1);
 
-	ln.setItem(rand);
+	this.setItem(rand);
 }
 
-ListNavigator.prototype.setItem = function(index) {let ln = this;
-	if(index >= ln.length){
-		ln.position = 0;
+ListNavigator.prototype.setItem = function(index) {
+	if(index >= this.length){
+		this.position = 0;
 	}else{
-		ln.position = index;
+		this.position = index;
 	}
 
 	// Set the URL hash
-	location.hash = "item=" + ln.position;
-	ln.viewer.setFile(ln.data[ln.position]);
+	location.hash = "item=" + this.position;
+	this.viewer.setFile(this.files[this.position]);
 
-	ln.addToHistory(index);
-	ln.loadThumbnails(index);
+	this.addToHistory(index);
+	this.loadThumbnails(index);
 
 	document.querySelectorAll("#list_navigator > .file_button_selected").forEach(el => {
 		el.classList.remove("file_button_selected");
 	});
 
-	let selectedItem = ln.divListNavigator.children[ln.position];
+	let selectedItem = this.divListNavigator.children[this.position];
 	selectedItem.classList.add("file_button_selected");
 
 	let cst = window.getComputedStyle(selectedItem);
 	let itemWidth = selectedItem.offsetWidth + parseInt(cst.marginLeft) + parseInt(cst.marginRight);
 
-	let start = ln.divListNavigator.scrollLeft;
-	let end = ((ln.position * itemWidth) + (itemWidth / 2)) - (ln.divListNavigator.clientWidth / 2);
+	let start = this.divListNavigator.scrollLeft;
+	let end = ((this.position * itemWidth) + (itemWidth / 2)) - (this.divListNavigator.clientWidth / 2);
 	let steps = 60; // One second
 	let stepSize = (end - start)/steps;
 
 	let animateScroll = (pos, step) => {
-		ln.divListNavigator.scrollLeft = pos;
+		this.divListNavigator.scrollLeft = pos;
 
 		if (step < steps) {
 			requestAnimationFrame(() => {
@@ -120,31 +124,30 @@ ListNavigator.prototype.setItem = function(index) {let ln = this;
 	animateScroll(start, 0);
 }
 
-ListNavigator.prototype.downloadList = function() {let ln = this;
-	document.getElementById("download_frame").src = "/api/list/" + ln.viewer.listId + "/zip";
+ListNavigator.prototype.downloadList = function() {
+	document.getElementById("download_frame").src = "/api/list/" + this.viewer.listId + "/zip";
 }
 
-ListNavigator.prototype.addToHistory = function(index) {let ln = this;
-	if(ln.history.length >= (ln.length - 6)){
-		ln.history.shift();
+ListNavigator.prototype.addToHistory = function(index) {
+	if(this.history.length >= (this.length - 6)){
+		this.history.shift();
 	}
-
-	ln.history.push(index);
+	this.history.push(index);
 }
 
-ListNavigator.prototype.toggleShuffle = function() {let ln = this;
-	ln.shuffle = !ln.shuffle; // :P
+ListNavigator.prototype.toggleShuffle = function() {
+	this.shuffle = !this.shuffle; // :P
 
-	if(ln.shuffle){
+	if(this.shuffle){
 		document.querySelector("#btn_shuffle > span").innerHTML = "Shuffle&nbsp;&#x2611;"; // Check icon
-		ln.btnShuffle.classList.add("button_highlight");
+		this.btnShuffle.classList.add("button_highlight");
 	}else{
 		document.querySelector("#btn_shuffle > span").innerHTML = "Shuffle&nbsp;&#x2610;"; // Empty checkbox
-		ln.btnShuffle.classList.remove("button_highlight");
+		this.btnShuffle.classList.remove("button_highlight");
 	}
 }
 
-ListNavigator.prototype.loadThumbnails = function(index) {let ln = this;
+ListNavigator.prototype.loadThumbnails = function(index) {
 	let startPos = +index - 50;
 	let endPos   = +index + 50;
 	// fyi, the + is to let javascript know it's actually a number instead of a string
@@ -152,9 +155,8 @@ ListNavigator.prototype.loadThumbnails = function(index) {let ln = this;
 	if(startPos < 0){
 		startPos = 0;
 	}
-
-	if(endPos >= ln.length){
-		endPos = ln.length - 1;
+	if(endPos >= this.length){
+		endPos = this.length - 1;
 	}
 
 	let navigatorItems = document.getElementById("list_navigator").children
@@ -164,8 +166,8 @@ ListNavigator.prototype.loadThumbnails = function(index) {let ln = this;
 			continue; // Thumbnail already loaded
 		}
 
-		let thumb = "/api/file/" + ln.data[i].id + "/thumbnail?width=48&height=48";
-		let name = ln.data[i].name;
+		let thumb = "/api/file/" + this.files[i].id + "/thumbnail?width=48&height=48";
+		let name = this.files[i].name;
 
 		let itemHtml = "<img src=\"" + thumb + "\" "
 			+ "class=\"list_item_thumbnail\" alt=\"" + escapeHTML(name) + "\"/>"
@@ -173,12 +175,4 @@ ListNavigator.prototype.loadThumbnails = function(index) {let ln = this;
 
 		navigatorItems[i].innerHTML = itemHtml;
 	}
-}
-
-
-
-// Misc function, don't really know where else to put it
-function getHashValue(key) {
-	let matches = location.hash.match(new RegExp(key + '=([^&]*)'));
-	return matches ? matches[1] : null;
 }

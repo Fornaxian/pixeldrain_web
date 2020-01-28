@@ -1,56 +1,56 @@
-function TextViewer(viewer, file) {let v = this;
-	v.viewer      = viewer;
-	v.file        = file;
-	v.pre         = null;
-	v.prettyprint = null;
+function TextViewer(viewer, file) {
+	this.viewer      = viewer;
+	this.file        = file;
+	this.pre         = null;
+	this.prettyprint = null;
 
-	v.container = document.createElement("div");
-	v.container.classList = "text-container";
+	this.container = document.createElement("div");
+	this.container.classList = "text-container";
 
 	if (file.name.endsWith(".md") || file.name.endsWith(".markdown") || file.id === "demo") {
-		v.getMarkdown();
+		this.getMarkdown();
 	} else {
-		v.getText();
+		this.getText();
 	}
 }
 
-TextViewer.prototype.getText = function() {let v = this;
-	v.pre = document.createElement("pre");
-	v.pre.classList = "pre-container prettyprint linenums";
-	v.pre.innerText = "Loading...";
-	v.container.appendChild(v.pre);
+TextViewer.prototype.getText = function() {
+	this.pre = document.createElement("pre");
+	this.pre.classList = "pre-container prettyprint linenums";
+	this.pre.innerText = "Loading...";
+	this.container.appendChild(this.pre);
 
-	if (v.file.size > 1<<22) { // File larger than 4 MiB
-		v.pre.innerText = "File is too large to view online.\nPlease download and view it locally.";
+	if (this.file.size > 1<<22) { // File larger than 4 MiB
+		this.pre.innerText = "File is too large to view online.\nPlease download and view it locally.";
 		return;
 	}
 
-	fetch(apiEndpoint+"/file/"+v.file.id).then(resp => {
+	fetch(apiEndpoint+"/file/"+this.file.id).then(resp => {
 		if (!resp.ok) { return Promise.reject(resp.status); }
 		return resp.text();
 	}).then(resp => {
-		v.pre.innerText = resp;
+		this.pre.innerText = resp;
 
 		// Load prettyprint script
-		v.prettyprint = document.createElement("script");
-		v.prettyprint.src = "https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert";
-		v.container.appendChild(v.prettyprint);
+		this.prettyprint = document.createElement("script");
+		this.prettyprint.src = "https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert";
+		this.container.appendChild(this.prettyprint);
 	}).catch(err => {
-		v.pre.innerText = "Error loading file: "+err;
+		this.pre.innerText = "Error loading file: "+err;
 	});
 }
 
-TextViewer.prototype.getMarkdown = function() {let v = this;
-	fetch("/u/"+v.file.id+"/preview").then(resp => {
+TextViewer.prototype.getMarkdown = function() {
+	fetch("/u/"+this.file.id+"/preview").then(resp => {
 		if (!resp.ok) { return Promise.reject(resp.status); }
 		return resp.text();
 	}).then(resp => {
-		v.container.innerHTML = resp;
+		this.container.innerHTML = resp;
 	}).catch(err => {
-		v.container.innerText = "Error loading file: "+err;
+		this.container.innerText = "Error loading file: "+err;
 	});
 }
 
-TextViewer.prototype.render = function(parent) {let v = this;
-	parent.appendChild(v.container);
+TextViewer.prototype.render = function(parent) {
+	parent.appendChild(this.container);
 }

@@ -1,12 +1,11 @@
-function UploadManager(apiAddress, uploadsFinished) {let um = this;
-
-	um.apiAddress = apiAddress;
+function UploadManager(apiAddress, uploadsFinished) {
+	this.apiAddress = apiAddress;
 
 	// Callback function for when the queue is empty
-	um.uploadsFinished = uploadsFinished;
+	this.uploadsFinished = uploadsFinished;
 
 	// Counts the total number of upload jobs
-	um.jobCounter = 0;
+	this.jobCounter = 0;
 
 	// Queue of files to be uploaded. Format:
 	// {
@@ -18,28 +17,28 @@ function UploadManager(apiAddress, uploadsFinished) {let um = this;
 	//	onFailure: function,
 	//	tries: number
 	// }
-	um.uploadQueue = [];
+	this.uploadQueue = [];
 
 	// Here we put successful jobs. The array should be sorted by job ID.
 	// Format:
 	// { jobID: number, fileID: string, fileName: string }
-	um.uploadLog = [];
+	this.uploadLog = [];
 
 	// Max number of uploading threads at once
-	um.maxWorkers = 3;
+	this.maxWorkers = 3;
 
 	// Threads which are currently uploading
-	um.activeWorkers = 0;
+	this.activeWorkers = 0;
 
 	// Total number of jobs accepted
-	um.jobCounter = 0;
+	this.jobCounter = 0;
 }
 
-UploadManager.prototype.finishedUploads = function() {let um = this;
-	um.uploadLog.sort(function(a, b) {
+UploadManager.prototype.finishedUploads = function() {
+	this.uploadLog.sort((a, b) => {
 		return a.jobID - b.jobID;
 	})
-	return um.uploadLog;
+	return this.uploadLog;
 }
 
 UploadManager.prototype.addFile = function(
@@ -48,9 +47,9 @@ UploadManager.prototype.addFile = function(
 	onProgress, // func (progress: number)
 	onFinished, // func (id: string)
 	onFailure // func (errorID: string, errorMessage: string)
-) {let um = this;
-	um.uploadQueue.push({
-		jobID: um.jobCounter,
+) {
+	this.uploadQueue.push({
+		jobID: this.jobCounter,
 		file: file,
 		name: name,
 		onProgress: onProgress,
@@ -60,43 +59,43 @@ UploadManager.prototype.addFile = function(
 	});
 
 	// Increment the job counter
-	um.jobCounter++
+	this.jobCounter++
 
-	if (um.activeWorkers < um.maxWorkers) {
+	if (this.activeWorkers < this.maxWorkers) {
 		// Run the upload function
-		um.startUpload();
+		this.startUpload();
 	}
 }
 
-UploadManager.prototype.startUpload = function() {let um = this;
-	if (um.uploadQueue.length === 0) {
+UploadManager.prototype.startUpload = function() {
+	if (this.uploadQueue.length === 0) {
 		return; // Nothing to upload
 	}
 
-	if (um.activeWorkers < um.maxWorkers) {
-		um.activeWorkers++;
-		um.uploadThread();
+	if (this.activeWorkers < this.maxWorkers) {
+		this.activeWorkers++;
+		this.uploadThread();
 	}
 }
 
-UploadManager.prototype.finishUpload = function() {let um = this;
-	um.activeWorkers--;
+UploadManager.prototype.finishUpload = function() {
+	this.activeWorkers--;
 
 	if (
-		um.uploadQueue.length === 0 &&
-		um.activeWorkers === 0 &&
-		typeof(um.uploadsFinished) === "function"
+		this.uploadQueue.length === 0 &&
+		this.activeWorkers === 0 &&
+		typeof(this.uploadsFinished) === "function"
 	) {
-		um.uploadsFinished();
+		this.uploadsFinished();
 		return;
 	}
 
 	// Run the upload function for the next file
-	um.startUpload();
+	this.startUpload();
 }
 
-UploadManager.prototype.uploadThread = function() {let um = this;
-	let job = um.uploadQueue.shift(); // Get the first element of the array
+UploadManager.prototype.uploadThread = function() {
+	let job = this.uploadQueue.shift(); // Get the first element of the array
 	console.debug("Starting upload of " + job.name);
 
 	let form = new FormData();
@@ -104,17 +103,17 @@ UploadManager.prototype.uploadThread = function() {let um = this;
 	form.append('file', job.file);
 
 	let xhr = new XMLHttpRequest();
-	xhr.open("POST", um.apiAddress + "/file", true);
+	xhr.open("POST", this.apiAddress + "/file", true);
 	xhr.timeout = 21600000; // 6 hours, to account for slow connections
 
 	// Report progress updates back to the caller
-	xhr.upload.addEventListener("progress", function (evt) {
+	xhr.upload.addEventListener("progress", evt => {
 		if (evt.lengthComputable && typeof(job.onProgress) === "function") {
 			job.onProgress(evt.loaded / evt.total);
 		}
 	});
 
-	xhr.onreadystatechange = function () {
+	xhr.onreadystatechange = () => {
 		// readystate 4 means the upload is done
 		if (xhr.readyState !== 4) { return; }
 
@@ -124,7 +123,7 @@ UploadManager.prototype.uploadThread = function() {let um = this;
 			addUploadHistory(resp.id)
 
 			// Log the successful job
-			um.uploadLog.push({
+			this.uploadLog.push({
 				jobID: job.jobID,
 				fileID: resp.id,
 				fileName: job.name
@@ -135,7 +134,7 @@ UploadManager.prototype.uploadThread = function() {let um = this;
 			}
 
 			// Finish the upload job
-			um.finishUpload();
+			this.finishUpload();
 		} else if (xhr.status >= 400) {
 			// Request failed
 			console.log("Upload error. status: " + xhr.status + " response: " + xhr.response);
@@ -144,11 +143,11 @@ UploadManager.prototype.uploadThread = function() {let um = this;
 				job.onFailure(resp.value, resp.message);
 			} else { // Try again
 				job.tries++;
-				um.uploadQueue.push(job);
+				this.uploadQueue.push(job);
 			}
 
 			// Sleep the upload thread for 5 seconds
-			window.setTimeout(() => { um.finishUpload(); }, 5000);
+			window.setTimeout(() => { this.finishUpload(); }, 5000);
 		} else {
 			// Request did not arrive
 			if (job.tries === 3) { // Upload failed
@@ -157,11 +156,11 @@ UploadManager.prototype.uploadThread = function() {let um = this;
 				}
 			} else { // Try again
 				job.tries++;
-				um.uploadQueue.push(job);
+				this.uploadQueue.push(job);
 			}
 
 			// Sleep the upload thread for 5 seconds
-			window.setTimeout(() => { um.finishUpload(); }, 5000);
+			window.setTimeout(() => { this.finishUpload(); }, 5000);
 		}
 	};
 	xhr.send(form);

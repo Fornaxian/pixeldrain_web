@@ -1,73 +1,73 @@
-function Toolbar(viewer) {let t = this;
-	t.viewer = viewer;
-	t.visible = false;
-	t.sharebarVisible = false;
+function Toolbar(viewer) {
+	this.viewer = viewer;
+	this.visible = false;
+	this.sharebarVisible = false;
 
-	t.divToolbar       = document.getElementById("toolbar");
-	t.divFilePreview   = document.getElementById("filepreview");
-	t.downloadFrame    = document.getElementById("download_frame");
-	t.spanViews        = document.getElementById("stat_views");
-	t.spanDownloads    = document.getElementById("stat_downloads");
-	t.spanSize         = document.getElementById("stat_size");
+	this.divToolbar       = document.getElementById("toolbar");
+	this.divFilePreview   = document.getElementById("filepreview");
+	this.downloadFrame    = document.getElementById("download_frame");
+	this.spanViews        = document.getElementById("stat_views");
+	this.spanDownloads    = document.getElementById("stat_downloads");
+	this.spanSize         = document.getElementById("stat_size");
 
-	t.btnToggleToolbar = document.getElementById("btn_toggle_toolbar");
-	t.btnDownload      = document.getElementById("btn_download");
-	t.btnCopyLink      = document.getElementById("btn_copy");
-	t.spanCopyLink     = document.querySelector("#btn_copy > span");
-	t.btnShare         = document.getElementById("btn_share");
-	t.divSharebar      = document.getElementById("sharebar");
+	this.btnToggleToolbar = document.getElementById("btn_toggle_toolbar");
+	this.btnDownload      = document.getElementById("btn_download");
+	this.btnCopyLink      = document.getElementById("btn_copy");
+	this.spanCopyLink     = document.querySelector("#btn_copy > span");
+	this.btnShare         = document.getElementById("btn_share");
+	this.divSharebar      = document.getElementById("sharebar");
 
-	t.btnToggleToolbar.addEventListener("click", () => { t.toggle(); });
-	t.btnDownload.addEventListener("click",      () => { t.download(); });
-	t.btnCopyLink.addEventListener("click",      () => { t.copyUrl(); });
-	t.btnShare.addEventListener("click",         () => { t.toggleSharebar(); });
+	this.btnToggleToolbar.addEventListener("click", () => { this.toggle(); });
+	this.btnDownload.addEventListener("click",      () => { this.download(); });
+	this.btnCopyLink.addEventListener("click",      () => { this.copyUrl(); });
+	this.btnShare.addEventListener("click",         () => { this.toggleSharebar(); });
 }
 
-Toolbar.prototype.toggle = function() {let t = this;
-	if (t.visible) {
-		if (t.sharebarVisible) { t.toggleSharebar(); }
+Toolbar.prototype.toggle = function() {
+	if (this.visible) {
+		if (this.sharebarVisible) { this.toggleSharebar(); }
 
-		t.divToolbar.style.left = "-8em";
-		t.divFilePreview.style.left = "0px";
-		t.btnToggleToolbar.classList.remove("button_highlight");
-		t.visible = false;
+		this.divToolbar.style.left = "-8em";
+		this.divFilePreview.style.left = "0px";
+		this.btnToggleToolbar.classList.remove("button_highlight");
+		this.visible = false;
 	} else {
-		t.divToolbar.style.left = "0px";
-		t.divFilePreview.style.left = "8em";
-		t.btnToggleToolbar.classList.add("button_highlight");
-		t.visible = true;
+		this.divToolbar.style.left = "0px";
+		this.divFilePreview.style.left = "8em";
+		this.btnToggleToolbar.classList.add("button_highlight");
+		this.visible = true;
 	}
 }
 
-Toolbar.prototype.toggleSharebar = function() {let t = this;
+Toolbar.prototype.toggleSharebar = function() {
 	if (navigator.share) {
 		navigator.share({
-			title: t.viewer.title,
-			text: "Download " + t.viewer.title + " here",
+			title: this.viewer.title,
+			text: "Download " + this.viewer.title + " here",
 			url: window.location.href
 		});
 		return;
 	}
 
-	if(t.sharebarVisible){
-		t.divSharebar.style.left = "-8em";
-		t.btnShare.classList.remove("button_highlight")
-		t.sharebarVisible = false;
+	if(this.sharebarVisible){
+		this.divSharebar.style.left = "-8em";
+		this.btnShare.classList.remove("button_highlight")
+		this.sharebarVisible = false;
 	}else{
-		t.divSharebar.style.left = "8em";
-		t.btnShare.classList.add("button_highlight")
-		t.sharebarVisible = true;
+		this.divSharebar.style.left = "8em";
+		this.btnShare.classList.add("button_highlight")
+		this.sharebarVisible = true;
 	}
 }
 
-Toolbar.prototype.download = function() {let t = this;
+Toolbar.prototype.download = function() {
 	let triggerDL = (captchaResp = "") => {
 		if (captchaResp === "") {
-			t.downloadFrame.src = apiEndpoint+"/file/"+
-				t.viewer.currentFile+"?download";
+			this.downloadFrame.src = apiEndpoint+"/file/"+
+				this.viewer.currentFile+"?download";
 		} else {
-			t.downloadFrame.src = apiEndpoint+"/file/"+
-				t.viewer.currentFile+"?download&recaptcha_response="+captchaResp;
+			this.downloadFrame.src = apiEndpoint+"/file/"+
+				this.viewer.currentFile+"?download&recaptcha_response="+captchaResp;
 		}
 	}
 
@@ -87,7 +87,7 @@ Toolbar.prototype.download = function() {let t = this;
 		return;
 	}
 
-	fetch(apiEndpoint+"/file/"+t.viewer.currentFile+"/availability").then(resp => {
+	fetch(apiEndpoint+"/file/"+this.viewer.currentFile+"/availability").then(resp => {
 		return resp.json();
 	}).then(resp => {
 		let popupDiv = document.getElementById("captcha_popup");
@@ -130,28 +130,28 @@ Toolbar.prototype.download = function() {let t = this;
 	});
 }
 
-Toolbar.prototype.copyUrl = function() {let t = this;
+Toolbar.prototype.copyUrl = function() {
 	if(copyText(window.location.href)) {
 		console.log('Text copied');
-		t.spanCopyLink.innerText = "Copied!";
-		t.btnCopyLink.classList.add("button_highlight")
+		this.spanCopyLink.innerText = "Copied!";
+		this.btnCopyLink.classList.add("button_highlight")
 	} else {
 		console.log('Copying not supported');
-		t.spanCopyLink.innerText = "Error!";
+		this.spanCopyLink.innerText = "Error!";
 		alert("Your browser does not support copying text.");
 	}
 
 	// Return to normal
 	setTimeout(() => {
-		t.spanCopyLink.innerText = "Copy";
-		t.btnCopyLink.classList.remove("button_highlight")
+		this.spanCopyLink.innerText = "Copy";
+		this.btnCopyLink.classList.remove("button_highlight")
 	}, 60000);
 }
 
-Toolbar.prototype.setStats = function(file) {let t = this;
-	t.spanViews.innerText = file.views
-	t.spanDownloads.innerText = Math.round((file.bandwidth_used/file.size)*10)/10;
-	t.spanSize.innerText = formatDataVolume(file.size, 3);
+Toolbar.prototype.setStats = function(file) {
+	this.spanViews.innerText = file.views
+	this.spanDownloads.innerText = Math.round((file.bandwidth_used/file.size)*10)/10;
+	this.spanSize.innerText = formatDataVolume(file.size, 3);
 }
 
 

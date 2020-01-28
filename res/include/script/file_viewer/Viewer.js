@@ -1,27 +1,27 @@
-function Viewer(type, viewToken, data) {let v = this;
+function Viewer(type, viewToken, data) {
 	// Set defaults
-	v.toolbar       = null;
-	v.listNavigator = null;
-	v.detailsWindow = null;
-	v.divFilepreview = null;
-	v.currentFile = "";
-	v.title       = ""; // Contains either the file name or list title
-	v.listId      = "";
-	v.viewToken   = "";
-	v.isList      = false;
-	v.isFile      = false;
-	v.initialized = false;
+	this.toolbar       = null;
+	this.listNavigator = null;
+	this.detailsWindow = null;
+	this.divFilepreview = null;
+	this.currentFile = "";
+	this.title       = ""; // Contains either the file name or list title
+	this.listId      = "";
+	this.viewToken   = "";
+	this.isList      = false;
+	this.isFile      = false;
+	this.initialized = false;
 
-	v.viewToken     = viewToken;
-	v.toolbar       = new Toolbar(v);
-	v.detailsWindow = new DetailsWindow(v);
+	this.viewToken     = viewToken;
+	this.toolbar       = new Toolbar(this);
+	this.detailsWindow = new DetailsWindow(this);
 
-	v.divFilepreview = document.getElementById("filepreview");
+	this.divFilepreview = document.getElementById("filepreview");
 
 	// On small screens the toolbar takes too much space, so it collapses
 	// automatically
-	if (v.divFilepreview.clientWidth > 600 && !v.toolbar.visible) {
-		v.toolbar.toggle();
+	if (this.divFilepreview.clientWidth > 600 && !this.toolbar.visible) {
+		this.toolbar.toggle();
 	}
 
 	// The close button only works if the window has an opener. So we hide
@@ -31,41 +31,41 @@ function Viewer(type, viewToken, data) {let v = this;
 	}
 
 	if (type === "file") {
-		v.isFile = true;
-		v.currentFile = data.id;
-		v.title = data.name;
-		v.setFile(data);
+		this.isFile = true;
+		this.currentFile = data.id;
+		this.title = data.name;
+		this.setFile(data);
 	} else if (type === "list") {
-		v.isList = true;
-		v.listId = data.id;
-		v.title = data.title;
-		v.listNavigator = new ListNavigator(v, data.data);
+		this.isList = true;
+		this.listId = data.id;
+		this.title = data.title;
+		this.listNavigator = new ListNavigator(this, data.files);
 	}
 
-	v.renderSponsors();
-	window.addEventListener("resize", e => { v.renderSponsors(e); });
+	this.renderSponsors();
+	window.addEventListener("resize", e => { this.renderSponsors(e); });
 
 	// Register keyboard shortcuts
-	document.addEventListener("keydown", e => { v.keyboardEvent(e); });
+	document.addEventListener("keydown", e => { this.keyboardEvent(e); });
 
-	v.initialized = true;
+	this.initialized = true;
 }
 
-Viewer.prototype.setFile = function(file) {let v = this;
-	v.currentFile = file.id;
-	if (v.isList) {
+Viewer.prototype.setFile = function(file) {
+	this.currentFile = file.id;
+	if (this.isList) {
 		document.getElementById("file_viewer_headerbar_title").style.lineHeight = "1em";
 		document.getElementById("file_viewer_list_title").innerText = this.title;
 		document.getElementById("file_viewer_file_title").innerText = file.name;
-		document.title = v.title + " ~ " + file.name + " ~ pixeldrain";
+		document.title = this.title + " ~ " + file.name + " ~ pixeldrain";
 	} else {
 		document.getElementById("file_viewer_file_title").innerText = file.name;
 		document.title = file.name + " ~ pixeldrain";
 	}
 
 	// Update the file details
-	v.detailsWindow.setDetails(file);
-	v.toolbar.setStats(file);
+	this.detailsWindow.setDetails(file);
+	this.toolbar.setStats(file);
 
 	// Register a new view. We don't care what this returns becasue we can't
 	// do anything about it anyway
@@ -73,47 +73,47 @@ Viewer.prototype.setFile = function(file) {let v = this;
 		{
 			method: "POST",
 			headers: {"Content-Type": "application/x-www-form-urlencoded"},
-			body: "token="+v.viewToken
+			body: "token="+this.viewToken
 		}
 	);
 
 	// Clear the canvas
-	v.divFilepreview.innerHTML = "";
+	this.divFilepreview.innerHTML = "";
 
 	let nextItem = () => {
-		if (v.listNavigator !== null) {
-			v.listNavigator.nextItem();
+		if (this.listNavigator !== null) {
+			this.listNavigator.nextItem();
 		}
 	};
 
 	if (
 		file.mime_type.startsWith("image")
 	) {
-		new ImageViewer(v, file).render(v.divFilepreview);
+		new ImageViewer(this, file).render(this.divFilepreview);
 	} else if (
 		file.mime_type.startsWith("video") ||
 		file.mime_type === "application/matroska" ||
 		file.mime_type === "application/x-matroska"
 	) {
-		new VideoViewer(v, file, nextItem).render(v.divFilepreview);
+		new VideoViewer(this, file, nextItem).render(this.divFilepreview);
 	} else if (
 		file.mime_type.startsWith("audio") ||
 		file.mime_type === "application/ogg" ||
 		file.name.endsWith(".mp3")
 	) {
-		new AudioViewer(v, file, nextItem).render(v.divFilepreview);
+		new AudioViewer(this, file, nextItem).render(this.divFilepreview);
 	} else if (
 		file.mime_type === "application/pdf" ||
 		file.mime_type === "application/x-pdf"
 	) {
-		new PDFViewer(v, file).render(v.divFilepreview);
+		new PDFViewer(this, file).render(this.divFilepreview);
 	} else if (
 		file.mime_type.startsWith("text") ||
 		file.id === "demo"
 	) {
-		new TextViewer(v, file).render(v.divFilepreview);
+		new TextViewer(this, file).render(this.divFilepreview);
 	} else {
-		new FileViewer(v, file).render(v.divFilepreview);
+		new FileViewer(this, file).render(this.divFilepreview);
 	}
 }
 
@@ -152,7 +152,7 @@ Viewer.prototype.renderSponsors = function() {
 	}
 }
 
-Viewer.prototype.keyboardEvent = function(evt) {let v = this;
+Viewer.prototype.keyboardEvent = function(evt) {
 	if (evt.ctrlKey || evt.altKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
@@ -160,33 +160,33 @@ Viewer.prototype.keyboardEvent = function(evt) {let v = this;
 	switch (evt.keyCode) {
 	case 65: // A or left arrow key go to previous file
 	case 37:
-		if (v.listNavigator != null) {
-			v.listNavigator.previousItem();
+		if (this.listNavigator != null) {
+			this.listNavigator.previousItem();
 		}
 		break;
 	case 68: // D or right arrow key go to next file
 	case 39:
-		if (v.listNavigator != null) {
-			v.listNavigator.nextItem();
+		if (this.listNavigator != null) {
+			this.listNavigator.nextItem();
 		}
 		break;
 	case 83:
 		if (evt.shiftKey) {
-			v.listNavigator.downloadList(); // SHIFT + S downloads all files in list
+			this.listNavigator.downloadList(); // SHIFT + S downloads all files in list
 		} else {
-			v.toolbar.download(); // S to download the current file
+			this.toolbar.download(); // S to download the current file
 		}
 		break;
 	case 82: // R to toggle list shuffle
-		if (v.listNavigator != null) {
-			v.listNavigator.toggleShuffle();
+		if (this.listNavigator != null) {
+			this.listNavigator.toggleShuffle();
 		}
 		break;
 	case 67: // C to copy to clipboard
-		v.toolbar.copyUrl();
+		this.toolbar.copyUrl();
 		break;
 	case 73: // I to open the details window
-		v.detailsWindow.toggle();
+		this.detailsWindow.toggle();
 		break;
 	case 81: // Q to close the window
 		window.close();

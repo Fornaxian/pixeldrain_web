@@ -1,24 +1,24 @@
-function VideoViewer(viewer, file, next) {let v = this;
-	v.viewer = viewer;
-	v.file   = file;
-	v.next   = next;
+function VideoViewer(viewer, file, next) {
+	this.viewer = viewer;
+	this.file   = file;
+	this.next   = next;
 
-	v.vidContainer = document.createElement("div");
-	v.vidContainer.classList = "image-container";
+	this.vidContainer = document.createElement("div");
+	this.vidContainer.classList = "image-container";
 
-	v.vidElement = document.createElement("video");
-	v.vidElement.autoplay = "autoplay";
-	v.vidElement.controls = "controls";
-	v.vidElement.classList = "center drop-shadow";
-	v.vidElement.addEventListener("ended", () => { v.next(); }, false);
+	this.vidElement = document.createElement("video");
+	this.vidElement.autoplay = "autoplay";
+	this.vidElement.controls = "controls";
+	this.vidElement.classList = "center drop-shadow";
+	this.vidElement.addEventListener("ended", () => { this.next(); }, false);
 
-	v.videoSource = document.createElement("source");
-	v.videoSource.src = apiEndpoint+"/file/"+v.file.id;
+	this.videoSource = document.createElement("source");
+	this.videoSource.src = apiEndpoint+"/file/"+this.file.id;
 
-	v.vidElement.appendChild(v.videoSource);
-	v.vidContainer.appendChild(v.vidElement);
+	this.vidElement.appendChild(this.videoSource);
+	this.vidContainer.appendChild(this.vidElement);
 }
 
-VideoViewer.prototype.render = function(parent) {let v = this;
-	parent.appendChild(v.vidContainer);
+VideoViewer.prototype.render = function(parent) {
+	parent.appendChild(this.vidContainer);
 }

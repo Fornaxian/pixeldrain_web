@@ -1,28 +1,27 @@
-function UploadProgressBar(uploadManager, queueDiv, file){let upb = this;
-	upb.uploadManager = uploadManager;
-	upb.file = file;
-	upb.name = file.name;
+function UploadProgressBar(uploadManager, queueDiv, file){
+	this.uploadManager = uploadManager;
+	this.file = file;
+	this.name = file.name;
 
-	upb.uploadDiv = document.createElement("a");
-	upb.uploadDiv.classList.add("file_button");
-	upb.uploadDiv.style.opacity = "0";
-	upb.uploadDiv.innerText = "Queued\n" + upb.file.name;
-	queueDiv.appendChild(upb.uploadDiv);
+	this.uploadDiv = document.createElement("a");
+	this.uploadDiv.classList.add("file_button");
+	this.uploadDiv.style.opacity = "0";
+	this.uploadDiv.innerText = "Queued\n" + this.file.name;
+	queueDiv.appendChild(this.uploadDiv);
 
 	// Start uploading the file
-	upb.uploadManager.addFile(
-		upb.file,
-		upb.name,
-		function(progress) { upb.onProgress(progress); },
-		function(id)       { upb.onFinished(id); },
-		function(val, msg) { upb.onFailure(val, msg); }
+	this.uploadManager.addFile(
+		this.file,
+		this.name,
+		(progress) => { this.onProgress(progress); },
+		(id)       => { this.onFinished(id); },
+		(val, msg) => { this.onFailure(val, msg); }
 	);
 
 	// Browsers don't render the transition if the opacity is set and
 	// updated in the same frame. So we have to wait a frame (or more)
 	// before changing the opacity to make sure the transition triggers
-	var d = this.uploadDiv // `this` stops working after constructor ends
-	window.setTimeout(function(){d.style.opacity = "1";}, 100)
+	window.setTimeout(() => {this.uploadDiv.style.opacity = "1";}, 100)
 }
 
 UploadProgressBar.prototype.onProgress = function(progress){

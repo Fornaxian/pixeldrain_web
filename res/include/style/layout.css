@@ -25,13 +25,13 @@ html, body {
 	overflow-x: hidden;
 }
 body{
-	background-color: #0d0d0d; /* Fallback */
+	background-color: #111111; /* Fallback */
 	background-color: var(--body_color);
 	background-repeat: repeat;
 	font-family: sans-serif;
 	margin: 0;
 	line-height: 1.5em;
-	color: #bfbfbf; /* Fallback */
+	color: #b2b2b2; /* Fallback */
 	color: var(--text_color);
 	padding: 0;
 }
@@ -54,9 +54,11 @@ body{
 	padding: 10px 20px 15px 10px;
 	font-size: 2em;
 	margin: 0;
+	background: #3f3f3f;
 	background: var(--input_color);
 	border-radius: 0;
 	border-bottom-right-radius: 90%;
+	box-shadow: 2px 2px 8px -3px #000000;
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
 }
 .page_navigation {
@@ -67,12 +69,14 @@ body{
 	height: 100%;
 	left: 0;
 	float: left;
+	background-color: #1c1c1c;
 	background-color: var(--layer_1_color);
 	padding: 20px 0 0.5em 0;
 	box-sizing: border-box;
 	overflow-y: auto;
 	overflow-x: hidden;
 	text-align: left;
+	box-shadow: inset -10px 0px 10px -10px #000000;
 	box-shadow: inset -10px 0px 10px -10px var(--shadow_color);
 	transition: left 0.5s;
 }
@@ -107,7 +111,9 @@ body{
 	width: 100%;
 	height: auto;
 	padding: 20px 0 20px 0;
+	background-color: #212121;
 	background-color: var(--layer_2_color);
+	box-shadow: 1px 1px 20px 0 #000000;
 	box-shadow: 1px 1px 20px 0 var(--shadow_color);
 	box-sizing: border-box;
 	clear: both;
@@ -125,6 +131,7 @@ body{
 }
 .page_body > h1 {
 	text-shadow: 1px 1px 25px #000000;
+	text-shadow: 1px 1px 25px var(--shadow_color);
 }
 
 /* Page contents */
@@ -140,7 +147,7 @@ body{
 	float: none;
 	display: block;
 	box-sizing: border-box;
-	color: #bfbfbf; /* Fallback */
+	color: #b2b2b2; /* Fallback */
 	color: var(--text_color);
 	text-align: center;
 	padding: 6px 6px;
@@ -153,12 +160,15 @@ body{
 	border-radius: 5px;
 }
 .page_navigation a:hover {
+	background-color: #3f3f3f;
 	background-color: var(--input_color);
+	color: #ffffff;
 	color: var(--input_text_color);
 	text-decoration: none;
 }
 
 .inset {
+	box-shadow: inset 1px 1px 20px 0 #000000;
 	box-shadow: inset 1px 1px 20px 0 var(--shadow_color);
 }
 .checkers {
