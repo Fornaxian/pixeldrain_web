@@ -3,7 +3,6 @@
 	<head>
 		{{template "meta_tags" "File Manager"}}
 		{{template "user_style" .}}
-		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
 		<style>
 			#page_body {
 				height: 100%;
@@ -15,84 +14,114 @@
 				padding: 0;
 				background-color: var(--layer_1_color);
 				box-shadow: #000000 8px 8px 50px 5px;
-				left:50px;
-				top:50px;
-				right: 50px;
-				bottom: 50px;
+				left:2%;
+				top:2%;
+				right:2%;
+				bottom:2%;
 				display: flex;
 				flex-direction: column;
 			}
 			.file_manager > .nav_bar {
 				flex-shrink: 0;
 				display: flex;
-				flex-direction: row
+				flex-direction: row;
 			}
-			.file_manager > .nav_bar :first-child   {margin-left:  5px;}
-			.file_manager > .nav_bar :last-child    {margin-right: 5px;}
-			.file_manager > .nav_bar > .breadcrumbs {flex: 1; margin: 1px 10px; min-width: 100px;}
+			.file_manager > .nav_bar > .spacer      {width: 8px;}
+			.file_manager > .nav_bar > .breadcrumbs {
+				flex-grow: .8;
+				flex-shrink: 1;
+			}
+			.file_manager > .nav_bar > .input_search {
+				flex-grow: .2;
+				flex-shrink: 1;
+			}
 			.file_manager > .directory_area {
 				flex-shrink: 1;
+				flex-grow: 1;
 				margin: 0;
-				padding: 5px;
+				/* padding: 0; */
+				padding: 8px;
 				overflow-x: hidden;
 				overflow-y: scroll;
 				text-align: left;
-			}
-			.file_manager > .directory_area > .file_button {
-				margin: 5px;
+				box-sizing: border-box;
 			}
 			.file_manager > .status_bar {
 				flex-shrink: 0;
 				text-align: left;
 			}
 
-			.file_button {
-				height: 20px;
-				box-shadow: none;
-				background: none;
-				margin: 2px;
+			.node {
+				position: relative;
+				height: 24px;
+				overflow: hidden;
+				margin-top: 4px;
+				margin-bottom: 4px;
+				box-sizing: border-box;
+				display: block;
+				color: var(--text_color);
 			}
-			.file_button > img {height: 100% !important;}
+			.node:hover  {background-color: var(--input_color_dark); text-decoration: none;}
+			.node > span {vertical-align: middle;}
+			.node > img {
+				max-height: 100%;
+				margin-right: 5px;
+				float: left;
+				display: block;
+			}
+
+			.spinner {
+				position: relative;
+				display: block;
+				margin: auto;
+				max-width: 100%;
+				max-height: 100%;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 100px;
+				height: 100px;
+			}
 		</style>
 	</head>
 
 	<body>
+		<template id="tpl_spinner"><div id="spinner" class="spinner">{{template `spinner.svg` .}}</div></template>
+
 		{{template "page_menu" .}}
 
 		<div id="page_body" class="page_body">
-			<div class="file_manager">
-				<div class="nav_bar highlight_light">
-					<button>⇐</button>
-					<button>⇑</button>
-					<button style="margin-right: 16px;">⇒</button>
-					<button>🏠</button>
+			<div id="file_manager" class="file_manager">
+				<div id="nav_bar" class="nav_bar highlight_light">
+					<button id="btn_menu">☰</button>
+					<div class="spacer"></div>
+					<button id="btn_back" >⇐</button id="btn_forward">
+					<button id="btn_up" >⇑</button id="btn_forward">
+					<button id="btn_forward">⇒</button>
+					<div class="spacer"></div>
+					<button id="btn_home">🏠</button>
+					<div class="spacer"></div>
 					<input class="breadcrumbs" type="text" value="/{{.Username}}/Documents"/>
-					<button>↻</button>
-					<button>🔎</button>
-					<button style="margin-left: 16px;">_</button>
-					<button>☐</button>
-					<button class="button_red">✕</button>
+					<div class="spacer"></div>
+					<input id="input_search" class="input_search" type="text" placeholder="Search..."/>
+					<div class="spacer"></div>
+					<button id="btn_reload">↻</button>
 				</div>
-				<div class="directory_area">
-					{{$size := 0}}
-					{{$count := 0}}
-
-					{{$files := .PixelAPI.UserFiles 0 10000}}
-					{{range $files.Files}}
-					{{$size = add $size .Size}}
-					{{$count = add $count 1}}
-					<a class="file_button" href="/u/{{.ID}}" target="_blank">
-						<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail?width=16&height=16" alt="{{.Name}}" />
-						{{.Name}}
-					</a>
-					{{end}}
-				</div>
-				<div class="status_bar highlight_light">
-					{{$count}} items (0 directories, {{$count}} files). Total size: {{formatData $size}}
-				</div>
+				<div id="directory_area" class="directory_area"></div>
+				<div id="directory_footer" class="status_bar highlight_light"></div>
 			</div>
 		</div>
 
+		<script>
+			'use strict';
+			let apiEndpoint = '{{.APIEndpoint}}';
+			{{template `util.js`}}
+			{{template `FileManager.js`}}
+
+			window.addEventListener("load", () => {
+				let fm = new FileManager(document.getElementById("file_manager"));
+				fm.getUserFiles();
+			});
+		</script>
 		{{template "analytics"}}
 	</body>
 </html>

@@ -53,14 +53,14 @@ UploadProgressBar.prototype.onFinished = function(id){
 	this.uploadDiv.appendChild(document.createElement("br"))
 	this.uploadDiv.appendChild(linkSpan)
 }
-UploadProgressBar.prototype.onFailure = function(error) {
+UploadProgressBar.prototype.onFailure = function(val, msg) {
 	this.uploadDiv.innerHTML = "" // Remove uploading progress
 	this.uploadDiv.style.background = 'var(--danger_color)'
 	this.uploadDiv.appendChild(document.createTextNode(this.file.name))
 	this.uploadDiv.appendChild(document.createElement("br"))
 	this.uploadDiv.appendChild(document.createTextNode("Upload failed after three tries:"))
 	this.uploadDiv.appendChild(document.createElement("br"))
-	this.uploadDiv.appendChild(document.createTextNode(error))
+	this.uploadDiv.appendChild(document.createTextNode(val))
 }
 
 

@@ -20,7 +20,7 @@ TextViewer.prototype.getText = function() {
 	this.pre.innerText = "Loading...";
 	this.container.appendChild(this.pre);
 
-	if (this.file.size > 1<<22) { // File larger than 4 MiB
+	if (this.file.size > 1<<20) { // File larger than 1 MiB
 		this.pre.innerText = "File is too large to view online.\nPlease download and view it locally.";
 		return;
 	}
