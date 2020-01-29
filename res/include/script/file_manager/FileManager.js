@@ -98,12 +98,12 @@ FileManager.prototype.renderVisibleFiles = function(files, freshStart) {
 	let scrollDown = this.lastScrollTop <= this.directoryArea.scrollTop;
 	this.lastScrollTop = this.directoryArea.scrollTop;
 
-	let fileHeight     = 28;
-	let totalHeight    = (files.length * fileHeight)+16;
-	let viewportHeight = this.directoryArea.clientHeight+100;
-	let paddingTop     = this.directoryArea.scrollTop-100;
+	let fileHeight     = 32;
+	let totalHeight    = (files.length * fileHeight)+38;
+	let viewportHeight = this.directoryArea.clientHeight;
+	let paddingTop     = this.lastScrollTop - this.lastScrollTop%fileHeight;
 	if (paddingTop < 0) { paddingTop = 0;}
-	let paddingBottom  = totalHeight - paddingTop - viewportHeight;
+	let paddingBottom  = totalHeight - paddingTop - viewportHeight - this.lastScrollTop%fileHeight;
 	if (paddingBottom < 0) {paddingBottom = 0;}
 
 	// Pad the items out which we're not going to show
@@ -126,8 +126,6 @@ FileManager.prototype.renderVisibleFiles = function(files, freshStart) {
 		lastEl   = this.dirContainer.lastElementChild;
 		lastIdx  = Number.parseInt(lastEl.getAttribute("fileindex"));
 
-		this.dirContainer.insert
-
 		if (firstIdx < start) {
 			this.dirContainer.removeChild(firstEl);
 			console.debug("Remove start "+firstIdx);
@@ -140,7 +138,6 @@ FileManager.prototype.renderVisibleFiles = function(files, freshStart) {
 	}
 
 	console.debug("Start "+start+" end "+end+" first el "+firstIdx+" last el "+lastIdx);
-
 
 	let makeButton = (i, file) => {
 		let el = document.createElement("a");
