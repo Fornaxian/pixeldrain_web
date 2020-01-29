@@ -92,7 +92,7 @@ FileManager.prototype.renderVisibleFiles = function(files, freshStart) {
 			" items (0 directories and "+
 			files.length+
 			" files). Total size: "
-			+formatDataVolume(totalSize);
+			+formatDataVolume(totalSize, 4);
 	}
 
 	let scrollDown = this.lastScrollTop <= this.directoryArea.scrollTop;
