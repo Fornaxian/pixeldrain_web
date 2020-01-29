@@ -29,6 +29,7 @@ body{
 	background-color: var(--body_color);
 	background-repeat: repeat;
 	margin: 0;
+	font-family: system-ui, sans-serif;
 	line-height: 1.5em;
 	color: #b2b2b2; /* Fallback */
 	color: var(--text_color);
