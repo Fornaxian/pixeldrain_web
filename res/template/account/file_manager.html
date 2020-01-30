@@ -9,18 +9,31 @@
 				padding: 0;
 			}
 
+			#button_toggle_navigation {
+				display: none;
+			}
+
 			.file_manager {
 				position: absolute;
 				padding: 0;
 				background-color: var(--layer_1_color);
 				box-shadow: #000000 8px 8px 50px 5px;
-				left:2%;
-				top:2%;
-				right:2%;
-				bottom:2%;
+				left:3%;
+				top:3%;
+				right:3%;
+				bottom:3%;
 				display: flex;
 				flex-direction: column;
 			}
+			@media (max-width: 800px) {
+				.file_manager {
+					left: 0;
+					top: 0;
+					right: 0;
+					bottom: 0;
+				}
+			}
+
 			.file_manager > .nav_bar {
 				flex-shrink: 0;
 				display: flex;
@@ -30,11 +43,28 @@
 			.file_manager > .nav_bar > .breadcrumbs {
 				flex-grow: .8;
 				flex-shrink: 1;
+				min-width: 0;
 			}
 			.file_manager > .nav_bar > .input_search {
 				flex-grow: .2;
 				flex-shrink: 1;
+				min-width: 0;
 			}
+
+			.file_manager > .directory_sorters {
+				flex-shrink: 0;
+				display: flex;
+				flex-direction: row;
+				position: relative;
+			}
+			.file_manager > .directory_sorters > div {
+				flex-shrink: 0;
+				flex-grow: 1;
+				display: inline-block;
+				margin: 4px 12px;
+				border-bottom: 1px solid var(--input_color);
+			}
+
 			.file_manager > .directory_area {
 				flex-shrink: 1;
 				flex-grow: 1;
@@ -45,6 +75,9 @@
 				text-align: left;
 				box-sizing: border-box;
 			}
+			.file_manager > .directory_area > div {
+				box-sizing: border-box;
+			}
 			.file_manager > .status_bar {
 				flex-shrink: 0;
 				text-align: left;
@@ -52,9 +85,10 @@
 
 			.node {
 				position: relative;
-				height: 24px;
+				height: 32px;
 				overflow: hidden;
-				margin: 8px;
+				border-radius: 4px;
+				margin: 6px;
 				box-sizing: border-box;
 				display: block;
 				color: var(--text_color);
@@ -69,13 +103,14 @@
 			}
 
 			.spinner {
-				position: relative;
+				position: absolute;
 				display: block;
 				margin: auto;
 				max-width: 100%;
 				max-height: 100%;
 				top: 50%;
-				transform: translateY(-50%);
+				left: 50%;
+				transform: translate(-50%, -50%);
 				width: 100px;
 				height: 100px;
 			}
@@ -90,7 +125,7 @@
 		<div id="page_body" class="page_body">
 			<div id="file_manager" class="file_manager">
 				<div id="nav_bar" class="nav_bar highlight_light">
-					<button id="btn_menu">☰</button>
+					<button id="btn_menu" onclick="toggleMenu();">☰</button>
 					<div class="spacer"></div>
 					<button id="btn_back" >⇐</button id="btn_forward">
 					<button id="btn_up" >⇑</button id="btn_forward">
@@ -104,6 +139,7 @@
 					<div class="spacer"></div>
 					<button id="btn_reload">↻</button>
 				</div>
+				<div id="directory_sorters" class="directory_sorters"></div>
 				<div id="directory_area" class="directory_area"></div>
 				<div id="directory_footer" class="status_bar highlight_light"></div>
 			</div>
@@ -115,8 +151,9 @@
 			{{template `util.js`}}
 			{{template `FileManager.js`}}
 
+			let fm = null;
 			window.addEventListener("load", () => {
-				let fm = new FileManager(document.getElementById("file_manager"));
+				fm = new FileManager(document.getElementById("file_manager"));
 				fm.getUserFiles();
 			});
 		</script>
