@@ -54,13 +54,18 @@ UploadProgressBar.prototype.onFinished = function(id){
 	this.uploadDiv.appendChild(linkSpan)
 }
 UploadProgressBar.prototype.onFailure = function(val, msg) {
+	if (val === "") {
+		val = "Could not connect to server";
+	}
+
 	this.uploadDiv.innerHTML = "" // Remove uploading progress
 	this.uploadDiv.style.background = 'var(--danger_color)'
+	this.uploadDiv.style.color = 'var(--highlight_text_color)'
+	this.uploadDiv.appendChild(document.createTextNode("Upload failed: "))
+	this.uploadDiv.appendChild(document.createTextNode(msg+" ("+val+")"))
+	this.uploadDiv.appendChild(document.createElement("br"))
 	this.uploadDiv.appendChild(document.createTextNode(this.file.name))
-	this.uploadDiv.appendChild(document.createElement("br"))
-	this.uploadDiv.appendChild(document.createTextNode("Upload failed after three tries:"))
-	this.uploadDiv.appendChild(document.createElement("br"))
-	this.uploadDiv.appendChild(document.createTextNode(val))
+	console.log(msg);
 }
 
 

@@ -152,7 +152,7 @@ UploadManager.prototype.uploadThread = function() {
 			// Request did not arrive
 			if (job.tries === 3) { // Upload failed
 				if (typeof(job.onFailure) === "function") {
-					job.onFailure(xhr.response, xhr.response);
+					job.onFailure(xhr.responseText, xhr.responseText);
 				}
 			} else { // Try again
 				job.tries++;
