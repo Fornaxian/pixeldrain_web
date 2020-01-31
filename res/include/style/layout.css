@@ -442,16 +442,16 @@ input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="number"]{
+	display: inline-block;
+	margin: 3px; /* Same as button, to make them align nicely */
 	border: none;
 	box-sizing: border-box;
-	border-radius: 4px;
+	border-radius: 3px;
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 2px 2px 6px -3px var(--shadow_color);
 	padding: 3px 5px;
 	color: var(--input_text_color);
-	height: 26px;
 	font-size: 1em;
-	vertical-align: middle;
 	outline: 0;
 	transition: box-shadow 0.3s;
 }
