@@ -2,7 +2,9 @@ package webcontroller
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/google/uuid"
@@ -18,6 +20,8 @@ type WebController struct {
 	templates *TemplateManager
 
 	resourceDir string
+
+	hostname string
 
 	apiURLInternal string
 	apiURLExternal string
@@ -40,6 +44,7 @@ func New(
 	maintenanceMode bool,
 	debugMode bool,
 ) (wc *WebController) {
+	var err error
 	wc = &WebController{
 		resourceDir:         resourceDir,
 		apiURLInternal:      apiURLInternal,
@@ -48,6 +53,10 @@ func New(
 	}
 	wc.templates = NewTemplateManager(resourceDir, apiURLExternal, debugMode)
 	wc.templates.ParseTemplates(false)
+
+	if wc.hostname, err = os.Hostname(); err != nil {
+		panic(fmt.Errorf("Could not get hostname: %s", err))
+	}
 
 	var p = prefix
 

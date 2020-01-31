@@ -30,6 +30,7 @@ type TemplateData struct {
 	UserStyle     template.CSS
 	APIEndpoint   template.URL
 	PixelAPI      *pixelapi.PixelAPI
+	Hostname      template.HTML
 
 	// Only used on file viewer page
 	Title  string
@@ -50,6 +51,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		Style:         userStyle(r),
 		UserStyle:     template.CSS(userStyle(r).String()),
 		APIEndpoint:   template.URL(wc.apiURLExternal),
+		Hostname:      template.HTML(wc.hostname),
 		URLQuery:      r.URL.Query(),
 	}
 
