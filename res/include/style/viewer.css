@@ -41,8 +41,8 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	white-space: nowrap;
 	line-height: 2em;
+	white-space: nowrap;
 	text-overflow: ellipsis;
 }
 .file_viewer > .file_viewer_headerbar > .button_home::after {

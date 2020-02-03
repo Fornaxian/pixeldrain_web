@@ -3,118 +3,7 @@
 	<head>
 		{{template "meta_tags" "File Manager"}}
 		{{template "user_style" .}}
-		<style>
-			#page_body {
-				height: 100%;
-				padding: 0;
-			}
-
-			#button_toggle_navigation {
-				display: none;
-			}
-
-			.file_manager {
-				position: absolute;
-				padding: 0;
-				background-color: var(--layer_1_color);
-				box-shadow: #000000 8px 8px 50px 5px;
-				left:3%;
-				top:3%;
-				right:3%;
-				bottom:3%;
-				display: flex;
-				flex-direction: column;
-			}
-			@media (max-width: 800px) {
-				.file_manager {
-					left: 0;
-					top: 0;
-					right: 0;
-					bottom: 0;
-				}
-			}
-
-			.file_manager > .nav_bar {
-				flex-shrink: 0;
-				display: flex;
-				flex-direction: row;
-			}
-			.file_manager > .nav_bar > .spacer      {width: 8px;}
-			.file_manager > .nav_bar > .breadcrumbs {
-				flex-grow: .8;
-				flex-shrink: 1;
-				min-width: 0;
-			}
-			.file_manager > .nav_bar > .input_search {
-				flex-grow: .2;
-				flex-shrink: 1;
-				min-width: 0;
-			}
-
-			.file_manager > .directory_sorters {
-				flex-shrink: 0;
-				display: flex;
-				flex-direction: row;
-				position: relative;
-			}
-			.file_manager > .directory_sorters > div {
-				flex-shrink: 0;
-				flex-grow: 1;
-				display: inline-block;
-				margin: 4px 12px;
-				border-bottom: 1px solid var(--input_color);
-			}
-
-			.file_manager > .directory_area {
-				flex-shrink: 1;
-				flex-grow: 1;
-				margin: 0;
-				padding: 0;
-				overflow-x: hidden;
-				overflow-y: scroll;
-				text-align: left;
-				box-sizing: border-box;
-			}
-			.file_manager > .directory_area > div {
-				box-sizing: border-box;
-			}
-			.file_manager > .status_bar {
-				flex-shrink: 0;
-				text-align: left;
-			}
-
-			.node {
-				position: relative;
-				height: 32px;
-				overflow: hidden;
-				border-radius: 4px;
-				margin: 6px;
-				box-sizing: border-box;
-				display: block;
-				color: var(--text_color);
-			}
-			.node:hover  {background-color: var(--input_color_dark); text-decoration: none;}
-			.node > span {vertical-align: middle;}
-			.node > img {
-				max-height: 100%;
-				margin-right: 5px;
-				float: left;
-				display: block;
-			}
-
-			.spinner {
-				position: absolute;
-				display: block;
-				margin: auto;
-				max-width: 100%;
-				max-height: 100%;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				width: 100px;
-				height: 100px;
-			}
-		</style>
+		<style>{{template "file_manager.css" .}}</style>
 	</head>
 
 	<body>
@@ -125,22 +14,24 @@
 		<div id="page_body" class="page_body">
 			<div id="file_manager" class="file_manager">
 				<div id="nav_bar" class="nav_bar highlight_light">
-					<button id="btn_menu" onclick="toggleMenu();">☰</button>
-					<div class="spacer"></div>
+					<button id="btn_menu" onclick="toggleMenu()">☰</button>
+					<!-- <div class="spacer"></div>
 					<button id="btn_back" >⇐</button id="btn_forward">
 					<button id="btn_up" >⇑</button id="btn_forward">
 					<button id="btn_forward">⇒</button>
 					<div class="spacer"></div>
-					<button id="btn_home">🏠</button>
+					<button id="btn_home">🏠</button> -->
 					<div class="spacer"></div>
-					<input class="breadcrumbs" type="text" value="/{{.Username}}/Documents"/>
+					<input class="breadcrumbs" type="text" value="/{{.Username}}"/>
 					<div class="spacer"></div>
 					<input id="input_search" class="input_search" type="text" placeholder="Search..."/>
 					<div class="spacer"></div>
 					<button id="btn_reload">↻</button>
 				</div>
-				<div id="directory_sorters" class="directory_sorters"></div>
-				<div id="directory_area" class="directory_area"></div>
+
+				<div id="directory_area" class="directory_area">
+					<div id="directory_sorters" class="directory_sorters"></div>
+				</div>
 				<div id="directory_footer" class="status_bar highlight_light"></div>
 			</div>
 		</div>
@@ -149,13 +40,25 @@
 			'use strict';
 			let apiEndpoint = '{{.APIEndpoint}}';
 			{{template `util.js`}}
+			{{template `DirectoryElement.js`}}
 			{{template `FileManager.js`}}
 
 			let fm = null;
 			window.addEventListener("load", () => {
-				fm = new FileManager(document.getElementById("file_manager"));
-				fm.getUserFiles();
-			});
+				fm = new FileManager(document.getElementById("file_manager"))
+
+				let breadcrumbs = document.querySelector("#nav_bar > .breadcrumbs")
+
+				if (window.location.href.endsWith("?files")) {
+					breadcrumbs.value += "/Files"
+					fm.getUserFiles()
+				} else if (window.location.href.endsWith("?lists")) {
+					breadcrumbs.value += "/Lists"
+					fm.getUserLists()
+				} else {
+					alert("invalid file manager type")
+				}
+			})
 		</script>
 		{{template "analytics"}}
 	</body>

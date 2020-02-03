@@ -1,3 +1,26 @@
+function renderFileButton(apiURL, id, title, subtitle) {
+	let btn                = document.createElement("a");
+	btn.classList          = "file_button";
+	btn.href               = "/u/"+id;
+	btn.target             = "_blank";
+	let thumbnail          = document.createElement("img");
+	thumbnail.src          = apiURL+"/file/"+id+"/thumbnail?width=80&height=80";
+	thumbnail.alt          = title;
+	let titleSpan          = document.createElement("span");
+	titleSpan.classList    = "file_button_title";
+	titleSpan.innerText    = title;
+	let br                 = document.createElement("br");
+	let subtitleSpan       = document.createElement("span");
+	subtitleSpan.classList = "file_button_subtitle";
+	subtitleSpan.innerText = subtitle;
+
+	btn.appendChild(thumbnail);
+	btn.appendChild(titleSpan);
+	btn.appendChild(br);
+	btn.appendChild(subtitleSpan);
+	return btn;
+}
+
 function getCookie(name) {
 	var result = new RegExp('(?:^|; )' + encodeURIComponent(name) + '=([^;]*)').exec(document.cookie);
 	return result ? result[1] : null;
