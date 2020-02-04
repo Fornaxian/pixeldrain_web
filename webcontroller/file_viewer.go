@@ -2,9 +2,13 @@ package webcontroller
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
+
+	pdmimetype "github.com/Fornaxian/pd_mime_type"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
@@ -140,6 +144,93 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		CaptchaKey:  wc.captchaSiteKey,
 		ViewToken:   viewTokenOrBust(templateData.PixelAPI),
 		APIResponse: list,
+	}
+
+	var templateName = "file_viewer"
+	if browserCompat(r.UserAgent()) {
+		templateName = "file_viewer_compat"
+	}
+
+	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
+	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+		log.Error("Error executing template file_viewer: %s", err)
+	}
+}
+
+// ServeFileViewer controller for GET /s/:id
+func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	var err error
+	templateData := wc.newTemplateData(w, r)
+
+	// Get the first few bytes from the file to probe the content type and
+	// length
+	rq, err := http.NewRequest("GET", "https://siasky.net/"+p.ByName("id"), nil)
+	if err != nil {
+		panic(err)
+	}
+
+	// Range header limits the number of bytes which will be read
+	rq.Header.Set("Range", "bytes=0-1023")
+
+	resp, err := wc.httpClient.Do(rq)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 500 {
+		w.WriteHeader(http.StatusInternalServerError)
+		wc.templates.Get().ExecuteTemplate(w, "500", templateData)
+		return
+	} else if resp.StatusCode >= 400 {
+		w.WriteHeader(http.StatusNotFound)
+		wc.templates.Get().ExecuteTemplate(w, "file_not_found", templateData)
+		return
+	}
+
+	head, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		wc.templates.Get().ExecuteTemplate(w, "500", templateData)
+		return
+	}
+
+	var fileType = resp.Header.Get("Content-Type")
+	if fileType == "application/octet-stream" || fileType == "" {
+		fileType = pdmimetype.Detect(head)
+	}
+
+	// Now get the size of the file from the content-range header
+	contentRange := resp.Header.Get("Content-Range")
+	if contentRange == "" {
+		w.WriteHeader(http.StatusInternalServerError)
+		wc.templates.Get().ExecuteTemplate(w, "500", templateData)
+		return
+	}
+	contentRange = strings.TrimPrefix(contentRange, "bytes ")
+	size, err := strconv.ParseUint(strings.Split(contentRange, "/")[1], 10, 64)
+	if err != nil {
+		panic(err)
+	}
+
+	templateData.OGData = ""
+	templateData.Title = fmt.Sprintf("Skylink ~ pixeldrain")
+	templateData.Other = viewerData{
+		Type: "skylink",
+		APIResponse: pixelapi.FileInfo{
+			Success:       true,
+			ID:            p.ByName("id"),
+			Name:          "skynet_file.dat",
+			Size:          size,
+			Views:         0,
+			BandwidthUsed: 0,
+			DateUpload:    time.Now(),
+			DateLastView:  time.Now(),
+			MimeType:      fileType,
+			MimeImage:     "",
+			ThumbnailHREF: "",
+			Availability:  "",
+		},
 	}
 
 	var templateName = "file_viewer"

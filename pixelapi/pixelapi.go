@@ -7,11 +7,12 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/Fornaxian/log"
 )
 
-var client = &http.Client{}
+var client = &http.Client{Timeout: time.Minute * 5}
 
 // PixelAPI is the Pixeldrain API client
 type PixelAPI struct {

@@ -22,6 +22,17 @@ function addUploadHistory(fileID) {
 	localStorage.setItem("uploaded_files", fileID + "," + uploads);
 }
 
+function printDate(date, hours, minutes, seconds) {
+	let dateStr = date.getFullYear()
+		+"-"+("00"+(date.getMonth()+1)).slice(-2)
+		+"-"+("00"+date.getDate()).slice(-2)
+
+	if (hours)   { dateStr += " "+("00"+date.getHours()).slice(-2) }
+	if (minutes) { dateStr += ":"+("00"+date.getMinutes()).slice(-2) }
+	if (seconds) { dateStr += ":"+("00"+date.getMinutes()).slice(-2) }
+	return dateStr
+}
+
 function copyText(text) {
 	// Create a textarea to copy the text from
 	let ta = document.createElement("textarea");

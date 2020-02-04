@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -30,6 +31,8 @@ type WebController struct {
 
 	// page-specific variables
 	captchaSiteKey string
+
+	httpClient *http.Client
 }
 
 // New initializes a new WebController by registering all the request handlers
@@ -50,6 +53,7 @@ func New(
 		apiURLInternal:      apiURLInternal,
 		apiURLExternal:      apiURLExternal,
 		sessionCookieDomain: sessionCookieDomain,
+		httpClient:          &http.Client{Timeout: time.Minute * 10},
 	}
 	wc.templates = NewTemplateManager(resourceDir, apiURLExternal, debugMode)
 	wc.templates.ParseTemplates(false)
@@ -88,6 +92,7 @@ func New(
 	r.GET(p+"/u/:id" /*        */, wc.serveFileViewer)
 	r.GET(p+"/u/:id/preview" /**/, wc.serveFilePreview)
 	r.GET(p+"/l/:id" /*        */, wc.serveListViewer)
+	r.GET(p+"/s/:id" /*        */, wc.serveSkynetViewer)
 	r.GET(p+"/t" /*            */, wc.serveTemplate("paste", false))
 	r.GET(p+"/donation" /*     */, wc.serveTemplate("donation", false))
 	r.GET(p+"/widgets" /*      */, wc.serveTemplate("widgets", false))

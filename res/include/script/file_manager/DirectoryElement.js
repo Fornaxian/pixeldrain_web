@@ -190,12 +190,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 		let cell = document.createElement("div")
 		cell.style.width = this.fieldDateWidth
 		let label = document.createElement("span")
-		let date = new Date(file.dateCreated)
-		label.innerText = date.getFullYear()
-			+"-"+("00"+(date.getMonth()+1)).slice(-2)
-			+"-"+("00"+date.getDate()).slice(-2)
-			+" "+("00"+date.getHours()).slice(-2)
-			+":"+("00"+date.getMinutes()).slice(-2)
+		label.innerText = printDate(new Date(file.dateCreated), true, true, false)
 		cell.appendChild(label)
 		el.appendChild(cell)
 	}
