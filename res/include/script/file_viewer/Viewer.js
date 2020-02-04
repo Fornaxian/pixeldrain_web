@@ -51,10 +51,7 @@ function Viewer(type, viewToken, data) {
 		document.getElementById("stat_views").remove()
 		document.getElementById("stat_downloads_label").remove()
 		document.getElementById("stat_downloads").remove()
-
-		let file = fileFromSkyNet(data)
-		console.log(file)
-		this.setFile(file)
+		this.setFile(fileFromSkyNet(data))
 	}
 
 	this.renderSponsors()
@@ -247,7 +244,7 @@ function fileFromSkyNet(resp) {
 	let file = fileFromAPIResp(resp)
 	file.icon_href         = "/res/img/mime/empty.png"
 	file.get_href          = "https://siasky.net/"+resp.id
-	file.download_href     = "https://siasky.net/"+resp.id
+	file.download_href     = "https://siasky.net/"+resp.id+"?attachment=1"
 	file.availability_href = ""
 	file.view_href         = ""
 	file.timeseries_href   = ""

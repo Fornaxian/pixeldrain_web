@@ -3,6 +3,7 @@ package webcontroller
 import (
 	"fmt"
 	"io/ioutil"
+	"mime"
 	"net/http"
 	"strconv"
 	"strings"
@@ -166,7 +167,10 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 	// length
 	rq, err := http.NewRequest("GET", "https://siasky.net/"+p.ByName("id"), nil)
 	if err != nil {
-		panic(err)
+		log.Warn("Failed to make request to sia portal: %s", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		wc.templates.Get().ExecuteTemplate(w, "500", templateData)
+		return
 	}
 
 	// Range header limits the number of bytes which will be read
@@ -179,6 +183,7 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 500 {
+		log.Warn("Sia portal returned error: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		wc.templates.Get().ExecuteTemplate(w, "500", templateData)
 		return
@@ -190,6 +195,7 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 
 	head, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Warn("Failed to read file header from Sia portal: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		wc.templates.Get().ExecuteTemplate(w, "500", templateData)
 		return
@@ -203,6 +209,7 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 	// Now get the size of the file from the content-range header
 	contentRange := resp.Header.Get("Content-Range")
 	if contentRange == "" {
+		log.Warn("Sia portal didn't send Content-Range")
 		w.WriteHeader(http.StatusInternalServerError)
 		wc.templates.Get().ExecuteTemplate(w, "500", templateData)
 		return
@@ -213,14 +220,22 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 		panic(err)
 	}
 
+	var name string
+	_, params, err := mime.ParseMediaType(resp.Header.Get("Content-Disposition"))
+	if err != nil {
+		name = "skynet_file"
+	} else {
+		name = params["filename"]
+	}
+
 	templateData.OGData = ""
-	templateData.Title = fmt.Sprintf("Skylink ~ pixeldrain")
+	templateData.Title = fmt.Sprintf("name ~ Skynet")
 	templateData.Other = viewerData{
 		Type: "skylink",
 		APIResponse: pixelapi.FileInfo{
 			Success:       true,
 			ID:            p.ByName("id"),
-			Name:          "skynet_file.dat",
+			Name:          name,
 			Size:          size,
 			Views:         0,
 			BandwidthUsed: 0,
