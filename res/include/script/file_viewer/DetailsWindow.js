@@ -32,7 +32,7 @@ DetailsWindow.prototype.toggle = function() {
 		if (this.graph === 0) {
 			this.renderGraph()
 		}
-		this.updateGraph(this.fileID)
+		this.updateGraph(this.file)
 	}
 }
 
