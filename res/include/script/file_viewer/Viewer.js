@@ -54,8 +54,8 @@ function Viewer(type, viewToken, data) {
 		this.setFile(fileFromSkyNet(data))
 	}
 
-	this.renderSponsors()
-	window.addEventListener("resize", e => { this.renderSponsors(e) })
+	// this.renderSponsors()
+	// window.addEventListener("resize", e => { this.renderSponsors(e) })
 
 	// Register keyboard shortcuts
 	document.addEventListener("keydown", e => { this.keyboardEvent(e) })
@@ -129,40 +129,40 @@ Viewer.prototype.setFile = function(file) {
 	}
 }
 
-Viewer.prototype.renderSponsors = function() {
-	let scale       = 1
-	let scaleWidth  = 1
-	let scaleHeight = 1
-	let minWidth    = 728
-	let minHeight   = 800
+// Viewer.prototype.renderSponsors = function() {
+// 	let scale       = 1
+// 	let scaleWidth  = 1
+// 	let scaleHeight = 1
+// 	let minWidth    = 728
+// 	let minHeight   = 800
 
-	if (window.innerWidth < minWidth) {
-		scaleWidth = window.innerWidth/minWidth
-	}
-	if (window.innerHeight < minHeight) {
-		scaleHeight = window.innerHeight/minHeight
-	}
-	scale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight
+// 	if (window.innerWidth < minWidth) {
+// 		scaleWidth = window.innerWidth/minWidth
+// 	}
+// 	if (window.innerHeight < minHeight) {
+// 		scaleHeight = window.innerHeight/minHeight
+// 	}
+// 	scale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight
 
-	// Because of the scale transformation the automatic margins don't work
-	// anymore. So we have to maunally calculate the margin. Where we take the
-	// width of the viewport - the width of the ad to calculate the amount of
-	// pixels around the ad. We multiply the ad size by the scale we calcualted
-	// to account for the smaller size.
-	let offset = (window.innerWidth - (minWidth*scale)) / 2
-	if (offset < 0) {
-		offset = 0
-	}
-	document.querySelector(".sponsors > iframe").style.marginLeft = offset+"px"
+// 	// Because of the scale transformation the automatic margins don't work
+// 	// anymore. So we have to maunally calculate the margin. Where we take the
+// 	// width of the viewport - the width of the ad to calculate the amount of
+// 	// pixels around the ad. We multiply the ad size by the scale we calcualted
+// 	// to account for the smaller size.
+// 	let offset = (window.innerWidth - (minWidth*scale)) / 2
+// 	if (offset < 0) {
+// 		offset = 0
+// 	}
+// 	document.querySelector(".sponsors > iframe").style.marginLeft = offset+"px"
 
-	if (scale == 1) {
-		document.querySelector(".sponsors > iframe").style.transform = "none"
-		document.querySelector(".sponsors").style.height = "90px"
-	} else {
-		document.querySelector(".sponsors > iframe").style.transform = "scale("+scale+")"
-		document.querySelector(".sponsors").style.height = (scale*90)+"px"
-	}
-}
+// 	if (scale == 1) {
+// 		document.querySelector(".sponsors > iframe").style.transform = "none"
+// 		document.querySelector(".sponsors").style.height = "90px"
+// 	} else {
+// 		document.querySelector(".sponsors > iframe").style.transform = "scale("+scale+")"
+// 		document.querySelector(".sponsors").style.height = (scale*90)+"px"
+// 	}
+// }
 
 Viewer.prototype.keyboardEvent = function(evt) {
 	if (evt.ctrlKey || evt.altKey) {
