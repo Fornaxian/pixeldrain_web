@@ -58,7 +58,7 @@ func (p *PixelAPI) UserLogin(username, password string, saveKey bool) (resp *Log
 		return nil, err
 	}
 	if saveKey {
-		p.apiKey = resp.APIKey
+		p.APIKey = resp.APIKey
 	}
 	return resp, nil
 }
