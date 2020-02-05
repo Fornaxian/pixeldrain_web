@@ -243,8 +243,8 @@ function fileFromAPIResp(resp) {
 function fileFromSkyNet(resp) {
 	let file = fileFromAPIResp(resp)
 	file.icon_href         = "/res/img/mime/empty.png"
-	file.get_href          = "https://siasky.net/"+resp.id
-	file.download_href     = "https://siasky.net/"+resp.id+"?attachment=1"
+	file.get_href          = "https://sky.pixeldrain.com/"+resp.id
+	file.download_href     = "https://sky.pixeldrain.com/"+resp.id+"?attachment=1"
 	file.availability_href = ""
 	file.view_href         = ""
 	file.timeseries_href   = ""
