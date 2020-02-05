@@ -76,6 +76,13 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 					Expires: time.Unix(0, 0),
 					Domain:  wc.sessionCookieDomain,
 				})
+				http.SetCookie(w, &http.Cookie{
+					Name:    "pd_auth_key",
+					Value:   "",
+					Path:    "/",
+					Expires: time.Unix(0, 0),
+					Domain:  ".pixeldrain.com",
+				})
 			}
 			return t
 		}
