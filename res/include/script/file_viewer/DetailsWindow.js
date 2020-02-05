@@ -1,7 +1,7 @@
 function DetailsWindow(viewer) {
 	this.viewer  = viewer
 	this.visible = false
-	this.fileID  = ""
+	this.file    = null
 	this.graph   = 0
 
 	this.divPopup        = document.getElementById("details_popup")
@@ -36,12 +36,12 @@ DetailsWindow.prototype.toggle = function() {
 	}
 }
 
-DetailsWindow.prototype.setDetails = function(file) {
+DetailsWindow.prototype.setFile = function(file) {
+	this.file = file
 	let desc = ""
 	if (this.viewer.isList) {
 		desc = file.description
 	}
-	this.fileID = file.id
 	this.divFileDetails.innerHTML = "<table>"
 		+ "<tr><td>Name<td><td>" + escapeHTML(file.name) + "</td></tr>"
 		+ "<tr><td>URL<td><td><a href=\""+file.link+"\">"+file.link+"</a></td></tr>"

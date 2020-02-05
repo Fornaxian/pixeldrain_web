@@ -74,8 +74,8 @@ Viewer.prototype.setFile = function(file) {
 		document.title = file.name + " ~ pixeldrain"
 	}
 
-	// Update the file details
-	this.detailsWindow.setDetails(file)
+	// Relay the file change event to all components
+	this.detailsWindow.setFile(file)
 	this.toolbar.setFile(file)
 
 	// Register a new view. We don't care what this returns becasue we can't
