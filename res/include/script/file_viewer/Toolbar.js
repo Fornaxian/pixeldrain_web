@@ -93,7 +93,7 @@ Toolbar.prototype.download = function() {
 		return
 	}
 
-	fetch(this.currentFile.file_availability_href).then(resp => {
+	fetch(this.currentFile.availability_href).then(resp => {
 		return resp.json()
 	}).then(resp => {
 		let popupDiv = document.getElementById("captcha_popup")
