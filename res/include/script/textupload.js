@@ -9,7 +9,7 @@ function uploadText() {
 		return;
 	}
 
-	new UploadManager(apiEndpoint, null).addFile(
+	new UploadManager(apiEndpoint+"/file", null).addFile(
 		blob,
 		filename,
 		null,

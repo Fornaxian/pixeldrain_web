@@ -296,33 +296,6 @@ pre{
 	font-size: 1.8em;
 }
 
-.progress_bar{
-	position: relative;
-	width: 100%;
-	height: 0;
-	background-color: #555;
-	overflow: hidden;
-	color: #eeeeee;
-	text-align: left;
-	white-space: nowrap;
-}
-.progressbar_inner{
-	position: absolute;
-	top: 0;
-	width: 0%;
-	left: 0;
-	height: 100%;
-	background-color: var(--highlight_color);;
-	overflow: hidden;
-	color: #000;
-	white-space: nowrap;
-}
-.progress_text{
-	overflow: hidden;
-	width: 100%;
-	white-space: nowrap;
-}
-
 .file_button{
 	position: relative;
 	box-sizing: border-box;

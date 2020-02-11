@@ -31,10 +31,9 @@ let uploadsStr = localStorage.getItem("uploaded_files")
 if (uploadsStr === null) { uploadsStr = "" }
 
 let uploads = Array()
-
 if (uploadsStr != "") {
-	uploadsStr = uploadsStr.slice(0, -1) // Strip the trailing comma
-	uploads = uploadsStr.split(",")
+	// Strip the trailing comma
+	uploads = uploadsStr.slice(0, -1).split(",")
 }
 
 // Get the uploads from a cookie

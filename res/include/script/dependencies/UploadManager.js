@@ -1,5 +1,5 @@
-function UploadManager(apiAddress, uploadsFinished) {
-	this.apiAddress = apiAddress;
+function UploadManager(uploadEndpoint, uploadsFinished) {
+	this.uploadEndpoint = uploadEndpoint;
 
 	// Callback function for when the queue is empty
 	this.uploadsFinished = uploadsFinished;
@@ -99,11 +99,10 @@ UploadManager.prototype.uploadThread = function() {
 	console.debug("Starting upload of " + job.name);
 
 	let form = new FormData();
-	form.append("name", job.name);
 	form.append('file', job.file);
 
 	let xhr = new XMLHttpRequest();
-	xhr.open("POST", this.apiAddress + "/file", true);
+	xhr.open("POST", this.uploadEndpoint, true);
 	xhr.timeout = 21600000; // 6 hours, to account for slow connections
 
 	// Report progress updates back to the caller

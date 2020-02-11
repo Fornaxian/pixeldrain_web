@@ -75,7 +75,7 @@ let shareLink  = ""
 
 function handleUploads(files) {
 	if (uploader === null){
-		uploader = new UploadManager(apiEndpoint, uploadsFinished)
+		uploader = new UploadManager(apiEndpoint+"/file", uploadsFinished)
 	}
 
 	if (files.length === 0) {
