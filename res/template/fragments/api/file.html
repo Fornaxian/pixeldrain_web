@@ -65,7 +65,7 @@
 {
 	"success": false,
 	"value": "file_too_large",
-	"message": "The file you tried to upload is too large. Max 5000 MB allowed."
+	"message": "The file you tried to upload is too large"
 }</pre>
 <pre>HTTP 500: Internal Server Error
 {
@@ -92,9 +92,24 @@
 			byte range requests.
 		</p>
 		<p>
-				When '?download' is added to the URL the server will send an
-				attachment header instead of inline rendering, which causes the
-				browser to show a 'Save File' dialog.
+			When '?download' is added to the URL the server will send an
+			attachment header instead of inline rendering, which causes the
+			browser to show a 'Save File' dialog.
+		</p>
+		<p>
+			Warning: If a file is using too much bandwidth it can be rate
+			limited. The rate limit will be enabled if a file has ten times more
+			downloads than views. The owner of a file can always download it.
+			When a file is rate limited the user will need to fill out a captcha
+			in order to continue downloading the file. The captcha will only
+			appear on the file viewer page (pixeldrain.com/u/{id}). Rate
+			limiting has been added to prevent the spread of viruses and to stop
+			direct linking.
+		</p>
+		<p>
+			Pixeldrain also includes a virus scanner. If a virus has been
+			detected in a file the user will also have to fill in a captcha to
+			download it.
 		</p>
 		<h3>Parameters</h3>
 		<table>
@@ -118,7 +133,31 @@
 			</tr>
 		</table>
 		<h3>Returns</h3>
-		A file output stream.
+		<pre>HTTP 200: OK
+The requested file.
+		</pre>
+		
+<pre>HTTP 404: Not Found
+{
+	"success": false,
+	"value": "not_found",
+	"message": "The entity you requested could not be found"
+}
+</pre>
+		<pre>HTTP 403: Forbidden
+{
+	"success": false,
+	"value": "file_rate_limited_captcha_required",
+	"message": "This file is using too much bandwidth. For anonymous downloads a captcha is required now. The captcha entry is available on the download page"
+}
+		</pre>
+		<pre>HTTP 403: Forbidden
+{
+	"success": false,
+	"value": "virus_detected_captcha_required",
+	"message": "This file has been marked as malware by our scanning systems. To avoid infecting other systems through automated downloads we require you to enter a captcha. The captcha entry is available on the download page"
+}
+		</pre>
 	</div>
 </details>
 {{end}}
@@ -152,17 +191,15 @@
 <pre>HTTP 200: OK
 {
 	"success": true,
-	"id": "123abc",
+	"id": "1234abcd",
 	"name": "screenshot.png",
-	"date_upload": 1485894987, // Timestamp
-	"date_last_view": 1485894987, // Timestamp
+	"date_upload": 2020-02-04T18:34:05.706801Z,
+	"date_last_view": 2020-02-04T18:34:05.706801Z,
 	"size": 5694837, // Bytes
 	"views" 1234, // Amount of unique file views
 	"bandwidth_used": 1234567890, // Bytes
 	"mime_type" "image/png",
-	"description": "File description",
-	"mime_image": "http://pixeldra.in/res/img/mime/image-png.png", // Image associated with the mime type
-	"thumbnail": "http://pixeldra.in/api/thumbnail/123abc" // Link to a thumbnail of this file
+	"thumbnail_href": "/file/1234abcd/thumbnail" // Link to a thumbnail of this file
 }</pre>
 <pre>HTTP 404: Not Found
 {

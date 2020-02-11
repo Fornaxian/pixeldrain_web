@@ -64,7 +64,10 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 			log.Debug("Session check for key '%s' failed: %s", key, err)
 
 			if err.Error() == "authentication_required" || err.Error() == "authentication_failed" {
-				// This key is invalid, delete it
+				// Disable API authentication
+				t.PixelAPI.APIKey = ""
+
+				// Remove the authentication cookie
 				log.Debug("Deleting invalid API key")
 				http.SetCookie(w, &http.Cookie{
 					Name:    "pd_auth_key",
@@ -72,6 +75,13 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 					Path:    "/",
 					Expires: time.Unix(0, 0),
 					Domain:  wc.sessionCookieDomain,
+				})
+				http.SetCookie(w, &http.Cookie{
+					Name:    "pd_auth_key",
+					Value:   "",
+					Path:    "/",
+					Expires: time.Unix(0, 0),
+					Domain:  ".pixeldrain.com",
 				})
 			}
 			return t

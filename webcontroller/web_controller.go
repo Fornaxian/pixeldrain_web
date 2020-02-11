@@ -183,6 +183,7 @@ func (wc *WebController) serveForm(
 
 		// Execute the extra actions if any
 		if td.Form.Extra.SetCookie != nil {
+			w.Header().Del("Set-Cookie")
 			http.SetCookie(w, td.Form.Extra.SetCookie)
 		}
 		if td.Form.Extra.RedirectTo != "" {

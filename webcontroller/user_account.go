@@ -172,12 +172,16 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 			// Request was a success
 			f.SubmitSuccess = true
 			f.SubmitMessages = []template.HTML{"Success!"}
+
+			// Set the autentication cookie
 			f.Extra.SetCookie = &http.Cookie{
-				Name:    "pd_auth_key",
-				Value:   loginResp.APIKey,
-				Path:    "/",
-				Expires: time.Now().AddDate(50, 0, 0),
-				Domain:  wc.sessionCookieDomain,
+				Name:     "pd_auth_key",
+				Value:    loginResp.APIKey,
+				Path:     "/",
+				Expires:  time.Now().AddDate(50, 0, 0),
+				Domain:   wc.sessionCookieDomain,
+				SameSite: http.SameSiteStrictMode,
+				Secure:   true,
 			}
 			f.Extra.RedirectTo = "/user"
 		}
