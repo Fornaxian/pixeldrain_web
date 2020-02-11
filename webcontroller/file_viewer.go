@@ -165,7 +165,7 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 
 	// Get the first few bytes from the file to probe the content type and
 	// length
-	rq, err := http.NewRequest("GET", "https://sky.pixeldrain.com/"+p.ByName("id"), nil)
+	rq, err := http.NewRequest("GET", "https://sky.pixeldrain.com/file/"+p.ByName("id"), nil)
 	if err != nil {
 		log.Warn("Failed to make request to sia portal: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -183,7 +183,8 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 500 {
-		log.Warn("Sia portal returned error: %s", err)
+		head, _ := ioutil.ReadAll(resp.Body)
+		log.Warn("Sia portal returned error: %s", head)
 		w.WriteHeader(http.StatusInternalServerError)
 		wc.templates.Get().ExecuteTemplate(w, "500", templateData)
 		return

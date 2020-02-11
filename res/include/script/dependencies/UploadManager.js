@@ -99,7 +99,7 @@ UploadManager.prototype.uploadThread = function() {
 	console.debug("Starting upload of " + job.name);
 
 	let form = new FormData();
-	form.append('file', job.file);
+	form.append('file', job.file, job.name);
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", this.uploadEndpoint, true);
