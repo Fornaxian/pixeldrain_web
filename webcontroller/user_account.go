@@ -181,7 +181,6 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 				Expires:  time.Now().AddDate(50, 0, 0),
 				Domain:   wc.sessionCookieDomain,
 				SameSite: http.SameSiteStrictMode,
-				Secure:   true,
 			}
 			f.Extra.RedirectTo = "/user"
 		}

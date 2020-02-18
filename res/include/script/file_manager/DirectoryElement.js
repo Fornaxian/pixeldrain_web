@@ -53,7 +53,7 @@ function DirectoryElement(directoryArea, footer) {
 	// files in the directory and the last scroll position. These are used for
 	// rendering the file list correctly
 
-	// type: {icon, name, href, type, size, sizeLabel, dateCreated}
+	// type: {icon, name, href, type, size, sizeLabel, dateCreated, selected}
 	this.allFiles     = []
 
 	// This array contains indexes referring to places in the allFiles array
@@ -77,6 +77,7 @@ DirectoryElement.prototype.addFile = function(icon, name, href, type, size, size
 		size: size,
 		sizeLabel: sizeLabel,
 		dateCreated: dateCreated,
+		selected: false,
 	})
 }
 

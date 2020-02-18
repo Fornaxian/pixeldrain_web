@@ -3,31 +3,29 @@ function DetailsWindow(viewer) {
 	this.visible = false
 	this.file    = null
 	this.graph   = 0
+	this.modal   = new Modal(
+		document.getElementById("file_viewer"),
+		() => { this.toggle() },
+		"File Details", "1200px", "1000px",
+	)
 
-	this.divPopup        = document.getElementById("details_popup")
-	this.btnDetails      = document.getElementById("btn_details")
-	this.btnCloseDetails = document.getElementById("btn_close_details")
-	this.divFileDetails  = document.getElementById("info_file_details")
+	let clone = document.getElementById("tpl_details_popup").content.cloneNode(true)
+	this.divFileDetails = clone.querySelector(".info_file_details")
+	this.modal.setBody(clone)
 
-	this.btnDetails.addEventListener("click",      () => { this.toggle() })
-	this.btnCloseDetails.addEventListener("click", () => { this.toggle() })
+	this.btnDetails = document.getElementById("btn_details")
+	this.btnDetails.addEventListener("click", () => { this.toggle() })
 }
 
 DetailsWindow.prototype.toggle = function() {
 	if (this.visible) {
-		this.divPopup.style.opacity = "0"
-		this.divPopup.style.visibility = "hidden"
+		this.modal.close()
 		this.btnDetails.classList.remove("button_highlight")
 		this.visible = false
 	} else {
-		this.divPopup.style.opacity = "1"
-		this.divPopup.style.visibility = "visible"
+		this.modal.open()
 		this.btnDetails.classList.add("button_highlight")
 		this.visible = true
-
-		// This is a workaround for a chrome bug which makes it so hidden
-		// windows can't be scrolled after they are shown
-		this.divPopup.focus()
 
 		if (this.graph === 0) {
 			this.renderGraph()
@@ -42,8 +40,7 @@ DetailsWindow.prototype.setFile = function(file) {
 	if (this.viewer.isList) {
 		desc = file.description
 	}
-	this.divFileDetails.innerHTML = "<table>"
-		+ "<tr><td>Name<td><td>" + escapeHTML(file.name) + "</td></tr>"
+	this.divFileDetails.innerHTML = "<tr><td>Name<td><td>" + escapeHTML(file.name) + "</td></tr>"
 		+ "<tr><td>URL<td><td><a href=\""+file.link+"\">"+file.link+"</a></td></tr>"
 		+ "<tr><td>Mime Type<td><td>" + escapeHTML(file.mime_type) + "</td></tr>"
 		+ "<tr><td>ID<td><td>" + file.id + "</td></tr>"
@@ -51,7 +48,6 @@ DetailsWindow.prototype.setFile = function(file) {
 		+ "<tr><td>Bandwidth<td><td>" + formatDataVolume(file.bandwidth_used, 4) + "</td></tr>"
 		+ "<tr><td>Upload Date<td><td>" + printDate(file.date_created, true, true, true) + "</td></tr>"
 		+ "<tr><td>Description<td><td>" + escapeHTML(desc) + "</td></tr>"
-		+ "</table>"
 
 	if(this.visible && file.timeseries_href !== "") {
 		this.updateGraph(file)

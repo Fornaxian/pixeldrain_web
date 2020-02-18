@@ -50,10 +50,10 @@
 				let breadcrumbs = document.querySelector("#nav_bar > .breadcrumbs")
 
 				if (window.location.href.endsWith("?files")) {
-					breadcrumbs.value += "/Files"
+					breadcrumbs.value = "/{{.Username}}/Files"
 					fm.getUserFiles()
 				} else if (window.location.href.endsWith("?lists")) {
-					breadcrumbs.value += "/Lists"
+					breadcrumbs.value = "/{{.Username}}/Lists"
 					fm.getUserLists()
 				} else {
 					alert("invalid file manager type")

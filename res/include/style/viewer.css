@@ -253,45 +253,7 @@
    || MISC COMPONENTS ||
    ===================== */
 
-.popup {
-	position: absolute;
-	visibility: hidden;
-	display: flex;
-	flex-direction: column;
-	opacity: 0;
-	transition: visibility .5s, opacity .5s;
-	background-color: var(--layer_2_color);
-	border-color: var(--layer_2_color_border);
-	max-height: 100%;
-	max-width: 100%;
-	top: 20%;
-	left: 50%;
-	transform: translate(-50%, -20%);
-	padding: 0;
-	box-sizing: border-box;
-	text-align: left;
-	box-shadow: var(--shadow_color) 0px 0px 50px;
-}
-.popup > .highlight_1 {
-	font-size: 1.2em;
-}
-.popup > .content_area {
-	flex: 1;
-	overflow: auto;
-	padding: 10px;
-}
-
-.details_popup{
-	width: 1500px;
-	height: 800px;
-	z-index: 200;
-}
-.captcha_popup{
-	height: auto;
-	width: 450px;
-	z-index: 201;
-}
-#captcha_popup_captcha > div {
+.captcha_popup_captcha > div {
 	display: inline-block;
 }
 

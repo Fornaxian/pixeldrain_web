@@ -4,6 +4,7 @@ function Viewer(type, viewToken, data) {
 	this.listNavigator  = null
 	this.detailsWindow  = null
 	this.divFilepreview = null
+	this.file           = null
 	this.title          = "" // Contains either the file name or list title
 	this.listId         = ""
 	this.viewToken      = ""
@@ -14,6 +15,7 @@ function Viewer(type, viewToken, data) {
 	this.viewToken     = viewToken
 	this.toolbar       = new Toolbar(this)
 	this.detailsWindow = new DetailsWindow(this)
+	this.editWindow    = new EditWindow()
 
 	this.divFilepreview = document.getElementById("filepreview")
 
@@ -63,7 +65,13 @@ function Viewer(type, viewToken, data) {
 	this.initialized = true
 }
 
+Viewer.prototype.getFile = function() {
+	return this.file
+}
+
 Viewer.prototype.setFile = function(file) {
+	this.file = file
+
 	if (this.isList) {
 		document.getElementById("file_viewer_headerbar_title").style.lineHeight = "1em"
 		document.getElementById("file_viewer_list_title").innerText = this.title
@@ -76,6 +84,7 @@ Viewer.prototype.setFile = function(file) {
 
 	// Relay the file change event to all components
 	this.detailsWindow.setFile(file)
+	this.editWindow.setFile(file)
 	this.toolbar.setFile(file)
 
 	// Register a new view. We don't care what this returns becasue we can't
@@ -169,6 +178,7 @@ Viewer.prototype.keyboardEvent = function(evt) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
 
+	console.debug("Key pressed: "+evt.keyCode)
 	switch (evt.keyCode) {
 	case 65: // A or left arrow key go to previous file
 	case 37:
@@ -200,6 +210,9 @@ Viewer.prototype.keyboardEvent = function(evt) {
 	case 73: // I to open the details window
 		this.detailsWindow.toggle()
 		break
+	case 69: // E to open the edit window
+		this.editWindow.toggle()
+		break
 	case 81: // Q to close the window
 		window.close()
 		break
@@ -217,35 +230,28 @@ function escapeHTML(str) {
 }
 
 function fileFromAPIResp(resp) {
-	let file = {
-		id:                resp.id,
-		name:              resp.name,
-		mime_type:         resp.mime_type,
-		size:              resp.size,
-		date_created:      new Date(resp.date_upload),
-		date_last_view:    new Date(resp.date_last_view),
-		views:             resp.views,
-		bandwidth_used:    resp.bandwidth_used,
-		description:       "",
-		icon_href:         apiEndpoint+"/file/"+resp.id+"/thumbnail",
-		get_href:          apiEndpoint+"/file/"+resp.id,
-		download_href:     apiEndpoint+"/file/"+resp.id+"?download",
-		availability_href: apiEndpoint+"/file/"+resp.id+"/availability",
-		view_href:         apiEndpoint+"/file/"+resp.id+"/view",
-		timeseries_href:   apiEndpoint+"/file/"+resp.id+"/timeseries",
-		link:              domainURL()+"/u/"+resp.id,
+	resp.date_created    = new Date(resp.date_upload)
+	resp.date_last_view  = new Date(resp.date_last_view)
+	resp.icon_href       = apiEndpoint+"/file/"+resp.id+"/thumbnail"
+	resp.get_href        = apiEndpoint+"/file/"+resp.id
+	resp.download_href   = apiEndpoint+"/file/"+resp.id+"?download"
+	resp.view_href       = apiEndpoint+"/file/"+resp.id+"/view"
+	resp.timeseries_href = apiEndpoint+"/file/"+resp.id+"/timeseries"
+	resp.link            = domainURL()+"/u/"+resp.id
+	if (resp.description === undefined) {
+		resp.description = ""
 	}
-	if (resp.description !== undefined) {
-		file.description = resp.description
-	}
-	return file
+
+	console.debug("New file:")
+	console.debug(resp)
+
+	return resp
 }
 function fileFromSkyNet(resp) {
 	let file = fileFromAPIResp(resp)
 	file.icon_href         = "/res/img/mime/empty.png"
-	file.get_href          = "https://sky.pixeldrain.com/file/"+resp.id
-	file.download_href     = "https://sky.pixeldrain.com/file/"+resp.id+"?attachment=1"
-	file.availability_href = ""
+	file.get_href          = "https://skydrain.net/file/"+resp.id
+	file.download_href     = "https://skydrain.net/file/"+resp.id+"?attachment=1"
 	file.view_href         = ""
 	file.timeseries_href   = ""
 	file.link              = domainURL()+"/s/"+resp.id

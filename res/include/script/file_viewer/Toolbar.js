@@ -1,8 +1,9 @@
 function Toolbar(viewer) {
-	this.viewer = viewer
-	this.visible = false
-	this.sharebarVisible = false
-	this.currentFile = null
+	this.viewer           = viewer
+	this.visible          = false
+	this.sharebarVisible  = false
+	this.currentFile      = null
+	this.editWindow       = null
 
 	this.divToolbar       = document.getElementById("toolbar")
 	this.divFilePreview   = document.getElementById("filepreview")
@@ -69,71 +70,67 @@ Toolbar.prototype.toggleSharebar = function() {
 }
 
 Toolbar.prototype.download = function() {
-	let triggerDL = (captchaResp = "") => {
-		if (captchaResp === "") {
-			this.downloadFrame.src = this.currentFile.download_href
-		} else {
-			this.downloadFrame.src = this.currentFile.download_href+"&recaptcha_response="+captchaResp
-		}
-	}
-
 	if (captchaKey === "none" || captchaKey === ""){
-		// If the server doesn't support captcha there's no use in checking
-		// availability
-		triggerDL()
-		return
-	}
-	if (recaptchaResponse !== "") {
-		// Captcha already filled in. Use the saved captcha responsse to
-		// download the file
-		triggerDL(recaptchaResponse)
-
-		// Reset the key
-		recaptchaResponse = ""
+		console.debug("Server doesn't support captcha, starting download")
+		this.downloadFrame.src = this.currentFile.download_href
 		return
 	}
 
-	fetch(this.currentFile.availability_href).then(resp => {
-		return resp.json()
-	}).then(resp => {
-		let popupDiv = document.getElementById("captcha_popup")
-		let popupTitle = document.getElementById("captcha_popup_title")
-		let popupContent = document.getElementById("captcha_popup_content")
+	if (this.currentFile.availability === "") {
+		console.debug("File is available, starting download")
+		this.downloadFrame.src = this.currentFile.download_href
+	} else {
+		console.debug("File is not readily available, showing captcha dialog")
 
-		let showCaptcha = () => {
+		let showCaptcha = (title, text) => {
+			// Create the modal
+			this.captchaModal = new Modal(
+				document.getElementById("file_viewer"),
+				null, title, "500px", "auto",
+			)
+
+			// Clone the popup contents and insert them into the popup
+			let clone = document.getElementById("tpl_captcha_popup").content.cloneNode(true)
+			clone.querySelector(".captcha_text").innerText = text
+			recaptchaElement = clone.querySelector(".captcha_popup_captcha")
+			this.captchaModal.setBody(clone)
+
+			// Set the callback function
+			recaptchaCallback = token => {
+				// Download the file using the recaptcha token
+				this.downloadFrame.src = this.currentFile.download_href+"&recaptcha_response="+token
+				this.captchaModal.close()
+			}
+
 			// Load the recaptcha script with a load function
 			let script = document.createElement("script")
 			script.src = "https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit"
 			document.body.appendChild(script)
 
 			// Show the popup
-			popupDiv.style.opacity = "1"
-			popupDiv.style.visibility = "visible"
+			this.captchaModal.open()
 		}
 
-		if (resp.value === "file_rate_limited_captcha_required") {
-			popupTitle.innerText = "Rate limiting enabled!"
-			popupContent.innerText = "This file is using a suspicious "+
-				"amount of bandwidth relative to its popularity. To "+
-				"continue downloading this file you will have to "+
-				"prove that you're a human first."
-			showCaptcha()
-		} else if (resp.value === "virus_detected_captcha_required") {
-			popupTitle.innerText = "Malware warning!"
-			popupContent.innerText = "According to our scanning "+
-				"systems this file may contain a virus  of type '"+
-				resp.extra+"'. You can continue downloading this file at "+
-				"your own risk, but you will have to prove that you're a "+
-				"human first."
-			showCaptcha()
-		} else {
-			console.warn("resp.value not valid: "+resp.value)
-			triggerDL()
+		console.log(this.currentFile.availability)
+		if (this.currentFile.availability === "file_rate_limited_captcha_required") {
+			console.debug("Showing rate limiting captcha")
+			showCaptcha(
+				"Rate limiting enabled!",
+				"This file is using a suspicious amount of bandwidth relative "+
+				"to its popularity. To continue downloading this file you "+
+				"will have to prove that you're a human first.",
+			)
+		} else if (this.currentFile.availability === "virus_detected_captcha_required") {
+			console.debug("Showing virus captcha")
+			showCaptcha(
+				"Malware warning!",
+				"According to our scanning systems this file may contain a "+
+				"virus of type '"+this.currentFile.availability_name+"'. You "+
+				"can continue downloading this file at your own risk, but you "+
+				"will have to prove that you're a human first.",
+			)
 		}
-	}).catch(e => {
-		console.warn("fetch availability failed: "+e)
-		triggerDL()
-	})
+	}
 }
 
 Toolbar.prototype.copyUrl = function() {
@@ -154,23 +151,13 @@ Toolbar.prototype.copyUrl = function() {
 	}, 60000)
 }
 
-
 // Called by the google recaptcha script
-let recaptchaResponse = ""
+let recaptchaElement  = null
+let recaptchaCallback = null
 function loadCaptcha(){
-	grecaptcha.render("captcha_popup_captcha", {
+	grecaptcha.render(recaptchaElement, {
 		sitekey: captchaKey,
 		theme: "dark",
-		callback: token => {
-			recaptchaResponse = token
-			document.getElementById("btn_download").click()
-
-			// Hide the popup
-			setTimeout(() => {
-				let popupDiv = document.getElementById("captcha_popup")
-				popupDiv.style.opacity = "0"
-				popupDiv.style.visibility = "hidden"
-			}, 1000)
-		}
+		callback: recaptchaCallback,
 	})
 }

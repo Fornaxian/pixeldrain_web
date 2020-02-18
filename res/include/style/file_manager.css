@@ -123,10 +123,14 @@
 
 	/* padding-top: 6px; */
 }
-.node:hover, .node_selected {
+.node:hover:not(.node_selected) {
 	background-color: var(--input_color_dark);
 	color: var(--input_text_color);
 	text-decoration: none;
+}
+.node_selected {
+	background-color: var(--highlight_color);
+	color: var(--highlight_text_color);
 }
 .node > div {
 	height: 100%;

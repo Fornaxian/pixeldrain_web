@@ -24,7 +24,12 @@ type FileInfo struct {
 	MimeType      string    `json:"mime_type"`
 	MimeImage     string    `json:"mime_image"`
 	ThumbnailHREF string    `json:"thumbnail_href"`
-	Availability  string    `json:"availability"`
+
+	Availability        string `json:"availability"`
+	AvailabilityMessage string `json:"availability_message"`
+	AvailabilityName    string `json:"availability_name"`
+
+	CanEdit bool `json:"can_edit"`
 }
 
 // GetFileInfo gets the FileInfo from the pixeldrain API

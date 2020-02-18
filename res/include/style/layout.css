@@ -17,7 +17,35 @@
 		local('Cantarell Light'),
 		local('Cantarell, Light'),
 		local('Cantarell-Light'),
-		url("/res/misc/Cantarell-Light.otf") format("opentype");
+		url(/res/misc/Cantarell-Light.otf) format("opentype");
+}
+
+@font-face {
+	font-family: 'Material Icons';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Material Icons'),
+		local('MaterialIcons-Regular'),
+		url(/res/misc/MaterialIcons-Regular.woff2) format('woff2'),
+		url(/res/misc/MaterialIcons-Regular.woff) format('woff'),
+		url(/res/misc/MaterialIcons-Regular.ttf) format('truetype');
+}
+.icon {
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;  /* Preferred icon size */
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	text-rendering: optimizeLegibility;
+}
+.icon.small {
+	font-size: 16px;
 }
 
 /* Page rendering configuration */

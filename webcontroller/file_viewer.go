@@ -165,7 +165,7 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 
 	// Get the first few bytes from the file to probe the content type and
 	// length
-	rq, err := http.NewRequest("GET", "https://sky.pixeldrain.com/file/"+p.ByName("id"), nil)
+	rq, err := http.NewRequest("GET", "https://skydrain.net/file/"+p.ByName("id"), nil)
 	if err != nil {
 		log.Warn("Failed to make request to sia portal: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
