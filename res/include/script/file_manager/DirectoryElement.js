@@ -233,8 +233,6 @@ DirectoryElement.prototype.renderVisibleFiles = function(freshStart) {
 	if (freshStart) {
 		this.dirContainer.innerHTML = ""
 		this.dirContainer.style.height = totalHeight+"px"
-		this.dirContainer.scrollTop = 0
-		this.lastScrollTop = 0
 		scrollDown = true
 
 		let totalSize = 0
