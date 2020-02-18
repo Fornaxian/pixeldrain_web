@@ -6,7 +6,7 @@ function DetailsWindow(viewer) {
 	this.modal   = new Modal(
 		document.getElementById("file_viewer"),
 		() => { this.toggle() },
-		"File Details", "1400px", "1000px",
+		"File Details", "1500px", "1000px",
 	)
 
 	let clone = document.getElementById("tpl_details_popup").content.cloneNode(true)

@@ -36,13 +36,16 @@
 
 .modal_title {
 	flex-grow: 1;
-	flex-shrink: 0;
+	flex-shrink: 1;
 
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 	font-size: 1.2em;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 .modal_btn_close {
