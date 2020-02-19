@@ -175,12 +175,18 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 
 			// Set the autentication cookie
 			f.Extra.SetCookie = &http.Cookie{
-				Name:     "pd_auth_key",
-				Value:    loginResp.APIKey,
-				Path:     "/",
-				Expires:  time.Now().AddDate(50, 0, 0),
-				Domain:   wc.sessionCookieDomain,
-				SameSite: http.SameSiteStrictMode,
+				Name:    "pd_auth_key",
+				Value:   loginResp.APIKey,
+				Path:    "/",
+				Expires: time.Now().AddDate(50, 0, 0),
+				Domain:  wc.sessionCookieDomain,
+
+				// Strict means the Cookie will only be sent when the user
+				// reaches a page by a link from the same domain. Lax means any
+				// page on the domain gets the cookie and None means embedded
+				// content also gets the cookie. We're not trying to track the
+				// user around the web so we use lax
+				SameSite: http.SameSiteLaxMode,
 			}
 			f.Extra.RedirectTo = "/user"
 		}
