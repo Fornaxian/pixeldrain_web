@@ -16,9 +16,9 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func viewTokenOrBust(api *pixelapi.PixelAPI) (t string) {
+func (wc *WebController) viewTokenOrBust() (t string) {
 	var err error
-	if t, err = api.GetMiscViewToken(); err != nil {
+	if t, err = wc.systemPixelAPI.GetMiscViewToken(); err != nil {
 		log.Error("Could not get viewtoken: %s", err)
 	}
 	return t
@@ -68,7 +68,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateData.Other = viewerData{
 			Type:       "list",
 			CaptchaKey: wc.captchaKey(),
-			ViewToken:  viewTokenOrBust(wc.systemPixelAPI),
+			ViewToken:  wc.viewTokenOrBust(),
 			APIResponse: pixelapi.List{
 				Success:     true,
 				Title:       "Multiple files",
@@ -81,7 +81,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateData.Other = viewerData{
 			Type:        "file",
 			CaptchaKey:  wc.captchaKey(),
-			ViewToken:   viewTokenOrBust(wc.systemPixelAPI),
+			ViewToken:   wc.viewTokenOrBust(),
 			APIResponse: finfo[0].FileInfo,
 		}
 	}
@@ -143,7 +143,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	templateData.Other = viewerData{
 		Type:        "list",
 		CaptchaKey:  wc.captchaSiteKey,
-		ViewToken:   viewTokenOrBust(wc.systemPixelAPI),
+		ViewToken:   wc.viewTokenOrBust(),
 		APIResponse: list,
 	}
 

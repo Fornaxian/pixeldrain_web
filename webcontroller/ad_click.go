@@ -17,15 +17,12 @@ func (wc *WebController) serveAdClick(w http.ResponseWriter, r *http.Request, p 
 
 	api := pixelapi.New(wc.apiURLInternal)
 
-	// Get the view token without authentication
-	vt := viewTokenOrBust(api)
-
-	// Apply authentication and register the view
-	api.APIKey, _ = wc.getAPIKey(r)
+	// The Real IP is used in the API server to determine that the view is not
+	// fake
 	api.RealIP = util.RemoteAddress(r)
 
 	// Log a view on the file
-	if err := api.PostFileView(p.ByName("id"), vt); err != nil {
+	if err := api.PostFileView(p.ByName("id"), wc.viewTokenOrBust()); err != nil {
 		log.Warn("Failed to log view")
 	}
 }
