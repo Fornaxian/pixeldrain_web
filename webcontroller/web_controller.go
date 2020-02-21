@@ -98,6 +98,7 @@ func New(
 	r.GET(p+"/widgets" /*      */, wc.serveTemplate("widgets", false))
 	r.GET(p+"/about" /*        */, wc.serveTemplate("about", false))
 	r.GET(p+"/appearance" /*   */, wc.serveTemplate("appearance", false))
+	r.GET(p+"/click/:id" /*    */, wc.serveAdClick)
 
 	// User account pages
 	r.GET(p+"/register" /*        */, wc.serveForm(wc.registerForm, false))

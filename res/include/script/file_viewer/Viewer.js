@@ -56,8 +56,8 @@ function Viewer(type, viewToken, data) {
 		this.setFile(fileFromSkyNet(data))
 	}
 
-	// this.renderSponsors()
-	// window.addEventListener("resize", e => { this.renderSponsors(e) })
+	this.renderSponsorsSimple()
+	window.addEventListener("resize", e => { this.renderSponsorsSimple() })
 
 	// Register keyboard shortcuts
 	document.addEventListener("keydown", e => { this.keyboardEvent(e) })
@@ -136,6 +136,24 @@ Viewer.prototype.setFile = function(file) {
 	} else {
 		new FileViewer(this, file).render(this.divFilepreview)
 	}
+}
+
+Viewer.prototype.renderSponsorsSimple = function() {
+	let scale       = 1
+	let scaleWidth  = 1
+	let scaleHeight = 1
+	let minWidth    = 768
+	let minHeight   = 1000
+
+	if (window.innerWidth < minWidth) {
+		scaleWidth = window.innerWidth/minWidth
+	}
+	if (window.innerHeight < minHeight) {
+		scaleHeight = window.innerHeight/minHeight
+	}
+	scale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight
+
+	document.querySelector(".sponsors").style.height = (scale*128)+"px"
 }
 
 // Viewer.prototype.renderSponsors = function() {

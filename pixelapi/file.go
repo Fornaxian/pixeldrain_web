@@ -2,6 +2,7 @@ package pixelapi
 
 import (
 	"io"
+	"net/url"
 	"time"
 )
 
@@ -35,4 +36,10 @@ type FileInfo struct {
 // GetFileInfo gets the FileInfo from the pixeldrain API
 func (p *PixelAPI) GetFileInfo(id string) (resp FileInfo, err error) {
 	return resp, p.jsonRequest("GET", p.apiEndpoint+"/file/"+id+"/info", &resp)
+}
+
+func (p *PixelAPI) PostFileView(id, viewtoken string) (err error) {
+	vals := url.Values{}
+	vals.Set("token", viewtoken)
+	return p.form("POST", p.apiEndpoint+"/file/"+id+"/view", vals, nil, true)
 }
