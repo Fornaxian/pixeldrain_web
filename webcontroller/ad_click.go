@@ -3,7 +3,6 @@ package webcontroller
 import (
 	"net/http"
 
-	"fornaxian.com/pixeldrain-api/util"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -14,7 +13,6 @@ func (wc *WebController) serveAdClick(w http.ResponseWriter, r *http.Request, p 
 
 	// Get a view token
 	td := wc.newTemplateData(w, r)
-	td.PixelAPI.RealIP = util.RemoteAddress(r)
 	vt := viewTokenOrBust(td.PixelAPI)
 
 	// Log a view on the file

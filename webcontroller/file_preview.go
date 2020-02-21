@@ -23,9 +23,10 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	apikey, _ := wc.getAPIKey(r)
-	api := pixelapi.New(wc.apiURLInternal, apikey)
+	api := pixelapi.New(wc.apiURLInternal)
+	api.APIKey, _ = wc.getAPIKey(r)
 	api.RealIP = util.RemoteAddress(r)
+
 	file, err := api.GetFileInfo(p.ByName("id")) // TODO: Error handling
 	if err != nil {
 		wc.serveNotFound(w, r)

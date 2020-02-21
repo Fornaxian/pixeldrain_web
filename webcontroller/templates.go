@@ -43,20 +43,27 @@ type TemplateData struct {
 	Form Form
 }
 
-func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) *TemplateData {
-	var t = &TemplateData{
+func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {
+	t = &TemplateData{
 		Authenticated: false,
 		Username:      "",
 		UserAgent:     r.UserAgent(),
 		Style:         userStyle(r),
 		UserStyle:     template.CSS(userStyle(r).String()),
 		APIEndpoint:   template.URL(wc.apiURLExternal),
+		PixelAPI:      pixelapi.New(wc.apiURLInternal),
 		Hostname:      template.HTML(wc.hostname),
 		URLQuery:      r.URL.Query(),
 	}
 
+	// Use the user's IP address for making requests
+	t.PixelAPI.RealIP = util.RemoteAddress(r)
+
+	// If the user is authenticated we'll indentify him and put the user info
+	// into the templatedata. This is used for putting the username in the menu
+	// and stuff like that
 	if key, err := wc.getAPIKey(r); err == nil {
-		t.PixelAPI = pixelapi.New(wc.apiURLInternal, key)
+		t.PixelAPI.APIKey = key // Use the user's API key for all requests
 		uinf, err := t.PixelAPI.UserInfo()
 		if err != nil {
 			// This session key doesn't work, or the backend is down, user
@@ -91,8 +98,6 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		t.Authenticated = true
 		t.Username = uinf.Username
 		t.Email = uinf.Email
-	} else {
-		t.PixelAPI = pixelapi.New(wc.apiURLInternal, "")
 	}
 
 	return t

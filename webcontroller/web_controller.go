@@ -241,7 +241,7 @@ func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {
 func (wc *WebController) captchaKey() string {
 	// This only runs on the first request
 	if wc.captchaSiteKey == "" {
-		var api = pixelapi.New(wc.apiURLInternal, "")
+		var api = pixelapi.New(wc.apiURLInternal)
 		capt, err := api.GetRecaptcha()
 		if err != nil {
 			log.Error("Error getting recaptcha key: %s", err)

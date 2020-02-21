@@ -22,8 +22,8 @@ type PixelAPI struct {
 }
 
 // New creates a new Pixeldrain API client to query the Pixeldrain API with
-func New(apiEndpoint, apiKey string) *PixelAPI {
-	return &PixelAPI{apiEndpoint, apiKey, ""}
+func New(apiEndpoint string) *PixelAPI {
+	return &PixelAPI{apiEndpoint: apiEndpoint}
 }
 
 // Error is either an error that occurred during the API request

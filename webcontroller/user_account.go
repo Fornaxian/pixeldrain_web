@@ -16,7 +16,8 @@ func (wc *WebController) serveLogout(
 	p httprouter.Params,
 ) {
 	if key, err := wc.getAPIKey(r); err == nil {
-		var api = pixelapi.New(wc.apiURLInternal, key)
+		var api = pixelapi.New(wc.apiURLInternal)
+		api.APIKey = key
 		if err = api.UserSessionDestroy(key); err != nil {
 			log.Warn("logout failed for session '%s': %s", key, err)
 		}

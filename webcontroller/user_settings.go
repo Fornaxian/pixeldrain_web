@@ -133,7 +133,9 @@ func (wc *WebController) serveEmailConfirm(
 ) {
 	var status string
 	if key, err := wc.getAPIKey(r); err == nil {
-		err = pixelapi.New(wc.apiURLInternal, key).UserEmailResetConfirm(r.FormValue("key"))
+		api := pixelapi.New(wc.apiURLInternal)
+		api.APIKey = key
+		err = api.UserEmailResetConfirm(r.FormValue("key"))
 		if err != nil && err.Error() == "not_found" {
 			status = "not_found"
 		} else if err != nil {
