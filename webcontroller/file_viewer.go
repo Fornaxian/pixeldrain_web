@@ -68,7 +68,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateData.Other = viewerData{
 			Type:       "list",
 			CaptchaKey: wc.captchaKey(),
-			ViewToken:  viewTokenOrBust(templateData.PixelAPI),
+			ViewToken:  viewTokenOrBust(wc.systemPixelAPI),
 			APIResponse: pixelapi.List{
 				Success:     true,
 				Title:       "Multiple files",
@@ -81,7 +81,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateData.Other = viewerData{
 			Type:        "file",
 			CaptchaKey:  wc.captchaKey(),
-			ViewToken:   viewTokenOrBust(templateData.PixelAPI),
+			ViewToken:   viewTokenOrBust(wc.systemPixelAPI),
 			APIResponse: finfo[0].FileInfo,
 		}
 	}
@@ -143,7 +143,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	templateData.Other = viewerData{
 		Type:        "list",
 		CaptchaKey:  wc.captchaSiteKey,
-		ViewToken:   viewTokenOrBust(templateData.PixelAPI),
+		ViewToken:   viewTokenOrBust(wc.systemPixelAPI),
 		APIResponse: list,
 	}
 

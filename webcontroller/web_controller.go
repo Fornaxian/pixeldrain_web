@@ -33,6 +33,10 @@ type WebController struct {
 	captchaSiteKey string
 
 	httpClient *http.Client
+
+	// This API client should only be used for system functions like getting
+	// view tokens. It has no authentication and no IP forwarding
+	systemPixelAPI *pixelapi.PixelAPI
 }
 
 // New initializes a new WebController by registering all the request handlers
@@ -54,6 +58,7 @@ func New(
 		apiURLExternal:      apiURLExternal,
 		sessionCookieDomain: sessionCookieDomain,
 		httpClient:          &http.Client{Timeout: time.Minute * 10},
+		systemPixelAPI:      pixelapi.New(apiURLInternal),
 	}
 	wc.templates = NewTemplateManager(resourceDir, apiURLExternal, debugMode)
 	wc.templates.ParseTemplates(false)
