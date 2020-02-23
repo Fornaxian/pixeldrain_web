@@ -103,7 +103,6 @@ func New(
 	r.GET(p+"/widgets" /*      */, wc.serveTemplate("widgets", false))
 	r.GET(p+"/about" /*        */, wc.serveTemplate("about", false))
 	r.GET(p+"/appearance" /*   */, wc.serveTemplate("appearance", false))
-	r.GET(p+"/click/:id" /*    */, wc.serveAdClick)
 
 	// User account pages
 	r.GET(p+"/register" /*        */, wc.serveForm(wc.registerForm, false))
@@ -130,6 +129,10 @@ func New(
 	r.GET(p+"/admin" /*         */, wc.serveTemplate("admin_panel", true))
 	r.GET(p+"/admin/globals" /* */, wc.serveForm(wc.adminGlobalsForm, true))
 	r.POST(p+"/admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true))
+
+	// Advertising related
+	r.GET(p+"/click/:id" /*    */, wc.serveAdClick)
+	r.GET(p+"/campaign/:id" /* */, wc.serveCampaignPartner)
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 

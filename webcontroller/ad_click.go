@@ -2,6 +2,7 @@ package webcontroller
 
 import (
 	"net/http"
+	"time"
 
 	"fornaxian.com/pixeldrain-api/util"
 
@@ -25,4 +26,16 @@ func (wc *WebController) serveAdClick(w http.ResponseWriter, r *http.Request, p 
 	if err := api.PostFileView(p.ByName("id"), wc.viewTokenOrBust()); err != nil {
 		log.Warn("Failed to log view")
 	}
+}
+
+func (wc *WebController) serveCampaignPartner(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	http.SetCookie(w, &http.Cookie{
+		Name:    "pd_campaign",
+		Value:   p.ByName("id"),
+		Path:    "/",
+		Expires: time.Now().Add(time.Hour * 24),
+	})
+
+	// Redirect the user to the home page
+	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }
