@@ -30,9 +30,6 @@
 					<div id="file_viewer_list_title"></div>
 					<div id="file_viewer_file_title">{{.Title}}</div>
 				</div>
-				<button id="button_close_file_viewer" class="button_close_file_viewer button_red" onclick="window.close();">
-					<i class="icon small">close</i>
-				</button>
 			</div>
 			<div id="list_navigator" class="list_navigator"></div>
 			<div id="file_viewer_window" class="file_viewer_window">
@@ -73,10 +70,6 @@
 						<span><u>E</u>dit</span>
 					</button>
 					{{template "advertisement" .}}
-
-					<a href="https://twitter.com/SiaTechHQ/status/1228050383685201921">
-						<img src="/res/img/misc/terminator.png" style="width: 100%; margin-top: 1000px; display: block;" />
-					</a>
 
 					<!-- This frame will load the download URL when a download button is pressed -->
 					<iframe id="download_frame" style="display: none; width: 1px; height: 1px;"></iframe>
