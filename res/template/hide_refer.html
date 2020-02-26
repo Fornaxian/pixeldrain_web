@@ -1,0 +1,22 @@
+{{define "hide_refer"}}<!DOCTYPE html>
+<html>
+	<head>
+		<title>You are being redirected</title>
+		<!-- <meta http-equiv="refresh" content="0; {{.}}" /> -->
+		<style>html, body {background-color: #000000;}</style>
+	</head>
+	<body>
+		You are being redirected.<br/>
+		<br/>
+		If it doesn't work. <a id="link" href="{{.}}">Click here</a>.
+
+		<script>
+			var a = document.getElementById("link");
+			if(!a.click) {
+				window.location = "{{.}}";
+			}
+			a.click();
+		</script>
+	</body>
+</html>
+{{end}}

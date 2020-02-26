@@ -14,7 +14,10 @@ import (
 
 func (wc *WebController) serveAdClick(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// Redirect the user to the target page
+	w.Header().Set("Referrer-Policy", "origin")
 	http.Redirect(w, r, r.URL.Query().Get("target"), http.StatusTemporaryRedirect)
+
+	// wc.templates.Get().ExecuteTemplate(w, "hide_refer", r.URL.Query().Get("target"))
 
 	api := pixelapi.New(wc.apiURLInternal)
 
