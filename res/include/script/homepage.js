@@ -28,14 +28,14 @@ UploadProgressBar.prototype.onProgress = function(progress){
 	this.uploadDiv.innerText = "Uploading... " + Math.round(progress*1000)/10 + "%\n" + this.name
 	this.uploadDiv.style.background = 'linear-gradient('
 		+'to right, '
-		+'var(--input_color_dark) 0%, '
+		+'var(--layer_3_color) 0%, '
 		+'var(--highlight_color) '+ ((progress*100)) +'%, '
-		+'var(--input_color_dark) '+ ((progress*100)+1) +'%)'
+		+'var(--layer_3_color) '+ ((progress*100)+1) +'%)'
 }
 UploadProgressBar.prototype.onFinished = function(id){
 	console.log("Upload finished: "+this.file.name+" "+id)
 
-	this.uploadDiv.style.background = 'var(--input_color_dark)'
+	this.uploadDiv.style.background = 'var(--layer_3_color)'
 	this.uploadDiv.href = '/u/'+id
 	this.uploadDiv.target= "_blank"
 
@@ -44,7 +44,7 @@ UploadProgressBar.prototype.onFinished = function(id){
 	fileImg.alt = this.file.name
 
 	let linkSpan = document.createElement("span")
-	linkSpan.style.color = "var(--highlight_color)"
+	linkSpan.classList = "file_button_title"
 	linkSpan.innerText = domainURL()+"/u/"+id
 
 	this.uploadDiv.innerHTML = "" // Remove uploading progress

@@ -211,7 +211,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	Layer1Shadow: 3,
 	Layer2Color:  hsl{0, 0, .11},
 	Layer2Shadow: 5,
-	Layer3Color:  hsl{0, 0, .14},
+	Layer3Color:  hsl{0, 0, .15},
 	Layer3Shadow: 7,
 
 	ShadowColor: hsl{0, 0, 0},
@@ -295,7 +295,7 @@ var hackerStyle = pixeldrainStyleSheet{
 	Layer1Shadow: 3,
 	Layer2Color:  hsl{0, 0, .03},
 	Layer2Shadow: 5,
-	Layer3Color:  hsl{120, .3, .15},
+	Layer3Color:  hsl{120, .3, .08},
 	Layer3Shadow: 7,
 
 	ShadowColor: hsl{0, 0, 0},
@@ -345,7 +345,7 @@ var arcPixeldrainStyle = pixeldrainStyleSheet{
 
 var deepseaPixeldrainStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .7},
-	InputColor:               hsl{41, .58, .47}, // hsl(0, 0%, 11%)
+	InputColor:               hsl{41, .58, .47},
 	InputTextColor:           hsl{0, 0, 0},
 	HighlightColor:           hsl{5, .77, .55},
 	HighlightTextColor:       hsl{0, 0, 0},

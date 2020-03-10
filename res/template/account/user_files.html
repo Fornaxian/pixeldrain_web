@@ -38,7 +38,7 @@
 			{{range $files.Files}}<!--
 			--><a class="file_button" href="/u/{{.ID}}" target="_blank">
 				<img src="{{$.APIEndpoint}}/file/{{.ID}}/thumbnail?width=80&height=80" alt="{{.Name}}" />
-				<span style="color: var(--highlight_color);">{{.Name}}</span>
+				<span class="file_button_title">{{.Name}}</span>
 				<br/>
 				{{.DateUpload.Format "2006-01-02 15:04:05"}}
 			</a><!--

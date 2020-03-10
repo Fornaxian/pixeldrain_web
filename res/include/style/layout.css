@@ -338,7 +338,7 @@ pre{
 	overflow: hidden;
 	border-radius: 2px;
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
-	background-color: var(--input_color_dark);
+	background-color: var(--layer_3_color);
 	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 	word-break: break-all;
@@ -355,8 +355,6 @@ pre{
 .file_button_selected {
 	box-shadow: 0px 0px 3px 3px var(--highlight_color);
 	text-decoration: none;
-	color: #bfbfbf; /* Fallback */
-	color: var(--text_color);
 }
 .file_button > img{
 	max-height: 100%;
