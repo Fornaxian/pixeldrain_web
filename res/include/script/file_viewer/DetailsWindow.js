@@ -80,7 +80,7 @@ DetailsWindow.prototype.renderGraph = function() {
 	this.graph = new Chart(
 		document.getElementById('bandwidth_chart'),
 		{
-			type: 'bar',
+			type: 'line',
 			data: {
 				datasets: [
 					{
