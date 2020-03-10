@@ -133,21 +133,21 @@ Viewer.prototype.setFile = function(file) {
 }
 
 Viewer.prototype.renderSponsorsSimple = function() {
-	let scale       = 1
-	let scaleWidth  = 1
-	let scaleHeight = 1
-	let minWidth    = 768
-	let minHeight   = 1000
+	let scaleWidth      = 1
+	let scaleHeight     = 1
+	let minWindowHeight = 1000
+	let bannerWidth     = 720
+	let bannerHeight    = 120
 
-	if (window.innerWidth < minWidth) {
-		scaleWidth = window.innerWidth/minWidth
+	if (window.innerWidth < bannerWidth) {
+		scaleWidth = window.innerWidth/bannerWidth
 	}
-	if (window.innerHeight < minHeight) {
-		scaleHeight = window.innerHeight/minHeight
+	if (window.innerHeight < minWindowHeight) {
+		scaleHeight = window.innerHeight/minWindowHeight
 	}
-	scale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight
-
-	document.querySelector(".sponsors").style.height = (scale*128)+"px"
+	
+	let scale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight
+	document.querySelector(".sponsors").style.height = (scale*bannerHeight)+"px"
 }
 
 // Viewer.prototype.renderSponsors = function() {
