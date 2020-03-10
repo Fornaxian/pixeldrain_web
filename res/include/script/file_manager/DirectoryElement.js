@@ -191,7 +191,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 	}
 	{
 		let cell = document.createElement("div")
-		cell.style.minWidth = this.fieldDateWidth
+		cell.style.width = this.fieldDateWidth
 		let label = document.createElement("span")
 		label.innerText = printDate(new Date(file.dateCreated), true, true, false)
 		cell.appendChild(label)
@@ -199,7 +199,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 	}
 	{
 		let cell = document.createElement("div")
-		cell.style.minWidth = this.fieldSizeWidth
+		cell.style.width = this.fieldSizeWidth
 		let label = document.createElement("span")
 		label.innerText = file.sizeLabel
 		cell.appendChild(label)
@@ -207,7 +207,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 	}
 	{
 		let cell = document.createElement("div")
-		cell.style.minWidth = this.fieldTypeWidth
+		cell.style.width = this.fieldTypeWidth
 		let label = document.createElement("span")
 		label.innerText = file.type
 		cell.appendChild(label)
