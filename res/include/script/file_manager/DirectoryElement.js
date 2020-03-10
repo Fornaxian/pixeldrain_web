@@ -24,11 +24,11 @@ function DirectoryElement(directoryArea, footer) {
 		this.directorySorters.appendChild(this.sortButtons[field])
 	}
 
-	this.fieldNameWidth = "300px"
+	// These widths are used for the sorters and the file nodes itself
 	this.fieldDateWidth = "160px"
 	this.fieldSizeWidth = "90px"
 	this.fieldTypeWidth = "200px"
-	makeSortButton("name",        "Name",          this.fieldNameWidth)
+	makeSortButton("name",        "Name",          "")
 	makeSortButton("dateCreated", "Creation Date", this.fieldDateWidth)
 	makeSortButton("size",        "Size",          this.fieldSizeWidth)
 	makeSortButton("type",        "Type",          this.fieldTypeWidth)
@@ -179,7 +179,6 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 
 	{
 		let cell = document.createElement("div")
-		cell.style.minWidth = this.fieldNameWidth
 		let thumb = document.createElement("img")
 		thumb.src = file.icon
 		cell.appendChild(thumb)

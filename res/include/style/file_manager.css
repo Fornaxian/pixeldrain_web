@@ -46,7 +46,7 @@ is collapsed */
 	top: 0;
 	z-index: 1;
 	background-color: var(--layer_2_color);
-	min-width: 750px; /* Sum of all columns */
+	min-width: 850px;
 }
 .file_manager > .directory_area > .directory_sorters > div {
 	display: inline-block;
@@ -82,7 +82,7 @@ is collapsed */
 	above are out of view*/
 	box-sizing: border-box;
 	display: block;
-	min-width: 750px; /* Sum of all columns */
+	min-width: 850px;
 }
 
 .file_manager > .status_bar {
@@ -104,8 +104,6 @@ is collapsed */
 	margin: 0;
 	box-sizing: border-box;
 	color: var(--text_color);
-
-	/* padding-top: 6px; */
 }
 .node:hover:not(.node_selected) {
 	background-color: var(--input_color_dark);
