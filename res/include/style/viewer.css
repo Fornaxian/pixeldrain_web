@@ -22,7 +22,6 @@
 	display: flex;
 	flex-direction: row;
 	text-align: left;
-	padding: 8px;
 	z-index: 10;
 	box-shadow: none;
 }
@@ -31,8 +30,8 @@
 .file_viewer > .file_viewer_headerbar > * {
 	flex-grow: 0;
 	flex-shrink: 0;
-	margin-left: .4em;
-	margin-right: .4em;
+	margin-left: 6px;
+	margin-right: 6px;
 	display: inline-flex;
 }
 .file_viewer > .file_viewer_headerbar > .file_viewer_headerbar_title {
@@ -148,7 +147,7 @@
 	overflow-x: hidden;
 	float: left;
 	background-color: var(--layer_1_color);
-	box-shadow: inset 1px 1px 6px var(--shadow_color);
+	box-shadow: inset 1px 1px var(--layer_1_shadow) var(--shadow_color);
 	text-align: center;
 	z-index: 48;
 	overflow: hidden;
@@ -193,8 +192,8 @@
 	transform: translateY(-50%);
 }
 
-.pannable{ cursor: move; }
-.drop-shadow{ box-shadow: var(--shadow_color) 10px 10px 50px; }
+.pannable    { cursor: move; }
+.drop_shadow { box-shadow: 1px 1px var(--layer_3_shadow) var(--shadow_color); }
 
 /* ========================
    || TOOLBAR COMPONENTS ||

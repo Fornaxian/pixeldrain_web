@@ -17,17 +17,18 @@ function DirectoryElement(directoryArea, footer) {
 	let makeSortButton = (field, label, width) => {
 		this.sortButtons[field] = document.createElement("div")
 		this.sortButtons[field].innerText = label
-		this.sortButtons[field].style.width = width
+		this.sortButtons[field].style.minWidth = width
 		this.sortButtons[field].addEventListener("click", () => {
 			this.sortBy(field)
 		})
 		this.directorySorters.appendChild(this.sortButtons[field])
 	}
 
+	this.fieldNameWidth = "300px"
 	this.fieldDateWidth = "160px"
-	this.fieldSizeWidth = "100px"
+	this.fieldSizeWidth = "90px"
 	this.fieldTypeWidth = "200px"
-	makeSortButton("name",        "Name",          "")
+	makeSortButton("name",        "Name",          this.fieldNameWidth)
 	makeSortButton("dateCreated", "Creation Date", this.fieldDateWidth)
 	makeSortButton("size",        "Size",          this.fieldSizeWidth)
 	makeSortButton("type",        "Type",          this.fieldTypeWidth)
@@ -178,6 +179,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 
 	{
 		let cell = document.createElement("div")
+		cell.style.minWidth = this.fieldNameWidth
 		let thumb = document.createElement("img")
 		thumb.src = file.icon
 		cell.appendChild(thumb)
@@ -189,7 +191,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 	}
 	{
 		let cell = document.createElement("div")
-		cell.style.width = this.fieldDateWidth
+		cell.style.minWidth = this.fieldDateWidth
 		let label = document.createElement("span")
 		label.innerText = printDate(new Date(file.dateCreated), true, true, false)
 		cell.appendChild(label)
@@ -197,7 +199,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 	}
 	{
 		let cell = document.createElement("div")
-		cell.style.width = this.fieldSizeWidth
+		cell.style.minWidth = this.fieldSizeWidth
 		let label = document.createElement("span")
 		label.innerText = file.sizeLabel
 		cell.appendChild(label)
@@ -205,7 +207,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 	}
 	{
 		let cell = document.createElement("div")
-		cell.style.width = this.fieldTypeWidth
+		cell.style.minWidth = this.fieldTypeWidth
 		let label = document.createElement("span")
 		label.innerText = file.type
 		cell.appendChild(label)

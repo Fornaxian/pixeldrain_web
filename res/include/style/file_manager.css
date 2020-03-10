@@ -3,6 +3,8 @@
 	padding: 0;
 }
 
+/* Override the menu button so it doesn't overlap the file manager when the menu
+is collapsed */
 #button_toggle_navigation {
 	display: none;
 }
@@ -10,24 +12,12 @@
 .file_manager {
 	position:         absolute;
 	padding:          0;
-	background-color: var(--layer_1_color);
-	box-shadow:       #000000 8px 8px 50px 5px;
-	left:             24px;
-	top:              24px;
-	right:            24px;
-	bottom:           24px;
+	background-color: var(--layer_2_color);
+	width:            100%;
+	height:           100%;
 	display:          flex;
 	flex-direction:   column;
 }
-@media (max-width: 1000px) {
-	.file_manager {
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-	}
-}
-
 .file_manager > .nav_bar {
 	flex-shrink: 0;
 	display: flex;
@@ -55,13 +45,14 @@
 	overflow: hidden;
 	top: 0;
 	z-index: 1;
-	background-color: var(--layer_1_color);
+	background-color: var(--layer_2_color);
+	min-width: 750px; /* Sum of all columns */
 }
 .file_manager > .directory_area > .directory_sorters > div {
-	flex-shrink: 0;
-	flex-grow: 1;
 	display: inline-block;
 	margin: 4px 10px;
+	padding: 4px;
+	box-sizing: border-box;
 	border-bottom: 1px solid var(--input_color);
 	cursor: pointer;
 }
@@ -75,12 +66,6 @@
 .node > :not(:first-child) {
 	flex-shrink: 0;
 	flex-grow: 0;
-}
-@media (max-width: 1000px) {
-	.file_manager > .directory_area > .directory_sorters > :not(:first-child),
-	.node > :not(:first-child) {
-		display: none;
-	}
 }
 
 .file_manager > .directory_area {
@@ -97,7 +82,7 @@
 	above are out of view*/
 	box-sizing: border-box;
 	display: block;
-	overflow: hidden;
+	min-width: 750px; /* Sum of all columns */
 }
 
 .file_manager > .status_bar {
@@ -117,7 +102,6 @@
 	control over the size.
 	Check out https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing*/
 	margin: 0;
-	padding: 4px;
 	box-sizing: border-box;
 	color: var(--text_color);
 
@@ -136,6 +120,8 @@
 	height: 100%;
 	overflow: hidden;
 	margin: auto 10px;
+	padding: 4px;
+	box-sizing: border-box;
 	display: inline-block;
 	text-overflow: ellipsis;
 	white-space: nowrap;

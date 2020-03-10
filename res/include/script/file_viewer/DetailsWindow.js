@@ -72,7 +72,7 @@ DetailsWindow.prototype.renderGraph = function() {
 	Chart.defaults.global.defaultFontColor = "#b3b3b3"
 	Chart.defaults.global.defaultFontSize = 15
 	Chart.defaults.global.defaultFontFamily = "Ubuntu"
-	Chart.defaults.global.aspectRatio = 2.5
+	Chart.defaults.global.maintainAspectRatio = false;
 	Chart.defaults.global.elements.point.radius = 0
 	Chart.defaults.global.tooltips.mode = "index"
 	Chart.defaults.global.tooltips.axis = "x"
@@ -80,25 +80,25 @@ DetailsWindow.prototype.renderGraph = function() {
 	this.graph = new Chart(
 		document.getElementById('bandwidth_chart'),
 		{
-			type: 'line',
+			type: 'bar',
 			data: {
 				datasets: [
 					{
-						label: "Downloads",
-						backgroundColor: "rgba(64, 255, 64, .05)",
-						borderColor: "rgba(128, 255, 128, 1)",
-						borderWidth: 1.5,
-						lineTension: 0.1,
+						label: "Bandwidth",
+						backgroundColor: "rgba(64, 255, 64, .01)",
+						borderColor: "rgba(96, 255, 96, 1)",
+						borderWidth: 2,
+						lineTension: 0.2,
 						fill: true,
-						yAxisID: "y_bandwidth",
+						yAxisID: "y_bandwidth"
 					}, {
 						label: "Views",
-						backgroundColor: "rgba(64, 64, 255, .1)",
-						borderColor: "rgba(128, 128, 255, 1)",
-						borderWidth: 1.5,
-						lineTension: 0.1,
+						backgroundColor: "rgba(64, 64, 255, .01)",
+						borderColor: "rgba(64, 64, 255, 1)",
+						borderWidth: 2,
+						lineTension: 0.2,
 						fill: true,
-						yAxisID: "y_views",
+						yAxisID: "y_views"
 					}
 				]
 			},
@@ -115,7 +115,7 @@ DetailsWindow.prototype.renderGraph = function() {
 								labelString: "Downloads"
 							},
 							gridLines: {
-								color: "rgba(100, 255, 100, .1)"
+								color: "rgba(100, 255, 100, .05)"
 							}
 						}, {
 							type: "linear",
@@ -127,7 +127,7 @@ DetailsWindow.prototype.renderGraph = function() {
 								labelString: "Views"
 							},
 							gridLines: {
-								color: "rgba(128, 128, 255, .2)"
+								color: "rgba(128, 128, 255, .05)"
 							}
 						}
 					],

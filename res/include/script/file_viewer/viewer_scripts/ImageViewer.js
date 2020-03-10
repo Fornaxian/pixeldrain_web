@@ -6,15 +6,19 @@ function ImageViewer(viewer, file) {
 	this.y        = 0
 	this.dragging = false
 
+	this.zoom = 1
+
 	this.container = document.createElement("dv")
 	this.container.classList = "image-container"
 
 	this.element = document.createElement("img")
-	this.element.classList = "pannable center drop-shadow"
+	this.element.classList = "pannable center drop_shadow"
 	this.element.src = this.file.get_href
 	this.element.addEventListener("dblclick",  (e) => { return this.doubleclick(e) })
 	this.element.addEventListener("doubletap", (e) => { return this.doubleclick(e) })
 	this.element.addEventListener("mousedown", (e) => { return this.mousedown(e) })
+	this.element.addEventListener("mousedown", (e) => { return this.mousedown(e) })
+	this.element.addEventListener("wheel",    (e) => { return this.scroll(e) })
 	document.addEventListener("mousemove",     (e) => { return this.mousemove(e) })
 	document.addEventListener("mouseup",       (e) => { return this.mouseup(e) })
 
@@ -25,14 +29,31 @@ ImageViewer.prototype.render = function(parent) {
 	parent.appendChild(this.container)
 }
 
+ImageViewer.prototype.scroll = function(e) {
+	if (!this.zoomed) {
+		this.doubleclick(e)
+	}
+
+	console.log(e.deltaY)
+
+	this.zoom = this.zoom - (e.deltaY * 0.01);
+	if (this.zoom < 1) { this.zoom = 1 }
+	if (this.zoom > 10) { this.zoom = 10 }
+
+	this.element.style.width = this.zoom * 100 + "%"
+	this.element.style.height = "auto"
+	this.element.style.maxWidth = "1000%"
+	this.element.style.maxHeight = "1000%"
+
+	e.preventDefault()
+	e.stopPropagation()
+	return false
+}
+
 ImageViewer.prototype.doubleclick = function(e) {
 	if (this.zoomed) {
-		this.element.style.maxWidth = "100%"
-		this.element.style.maxHeight = "100%"
-		this.element.style.top = "50%"
-		this.element.style.left = "auto"
-		this.element.style.transform = "translateY(-50%)"
-		this.container.style.overflow = "hidden"
+		this.element.removeAttribute("style")
+		this.container.style.overflow = ""
 		this.zoomed = false
 	} else {
 		this.element.style.maxWidth = "none"

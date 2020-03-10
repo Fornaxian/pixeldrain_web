@@ -9,7 +9,7 @@ function VideoViewer(viewer, file, next) {
 	this.vidElement = document.createElement("video")
 	this.vidElement.autoplay = "autoplay"
 	this.vidElement.controls = "controls"
-	this.vidElement.classList = "center drop-shadow"
+	this.vidElement.classList = "center drop_shadow"
 	this.vidElement.addEventListener("ended", () => { this.next() }, false)
 
 	this.videoSource = document.createElement("source")

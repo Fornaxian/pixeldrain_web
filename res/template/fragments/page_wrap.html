@@ -20,16 +20,14 @@
 </div>
 <script>
 	function toggleMenu() {
-		var nav = document.getElementById("page_navigation");
+		var nav  = document.getElementById("page_navigation");
 		var body = document.getElementById("page_body");
 		if (nav.offsetLeft === 0) {
-			// Menu is visible
-
+			// Menu is visible, hide it
 			nav.style.left = -nav.offsetWidth + "px";
 			body.style.left = "0";
 		} else {
-			// Menu is hidden
-
+			// Menu is hidden, show it
 			nav.style.left = "0";
 			body.style.left = nav.offsetWidth + "px";
 		}

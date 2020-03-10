@@ -54,7 +54,7 @@ html, body {
 }
 body{
 	background-color: #111111; /* Fallback */
-	background-color: var(--body_color);
+	background-color: var(--layer_2_color);
 	background-repeat: repeat;
 	margin: 0;
 	font-family: system-ui, sans-serif;
@@ -123,7 +123,7 @@ body{
 	transition: left 0.5s;
 	padding: 50px 0 50px 0;
 }
-@media (max-width: 600px) {
+@media (max-width: 800px) {
 	.page_navigation {
 		left: -250px;
 	}
@@ -210,43 +210,44 @@ body, .checkers {
 .highlight_dark,
 .highlight_middle,
 .highlight_light,
-.highlight_headerbar,
 .highlight_green,
 .highlight_blue,
 .highlight_red,
 .highlight_1,
 .highlight_2,
-.highlight_3,
-.highlight_4 {
+.highlight_3{
 	position: relative;
 	width: auto;
 	height: auto;
 	box-sizing: border-box;
 	overflow: hidden;
 	text-align: center;
-	padding: .5em;
+	padding: 8px;
 }
 .highlight_dark, .highlight_1 {
 	background-color: var(--layer_1_color);
-	box-shadow: 1px 1px var(--layer_1_shadow) 0 var(--shadow_color);}
+	box-shadow: 1px 1px var(--layer_1_shadow) 0 var(--shadow_color);
+}
 .highlight_middle, .highlight_2 {
 	background-color: var(--layer_2_color);
-	box-shadow: 1px 1px var(--layer_2_shadow) 0 var(--shadow_color);}
+	box-shadow: 1px 1px var(--layer_2_shadow) 0 var(--shadow_color);
+}
 .highlight_light, .highlight_3 {
 	background-color: var(--layer_3_color);
-	box-shadow: 1px 1px var(--layer_3_shadow) 0 var(--shadow_color);}
-.highlight_headerbar, .highlight_4 {
-	background-color: var(--layer_4_color);
-	box-shadow: 1px 1px var(--layer_4_shadow) 0 var(--shadow_color);}
-.highlight_green  {
+	box-shadow: 1px 1px var(--layer_3_shadow) 0 var(--shadow_color);
+}
+.highlight_green {
 	background-color: rgba(0, 255, 0, 0.05);
-	border-color: #00d000;}
-.highlight_blue   {
+	border-color: #00d000;
+}
+.highlight_blue {
 	background-color: rgba(32, 32, 255, 0.2);
-	border-color: rgb(54, 54, 255);}
-.highlight_red    {
+	border-color: rgb(54, 54, 255);
+}
+.highlight_red {
 	background-color: rgba(255, 0, 0, 0.1);
-	border-color: #B00000;}
+	border-color: #B00000;
+}
 
 .highlight_green,
 .highlight_blue,
@@ -264,13 +265,15 @@ h1, h2, h3, h4, h5, h6 {
 	margin-left: 10px;
 	margin-right: 10px;
 }
-h1{font-size: 2em;    font-family: "light", sans-serif; font-weight: normal;}
-h2{font-size: 1.75em; font-family: "light", sans-serif; font-weight: normal;}
+h2, h3{ /* Differentiate it a bit, else it just looks like bold text */
+	border-bottom: 1px var(--layer_3_color_border) solid;
+}
+h1{font-size: 2.25em;    font-family: "light", sans-serif; font-weight: normal;}
+h2{font-size: 2em; font-family: "light", sans-serif; font-weight: normal;}
 h3{font-size: 1.5em;  font-family: "light", sans-serif; font-weight: normal;}
 h4{font-size: 1.25em; font-family: sans-serif; font-weight: normal;}
 h5{font-size: 1em;    font-family: sans-serif; font-weight: normal;}
 h6{font-size: .75em;  font-family: sans-serif; font-weight: normal;}
-h2, h3{border-bottom: 1px var(--layer_3_color_border) solid;} /* Differentiate it a bit, else it just looks like bold text */
 
 p, .indent {
 	margin: 10px;
@@ -335,7 +338,7 @@ pre{
 	overflow: hidden;
 	border-radius: 2px;
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
-	background-color: var(--file_background_color);
+	background-color: var(--input_color_dark);
 	color: #bfbfbf; /* Fallback */
 	color: var(--text_color);
 	word-break: break-all;
