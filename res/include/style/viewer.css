@@ -73,7 +73,7 @@
 	background-color: var(--layer_1_color);
 	text-align: center;
 	line-height: 1em;
-	overflow-x: scroll;
+	overflow-x: auto;
 	overflow-y: hidden;
 	z-index: 50;
 	white-space: nowrap;
