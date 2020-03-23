@@ -36,7 +36,7 @@ func (wc *WebController) serveCampaignPartner(w http.ResponseWriter, r *http.Req
 		Name:    "pd_campaign",
 		Value:   p.ByName("id"),
 		Path:    "/",
-		Expires: time.Now().Add(time.Hour * 24),
+		Expires: time.Now().AddDate(0, 0, 2),
 	})
 
 	// Redirect the user to the home page
