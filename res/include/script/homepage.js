@@ -383,7 +383,7 @@ btnCopyMarkdown.addEventListener("click", function(){
  * Keyboard shortcuts
  */
 document.addEventListener("keydown", function(event){
-	if (event.ctrlKey || event.altKey) {
+	if (event.ctrlKey || event.altKey || event.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
 	if (event.keyCode === 67) { // c

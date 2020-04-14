@@ -18,7 +18,7 @@ function ImageViewer(viewer, file) {
 	this.element.addEventListener("doubletap", (e) => { return this.doubleclick(e) })
 	this.element.addEventListener("mousedown", (e) => { return this.mousedown(e) })
 	this.element.addEventListener("mousedown", (e) => { return this.mousedown(e) })
-	this.element.addEventListener("wheel",    (e) => { return this.scroll(e) })
+	// this.element.addEventListener("wheel",    (e) => { return this.scroll(e) })
 	document.addEventListener("mousemove",     (e) => { return this.mousemove(e) })
 	document.addEventListener("mouseup",       (e) => { return this.mouseup(e) })
 

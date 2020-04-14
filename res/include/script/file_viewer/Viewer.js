@@ -145,7 +145,7 @@ Viewer.prototype.renderSponsorsSimple = function() {
 	if (window.innerHeight < minWindowHeight) {
 		scaleHeight = window.innerHeight/minWindowHeight
 	}
-	
+
 	let scale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight
 	document.querySelector(".sponsors").style.height = (scale*bannerHeight)+"px"
 }
@@ -186,7 +186,7 @@ Viewer.prototype.renderSponsorsSimple = function() {
 // }
 
 Viewer.prototype.keyboardEvent = function(evt) {
-	if (evt.ctrlKey || evt.altKey) {
+	if (evt.ctrlKey || evt.altKey || evt.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
 

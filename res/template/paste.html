@@ -20,6 +20,7 @@
 				right: 0;
 				bottom: 0;
 				display: inline-block;
+				line-height: 0;
 			}
 			.textarea{
 				position: relative;
@@ -27,12 +28,15 @@
 				width: 100%;
 				background: var(--layer_1_color);
 				color: var(--text_color);
+				margin: 0;
+				border-radius: 0;
 			}
 
 			.toolbar_button{
 				text-align: left;
 			}
-			.toolbar_button > img {
+			.toolbar_button > img,
+			.toolbar_button > svg {
 				width: 24px;
 				height: 24px;
 			}
@@ -45,11 +49,11 @@
 	<body>
 		<div id="toolbar">
 			<button class="toolbar_button button_full_width button_highlight" onclick="uploadText();">
-				{{template `upload.svg` .}}
+				<i class="icon">save</i>
 				<span>Upload</span>
 			</button>
 			<a href="/" class="button toolbar_button button_full_width">
-				<img src="{{template `pixeldrain_icon.png`}}" alt="Back to the Home page"/>
+				{{template `pixeldrain.svg` .}}
 				<span>Home</span>
 			</a>
 			<br/><br/>

@@ -226,7 +226,7 @@
 	height: 24px;
 }
 .toolbar_button > span {
-	vertical-align: 6px;
+	vertical-align: middle;
 }
 
 .toolbar_label {

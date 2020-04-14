@@ -43,6 +43,7 @@
 	white-space: nowrap;
 	direction: ltr;
 	text-rendering: optimizeLegibility;
+	vertical-align: middle;
 }
 .icon.small {
 	font-size: 16px;
@@ -320,7 +321,7 @@ pre{
 
 .big_button{
 	width: 40%;
-	min-width: 200px;
+	min-width: 250px;
 	max-width: 400px;
 	margin: 10px !important;
 	border-radius: 5px;
