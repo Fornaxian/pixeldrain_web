@@ -224,6 +224,7 @@
 .toolbar_button > img {
 	width: 24px;
 	height: 24px;
+	vertical-align: middle;
 }
 .toolbar_button > span {
 	vertical-align: middle;
