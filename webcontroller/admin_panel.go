@@ -69,7 +69,7 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 			}
 
 			// Value changed, try to update global setting
-			if _, err = td.PixelAPI.AdminSetGlobals(v.Name, v.EnteredValue); err != nil {
+			if err = td.PixelAPI.AdminSetGlobals(v.Name, v.EnteredValue); err != nil {
 				if apiErr, ok := err.(pixelapi.Error); ok {
 					f.SubmitMessages = append(f.SubmitMessages, template.HTML(apiErr.Message))
 				} else {

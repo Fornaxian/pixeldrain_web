@@ -35,9 +35,10 @@ type FileInfo struct {
 
 // GetFileInfo gets the FileInfo from the pixeldrain API
 func (p *PixelAPI) GetFileInfo(id string) (resp FileInfo, err error) {
-	return resp, p.jsonRequest("GET", p.apiEndpoint+"/file/"+id+"/info", &resp)
+	return resp, p.jsonRequest("GET", p.apiEndpoint+"/file/"+id+"/info", &resp, false)
 }
 
+// PostFileView adds a view to a file
 func (p *PixelAPI) PostFileView(id, viewtoken string) (err error) {
 	vals := url.Values{}
 	vals.Set("token", viewtoken)

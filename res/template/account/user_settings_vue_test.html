@@ -1,0 +1,57 @@
+{{define "user_settings_vue_test"}}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" .Username}}
+		{{template "user_style" .}}
+		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
+	</head>
+
+	<body>
+		{{template "page_top" .}}
+		<h1>{{.Title}}</h1>
+		<div class="page_content"><div class="limit_width">
+			<h2>TEST FORM</h2>
+			<form id="test_form" class="highlight_dark" method="POST">
+				<table class="form">
+					<tr class="form">
+						<td>Old Password</td>
+						<td>
+							<input id="input_old_password" name="old_password" value="" type="password" autocomplete="current-password" class="form_input">
+						</td>
+					</tr>
+					<tr class="form"></tr>
+						<td>New Password</td>
+						<td>
+							<input id="input_new_password1" name="new_password1" value="" type="password" autocomplete="new-password" class="form_input">
+						</td>
+					</tr>
+					<tr class="form">
+						<td>New Password again</td>
+						<td>
+							<input id="input_new_password2" name="new_password2" value="" type="password" autocomplete="new-password" class="form_input">
+						</td>
+						</tr>
+					<tr class="form">
+						<td colspan="2">
+							we need you to repeat your password so you won't be locked out of your account if you make a typing error
+						</td>
+					</tr>
+					<tr class="form">
+						<td colspan="2" style="text-align: right;">
+							<input type="submit" value="Submit" class="button_highlight" style="float: right;">
+						</td>
+					</tr>
+				</table>
+			</form>
+
+			{{template "form" .Other.PasswordForm}}
+			{{template "form" .Other.EmailForm}}
+			{{template "form" .Other.UsernameForm}}
+		</div></div>
+		{{template "page_bottom" .}}
+		{{template "analytics"}}
+
+		{{template "vue"}}
+	</body>
+</html>
+{{end}}

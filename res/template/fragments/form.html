@@ -52,17 +52,17 @@
 							{{end}}
 						</td>
 					{{end}}
-					{{if or (ne $field.Description "") (eq $field.Separator true)}}
-						<tr class="form">
-							<td colspan="2">
-								{{$field.Description}}
-								{{if eq $field.Separator true}}
-									<hr/>
-								{{end}}
-							</td>
-						</tr>
-					{{end}}
 				</tr>
+				{{if or (ne $field.Description "") (eq $field.Separator true)}}
+					<tr class="form">
+						<td colspan="2">
+							{{$field.Description}}
+							{{if eq $field.Separator true}}
+								<hr/>
+							{{end}}
+						</td>
+					</tr>
+				{{end}}
 			{{end}}
 			<tr class="form">
 				{{if eq .BackLink ""}}

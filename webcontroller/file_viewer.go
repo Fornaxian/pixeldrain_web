@@ -130,11 +130,14 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	var templateData = wc.newTemplateData(w, r)
 	var list, err = templateData.PixelAPI.GetList(p.ByName("id"))
 	if err != nil {
-		if err, ok := err.(pixelapi.Error); ok && err.ReqError {
-			log.Error("API request error occurred: %s", err.Value)
+		if err, ok := err.(pixelapi.Error); ok && err.Status == http.StatusNotFound {
+			w.WriteHeader(http.StatusNotFound)
+			wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
+		} else {
+			log.Error("API request error occurred: %s", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			wc.templates.Get().ExecuteTemplate(w, "500", templateData)
 		}
-		w.WriteHeader(http.StatusNotFound)
-		wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
 		return
 	}
 

@@ -1,6 +1,7 @@
 package webcontroller
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -8,6 +9,44 @@ import (
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
+
+// formAPIError makes it easier to display errors returned by the pixeldrain
+// API. TO make use of this function the form fields should be named exactly the
+// same as the API parameters
+func formAPIError(err error, f *Form) {
+	fieldLabel := func(name string) string {
+		for _, v := range f.Fields {
+			if v.Name == name {
+				return v.Label
+			}
+		}
+		return name
+	}
+
+	if err, ok := err.(pixelapi.Error); ok {
+		if err.StatusCode == "multiple_errors" {
+			for _, err := range err.Errors {
+				// Modify the message to make it more user-friendly
+				if err.StatusCode == "string_out_of_range" {
+					err.Message = fmt.Sprintf(
+						"%s is too long or too short. Should be between %v and %v characters. Current length: %v",
+						fieldLabel(err.Extra["field"].(string)),
+						err.Extra["min_len"],
+						err.Extra["max_len"],
+						err.Extra["len"],
+					)
+				}
+
+				f.SubmitMessages = append(f.SubmitMessages, template.HTML(err.Message))
+			}
+		} else {
+			f.SubmitMessages = append(f.SubmitMessages, template.HTML(err.Message))
+		}
+	} else {
+		log.Error("Error submitting form: %s", err)
+		f.SubmitMessages = []template.HTML{"Internal Server Error"}
+	}
+}
 
 func (wc *WebController) serveUserSettings(
 	w http.ResponseWriter,
@@ -44,7 +83,7 @@ func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f Form
 				Label: "Old Password",
 				Type:  FieldTypeCurrentPassword,
 			}, {
-				Name:  "new_password1",
+				Name:  "new_password",
 				Label: "New Password",
 				Type:  FieldTypeNewPassword,
 			}, {
@@ -60,7 +99,7 @@ func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f Form
 	}
 
 	if f.ReadInput(r) {
-		if f.FieldVal("new_password1") != f.FieldVal("new_password2") {
+		if f.FieldVal("new_password") != f.FieldVal("new_password2") {
 			f.SubmitMessages = []template.HTML{
 				"Password verification failed. Please enter the same " +
 					"password in both new password fields"}
@@ -71,14 +110,9 @@ func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f Form
 		// form
 		if err := td.PixelAPI.UserPasswordSet(
 			f.FieldVal("old_password"),
-			f.FieldVal("new_password1"),
+			f.FieldVal("new_password"),
 		); err != nil {
-			if apiErr, ok := err.(pixelapi.Error); ok {
-				f.SubmitMessages = []template.HTML{template.HTML(apiErr.Message)}
-			} else {
-				log.Error("%s", err)
-				f.SubmitMessages = []template.HTML{"Internal Server Error"}
-			}
+			formAPIError(err, &f)
 		} else {
 			// Request was a success
 			f.SubmitSuccess = true
@@ -111,12 +145,7 @@ func (wc *WebController) emailForm(td *TemplateData, r *http.Request) (f Form) {
 			f.FieldVal("new_email"),
 			false,
 		); err != nil {
-			if apiErr, ok := err.(pixelapi.Error); ok {
-				f.SubmitMessages = []template.HTML{template.HTML(apiErr.Message)}
-			} else {
-				log.Error("%s", err)
-				f.SubmitMessages = []template.HTML{"Internal Server Error"}
-			}
+			formAPIError(err, &f)
 		} else {
 			// Request was a success
 			f.SubmitSuccess = true
@@ -131,18 +160,18 @@ func (wc *WebController) serveEmailConfirm(
 	r *http.Request,
 	p httprouter.Params,
 ) {
+	var err error
 	var status string
-	if key, err := wc.getAPIKey(r); err == nil {
-		api := pixelapi.New(wc.apiURLInternal)
-		api.APIKey = key
-		err = api.UserEmailResetConfirm(r.FormValue("key"))
-		if err != nil && err.Error() == "not_found" {
-			status = "not_found"
-		} else if err != nil {
-			status = "internal_error"
-		} else {
-			status = "success"
-		}
+
+	api := pixelapi.New(wc.apiURLInternal)
+	err = api.UserEmailResetConfirm(r.FormValue("key"))
+	if err != nil && err.Error() == "not_found" {
+		status = "not_found"
+	} else if err != nil {
+		log.Error("E-mail reset fail: %s", err)
+		status = "internal_error"
+	} else {
+		status = "success"
 	}
 
 	td := wc.newTemplateData(w, r)
@@ -171,12 +200,7 @@ func (wc *WebController) usernameForm(td *TemplateData, r *http.Request) (f Form
 
 	if f.ReadInput(r) {
 		if err := td.PixelAPI.UserSetUsername(f.FieldVal("new_username")); err != nil {
-			if apiErr, ok := err.(pixelapi.Error); ok {
-				f.SubmitMessages = []template.HTML{template.HTML(apiErr.Message)}
-			} else {
-				log.Error("%s", err)
-				f.SubmitMessages = []template.HTML{"Internal Server Error"}
-			}
+			formAPIError(err, &f)
 		} else {
 			// Request was a success
 			f.SubmitSuccess = true

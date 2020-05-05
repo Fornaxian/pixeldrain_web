@@ -26,59 +26,49 @@ func New(apiEndpoint string) *PixelAPI {
 	return &PixelAPI{apiEndpoint: apiEndpoint}
 }
 
-// Error is either an error that occurred during the API request
-// (ReqError = true), or an error that was returned from the Pixeldrain API
-// (ReqError = false). The Success field is also returned by the Pixeldrain API,
-// but since this is struct represents an Error it will usually be false.
-//
-// When ReqError is true the Value field will contain a Go error message. When
-// it's false it will contain a Pixeldrain API error code.
+// Standard response types
+
+// Error is an error returned by the pixeldrain API. If the request failed
+// before it could reach the API the error will be on a different type
 type Error struct {
-	ReqError bool
-	Success  bool        `json:"success"`
-	Value    string      `json:"value"`
-	Message  string      `json:"message"`
-	Extra    interface{} `json:"extra,omitempty"`
+	Status     int    `json:"-"` // One of the http.Status types
+	Success    bool   `json:"success"`
+	StatusCode string `json:"value"`
+	Message    string `json:"message"`
+
+	// In case of the multiple_errors code this array will be populated with
+	// more errors
+	Errors []Error `json:"errors,omitempty"`
+
+	// Metadata regarding the error
+	Extra map[string]interface{} `json:"extra,omitempty"`
 }
 
-func (e Error) Error() string { return e.Value }
+func (e Error) Error() string { return e.StatusCode }
 
-// SuccessResponse is a generic response the API returns when the action was
-// successful and there is nothing interesting to report
-type SuccessResponse struct {
-	Success bool   `json:"success"`
-	Message string `json:"message"`
-}
-
-func (p *PixelAPI) jsonRequest(method, url string, target interface{}) error {
-	req, err := http.NewRequest(method, url, nil)
-	if err != nil {
-		return Error{
-			ReqError: true,
-			Success:  false,
-			Value:    err.Error(),
-			Message:  err.Error(),
-		}
-	}
+func (p *PixelAPI) do(r *http.Request) (*http.Response, error) {
 	if p.APIKey != "" {
-		req.SetBasicAuth("", p.APIKey)
+		r.SetBasicAuth("", p.APIKey)
 	}
 	if p.RealIP != "" {
-		req.Header.Set("X-Real-IP", p.RealIP)
+		r.Header.Set("X-Real-IP", p.RealIP)
 	}
 
-	resp, err := client.Do(req)
+	return client.Do(r)
+}
+
+func (p *PixelAPI) jsonRequest(method, url string, target interface{}, multiErr bool) error {
+	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
-		return Error{
-			ReqError: true,
-			Success:  false,
-			Value:    err.Error(),
-			Message:  err.Error(),
-		}
+		return err
+	}
+	resp, err := p.do(req)
+	if err != nil {
+		return err
 	}
 
 	defer resp.Body.Close()
-	return parseJSONResponse(resp, target, true)
+	return parseJSONResponse(resp, target, multiErr)
 }
 
 func (p *PixelAPI) getString(url string) (string, error) {
@@ -86,14 +76,7 @@ func (p *PixelAPI) getString(url string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if p.APIKey != "" {
-		req.SetBasicAuth("", p.APIKey)
-	}
-	if p.RealIP != "" {
-		req.Header.Set("X-Real-IP", p.RealIP)
-	}
-
-	resp, err := client.Do(req)
+	resp, err := p.do(req)
 	if err != nil {
 		return "", err
 	}
@@ -110,14 +93,7 @@ func (p *PixelAPI) getRaw(url string) (io.ReadCloser, error) {
 	if err != nil {
 		return nil, err
 	}
-	if p.APIKey != "" {
-		req.SetBasicAuth("", p.APIKey)
-	}
-	if p.RealIP != "" {
-		req.Header.Set("X-Real-IP", p.RealIP)
-	}
-
-	resp, err := client.Do(req)
+	resp, err := p.do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -130,56 +106,29 @@ func (p *PixelAPI) form(
 	url string,
 	vals url.Values,
 	target interface{},
-	catchErrors bool,
+	multiErr bool,
 ) error {
 	req, err := http.NewRequest(method, url, strings.NewReader(vals.Encode()))
 	if err != nil {
-		return Error{
-			ReqError: true,
-			Success:  false,
-			Value:    err.Error(),
-			Message:  err.Error(),
-		}
+		return err
 	}
-	if p.APIKey != "" {
-		req.SetBasicAuth("", p.APIKey)
-	}
-	if p.RealIP != "" {
-		req.Header.Set("X-Real-IP", p.RealIP)
-	}
-
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-	resp, err := client.Do(req)
+	resp, err := p.do(req)
 	if err != nil {
-		return Error{
-			ReqError: true,
-			Success:  false,
-			Value:    err.Error(),
-			Message:  err.Error(),
-		}
+		return err
 	}
 
 	defer resp.Body.Close()
-	return parseJSONResponse(resp, target, catchErrors)
+	return parseJSONResponse(resp, target, multiErr)
 }
 
-func parseJSONResponse(resp *http.Response, target interface{}, catchErrors bool) error {
-	var err error
-
+func parseJSONResponse(resp *http.Response, target interface{}, multiErr bool) (err error) {
 	// Test for client side and server side errors
-	if catchErrors && resp.StatusCode >= 400 {
-		var errResp = Error{
-			ReqError: false,
-		}
+	if resp.StatusCode >= 400 {
+		errResp := Error{Status: resp.StatusCode}
 		if err = json.NewDecoder(resp.Body).Decode(&errResp); err != nil {
-			log.Error("Can't decode this: %v", err)
-			return Error{
-				ReqError: true,
-				Success:  false,
-				Value:    err.Error(),
-				Message:  err.Error(),
-			}
+			return err
 		}
 		return errResp
 	}
@@ -191,12 +140,8 @@ func parseJSONResponse(resp *http.Response, target interface{}, catchErrors bool
 	if err = json.NewDecoder(resp.Body).Decode(target); err != nil {
 		r, _ := ioutil.ReadAll(resp.Body)
 		log.Error("Can't decode this: %v. %s", err, r)
-		return Error{
-			ReqError: true,
-			Success:  false,
-			Value:    err.Error(),
-			Message:  err.Error(),
-		}
+		return err
 	}
+
 	return nil
 }

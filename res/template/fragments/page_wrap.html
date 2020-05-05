@@ -4,8 +4,8 @@
 	<a href="/">Home</a>
 	<hr />
 	{{if .Authenticated}}<a href="/user">{{.Username}}</a>
-	<a href="/user/filemanager?files">My Files</a>
-	<a href="/user/filemanager?lists">My Lists</a>
+	<a href="/user/filemanager#files">My Files</a>
+	<a href="/user/filemanager#lists">My Lists</a>
 	<a href="/logout">Log out</a>
 	{{else}}
 	<a href="/login">Login</a>

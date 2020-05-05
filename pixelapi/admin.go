@@ -10,7 +10,7 @@ type IsAdmin struct {
 
 // UserIsAdmin returns if the logged in user is an admin user
 func (p *PixelAPI) UserIsAdmin() (resp IsAdmin, err error) {
-	err = p.jsonRequest("GET", p.apiEndpoint+"/admin/is_admin", &resp)
+	err = p.jsonRequest("GET", p.apiEndpoint+"/admin/is_admin", &resp, false)
 	if err != nil {
 		return resp, err
 	}
@@ -31,16 +31,16 @@ type AdminGlobals struct {
 
 // AdminGetGlobals returns if the logged in user is an admin user
 func (p *PixelAPI) AdminGetGlobals() (resp AdminGlobals, err error) {
-	if err = p.jsonRequest("GET", p.apiEndpoint+"/admin/globals", &resp); err != nil {
+	if err = p.jsonRequest("GET", p.apiEndpoint+"/admin/globals", &resp, false); err != nil {
 		return resp, err
 	}
 	return resp, nil
 }
 
 // AdminSetGlobals returns if the logged in user is an admin user
-func (p *PixelAPI) AdminSetGlobals(key, value string) (resp SuccessResponse, err error) {
+func (p *PixelAPI) AdminSetGlobals(key, value string) (err error) {
 	var form = url.Values{}
 	form.Add("key", key)
 	form.Add("value", value)
-	return resp, p.form("POST", p.apiEndpoint+"/admin/globals", form, &resp, true)
+	return p.form("POST", p.apiEndpoint+"/admin/globals", form, nil, true)
 }

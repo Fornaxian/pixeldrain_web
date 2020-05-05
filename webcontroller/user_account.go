@@ -27,6 +27,7 @@ func (wc *WebController) serveLogout(
 }
 
 func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form) {
+	var err error
 	// This only runs on the first request
 	if wc.captchaSiteKey == "" {
 		capt, err := td.PixelAPI.GetRecaptcha()
@@ -58,7 +59,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 				Separator:   true,
 				Type:        FieldTypeUsername,
 			}, {
-				Name:  "e-mail",
+				Name:  "email",
 				Label: "E-mail address",
 				Description: "not required. your e-mail address will only be " +
 					"used for password resets and important account " +
@@ -66,7 +67,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 				Separator: true,
 				Type:      FieldTypeEmail,
 			}, {
-				Name:  "password1",
+				Name:  "password",
 				Label: "Password",
 				Type:  FieldTypeNewPassword,
 			}, {
@@ -79,10 +80,11 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 				Type:      FieldTypeNewPassword,
 			}, {
 				Name:  "recaptcha_response",
-				Label: "Turing test (click the white box)",
+				Label: "reCaptcha",
 				Description: "the reCaptcha turing test verifies that you " +
 					"are not an evil robot that is trying to flood the " +
-					"website with fake accounts",
+					"website with fake accounts. Please click the white box " +
+					"to prove that you're not a robot",
 				Separator:      true,
 				Type:           FieldTypeCaptcha,
 				CaptchaSiteKey: wc.captchaKey(),
@@ -94,31 +96,21 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 	}
 
 	if f.ReadInput(r) {
-		if f.FieldVal("password1") != f.FieldVal("password2") {
+		if f.FieldVal("password") != f.FieldVal("password2") {
 			f.SubmitMessages = []template.HTML{
 				"Password verification failed. Please enter the same " +
 					"password in both password fields"}
 			return f
 		}
 		log.Debug("capt: %s", f.FieldVal("recaptcha_response"))
-		resp, err := td.PixelAPI.UserRegister(
+
+		if err = td.PixelAPI.UserRegister(
 			f.FieldVal("username"),
-			f.FieldVal("e-mail"),
-			f.FieldVal("password1"),
+			f.FieldVal("email"),
+			f.FieldVal("password"),
 			f.FieldVal("recaptcha_response"),
-		)
-		if err != nil {
-			if apiErr, ok := err.(pixelapi.Error); ok {
-				f.SubmitMessages = []template.HTML{template.HTML(apiErr.Message)}
-			} else {
-				log.Error("%s", err)
-				f.SubmitMessages = []template.HTML{"Internal Server Error"}
-			}
-		} else if len(resp.Errors) != 0 {
-			// Registration errors occurred
-			for _, rerr := range resp.Errors {
-				f.SubmitMessages = append(f.SubmitMessages, template.HTML(rerr.Message))
-			}
+		); err != nil {
+			formAPIError(err, &f)
 		} else {
 			// Request was a success
 			f.SubmitSuccess = true
@@ -162,12 +154,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 	if f.ReadInput(r) {
 		loginResp, err := td.PixelAPI.UserLogin(f.FieldVal("username"), f.FieldVal("password"), false)
 		if err != nil {
-			if apiErr, ok := err.(pixelapi.Error); ok {
-				f.SubmitMessages = []template.HTML{template.HTML(apiErr.Message)}
-			} else {
-				log.Error("%s", err)
-				f.SubmitMessages = []template.HTML{"Internal Server Error"}
-			}
+			formAPIError(err, &f)
 		} else {
 			log.Debug("key %s", loginResp.APIKey)
 			// Request was a success
@@ -223,13 +210,11 @@ func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f
 	}
 
 	if f.ReadInput(r) {
-		if err := td.PixelAPI.UserPasswordReset(f.FieldVal("email"), f.FieldVal("recaptcha_response")); err != nil {
-			if apiErr, ok := err.(pixelapi.Error); ok {
-				f.SubmitMessages = []template.HTML{template.HTML(apiErr.Message)}
-			} else {
-				log.Error("%s", err)
-				f.SubmitMessages = []template.HTML{"Internal Server Error"}
-			}
+		if err := td.PixelAPI.UserPasswordReset(
+			f.FieldVal("email"),
+			f.FieldVal("recaptcha_response"),
+		); err != nil {
+			formAPIError(err, &f)
 		} else {
 			f.SubmitSuccess = true
 			f.SubmitMessages = []template.HTML{
@@ -247,12 +232,12 @@ func (wc *WebController) passwordResetConfirmForm(td *TemplateData, r *http.Requ
 		Title: td.Title,
 		Fields: []Field{
 			{
-				Name:  "password1",
-				Label: "password",
+				Name:  "new_password",
+				Label: "Password",
 				Type:  FieldTypeNewPassword,
 			}, {
-				Name:  "password2",
-				Label: "password again",
+				Name:  "new_password2",
+				Label: "Password again",
 				Description: "you need to enter your password twice so we " +
 					"can verify that no typing errors were made, which would " +
 					"prevent you from logging into your new account",
@@ -271,23 +256,20 @@ func (wc *WebController) passwordResetConfirmForm(td *TemplateData, r *http.Requ
 	}
 
 	if f.ReadInput(r) {
-		if f.FieldVal("password1") != f.FieldVal("password2") {
+		if f.FieldVal("new_password") != f.FieldVal("new_password2") {
 			f.SubmitMessages = []template.HTML{
 				"Password verification failed. Please enter the same " +
 					"password in both password fields"}
 			return f
 		}
 
-		if err := td.PixelAPI.UserPasswordResetConfirm(resetKey, f.FieldVal("password1")); err != nil {
-			if err.Error() == "not_found" {
-				f.SubmitMessages = []template.HTML{template.HTML("Password reset key not found")}
-			} else {
-				log.Error("%s", err)
-				f.SubmitMessages = []template.HTML{"Internal Server Error"}
-			}
+		if err := td.PixelAPI.UserPasswordResetConfirm(resetKey, f.FieldVal("new_password")); err != nil {
+			formAPIError(err, &f)
 		} else {
 			f.SubmitSuccess = true
-			f.SubmitMessages = []template.HTML{"Success! You can now log in with your new password"}
+			f.SubmitMessages = []template.HTML{
+				`Success! You can now <a href="/login">log in</a> with your new password`,
+			}
 		}
 	}
 	return f

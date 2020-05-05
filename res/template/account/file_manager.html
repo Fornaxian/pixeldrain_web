@@ -49,15 +49,21 @@
 
 				let breadcrumbs = document.querySelector("#nav_bar > .breadcrumbs")
 
-				if (window.location.href.endsWith("?files")) {
-					breadcrumbs.value = "/{{.Username}}/Files"
-					fm.getUserFiles()
-				} else if (window.location.href.endsWith("?lists")) {
-					breadcrumbs.value = "/{{.Username}}/Lists"
-					fm.getUserLists()
-				} else {
-					alert("invalid file manager type")
+				let hashChange = () => {
+					if (window.location.hash === "#files") {
+						breadcrumbs.value = "/{{.Username}}/Files"
+						fm.getUserFiles()
+					} else if (window.location.hash === "#lists") {
+						breadcrumbs.value = "/{{.Username}}/Lists"
+						fm.getUserLists()
+					} else {
+						alert("invalid file manager type")
+					}
 				}
+
+				hashChange()
+
+				window.addEventListener("hashchange", hashChange)
 			})
 		</script>
 		{{template "analytics"}}
