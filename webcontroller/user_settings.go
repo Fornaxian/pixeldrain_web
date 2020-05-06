@@ -35,6 +35,12 @@ func formAPIError(err error, f *Form) {
 						err.Extra["max_len"],
 						err.Extra["len"],
 					)
+				} else if err.StatusCode == "field_contains_illegal_character" {
+					err.Message = fmt.Sprintf(
+						"Character '%v' is not allowed in %s",
+						err.Extra["char"],
+						fieldLabel(err.Extra["field"].(string)),
+					)
 				}
 
 				f.SubmitMessages = append(f.SubmitMessages, template.HTML(err.Message))
