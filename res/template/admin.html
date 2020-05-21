@@ -12,16 +12,16 @@
 			{{if $isAdmin.IsAdmin}}
 				<h3>Bandwidth and views</h3>
 				<div class="highlight_dark">
-					<button onclick="days = 7; interval = 60; setData();">Week</button>
-					<button onclick="days = 14; interval = 60; setData();">Two Weeks</button>
-					<button onclick="days = 21; interval = 60; setData();">Three Weeks</button>
-					<button onclick="days = 30; interval = 1440; setData();">Month</button>
-					<button onclick="days = 60; interval = 1440; setData();">Two Months</button>
-					<button onclick="days = 91; interval = 1440; setData();">Quarter</button>
-					<button onclick="days = 182; interval = 1440; setData();">Half-year</button>
-					<button onclick="days = 365; interval = 1440; setData();">Year</button>
+					<button onclick="setData(7, 60);">Week</button>
+					<button onclick="setData(14, 60);">Two Weeks</button>
+					<button onclick="setData(21, 60);">Three Weeks</button>
+					<button onclick="setData(30, 1440);">Month</button>
+					<button onclick="setData(60, 1440);">Two Months</button>
+					<button onclick="setData(91, 1440);">Quarter</button>
+					<button onclick="setData(182, 1440);">Half-year</button>
+					<button onclick="setData(356, 1440);">Year</button>
 				</div>
-				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: 500px;">
+				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: 400px;">
 					<canvas id="bandwidth_chart"></canvas>
 				</div>
 
@@ -40,8 +40,6 @@
 				Chart.defaults.global.tooltips.axis = "x";
 				Chart.defaults.global.tooltips.intersect = false;
 
-				var days = 7;
-				var interval = 60;
 				var graph = new Chart(
 					document.getElementById('bandwidth_chart'),
 					{
@@ -116,8 +114,17 @@
 					}
 				);
 
-				function setData(){
-					fetch(apiEndpoint+"/admin/files/timeseries?days="+days+"&interval="+interval).then(resp => {
+				function setData(days, interval){
+					let today = new Date()
+					let start = new Date()
+					start.setDate(start.getDate()-days)
+
+					fetch(
+						apiEndpoint+"/admin/files/timeseries" +
+						"?start="+start.toISOString() +
+						"&end="+today.toISOString() +
+						"&interval="+interval
+					).then(resp => {
 						if (!resp.ok) { return Promise.reject("Error: "+resp.status);}
 						return resp.json();
 					}).then(resp => {
@@ -132,7 +139,7 @@
 					})
 				}
 
-				setData();
+				setData(7, 60);
 				</script>
 
 				<hr/>
