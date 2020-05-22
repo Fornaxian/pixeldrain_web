@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strings"
 
 	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
@@ -64,6 +65,9 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 	if f.ReadInput(r) {
 		var successfulUpdates = 0
 		for k, v := range f.Fields {
+			// Remove carriage returns from input
+			v.EnteredValue = strings.ReplaceAll(v.EnteredValue, "\r", "")
+
 			if v.EnteredValue == globalsMap[v.Name] {
 				continue // Change changes, no need to update
 			}
