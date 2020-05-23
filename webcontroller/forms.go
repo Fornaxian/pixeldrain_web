@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strings"
 )
 
 // Form is a form which can be rendered in HTML and submitted
@@ -99,7 +100,8 @@ func (f *Form) ReadInput(r *http.Request) (success bool) {
 	f.Submitted = true
 
 	for i, field := range f.Fields {
-		field.EnteredValue = r.FormValue(field.Name)
+		// Remove carriage returns
+		field.EnteredValue = strings.ReplaceAll(r.FormValue(field.Name), "\r", "")
 
 		if field.DefaultValue == "" {
 			field.DefaultValue = field.EnteredValue

@@ -27,7 +27,7 @@ func (wc *WebController) serveAdClick(w http.ResponseWriter, r *http.Request, p 
 
 	// Log a view on the file
 	if err := api.PostFileView(p.ByName("id"), wc.viewTokenOrBust()); err != nil {
-		log.Warn("Failed to log view")
+		log.Error("Failed to log view: %s", err)
 	}
 }
 
