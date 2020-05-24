@@ -3,6 +3,7 @@ package webcontroller
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"mime"
 	"net/http"
 	"strconv"
@@ -28,10 +29,25 @@ func browserCompat(ua string) bool {
 	return strings.Contains(ua, "MSIE") || strings.Contains(ua, "Trident/7.0")
 }
 
+func adType() (i int) {
+	// Intn returns a number up to n, but never n itself. So it get a random 0
+	// or 1 we need to give it n=2. We can use this function to make other
+	// splits like 1/3 1/4, etc
+	i = rand.Intn(2)
+
+	switch {
+	case i == 1: // 50% of the traffic
+		return 1 // Amarula
+	default:
+		return 0 // A-Ads
+	}
+}
+
 type viewerData struct {
 	Type        string // file or list
 	CaptchaKey  string
 	ViewToken   string
+	AdType      int
 	APIResponse interface{}
 }
 
@@ -69,6 +85,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			Type:       "list",
 			CaptchaKey: wc.captchaKey(),
 			ViewToken:  wc.viewTokenOrBust(),
+			AdType:     adType(),
 			APIResponse: pixelapi.List{
 				Success:     true,
 				Title:       "Multiple files",
@@ -82,6 +99,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			Type:        "file",
 			CaptchaKey:  wc.captchaKey(),
 			ViewToken:   wc.viewTokenOrBust(),
+			AdType:      adType(),
 			APIResponse: finfo[0].FileInfo,
 		}
 	}
@@ -105,6 +123,7 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 	templateData.Other = viewerData{
 		Type:       "file",
 		CaptchaKey: wc.captchaSiteKey,
+		AdType:     0, // Always show a-ads on the demo page
 		APIResponse: map[string]interface{}{
 			"id":             "demo",
 			"name":           "Demo file",
@@ -147,6 +166,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		Type:        "list",
 		CaptchaKey:  wc.captchaSiteKey,
 		ViewToken:   wc.viewTokenOrBust(),
+		AdType:      adType(),
 		APIResponse: list,
 	}
 
@@ -235,7 +255,8 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 	templateData.OGData = ""
 	templateData.Title = fmt.Sprintf("name ~ Skynet")
 	templateData.Other = viewerData{
-		Type: "skylink",
+		Type:   "skylink",
+		AdType: adType(),
 		APIResponse: pixelapi.FileInfo{
 			Success:       true,
 			ID:            p.ByName("id"),

@@ -100,9 +100,19 @@
 			</div>
 
 			<div id="sponsors" class="sponsors">
-				<a href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarula-electronics.com/?v=79cba1185463">
-					<img src="/res/img/misc/banner_as.png" style="display: block; margin: auto; height: 100%;" />
+				{{if eq .Other.AdType 0}}
+				<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
+				<iframe class="sponsors_banner"
+					data-aa="73974"
+					src="//ad.a-ads.com/73974?size=728x90&background_color={{.Style.Layer1Color.RGB}}&text_color={{.Style.TextColor.RGB}}&title_color={{.Style.HighlightColor.RGB}}&title_hover_color={{.Style.HighlightColor.RGB}}&link_color={{.Style.HighlightColor.RGB}}&link_hover_color={{.Style.HighlightColor.RGB}}"
+					style="width:728px; height:90px; border:none; padding:0; overflow:hidden;"
+					scrolling="no">
+				</iframe>
+				{{else if eq .Other.AdType 1}}
+				<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarula-electronics.com/?v=79cba1185463">
+					<img src="/res/img/misc/banner_as.png" style="width: 100%; height: 100%" />
 				</a>
+				{{end}}
 			</div>
 		</div>
 

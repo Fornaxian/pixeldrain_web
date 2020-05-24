@@ -1,7 +1,9 @@
 package init
 
 import (
+	"math/rand"
 	"os"
+	"time"
 
 	"fornaxian.com/pixeldrain-web/webcontroller"
 	"github.com/Fornaxian/config"
@@ -33,6 +35,9 @@ maintenance_mode      = false
 // Init initializes the Pixeldrain Web UI controllers
 func Init(r *httprouter.Router, prefix string, setLogLevel bool) {
 	log.Info("Starting web UI server (PID %v)", os.Getpid())
+
+	// Seed the RNG
+	rand.Seed(time.Now().UnixNano())
 
 	var webconf = &PixelWebConfig{}
 	var _, err = config.New(

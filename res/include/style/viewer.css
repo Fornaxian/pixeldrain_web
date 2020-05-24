@@ -116,7 +116,7 @@
 	font-size: 0;
 	line-height: 0;
 }
-.file_viewer > .sponsors > iframe {
+.file_viewer > .sponsors > * {
 	display: block;
 	margin: auto;
 	transform-origin: 0 0;
