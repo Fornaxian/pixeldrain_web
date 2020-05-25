@@ -83,11 +83,7 @@ DirectoryElement.prototype.addFile = function(icon, name, href, type, size, size
 }
 
 DirectoryElement.prototype.renderFiles = function() {
-	this.visibleFiles = []
-	for (let i in this.allFiles) {
-		this.visibleFiles.push(i)
-	}
-	this.sortBy("")
+	this.search(this.lastSearchTerm)
 }
 
 // search filters the allFiles array on a search term. All files which match the
@@ -129,7 +125,7 @@ DirectoryElement.prototype.sortBy = function(field) {
 			this.currentSortAscending = true
 			this.currentSortField = field
 		} else if (this.currentSortField === field) {
-			// If it is the same field as before re reverse the sort order
+			// If it is the same field as before we reverse the sort order
 			this.currentSortAscending = !this.currentSortAscending
 		}
 	}
