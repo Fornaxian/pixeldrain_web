@@ -145,7 +145,60 @@
 				<hr/>
 				<div class="limit_width">
 					<a href="/admin/globals">Update global settings</a>
+					<h3>Query statistics</h3>
+					<table>
+						<thead>
+							<tr>
+								<td onclick="getStats('query_name')">Query</td>
+								<td onclick="getStats('events')">Events</td>
+								<td onclick="getStats('average_duration')">Average Duration</td>
+								<td onclick="getStats('total_duration')">Total Duration</td>
+								<td>Callers</td>
+							</tr>
+						</thead>
+						<tbody id="tstat_body">
+
+						</tbody>
+					</table>
+					<script>
+						function getStats(order) {
+							fetch(apiEndpoint+"/status").then(
+								resp => resp.json()
+							).then(resp => {
+								let t = document.getElementById("tstat_body")
+								t.innerHTML = ""
+
+								resp.query_statistics.sort((a, b) => {
+									if (typeof(a[order]) === "number") {
+										// Sort ints from high to low
+										return b[order] - a[order]
+									} else {
+										// Sort strings alphabetically
+										return a[order].localeCompare(b[order])
+									}
+								})
+
+								resp.query_statistics.forEach((v) => {
+									let callers = ""
+									v.callers.forEach((v1) => {
+										callers += `${v1.count}x ${v1.name}<br/>`
+									})
+
+									let row = document.createElement("tr")
+									row.innerHTML = `\
+									<td>${v.query_name}</td>
+									<td>${v.events}</td>
+									<td>${v.average_duration}ms</td>
+									<td>${v.total_duration}ms</td>
+									<td>${callers}</td>`
+									t.appendChild(row)
+								})
+							})
+						}
+						getStats("average_duration")
+					</script>
 				</div>
+
 				{{else}}
 				<h1 style="text-align: center;">;)</h1>
 				{{end}}
