@@ -70,3 +70,16 @@ function formatDataVolume(amt, precision) {
 	}
 	return amt + " B"
 }
+
+const second = 1000
+const minute = second*60
+const hour = minute*60
+const day = hour*24
+
+function formatDuration(ms) {
+	let res = ""
+	if (ms >= day)    { res += Math.floor(ms/day) + "d " }
+	if (ms >= hour)   { res += Math.floor((ms%day)/hour) + "h " }
+	if (ms >= minute) { res += Math.floor((ms%hour)/minute) + "m " }
+	return res + ((ms%minute)/second).toFixed(3) + "s"
+}

@@ -187,8 +187,8 @@
 									row.innerHTML = `\
 									<td>${v.query_name}</td>
 									<td>${v.calls}</td>
-									<td>${v.average_duration}ms</td>
-									<td>${v.total_duration}ms</td>
+									<td>${formatDuration(v.average_duration)}</td>
+									<td>${formatDuration(v.total_duration)}</td>
 									<td>${callers}</td>`
 									t.appendChild(row)
 								})
