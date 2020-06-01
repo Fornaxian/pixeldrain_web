@@ -117,6 +117,19 @@ function getStats(order) {
 	).then(resp => {
 		let t = document.getElementById("tstat_body")
 		t.innerHTML = ""
+		let c = document.getElementById("tconnstat_body")
+		c.innerHTML = ""
+
+		resp.db_connection_stats.forEach(v => {
+			let row = document.createElement("tr")
+			row.innerHTML = `\
+			<td>${v.name}</td>
+			<td>${v.max_connections}</td>
+			<td>${v.open_connections}</td>
+			<td>${v.connections_in_use}</td>
+			<td>${v.connections_idle}</td>`
+			c.appendChild(row)
+		})
 
 		resp.query_statistics.sort((a, b) => {
 			if (typeof(a[order]) === "number") {
