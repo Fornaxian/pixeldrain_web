@@ -111,7 +111,10 @@ setData(7, 60);
 
 // Load performance statistics
 
+let lastOrder
 function getStats(order) {
+	lastOrder = order
+
 	fetch(apiEndpoint+"/status").then(
 		resp => resp.json()
 	).then(resp => {
@@ -160,3 +163,5 @@ function getStats(order) {
 	})
 }
 getStats("calls")
+
+setInterval(() => {	getStats(lastOrder) }, 5000)
