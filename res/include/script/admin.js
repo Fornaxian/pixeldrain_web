@@ -127,6 +127,7 @@ function getStats(order) {
 			let row = document.createElement("tr")
 			row.innerHTML = `\
 			<td>${v.name}</td>
+			<td>${v.available}</td>
 			<td>${v.max_connections}</td>
 			<td>${v.open_connections}</td>
 			<td>${v.connections_in_use}</td>

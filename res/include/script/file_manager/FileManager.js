@@ -95,7 +95,7 @@ FileManager.prototype.getUserLists = function() {
 	this.setSpinner()
 
 	let getAll = (page) => {
-		let numFiles = 10000
+		let numFiles = 1000
 		fetch(apiEndpoint+"/user/lists?page="+page+"&limit="+numFiles).then(resp => {
 			if (!resp.ok) { Promise.reject("yo") }
 			return resp.json()
