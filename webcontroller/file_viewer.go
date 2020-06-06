@@ -3,7 +3,6 @@ package webcontroller
 import (
 	"fmt"
 	"io/ioutil"
-	"math/rand"
 	"mime"
 	"net/http"
 	"strconv"
@@ -33,14 +32,14 @@ func adType() (i int) {
 	// Intn returns a number up to n, but never n itself. So it get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	i = rand.Intn(2)
+	// i = rand.Intn(2)
 
-	switch {
-	case i == 1: // 50% of the traffic
-		return 1 // Amarula
-	default:
-		return 0 // A-Ads
-	}
+	// switch {
+	// case i == 1: // 50% of the traffic
+	return 1 // Amarula
+	// default:
+	// return 0 // A-Ads
+	// }
 }
 
 type viewerData struct {
