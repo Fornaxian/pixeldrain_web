@@ -11,7 +11,7 @@ import (
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 	"github.com/microcosm-cc/bluemonday"
-	"gopkg.in/russross/blackfriday.v2"
+	blackfriday "github.com/russross/blackfriday/v2"
 )
 
 // ServeFilePreview controller for GET /u/:id/preview

@@ -133,6 +133,9 @@ Viewer.prototype.setFile = function(file) {
 }
 
 Viewer.prototype.renderSponsors = function() {
+	// Check if the ad is enabled
+	if (document.querySelector(".sponsors_banner") == null) { return }
+
 	let scaleWidth      = 1
 	let scaleHeight     = 1
 	let minWindowHeight = 800
