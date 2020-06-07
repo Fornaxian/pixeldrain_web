@@ -14,8 +14,9 @@ import (
 	"strings"
 	"time"
 
+	"fornaxian.com/pixeldrain-api/api/apiclient"
+	"fornaxian.com/pixeldrain-api/api/apitype"
 	"fornaxian.com/pixeldrain-api/util"
-	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
 )
 
@@ -23,13 +24,12 @@ import (
 // the field Other you can pass your own template-specific variables.
 type TemplateData struct {
 	Authenticated bool
-	Username      string
-	Email         string
+	User          apitype.UserInfo
 	UserAgent     string
 	Style         pixeldrainStyleSheet
 	UserStyle     template.CSS
 	APIEndpoint   template.URL
-	PixelAPI      *pixelapi.PixelAPI
+	PixelAPI      *apiclient.PixelAPI
 	Hostname      template.HTML
 
 	// Only used on file viewer page
@@ -46,12 +46,11 @@ type TemplateData struct {
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {
 	t = &TemplateData{
 		Authenticated: false,
-		Username:      "",
 		UserAgent:     r.UserAgent(),
 		Style:         userStyle(r),
 		UserStyle:     template.CSS(userStyle(r).String()),
 		APIEndpoint:   template.URL(wc.apiURLExternal),
-		PixelAPI:      pixelapi.New(wc.apiURLInternal),
+		PixelAPI:      apiclient.New(wc.apiURLInternal),
 		Hostname:      template.HTML(wc.hostname),
 		URLQuery:      r.URL.Query(),
 	}
@@ -64,7 +63,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 	// and stuff like that
 	if key, err := wc.getAPIKey(r); err == nil {
 		t.PixelAPI.APIKey = key // Use the user's API key for all requests
-		uinf, err := t.PixelAPI.UserInfo()
+		t.User, err = t.PixelAPI.UserInfo()
 		if err != nil {
 			// This session key doesn't work, or the backend is down, user
 			// cannot be authenticated
@@ -96,8 +95,6 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 
 		// Authentication succeeded
 		t.Authenticated = true
-		t.Username = uinf.Username
-		t.Email = uinf.Email
 	}
 
 	return t
@@ -245,7 +242,7 @@ func (tm *TemplateManager) sub(a, b interface{}) int {
 	return detectInt(a) - detectInt(b)
 }
 func (tm *TemplateManager) formatData(i interface{}) string {
-	return util.FormatData(uint64(detectInt(i)))
+	return util.FormatData(int64(detectInt(i)))
 }
 
 func detectInt(i interface{}) int {

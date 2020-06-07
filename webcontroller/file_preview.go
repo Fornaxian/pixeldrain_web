@@ -6,13 +6,11 @@ import (
 	"net/http"
 	"strings"
 
+	"fornaxian.com/pixeldrain-api/api/apiclient"
 	"fornaxian.com/pixeldrain-api/util"
-	"fornaxian.com/pixeldrain-web/pixelapi"
 	"github.com/Fornaxian/log"
-	"github.com/microcosm-cc/bluemonday"
-
 	"github.com/julienschmidt/httprouter"
-
+	"github.com/microcosm-cc/bluemonday"
 	"gopkg.in/russross/blackfriday.v2"
 )
 
@@ -23,7 +21,7 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	api := pixelapi.New(wc.apiURLInternal)
+	api := apiclient.New(wc.apiURLInternal)
 	api.APIKey, _ = wc.getAPIKey(r)
 	api.RealIP = util.RemoteAddress(r)
 

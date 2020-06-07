@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"strings"
 
-	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-api/api/apitype"
 )
 
 type ogRule struct {
@@ -34,7 +34,7 @@ func (o linkRule) HTML() template.HTML {
 	return template.HTML(`<link rel="` + o.Rel + `" href="` + o.HREF + `"/>` + "\n")
 }
 
-func metadataFromFile(f pixelapi.FileInfo) (meta template.HTML) {
+func metadataFromFile(f apitype.FileInfo) (meta template.HTML) {
 	meta += ogRule{"og:title", f.Name}.HTML()
 	meta += ogRule{"og:site_name", "pixeldrain"}.HTML()
 	meta += ogRule{"og:description", "View '" + f.Name + "' on pixeldrain"}.HTML()
@@ -79,7 +79,7 @@ func metadataFromFile(f pixelapi.FileInfo) (meta template.HTML) {
 	}
 	return meta
 }
-func metadataFromList(l pixelapi.List) (meta template.HTML) {
+func metadataFromList(l apitype.ListInfo) (meta template.HTML) {
 	meta += ogRule{"og:type", "website"}.HTML()
 	meta += ogRule{"og:title", l.Title}.HTML()
 	meta += ogRule{"og:site_name", "pixeldrain"}.HTML()

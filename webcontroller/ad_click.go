@@ -4,10 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"fornaxian.com/pixeldrain-api/api/apiclient"
 	"fornaxian.com/pixeldrain-api/util"
-
-	"fornaxian.com/pixeldrain-web/pixelapi"
-
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -17,9 +15,7 @@ func (wc *WebController) serveAdClick(w http.ResponseWriter, r *http.Request, p 
 	w.Header().Set("Referrer-Policy", "origin")
 	http.Redirect(w, r, r.URL.Query().Get("target"), http.StatusTemporaryRedirect)
 
-	// wc.templates.Get().ExecuteTemplate(w, "hide_refer", r.URL.Query().Get("target"))
-
-	api := pixelapi.New(wc.apiURLInternal)
+	api := apiclient.New(wc.apiURLInternal)
 
 	// The Real IP is used in the API server to determine that the view is not
 	// fake

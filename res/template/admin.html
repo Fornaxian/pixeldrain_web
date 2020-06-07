@@ -9,7 +9,7 @@
 		{{$isAdmin := .PixelAPI.UserIsAdmin}}
 		{{template "page_top" .}}
 		<div class="page_content">
-			{{if $isAdmin.IsAdmin}}
+			{{if $isAdmin}}
 				<h3>Bandwidth and views</h3>
 				<div class="highlight_dark">
 					<button onclick="setData(7, 60);">Week</button>

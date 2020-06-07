@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-api/api/apiclient"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -23,7 +23,7 @@ func formAPIError(err error, f *Form) {
 		return name
 	}
 
-	if err, ok := err.(pixelapi.Error); ok {
+	if err, ok := err.(apiclient.Error); ok {
 		if err.StatusCode == "multiple_errors" {
 			for _, err := range err.Errors {
 				// Modify the message to make it more user-friendly
@@ -169,7 +169,7 @@ func (wc *WebController) serveEmailConfirm(
 	var err error
 	var status string
 
-	api := pixelapi.New(wc.apiURLInternal)
+	api := apiclient.New(wc.apiURLInternal)
 	err = api.UserEmailResetConfirm(r.FormValue("key"))
 	if err != nil && err.Error() == "not_found" {
 		status = "not_found"

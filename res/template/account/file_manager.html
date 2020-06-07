@@ -22,7 +22,7 @@
 					<div class="spacer"></div>
 					<button id="btn_home">🏠</button> -->
 					<div class="spacer"></div>
-					<input class="breadcrumbs" type="text" value="/{{.Username}}"/>
+					<input class="breadcrumbs" type="text" value="/{{.User.Username}}"/>
 					<div class="spacer"></div>
 					<input id="input_search" class="input_search" type="text" placeholder="Search..."/>
 					<div class="spacer"></div>
@@ -51,10 +51,10 @@
 
 				let hashChange = () => {
 					if (window.location.hash === "#files") {
-						breadcrumbs.value = "/{{.Username}}/Files"
+						breadcrumbs.value = "/{{.User.Username}}/Files"
 						fm.getUserFiles()
 					} else if (window.location.hash === "#lists") {
-						breadcrumbs.value = "/{{.Username}}/Lists"
+						breadcrumbs.value = "/{{.User.Username}}/Lists"
 						fm.getUserLists()
 					} else {
 						alert("invalid file manager type")

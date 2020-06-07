@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-api/api/apiclient"
 	"github.com/Fornaxian/log"
 )
 
@@ -13,7 +13,7 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 	if isAdmin, err := td.PixelAPI.UserIsAdmin(); err != nil {
 		td.Title = err.Error()
 		return Form{Title: td.Title}
-	} else if !isAdmin.IsAdmin {
+	} else if !isAdmin {
 		td.Title = ";)"
 		return Form{Title: td.Title}
 	}
@@ -70,7 +70,7 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 
 			// Value changed, try to update global setting
 			if err = td.PixelAPI.AdminSetGlobals(v.Name, v.EnteredValue); err != nil {
-				if apiErr, ok := err.(pixelapi.Error); ok {
+				if apiErr, ok := err.(apiclient.Error); ok {
 					f.SubmitMessages = append(f.SubmitMessages, template.HTML(apiErr.Message))
 				} else {
 					log.Error("%s", err)

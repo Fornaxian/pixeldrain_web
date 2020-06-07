@@ -8,10 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/uuid"
-
-	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-api/api/apiclient"
 	"github.com/Fornaxian/log"
+	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -36,7 +35,7 @@ type WebController struct {
 
 	// This API client should only be used for system functions like getting
 	// view tokens. It has no authentication and no IP forwarding
-	systemPixelAPI *pixelapi.PixelAPI
+	systemPixelAPI *apiclient.PixelAPI
 }
 
 // New initializes a new WebController by registering all the request handlers
@@ -58,7 +57,7 @@ func New(
 		apiURLExternal:      apiURLExternal,
 		sessionCookieDomain: sessionCookieDomain,
 		httpClient:          &http.Client{Timeout: time.Minute * 10},
-		systemPixelAPI:      pixelapi.New(apiURLInternal),
+		systemPixelAPI:      apiclient.New(apiURLInternal),
 	}
 	wc.templates = NewTemplateManager(resourceDir, apiURLExternal, debugMode)
 	wc.templates.ParseTemplates(false)
@@ -188,7 +187,7 @@ func (wc *WebController) serveForm(
 		// The handler retuns the form which will be rendered
 		td.Form = handler(td, r)
 
-		td.Form.Username = td.Username
+		td.Form.Username = td.User.Username
 
 		// Execute the extra actions if any
 		if td.Form.Extra.SetCookie != nil {
@@ -249,7 +248,7 @@ func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {
 func (wc *WebController) captchaKey() string {
 	// This only runs on the first request
 	if wc.captchaSiteKey == "" {
-		var api = pixelapi.New(wc.apiURLInternal)
+		var api = apiclient.New(wc.apiURLInternal)
 		capt, err := api.GetRecaptcha()
 		if err != nil {
 			log.Error("Error getting recaptcha key: %s", err)

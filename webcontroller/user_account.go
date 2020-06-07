@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-api/api/apiclient"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -16,7 +16,7 @@ func (wc *WebController) serveLogout(
 	p httprouter.Params,
 ) {
 	if key, err := wc.getAPIKey(r); err == nil {
-		var api = pixelapi.New(wc.apiURLInternal)
+		var api = apiclient.New(wc.apiURLInternal)
 		api.APIKey = key
 		if err = api.UserSessionDestroy(key); err != nil {
 			log.Warn("logout failed for session '%s': %s", key, err)

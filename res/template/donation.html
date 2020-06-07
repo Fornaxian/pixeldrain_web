@@ -12,7 +12,7 @@
 			{{$success := .URLQuery.Get "success"}}
 			{{if eq $success "true"}}
 				{{if .Authenticated}}
-					Dear {{.Username}},
+					Dear {{.User.Username}},
 					<br/><br/>
 					Thank you for your donation. I really appreciate it!
 					<br/><br/>

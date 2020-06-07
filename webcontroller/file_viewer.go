@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	pdmimetype "github.com/Fornaxian/pd_mime_type"
-
-	"fornaxian.com/pixeldrain-web/pixelapi"
+	"fornaxian.com/pixeldrain-api/api/apiclient"
+	"fornaxian.com/pixeldrain-api/api/apitype"
 	"github.com/Fornaxian/log"
+	pdmimetype "github.com/Fornaxian/pd_mime_type"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -47,6 +47,7 @@ type viewerData struct {
 	CaptchaKey  string
 	ViewToken   string
 	AdType      int
+	ShowAds     bool
 	APIResponse interface{}
 }
 
@@ -62,13 +63,13 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	templateData := wc.newTemplateData(w, r)
 
-	var finfo []pixelapi.ListFile
+	var finfo []apitype.ListFile
 	for _, id := range ids {
 		inf, err := templateData.PixelAPI.GetFileInfo(id)
 		if err != nil {
 			continue
 		}
-		finfo = append(finfo, pixelapi.ListFile{FileInfo: inf})
+		finfo = append(finfo, apitype.ListFile{FileInfo: inf})
 	}
 
 	if len(finfo) == 0 {
@@ -85,7 +86,8 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			CaptchaKey: wc.captchaKey(),
 			ViewToken:  wc.viewTokenOrBust(),
 			AdType:     adType(),
-			APIResponse: pixelapi.List{
+			ShowAds:    finfo[0].ShowAds,
+			APIResponse: apitype.ListInfo{
 				Success:     true,
 				Title:       "Multiple files",
 				DateCreated: time.Now(),
@@ -99,6 +101,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			CaptchaKey:  wc.captchaKey(),
 			ViewToken:   wc.viewTokenOrBust(),
 			AdType:      adType(),
+			ShowAds:     finfo[0].ShowAds,
 			APIResponse: finfo[0].FileInfo,
 		}
 	}
@@ -123,6 +126,7 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 		Type:       "file",
 		CaptchaKey: wc.captchaSiteKey,
 		AdType:     0, // Always show a-ads on the demo page
+		ShowAds:    true,
 		APIResponse: map[string]interface{}{
 			"id":             "demo",
 			"name":           "Demo file",
@@ -148,7 +152,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	var templateData = wc.newTemplateData(w, r)
 	var list, err = templateData.PixelAPI.GetList(p.ByName("id"))
 	if err != nil {
-		if err, ok := err.(pixelapi.Error); ok && err.Status == http.StatusNotFound {
+		if err, ok := err.(apiclient.Error); ok && err.Status == http.StatusNotFound {
 			w.WriteHeader(http.StatusNotFound)
 			wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
 		} else {
@@ -158,6 +162,10 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		}
 		return
 	}
+	if len(list.Files) == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
+	}
 
 	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
 	templateData.OGData = metadataFromList(list)
@@ -166,6 +174,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		CaptchaKey:  wc.captchaSiteKey,
 		ViewToken:   wc.viewTokenOrBust(),
 		AdType:      adType(),
+		ShowAds:     list.Files[0].ShowAds,
 		APIResponse: list,
 	}
 
@@ -238,7 +247,7 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	contentRange = strings.TrimPrefix(contentRange, "bytes ")
-	size, err := strconv.ParseUint(strings.Split(contentRange, "/")[1], 10, 64)
+	size, err := strconv.ParseInt(strings.Split(contentRange, "/")[1], 10, 64)
 	if err != nil {
 		panic(err)
 	}
@@ -256,19 +265,14 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 	templateData.Other = viewerData{
 		Type:   "skylink",
 		AdType: adType(),
-		APIResponse: pixelapi.FileInfo{
-			Success:       true,
-			ID:            p.ByName("id"),
-			Name:          name,
-			Size:          size,
-			Views:         0,
-			BandwidthUsed: 0,
-			DateUpload:    time.Now(),
-			DateLastView:  time.Now(),
-			MimeType:      fileType,
-			MimeImage:     "",
-			ThumbnailHREF: "",
-			Availability:  "",
+		APIResponse: apitype.FileInfo{
+			Success:      true,
+			ID:           p.ByName("id"),
+			Name:         name,
+			Size:         size,
+			DateUpload:   time.Now(),
+			DateLastView: time.Now(),
+			MimeType:     fileType,
 		},
 	}
 

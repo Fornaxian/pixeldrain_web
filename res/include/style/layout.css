@@ -48,6 +48,9 @@
 .icon.small {
 	font-size: 16px;
 }
+a > svg {
+	vertical-align: middle;
+}
 
 /* Page rendering configuration */
 html, body {

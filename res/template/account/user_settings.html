@@ -1,7 +1,7 @@
 {{define "user_settings"}}<!DOCTYPE html>
 <html lang="en">
 	<head>
-		{{template "meta_tags" .Username}}
+		{{template "meta_tags" .User.Username}}
 		{{template "user_style" .}}
 		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
 	</head>
