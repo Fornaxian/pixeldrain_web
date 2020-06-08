@@ -1,3 +1,4 @@
 .vscode
 main
 pdwebconf.toml
+go.sum
