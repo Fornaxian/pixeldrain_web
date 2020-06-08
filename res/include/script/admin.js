@@ -83,10 +83,16 @@ var graph = new Chart(
 	}
 );
 
-function setData(days, interval){
+let graphTimeout = null;
+function loadGraph(minutes, interval, live){
+	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
+	if (live) {
+		graphTimeout = setTimeout(() => {loadGraph(60, 1, true)}, 3000)
+	}
+
 	let today = new Date()
 	let start = new Date()
-	start.setDate(start.getDate()-days)
+	start.setMinutes(start.getMinutes()-minutes)
 
 	fetch(
 		apiEndpoint+"/admin/files/timeseries" +
@@ -107,7 +113,8 @@ function setData(days, interval){
 		alert("Error requesting time series: "+e);
 	})
 }
-setData(7, 60);
+
+loadGraph(60, 1, true);
 
 // Load performance statistics
 
