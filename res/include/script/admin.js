@@ -49,7 +49,8 @@ var graph = new Chart(
 						ticks: {
 							callback: function(value, index, values) {
 								return formatDataVolume(value, 3);
-							}
+							},
+							beginAtZero: true
 						},
 						gridLines: {
 							color: "rgba(100, 255, 100, .05)"
@@ -62,6 +63,12 @@ var graph = new Chart(
 						scaleLabel: {
 							display: true,
 							labelString: "Views"
+						},
+						ticks: {
+							callback: function(value, index, values) {
+								return formatNumber(value, 3);
+							},
+							beginAtZero: true
 						},
 						gridLines: {
 							color: "rgba(128, 128, 255, .05)"

@@ -57,6 +57,16 @@ function domainURL() {
 	return url;
 }
 
+function formatNumber(amt, precision) {
+	if (precision < 3) { precision = 3; }
+	if (amt >= 1e6) {
+		return (amt/1e6).toPrecision(precision) + "M";
+	} else if (amt >= 1e3) {
+		return (amt/1e3).toPrecision(precision) + "k";
+	}
+	return amt
+}
+
 function formatDataVolume(amt, precision) {
 	if (precision < 3) { precision = 3; }
 	if (amt >= 1e12) {
