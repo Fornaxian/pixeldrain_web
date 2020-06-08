@@ -56,7 +56,17 @@ DetailsWindow.prototype.setFile = function(file) {
 
 DetailsWindow.prototype.updateGraph = function(file) {
 	console.log("updating graph")
-	fetch(file.timeseries_href+"?interval=60?days=14").then(resp => {
+
+	let today = new Date()
+	let start = new Date()
+	start.setDate(start.getDate()-30)
+
+	fetch(
+		file.timeseries_href+
+		"?start="+start.toISOString() +
+		"&end="+today.toISOString() +
+		"&interval="+60
+	).then(resp => {
 		if (!resp.ok) {return null}
 		return resp.json()
 	}).then(resp => {
