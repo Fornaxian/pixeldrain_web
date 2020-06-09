@@ -8,6 +8,8 @@ Chart.defaults.global.elements.point.radius = 0;
 Chart.defaults.global.tooltips.mode = "index";
 Chart.defaults.global.tooltips.axis = "x";
 Chart.defaults.global.tooltips.intersect = false;
+Chart.defaults.global.animation.duration = 1000;
+Chart.defaults.global.animation.easing = "linear";
 
 var graph = new Chart(
 	document.getElementById('bandwidth_chart'),
@@ -19,15 +21,15 @@ var graph = new Chart(
 					label: "Bandwidth",
 					backgroundColor: "rgba(64, 255, 64, .01)",
 					borderColor: "rgba(96, 255, 96, 1)",
-					borderWidth: 2,
+					borderWidth: 1.5,
 					lineTension: 0.2,
 					fill: true,
 					yAxisID: "y_bandwidth"
 				}, {
 					label: "Views",
 					backgroundColor: "rgba(64, 64, 255, .01)",
-					borderColor: "rgba(64, 64, 255, 1)",
-					borderWidth: 2,
+					borderColor: "rgba(96, 96, 255, 1)",
+					borderWidth: 1.5,
 					lineTension: 0.2,
 					fill: true,
 					yAxisID: "y_views"
@@ -78,7 +80,7 @@ var graph = new Chart(
 				xAxes: [
 					{
 						ticks: {
-							maxRotation: 20
+							maxRotation: 16
 						},
 						gridLines: {
 							display: false
@@ -94,7 +96,7 @@ let graphTimeout = null;
 function loadGraph(minutes, interval, live){
 	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
 	if (live) {
-		graphTimeout = setTimeout(() => {loadGraph(60, 1, true)}, 3000)
+		graphTimeout = setTimeout(() => {loadGraph(minutes, interval, true)}, 1000)
 	}
 
 	let today = new Date()

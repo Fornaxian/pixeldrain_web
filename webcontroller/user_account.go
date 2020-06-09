@@ -156,7 +156,6 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 		if err != nil {
 			formAPIError(err, &f)
 		} else {
-			log.Debug("key %s", loginResp.APIKey)
 			// Request was a success
 			f.SubmitSuccess = true
 			f.SubmitMessages = []template.HTML{"Success!"}

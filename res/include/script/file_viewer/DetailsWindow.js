@@ -94,18 +94,18 @@ DetailsWindow.prototype.renderGraph = function() {
 			data: {
 				datasets: [
 					{
-						label: "Bandwidth",
+						label: "Downloads",
 						backgroundColor: "rgba(64, 255, 64, .01)",
 						borderColor: "rgba(96, 255, 96, 1)",
-						borderWidth: 2,
+						borderWidth: 1.5,
 						lineTension: 0.2,
 						fill: true,
 						yAxisID: "y_bandwidth"
 					}, {
 						label: "Views",
 						backgroundColor: "rgba(64, 64, 255, .01)",
-						borderColor: "rgba(64, 64, 255, 1)",
-						borderWidth: 2,
+						borderColor: "rgba(96, 96, 255, 1)",
+						borderWidth: 1.5,
 						lineTension: 0.2,
 						fill: true,
 						yAxisID: "y_views"
@@ -156,7 +156,7 @@ DetailsWindow.prototype.renderGraph = function() {
 					xAxes: [
 						{
 							ticks: {
-								maxRotation: 20
+								maxRotation: 16
 							},
 							gridLines: {
 								display: false
