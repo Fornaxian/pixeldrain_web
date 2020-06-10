@@ -96,7 +96,7 @@ let graphTimeout = null;
 function loadGraph(minutes, interval, live){
 	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
 	if (live) {
-		graphTimeout = setTimeout(() => {loadGraph(minutes, interval, true)}, 1000)
+		graphTimeout = setTimeout(() => {loadGraph(minutes, interval, true)}, 3000)
 	}
 
 	let today = new Date()
