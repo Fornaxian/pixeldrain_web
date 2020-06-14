@@ -67,6 +67,10 @@ function formatNumber(amt, precision) {
 	return amt
 }
 
+function formatThousands(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 function formatDataVolume(amt, precision) {
 	if (precision < 3) { precision = 3; }
 	if (amt >= 1e12) {

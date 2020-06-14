@@ -27,8 +27,8 @@ function Toolbar(viewer) {
 
 Toolbar.prototype.setFile = function(file) {
 	this.currentFile = file
-	this.spanViews.innerText = file.views
-	this.spanDownloads.innerText = Math.round((file.bandwidth_used/file.size)*10)/10
+	this.spanViews.innerText = formatThousands(file.views)
+	this.spanDownloads.innerText = formatThousands(Math.round(file.bandwidth_used/file.size))
 	this.spanSize.innerText = formatDataVolume(file.size, 3)
 }
 
