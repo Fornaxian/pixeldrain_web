@@ -39,7 +39,7 @@ Toolbar.prototype.setFile = function(file) {
 
 // This function periodically updates the stats using an exponential backoff
 // timer. It starts with one query per second, and it increases by one second
-// every run. When the stats change it resets back to one second.
+// every run. When the stats change the timeout decreases by one second
 Toolbar.prototype.setStats = function() {
 	clearTimeout(this.statsTimeout)
 
@@ -50,9 +50,10 @@ Toolbar.prototype.setStats = function() {
 	}).then(resp => {
 		let downloads = Math.round(resp.bandwidth/size)
 
-		// If the new values are different we reset the timer
+		// If the new values are different we decrease the timeout
 		if (resp.views != this.views || downloads != this.downloads) {
-			this.statsInterval = 1000
+			this.statsInterval = this.statsInterval - 1000
+			if (this.statsInterval < 1000) { this.statsInterval = 1000 }
 		} else {
 			this.statsInterval = this.statsInterval + 1000
 		}
