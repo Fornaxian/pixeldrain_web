@@ -7,7 +7,7 @@ function Toolbar(viewer) {
 
 	this.views            = 0
 	this.downloads        = 0
-	this.statsInterval    = 1000
+	this.statsInterval    = 2000
 	this.statsTimeout     = null
 
 	this.divToolbar       = document.getElementById("toolbar")
@@ -52,10 +52,10 @@ Toolbar.prototype.setStats = function() {
 
 		// If the new values are different we decrease the timeout
 		if (resp.views != this.views || downloads != this.downloads) {
-			this.statsInterval = this.statsInterval - 1000
-			if (this.statsInterval < 1000) { this.statsInterval = 1000 }
+			this.statsInterval = this.statsInterval - 2000
+			if (this.statsInterval < 2000) { this.statsInterval = 2000 }
 		} else {
-			this.statsInterval = this.statsInterval + 1000
+			this.statsInterval = this.statsInterval + 2000
 		}
 
 		// Save the new values
@@ -70,7 +70,7 @@ Toolbar.prototype.setStats = function() {
 		this.statsTimeout = setTimeout(() => { this.setStats() }, this.statsInterval)
 	}).catch(err => {
 		console.error("Failed to update stats:", err)
-		this.statsTimeout = setTimeout(() => { this.setStats() }, 10000)
+		this.statsTimeout = setTimeout(() => { this.setStats() }, this.statsInterval)
 	})
 }
 
