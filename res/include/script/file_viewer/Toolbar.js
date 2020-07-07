@@ -5,6 +5,11 @@ function Toolbar(viewer) {
 	this.currentFile      = null
 	this.editWindow       = null
 
+	this.views            = 0
+	this.bandwidth        = 0
+	this.statsInterval    = 1000
+	this.statsTimeout     = null
+
 	this.divToolbar       = document.getElementById("toolbar")
 	this.divFilePreview   = document.getElementById("filepreview")
 	this.downloadFrame    = document.getElementById("download_frame")
@@ -27,9 +32,38 @@ function Toolbar(viewer) {
 
 Toolbar.prototype.setFile = function(file) {
 	this.currentFile = file
-	this.spanViews.innerText = formatThousands(file.views)
-	this.spanDownloads.innerText = formatThousands(Math.round(file.bandwidth_used/file.size))
 	this.spanSize.innerText = formatDataVolume(file.size, 3)
+
+	this.setStats()
+}
+
+// This function periodically updates the stats using an exponential backoff
+// timer. It starts with one query per second, and it increases by one second
+// every run. When the stats change it resets back to one second.
+Toolbar.prototype.setStats = function() {
+	clearTimeout(this.statsTimeout)
+
+	let size = this.currentFile.size
+
+	fetch(this.currentFile.stats_href).then(resp => {
+		return resp.json()
+	}).then(resp => {
+		if (resp.views != this.views || resp.bandwidth != this.bandwidth) {
+			this.statsInterval = 1000
+		} else {
+			this.statsInterval = this.statsInterval + 1000
+		}
+
+		this.views = resp.views
+		this.spanViews.innerText = formatThousands(this.views)
+		this.bandwidth = resp.bandwidth
+		this.spanDownloads.innerText = formatThousands(Math.round(this.bandwidth/size))
+
+		this.statsTimeout = setTimeout(() => { this.setStats() }, this.statsInterval)
+	}).catch(err => {
+		console.error("Failed to update stats:", err)
+		this.statsTimeout = setTimeout(() => { this.setStats() }, 10000)
+	})
 }
 
 Toolbar.prototype.toggle = function() {

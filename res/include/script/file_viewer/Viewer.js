@@ -228,6 +228,7 @@ function fileFromAPIResp(resp) {
 	resp.download_href   = apiEndpoint+"/file/"+resp.id+"?download"
 	resp.view_href       = apiEndpoint+"/file/"+resp.id+"/view"
 	resp.timeseries_href = apiEndpoint+"/file/"+resp.id+"/timeseries"
+	resp.stats_href      = apiEndpoint+"/file/"+resp.id+"/stats"
 	resp.link            = domainURL()+"/u/"+resp.id
 	if (resp.description === undefined) {
 		resp.description = ""
@@ -245,6 +246,7 @@ function fileFromSkyNet(resp) {
 	file.download_href     = "https://skydrain.net/file/"+resp.id+"?attachment=1"
 	file.view_href         = ""
 	file.timeseries_href   = ""
+	file.stats_href        = ""
 	file.link              = domainURL()+"/s/"+resp.id
 	return file
 }
