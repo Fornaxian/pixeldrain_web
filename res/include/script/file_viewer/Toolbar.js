@@ -6,7 +6,7 @@ function Toolbar(viewer) {
 	this.editWindow       = null
 
 	this.views            = 0
-	this.bandwidth        = 0
+	this.downloads        = 0
 	this.statsInterval    = 1000
 	this.statsTimeout     = null
 
@@ -48,16 +48,23 @@ Toolbar.prototype.setStats = function() {
 	fetch(this.currentFile.stats_href).then(resp => {
 		return resp.json()
 	}).then(resp => {
-		if (resp.views != this.views || resp.bandwidth != this.bandwidth) {
+		let downloads = Math.round(resp.bandwidth/size)
+
+		// If the new values are different we reset the timer
+		if (resp.views != this.views || downloads != this.downloads) {
 			this.statsInterval = 1000
 		} else {
 			this.statsInterval = this.statsInterval + 1000
 		}
 
+		// Save the new values
 		this.views = resp.views
+		this.downloads = downloads
+
 		this.spanViews.innerText = formatThousands(this.views)
-		this.bandwidth = resp.bandwidth
-		this.spanDownloads.innerText = formatThousands(Math.round(this.bandwidth/size))
+		this.spanDownloads.innerText = formatThousands(downloads)
+
+		console.debug("updating stats in ", this.statsInterval)
 
 		this.statsTimeout = setTimeout(() => { this.setStats() }, this.statsInterval)
 	}).catch(err => {
