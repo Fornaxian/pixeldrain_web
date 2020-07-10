@@ -33,7 +33,7 @@ func adType() (i int) {
 	// Intn returns a number up to n, but never n itself. So it get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	i = rand.Intn(2)
+	i = rand.Intn(4)
 
 	// The return value correstonds to the type of ad shown:
 	//  0: A-ads
@@ -41,10 +41,16 @@ func adType() (i int) {
 	//  2: Patreon
 
 	switch i {
-	case 0: // 50% of the traffic
+	case 0, 1: // 50% of the traffic
 		return 1
-	default:
+	case 2:
 		return 2
+	case 3:
+		return 0
+	default:
+		panic(fmt.Errorf(
+			"random number generator returned unrecognised number: %d", i),
+		)
 	}
 }
 
@@ -84,6 +90,11 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
+	showAds := true
+	if (templateData.Authenticated && templateData.User.DisableAdDisplay) || finfo[0].ShowAds == false {
+		showAds = false
+	}
+
 	templateData.OGData = metadataFromFile(finfo[0].FileInfo)
 	if len(ids) > 1 {
 		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(finfo))
@@ -92,7 +103,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			CaptchaKey: wc.captchaKey(),
 			ViewToken:  wc.viewTokenOrBust(),
 			AdType:     adType(),
-			ShowAds:    finfo[0].ShowAds,
+			ShowAds:    showAds,
 			APIResponse: apitype.ListInfo{
 				Success:     true,
 				Title:       "Multiple files",
@@ -107,7 +118,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			CaptchaKey:  wc.captchaKey(),
 			ViewToken:   wc.viewTokenOrBust(),
 			AdType:      adType(),
-			ShowAds:     finfo[0].ShowAds,
+			ShowAds:     showAds,
 			APIResponse: finfo[0].FileInfo,
 		}
 	}
@@ -173,6 +184,11 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
 	}
 
+	showAds := true
+	if (templateData.Authenticated && templateData.User.DisableAdDisplay) || list.Files[0].ShowAds == false {
+		showAds = false
+	}
+
 	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
 	templateData.OGData = metadataFromList(list)
 	templateData.Other = viewerData{
@@ -180,7 +196,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		CaptchaKey:  wc.captchaSiteKey,
 		ViewToken:   wc.viewTokenOrBust(),
 		AdType:      adType(),
-		ShowAds:     list.Files[0].ShowAds,
+		ShowAds:     showAds,
 		APIResponse: list,
 	}
 
