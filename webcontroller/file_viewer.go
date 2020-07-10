@@ -182,6 +182,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	if len(list.Files) == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
+		return
 	}
 
 	showAds := true
