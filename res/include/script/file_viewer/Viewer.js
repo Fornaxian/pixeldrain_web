@@ -102,6 +102,10 @@ Viewer.prototype.setFile = function(file) {
 	}
 
 	if (
+		file.abuse_type !== ""
+	) {
+		new AbuseViewer(this,file).render(this.divFilepreview)
+	}else if (
 		file.mime_type.startsWith("image")
 	) {
 		new ImageViewer(this, file).render(this.divFilepreview)

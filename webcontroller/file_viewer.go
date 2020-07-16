@@ -35,7 +35,7 @@ func adType() (i int) {
 	// splits like 1/3 1/4, etc
 	i = rand.Intn(4)
 
-	// The return value correstonds to the type of ad shown:
+	// The return value corresponds to the type of ad shown:
 	//  0: A-ads
 	//  1: Amarulasolutions
 	//  2: Patreon
