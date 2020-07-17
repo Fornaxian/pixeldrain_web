@@ -41,12 +41,10 @@ func adType() (i int) {
 	//  2: Patreon
 
 	switch i {
-	case 0, 1: // 50% of the traffic
+	case 0, 1, 2: // 75% of the traffic
 		return 1
-	case 2:
-		return 2
 	case 3:
-		return 0
+		return 2
 	default:
 		panic(fmt.Errorf(
 			"random number generator returned unrecognised number: %d", i),
