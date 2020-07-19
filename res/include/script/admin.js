@@ -8,7 +8,7 @@ Chart.defaults.global.elements.point.radius = 0;
 Chart.defaults.global.tooltips.mode = "index";
 Chart.defaults.global.tooltips.axis = "x";
 Chart.defaults.global.tooltips.intersect = false;
-Chart.defaults.global.animation.duration = 1000;
+Chart.defaults.global.animation.duration = 2000;
 Chart.defaults.global.animation.easing = "linear";
 
 var graph = new Chart(
@@ -96,7 +96,7 @@ let graphTimeout = null;
 function loadGraph(minutes, interval, live){
 	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
 	if (live) {
-		graphTimeout = setTimeout(() => {loadGraph(minutes, interval, true)}, 3000)
+		graphTimeout = setTimeout(() => {loadGraph(minutes, interval, true)}, 2000)
 	}
 
 	let today = new Date()
