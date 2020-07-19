@@ -8,7 +8,7 @@ Chart.defaults.global.elements.point.radius = 0;
 Chart.defaults.global.tooltips.mode = "index";
 Chart.defaults.global.tooltips.axis = "x";
 Chart.defaults.global.tooltips.intersect = false;
-Chart.defaults.global.animation.duration = 2000;
+Chart.defaults.global.animation.duration = 1000;
 Chart.defaults.global.animation.easing = "linear";
 
 var graph = new Chart(
