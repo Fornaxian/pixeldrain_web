@@ -117,13 +117,22 @@ function loadGraph(minutes, interval, live){
 			window.graph.data.datasets[0].data = resp.downloads;
 			window.graph.data.datasets[1].data = resp.views;
 			window.graph.update();
+
+			document.getElementById("time_start").innerText = resp.labels[0];
+			document.getElementById("time_end").innerText = resp.labels.slice(-1)[0];
+			let total = 0
+			resp.downloads.forEach(e => { total += e; });
+			document.getElementById("total_bandwidth").innerText = formatDataVolume(total, 3);
+			total = 0
+			resp.views.forEach(e => { total += e; });
+			document.getElementById("total_views").innerText = formatThousands(total);
 		}
 	}).catch(e => {
 		alert("Error requesting time series: "+e);
 	})
 }
 
-loadGraph(60, 1, true);
+loadGraph(360, 1, true);
 
 // Load performance statistics
 
