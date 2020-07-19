@@ -73,7 +73,11 @@ function formatThousands(x) {
 
 function formatDataVolume(amt, precision) {
 	if (precision < 3) { precision = 3; }
-	if (amt >= 1e12) {
+	if (amt >= 1e18) {
+		return (amt/1e18).toPrecision(precision) + " EB";
+	}else if (amt >= 1e15) {
+		return (amt/1e15).toPrecision(precision) + " PB";
+	}else if (amt >= 1e12) {
 		return (amt/1e12).toPrecision(precision) + " TB";
 	} else if (amt >= 1e9) {
 		return (amt/1e9).toPrecision(precision) + " GB";
