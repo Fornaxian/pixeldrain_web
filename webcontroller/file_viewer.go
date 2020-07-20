@@ -77,6 +77,10 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	for _, id := range ids {
 		inf, err := templateData.PixelAPI.GetFileInfo(id)
 		if err != nil {
+			if apiclient.ErrIsServerError(err) {
+				wc.templates.Get().ExecuteTemplate(w, "500", templateData)
+				return
+			}
 			continue
 		}
 		finfo = append(finfo, apitype.ListFile{FileInfo: inf})
