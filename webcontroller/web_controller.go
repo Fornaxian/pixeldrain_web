@@ -66,11 +66,9 @@ func New(
 		panic(fmt.Errorf("Could not get hostname: %s", err))
 	}
 
-	var p = prefix
-
 	// Serve static files
 	var fs = http.FileServer(http.Dir(resourceDir + "/static"))
-	r.GET(p+"/res/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	r.GET(prefix+"/res/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		// Cache resources for 4 weeks
 		w.Header().Set("Cache-Control", "public, max-age=2419200")
 		r.URL.Path = p.ByName("filepath")
@@ -78,8 +76,8 @@ func New(
 	})
 
 	// Static assets
-	r.GET(p+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
-	r.GET(p+"/robots.txt" /*   */, wc.serveFile("/robots.txt"))
+	r.GET(prefix+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
+	r.GET(prefix+"/robots.txt" /*   */, wc.serveFile("/robots.txt"))
 
 	if maintenanceMode {
 		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -89,53 +87,65 @@ func New(
 		return wc
 	}
 
-	// General navigation
-	r.GET(p+"/" /*             */, wc.serveTemplate("home", false))
-	r.GET(p+"/api" /*          */, wc.serveTemplate("apidoc", false))
-	r.GET(p+"/history" /*      */, wc.serveTemplate("history_cookies", false))
-	r.GET(p+"/u/:id" /*        */, wc.serveFileViewer)
-	r.GET(p+"/u/:id/preview" /**/, wc.serveFilePreview)
-	r.GET(p+"/l/:id" /*        */, wc.serveListViewer)
-	r.GET(p+"/s/:id" /*        */, wc.serveSkynetViewer)
-	r.GET(p+"/t" /*            */, wc.serveTemplate("paste", false))
-	r.GET(p+"/donation" /*     */, wc.serveTemplate("donation", false))
-	r.GET(p+"/widgets" /*      */, wc.serveTemplate("widgets", false))
-	r.GET(p+"/about" /*        */, wc.serveTemplate("about", false))
-	r.GET(p+"/appearance" /*   */, wc.serveTemplate("appearance", false))
-
-	// User account pages
-	r.GET(p+"/register" /*        */, wc.serveForm(wc.registerForm, false))
-	r.POST(p+"/register" /*       */, wc.serveForm(wc.registerForm, false))
-	r.GET(p+"/login" /*           */, wc.serveForm(wc.loginForm, false))
-	r.POST(p+"/login" /*          */, wc.serveForm(wc.loginForm, false))
-	r.GET(p+"/password_reset" /*  */, wc.serveForm(wc.passwordResetForm, false))
-	r.POST(p+"/password_reset" /* */, wc.serveForm(wc.passwordResetForm, false))
-	r.GET(p+"/logout" /*          */, wc.serveTemplate("logout", true))
-	r.POST(p+"/logout" /*         */, wc.serveLogout)
-	r.GET(p+"/user" /*            */, wc.serveTemplate("user_home", true))
-	r.GET(p+"/user/files" /*      */, wc.serveTemplate("user_files", true))
-	r.GET(p+"/user/lists" /*      */, wc.serveTemplate("user_lists", true))
-	r.GET(p+"/user/filemanager" /**/, wc.serveTemplate("file_manager", true))
-
-	// User account settings
-	r.GET(p+"/user/settings" /*               */, wc.serveUserSettings)
-	r.POST(p+"/user/settings" /*              */, wc.serveUserSettings)
-	r.GET(p+"/user/confirm_email" /*          */, wc.serveEmailConfirm)
-	r.GET(p+"/user/password_reset_confirm" /* */, wc.serveForm(wc.passwordResetConfirmForm, false))
-	r.POST(p+"/user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false))
-
-	// Admin settings
-	r.GET(p+"/admin" /*         */, wc.serveTemplate("admin_panel", true))
-	r.GET(p+"/admin/globals" /* */, wc.serveForm(wc.adminGlobalsForm, true))
-	r.POST(p+"/admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true))
-	r.GET(p+"/admin/abuse" /* */, wc.serveForm(wc.adminAbuseForm, true))
-	r.POST(p+"/admin/abuse" /**/, wc.serveForm(wc.adminAbuseForm, true))
-
-	// Advertising related
-	r.GET(p+"/click/:id" /*    */, wc.serveAdClick)
-	r.GET(p+"/campaign/:id" /* */, wc.serveCampaignPartner)
-
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
+
+	// Request method shorthands. These help keep the array of handlers aligned
+	const PST, GET, PUT, DEL = "POST", "GET", "PUT", "DELETE"
+
+	// Loop over the handlers and register all of them in the router
+	for _, h := range []struct {
+		method  string            // HTTP request method this API handler uses
+		path    string            // The URL path this API will be registered on
+		handler httprouter.Handle // The function to run when this API is called
+	}{
+		// General navigation
+		{GET, "" /*             */, wc.serveTemplate("home", false)},
+		{GET, "api" /*          */, wc.serveTemplate("apidoc", false)},
+		{GET, "history" /*      */, wc.serveTemplate("history_cookies", false)},
+		{GET, "u/:id" /*        */, wc.serveFileViewer},
+		{GET, "u/:id/preview" /**/, wc.serveFilePreview},
+		{GET, "l/:id" /*        */, wc.serveListViewer},
+		{GET, "s/:id" /*        */, wc.serveSkynetViewer},
+		{GET, "t" /*            */, wc.serveTemplate("paste", false)},
+		{GET, "donation" /*     */, wc.serveTemplate("donation", false)},
+		{GET, "widgets" /*      */, wc.serveTemplate("widgets", false)},
+		{GET, "about" /*        */, wc.serveTemplate("about", false)},
+		{GET, "appearance" /*   */, wc.serveTemplate("appearance", false)},
+
+		// User account pages
+		{GET, "register" /*        */, wc.serveForm(wc.registerForm, false)},
+		{PST, "register" /*        */, wc.serveForm(wc.registerForm, false)},
+		{GET, "login" /*           */, wc.serveForm(wc.loginForm, false)},
+		{PST, "login" /*           */, wc.serveForm(wc.loginForm, false)},
+		{GET, "password_reset" /*  */, wc.serveForm(wc.passwordResetForm, false)},
+		{PST, "password_reset" /*  */, wc.serveForm(wc.passwordResetForm, false)},
+		{GET, "logout" /*          */, wc.serveTemplate("logout", true)},
+		{PST, "logout" /*          */, wc.serveLogout},
+		{GET, "user" /*            */, wc.serveTemplate("user_home", true)},
+		{GET, "user/files" /*      */, wc.serveTemplate("user_files", true)},
+		{GET, "user/lists" /*      */, wc.serveTemplate("user_lists", true)},
+		{GET, "user/filemanager" /**/, wc.serveTemplate("file_manager", true)},
+
+		// User account settings
+		{GET, "user/settings" /*              */, wc.serveUserSettings},
+		{PST, "user/settings" /*              */, wc.serveUserSettings},
+		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
+		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false)},
+		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false)},
+
+		// Admin settings
+		{GET, "admin" /*        */, wc.serveTemplate("admin_panel", true)},
+		{GET, "admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true)},
+		{PST, "admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true)},
+		{GET, "admin/abuse" /*  */, wc.serveForm(wc.adminAbuseForm, true)},
+		{PST, "admin/abuse" /*  */, wc.serveForm(wc.adminAbuseForm, true)},
+
+		// Advertising related
+		{GET, "click/:id" /*   */, wc.serveAdClick},
+		{GET, "campaign/:id" /**/, wc.serveCampaignPartner},
+	} {
+		r.Handle(h.method, prefix+"/"+h.path, h.handler)
+	}
 
 	return wc
 }
