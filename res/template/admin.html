@@ -10,7 +10,12 @@
 		{{template "page_top" .}}
 		<div class="page_content">
 			{{if $isAdmin}}
-				<h3>Bandwidth and views</h3>
+
+				<div class="limit_width">
+					<a class="button" href="/admin/globals">Update global settings</a>
+					<a class="button" href="/admin/abuse">Block files</a>
+					<h3>Bandwidth and views</h3>
+				</div>
 				<div class="highlight_dark">
 					<button onclick="loadGraph(360, 1, true);">Live</button>
 					<button onclick="loadGraph(1440, 10, true);">Day</button>
@@ -29,8 +34,6 @@
 					<span id="total_bandwidth"></span> bandwidth and <span id="total_views"></span> views
 				</div>
 				<div class="limit_width">
-					<br/>
-					<a href="/admin/globals">Update global settings</a>
 					<h3>Database connection statistics</h3>
 					<table>
 						<thead>

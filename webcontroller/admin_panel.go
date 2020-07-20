@@ -96,44 +96,62 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 	return f
 }
 
-// func (wc *WebController) adminFileDeleteForm(td *TemplateData, r *http.Request) (f Form) {
-// 	if isAdmin, err := td.PixelAPI.UserIsAdmin(); err != nil {
-// 		td.Title = err.Error()
-// 		return Form{Title: td.Title}
-// 	} else if !isAdmin.IsAdmin {
-// 		td.Title = ";)"
-// 		return Form{Title: td.Title}
-// 	}
+func (wc *WebController) adminAbuseForm(td *TemplateData, r *http.Request) (f Form) {
+	if isAdmin, err := td.PixelAPI.UserIsAdmin(); err != nil {
+		td.Title = err.Error()
+		return Form{Title: td.Title}
+	} else if !isAdmin {
+		td.Title = ";)"
+		return Form{Title: td.Title}
+	}
 
-// 	td.Title = "Admin file removal"
-// 	f = Form{
-// 		Name:        "admin_file_removal",
-// 		Title:       td.Title,
-// 		PreFormHTML: template.HTML("<p>Paste any pixeldrain file links in here to remove them</p>"),
-// 		Fields: []Field{
-// 			{
-// 				Name:  "files",
-// 				Label: "Files to delete",
-// 				Type:  FieldTypeTextarea,
-// 			},
-// 		},
-// 		BackLink:    "/admin",
-// 		SubmitLabel: "Submit",
-// 	}
+	td.Title = "Admin file removal"
+	f = Form{
+		Name:        "admin_file_removal",
+		Title:       td.Title,
+		PreFormHTML: template.HTML("<p>Paste any pixeldrain file links in here to remove them</p>"),
+		Fields: []Field{
+			{
+				Name:  "text",
+				Label: "Files to delete",
+				Type:  FieldTypeTextarea,
+			}, {
+				Name:         "type",
+				Label:        "Type",
+				DefaultValue: "unknown",
+				Description:  "Can be 'unknown', 'copyright', 'terrorism' or 'child_abuse'",
+				Type:         FieldTypeText,
+			}, {
+				Name:         "reporter",
+				Label:        "Reporter",
+				DefaultValue: "pixeldrain",
+				Type:         FieldTypeText,
+			},
+		},
+		BackLink:    "/admin",
+		SubmitLabel: "Submit",
+	}
 
-// 	if f.ReadInput(r) {
-// 		filesText := f.FieldVal("files")
+	if f.ReadInput(r) {
+		resp, err := td.PixelAPI.AdminBlockFiles(
+			f.FieldVal("text"),
+			f.FieldVal("type"),
+			f.FieldVal("reporter"),
+		)
+		if err != nil {
+			formAPIError(err, &f)
+			return
+		}
 
-// 		// Get all links from the text
-// 		strings.Index(filesText, "/u/")
+		successMsg := template.HTML("The following files were blocked:<br/><ul>")
+		for _, v := range resp.FilesBlocked {
+			successMsg += template.HTML("<li>pixeldrain.com/u/" + v + "</li>")
+		}
+		successMsg += "<ul>"
 
-// 		if len(f.SubmitMessages) == 0 {
-// 			// Request was a success
-// 			f.SubmitSuccess = true
-// 			f.SubmitMessages = []template.HTML{template.HTML(
-// 				fmt.Sprintf("Success! %d values updated", successfulUpdates),
-// 			)}
-// 		}
-// 	}
-// 	return f
-// }
+		// Request was a success
+		f.SubmitSuccess = true
+		f.SubmitMessages = []template.HTML{successMsg}
+	}
+	return f
+}

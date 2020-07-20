@@ -128,6 +128,8 @@ func New(
 	r.GET(p+"/admin" /*         */, wc.serveTemplate("admin_panel", true))
 	r.GET(p+"/admin/globals" /* */, wc.serveForm(wc.adminGlobalsForm, true))
 	r.POST(p+"/admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true))
+	r.GET(p+"/admin/abuse" /* */, wc.serveForm(wc.adminAbuseForm, true))
+	r.POST(p+"/admin/abuse" /**/, wc.serveForm(wc.adminAbuseForm, true))
 
 	// Advertising related
 	r.GET(p+"/click/:id" /*    */, wc.serveAdClick)
