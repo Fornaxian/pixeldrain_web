@@ -136,10 +136,14 @@ func (wc *WebController) emailForm(td *TemplateData, r *http.Request) (f Form) {
 			{
 				Name:  "new_email",
 				Label: "New e-mail address",
-				Description: "we will send an e-mail to the new address to " +
-					"verify that it's real. The address will be saved once " +
-					"the link in the message is clicked. If the e-mail " +
-					"doesn't arrive right away please check your spam box too",
+				Description: `we will send an e-mail to the new address to
+					verify that it's real. The address will be saved once the
+					link in the message is clicked. If the e-mail doesn't arrive
+					right away please check your spam box too.<br/><br/>
+					Note: Gmail has been blocking mails from pixeldrain since
+					the 13th of july. Please
+					<a href="https://support.google.com/mail/thread/new" target="_blank">contact Google</a>
+					if you didn't receive your confirmation mail`,
 				Type: FieldTypeEmail,
 			},
 		},

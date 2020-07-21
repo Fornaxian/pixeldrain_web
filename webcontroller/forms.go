@@ -51,7 +51,7 @@ type Field struct {
 	Label string
 
 	// Text below the input field
-	Description string
+	Description template.HTML
 
 	// Separates fields with a horizontal rule
 	Separator bool
