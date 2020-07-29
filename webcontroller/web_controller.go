@@ -1,8 +1,10 @@
 package webcontroller
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 	"strings"
@@ -12,6 +14,7 @@ import (
 	"github.com/Fornaxian/log"
 	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
+	blackfriday "github.com/russross/blackfriday/v2"
 )
 
 // WebController controls how requests are handled and makes sure they have
@@ -100,16 +103,16 @@ func New(
 	}{
 		// General navigation
 		{GET, "" /*             */, wc.serveTemplate("home", false)},
-		{GET, "api" /*          */, wc.serveTemplate("apidoc", false)},
+		{GET, "api" /*          */, wc.serveMarkdown("apidoc.md", false)},
 		{GET, "history" /*      */, wc.serveTemplate("history_cookies", false)},
 		{GET, "u/:id" /*        */, wc.serveFileViewer},
 		{GET, "u/:id/preview" /**/, wc.serveFilePreview},
 		{GET, "l/:id" /*        */, wc.serveListViewer},
 		{GET, "s/:id" /*        */, wc.serveSkynetViewer},
 		{GET, "t" /*            */, wc.serveTemplate("paste", false)},
-		{GET, "donation" /*     */, wc.serveTemplate("donation", false)},
+		{GET, "donation" /*     */, wc.serveMarkdown("donation.md", false)},
 		{GET, "widgets" /*      */, wc.serveTemplate("widgets", false)},
-		{GET, "about" /*        */, wc.serveTemplate("about", false)},
+		{GET, "about" /*        */, wc.serveMarkdown("about.md", false)},
 		{GET, "appearance" /*   */, wc.serveTemplate("appearance", false)},
 
 		// User account pages
@@ -165,6 +168,65 @@ func (wc *WebController) serveTemplate(
 			return
 		}
 		err := wc.templates.Get().ExecuteTemplate(w, tpl, tpld)
+		if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+			log.Error("Error executing template '%s': %s", tpl, err)
+		}
+	}
+}
+
+func (wc *WebController) serveMarkdown(tpl string, requireAuth bool) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		var err error
+		var tpld = wc.newTemplateData(w, r)
+		if requireAuth && !tpld.Authenticated {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
+		// Execute the raw markdown template and save the result in a buffer
+		var tplBuf bytes.Buffer
+		if err = wc.templates.Get().ExecuteTemplate(&tplBuf, tpl, tpld); err != nil {
+			log.Error("Error executing template '%s': %s", tpl, err)
+			return
+		}
+
+		// Parse the markdown document and save the resulting HTML in a buffer
+		renderer := blackfriday.NewHTMLRenderer(blackfriday.HTMLRendererParameters{
+			Flags: blackfriday.CommonHTMLFlags,
+		})
+
+		// We parse the markdown document, walk through the nodes. Extract the
+		// title of the document, and the rest of the nodes are rendered like
+		// normal
+		var mdBuf bytes.Buffer
+		var inHeader = false
+		blackfriday.New(
+			blackfriday.WithRenderer(renderer),
+			blackfriday.WithExtensions(blackfriday.CommonExtensions),
+		).Parse(
+			tplBuf.Bytes(),
+		).Walk(func(node *blackfriday.Node, entering bool) blackfriday.WalkStatus {
+			// Capture the title of the document so we can put it at the top of
+			// the template and in the metadata. When entering a h1 node the
+			// next node will be the title of the document. Save that value
+			if node.Type == blackfriday.Heading && node.HeadingData.Level == 1 {
+				inHeader = entering
+				return blackfriday.GoToNext
+			}
+			if inHeader {
+				tpld.Title = string(node.Literal)
+				log.Info(string(node.Literal))
+				return blackfriday.GoToNext
+			}
+
+			return renderer.RenderNode(&mdBuf, node, entering)
+		})
+
+		// Pass the buffer's parsed contents to the wrapper template
+		tpld.Other = template.HTML(mdBuf.Bytes())
+
+		// Execute the wrapper template
+		err = wc.templates.Get().ExecuteTemplate(w, "markdown_wrapper", tpld)
 		if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}

@@ -305,7 +305,7 @@ a:hover {text-decoration: underline;}
 }
 table:not(.form) {border-collapse: collapse; width: 100%;}
 tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
-tr > td          {padding: 0.3em;}
+tr > td, tr > th {padding: 0.3em;}
 @media(max-width: 30em) {
 	/* Forms will be stacked on small screens */
 	tr.form > td {
@@ -319,7 +319,7 @@ tr > td          {padding: 0.3em;}
 pre{
 	padding: 2px;
 	border-bottom: 1px var(--layer_2_color_border) solid;
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 
 .big_button{
@@ -370,6 +370,31 @@ pre{
 .file_button > .file_button_title{
 	color: var(--highlight_color);
 }
+
+/* API documentation markup */
+
+details {
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	margin: 15px 0 15px 0;
+}
+details > summary {
+	padding: 2px;
+	font-family: monospace;
+}
+details > summary > .method {
+	display: inline-block;
+	width: 80px;
+}
+details > div {
+	padding: 8px;
+}
+
+details.request_get    { border-color: #3636ff; background-color: rgba(32, 32, 255, 0.2); }
+details.request_post   { border-color: #00d000; background-color: rgba(0, 255, 0, 0.05); }
+details.request_delete { border-color: #B00000; background-color: rgba(255, 0, 0, 0.05); }
+details.request_put    { border-color: #B06000; background-color: rgba(255, 128, 0, 0.05); }
+details.request_patch  { border-color: #6000B0; background-color: rgba(128, 0, 255, 0.1); }
 
 /* Form fields */
 
