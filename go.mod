@@ -1,16 +1,15 @@
-module fornaxian.com/pixeldrain-web
+module fornaxian.tech/pixeldrain_web
 
 go 1.14
 
 replace (
-	fornaxian.com/pd_database => ../pd_database
-	fornaxian.com/pixeldrain-api => ../pixeldrain-api
-	fornaxian.com/pixeldrain-web => ../pixeldrain-web
-	fornaxian.com/pixelstore => ../pixelstore
+	fornaxian.tech/pd_database => ../pd_database
+	fornaxian.tech/pixeldrain_server/api => ../pixeldrain_server/api
+	fornaxian.tech/pixeldrain_web => ../pixeldrain_web
+	fornaxian.tech/pixeldrain_server/pixelstore => ../pixeldrain_server/pixelstore
 )
 
 require (
-	fornaxian.com/pixeldrain-api v0.0.0-20200607143707-5b697aff6c1e
 	github.com/Fornaxian/config v0.0.0-20180915150834-ac41cf746a70
 	github.com/Fornaxian/log v0.0.0-20190617093801-1c7ce9a7c9b3
 	github.com/Fornaxian/pd_mime_type v0.0.0-20200204165508-2815edf3a145

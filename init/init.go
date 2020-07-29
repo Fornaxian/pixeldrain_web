@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"fornaxian.com/pixeldrain-web/webcontroller"
+	"fornaxian.tech/pixeldrain_web/webcontroller"
 	"github.com/Fornaxian/config"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"

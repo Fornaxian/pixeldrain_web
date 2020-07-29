@@ -4,7 +4,7 @@ import (
 	"flag"
 	"net/http"
 
-	web "fornaxian.com/pixeldrain-web/init"
+	web "fornaxian.tech/pixeldrain_web/init"
 
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"

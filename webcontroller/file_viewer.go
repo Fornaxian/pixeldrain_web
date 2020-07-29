@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"fornaxian.com/pixeldrain-api/api/apiclient"
-	"fornaxian.com/pixeldrain-api/api/apitype"
+	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
+	"fornaxian.tech/pixeldrain_server/api/restapi/apitype"
 	"github.com/Fornaxian/log"
 	pdmimetype "github.com/Fornaxian/pd_mime_type"
 	"github.com/julienschmidt/httprouter"

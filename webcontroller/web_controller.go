@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"fornaxian.com/pixeldrain-api/api/apiclient"
+	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
 	"github.com/Fornaxian/log"
 	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"

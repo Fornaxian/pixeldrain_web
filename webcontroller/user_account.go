@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"fornaxian.com/pixeldrain-api/api/apiclient"
+	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )

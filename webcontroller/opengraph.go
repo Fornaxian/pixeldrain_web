@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"strings"
 
-	"fornaxian.com/pixeldrain-api/api/apitype"
+	"fornaxian.tech/pixeldrain_server/api/restapi/apitype"
 )
 
 type ogRule struct {
