@@ -4,9 +4,8 @@ go 1.14
 
 replace (
 	fornaxian.tech/pd_database => ../pd_database
+	fornaxian.tech/pixeldrain_server => ../pixeldrain_server
 	fornaxian.tech/pixeldrain_server/api => ../pixeldrain_server/api
-	fornaxian.tech/pixeldrain_web => ../pixeldrain_web
-	fornaxian.tech/pixeldrain_server/pixelstore => ../pixeldrain_server/pixelstore
 )
 
 require (
@@ -15,7 +14,7 @@ require (
 	github.com/Fornaxian/pd_mime_type v0.0.0-20200204165508-2815edf3a145
 	github.com/google/uuid v1.1.1
 	github.com/julienschmidt/httprouter v1.3.0
-	github.com/microcosm-cc/bluemonday v1.0.2
+	github.com/microcosm-cc/bluemonday v1.0.3
 	github.com/russross/blackfriday/v2 v2.0.1
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 )

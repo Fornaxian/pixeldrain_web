@@ -16,7 +16,7 @@ import (
 
 	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
 	"fornaxian.tech/pixeldrain_server/api/restapi/apitype"
-	"fornaxian.tech/pixeldrain_server/api/util"
+	"fornaxian.tech/pixeldrain_server/util"
 	"github.com/Fornaxian/log"
 )
 
