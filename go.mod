@@ -4,8 +4,9 @@ go 1.14
 
 replace (
 	fornaxian.tech/pd_database => ../pd_database
-	fornaxian.tech/pixeldrain_server => ../pixeldrain_server
+	fornaxian.tech/pixeldrain_server/pixelstore => ../pixeldrain_server/pixelstore
 	fornaxian.tech/pixeldrain_server/api => ../pixeldrain_server/api
+	fornaxian.tech/pixeldrain_server/util => ../pixeldrain_server/util
 )
 
 require (
