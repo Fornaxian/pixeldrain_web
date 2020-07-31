@@ -260,7 +260,7 @@ func (wc *WebController) serveForm(
 
 		// The handler retuns the form which will be rendered
 		td.Form = handler(td, r)
-
+		td.Title = td.Form.Title
 		td.Form.Username = td.User.Username
 
 		// Execute the extra actions if any

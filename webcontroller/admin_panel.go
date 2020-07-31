@@ -10,18 +10,13 @@ import (
 )
 
 func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f Form) {
-	if isAdmin, err := td.PixelAPI.UserIsAdmin(); err != nil {
-		td.Title = err.Error()
-		return Form{Title: td.Title}
-	} else if !isAdmin {
-		td.Title = ";)"
-		return Form{Title: td.Title}
+	if !td.Authenticated || !td.User.IsAdmin {
+		return Form{Title: ";-)"}
 	}
 
-	td.Title = "Pixeldrain global configuration"
 	f = Form{
 		Name:        "admin_globals",
-		Title:       td.Title,
+		Title:       "Pixeldrain global configuration",
 		PreFormHTML: template.HTML("<p>Careful! The slightest typing error could bring the whole website down</p>"),
 		BackLink:    "/admin",
 		SubmitLabel: "Submit",
@@ -97,18 +92,13 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 }
 
 func (wc *WebController) adminAbuseForm(td *TemplateData, r *http.Request) (f Form) {
-	if isAdmin, err := td.PixelAPI.UserIsAdmin(); err != nil {
-		td.Title = err.Error()
-		return Form{Title: td.Title}
-	} else if !isAdmin {
-		td.Title = ";)"
-		return Form{Title: td.Title}
+	if !td.Authenticated || !td.User.IsAdmin {
+		return Form{Title: ";-)"}
 	}
 
-	td.Title = "Admin file removal"
 	f = Form{
 		Name:        "admin_file_removal",
-		Title:       td.Title,
+		Title:       "Admin file removal",
 		PreFormHTML: template.HTML("<p>Paste any pixeldrain file links in here to remove them</p>"),
 		Fields: []Field{
 			{

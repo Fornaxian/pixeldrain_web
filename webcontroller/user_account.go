@@ -47,10 +47,9 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 	}
 
 	// Construct the form
-	td.Title = "Register a new pixeldrain account"
 	f = Form{
 		Name:  "register",
-		Title: td.Title,
+		Title: "Register a new pixeldrain account",
 		Fields: []Field{
 			{
 				Name:        "username",
@@ -128,7 +127,6 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 }
 
 func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
-	td.Title = "Login"
 	f = Form{
 		Name:  "login",
 		Title: "Log in to your pixeldrain account",
@@ -186,10 +184,9 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 }
 
 func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f Form) {
-	td.Title = "Recover lost password"
 	f = Form{
 		Name:  "password_reset",
-		Title: td.Title,
+		Title: "Recover lost password",
 		Fields: []Field{
 			{
 				Name:  "email",
@@ -233,10 +230,9 @@ func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f
 }
 
 func (wc *WebController) passwordResetConfirmForm(td *TemplateData, r *http.Request) (f Form) {
-	td.Title = "Reset lost password"
 	f = Form{
 		Name:  "password_reset_confirm",
-		Title: td.Title,
+		Title: "Reset lost password",
 		Fields: []Field{
 			{
 				Name:  "new_password",

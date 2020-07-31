@@ -6,11 +6,9 @@
 		{{template "user_style" .}}
 	</head>
 	<body>
-		{{$isAdmin := .PixelAPI.UserIsAdmin}}
 		{{template "page_top" .}}
 		<div class="page_content">
-			{{if $isAdmin}}
-
+			{{if and .Authenticated .User.IsAdmin}}
 				<div class="limit_width">
 					<a class="button" href="/admin/globals">Update global settings</a>
 					<a class="button" href="/admin/abuse">Block files</a>
