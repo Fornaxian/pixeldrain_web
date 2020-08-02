@@ -7,12 +7,12 @@ function Viewer(type, viewToken, data) {
 	this.file           = null
 	this.title          = "" // Contains either the file name or list title
 	this.listId         = ""
-	this.viewToken      = ""
+	this.viewToken      = viewToken
 	this.isList         = false
 	this.isFile         = false
 	this.initialized    = false
+	this.viewerScript   = null
 
-	this.viewToken     = viewToken
 	this.toolbar       = new Toolbar(this)
 	this.detailsWindow = new DetailsWindow(this)
 	this.editWindow    = new EditWindow()
@@ -92,48 +92,53 @@ Viewer.prototype.setFile = function(file) {
 		)
 	}
 
+	// Clean up the previous viewer if possible
+	if (this.viewerScript !== null && typeof this.viewerScript.destroy === "function") {
+		this.viewerScript.destroy()
+	}
+
 	// Clear the canvas
 	this.divFilepreview.innerHTML = ""
 
+	// This function can be used by the viewer scripts to navigate to the next
+	// file when a songs has ended for example
 	let nextItem = () => {
 		if (this.listNavigator !== null) {
 			this.listNavigator.nextItem()
 		}
 	}
 
-	if (
-		file.abuse_type !== ""
-	) {
-		new AbuseViewer(this,file).render(this.divFilepreview)
-	}else if (
-		file.mime_type.startsWith("image")
-	) {
-		new ImageViewer(this, file).render(this.divFilepreview)
+	if (file.abuse_type !== "") {
+		this.viewerScript = new AbuseViewer(this,file)
+	}else if (file.mime_type.startsWith("image")) {
+		this.viewerScript = new ImageViewer(this, file)
 	} else if (
 		file.mime_type.startsWith("video") ||
 		file.mime_type === "application/matroska" ||
 		file.mime_type === "application/x-matroska"
 	) {
-		new VideoViewer(this, file, nextItem).render(this.divFilepreview)
+		this.viewerScript = new VideoViewer(this, file, nextItem)
 	} else if (
 		file.mime_type.startsWith("audio") ||
 		file.mime_type === "application/ogg" ||
 		file.name.endsWith(".mp3")
 	) {
-		new AudioViewer(this, file, nextItem).render(this.divFilepreview)
+		this.viewerScript = new AudioViewer(this, file, nextItem)
 	} else if (
 		file.mime_type === "application/pdf" ||
 		file.mime_type === "application/x-pdf"
 	) {
-		new PDFViewer(this, file).render(this.divFilepreview)
+		this.viewerScript = new PDFViewer(this, file)
 	} else if (
 		file.mime_type.startsWith("text") ||
 		file.id === "demo"
 	) {
-		new TextViewer(this, file).render(this.divFilepreview)
+		this.viewerScript = new TextViewer(this, file)
 	} else {
-		new FileViewer(this, file).render(this.divFilepreview)
+		this.viewerScript = new FileViewer(this, file)
 	}
+
+	this.viewerScript.render(this.divFilepreview)
 }
 
 Viewer.prototype.renderSponsors = function() {

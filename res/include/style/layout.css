@@ -458,6 +458,16 @@ select:active{
 .button_red             {background: linear-gradient(var(--danger_color),         var(--danger_color_dark)) !important;    color: var(--highlight_text_color) !important;}
 .button_red:active      {background: linear-gradient(var(--danger_color_dark),    var(--danger_color)) !important;         color: var(--highlight_text_color) !important;}
 
+button:disabled, button.disabled,
+.button:disabled, .button.disabled,
+input[type="submit"]:disabled, input[type="submit"].disabled,
+input[type="button"]:disabled, input[type="button"].disabled,
+input[type="color"]:disabled, input[type="color"].disabled,
+select:disabled , select.disabled {
+	background: var(--input_color_dark);
+	box-shadow: none;
+}
+
 /* Dropdown list of the select tag */
 option{
 	background-color: var(--input_color_dark);

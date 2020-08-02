@@ -12,7 +12,6 @@ function AbuseViewer(viewer, file, next) {
 	this.container.appendChild(this.title)
 
 	this.description = document.createElement("p")
-	// this.description.style.maxWidth = "500px"
 	this.description.innerText = "This file has received an abuse report and "+
 		"was taken down."
 	this.container.appendChild(this.description)
@@ -25,4 +24,13 @@ function AbuseViewer(viewer, file, next) {
 
 AbuseViewer.prototype.render = function(parent) {
 	parent.appendChild(this.container)
+
+	// Disable the download button
+	this.btnDownloadDisplay = this.viewer.toolbar.btnDownload.style.display
+	this.viewer.toolbar.btnDownload.style.display = "none"
+}
+
+AbuseViewer.prototype.destroy = function(parent) {
+	// Restore the download button
+	this.viewer.toolbar.btnDownload.style.display = this.btnDownloadDisplay
 }
