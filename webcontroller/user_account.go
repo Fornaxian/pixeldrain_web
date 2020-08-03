@@ -62,11 +62,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 				Label: "E-mail address",
 				Description: `not required. your e-mail address will only be
 					used for password resets and important account
-					notifications<br/><br/>
-					Note: Gmail has been blocking mails from pixeldrain since
-					the 13th of july. Please
-					<a href="https://support.google.com/mail/thread/new" target="_blank">contact Google</a>
-					if you didn't receive your confirmation mail`,
+					notifications`,
 				Separator: true,
 				Type:      FieldTypeEmail,
 			}, {
@@ -192,11 +188,7 @@ func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f
 				Name:  "email",
 				Label: "E-mail address",
 				Description: `we will send a password reset link to this e-mail
-					address<br/><br/>
-					Note: Gmail has been blocking mails from pixeldrain since
-					the 13th of july. Please
-					<a href="https://support.google.com/mail/thread/new" target="_blank">contact Google</a>
-					if you didn't receive your confirmation mail`,
+					address`,
 				Separator: true,
 				Type:      FieldTypeEmail,
 			}, {
