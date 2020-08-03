@@ -41,6 +41,45 @@
 			height: 40px;
 			margin: 5px 15px;
 		}
+
+		.features {
+			width: 100%;
+			text-align: center;
+			overflow-x: auto;
+			overflow-y: hidden;
+			white-space: nowrap;
+		}
+		.features > div {
+			display: inline-block;
+			margin: 12px;
+			width: 18em;
+			vertical-align: top;
+			text-align: left;
+			white-space: initial;
+			background-color: var(--layer_3_color);
+			box-shadow: 1px 1px 6px -2px var(--shadow_color);
+		}
+		.features > div > h3 {
+			text-align: center;
+			border-bottom: none;
+			margin: 10px;
+		}
+		.features > div > .price {
+			text-align: center;
+			margin-bottom: 6px;
+		}
+		.features > div > .feature {
+			text-align: center;
+			padding: 6px;
+			border-bottom: 1px solid var(--layer_3_color_border);
+		}
+		.features > div > ul {
+			padding-left: 20px;
+		}
+		.features > div > ul > li {
+			margin: 8px;
+			text-align: center;
+		}
 		</style>
 	</head>
 	<body>
@@ -116,16 +155,14 @@
 				<div id="created_lists"></div>
 			</div>
 
-			<br/>
 			<div class="limit_width">
 				<h2>What is pixeldrain?</h2>
 				<p>
 					Pixeldrain is a file sharing website built for speed and
 					ease of use. Pixeldrain does not cost any money, though
-					donations are appreciated. For donation methods see the
-					<a href="/about">about</a> page.
+					donations are appreciated. See how you can support
+					pixeldrain below.
 				</p>
-				<h2>How to use pixeldrain</h2>
 				<p>
 					Files can be uploaded by clicking the big green upload
 					button, or by dragging them onto this page from your file
@@ -136,8 +173,8 @@
 					You can also create lists, which are a collection of files.
 					Like a photo album, a music record or a video compilation.
 					To do this you need to upload a bunch of files at once. The
-					files will be saved in the order you upload them in. When
-					all files have finished uploading you click the "Create list
+					files will be saved in the order you uploaded them. When all
+					files have finished uploading you click the "Create list
 					with uploaded files" button and you will be asked to enter a
 					name for your list. After picking a name the list will be
 					created and opened in a new window. If your browser blocks
@@ -145,9 +182,98 @@
 					bottom of your uploaded files.
 				</p>
 				<p>
-					For more information see the <a href="/about">about</a>
-					page.
+					For more information about pixeldrain see the
+					<a href="/about">about</a> page.
 				</p>
+				<h2>Features</h2>
+			</div>
+			<div class="features">
+				<div>
+					<h3>Free</h3>
+					<div class="price">€0 per month</div>
+					<img src="/res/img/benefit_0.png" style="width: 100%;">
+
+					<div class="feature">No account required</div>
+					<div class="feature">Files expire 30 days after last view</div>
+					<div class="feature">Max file size 10 GB</div>
+					<div class="feature">Access your files anywhere with a pixeldrain account</div>
+					<div class="feature">Group multiple files together in a single link with lists</div>
+				</div>
+				<div>
+					<h3>I'm doing my part!</h3>
+					<div class="price">€2 per month + tax</div>
+					<img src="/res/img/benefit_1.png" style="width: 100%;">
+
+					<div class="feature">No ads when viewing and downloading files</div>
+					<div class="feature">Support pixeldrain's development</div>
+
+					<div style="text-align: center; padding: 8px;">
+						{{if eq .User.Subscription "patreon_1"}}
+						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
+						{{else}}
+						<a href="/subscribe?plan=t1" class="button button_highlight" style="width: 90%;">
+							Get Started
+						</a>
+						{{end}}
+					</div>
+				</div>
+				<div>
+					<h3>Persistence</h3>
+					<div class="price">€8 per month + tax</div>
+					<img src="/res/img/benefit_2.png" style="width: 100%;">
+
+					<div class="feature">No ads when viewing and downloading files</div>
+					<div class="feature">No ads on files you uploaded</div>
+					<div class="feature">Files expire two months after last view</div>
+
+					<div style="text-align: center; padding: 8px;">
+						{{if eq .User.Subscription "patreon_2"}}
+						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
+						{{else}}
+						<a href="/subscribe?plan=t2" class="button button_highlight" style="width: 90%;">
+							Get Started
+						</a>
+						{{end}}
+					</div>
+				</div>
+				<div>
+					<h3>Tenacity</h3>
+					<div class="price">€16 per month + tax</div>
+					<img src="/res/img/benefit_3.png" style="width: 100%;">
+
+					<div class="feature">No ads when viewing and downloading files</div>
+					<div class="feature">No ads on files you uploaded</div>
+					<div class="feature">Files expire six months after last view</div>
+
+					<div style="text-align: center; padding: 8px;">
+						{{if eq .User.Subscription "patreon_3"}}
+						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
+						{{else}}
+						<a href="/subscribe?plan=t3" class="button button_highlight" style="width: 90%;">
+							Get Started
+						</a>
+						{{end}}
+					</div>
+				</div>
+				<div>
+					<h3>Eternity</h3>
+					<div class="price">€32 per month + tax</div>
+					<img src="/res/img/benefit_4.png" style="width: 100%;">
+
+					<div class="feature">No ads when viewing and downloading files</div>
+					<div class="feature">No ads on files you uploaded</div>
+					<div class="feature">Files you upload never expire</div>
+
+					<div style="text-align: center; padding: 8px;">
+						{{if eq .User.Subscription "patreon_4"}}
+						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
+						{{else}}
+						<a href="/subscribe?plan=t4" class="button button_highlight" style="width: 90%;">
+							Get Started
+						</a>
+						{{end}}
+					</div>
+				</div>
 			</div>
 		</div>
 

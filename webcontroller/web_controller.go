@@ -111,6 +111,7 @@ func New(
 		{GET, "s/:id" /*        */, wc.serveSkynetViewer},
 		{GET, "t" /*            */, wc.serveTemplate("paste", false)},
 		{GET, "donation" /*     */, wc.serveMarkdown("donation.md", false)},
+		{GET, "subscribe" /*    */, wc.serveMarkdown("subscribe.md", false)},
 		{GET, "widgets" /*      */, wc.serveTemplate("widgets", false)},
 		{GET, "about" /*        */, wc.serveMarkdown("about.md", false)},
 		{GET, "appearance" /*   */, wc.serveTemplate("appearance", false)},
