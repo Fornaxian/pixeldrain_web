@@ -5,6 +5,12 @@
 		{{template "meta_tags" "Free file sharing service"}}
 		{{template "user_style" .}}
 		<style>
+		.header_image{
+			width: 100%;
+			max-width: 800px;
+			margin: 20px auto 50px auto;
+		}
+
 		.instruction_highlight {
 			border-top: 1px solid var(--layer_2_color_border);
 			border-bottom: 1px solid var(--layer_2_color_border);
@@ -85,7 +91,10 @@
 	<body>
 		{{template "page_top" .}}
 
-		<img id="header_image" class="header_image" src="/res/img/header_orbitron.png" alt="Header image"/>
+		<picture>
+			<source media="(max-width: 800px)" srcset="/res/img/header_orbitron.png">
+			<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header image">
+		</picture>
 		<br/>
 		<div class="page_content" style="padding-top: 0;">
 			<!-- <h1>How to share files:</h1> -->
