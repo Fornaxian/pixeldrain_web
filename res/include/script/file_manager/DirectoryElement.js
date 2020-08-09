@@ -97,6 +97,7 @@ DirectoryElement.prototype.search = function(term) {
 		for (let i in this.allFiles) {
 			this.visibleFiles.push(i)
 		}
+		this.sortBy("")
 		this.renderVisibleFiles(true)
 		return
 	}
@@ -107,7 +108,6 @@ DirectoryElement.prototype.search = function(term) {
 		}
 	}
 
-	// We have to resort because we modified the visibleFiles array
 	this.sortBy("")
 	this.renderVisibleFiles(true)
 }

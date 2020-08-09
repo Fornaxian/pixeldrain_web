@@ -10,9 +10,6 @@ function FileManager(windowElement) {
 	this.btnReload        = this.navBar.querySelector("#btn_reload")
 	this.inputSearch      = this.navBar.querySelector("#input_search")
 
-	// Buttons
-	this.btnReload.addEventListener("click", () => { this.getUserFiles() })
-
 	// Register keyboard shortcuts
 	document.addEventListener("keydown", e => { this.keyboardEvent(e) })
 
@@ -93,42 +90,30 @@ FileManager.prototype.getUserFiles = function() {
 
 FileManager.prototype.getUserLists = function() {
 	this.setSpinner()
-
-	let getAll = (page) => {
-		let numFiles = 1000
-		fetch(apiEndpoint+"/user/lists?page="+page+"&limit="+numFiles).then(resp => {
-			if (!resp.ok) { Promise.reject("yo") }
-			return resp.json()
-		}).then(resp => {
-			for (let i in resp.lists) {
-				this.directoryElement.addFile(
-					apiEndpoint+"/list/"+resp.lists[i].id+"/thumbnail?width=32&height=32",
-					resp.lists[i].title,
-					"/l/"+resp.lists[i].id,
-					"list",
-					resp.lists[i].file_count,
-					resp.lists[i].file_count+" files",
-					resp.lists[i].date_created,
-				)
-			}
-
-			this.directoryElement.renderFiles()
-
-			if (resp.lists.length === numFiles) {
-				getAll(page+1)
-			} else {
-				// Less than the maximum number of results means we're done
-				// loading, we can remove the loading spinner
-				this.delSpinner()
-			}
-		}).catch((err) => {
-			this.delSpinner()
-			throw(err)
-		})
-	}
-
 	this.directoryElement.reset()
-	getAll(0)
+
+	fetch(apiEndpoint+"/user/lists").then(resp => {
+		if (!resp.ok) { Promise.reject("yo") }
+		return resp.json()
+	}).then(resp => {
+		for (let i in resp.lists) {
+			this.directoryElement.addFile(
+				apiEndpoint+"/list/"+resp.lists[i].id+"/thumbnail?width=32&height=32",
+				resp.lists[i].title,
+				"/l/"+resp.lists[i].id,
+				"list",
+				resp.lists[i].file_count,
+				resp.lists[i].file_count+" files",
+				resp.lists[i].date_created,
+			)
+		}
+
+		this.directoryElement.renderFiles()
+		this.delSpinner()
+	}).catch((err) => {
+		this.delSpinner()
+		throw(err)
+	})
 }
 
 FileManager.prototype.keyboardEvent = function(e) {
