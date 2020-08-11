@@ -347,6 +347,7 @@ pre{
 	transition: box-shadow 0.3s, opacity 2s;
 	white-space: normal;
 	text-overflow: ellipsis;
+	text-decoration: none;
 	vertical-align: top;
 	cursor: pointer;
 }
