@@ -104,6 +104,7 @@ is collapsed */
 	margin: 0;
 	box-sizing: border-box;
 	color: var(--text_color);
+	text-decoration: none;
 }
 .node:hover:not(.node_selected) {
 	background-color: var(--input_color_dark);

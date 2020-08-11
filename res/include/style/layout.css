@@ -96,7 +96,7 @@ body{
 .page_navigation {
 	position: fixed;
 	backface-visibility: hidden;
-	z-index: 100;
+	z-index: 99;
 	width: 250px;
 	height: 100%;
 	left: 0;
@@ -125,7 +125,7 @@ body{
 	overflow-x: hidden;
 	z-index: 50;
 	transition: left 0.5s;
-	padding: 50px 0 50px 0;
+	padding: 70px 0 100px 0;
 }
 @media (max-width: 800px) {
 	.page_navigation {
@@ -183,6 +183,7 @@ body{
 	text-overflow: ellipsis;
 	transition: background-color 0.5s;
 	border-radius: 5px;
+	text-decoration: none;
 }
 .page_navigation a:hover {
 	background-color: #3f3f3f;
@@ -285,10 +286,11 @@ hr{
 
 a {
 	color: #74ad38;
-	color: var(--highlight_color);
-	text-decoration: none;
+	color: var(--highlight_color_dark);
 }
-a:hover {text-decoration: underline;}
+a:hover {
+	color: var(--highlight_color);
+}
 
 .form{
 	margin-left: auto;

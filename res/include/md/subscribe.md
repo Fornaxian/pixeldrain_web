@@ -39,6 +39,10 @@ account. {{if .Authenticated}}(Your e-mail address: {{.User.Email}}){{end}}
 <a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427">
 Order plan 'I'm doing my part!'
 </a>
+{{else if eq $plan "t5"}}
+<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701">
+Order plan 'Resolve'
+</a>
 {{else if eq $plan "t2"}}
 <a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291482">
 Order plan 'Persistence'

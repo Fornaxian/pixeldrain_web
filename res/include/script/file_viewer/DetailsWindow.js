@@ -2,7 +2,9 @@ function DetailsWindow(viewer) {
 	this.viewer  = viewer
 	this.visible = false
 	this.file    = null
-	this.graph   = 0
+	this.graphsInitialized = false
+	this.graphViews     = 0
+	this.graphDownloads = 0
 	this.modal   = new Modal(
 		document.getElementById("file_viewer"),
 		() => { this.toggle() },
@@ -27,8 +29,9 @@ DetailsWindow.prototype.toggle = function() {
 		this.btnDetails.classList.add("button_highlight")
 		this.visible = true
 
-		if (this.graph === 0) {
-			this.renderGraph()
+		if (!this.graphsInitialized) {
+			this.renderGraphs()
+			this.graphsInitialized = true
 		}
 		this.updateGraph(this.file)
 	}
@@ -54,12 +57,22 @@ DetailsWindow.prototype.setFile = function(file) {
 	}
 }
 
+DetailsWindow.prototype.renderGraphs = function() {
+	console.log("rendering graphs")
+	this.graphDownloads = drawGraph(
+		document.getElementById("downloads_chart"), "Downloads", "number",
+	);
+	this.graphViews = drawGraph(
+		document.getElementById("views_chart"), "Views", "number",
+	);
+}
+
 DetailsWindow.prototype.updateGraph = function(file) {
 	console.log("updating graph")
 
 	let today = new Date()
 	let start = new Date()
-	start.setDate(start.getDate()-30)
+	start.setDate(start.getDate()-90)
 
 	fetch(
 		file.timeseries_href+
@@ -70,101 +83,21 @@ DetailsWindow.prototype.updateGraph = function(file) {
 		if (!resp.ok) {return null}
 		return resp.json()
 	}).then(resp => {
-		this.graph.data.labels = resp.labels
-		this.graph.data.datasets[0].data = resp.downloads
-		this.graph.data.datasets[1].data = resp.views
-		this.graph.update()
+		resp.views.timestamps.forEach((val, idx) => {
+			let date = new Date(val);
+			let dateStr = ("00"+(date.getMonth()+1)).slice(-2);
+			dateStr += "-"+("00"+date.getDate()).slice(-2);
+			dateStr += " "+("00"+date.getHours()).slice(-2)+"h";
+			resp.views.timestamps[idx] = "   "+dateStr+"   "; // Poor man's padding
+		});
+		resp.bandwidth.amounts.forEach((val, idx) => {
+			resp.bandwidth.amounts[idx] = Math.round(val/file.size);
+		});
+		this.graphDownloads.data.labels = resp.views.timestamps
+		this.graphViews.data.labels = resp.views.timestamps
+		this.graphDownloads.data.datasets[0].data = resp.bandwidth.amounts
+		this.graphViews.data.datasets[0].data = resp.views.amounts
+		this.graphDownloads.update()
+		this.graphViews.update()
 	})
-}
-
-DetailsWindow.prototype.renderGraph = function() {
-	console.log("rendering graph")
-	Chart.defaults.global.defaultFontColor = "#b3b3b3"
-	Chart.defaults.global.defaultFontSize = 15
-	Chart.defaults.global.defaultFontFamily = "Ubuntu"
-	Chart.defaults.global.maintainAspectRatio = false;
-	Chart.defaults.global.elements.point.radius = 0
-	Chart.defaults.global.tooltips.mode = "index"
-	Chart.defaults.global.tooltips.axis = "x"
-	Chart.defaults.global.tooltips.intersect = false
-	this.graph = new Chart(
-		document.getElementById('bandwidth_chart'),
-		{
-			type: 'line',
-			data: {
-				datasets: [
-					{
-						label: "Downloads",
-						backgroundColor: "rgba(64, 255, 64, .01)",
-						borderColor: "rgba(96, 255, 96, 1)",
-						borderWidth: 1.5,
-						lineTension: 0.2,
-						fill: true,
-						yAxisID: "y_bandwidth"
-					}, {
-						label: "Views",
-						backgroundColor: "rgba(64, 64, 255, .01)",
-						borderColor: "rgba(96, 96, 255, 1)",
-						borderWidth: 1.5,
-						lineTension: 0.2,
-						fill: true,
-						yAxisID: "y_views"
-					}
-				]
-			},
-			options: {
-				scales: {
-					yAxes: [
-						{
-							type: "linear",
-							display: true,
-							position: "left",
-							id: "y_bandwidth",
-							scaleLabel: {
-								display: true,
-								labelString: "Downloads"
-							},
-							ticks: {
-								callback: function(value, index, values) {
-									return formatNumber(value, 3);
-								},
-								beginAtZero: true
-							},
-							gridLines: {
-								color: "rgba(100, 255, 100, .05)"
-							}
-						}, {
-							type: "linear",
-							display: true,
-							position: "right",
-							id: "y_views",
-							scaleLabel: {
-								display: true,
-								labelString: "Views"
-							},
-							ticks: {
-								callback: function(value, index, values) {
-									return formatNumber(value, 3);
-								},
-								beginAtZero: true
-							},
-							gridLines: {
-								color: "rgba(128, 128, 255, .05)"
-							}
-						}
-					],
-					xAxes: [
-						{
-							ticks: {
-								maxRotation: 16
-							},
-							gridLines: {
-								display: false
-							}
-						}
-					]
-				}
-			}
-		}
-	)
 }

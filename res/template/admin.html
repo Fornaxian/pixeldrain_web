@@ -24,8 +24,12 @@
 					<button onclick="loadGraph(262800, 1440, false);">Half-year</button>
 					<button onclick="loadGraph(525600, 1440, false);">Year</button>
 				</div>
-				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: 300px;">
+				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: 160px; padding-top: 6px;">
 					<canvas id="bandwidth_chart"></canvas>
+				</div>
+				<hr>
+				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: 160px;">
+					<canvas id="views_chart"></canvas>
 				</div>
 				<div class="highlight_dark">
 					Total usage from <span id="time_start"></span> to <span id="time_end"></span><br/>
@@ -63,7 +67,9 @@
 				<script src="/res/script/Chart.min.js"></script>
 				<script>
 					var apiEndpoint = '{{.APIEndpoint}}';
+					var highlightColor = '#{{.Style.HighlightColor.RGB}}';
 					{{template `util.js`}}
+					{{template `drawGraph.js`}}
 					{{template `admin.js`}}
 				</script>
 				{{else}}

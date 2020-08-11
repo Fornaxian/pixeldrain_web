@@ -18,52 +18,77 @@
 					<li>Username: {{.User.Username}}</li>
 					<li>E-mail address: {{.User.Email}}</li>
 					<li>
-						Supporter status:
-						{{if eq .User.Subscription ""}}
-							Not a pixeldrain supporter<br/>
+						{{if eq .User.Subscription.Name ""}}
+							Supporter status: Not a pixeldrain supporter<br/>
 							<a href="https://www.patreon.com/pixeldrain">Learn how to support pixeldrain</a>.
 						{{else}}
-							{{if eq .User.Subscription "patreon_1"}}
-								Level 1 Patreon supporter. Benefits:
-								<ul>
-									<li>No ads when viewing files</li>
-								</ul>
-							{{else if eq .User.Subscription "patreon_2"}}
-								Level 2 Patreon supporter. Benefits:
-								<ul>
-									<li>No ads when viewing files</li>
-									<li>No ads on uploaded files</li>
-									<li>2-month file expiry</li>
-								</ul>
-							{{else if eq .User.Subscription "patreon_3"}}
-								Level 3 Patreon supporter. Benefits:
-								<ul>
-									<li>No ads when viewing files</li>
-									<li>No ads on uploaded files</li>
-									<li>6-month file expiry</li>
-								</ul>
-							{{else if eq .User.Subscription "patreon_4"}}
-								Level 4 Patreon supporter. Benefits:
-								<ul>
-									<li>No ads when viewing files</li>
-									<li>No ads on uploaded files</li>
-									<li>No file expiry</li>
-								</ul>
-							{{end}}
+							Supporter level {{.User.Subscription.Name}}
+							<ul>
+								<li>Ads when viewing files: {{if .User.Subscription.DisableAdDisplay}}No{{else}}Yes{{end}}</li>
+								<li>Ads on uploaded files: {{if .User.Subscription.DisableAdsOnFiles}}No{{else}}Yes{{end}}</li>
+								{{if gt .User.Subscription.FileExpiryDays 0}}
+								<li>Files expire after {{.User.Subscription.FileExpiryDays}} days</li>
+								{{else}}
+								<li>Files never expire</li>
+								{{end}}
+								<li>Direct linking bandwidth: {{formatData .User.Subscription.DirectLinkingBandwidth}}</li>
+							</ul>
 						{{end}}
 					</li>
 				</ul>
 				<a href="/user/settings" class="button button_highlight">Change account settings</a>
-				<h2>Navigation</h2>
-				<a href="/" class="button">Upload files</a>
-				<a href="/user/filemanager#files" class="button">My files</a>
-				<a href="/user/filemanager#lists" class="button">My lists</a>
+
+				<h2>Statistics</h2>
+				<p>
+					Here you can see how often your files are viewed, downloaded
+					and how much bandwidth they consume. The buttons at the top
+					can be pressed to adjust the timeframe. If you choose 'Live'
+					or 'Day' the statistics will be updated periodically. No
+					need to refresh the page.
+				</p>
+			</div>
+			<div class="highlight_dark">
+				<button onclick="updateGraphs(360, 1, true);">Live</button>
+				<button onclick="updateGraphs(1440, 10, true);">Day</button>
+				<button onclick="updateGraphs(10080, 60, false);">Week</button>
+				<button onclick="updateGraphs(20160, 60, false);">Two Weeks</button>
+				<button onclick="updateGraphs(43200, 1440, false);">Month</button>
+				<button onclick="updateGraphs(131400, 1440, false);">Quarter</button>
+				<button onclick="updateGraphs(262800, 1440, false);">Half-year</button>
+				<button onclick="updateGraphs(525600, 1440, false);">Year</button>
+			</div>
+			<h3>Views</h3>
+			<div class="chart-container" style="position: relative; width: 100%; height: 120px;">
+				<canvas id="views_chart"></canvas>
+			</div>
+			<h3>Downloads</h3>
+			<div class="chart-container" style="position: relative; width: 100%; height: 120px;">
+				<canvas id="downloads_chart"></canvas>
+			</div>
+			<h3>Bandwidth</h3>
+			<div class="chart-container" style="position: relative; width: 100%; height: 120px;">
+				<canvas id="bandwidth_chart"></canvas>
+			</div>
+			<div class="highlight_dark">
+				Total usage from <span id="time_start"></span> to <span id="time_end"></span><br/>
+				<span id="total_views"></span> views,
+				<span id="total_downloads"></span> downloads and
+				<span id="total_bandwidth"></span> bandwidth
 			</div>
 		</div>
 
 		{{template "page_bottom" .}}
 
 		{{template "analytics"}}
+
+		<script src="/res/script/Chart.min.js"></script>
+		<script>
+			var apiEndpoint = '{{.APIEndpoint}}';
+			var highlightColor = '#{{.Style.HighlightColor.RGB}}';
+			{{template `util.js`}}
+			{{template `drawGraph.js`}}
+			{{template `user_home.js`}}
+		</script>
 	</body>
 </html>
 {{end}}

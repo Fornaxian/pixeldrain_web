@@ -93,7 +93,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	showAds := true
-	if (templateData.Authenticated && templateData.User.DisableAdDisplay) || finfo[0].ShowAds == false {
+	if (templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay) || finfo[0].ShowAds == false {
 		showAds = false
 	}
 
@@ -188,7 +188,8 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	showAds := true
-	if (templateData.Authenticated && templateData.User.DisableAdDisplay) || list.Files[0].ShowAds == false {
+	if (templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay) ||
+		list.Files[0].ShowAds == false {
 		showAds = false
 	}
 

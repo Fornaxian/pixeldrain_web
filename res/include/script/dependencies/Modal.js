@@ -55,6 +55,10 @@ Modal.prototype.setBody = function(element) {
 	this.body.append(element)
 }
 
+Modal.prototype.cloneTemplate = function(templateID) {
+	this.setBody(document.getElementById(templateID).content.cloneNode(true))
+}
+
 Modal.prototype.open = function() {
 	if (this.visible) { return }
 	this.visible = true

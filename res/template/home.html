@@ -8,7 +8,7 @@
 		.header_image{
 			width: 100%;
 			max-width: 800px;
-			margin: 20px auto 50px auto;
+			margin: 0 auto 50px auto;
 		}
 
 		.instruction_highlight {
@@ -75,6 +75,7 @@
 			margin-bottom: 6px;
 		}
 		.features > div > .feature {
+			display: block;
 			text-align: center;
 			padding: 6px;
 			border-bottom: 1px solid var(--layer_3_color_border);
@@ -86,6 +87,8 @@
 			margin: 8px;
 			text-align: center;
 		}
+
+		{{template `modal.css`}}
 		</style>
 	</head>
 	<body>
@@ -195,6 +198,11 @@
 					<a href="/about">about</a> page.
 				</p>
 				<h2>Features</h2>
+				<p>
+					By purchasing a subscription you support pixeldrain on its
+					mission to make content sharing easier, safer and faster for
+					everyone.
+				</p>
 			</div>
 			<div class="features">
 				<div>
@@ -203,7 +211,9 @@
 					<img src="/res/img/benefit_0.png" style="width: 100%;">
 
 					<div class="feature">No account required</div>
-					<div class="feature">Files expire 30 days after last view</div>
+					<a href="#" onclick="return explainFileExpiry()" class="feature">
+						Files expire 30 days after last view
+					</a>
 					<div class="feature">Max file size 10 GB</div>
 					<div class="feature">Access your files anywhere with a pixeldrain account</div>
 					<div class="feature">Group multiple files together in a single link with lists</div>
@@ -213,14 +223,43 @@
 					<div class="price">€2 per month + tax</div>
 					<img src="/res/img/benefit_1.png" style="width: 100%;">
 
-					<div class="feature">No ads when viewing and downloading files</div>
-					<div class="feature">Support pixeldrain's development</div>
+					<div class="feature">No ads when viewing files</div>
+					<a href="#" onclick="return explainFileExpiry()" class="feature">
+						Files expire 2 months after last view
+					</a>
+					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
+						3 TB of direct linking bandwidth
+					</a>-->
 
 					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription "patreon_1"}}
+						{{if eq .User.Subscription.ID "patreon_1"}}
 						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
 						{{else}}
 						<a href="/subscribe?plan=t1" class="button button_highlight" style="width: 90%;">
+							Get Started
+						</a>
+						{{end}}
+					</div>
+				</div>
+				<div>
+					<h3>Resolve</h3>
+					<div class="price">€4 per month + tax</div>
+					<img src="/res/img/benefit_5.png" style="width: 100%;">
+
+					<div class="feature">No ads when viewing files</div>
+					<a href="#" onclick="return explainFileExpiry()" class="feature">
+						Files expire 3 months after last view
+					</a>
+					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
+						6 TB of direct linking bandwidth
+					</a>-->
+					<div class="feature">No ads on files you uploaded</div>
+
+					<div style="text-align: center; padding: 8px;">
+						{{if eq .User.Subscription.ID "patreon_5"}}
+						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
+						{{else}}
+						<a href="/subscribe?plan=t5" class="button button_highlight" style="width: 90%;">
 							Get Started
 						</a>
 						{{end}}
@@ -231,12 +270,17 @@
 					<div class="price">€8 per month + tax</div>
 					<img src="/res/img/benefit_2.png" style="width: 100%;">
 
-					<div class="feature">No ads when viewing and downloading files</div>
+					<div class="feature">No ads when viewing files</div>
+					<a href="#" onclick="return explainFileExpiry()" class="feature">
+						Files expire 4 months after last view
+					</a>
+					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
+						12 TB of direct linking bandwidth
+					</a>-->
 					<div class="feature">No ads on files you uploaded</div>
-					<div class="feature">Files expire two months after last view</div>
 
 					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription "patreon_2"}}
+						{{if eq .User.Subscription.ID "patreon_2"}}
 						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
 						{{else}}
 						<a href="/subscribe?plan=t2" class="button button_highlight" style="width: 90%;">
@@ -250,12 +294,17 @@
 					<div class="price">€16 per month + tax</div>
 					<img src="/res/img/benefit_3.png" style="width: 100%;">
 
-					<div class="feature">No ads when viewing and downloading files</div>
+					<div class="feature">No ads when viewing files</div>
+					<a href="#" onclick="return explainFileExpiry()" class="feature">
+						Files expire 8 months after last view
+					</a>
+					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
+						24 TB of direct linking bandwidth
+					</a>-->
 					<div class="feature">No ads on files you uploaded</div>
-					<div class="feature">Files expire six months after last view</div>
 
 					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription "patreon_3"}}
+						{{if eq .User.Subscription.ID "patreon_3"}}
 						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
 						{{else}}
 						<a href="/subscribe?plan=t3" class="button button_highlight" style="width: 90%;">
@@ -269,12 +318,17 @@
 					<div class="price">€32 per month + tax</div>
 					<img src="/res/img/benefit_4.png" style="width: 100%;">
 
-					<div class="feature">No ads when viewing and downloading files</div>
+					<div class="feature">No ads when viewing files</div>
+					<a href="#" onclick="return explainFileExpiry()" class="feature">
+						Files you upload never expire
+					</a>
+					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
+						48 TB of direct linking bandwidth
+					</a>-->
 					<div class="feature">No ads on files you uploaded</div>
-					<div class="feature">Files you upload never expire</div>
 
 					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription "patreon_4"}}
+						{{if eq .User.Subscription.ID "patreon_4"}}
 						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
 						{{else}}
 						<a href="/subscribe?plan=t4" class="button button_highlight" style="width: 90%;">
@@ -286,14 +340,77 @@
 			</div>
 		</div>
 
+		<template id="tpl_file_expiry">
+			<p>
+				Files on pixeldrain have to expire eventually. If we didn't do
+				this the website would keep growing forever and we would run out
+				of money pretty quickly.
+			</p>
+			<p>
+				Unlike most other sharing sites pixeldrain uses a postponing
+				system for expiring files. When a file is freshly uploaded it
+				gets 30 days by default (this can be extended by supporting the
+				site on patreon). After these 30 days we will check when the
+				file was last viewed. Files which are regularly viewed could
+				still bring new users to the platform, it would be rude to show
+				these people a 404 Not Found page. So if the file was viewed in
+				the last 30 days we will simply postpone the next check a month.
+				If the file was not viewed however it will immediately be
+				removed.
+			</p>
+			<p>
+				This way we can minimize dead links, and you won't have to tell
+				your friends to 'hurry and download this before it expires'.
+			</p>
+		</template>
+		<template id="tpl_direct_linking">
+			<p>
+				Normally when viewing a file on pixeldrain it has to go through
+				the file viewer. Files which are directly downloaded without
+				visiting the file viewer are blocked after a while.
+			</p>
+			<p>
+				Direct linking allows you to share files without going through
+				the file viewer. You can use this to embed videos / images in
+				your own webpages. Files which are direct linked won't count any
+				views but we will keep track of the downloads and used
+				bandwidth.
+			</p>
+			<p>
+				When you use up your direct linking bandwidth your direct links
+				will stop working for the rest of the month. You can always
+				upgrade to get more bandwidth. The amount of bandwidth used in
+				the month can be seen on your <a href="/user">user page</a> when
+				logged in.
+			</p>
+		</template>
+
 		{{template "page_bottom" .}}
 
 		<script>
 			'use strict';
 			let apiEndpoint = '{{.APIEndpoint}}';
 			{{template "util.js"}}
+			{{template "Modal.js"}}
 			{{template "UploadManager.js"}}
 			{{template "homepage.js"}}
+
+			function explainFileExpiry() {
+				let m = new Modal(
+					document.body, null, "File Expiry Postponing", "600px", "auto"
+				)
+				m.cloneTemplate("tpl_file_expiry")
+				m.open()
+				return false
+			}
+			function explainDirectLinking() {
+				let m = new Modal(
+					document.body, null, "Direct Linking Bandwidth", "600px", "auto"
+				)
+				m.cloneTemplate("tpl_direct_linking")
+				m.open()
+				return false
+			}
 		</script>
 
 		{{template "analytics"}}

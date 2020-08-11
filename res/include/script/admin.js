@@ -1,102 +1,10 @@
-// Draw usage graph
+let graphViews = drawGraph(document.getElementById("views_chart"), "Views", "number");
+let graphBandwidth = drawGraph(document.getElementById("bandwidth_chart"), "Bandwidth", "bytes");
 
-Chart.defaults.global.defaultFontColor = "#b3b3b3";
-Chart.defaults.global.defaultFontSize = 15;
-Chart.defaults.global.defaultFontFamily = "Ubuntu";
-Chart.defaults.global.maintainAspectRatio = false;
-Chart.defaults.global.elements.point.radius = 0;
-Chart.defaults.global.tooltips.mode = "index";
-Chart.defaults.global.tooltips.axis = "x";
-Chart.defaults.global.tooltips.intersect = false;
-Chart.defaults.global.animation.duration = 1000;
-Chart.defaults.global.animation.easing = "linear";
-
-var graph = new Chart(
-	document.getElementById('bandwidth_chart'),
-	{
-		type: 'line',
-		data: {
-			datasets: [
-				{
-					label: "Bandwidth",
-					backgroundColor: "rgba(64, 255, 64, .01)",
-					borderColor: "rgba(96, 255, 96, 1)",
-					borderWidth: 1.5,
-					lineTension: 0.2,
-					fill: true,
-					yAxisID: "y_bandwidth"
-				}, {
-					label: "Views",
-					backgroundColor: "rgba(64, 64, 255, .01)",
-					borderColor: "rgba(96, 96, 255, 1)",
-					borderWidth: 1.5,
-					lineTension: 0.2,
-					fill: true,
-					yAxisID: "y_views"
-				}
-			]
-		},
-		options: {
-			scales: {
-				yAxes: [
-					{
-						type: "linear",
-						display: true,
-						position: "left",
-						id: "y_bandwidth",
-						scaleLabel: {
-							display: true,
-							labelString: "Bandwidth"
-						},
-						ticks: {
-							callback: function(value, index, values) {
-								return formatDataVolume(value, 3);
-							},
-							beginAtZero: true
-						},
-						gridLines: {
-							color: "rgba(100, 255, 100, .05)"
-						}
-					}, {
-						type: "linear",
-						display: true,
-						position: "right",
-						id: "y_views",
-						scaleLabel: {
-							display: true,
-							labelString: "Views"
-						},
-						ticks: {
-							callback: function(value, index, values) {
-								return formatNumber(value, 3);
-							},
-							beginAtZero: true
-						},
-						gridLines: {
-							color: "rgba(128, 128, 255, .05)"
-						}
-					}
-				],
-				xAxes: [
-					{
-						ticks: {
-							maxRotation: 16
-						},
-						gridLines: {
-							display: false
-						}
-					}
-				]
-			}
-		}
-	}
-);
-
-let graphTimeout = null;
 function loadGraph(minutes, interval, live){
 	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
 	if (live) {
-		graphTimeout = setTimeout(() => {loadGraph(minutes, interval, true)}, 2000)
+		graphTimeout = setTimeout(() => {updateGraphs(minutes, interval, true)}, 10000)
 	}
 
 	let today = new Date()
@@ -112,24 +20,39 @@ function loadGraph(minutes, interval, live){
 		if (!resp.ok) { return Promise.reject("Error: "+resp.status);}
 		return resp.json();
 	}).then(resp => {
-		if (resp.success) {
-			window.graph.data.labels = resp.labels;
-			window.graph.data.datasets[0].data = resp.downloads;
-			window.graph.data.datasets[1].data = resp.views;
-			window.graph.update();
+		resp.views.timestamps.forEach((val, idx) => {
+			let date = new Date(val);
+			let dateStr = ("00"+(date.getMonth()+1)).slice(-2);
+			dateStr += "-"+("00"+date.getDate()).slice(-2);
+			dateStr += " "+("00"+date.getHours()).slice(-2);
+			dateStr += ":"+("00"+date.getMinutes()).slice(-2);
+			resp.views.timestamps[idx] = "   "+dateStr+"   "; // Poor man's padding
+		});
+		graphViews.data.labels = resp.views.timestamps;
+		graphViews.data.datasets[0].data = resp.views.amounts;
+		graphBandwidth.data.labels = resp.views.timestamps;
+		graphBandwidth.data.datasets[0].data = resp.bandwidth.amounts;
+		graphViews.update()
+		graphBandwidth.update();
 
-			document.getElementById("time_start").innerText = resp.labels[0];
-			document.getElementById("time_end").innerText = resp.labels.slice(-1)[0];
-			let total = 0
-			resp.downloads.forEach(e => { total += e; });
-			document.getElementById("total_bandwidth").innerText = formatDataVolume(total, 3);
-			total = 0
-			resp.views.forEach(e => { total += e; });
-			document.getElementById("total_views").innerText = formatThousands(total);
-		}
+		document.getElementById("time_start").innerText = resp.views.timestamps[0];
+		document.getElementById("time_end").innerText = resp.views.timestamps.slice(-1)[0];
+		let total = 0
+		resp.bandwidth.amounts.forEach(e => { total += e; });
+		document.getElementById("total_bandwidth").innerText = formatDataVolume(total, 3);
+		total = 0
+		resp.views.amounts.forEach(e => { total += e; });
+		document.getElementById("total_views").innerText = formatThousands(total);
 	}).catch(e => {
 		alert("Error requesting time series: "+e);
 	})
+}
+
+let graphTimeout = null;
+function updateGraphs(minutes, interval, live) {
+
+	loadGraph(graphViews, "views", minutes, interval);
+	loadGraph(graphBandwidth, "bandwidth", minutes, interval);
 }
 
 loadGraph(1440, 10, true);
