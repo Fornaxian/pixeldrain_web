@@ -5,6 +5,7 @@ go 1.14
 replace (
 	fornaxian.tech/pd_database => ../pd_database
 	fornaxian.tech/pixeldrain_server/api => ../pixeldrain_server/api
+	fornaxian.tech/pixeldrain_server/database => ../pixeldrain_server/database
 	fornaxian.tech/pixeldrain_server/pixelstore => ../pixeldrain_server/pixelstore
 	fornaxian.tech/pixeldrain_server/util => ../pixeldrain_server/util
 )
@@ -19,5 +20,4 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/microcosm-cc/bluemonday v1.0.3
 	github.com/russross/blackfriday/v2 v2.0.1
-	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 )
