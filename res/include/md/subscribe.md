@@ -8,9 +8,9 @@
 
 {{else}}
 
-First you need to register a pixeldrain account. You can do so with our
-[registration form](/register). If you already have an account you can [log in
-here](/login).
+❌ You are not logged into a pixeldrain account. If you do not have an account
+yet you need to register one. You can do so with our [registration
+form](/register). If you already have an account you can [log in here](/login).
 
 {{end}}
 
@@ -18,7 +18,7 @@ here](/login).
 
 {{if eq .User.Email ""}}
 
-Your e-mail address is not yet verified. You can change your e-mail address on
+❌ Your e-mail address is not yet verified. You can change your e-mail address on
 the [user settings page](/user/settings). After submitting your e-mail address
 you will receive a verification link in your inbox. Click the verification link
 to verify your e-mail address.
@@ -56,9 +56,11 @@ Order plan 'Tenacity'
 Order plan 'Eternity'
 </a>
 {{else}}
+<div style="text-align: center;">
 <a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
 See our subscription plans on Patreon
 </a>
+</div>
 {{end}}
 
 After ordering I will add the subscription to your pixeldrain account. This can
