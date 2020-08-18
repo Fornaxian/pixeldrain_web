@@ -49,6 +49,16 @@
 							{{else if eq $field.Type "captcha"}}
 								<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 								<div class="g-recaptcha" data-theme="dark" data-sitekey="{{$field.CaptchaSiteKey}}"></div>
+							{{else if eq $field.Type "radio"}}
+								{{ range $val := $field.RadioValues}}
+								<input
+									id="input_{{$field.Name}}_choice_{{$val}}"
+									name="{{$field.Name}}"
+									value="{{$val}}"
+									type="radio"
+									{{if eq $val $field.DefaultValue}}checked="checked"{{end}}/>
+								<label for="input_{{$field.Name}}_choice_{{$val}}">{{$val}}</label><br/>
+								{{ end }}
 							{{end}}
 						</td>
 					{{end}}

@@ -60,6 +60,9 @@ type Field struct {
 
 	// Only used when Type == FieldTypeCaptcha
 	CaptchaSiteKey string
+
+	// Only used when Type == FieldTypeRadio
+	RadioValues []string
 }
 
 // ExtraActions contains extra actions to performs when rendering the form
@@ -84,6 +87,7 @@ const (
 	FieldTypeNumber          FieldType = "number"
 	FieldTypeUsername        FieldType = "username"
 	FieldTypeEmail           FieldType = "email"
+	FieldTypeRadio           FieldType = "radio"
 	FieldTypeCurrentPassword FieldType = "current-password"
 	FieldTypeNewPassword     FieldType = "new-password"
 	FieldTypeCaptcha         FieldType = "captcha"
@@ -103,7 +107,7 @@ func (f *Form) ReadInput(r *http.Request) (success bool) {
 		// Remove carriage returns
 		field.EnteredValue = strings.ReplaceAll(r.FormValue(field.Name), "\r", "")
 
-		if field.DefaultValue == "" {
+		if field.EnteredValue != "" {
 			field.DefaultValue = field.EnteredValue
 		}
 
