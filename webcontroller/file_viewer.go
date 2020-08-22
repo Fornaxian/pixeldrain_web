@@ -33,7 +33,7 @@ func adType() (i int) {
 	// Intn returns a number up to n, but never n itself. So it get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	i = rand.Intn(4)
+	i = rand.Intn(8)
 
 	// The return value corresponds to the type of ad shown:
 	//  0: A-ads
@@ -41,10 +41,12 @@ func adType() (i int) {
 	//  2: Patreon
 
 	switch i {
-	case 0, 1, 2: // 75% of the traffic
+	case 0, 1, 2, 3: // 50% of the traffic
 		return 1
-	case 3:
-		return 2
+	case 4:
+		return 2 // 12.5%
+	case 5, 6, 7:
+		return 0 // 37.5%
 	default:
 		panic(fmt.Errorf(
 			"random number generator returned unrecognised number: %d", i),
