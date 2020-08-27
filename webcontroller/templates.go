@@ -201,7 +201,7 @@ func (tm *TemplateManager) Get() *template.Template {
 	return tm.tpl
 }
 
-// Templace functions. These can be called from within the template to execute
+// Template functions. These can be called from within the template to execute
 // more specialized actions
 
 func (tm *TemplateManager) bgPattern() template.URL {
