@@ -28,6 +28,10 @@ have to upload all our data three times to the Sia network in order to reach
 high availability. If you multiply everything by three it becomes much more
 reasonable.
 
+We also can't guarantee that your host will be picked when it fulfills these
+requirements. If there is enough supply we will only pick the most reliable
+hosts available.
+
 Other settings we pay attention to:
 
 | Setting               | Recommended value |
@@ -49,10 +53,9 @@ interruping system processes are also likely to harm hosting uptime and
 performance.
 
 We can recommend Debian, CentOS or Ubuntu LTS for hosting. These are systems
-which are known to be able to run uninterruped for decades at a time. They are
-also regularly patched with security updates which don't even require restarting
-most of the time. This makes these systems perfect for the role of hosting on
-Sia.
+which are known to be able to run uninterruped for decades. They are also
+regularly patched with security updates which don't even require restarting most
+of the time. This makes these systems perfect for the role of hosting on Sia.
 
 ### Enable TCP BBR and other network stack optimizations
 
