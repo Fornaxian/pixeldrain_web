@@ -65,7 +65,7 @@ improvements to counter other problems like router buffer bloat which causes
 network latency spikes. Here's an [in-depth analysis of the benefits of enabling
 BBR](https://blog.apnic.net/2017/05/09/bbr-new-kid-tcp-block/).
 
-To enable BBR you need yo have kernel version 4.9 or higher. See your kernel
+To enable BBR you need you have kernel version 4.9 or higher. See your kernel
 version with `uname -a`. On Ubuntu you can upgrade to a newer kernel by
 [enabling HWE](https://wiki.ubuntu.com/Kernel/LTSEnablementStack).
 
