@@ -38,6 +38,33 @@ spare some coins. Possible methods for donating are:
    href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">
    Donate with PayPal</a>
 
+## How does pixeldrain store files?
+
+Pixeldrain uses a few different techniques to store files cheaply, efficiently
+and performantly. The servers which accept files from users have a hard disk
+drive cache of typically a few terabytes (4 to 16). This is where most of the
+files are kept. When a file is requested from another server it will look up
+where the file is stored using a lookup table in the shared database. It will
+then try to contact that server to request the file and proxy the data directly
+to the requesting user.
+
+Each server keeps track of which files are popular with its own userbase. This
+includes files which it is not storing locally. It does this using a popularity
+score. Every time a request to read a file comes in it will add 1 to the score
+of that file. This score will slowly degrade over time. Periodically the server
+will request all files with a high popularity score so it can store them locally
+to save bandwidth. If there is not enough space available to store these popular
+files it will move some less popular files to the next storage medium to make
+space available for the more popular files.
+
+The next storage medium is Sia. This is where all the files live which are not
+requested frequently, but are still occasionally needed. Sia is a storage
+marketplace where anyone can sell their storage space for financial compensation
+in Siacoins. If you have storage space available and would like to provide it to
+pixeldrain and other services you should read our [Sia hosting
+guidelines](/hosting). There we explain which requirements we are setting for
+hosts and some handy tips for getting started with hosting.
+
 ## Do I need to register an account?
 
 Not if you don't want to. You're free to use pixeldrain completely anonymously.

@@ -43,10 +43,8 @@ func adType() (i int) {
 	switch i {
 	case 0, 1, 2, 3: // 50% of the traffic
 		return 1
-	case 4:
-		return 2 // 12.5%
-	case 5, 6, 7:
-		return 0 // 37.5%
+	case 4, 5, 6, 7: // 50%
+		return 2
 	default:
 		panic(fmt.Errorf(
 			"random number generator returned unrecognised number: %d", i),
@@ -160,6 +158,7 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 			"description":    "A file to demonstrate the viewer page",
 			"mime_image":     "/res/img/mime/text.png",
 			"thumbnail":      "/res/img/mime/text.png",
+			"abuse_type":     "",
 		},
 	}
 	err := wc.templates.Get().ExecuteTemplate(w, "file_viewer", templateData)

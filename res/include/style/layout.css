@@ -298,7 +298,11 @@ a:hover {
 	text-align: left;
 	max-width: 40em;
 }
-table:not(.form) {border-collapse: collapse; width: 100%;}
+table:not(.form) {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 14px;
+}
 tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
 tr > td, tr > th {padding: 0.3em;}
 @media(max-width: 30em) {
@@ -311,8 +315,8 @@ tr > td, tr > th {padding: 0.3em;}
 	}
 }
 
-pre{
-	padding: 2px;
+pre {
+	margin: 16px;
 	border-bottom: 1px var(--layer_2_color_border) solid;
 	overflow-x: auto;
 }

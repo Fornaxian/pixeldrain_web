@@ -115,6 +115,7 @@ func New(
 		{GET, "widgets" /*      */, wc.serveTemplate("widgets", false)},
 		{GET, "about" /*        */, wc.serveMarkdown("about.md", false)},
 		{GET, "appearance" /*   */, wc.serveTemplate("appearance", false)},
+		{GET, "hosting" /*      */, wc.serveMarkdown("hosting.md", false)},
 
 		// User account pages
 		{GET, "register" /*        */, wc.serveForm(wc.registerForm, false)},
