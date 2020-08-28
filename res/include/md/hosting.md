@@ -13,25 +13,25 @@ requirements on storage and bandwidth pricing for Sia hosts.
 We will only make contracts with hosts that fullfill all these requirements.
 Keep in mind that these are maximums, you are allowed to go lower.
 
-| Requirement              | Max rate         |
-|--------------------------|------------------|
-| Storage price per month  | €1.50 / TB       |
-| Download price           | €1.00 / TB       |
-| Upload price             | €0.50 / TB       |
-| Contract formation price | €0.01            |
-| RPC price                | €0.000 000 000 1 |
-| Sector access price      | €0.000 000 000 1 |
-| Collateral per month     | €3.00 / TB       |
+{{$price := .PixelAPI.GetSiaPrice}}
+
+| Requirement              | Max rate EUR | Max rate SC |
+|--------------------------|--------------|-------------|
+| Storage price per month  | € 1.50 / TB  | {{ div 1.50 $price | formatSC }} / TB |
+| Download price           | € 1.00 / TB  | {{ div 1 $price | formatSC }} / TB |
+| Upload price             | € 0.50 / TB  | {{ div 0.50 $price | formatSC }} / TB |
+| Collateral per month     | € 5.00 / TB  | {{ div 5 $price | formatSC }} / TB |
+| Contract formation price | € 0.01       | {{ div 0.01 $price | formatSC }} |
+
+<sup>
+	Based on exchange rates from Kraken.
+	[Explanation of units](https://siawiki.tech/wallet/siacoin).
+</sup>
 
 This may seem low, but keep in mind that these prices are before redundancy. We
 have to upload all our data three times to the Sia network in order to reach
 high availability. If you multiply everything by three it becomes much more
 reasonable.
-
-The RPC price and sector access price are paid every time a single chunk of data
-is read from the host. These costs ramp up quickly when frequently downloading
-files. Sia only includes these settings as a way to mitigate denial of service
-attacks. There is normally no need to increase these settings.
 
 We also can't guarantee that your host will be picked when it fulfills these
 requirements. If there is enough supply we will only pick the most reliable

@@ -137,7 +137,9 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 		"pageNr":     tm.pageNr,
 		"add":        tm.add,
 		"sub":        tm.sub,
+		"div":        tm.div,
 		"formatData": tm.formatData,
+		"formatSC":   tm.formatSC,
 	})
 
 	// Parse dynamic templates
@@ -235,14 +237,45 @@ func (tm *TemplateManager) pageNr(s string) (nr int) {
 	}
 	return nr
 }
-func (tm *TemplateManager) add(a, b interface{}) int {
-	return detectInt(a) + detectInt(b)
-}
-func (tm *TemplateManager) sub(a, b interface{}) int {
-	return detectInt(a) - detectInt(b)
-}
+func (tm *TemplateManager) add(a, b interface{}) int { return detectInt(a) + detectInt(b) }
+func (tm *TemplateManager) sub(a, b interface{}) int { return detectInt(a) - detectInt(b) }
+func (tm *TemplateManager) div(a, b float64) float64 { return a / b }
+
 func (tm *TemplateManager) formatData(i interface{}) string {
 	return util.FormatData(int64(detectInt(i)))
+}
+func (tm *TemplateManager) formatSC(amt float64) string {
+	var fmtSize = func(n float64, u string) string {
+		var f string
+		if n >= 100 {
+			f = "%.1f"
+		} else if n >= 10 {
+			f = "%.2f"
+		} else {
+			f = "%.3f"
+		}
+		return fmt.Sprintf(f+" "+u, n)
+	}
+	// if amt >= 1e12 {
+	// 	return fmtSize(amt/1e12, "TS")
+	// } else if amt >= 1e9 {
+	// 	return fmtSize(amt/1e9, "GS")
+	// } else if amt >= 1e6 {
+	// 	return fmtSize(amt/1e6, "MS")
+	// } else if amt >= 1e3 {
+	// 	return fmtSize(amt/1e3, "KS")
+	if amt >= 1 {
+		return fmtSize(amt, "SC")
+	} else if amt >= 1e-3 {
+		return fmtSize(amt/1e-3, "mS")
+	} else if amt >= 1e-6 {
+		return fmtSize(amt/1e-6, "μS")
+	} else if amt >= 1e-9 {
+		return fmtSize(amt/1e-9, "nS")
+	} else if amt >= 1e-12 {
+		return fmtSize(amt/1e-12, "pS")
+	}
+	return fmtSize(amt/1e-24, "H")
 }
 
 func detectInt(i interface{}) int {
