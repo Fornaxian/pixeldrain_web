@@ -51,11 +51,26 @@ Toolbar.prototype.setStats = function() {
 	)
 	this.statsWebsocket.onmessage = (msg) => {
 		let j = JSON.parse(msg.data)
+		console.debug("WS update", j)
+
 		this.views = j.views
 		this.downloads = Math.round(j.bandwidth/size)
 		this.spanViews.innerText = formatThousands(this.views)
 		this.spanDownloads.innerText = formatThousands(this.downloads)
-		console.log("WS update", j)
+	}
+	this.statsWebsocket.onerror = (err) => {
+		log.error("WS error", err)
+		this.statsWebsocket.close()
+		this.statsWebsocket = null
+
+		this.spanViews.innerText = "error"
+		this.spanDownloads.innerText = "retrying..."
+
+		window.setTimeout(() => {
+			if (this.statsWebsocket === null) {
+				this.setStats()
+			}
+		}, 5000)
 	}
 }
 
