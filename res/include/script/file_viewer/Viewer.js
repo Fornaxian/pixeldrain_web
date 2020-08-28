@@ -139,11 +139,6 @@ Viewer.prototype.setFile = function(file) {
 	}
 
 	this.viewerScript.render(this.divFilepreview)
-
-	// let ws = new WebSocket("ws://127.0.0.1:8080/api/file/"+file.id+"/stats")
-	// ws.onmessage = (msg) => {
-	// 	console.log(msg)
-	// }
 }
 
 Viewer.prototype.renderSponsors = function() {
@@ -247,9 +242,6 @@ function fileFromAPIResp(resp) {
 	if (resp.description === undefined) {
 		resp.description = ""
 	}
-
-	console.debug("New file:")
-	console.debug(resp)
 
 	return resp
 }

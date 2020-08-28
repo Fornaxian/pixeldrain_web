@@ -7,8 +7,7 @@ function Toolbar(viewer) {
 
 	this.views            = 0
 	this.downloads        = 0
-	this.statsInterval    = 2000
-	this.statsTimeout     = null
+	this.statsWebsocket   = null
 
 	this.divToolbar       = document.getElementById("toolbar")
 	this.divFilePreview   = document.getElementById("filepreview")
@@ -37,41 +36,27 @@ Toolbar.prototype.setFile = function(file) {
 	this.setStats()
 }
 
-// This function periodically updates the stats using an exponential backoff
-// timer. It starts with one query per second, and it increases by one second
-// every run. When the stats change the timeout decreases by one second
 Toolbar.prototype.setStats = function() {
-	clearTimeout(this.statsTimeout)
-
 	let size = this.currentFile.size
 
-	fetch(this.currentFile.stats_href).then(resp => {
-		return resp.json()
-	}).then(resp => {
-		let downloads = Math.round(resp.bandwidth/size)
+	this.spanViews.innerText = "loading..."
+	this.spanDownloads.innerText = "loading..."
 
-		// If the new values are different we decrease the timeout
-		if (resp.views != this.views || downloads != this.downloads) {
-			this.statsInterval = this.statsInterval - 2000
-			if (this.statsInterval < 2000) { this.statsInterval = 2000 }
-		} else {
-			this.statsInterval = this.statsInterval + 2000
-		}
+	if (this.statsWebsocket !== null) {
+		this.statsWebsocket.close()
+	}
 
-		// Save the new values
-		this.views = resp.views
-		this.downloads = downloads
-
+	this.statsWebsocket = new WebSocket(
+		location.origin.replace(/^http/, 'ws')+"/api/file/"+this.currentFile.id+"/stats"
+	)
+	this.statsWebsocket.onmessage = (msg) => {
+		let j = JSON.parse(msg.data)
+		this.views = j.views
+		this.downloads = Math.round(j.bandwidth/size)
 		this.spanViews.innerText = formatThousands(this.views)
-		this.spanDownloads.innerText = formatThousands(downloads)
-
-		console.debug("updating stats in ", this.statsInterval)
-
-		this.statsTimeout = setTimeout(() => { this.setStats() }, this.statsInterval)
-	}).catch(err => {
-		console.error("Failed to update stats:", err)
-		this.statsTimeout = setTimeout(() => { this.setStats() }, this.statsInterval)
-	})
+		this.spanDownloads.innerText = formatThousands(this.downloads)
+		console.log("WS update", j)
+	}
 }
 
 Toolbar.prototype.toggle = function() {
