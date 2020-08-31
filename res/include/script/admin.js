@@ -186,6 +186,10 @@ function getStats(order) {
 		let c = document.getElementById("tconnstat_body")
 		c.innerHTML = ""
 
+		document.getElementById("file_stats_watchers").innerText = resp.stats_watcher_threads;
+		document.getElementById("file_stats_listeners").innerText = resp.stats_watcher_listeners;
+		document.getElementById("file_stats_avg").innerText = resp.stats_watcher_listeners / resp.stats_watcher_threads;
+
 		resp.db_connection_stats.forEach(v => {
 			let row = document.createElement("tr")
 			row.innerHTML = `\
