@@ -39,11 +39,12 @@ func adType() (i int) {
 	//  0: A-ads
 	//  1: Amarulasolutions
 	//  2: Patreon
+	//  3: Soul Studio Yoga
 
 	switch i {
-	case 0, 1, 2, 3: // 50% of the traffic
-		return 1
-	case 4, 5, 6, 7: // 50%
+	case 0, 1, 2, 3, 4: // 5/8 of the traffic
+		return 3
+	case 5, 6, 7: // 3/8 of traffic
 		return 2
 	default:
 		panic(fmt.Errorf(
