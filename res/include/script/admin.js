@@ -181,17 +181,14 @@ function getStats(order) {
 	fetch(apiEndpoint+"/status").then(
 		resp => resp.json()
 	).then(resp => {
-		let t = document.getElementById("tstat_body")
-		t.innerHTML = ""
-		let c = document.getElementById("tconnstat_body")
-		c.innerHTML = ""
-
 		document.getElementById("file_stats_watchers").innerText = resp.stats_watcher_threads;
 		document.getElementById("file_stats_listeners").innerText = resp.stats_watcher_listeners;
 		document.getElementById("file_stats_avg").innerText = (
 			resp.stats_watcher_listeners / resp.stats_watcher_threads
 		).toPrecision(3);
 
+		let c = document.getElementById("tconnstat_body")
+		c.innerHTML = ""
 		resp.db_connection_stats.forEach(v => {
 			let row = document.createElement("tr")
 			row.innerHTML = `\
@@ -204,6 +201,21 @@ function getStats(order) {
 			c.appendChild(row)
 		})
 
+		let p = document.getElementById("tbody_peers")
+		p.innerHTML = ""
+		resp.peers.forEach(v => {
+			let row = document.createElement("tr")
+			row.innerHTML = `\
+			<td>${v.address}</td>
+			<td>${v.position}</td>
+			<td>${v.reachable}</td>
+			<td>${v.unreachable_count}</td>
+			<td>${formatDuration(v.latency)}</td>
+			<td>${formatDataVolume(v.free_space, 3)}</td>
+			<td>${formatDataVolume(v.min_free_space, 3)}</td>`
+			p.appendChild(row)
+		})
+
 		resp.query_statistics.sort((a, b) => {
 			if (typeof(a[order]) === "number") {
 				// Sort ints from high to low
@@ -214,6 +226,8 @@ function getStats(order) {
 			}
 		})
 
+		let t = document.getElementById("tstat_body")
+		t.innerHTML = ""
 		resp.query_statistics.forEach((v) => {
 			let callers = ""
 			v.callers.sort((a, b) => b.count - a.count)
