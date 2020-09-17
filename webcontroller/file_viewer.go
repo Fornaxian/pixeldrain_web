@@ -37,13 +37,14 @@ func adType() (i int) {
 
 	// The return value corresponds to the type of ad shown:
 	//  0: A-ads
-	//  1: Amarulasolutions
+	//  1: Amarula Electronics
 	//  2: Patreon
 	//  3: Soul Studio Yoga
+	//  4: Amarula Solutions
 
 	switch i {
 	case 0, 1, 2, 3, 4: // 5/8 of the traffic
-		return 3
+		return 4
 	case 5, 6, 7: // 3/8 of traffic
 		return 2
 	default:

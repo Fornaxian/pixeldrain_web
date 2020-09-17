@@ -214,7 +214,7 @@ function getStats(order) {
 			<td>${formatDataVolume(v.free_space, 3)}</td>
 			<td>${formatDataVolume(v.min_free_space, 3)}</td>`
 
-			if (v.free_space < v.min_free_space/2) {
+			if (v.free_space < v.min_free_space/2 || !v.reachable) {
 				row.classList.add("highlight_red")
 			} else if (v.free_space < v.min_free_space) {
 				row.classList.add("highlight_blue")
