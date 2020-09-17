@@ -19,9 +19,9 @@ Keep in mind that these are maximums, you are allowed to go lower.
 |--------------------------|--------------|-------------|
 | Storage price per month  | € 1.50 / TB  | {{ div 1.50 $price | formatSC }} / TB |
 | Download price           | € 1.00 / TB  | {{ div 1 $price | formatSC }} / TB |
-| Upload price             | € 0.50 / TB  | {{ div 1 $price | formatSC }} / TB |
+| Upload price             | € 1.00 / TB  | {{ div 1 $price | formatSC }} / TB |
 | Collateral per month     | € 5.00 / TB  | {{ div 5 $price | formatSC }} / TB |
-| Contract formation price | € 0.01       | {{ div 0.05 $price | formatSC }} |
+| Contract formation price | € 0.05       | {{ div 0.05 $price | formatSC }} |
 
 <sup>
 	Based on exchange rates from Kraken.
