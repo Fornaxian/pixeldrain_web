@@ -63,6 +63,6 @@ See our subscription plans on Patreon
 </div>
 {{end}}
 
-After ordering I will add the subscription to your pixeldrain account. This can
-take a few hours depending on how busy I am at that moment. This part will soon
-be automated.
+After ordering you will receive an e-mail with a link to activate your
+subscription. The subscription will be linked to the pixeldrain account you're
+currently loggin into.
