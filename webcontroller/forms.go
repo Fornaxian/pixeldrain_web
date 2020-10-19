@@ -91,6 +91,7 @@ const (
 	FieldTypeCurrentPassword FieldType = "current-password"
 	FieldTypeNewPassword     FieldType = "new-password"
 	FieldTypeCaptcha         FieldType = "captcha"
+	FieldTypeDescription     FieldType = "description"
 )
 
 // ReadInput reads the form of a request and fills in the values for each field.
