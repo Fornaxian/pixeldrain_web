@@ -31,7 +31,7 @@ function Modal(parent, closeCallback, title, width, height) {
 
 	this.btnClose = document.createElement("button")
 	this.btnClose.classList = "modal_btn_close button_red"
-	this.btnClose.innerHTML = '<i class="icon small">close</i>'
+	this.btnClose.innerHTML = '<i class="icon">close</i>'
 	this.btnClose.addEventListener("click", e => { this.close() })
 
 	this.body = document.createElement("div")

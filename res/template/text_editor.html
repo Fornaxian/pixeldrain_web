@@ -1,0 +1,152 @@
+{{define "text_editor"}}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "Text Upload"}}
+		{{template "user_style" .}}
+
+		<style>
+			.text_editor {
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				width: 100%;
+			}
+			.headerbar {
+				flex: 0 0 auto;
+				display: flex;
+				flex-direction: row;
+			}
+			.headerbar > * {
+				flex: 0 0 auto;
+				margin-left: 6px;
+				margin-right: 6px;
+			}
+			.headerbar > .headerbar_spacer { flex: 1 1 auto; }
+			.textarea_container {
+				flex: 1 1 auto;
+				margin: 0;
+				z-index: 9;
+			}
+			.textarea {
+				position: relative;
+				height: 100%;
+				width: 100%;
+				background: var(--layer_1_color);
+				color: var(--text_color);
+				margin: 0;
+				border-radius: 0;
+				box-shadow: none;
+			}
+			.textarea:focus { box-shadow: none; }
+
+			{{template `modal.css`}}
+		</style>
+	</head>
+
+	<body>
+		<div id="text_editor" class="text_editor">
+			<div id="headerbar" class="highlight_2 headerbar">
+				<a href="/" class="button">
+					<i class="icon">arrow_back</i>
+				</a>
+				<div id="headerbar_spacer" class="headerbar_spacer"></div>
+				<button class="button toolbar_button" onclick="return helpModal();">
+					<i class="icon">info</i> Information
+				</button>
+				<button class="button toolbar_button button_highlight" onclick="uploadText();">
+					<i class="icon">save</i> Save
+				</button>
+			</div>
+			<div class="textarea_container">
+				<textarea id="textarea" class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
+			</div>
+		</div>
+
+		<template id="tpl_text_editor_help">
+			<p>
+				You can type anything you want in here. When you're done press
+				CTRL + S or click the Save button in the top right corner to
+				upload your text file to pixeldrain.
+			</p>
+			<p>
+				To show syntax highlighting on pixeldrain's file viewer you
+				should save your file with a file extension like .js, .go,
+				.java, etc. If you save your file with the extension .md or
+				.markdown the result will be rendered as HTML on the file
+				viewer.
+			</p>
+			<p>
+				The text editor has been enhanced by Jacob Kelly's
+				<a href="https://jakiestfu.github.io/Behave.js/"target="_blank">Behave.js</a>.
+
+				Many thanks to him for developing this plugin and putting it
+				under the MIT license.
+			</p>
+		</template>
+
+		<script src="/res/script/behave.js"></script>
+		<script>
+			let apiEndpoint = '{{.APIEndpoint}}';
+			{{template "UploadManager.js"}}
+			{{template "util.js"}}
+			{{template "Modal.js"}}
+
+			let editor = new Behave({
+				textarea: document.getElementById("textarea"),
+				replaceTab: true,
+				softTabs: false,
+				tabSize: 8
+			});
+
+			function uploadText() {
+				var text = document.getElementById("textarea").value;
+				var blob = new Blob([text], {type: "text/plain"});
+				var filename = prompt(
+					"What do you want to call this piece of textual art?\n\n" +
+					"Please add your own file extension, if you want.",
+					"Text file.txt"
+				);
+
+				if(filename === null){
+					return; // User pressed cancel
+				}
+
+				new UploadManager(apiEndpoint+"/file", null).addFile(
+					blob,
+					filename,
+					null,
+					function (id){
+						addUploadHistory(id);
+						setTimeout(window.location.href = "/u/" + id, 100);
+					},
+					function (response, error) {
+						alert("File upload failed! The server told us this: " + response);
+					}
+				)
+			}
+
+			// Upload the file when ctrl + s is pressed
+			document.addEventListener("keydown", function(event) {
+				if ((event.ctrlKey || event.metaKey) && event.keyCode === 83) {
+					event.preventDefault();
+					uploadText();
+					return false;
+				}
+			});
+
+			function helpModal() {
+				let m = new Modal(
+					document.body, null, "Text editor", "600px", "auto"
+				)
+				m.cloneTemplate("tpl_text_editor_help")
+				m.open()
+				return false
+			}
+		</script>
+
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

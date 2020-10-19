@@ -34,7 +34,7 @@
 	font-family: 'Material Icons';
 	font-weight: normal;
 	font-style: normal;
-	font-size: 24px;  /* Preferred icon size */
+	font-size: 1.6em;
 	display: inline-block;
 	line-height: 1;
 	text-transform: none;
@@ -45,17 +45,11 @@
 	text-rendering: optimizeLegibility;
 	vertical-align: middle;
 }
-.icon.small {
-	font-size: 16px;
-}
-a > svg {
-	vertical-align: middle;
-}
+.icon.small { font-size: 1.2em; }
+a > svg { vertical-align: middle; }
 
 /* Page rendering configuration */
-html, body {
-	overflow-x: hidden;
-}
+html, body { overflow-x: hidden; }
 body{
 	background-color: #111111; /* Fallback */
 	background-color: var(--layer_2_color);
@@ -301,10 +295,9 @@ a:hover {
 table:not(.form) {
 	border-collapse: collapse;
 	width: 100%;
-	margin: 14px;
 }
 tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
-tr > td, tr > th {padding: 0.3em;}
+tr > td, tr > th {padding: 0.4em;}
 @media(max-width: 30em) {
 	/* Forms will be stacked on small screens */
 	tr.form > td {
@@ -319,15 +312,6 @@ pre {
 	margin: 16px;
 	border-bottom: 1px var(--layer_2_color_border) solid;
 	overflow-x: auto;
-}
-
-.big_button{
-	width: 40%;
-	min-width: 250px;
-	max-width: 400px;
-	margin: 10px !important;
-	border-radius: 5px;
-	font-size: 1.8em;
 }
 
 .file_button{
@@ -413,9 +397,8 @@ select {
 	border: none;
 	margin: 3px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
-	padding: .4em .5em .4em .5em;
+	padding: .3em .4em .3em .4em;
 	box-shadow: 2px 2px 6px -3px var(--shadow_color);
-	font-size: 0.9em;
 	line-height: 1em;
 	overflow: hidden;
 	text-decoration: none;
@@ -451,7 +434,7 @@ input[type="color"]:active,
 select:active{
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 4px 4px 8px var(--shadow_color);
-	padding: .6em .3em .2em .7em; /* Exactly .2em offset compared to the inactive padding to give a depth effect */
+	padding: .5em .2em .1em .6em; /* Exactly .2em offset compared to the inactive padding to give a depth effect */
 }
 .button_full_width      {width: calc(100% - 6px);}
 .button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: var(--highlight_text_color) !important;}

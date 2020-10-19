@@ -44,14 +44,13 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+.file_viewer > .file_viewer_headerbar > .button_home > svg {
+	height: 1.6em;
+	width: 1.6em;
+	margin: -0.1em 0.2em -0.1em -0.1em;
+}
 .file_viewer > .file_viewer_headerbar > .button_home::after {
 	content: "pixeldrain";
-}
-.file_viewer > .file_viewer_headerbar > .button_home > svg {
-	height: 1.7em;
-	width: 1.7em;
-	margin: -0.25em;
-	margin-right: 0.2em;
 }
 @media (max-width: 600px) {
 	.file_viewer > .file_viewer_headerbar > .button_home::after {
