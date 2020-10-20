@@ -90,6 +90,7 @@ DirectoryElement.prototype.renderFiles = function() {
 // search term will be put into visibleFiles. The visibleFiles array will then
 // be rendered by renderVisibleFiles
 DirectoryElement.prototype.search = function(term) {
+	term = term.toLowerCase()
 	this.lastSearchTerm = term
 	this.visibleFiles = []
 
@@ -102,14 +103,33 @@ DirectoryElement.prototype.search = function(term) {
 		return
 	}
 
+	let fileName = ""
 	for (let i in this.allFiles) {
-		if (this.allFiles[i].name.toLowerCase().includes(term.toLowerCase())) {
+		fileName = this.allFiles[i].name.toLowerCase()
+
+		// If there's an exact match we'll show it as the only result
+		if (fileName === term) {
+			this.visibleFiles = [i]
+			break
+		}
+
+		// If a file name contains the search term we include it in the results
+		if (fileName.includes(term)) {
 			this.visibleFiles.push(i)
 		}
 	}
 
 	this.sortBy("")
 	this.renderVisibleFiles(true)
+}
+
+// searchSubmit opens the first file in the search results
+DirectoryElement.prototype.searchSubmit = function() {
+	if (this.visibleFiles.length === 0) {
+		return // There are no files visible
+	}
+
+	window.location = this.getVisibleFile(0).href
 }
 
 DirectoryElement.prototype.sortBy = function(field) {
@@ -169,7 +189,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 	let el = document.createElement("a")
 	el.classList = "node"
 	el.href = file.href
-	el.target = "_blank"
+	// el.target = "_blank"
 	el.title = file.name
 	el.setAttribute("fileindex", index)
 

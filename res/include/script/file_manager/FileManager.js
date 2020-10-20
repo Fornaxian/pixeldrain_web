@@ -14,9 +14,13 @@ function FileManager(windowElement) {
 	document.addEventListener("keydown", e => { this.keyboardEvent(e) })
 
 	this.inputSearch.addEventListener("keyup", e => {
-		if (e.keyCode === 27) {
+		if (e.keyCode === 27) { // Escape
 			e.preventDefault()
 			this.inputSearch.blur()
+			return
+		} else if (e.keyCode === 13) { // Enter
+			e.preventDefault()
+			this.directoryElement.searchSubmit()
 			return
 		}
 		requestAnimationFrame(() => {

@@ -405,6 +405,7 @@ select {
 	box-shadow: 2px 2px 6px -3px var(--shadow_color);
 	line-height: 1em;
 	overflow: hidden;
+	font-size: 1em; /* Sometimes user-agents have different font sizes for buttons and links */
 	text-decoration: none;
 	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
