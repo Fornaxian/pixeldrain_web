@@ -135,7 +135,7 @@
 				{{else if eq .Other.AdType 2}}
 				<div style="text-align: center; line-height: 22px; font-size: 18px;">
 					<div style="margin: 4px 8px; display: inline-block; vertical-align: middle;">
-						Pixeldrain needs money to survive!<br/>
+						Pixeldrain needs money to survive<br/>
 						<a href="/click/7wy9gg2J?target=%2Fsubscribe" class="button button_highlight">
 							Support me on Patreon and get some neat perks
 						</a>
@@ -247,6 +247,10 @@
 		</script>
 
 		{{template "analytics"}}
+
+		{{ if .Other.ShowAds }}{{ if eq .Other.AdType 5 }}
+			<script data-cfasync="false" defer src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
+		{{ end }}{{ end }}
 	</body>
 </html>
 {{end}}

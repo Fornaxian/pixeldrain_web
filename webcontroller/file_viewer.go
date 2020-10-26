@@ -41,12 +41,18 @@ func adType() (i int) {
 	//  2: Patreon
 	//  3: Soul Studio Yoga
 	//  4: Amarula Solutions
+	//  5: Ad-Maven
 
 	switch i {
-	case 0, 1, 2, 3, 4: // 5/8 of the traffic
-		return 4
-	case 5, 6, 7: // 3/8 of traffic
-		return 2
+	case 0, 1, 2: // 3/8 of the traffic
+		return 4 // Amarula solutions
+
+	case 3, 4, 5, 6: // 4/8 of the traffic
+		return 5 // Ad-Maven
+
+	case 7: // 1/8 of traffic
+		return 2 // Patreon
+
 	default:
 		panic(fmt.Errorf(
 			"random number generator returned unrecognised number: %d", i),
