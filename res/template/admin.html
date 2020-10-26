@@ -23,6 +23,7 @@
 					<button onclick="loadGraph(131400, 1440, false);">Quarter</button>
 					<button onclick="loadGraph(262800, 1440, false);">Half-year</button>
 					<button onclick="loadGraph(525600, 1440, false);">Year</button>
+					<button onclick="loadGraph(1051200, 1440, false);">Two Years</button>
 					<!--<br/>
 					<button onclick="navigateTimespan(false);">🠈</button>
 					<button onclick="loadTimespan('day', new Date());">Day</button>
@@ -43,6 +44,13 @@
 					Total usage from <span id="time_start"></span> to <span id="time_end"></span><br/>
 					<span id="total_bandwidth"></span> bandwidth and <span id="total_views"></span> views
 				</div>
+
+				<br/>
+				<a class="button" href="/api/admin/call_stack">Call stack</a>
+				<a class="button" href="/api/admin/heap_profile">Heap profile</a>
+				<a class="button" href="/api/admin/cpu_profile">CPU profile (wait 1 min)</a>
+				<br/>
+
 				<div class="limit_width">
 					<h3>Database connection statistics</h3>
 					<table>
