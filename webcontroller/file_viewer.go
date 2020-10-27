@@ -67,12 +67,13 @@ func adType() (i int) {
 }
 
 type viewerData struct {
-	Type        string // file or list
-	CaptchaKey  string
-	ViewToken   string
-	AdType      int
-	ShowAds     bool
-	APIResponse interface{}
+	Type           string // file or list
+	CaptchaKey     string
+	ViewToken      string
+	AdType         int
+	FileAdsEnabled bool
+	UserAdsEnabled bool
+	APIResponse    interface{}
 }
 
 // ServeFileViewer controller for GET /u/:id
@@ -106,39 +107,30 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	showAds := true
-	if finfo[0].ShowAds == false ||
-		(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay) {
-		showAds = false
-	}
-
 	templateData.OGData = metadataFromFile(finfo[0].FileInfo)
+
+	var vd = viewerData{
+		CaptchaKey:     wc.captchaKey(),
+		ViewToken:      wc.viewTokenOrBust(),
+		AdType:         adType(),
+		FileAdsEnabled: finfo[0].ShowAds,
+		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
+	}
 	if len(ids) > 1 {
 		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(finfo))
-		templateData.Other = viewerData{
-			Type:       "list",
-			CaptchaKey: wc.captchaKey(),
-			ViewToken:  wc.viewTokenOrBust(),
-			AdType:     adType(),
-			ShowAds:    showAds,
-			APIResponse: apitype.ListInfo{
-				Success:     true,
-				Title:       "Multiple files",
-				DateCreated: time.Now(),
-				Files:       finfo,
-			},
+		vd.Type = "list"
+		vd.APIResponse = apitype.ListInfo{
+			Success:     true,
+			Title:       "Multiple files",
+			DateCreated: time.Now(),
+			Files:       finfo,
 		}
 	} else {
 		templateData.Title = fmt.Sprintf("%s ~ pixeldrain", finfo[0].Name)
-		templateData.Other = viewerData{
-			Type:        "file",
-			CaptchaKey:  wc.captchaKey(),
-			ViewToken:   wc.viewTokenOrBust(),
-			AdType:      adType(),
-			ShowAds:     showAds,
-			APIResponse: finfo[0].FileInfo,
-		}
+		vd.Type = "file"
+		vd.APIResponse = finfo[0].FileInfo
 	}
+	templateData.Other = vd
 
 	var templateName = "file_viewer"
 	if browserCompat(r.UserAgent()) {
@@ -157,10 +149,11 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Request) {
 	templateData := wc.newTemplateData(w, r)
 	templateData.Other = viewerData{
-		Type:       "file",
-		CaptchaKey: wc.captchaSiteKey,
-		AdType:     0, // Always show a-ads on the demo page
-		ShowAds:    true,
+		Type:           "file",
+		CaptchaKey:     wc.captchaSiteKey,
+		AdType:         0, // Always show a-ads on the demo page
+		FileAdsEnabled: true,
+		UserAdsEnabled: true,
 		APIResponse: map[string]interface{}{
 			"id":             "demo",
 			"name":           "Demo file",
@@ -203,21 +196,16 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	showAds := true
-	if (templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay) ||
-		list.Files[0].ShowAds == false {
-		showAds = false
-	}
-
 	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
 	templateData.OGData = metadataFromList(list)
 	templateData.Other = viewerData{
-		Type:        "list",
-		CaptchaKey:  wc.captchaSiteKey,
-		ViewToken:   wc.viewTokenOrBust(),
-		AdType:      adType(),
-		ShowAds:     showAds,
-		APIResponse: list,
+		Type:           "list",
+		CaptchaKey:     wc.captchaSiteKey,
+		ViewToken:      wc.viewTokenOrBust(),
+		AdType:         adType(),
+		FileAdsEnabled: list.Files[0].ShowAds,
+		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
+		APIResponse:    list,
 	}
 
 	var templateName = "file_viewer"

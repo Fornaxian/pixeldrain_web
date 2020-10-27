@@ -71,7 +71,7 @@
 					</button>
 					<br/>
 
-					{{if .Other.ShowAds}}
+					{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
 					<hr/>
 					<!-- <div id="brave_ref" style="text-align: center; padding: 2px;"> -->
 						{{if ne (isBrave .UserAgent) true}}
@@ -119,7 +119,7 @@
 			</div>
 
 			<div id="sponsors" class="sponsors">
-				{{if .Other.ShowAds}}
+				{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
 					{{if eq .Other.AdType 0}}
 					<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
 					<iframe class="sponsors_banner"
@@ -159,8 +159,12 @@
 					{{ else if eq .Other.AdType 7}}
 					<iframe class="sponsors_banner" src="/ad/revenuehits" style="width:728px; height:90px; border:none; padding:0; overflow:hidden;" scrolling="no"></iframe>
 					{{end}}
-				{{ else }}
-				<div style="text-align: center; line-height: 1.5em; font-size: 14px;">
+				{{ else if not .Other.UserAdsEnabled }}
+				<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
+					Thank you for supporting pixeldrain!
+				</div>
+				{{ else if not .Other.FileAdsEnabled }}
+				<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
 					The uploader of this file disabled advertisements. You can do the same for <a href="/subscribe">only €2 per month</a>!
 				</div>
 				{{end}}
@@ -256,7 +260,7 @@
 
 		{{template "analytics"}}
 
-		{{ if .Other.ShowAds }}
+		{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
 			{{ if eq .Other.AdType 5 }}
 			<script data-cfasync="false" defer src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
 			{{ else if eq .Other.AdType 6}}
