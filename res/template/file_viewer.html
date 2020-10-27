@@ -118,49 +118,53 @@
 				</div>
 			</div>
 
-			{{if .Other.ShowAds}}
 			<div id="sponsors" class="sponsors">
-				{{if eq .Other.AdType 0}}
-				<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
-				<iframe class="sponsors_banner"
-					data-aa="73974"
-					src="//ad.a-ads.com/73974?size=728x90&background_color={{.Style.Layer1Color.RGB}}&text_color={{.Style.TextColor.RGB}}&title_color={{.Style.HighlightColor.RGB}}&title_hover_color={{.Style.HighlightColor.RGB}}&link_color={{.Style.HighlightColor.RGB}}&link_hover_color={{.Style.HighlightColor.RGB}}"
-					style="width:728px; height:90px; border:none; padding:0; overflow:hidden;"
-					scrolling="no">
-				</iframe>
-				{{else if eq .Other.AdType 1}}
-				<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarula-electronics.com">
-					<img src="/res/img/misc/banner_as.png" style="width: 100%; height: 100%" />
-				</a>
-				{{else if eq .Other.AdType 2}}
-				<div style="text-align: center; line-height: 22px; font-size: 18px;">
-					<div style="margin: 4px 8px; display: inline-block; vertical-align: middle;">
-						Pixeldrain needs money to survive<br/>
-						<a href="/click/7wy9gg2J?target=%2Fsubscribe" class="button button_highlight">
-							Support me on Patreon and get some neat perks
-						</a>
-					</div>
-					<div style="margin: 4px 8px; display: inline-block; vertical-align: middle; text-align: left;">
-						No ads when viewing files<br/>
-						No ads on your uploaded files<br/>
-						Longer file retention<br/>
-					</div>
-				<div>
-				{{else if eq .Other.AdType 3}}
-				<a class="sponsors_banner" style="display: inline-block; width: 842px; height: 125px;" href="/click/RJRbh7Tn?target=https%3A%2F%2Fsoulstudio.nl%2Fonline-y">
-					<img src="/res/img/misc/banner_soul_studio.png" style="width: 100%; height: 100%" />
-				</a>
-				{{else if eq .Other.AdType 4}}
-				<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarulasolutions.com">
-					<img src="/res/img/misc/banner_amarulasolutions.png" style="width: 100%; height: 100%" />
-				</a>
-				{{ else if eq .Other.AdType 6}}
-				<div id="348416176"></div>
-				{{ else if eq .Other.AdType 7}}
-				<iframe class="sponsors_banner" src="/ad/revenuehits" style="width:728px; height:90px; border:none; padding:0; overflow:hidden;" scrolling="no"></iframe>
+				{{if .Other.ShowAds}}
+					{{if eq .Other.AdType 0}}
+					<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
+					<iframe class="sponsors_banner"
+						data-aa="73974"
+						src="//ad.a-ads.com/73974?size=728x90&background_color={{.Style.Layer1Color.RGB}}&text_color={{.Style.TextColor.RGB}}&title_color={{.Style.HighlightColor.RGB}}&title_hover_color={{.Style.HighlightColor.RGB}}&link_color={{.Style.HighlightColor.RGB}}&link_hover_color={{.Style.HighlightColor.RGB}}"
+						style="width:728px; height:90px; border:none; padding:0; overflow:hidden;"
+						scrolling="no">
+					</iframe>
+					{{else if eq .Other.AdType 1}}
+					<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarula-electronics.com">
+						<img src="/res/img/misc/banner_as.png" style="width: 100%; height: 100%" />
+					</a>
+					{{else if eq .Other.AdType 2}}
+					<div style="text-align: center; line-height: 22px; font-size: 18px;">
+						<div style="margin: 4px 8px; display: inline-block; vertical-align: middle;">
+							Pixeldrain needs money to survive<br/>
+							<a href="/click/7wy9gg2J?target=%2Fsubscribe" class="button button_highlight">
+								Support me on Patreon and get some neat perks
+							</a>
+						</div>
+						<div style="margin: 4px 8px; display: inline-block; vertical-align: middle; text-align: left;">
+							No ads when viewing files<br/>
+							No ads on your uploaded files<br/>
+							Longer file retention<br/>
+						</div>
+					<div>
+					{{else if eq .Other.AdType 3}}
+					<a class="sponsors_banner" style="display: inline-block; width: 842px; height: 125px;" href="/click/RJRbh7Tn?target=https%3A%2F%2Fsoulstudio.nl%2Fonline-y">
+						<img src="/res/img/misc/banner_soul_studio.png" style="width: 100%; height: 100%" />
+					</a>
+					{{else if eq .Other.AdType 4}}
+					<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarulasolutions.com">
+						<img src="/res/img/misc/banner_amarulasolutions.png" style="width: 100%; height: 100%" />
+					</a>
+					{{ else if eq .Other.AdType 6}}
+					<div id="348416176"></div>
+					{{ else if eq .Other.AdType 7}}
+					<iframe class="sponsors_banner" src="/ad/revenuehits" style="width:728px; height:90px; border:none; padding:0; overflow:hidden;" scrolling="no"></iframe>
+					{{end}}
+				{{ else }}
+				<div style="text-align: center; line-height: 1.5em; font-size: 14px;">
+					The uploader of this file disabled advertisements. You can do the same for <a href="/subscribe">only €2 per month</a>!
+				</div>
 				{{end}}
 			</div>
-			{{end}}
 		</div>
 
 		<template id="tpl_details_popup">

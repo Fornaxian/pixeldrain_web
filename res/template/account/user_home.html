@@ -25,7 +25,7 @@
 							Supporter level {{.User.Subscription.Name}}
 							<ul>
 								<li>Ads when viewing files: {{if .User.Subscription.DisableAdDisplay}}No{{else}}Yes{{end}}</li>
-								<li>Ads on uploaded files: {{if .User.Subscription.DisableAdsOnFiles}}No{{else}}Yes{{end}}</li>
+								<li>Ads on your uploaded files: {{if .User.Subscription.DisableAdsOnFiles}}No{{else}}Yes{{end}}</li>
 								{{if gt .User.Subscription.FileExpiryDays 0}}
 								<li>Files expire after {{.User.Subscription.FileExpiryDays}} days</li>
 								{{else}}

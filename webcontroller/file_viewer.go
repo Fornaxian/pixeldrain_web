@@ -107,7 +107,8 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	showAds := true
-	if (templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay) || finfo[0].ShowAds == false {
+	if finfo[0].ShowAds == false ||
+		(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay) {
 		showAds = false
 	}
 
