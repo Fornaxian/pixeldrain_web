@@ -154,6 +154,10 @@
 				<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarulasolutions.com">
 					<img src="/res/img/misc/banner_amarulasolutions.png" style="width: 100%; height: 100%" />
 				</a>
+				{{ else if eq .Other.AdType 6}}
+				<div id="348416176"></div>
+				{{ else if eq .Other.AdType 7}}
+				<iframe class="sponsors_banner" src="/ad/revenuehits" style="width:728px; height:90px; border:none; padding:0; overflow:hidden;" scrolling="no"></iframe>
 				{{end}}
 			</div>
 			{{end}}
@@ -248,9 +252,25 @@
 
 		{{template "analytics"}}
 
-		{{ if .Other.ShowAds }}{{ if eq .Other.AdType 5 }}
+		{{ if .Other.ShowAds }}
+			{{ if eq .Other.AdType 5 }}
 			<script data-cfasync="false" defer src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
-		{{ end }}{{ end }}
+			{{ else if eq .Other.AdType 6}}
+			<script type="text/javascript">
+				window._mNHandle = window._mNHandle || {};
+				window._mNHandle.queue = window._mNHandle.queue || [];
+				medianet_versionId = "3121199";
+			</script>
+			<script src="https://contextual.media.net/dmedianet.js?cid=8CU832SZI" async="async"></script>
+			<script type="text/javascript">
+				try {
+					window._mNHandle.queue.push(function (){
+						window._mNDetails.loadTag("348416176", "728x90", "348416176");
+					});
+				} catch (error) {}
+			</script>
+			{{ end }}
+		{{ end }}
 	</body>
 </html>
 {{end}}

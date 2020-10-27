@@ -33,25 +33,31 @@ func adType() (i int) {
 	// Intn returns a number up to n, but never n itself. So it get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	i = rand.Intn(8)
+	i = rand.Intn(5)
 
-	// The return value corresponds to the type of ad shown:
-	//  0: A-ads
-	//  1: Amarula Electronics
-	//  2: Patreon
-	//  3: Soul Studio Yoga
-	//  4: Amarula Solutions
-	//  5: Ad-Maven
+	const (
+		aAds               = 0
+		amarulaElectronics = 1
+		patreon            = 2
+		soulStudio         = 3
+		amarulaSolutions   = 4
+		adMaven            = 5
+		mediaNet           = 6
+		revenueHits        = 7
+	)
 
 	switch i {
-	case 0, 1, 2: // 3/8 of the traffic
-		return 4 // Amarula solutions
+	case 0, 1:
+		return amarulaSolutions
 
-	case 3, 4, 5, 6: // 4/8 of the traffic
-		return 5 // Ad-Maven
+	case 2:
+		return adMaven
 
-	case 7: // 1/8 of traffic
-		return 2 // Patreon
+	case 3:
+		return mediaNet
+
+	case 4:
+		return revenueHits
 
 	default:
 		panic(fmt.Errorf(

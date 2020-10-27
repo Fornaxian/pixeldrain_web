@@ -149,8 +149,9 @@ func New(
 		{PST, "admin/abuse" /*  */, wc.serveForm(wc.adminAbuseForm, true)},
 
 		// Advertising related
-		{GET, "click/:id" /*   */, wc.serveAdClick},
-		{GET, "campaign/:id" /**/, wc.serveCampaignPartner},
+		{GET, "click/:id" /*     */, wc.serveAdClick},
+		{GET, "campaign/:id" /*  */, wc.serveCampaignPartner},
+		{GET, "ad/revenuehits" /**/, wc.serveTemplate("revenuehits", false)},
 	} {
 		r.Handle(h.method, prefix+"/"+h.path, h.handler)
 	}
