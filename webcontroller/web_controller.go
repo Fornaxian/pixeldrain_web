@@ -116,6 +116,7 @@ func New(
 		{GET, "about" /*        */, wc.serveMarkdown("about.md", false)},
 		{GET, "appearance" /*   */, wc.serveTemplate("appearance", false)},
 		{GET, "hosting" /*      */, wc.serveMarkdown("hosting.md", false)},
+		{GET, "brave" /*        */, wc.serveMarkdown("brave.md", false)},
 
 		// User account pages
 		{GET, "register" /*        */, wc.serveForm(wc.registerForm, false)},
@@ -137,6 +138,9 @@ func New(
 		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
 		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false)},
 		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false)},
+
+		// Filesystem
+		{GET, "fs/*path", wc.serveFilesystem},
 
 		{GET, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},
 		{PST, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},

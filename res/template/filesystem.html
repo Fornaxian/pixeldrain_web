@@ -1,0 +1,37 @@
+{{ define "filesystem" }}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" .Title}}
+		{{template "user_style" .}}
+		<style>{{template "file_manager.css" .}}</style>
+		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
+	</head>
+
+	<body>
+		{{template "page_top" .}}
+
+		<h1>{{ .Title}}</h1>
+
+		<div class="page_content">
+			<div class="limit_width">
+				<h2>
+					<a href="/fs">Buckets</a>
+					{{ range $node := .Other.Path }}
+						/ <a href="{{ $node.HREF }}">{{ $node.Name }}</a>
+					{{ end }}
+				</h2>
+
+				{{ range $node := .Other.Children }}
+					<a class="node" href="{{ $node.HREF }}"><div>
+						<img src="{{ $node.Icon }}"/>
+						<span>{{ $node.Name }}</span>
+					</div></a>
+				{{ end }}
+			</div>
+		</div>
+
+		{{template "page_bottom" .}}
+		{{template "analytics"}}
+	</body>
+</html>
+{{ end }}

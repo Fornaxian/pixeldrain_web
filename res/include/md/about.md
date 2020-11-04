@@ -26,16 +26,12 @@ spare some coins. Possible methods for donating are:
  * Bitcoin:
    [1Ne7hGuvnfz9EFTRD3PLWVeaJTX9oA1QUr](bitcoin:1Ne7hGuvnfz9EFTRD3PLWVeaJTX9oA1QUr?label=Pixeldrain%20Donation)
  * BasicAttentionToken: Donate BAT by clicking the BAT icon in your address bar.
-   If you don't have Brave browser yet you can download it here: <a
-   class="button button_highlight" href="https://brave.com/pix009"
-   target="_blank">Install Brave</a>. Installing and using Brave with this
-   referral link also counts as a 5$ donation.
+   <a href="/brave">Learn more about Brave browser</a>.
  * Siacoin:
    26117c19ca3975b315d663dcbbc19cf9c07274f441689d4392ed380b2337589ef1aacfbdc93f
    (this address points directly at the storage backend. Donations will be used
    for paying storage contracts with Sia hosts)
- * PayPal: <a class="button button_highlight"
-   href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">
+ * <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">
    Donate with PayPal</a>
 
 ## How does pixeldrain store files?

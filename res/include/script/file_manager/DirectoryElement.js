@@ -189,7 +189,7 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 	let el = document.createElement("a")
 	el.classList = "node"
 	el.href = file.href
-	// el.target = "_blank"
+	el.target = "_blank"
 	el.title = file.name
 	el.setAttribute("fileindex", index)
 

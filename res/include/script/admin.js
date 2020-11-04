@@ -187,6 +187,13 @@ function getStats(order) {
 			resp.stats_watcher_listeners / resp.stats_watcher_threads
 		).toPrecision(3);
 
+		document.getElementById("cache_files").innerText = resp.cache_files;
+		document.getElementById("cache_size").innerText = formatDataVolume(resp.cache_size_total, 3);
+		document.getElementById("cache_max").innerText = formatDataVolume(resp.cache_size_max, 3);
+		document.getElementById("cache_reads").innerText = resp.cache_reads;
+		document.getElementById("disk_reads").innerText = resp.disk_reads;
+		document.getElementById("remote_reads").innerText = resp.remote_reads;
+
 		let c = document.getElementById("tconnstat_body")
 		c.innerHTML = ""
 		resp.db_connection_stats.forEach(v => {

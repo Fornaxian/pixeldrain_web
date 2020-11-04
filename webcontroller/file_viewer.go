@@ -44,6 +44,7 @@ func adType() (i int) {
 		adMaven            = 5
 		mediaNet           = 6
 		revenueHits        = 7
+		brave              = 8
 	)
 
 	switch i {
@@ -53,11 +54,8 @@ func adType() (i int) {
 	case 2:
 		return adMaven
 
-	case 3:
-		return mediaNet
-
-	case 4:
-		return revenueHits
+	case 3, 4:
+		return brave
 
 	default:
 		panic(fmt.Errorf(
