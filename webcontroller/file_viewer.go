@@ -29,12 +29,7 @@ func browserCompat(ua string) bool {
 	return strings.Contains(ua, "MSIE") || strings.Contains(ua, "Trident/7.0")
 }
 
-func adType() (i int) {
-	// Intn returns a number up to n, but never n itself. So it get a random 0
-	// or 1 we need to give it n=2. We can use this function to make other
-	// splits like 1/3 1/4, etc
-	i = rand.Intn(5)
-
+func adType() int {
 	const (
 		aAds               = 0
 		amarulaElectronics = 1
@@ -47,16 +42,18 @@ func adType() (i int) {
 		brave              = 8
 	)
 
-	switch i {
-	case 0, 1:
+	// Intn returns a number up to n, but never n itself. So it get a random 0
+	// or 1 we need to give it n=2. We can use this function to make other
+	// splits like 1/3 1/4, etc
+	switch i := rand.Intn(12); i {
+	case 0, 1, 2, 3, 4:
 		return amarulaSolutions
-
-	case 2:
+	case 5, 6, 7, 8:
 		return adMaven
-
-	case 3, 4:
+	case 9, 10:
 		return brave
-
+	case 11:
+		return aAds
 	default:
 		panic(fmt.Errorf(
 			"random number generator returned unrecognised number: %d", i),
