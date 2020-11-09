@@ -83,26 +83,28 @@
 					</table>
 					<h3>Pixelstore stats</h3>
 					<table>
-						<tr>
-							<td>Cache files</td>
-							<td>Cache size</td>
-							<td>Max cache size</td>
-						</tr>
-						<tr>
-							<td id="cache_files"></td>
-							<td id="cache_size"></td>
-							<td id="cache_max"></td>
-						</tr>
-						<tr>
-							<td>Cache reads</td>
-							<td>Disk reads</td>
-							<td>Remote reads</td>
-						</tr>
-						<tr>
-							<td id="cache_reads"></td>
-							<td id="disk_reads"></td>
-							<td id="remote_reads"></td>
-						</tr>
+						<thead>
+							<tr>
+								<td>Local reads</td>
+								<td>Local read size</td>
+								<td>Remote reads</td>
+								<td>Remote read size</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="local_reads"></td>
+								<td id="local_read_size"></td>
+								<td id="remote_reads"></td>
+								<td id="remote_read_size"></td>
+							</tr>
+							<tr>
+								<td id="local_reads_rate"></td>
+								<td id="local_read_size_rate"></td>
+								<td id="remote_reads_rate"></td>
+								<td id="remote_read_size_rate"></td>
+							</tr>
+						</tbody>
 					</table>
 					<h3>Websocket statistics</h3>
 					<table>

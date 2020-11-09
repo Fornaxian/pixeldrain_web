@@ -225,7 +225,6 @@ func (wc *WebController) serveMarkdown(tpl string, requireAuth bool) httprouter.
 			}
 			if inHeader {
 				tpld.Title = string(node.Literal)
-				log.Info(string(node.Literal))
 				return blackfriday.GoToNext
 			}
 
