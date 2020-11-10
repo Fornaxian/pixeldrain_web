@@ -1,6 +1,7 @@
 package webcontroller
 
 import (
+	"fmt"
 	"net/http"
 	"sort"
 	"strings"
@@ -12,6 +13,7 @@ import (
 
 type filesystemPath struct {
 	Path     []filesystemNode
+	Base     filesystemNode
 	Children []filesystemNode
 }
 
@@ -84,15 +86,18 @@ func (wc *WebController) serveFilesystem(w http.ResponseWriter, r *http.Request,
 			return
 		}
 
-		if node.Path[node.NodeIndex].Type == "file" {
+		if node.Base.Type == "file" {
 			http.Redirect(w, r, "/api/filesystem/"+path, http.StatusSeeOther)
 			return
 		}
 
-		for _, v := range node.Path {
+		for _, v := range node.Parents {
 			fsPath.Path = append(fsPath.Path, convFilesystemNode(node.Bucket.ID, v))
 		}
-		for _, v := range node.Children {
+
+		fsPath.Base = convFilesystemNode(node.Bucket.ID, node.Base)
+
+		for _, v := range node.Base.Children {
 			fsPath.Children = append(fsPath.Children, convFilesystemNode(node.Bucket.ID, v))
 		}
 	}
@@ -110,6 +115,34 @@ func (wc *WebController) serveFilesystem(w http.ResponseWriter, r *http.Request,
 	td.Title = "Filesystem"
 	td.Other = fsPath
 	err = wc.templates.Get().ExecuteTemplate(w, "filesystem", td)
+	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+		log.Error("Error executing template filesystem: %s", err)
+	}
+}
+
+func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	var err error
+	var td = wc.newTemplateData(w, r)
+	var path = strings.TrimPrefix(p.ByName("path"), "/")
+
+	node, err := td.PixelAPI.GetFilesystemPath(path)
+	if err != nil {
+		if err.Error() == "not_found" || err.Error() == "path_not_found" {
+			wc.templates.Get().ExecuteTemplate(w, "404", td)
+		} else {
+			log.Error("Failed to get path: %s", err)
+			wc.templates.Get().ExecuteTemplate(w, "500", td)
+		}
+		return
+	}
+
+	if node.Base.Type == "bucket" {
+		td.Title = fmt.Sprintf("%s ~ pixeldrain", node.Base.Name)
+	} else {
+		td.Title = fmt.Sprintf("%s in %s ~ pixeldrain", node.Base.Name, node.Bucket.Name)
+	}
+	td.Other = node
+	err = wc.templates.Get().ExecuteTemplate(w, "filesystem_svelte", td)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template filesystem: %s", err)
 	}

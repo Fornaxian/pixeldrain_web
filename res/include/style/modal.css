@@ -31,7 +31,7 @@
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: row;
-	padding: 4px;
+	padding: 1px;
 }
 
 .modal_title {

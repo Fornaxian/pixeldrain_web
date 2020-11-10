@@ -141,6 +141,7 @@ func New(
 
 		// Filesystem
 		{GET, "fs/*path", wc.serveFilesystem},
+		{GET, "d/*path", wc.serveDirectory},
 
 		{GET, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},
 		{PST, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},

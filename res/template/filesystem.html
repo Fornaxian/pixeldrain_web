@@ -19,6 +19,9 @@
 					{{ range $node := .Other.Path }}
 						/ <a href="{{ $node.HREF }}">{{ $node.Name }}</a>
 					{{ end }}
+					{{ if ne .Other.Base.Name "" }}
+						/ {{ .Other.Base.Name }}
+					{{ end }}
 				</h2>
 
 				{{ range $node := .Other.Children }}
