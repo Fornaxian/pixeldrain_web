@@ -5,12 +5,8 @@ import Sharebar from './Sharebar.svelte'
 import Spinner from '../util/Spinner.svelte'
 import Modal from '../util/Modal.svelte'
 import Directory from './viewers/Directory.svelte';
-
-let file = {
-	views: 6,
-	downloads: 12,
-	size: 24,
-}
+import Audio from './viewers/Audio.svelte';
+import Image from './viewers/Image.svelte';
 
 // Elements
 let file_viewer
@@ -32,22 +28,30 @@ let preview
 
 // State
 let currentNode = initialNode
+let path_base = "/d/"+currentNode.bucket.id
 let loading = true
 let viewer_type = ""
 
-const download = () => {
-	file.downloads++
-}
+window.onpopstate = (e) => {
+    if(e.state){
+		let locsplit = document.location.pathname.split(currentNode.bucket.id+"/", 2)
+		navigate(decodeURIComponent(locsplit[1]))
+    }
+};
 
-const navigate = (path) => {
+const navigate = (path, pushHist) => {
+	loading = true
 	fetch(
-		apiEndpoint+"/filesystem/"+currentNode.bucket.id+"/"+encodeURIComponent(path)+"?stat",
-	).then(resp => resp.json()).then(resp => {
-		window.history.pushState(
-			"page2",
-			resp.base.name+" in "+resp.bucket.name+" ~ pixeldrain",
-			"/d/"+resp.bucket.id+resp.base.path,
-		)
+		window.apiEndpoint+"/filesystem/"+currentNode.bucket.id+"/"+encodeURIComponent(path)+"?stat",
+	).then(
+		resp => resp.json()
+	).then(resp => {
+		window.document.title = resp.base.name+" ~ pixeldrain"
+		if (pushHist) {
+			window.history.pushState(
+				{}, window.document.title, "/d/"+resp.bucket.id+resp.base.path,
+			)
+		}
 		currentNode = resp
 		openPath()
 	}).catch(err => {
@@ -60,6 +64,16 @@ const openPath = () => {
 	console.log(currentNode.base.type)
 	if (currentNode.base.type === "bucket" || currentNode.base.type === "dir") {
 		viewer_type = "dir"
+	} else if (
+		currentNode.base.file_type.startsWith("image")
+	) {
+		viewer_type = "image"
+	} else if (
+		currentNode.base.file_type.startsWith("audio") ||
+		currentNode.base.file_type === "application/ogg" ||
+		currentNode.base.name.endsWith(".mp3")
+	) {
+		viewer_type = "audio"
 	}
 	loading = false
 }
@@ -81,31 +95,31 @@ onMount(openPath)
 <svelte:window on:keydown={keydown}/>
 
 <div bind:this={file_viewer} class="file_viewer">
+	{#if loading}
+	<div style="position: absolute; right: 0; top: 0; height: 48px; width: 48px; z-index: 100;">
+		<Spinner></Spinner>
+	</div>
+	{/if}
+
 	<div bind:this={header_bar} class="file_viewer_headerbar highlight_1">
 		<button on:click={toolbar_toggle} class="button_toggle_toolbar" class:button_highlight={toolbar_visible}>
 			<i class="icon">menu</i>
 		</button>
 		<a href="/" id="button_home" class="button button_home"><i class="icon">home</i></a>
 		<div class="file_viewer_headerbar_title">
-			<div>
-				{#if currentNode.parents.length > 0}
-					{currentNode.parents[currentNode.parents.length-1].path}
-				{/if}
-				/{currentNode.base.name}
-			</div>
+			{#each currentNode.parents as parent}
+			<div class="breadcrumb breadcrumb_button" on:click={() => {navigate(parent.path, true)}}>{parent.name}</div> /
+			{/each}
+			<div class="breadcrumb breadcrumb_last">{currentNode.base.name}</div>
 		</div>
 	</div>
 	<div class="list_navigator"></div>
 	<div class="file_viewer_window">
 		<div class="toolbar" class:toolbar_visible><div><div>
-			<div class="toolbar_label">Views</div>
-			<div class="toolbar_statistic">{formatThousands(file.views)}</div>
-			<div class="toolbar_label">Downloads</div>
-			<div class="toolbar_statistic">{formatThousands(file.downloads)}</div>
 			<div class="toolbar_label">Size</div>
-			<div class="toolbar_statistic">{formatDataVolume(file.size)}</div>
+			<div class="toolbar_statistic">{formatDataVolume(currentNode.base.file_size, 3)}</div>
 
-			<button on:click={download} class="toolbar_button button_full_width">
+			<button class="toolbar_button button_full_width">
 				<i class="icon">save</i> Download
 			</button>
 			<button id="btn_download_list" class="toolbar_button button_full_width" style="display: none;">
@@ -127,12 +141,12 @@ onMount(openPath)
 		<Sharebar bind:this={sharebar}></Sharebar>
 
 		<div bind:this={preview} class="file_viewer_file_preview" class:toolbar_visible>
-			{#if loading}
-			<div class="center" style="width: 128px; height: 128px;">
-				<Spinner></Spinner>
-			</div>
-			{:else if viewer_type === "dir"}
-			<Directory bind:this={preview} node={currentNode} on:navigate={e => {navigate(e.detail)}}></Directory>
+			{#if viewer_type === "dir"}
+			<Directory bind:this={preview} node={currentNode} path_base={path_base} on:navigate={e => {navigate(e.detail, true)}}></Directory>
+			{:else if viewer_type === "audio"}
+			<Audio bind:this={preview} node={currentNode}></Audio>
+			{:else if viewer_type === "image"}
+			<Image bind:this={preview} node={currentNode}></Image>
 			{/if}
 		</div>
 	</div>
@@ -183,27 +197,48 @@ onMount(openPath)
 	text-align: left;
 	z-index: 10;
 	box-shadow: none;
+	padding: 4px;
 }
 
 /* Headerbar components */
 .file_viewer > .file_viewer_headerbar > * {
 	flex-grow: 0;
 	flex-shrink: 0;
-	margin-left: 6px;
-	margin-right: 6px;
+	margin-left: 4px;
+	margin-right: 4px;
 	display: inline;
+	align-self: center;
 }
 .file_viewer > .file_viewer_headerbar > .file_viewer_headerbar_title {
 	flex-grow: 1;
 	flex-shrink: 1;
 	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-	line-height: 1.2em; /* When the page is a list there will be two lines. Dont's want to stretch the container*/
-	white-space: nowrap;
-	text-overflow: ellipsis;
+	align-items: center;
 	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: row;
 }
+.breadcrumb {
+	border-radius: 1em;
+	min-width: 1em;
+	text-align: center;
+	line-height: 1.2em;
+	padding: 3px 8px;
+	margin: 2px 6px;
+}
+.breadcrumb_button {
+	cursor: pointer;
+	background-color: var(--layer_2_color);
+	transition: 0.2s background-color;
+}
+.breadcrumb_button:hover, .breadcrumb_button:focus, .breadcrumb_button:active {
+	background-color: var(--input_color);
+}
+.breadcrumb_last {
+	background-color: var(--highlight_color);
+	color: var(--highlight_text_color);
+}
+
 .button_home::after {
 	content: "pixeldrain";
 }
@@ -257,16 +292,6 @@ onMount(openPath)
 	transition: left 0.5s;
 	overflow: hidden;
 	box-shadow: inset 2px 2px 8px var(--shadow_color);
-}
-
-.file_viewer > .file_viewer_window > .file_viewer_file_preview > .center{
-	position: relative;
-	display: block;
-	margin: auto;
-	max-width: 100%;
-	max-height: 100%;
-	top: 50%;
-	transform: translateY(-50%);
 }
 
 /* Toolbar */

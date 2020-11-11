@@ -136,11 +136,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 		return
 	}
 
-	if node.Base.Type == "bucket" {
-		td.Title = fmt.Sprintf("%s ~ pixeldrain", node.Base.Name)
-	} else {
-		td.Title = fmt.Sprintf("%s in %s ~ pixeldrain", node.Base.Name, node.Bucket.Name)
-	}
+	td.Title = fmt.Sprintf("%s ~ pixeldrain", node.Base.Name)
 	td.Other = node
 	err = wc.templates.Get().ExecuteTemplate(w, "filesystem_svelte", td)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {

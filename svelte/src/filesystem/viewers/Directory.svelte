@@ -1,15 +1,29 @@
 <script>
+import { formatDataVolume } from '../../util/Formatting.svelte'
 import { createEventDispatcher } from 'svelte'
 let dispatch = createEventDispatcher()
 
 export let node;
+export let path_base;
+let mode = "viewing"
 
-const navigate_to = (path) => {
-	dispatch("navigate", path)
+$: children = node.base.children.reduce((accum, val) => {
+	val["selected"] = false
+	accum.push(val)
+	return accum
+}, [])
+
+const node_click = (node, index) => {
+	if (mode === "viewing") {
+		dispatch("navigate", node.path)
+	} else if (mode === "selecting") {
+		children[index].selected = !children[index].selected
+	}
 }
 const navigate_up = () => {
+	// Go to the path of the last parent
 	if (node.parents.length !== 0) {
-		navigate_to(node.parents[node.parents.length-1].path)
+		dispatch("navigate", node.parents[node.parents.length-1].path)
 	}
 }
 
@@ -45,23 +59,50 @@ const node_icon = node => {
 </script>
 
 <div class="container">
-	<div class="toolbar">
-		<button on:click={navigate_up}><i class="icon">arrow_upward</i> up</button>
-	</div>
-	<br/>
-	<div class="directory">
-		{#if Array.isArray(node.base.children)}
-			{#each node.base.children as child}
-			<div on:click={navigate_to(child.path)} class="node">
-				<img src={node_icon(child)} alt="icon"/>
-				<div>{child.name}</div>
-			</div>
+	<div class="width_container">
+		<div class="toolbar">
+			<!-- {#if node.parents.length !== 0} -->
+			<button on:click={navigate_up} class:hidden={node.parents.length === 0}><i class="icon">arrow_back</i></button>
+			<!-- {/if} -->
+			<div class="toolbar_spacer"></div>
+			<button on:click={navigate_up}><i class="icon">cloud_upload</i></button>
+			<button on:click={navigate_up}><i class="icon">create_new_folder</i></button>
+			<button on:click={navigate_up}><i class="icon">delete</i></button>
+		</div>
+		<br/>
+		<table class="directory">
+			<tr>
+				<!-- <td><input type="checkbox" /></td> -->
+				<td></td>
+				<td>name</td>
+				<td>size</td>
+			</tr>
+			{#each children as child, index}
+				<a
+					href={path_base+child.path}
+					on:click|preventDefault={() => {node_click(child, index)}}
+					class="node"
+					class:node_selected={child.selected}>
+					<!-- <td on:click|preventDefault class="node_checkbox">
+						<input type="checkbox" />
+					</td> -->
+					<td>
+						<img src={node_icon(child)} class="node_icon" alt="icon"/>
+					</td>
+					<td class="node_name">
+						{child.name}
+					</td>
+					<td class="node_size">
+						{formatDataVolume(child.file_size, 3)}
+					</td>
+				</a>
 			{/each}
-		{/if}
+		</table>
 	</div>
 </div>
 
 <style>
+.hidden { visibility: hidden; }
 .container {
 	height: 100%;
 	width: 100%;
@@ -69,59 +110,72 @@ const node_icon = node => {
 	overflow-y: auto;
 	text-align: center;
 }
+.width_container {
+	position: relative;
+	display: inline-block;
+	max-width: 94%;
+	width: 1000px;
+	margin: 0;
+	padding: 0;
+}
 .toolbar {
 	position: relative;
-	display: inline-block;
-	max-width: 800px;
+	display: inline-flex;
+	flex-direction: row;
 	width: 100%;
-	margin: 20px 0 0 0;
+	margin: 16px 0 0 0;
+	padding: 0;
 	box-sizing: border-box;
 }
+.toolbar > * { flex: 0 0 auto; }
+.toolbar_spacer { flex: 1 1 auto; }
+
 .directory {
 	position: relative;
-	display: inline-block;
-	max-width: 800px;
+	overflow-x: auto;
+	overflow-y: hidden;
 	width: 100%;
-	margin: 20px 0 40px 0;
+	margin: 16px 0 16px 0;
 	text-align: left;
 	background-color: var(--layer_2_color);
 	box-shadow: 1px 1px var(--layer_2_shadow) var(--shadow_color);
 	box-sizing: border-box;
 }
 .node {
-	position: relative;
-	height: 40px;
-	overflow: hidden;
-	margin: 4px;
-	padding: 4px;
+	display: table-row;
+	text-decoration: none;
+	color: var(--text-color);
+	padding: 6px;
 	box-sizing: border-box;
-	cursor: pointer;
+}
+.node:not(:last-child) {
+	border-bottom: 1px solid var(--layer_3_color);
 }
 .node:hover:not(.node_selected) {
 	background-color: var(--input_color_dark);
 	color: var(--input_text_color);
 	text-decoration: none;
 }
-/* .node_selected {
+.node.node_selected {
 	background-color: var(--highlight_color);
 	color: var(--highlight_text_color);
-} */
-.node > div {
-	height: 100%;
-	overflow: hidden;
-	padding: 0;
-	line-height: 32px;
-	box-sizing: border-box;
-	display: inline-block;
-	text-overflow: ellipsis;
-	white-space: nowrap;
 }
-.node > img {
-	max-height: 100%;
-	margin-right: 6px;
+td {
+	padding: 4px;
+	vertical-align: middle;
+}
+.node_icon {
+	height: 32px;
 	width: auto;
-	min-width: auto;
-	float: left;
-	display: block;
+	vertical-align: middle;
+}
+.node_name {
+	width: 100%;
+	overflow: hidden;
+	line-height: 1.2em;
+}
+.node_size {
+	min-width: 50px;
+	white-space: nowrap;
 }
 </style>
