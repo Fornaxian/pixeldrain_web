@@ -81,22 +81,18 @@
 
 					{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
 					<hr/>
-					<!-- <div id="brave_ref" style="text-align: center; padding: 2px;"> -->
-						{{if ne (isBrave .UserAgent) true}}
-						Use the Brave web browser for a faster and safer web!<br/>
-						<a href="https://brave.com/pix009" id="btnBrave" class="button toolbar_button button_full_width button_highlight">
-							<img src="{{template `brave_lion.png`}}" alt="Brave lion"/>
-							<span>Get Brave</span>
-						</a>
+					<div style="text-align: center; line-height: 1.4em">
+						<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
+						<iframe
+							data-aa="73974"
+							src="//ad.a-ads.com/73974?size=120x600&background_color={{.Style.Layer1Color.RGB}}&text_color={{.Style.TextColor.RGB}}&title_color={{.Style.HighlightColor.RGB}}&title_hover_color={{.Style.HighlightColor.RGB}}&link_color={{.Style.HighlightColor.RGB}}&link_hover_color={{.Style.HighlightColor.RGB}}"
+							style="width:120px; height:600px; border:none; padding:0; overflow:hidden;"
+							scrolling="no">
+						</iframe>
 						<br/>
-						or <a href="/brave">learn why pixeldrain supports Brave</a>
-						{{else}}
-						Thank you for using Brave! Please consider supporting pixeldrain with a tip
-						<img src="{{template `bat_logo_color.png`}}" style="height: 1em; width: 1em;" />
-						{{end}}
-					<!-- </div> -->
-					<br/>
-					{{end}}
+						<a href="https://a-ads.com/campaigns/new?selected_ad_unit_id=73974&selected_source_type=ad_unit&partner=73974">Put your own advertisement here</a>
+					</div>
+					{{ end }}
 
 					<!-- This frame will load the download URL when a download button is pressed -->
 					<iframe id="download_frame" style="display: none; width: 1px; height: 1px;"></iframe>
@@ -128,19 +124,13 @@
 
 			<div id="sponsors" class="sponsors">
 				{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
-					{{if eq .Other.AdType 0}}
-					<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
-					<iframe class="sponsors_banner"
-						data-aa="73974"
-						src="//ad.a-ads.com/73974?size=728x90&background_color={{.Style.Layer1Color.RGB}}&text_color={{.Style.TextColor.RGB}}&title_color={{.Style.HighlightColor.RGB}}&title_hover_color={{.Style.HighlightColor.RGB}}&link_color={{.Style.HighlightColor.RGB}}&link_hover_color={{.Style.HighlightColor.RGB}}"
-						style="width:728px; height:90px; border:none; padding:0; overflow:hidden;"
-						scrolling="no">
-					</iframe>
-					{{else if eq .Other.AdType 1}}
+					{{if eq .Other.AdType 1}}
+					<!-- Amarula electronics -->
 					<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarula-electronics.com">
 						<img src="/res/img/misc/banner_as.png" style="width: 100%; height: 100%" />
 					</a>
 					{{else if eq .Other.AdType 2}}
+					<!-- Patreon -->
 					<div style="text-align: center; line-height: 22px; font-size: 18px;">
 						<div style="margin: 4px 8px; display: inline-block; vertical-align: middle;">
 							Pixeldrain needs money to survive<br/>
@@ -155,18 +145,20 @@
 						</div>
 					<div>
 					{{else if eq .Other.AdType 3}}
+					<!-- Soul Studio -->
 					<a class="sponsors_banner" style="display: inline-block; width: 842px; height: 125px;" href="/click/RJRbh7Tn?target=https%3A%2F%2Fsoulstudio.nl%2Fonline-y">
 						<img src="/res/img/misc/banner_soul_studio.png" style="width: 100%; height: 100%" />
 					</a>
 					{{else if eq .Other.AdType 4}}
+					<!-- Amarula Jobs -->
 					<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarulasolutions.com/jobs">
 						<img src="/res/img/misc/banner_amarula_jobs.png" style="width: 100%; height: 100%" />
 					</a>
-					{{ else if eq .Other.AdType 6}}
-					<div id="348416176"></div>
 					{{ else if eq .Other.AdType 7}}
+					<!-- Revenuehits -->
 					<iframe class="sponsors_banner" src="/ad/revenuehits" style="width:728px; height:90px; border:none; padding:0; overflow:hidden;" scrolling="no"></iframe>
 					{{ else if eq .Other.AdType 8}}
+					<!-- Brave -->
 					<a class="sponsors_banner" style="display: inline-block; width: 728px; height: 90px;" href="https://brave.com/pix009">
 						<img src="/res/img/misc/brave-728x90.png" style="width: 100%; height: 100%" />
 					</a>
@@ -274,21 +266,8 @@
 
 		{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
 			{{ if eq .Other.AdType 5 }}
-			<script data-cfasync="false" defer src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
-			{{ else if eq .Other.AdType 6}}
-			<script type="text/javascript">
-				window._mNHandle = window._mNHandle || {};
-				window._mNHandle.queue = window._mNHandle.queue || [];
-				medianet_versionId = "3121199";
-			</script>
-			<script src="https://contextual.media.net/dmedianet.js?cid=8CU832SZI" async="async"></script>
-			<script type="text/javascript">
-				try {
-					window._mNHandle.queue.push(function (){
-						window._mNDetails.loadTag("348416176", "728x90", "348416176");
-					});
-				} catch (error) {}
-			</script>
+			<!-- AdMaven -->
+			<script data-cfasync="false" async src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
 			{{ end }}
 		{{ end }}
 	</body>

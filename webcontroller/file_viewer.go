@@ -31,29 +31,26 @@ func browserCompat(ua string) bool {
 
 func adType() int {
 	const (
-		aAds               = 0
+		aAds               = 0 // Always on
 		amarulaElectronics = 1
 		patreon            = 2
 		soulStudio         = 3
 		amarulaSolutions   = 4
 		adMaven            = 5
-		mediaNet           = 6
 		revenueHits        = 7
 		brave              = 8
 	)
 
-	// Intn returns a number up to n, but never n itself. So it get a random 0
+	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	switch i := rand.Intn(12); i {
-	case 0, 1, 2, 3, 4:
+	switch i := rand.Intn(8); i {
+	case 0, 1, 2, 3:
 		return amarulaSolutions
-	case 5, 6, 7, 8:
+	case 4, 5:
 		return adMaven
-	case 9, 10:
-		return brave
-	case 11:
-		return aAds
+	case 6, 7:
+		return patreon
 	default:
 		panic(fmt.Errorf(
 			"random number generator returned unrecognised number: %d", i),
