@@ -8,7 +8,6 @@ export let file
 export let sharebar
 export let visible = false
 
-
 export const setVisible = (v) => {
 	visible = v
 	if (!visible) {
@@ -57,56 +56,56 @@ export const toggle = () => { setVisible(!visible) }
 </div></div></div>
 
 <style>
-	.toolbar {
-		position: absolute;
-		width: 8em;
-		z-index: 49;
-		overflow: hidden;
-		float: left;
-		background-color: var(--layer_1_color);
-		left: -9em;
-		bottom: 0;
-		top: 0;
-		padding: 0;
-		text-align: left;
-		transition: left 0.5s;
-	}
-	.visible { left: 0; }
+.toolbar {
+	position: absolute;
+	width: 8em;
+	z-index: 49;
+	overflow: hidden;
+	float: left;
+	background-color: var(--layer_1_color);
+	left: -9em;
+	bottom: 0;
+	top: 0;
+	padding: 0;
+	text-align: left;
+	transition: left 0.5s;
+}
+.visible { left: 0; }
 
-	/* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
-	.toolbar > div {
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		right: -30px;
-		overflow-y: scroll;
-		overflow-x: hidden;
-	}
-	.toolbar > div > div {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 8em;
-		height: auto;
-		text-align: center;
-	}
+/* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
+.toolbar > div {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: -30px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.toolbar > div > div {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 8em;
+	height: auto;
+	text-align: center;
+}
 
-	.toolbar_button{
-		text-align: left;
-	}
-	.toolbar_button > span {
-		vertical-align: middle;
-	}
+.toolbar_button{
+	text-align: left;
+}
+.toolbar_button > span {
+	vertical-align: middle;
+}
 
-	.label {
-		text-align: left;
-		padding-left: 10px;
-		font-size: 0.8em;
-		line-height: 0.7em;
-		margin-top: 0.5em;
-	}
-	.statistic {
-		text-align: center;
-	}
+.label {
+	text-align: left;
+	padding-left: 10px;
+	font-size: 0.8em;
+	line-height: 0.7em;
+	margin-top: 0.5em;
+}
+.statistic {
+	text-align: center;
+}
 </style>

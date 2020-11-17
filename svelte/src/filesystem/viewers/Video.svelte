@@ -7,28 +7,33 @@ export let state;
 </script>
 
 <div class="container">
-	{state.base.name}
-	<br/><br/>
-	<audio
+	<video
 		class="player"
 		src={fs_get_file_url(state.bucket.id, state.base.path)}
 		autoplay="autoplay"
 		controls="controls"
 		on:ended={() => { dispatch("next") }}>
 		<track kind="captions"/>
-	</audio>
+</video>
 </div>
 
 <style>
 .container {
+	position: relative;
+	display: block;
 	height: 100%;
 	width: 100%;
-	margin: 50px 0 0 0;
-	padding: 0;
-	overflow-y: auto;
 	text-align: center;
+	overflow: hidden;
 }
 .player {
-	width: 90%;
+	position: relative;
+	display: block;
+	margin: auto;
+	max-width: 100%;
+	max-height: 100%;
+	top: 50%;
+	transform: translateY(-50%);
+	box-shadow: 1px 1px var(--layer_3_shadow) var(--shadow_color);
 }
 </style>

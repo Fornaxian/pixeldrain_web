@@ -1,5 +1,8 @@
 <script>
-export let node
+import { fs_get_file_url } from "../FilesystemAPI.svelte";
+
+
+export let state
 let container
 let zoom = false
 let x, y = 0
@@ -48,7 +51,7 @@ const mouseup = (e) => {
 		on:doubletap={() => {zoom = !zoom}}
 		on:mousedown={mousedown}
 		class="image" class:zoom
-		src={window.apiEndpoint+"/filesystem/"+node.bucket.id+"/"+node.base.path}
+		src={fs_get_file_url(state.bucket.id, state.base.path)}
 		alt="no description available" />
 </div>
 

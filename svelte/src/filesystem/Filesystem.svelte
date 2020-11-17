@@ -1,12 +1,15 @@
 <script>
 import { onMount } from 'svelte';
-import { formatDate, formatDataVolume, formatThousands } from '../util/Formatting.svelte'
+import { formatDate, formatDataVolume, formatThousands, formatNumber } from '../util/Formatting.svelte'
+import { fs_get_file_url, fs_get_node } from './FilesystemAPI.svelte'
 import Sharebar from './Sharebar.svelte'
 import Spinner from '../util/Spinner.svelte'
 import Modal from '../util/Modal.svelte'
-import Directory from './viewers/Directory.svelte';
+import FileManager from './filemanager/FileManager.svelte';
 import Audio from './viewers/Audio.svelte';
 import Image from './viewers/Image.svelte';
+import Video from './viewers/Video.svelte';
+import { current_component } from 'svelte/internal';
 
 // Elements
 let file_viewer
@@ -22,29 +25,41 @@ let toolbar_toggle = () => {
 
 let sharebar
 let sharebar_visible = false
-let details;
+let details
 let details_visible = false
-let preview
+let download_frame
 
 // State
-let currentNode = initialNode
-let path_base = "/d/"+currentNode.bucket.id
-let loading = true
-let viewer_type = ""
+let state = {
+	bucket: initialNode.bucket,
+	parents: initialNode.parents,
+	base: initialNode.base,
 
-window.onpopstate = (e) => {
-    if(e.state){
-		let locsplit = document.location.pathname.split(currentNode.bucket.id+"/", 2)
-		navigate(decodeURIComponent(locsplit[1]))
-    }
-};
+	path_root: "/d/"+initialNode.bucket.id,
+	loading: true,
+	viewer_type: ""
+}
+
+// Tallys
+$: total_directories = state.base.children.reduce((acc, cur) => {
+	if (cur.type === "dir") {
+		acc++
+	}
+	return acc
+}, 0)
+$: total_files = state.base.children.reduce((acc, cur) => {
+	if (cur.type === "file") {
+		acc++
+	}
+	return acc
+}, 0)
+$: total_file_size = state.base.children.reduce((acc, cur) => acc + cur.file_size, 0)
 
 const navigate = (path, pushHist) => {
-	loading = true
-	fetch(
-		window.apiEndpoint+"/filesystem/"+currentNode.bucket.id+"/"+encodeURIComponent(path)+"?stat",
-	).then(
-		resp => resp.json()
+	state.loading = true
+
+	fs_get_node(
+		state.bucket.id, path,
 	).then(resp => {
 		window.document.title = resp.base.name+" ~ pixeldrain"
 		if (pushHist) {
@@ -52,31 +67,64 @@ const navigate = (path, pushHist) => {
 				{}, window.document.title, "/d/"+resp.bucket.id+resp.base.path,
 			)
 		}
-		currentNode = resp
-		openPath()
+
+		openNode(resp)
 	}).catch(err => {
-		loading = false
+		console.error(err)
 		alert(err)
+	}).finally(() => {
+		state.loading = false
 	})
 }
 
-const openPath = () => {
-	console.log(currentNode.base.type)
-	if (currentNode.base.type === "bucket" || currentNode.base.type === "dir") {
-		viewer_type = "dir"
+const openNode = (node) => {
+	// Sort directory children
+	node.base.children.sort((a, b) => {
+		// Sort directories before files
+		console.log(a)
+		if (a.type !== b.type) {
+			return a.type === "file" ? 1 : -1
+		}
+		return a.name.localeCompare(b.name)
+	})
+
+	// Update shared state
+	state.bucket = node.bucket
+	state.parents = node.parents
+	state.base = node.base
+
+	// Update the viewer area with the right viewer type
+	if (state.base.type === "bucket" || state.base.type === "dir") {
+		state.viewer_type = "dir"
+	} else if (state.base.file_type.startsWith("image")) {
+		state.viewer_type = "image"
 	} else if (
-		currentNode.base.file_type.startsWith("image")
+		state.base.file_type.startsWith("audio") ||
+		state.base.file_type === "application/ogg" ||
+		state.base.name.endsWith(".mp3")
 	) {
-		viewer_type = "image"
+		state.viewer_type = "audio"
 	} else if (
-		currentNode.base.file_type.startsWith("audio") ||
-		currentNode.base.file_type === "application/ogg" ||
-		currentNode.base.name.endsWith(".mp3")
+		state.base.file_type.startsWith("video") ||
+		state.base.file_type === "application/matroska" ||
+		state.base.file_type === "application/x-matroska"
 	) {
-		viewer_type = "audio"
+		state.viewer_type = "video"
+	} else {
+		state.viewer_type = ""
 	}
-	loading = false
+
+	// Remove spinner
+	state.loading = false
 }
+onMount(() => openNode(initialNode))
+
+window.onpopstate = (e) => {
+    if(e.state){
+		let locsplit = document.location.pathname.split(state.bucket.id+"/", 2)
+		navigate(decodeURIComponent(locsplit[1]))
+    }
+};
 
 const keydown = e => {
 	switch (e.key) {
@@ -86,16 +134,18 @@ const keydown = e => {
 		case 'i':
 			details_window.toggle()
 	}
-	console.log(e.key)
 };
 
-onMount(openPath)
+const download = () => {
+	download_frame.src = fs_get_file_url(state.bucket.id, state.base.path) + "?attach"
+}
+
 </script>
 
 <svelte:window on:keydown={keydown}/>
 
 <div bind:this={file_viewer} class="file_viewer">
-	{#if loading}
+	{#if state.loading}
 	<div style="position: absolute; right: 0; top: 0; height: 48px; width: 48px; z-index: 100;">
 		<Spinner></Spinner>
 	</div>
@@ -107,21 +157,32 @@ onMount(openPath)
 		</button>
 		<a href="/" id="button_home" class="button button_home"><i class="icon">home</i></a>
 		<div class="file_viewer_headerbar_title">
-			{#each currentNode.parents as parent}
+			{#each state.parents as parent}
 			<div class="breadcrumb breadcrumb_button" on:click={() => {navigate(parent.path, true)}}>{parent.name}</div> /
 			{/each}
-			<div class="breadcrumb breadcrumb_last">{currentNode.base.name}</div>
+			<div class="breadcrumb breadcrumb_last">{state.base.name}</div>
 		</div>
 	</div>
 	<div class="list_navigator"></div>
 	<div class="file_viewer_window">
 		<div class="toolbar" class:toolbar_visible><div><div>
+			{#if state.base.type === "file"}
 			<div class="toolbar_label">Size</div>
-			<div class="toolbar_statistic">{formatDataVolume(currentNode.base.file_size, 3)}</div>
+			<div class="toolbar_statistic">{formatDataVolume(state.base.file_size, 3)}</div>
+			{:else if state.base.type === "dir" || state.base.type === "bucket"}
+			<div class="toolbar_label">Directories</div>
+			<div class="toolbar_statistic">{formatThousands(total_directories, 3)}</div>
+			<div class="toolbar_label">Files</div>
+			<div class="toolbar_statistic">{formatThousands(total_files, 3)}</div>
+			<div class="toolbar_label">Total size</div>
+			<div class="toolbar_statistic">{formatDataVolume(total_file_size, 3)}</div>
+			{/if}
 
-			<button class="toolbar_button button_full_width">
+			{#if state.base.type === "file"}
+			<button on:click={download} class="toolbar_button button_full_width">
 				<i class="icon">save</i> Download
 			</button>
+			{/if}
 			<button id="btn_download_list" class="toolbar_button button_full_width" style="display: none;">
 				<i class="icon">save</i> DL all files
 			</button>
@@ -140,37 +201,39 @@ onMount(openPath)
 		</div></div></div>
 		<Sharebar bind:this={sharebar}></Sharebar>
 
-		<div bind:this={preview} class="file_viewer_file_preview" class:toolbar_visible>
-			{#if viewer_type === "dir"}
-			<Directory bind:this={preview} node={currentNode} path_base={path_base} on:navigate={e => {navigate(e.detail, true)}}></Directory>
-			{:else if viewer_type === "audio"}
-			<Audio bind:this={preview} node={currentNode}></Audio>
-			{:else if viewer_type === "image"}
-			<Image bind:this={preview} node={currentNode}></Image>
+		<div class="file_viewer_file_preview" class:toolbar_visible>
+			{#if state.viewer_type === "dir"}
+			<FileManager state={state} on:navigate={e => {navigate(e.detail, true)}} on:loading={e => {state.loading = e.detail}}></FileManager>
+			{:else if state.viewer_type === "audio"}
+			<Audio state={state}></Audio>
+			{:else if state.viewer_type === "image"}
+			<Image state={state}></Image>
+			{:else if state.viewer_type === "video"}
+			<Video state={state}></Video>
 			{/if}
 		</div>
 	</div>
 
 	<!-- This frame will load the download URL when a download button is pressed -->
-	<iframe title="Frame for downloading files" style="display: none; width: 1px; height: 1px;"></iframe>
+	<iframe bind:this={download_frame} title="Frame for downloading files" style="display: none; width: 1px; height: 1px;"></iframe>
 
 	<Modal bind:this={details} title="Details" width="600px">
 		<table style="min-width: 100%;">
 			<tr><td colspan="2"><h3>Node details</h3></td></tr>
-			<tr><td>Name</td><td>{currentNode.base.name}</td></tr>
-			<tr><td>Path</td><td>{currentNode.base.path}</td></tr>
-			<tr><td>Type</td><td>{currentNode.base.type}</td></tr>
-			<tr><td>Date created</td><td>{formatDate(currentNode.base.date_created, true, true, true)}</td></tr>
-			<tr><td>Date modified</td><td>{formatDate(currentNode.base.date_modified, true, true, true)}</td></tr>
-			{#if currentNode.base.type === "file"}
-			<tr><td>File type</td><td>{currentNode.base.file_type}</td></tr>
-			<tr><td>File size</td><td>{formatDataVolume(currentNode.base.file_size)}</td></tr>
+			<tr><td>Name</td><td>{state.base.name}</td></tr>
+			<tr><td>Path</td><td>{state.base.path}</td></tr>
+			<tr><td>Type</td><td>{state.base.type}</td></tr>
+			<tr><td>Date created</td><td>{formatDate(state.base.date_created, true, true, true)}</td></tr>
+			<tr><td>Date modified</td><td>{formatDate(state.base.date_modified, true, true, true)}</td></tr>
+			{#if state.base.type === "file"}
+			<tr><td>File type</td><td>{state.base.file_type}</td></tr>
+			<tr><td>File size</td><td>{formatDataVolume(state.base.file_size)}</td></tr>
 			{/if}
 			<tr><td colspan="2"><h3>Bucket details</h3></td></tr>
-			<tr><td>ID</td><td>{currentNode.bucket.id}</td></tr>
-			<tr><td>Name</td><td>{currentNode.bucket.name}</td></tr>
-			<tr><td>Date created</td><td>{formatDate(currentNode.bucket.date_created, true, true, true)}</td></tr>
-			<tr><td>Date modified</td><td>{formatDate(currentNode.bucket.date_modified, true, true, true)}</td></tr>
+			<tr><td>ID</td><td>{state.bucket.id}</td></tr>
+			<tr><td>Name</td><td>{state.bucket.name}</td></tr>
+			<tr><td>Date created</td><td>{formatDate(state.bucket.date_created, true, true, true)}</td></tr>
+			<tr><td>Date modified</td><td>{formatDate(state.bucket.date_modified, true, true, true)}</td></tr>
 		</table>
 	</Modal>
 </div>
@@ -225,18 +288,20 @@ onMount(openPath)
 	line-height: 1.2em;
 	padding: 3px 8px;
 	margin: 2px 6px;
+	word-break: break-all;
 }
 .breadcrumb_button {
 	cursor: pointer;
 	background-color: var(--layer_2_color);
-	transition: 0.2s background-color;
+	transition: 0.2s background-color, 0.2s color;
 }
 .breadcrumb_button:hover, .breadcrumb_button:focus, .breadcrumb_button:active {
+	color: var(--input_text_color);
 	background-color: var(--input_color);
 }
 .breadcrumb_last {
-	background-color: var(--highlight_color);
 	color: var(--highlight_text_color);
+	background-color: var(--highlight_color);
 }
 
 .button_home::after {
