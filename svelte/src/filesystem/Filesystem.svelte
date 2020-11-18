@@ -35,24 +35,18 @@ let state = {
 	parents: initialNode.parents,
 	base: initialNode.base,
 
+	// When navigating into a file or directory the siblings array will be
+	// populated with the previous base's children
+	siblings: [],
+
 	path_root: "/d/"+initialNode.bucket.id,
 	loading: true,
 	viewer_type: ""
 }
 
 // Tallys
-$: total_directories = state.base.children.reduce((acc, cur) => {
-	if (cur.type === "dir") {
-		acc++
-	}
-	return acc
-}, 0)
-$: total_files = state.base.children.reduce((acc, cur) => {
-	if (cur.type === "file") {
-		acc++
-	}
-	return acc
-}, 0)
+$: total_directories = state.base.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
+$: total_files = state.base.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
 $: total_file_size = state.base.children.reduce((acc, cur) => acc + cur.file_size, 0)
 
 const navigate = (path, pushHist) => {
@@ -77,16 +71,19 @@ const navigate = (path, pushHist) => {
 	})
 }
 
-const openNode = (node) => {
-	// Sort directory children
-	node.base.children.sort((a, b) => {
+const sort_children = children => {
+	children.sort((a, b) => {
 		// Sort directories before files
-		console.log(a)
 		if (a.type !== b.type) {
-			return a.type === "file" ? 1 : -1
+			return a.type === "dir" ? -1 : 1
 		}
 		return a.name.localeCompare(b.name)
 	})
+}
+
+const openNode = (node) => {
+	// Sort directory children
+	sort_children(node.base.children)
 
 	// Update shared state
 	state.bucket = node.bucket
@@ -119,8 +116,50 @@ const openNode = (node) => {
 }
 onMount(() => openNode(initialNode))
 
+// Opens a sibling of the currently open file. The offset is relative to the
+// file which is currently open. Give a positive number to move forward and a
+// negative number to move backward
+const open_sibling = offset => {
+	state.loading = true
+
+	// Get the parent directory
+	fs_get_node(
+		state.bucket.id, state.parents[state.parents.length - 1].path,
+	).then(resp => {
+		// Sort directory children
+		sort_children(resp.base.children)
+
+		// Loop over the parent node's children to find the one which is
+		// currently open. Then, if possible, we save the one which comes before
+		// or after it
+		let next_sibling = null
+		for (let i = 0; i < resp.base.children.length; i++) {
+			if (
+				resp.base.children[i].name === state.base.name &&
+				i+offset >= 0 && // Prevent underflow
+				i+offset < resp.base.children.length // Prevent overflow
+			) {
+				next_sibling = resp.base.children[i+offset]
+				console.debug("Next sibling is", next_sibling)
+			}
+		}
+
+		// If we found a sibling we open it
+		if (next_sibling !== null) {
+			navigate(next_sibling.path, true)
+		}
+	}).catch(err => {
+		console.error(err)
+		alert(err)
+	}).finally(() => {
+		state.loading = false
+	})
+}
+
+// Capture browser back and forward navigation buttons
 window.onpopstate = (e) => {
     if(e.state){
+		// Get the part of the URL after the bucket ID and navigate to it
 		let locsplit = document.location.pathname.split(state.bucket.id+"/", 2)
 		navigate(decodeURIComponent(locsplit[1]))
     }
@@ -142,7 +181,7 @@ const download = () => {
 
 </script>
 
-<svelte:window on:keydown={keydown}/>
+<svelte:window on:keydown={keydown} on:/>
 
 <div bind:this={file_viewer} class="file_viewer">
 	{#if state.loading}
@@ -205,11 +244,11 @@ const download = () => {
 			{#if state.viewer_type === "dir"}
 			<FileManager state={state} on:navigate={e => {navigate(e.detail, true)}} on:loading={e => {state.loading = e.detail}}></FileManager>
 			{:else if state.viewer_type === "audio"}
-			<Audio state={state}></Audio>
+			<Audio state={state} on:open_sibling={e => {open_sibling(e.detail)}}></Audio>
 			{:else if state.viewer_type === "image"}
-			<Image state={state}></Image>
+			<Image state={state} on:open_sibling={e => {open_sibling(e.detail)}}></Image>
 			{:else if state.viewer_type === "video"}
-			<Video state={state}></Video>
+			<Video state={state} on:open_sibling={e => {open_sibling(e.detail)}}></Video>
 			{/if}
 		</div>
 	</div>

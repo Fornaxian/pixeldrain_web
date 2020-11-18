@@ -12,7 +12,7 @@ export let state;
 		src={fs_get_file_url(state.bucket.id, state.base.path)}
 		autoplay="autoplay"
 		controls="controls"
-		on:ended={() => { dispatch("next") }}>
+		on:ended={() => { dispatch("open_sibling", 1) }}>
 		<track kind="captions"/>
 </video>
 </div>
