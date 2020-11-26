@@ -156,9 +156,6 @@
 					<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarulasolutions.com/jobs">
 						<img src="/res/img/misc/banner_amarula_jobs.png" style="width: 100%; height: 100%" />
 					</a>
-					{{ else if eq .Other.AdType 7}}
-					<!-- Revenuehits -->
-					<iframe class="sponsors_banner" src="/ad/revenuehits" style="width:728px; height:90px; border:none; padding:0; overflow:hidden;" scrolling="no"></iframe>
 					{{ else if eq .Other.AdType 8}}
 					<!-- Brave -->
 					<a class="sponsors_banner" style="display: inline-block; width: 728px; height: 90px;" href="https://brave.com/pix009">
@@ -270,6 +267,14 @@
 			{{ if eq .Other.AdType 5 }}
 			<!-- AdMaven -->
 			<script data-cfasync="false" async src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
+			{{ else if eq .Other.AdType 7}}
+			<!-- PropellerAds -->
+			<script>
+			(function(d,z,s){
+				s.src='//'+d+'/400/'+z
+				try{(document.body||document.documentElement).appendChild(s)}catch(e){}
+			})('in-page-push.com',3724132,document.createElement('script'))
+			</script>
 			{{ end }}
 		{{ end }}
 	</body>

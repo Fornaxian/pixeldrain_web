@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte';
-import { formatDate, formatDataVolume, formatThousands, formatNumber } from '../util/Formatting.svelte'
+import { formatDate, formatDataVolume, formatThousands } from '../util/Formatting.svelte'
 import { fs_get_file_url, fs_get_node } from './FilesystemAPI.svelte'
 import Sharebar from './Sharebar.svelte'
 import Spinner from '../util/Spinner.svelte'
@@ -9,13 +9,12 @@ import FileManager from './filemanager/FileManager.svelte';
 import Audio from './viewers/Audio.svelte';
 import Image from './viewers/Image.svelte';
 import Video from './viewers/Video.svelte';
-import { current_component } from 'svelte/internal';
 
 // Elements
 let file_viewer
 let header_bar
 
-let toolbar_visible = (window.innerWidth > 800)
+let toolbar_visible = (window.innerWidth > 600)
 let toolbar_toggle = () => {
 	toolbar_visible = !toolbar_visible
 	if (!toolbar_visible) {
@@ -38,7 +37,10 @@ let state = {
 	// When navigating into a file or directory the siblings array will be
 	// populated with the previous base's children
 	siblings: [],
+	current_sibling: -1,
 
+	// Root path of the bucket. Used for navigation by prepending it to a file
+	// path
 	path_root: "/d/"+initialNode.bucket.id,
 	loading: true,
 	viewer_type: ""
@@ -84,6 +86,23 @@ const sort_children = children => {
 const openNode = (node) => {
 	// Sort directory children
 	sort_children(node.base.children)
+
+	// If the new node is a child of the previous node we save the parent's
+	// children array
+	if (node.parents.length > 0 && node.parents[node.parents.length-1].path === state.base.path) {
+		console.debug("Current parent path and new node path match. Saving siblings")
+		state.siblings = state.base.children
+		state.current_sibling = -1
+
+		// Find which sibling is currently open
+		for (let i = 0; i < state.siblings.length; i++) {
+			if (state.siblings[i].name === node.base.name) {
+				state.current_sibling = i
+				console.debug("Current sibling ID is", i)
+				break
+			}
+		}
+	}
 
 	// Update shared state
 	state.bucket = node.bucket
@@ -167,11 +186,13 @@ window.onpopstate = (e) => {
 
 const keydown = e => {
 	switch (e.key) {
-		case 'Escape':
+		case "Escape":
 			hide();
 			return;
-		case 'i':
+		case "i":
 			details_window.toggle()
+		case "s":
+			download()
 	}
 };
 
@@ -197,7 +218,12 @@ const download = () => {
 		<a href="/" id="button_home" class="button button_home"><i class="icon">home</i></a>
 		<div class="file_viewer_headerbar_title">
 			{#each state.parents as parent}
-			<div class="breadcrumb breadcrumb_button" on:click={() => {navigate(parent.path, true)}}>{parent.name}</div> /
+			<a
+				href={state.path_root+parent.path}
+				class="breadcrumb breadcrumb_button"
+				on:click|preventDefault={() => {navigate(parent.path, true)}}>
+				{parent.name}
+			</a> /
 			{/each}
 			<div class="breadcrumb breadcrumb_last">{state.base.name}</div>
 		</div>
@@ -331,6 +357,8 @@ const download = () => {
 }
 .breadcrumb_button {
 	cursor: pointer;
+	text-decoration: none;
+	color: var(--text_color);
 	background-color: var(--layer_2_color);
 	transition: 0.2s background-color, 0.2s color;
 }

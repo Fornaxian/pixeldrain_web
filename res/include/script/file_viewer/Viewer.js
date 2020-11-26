@@ -21,7 +21,7 @@ function Viewer(type, viewToken, data) {
 
 	// On small screens the toolbar takes too much space, so it collapses
 	// automatically
-	if (this.divFilepreview.clientWidth > 800 && !this.toolbar.visible) {
+	if (this.divFilepreview.clientWidth > 600 && !this.toolbar.visible) {
 		this.toolbar.toggle()
 	}
 

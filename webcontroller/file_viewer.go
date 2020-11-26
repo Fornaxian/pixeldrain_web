@@ -37,7 +37,7 @@ func adType() int {
 		soulStudio         = 3
 		amarulaSolutions   = 4
 		adMaven            = 5
-		revenueHits        = 7
+		propellerAds       = 7
 		brave              = 8
 	)
 
@@ -50,7 +50,7 @@ func adType() int {
 	case 4, 5:
 		return adMaven
 	case 6, 7:
-		return patreon
+		return propellerAds
 	default:
 		panic(fmt.Errorf(
 			"random number generator returned unrecognised number: %d", i),
