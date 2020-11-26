@@ -3,5 +3,4 @@ main
 pdwebconf.toml
 go.sum
 svelte/node_modules
-*.js.map
-*.css.map
+res/static/svelte/*
