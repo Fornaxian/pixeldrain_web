@@ -454,8 +454,11 @@ input[type="submit"]:disabled, input[type="submit"].disabled,
 input[type="button"]:disabled, input[type="button"].disabled,
 input[type="color"]:disabled, input[type="color"].disabled,
 select:disabled , select.disabled {
-	background: var(--input_color_dark);
+	background: var(--layer_1_color);
+	color: var(--input_color);
 	box-shadow: none;
+	transition: none;
+	padding: 4px 5px 4px 5px;
 }
 
 /* Dropdown list of the select tag */

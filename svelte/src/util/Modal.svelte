@@ -46,10 +46,12 @@ const keydown = e => {
 <div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}}>
 	<div class="window" use:load_modal on:click|stopPropagation role="dialog" aria-modal="true">
 		<div class="header highlight_1">
-			<div class="title">{title}</div>
-			<button class="button_close button_red" on:click={hide}>
-				<i class="icon">close</i>
-			</button>
+			<slot name="title">
+				<div class="title">{title}</div>
+				<button class="button button_red" on:click={hide}>
+					<i class="icon">close</i>
+				</button>
+			</slot>
 		</div>
 		<div class="body">
 			<slot></slot>
@@ -104,7 +106,7 @@ const keydown = e => {
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
-.button_close {
+.button {
 	flex-grow: 0;
 	flex-shrink: 0;
 }

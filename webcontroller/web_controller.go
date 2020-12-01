@@ -132,6 +132,7 @@ func New(
 		{GET, "user" /*            */, wc.serveTemplate("user_home", true)},
 		{GET, "user/files" /*      */, wc.serveTemplate("user_files", true)},
 		{GET, "user/lists" /*      */, wc.serveTemplate("user_lists", true)},
+		{GET, "user/buckets" /*    */, wc.serveTemplate("user_buckets", true)},
 		{GET, "user/filemanager" /**/, wc.serveTemplate("file_manager", true)},
 
 		// User account settings

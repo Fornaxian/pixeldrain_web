@@ -17,7 +17,7 @@ const update_session_meta = name => {
 	if (media_session) {
 		navigator.mediaSession.metadata = new MediaMetadata({
 			title: name,
-			artist: "unknown",
+			artist: "pixeldrain",
 			album: "unknown",
 		});
 	}
@@ -38,7 +38,7 @@ onMount(() => {
 </script>
 
 <div class="container">
-	<button on:click={() =>  dispatch("open_sibling", -1) }><i class="icon">skip_previous</i></button>
+	<button on:click={() => dispatch("open_sibling", -1) }><i class="icon">skip_previous</i></button>
 	<button on:click={() => player.currentTime -= 10 }><i class="icon">replay_10</i></button>
 	<button on:click={toggle_play}>
 		{#if playing}

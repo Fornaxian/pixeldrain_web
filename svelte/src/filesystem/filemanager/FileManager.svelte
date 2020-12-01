@@ -20,8 +20,6 @@ const node_click = (index) => {
 		dispatch("navigate", state.base.children[index].path)
 	} else if (mode === "selecting") {
 		state.base.children[index].fm_selected = !state.base.children[index].fm_selected
-	} else if (mode === "deleting") {
-		state.base.children[index].fm_delete = !state.base.children[index].fm_delete
 	}
 }
 const navigate_up = () => {
@@ -66,9 +64,23 @@ const node_icon = node => {
 	return "/res/img/mime/empty.png"
 }
 
-const delete_node = () => {
-	if (mode !== "deleting") {
-		mode = "deleting"
+const delete_selected = () => {
+	if (mode !== "selecting") {
+		return
+	}
+
+	let count = state.base.children.reduce((acc, cur) => {
+		if (cur.fm_selected) {
+			acc++
+		}
+		return acc
+	}, 0)
+
+	let confirmSingle = `Are you sure you want to delete this file? This action is irreversible.`
+	let confirmMulti = `Are you sure you want to delete these ${count} files? This action is irreversible.`
+	if (count === 0 ||
+		(count === 1 && !confirm(confirmSingle)) ||
+		(count > 1 && !confirm(confirmMulti))) {
 		return
 	}
 
@@ -77,7 +89,7 @@ const delete_node = () => {
 	// Save all promises with deletion requests in an array
 	let promises = []
 	state.base.children.forEach(child => {
-		if (!child.fm_delete) { return }
+		if (!child.fm_selected) { return }
 		promises.push(fs_delete_node(state.bucket.id, child.path))
 	})
 
@@ -89,53 +101,53 @@ const delete_node = () => {
 		reload()
 	})
 }
-const delete_toggle = () => {
-	// Turn on deletion mode if it's not already
-	if (mode !== "deleting") {
-		mode = "deleting"
+const toggle_select = () => {
+	if (mode !== "selecting") {
+		mode = "selecting"
 		return
 	}
 
-	// Return to normal and unmark all the marked files
-	mode = "viewing"
+	// Unmark all the selected files and return to viewing mode
 	state.base.children.forEach((child, i) => {
-		if (child.fm_delete) {
-			state.base.children[i].fm_delete = false
+		if (child.fm_selected) {
+			state.base.children[i].fm_selected = false
 		}
 	})
+	mode = "viewing"
 }
 </script>
 
 <div class="container">
 	<div class="width_container">
 		<div class="toolbar">
-			<button on:click={navigate_up} class:hidden={state.parents.length === 0}><i class="icon">arrow_back</i></button>
+			<button on:click={navigate_up} disabled={state.parents.length === 0}><i class="icon">arrow_back</i></button>
+			<button on:click={reload}><i class="icon">refresh</i></button>
 			<div class="toolbar_spacer"></div>
 			{#if state.bucket.permissions.update}
 				<button on:click={uploader.picker}><i class="icon">cloud_upload</i></button>
 				<button on:click={() => {creating_dir = true}}><i class="icon">create_new_folder</i></button>
 
 				<button
-					on:click={delete_toggle}
-					class:button_red={mode === "deleting"}>
-					<i class="icon">delete</i>
+					on:click={toggle_select}
+					class:button_highlight={mode === "selecting"}>
+					<i class="icon">edit</i>
 				</button>
 			{/if}
 		</div>
 		<br/>
 
-		{#if mode === "deleting"}
-			<div class="toolbar toolbar_delete highlight_red">
+		{#if mode === "selecting"}
+			<div class="toolbar toolbar_edit highlight_green">
 				<div style="flex: 1 1 auto; justify-self: center;">
-					Deleting files. Click a file or directory to select it for deletion.
-					Click confirm to delete the files.
+					Select files or directories by clicking on them. Then you
+					can choose which action to perform
 				</div>
 				<div style="display: flex; flex-direction: row; justify-content: center;">
-					<button on:click={delete_toggle}>
+					<button on:click={toggle_select}>
 						<i class="icon">undo</i>
 						Cancel
 					</button>
-					<button on:click={delete_node} class="button_red">
+					<button on:click={delete_selected} class="button_red">
 						<i class="icon">delete</i>
 						Delete selected
 					</button>
@@ -162,8 +174,7 @@ const delete_toggle = () => {
 					href={state.path_root+child.path}
 					on:click|preventDefault={() => {node_click(index)}}
 					class="node"
-					class:node_selected={child.fm_selected}
-					class:node_delete={child.fm_delete}>
+					class:node_selected={child.fm_selected}>
 					<td>
 						<img src={node_icon(child)} class="node_icon" alt="icon"/>
 					</td>
@@ -180,7 +191,6 @@ const delete_toggle = () => {
 </div>
 
 <style>
-.hidden { visibility: hidden; }
 .container {
 	height: 100%;
 	width: 100%;
@@ -210,7 +220,7 @@ const delete_toggle = () => {
 .toolbar_spacer { flex: 1 1 auto; }
 
 @media(max-width: 800px) {
-	.toolbar_delete {
+	.toolbar_edit {
 		flex-direction: column;
 	}
 }

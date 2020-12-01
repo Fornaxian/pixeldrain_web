@@ -9,6 +9,8 @@ import FileManager from './filemanager/FileManager.svelte';
 import Audio from './viewers/Audio.svelte';
 import Image from './viewers/Image.svelte';
 import Video from './viewers/Video.svelte';
+import PDF from './viewers/PDF.svelte';
+import PixeldrainLogo from '../util/PixeldrainLogo.svelte';
 
 // Elements
 let file_viewer
@@ -18,12 +20,18 @@ let toolbar_visible = (window.innerWidth > 600)
 let toolbar_toggle = () => {
 	toolbar_visible = !toolbar_visible
 	if (!toolbar_visible) {
-		sharebar.setVisible(false)
+		sharebar_visible = false
 	}
 }
 
 let sharebar
 let sharebar_visible = false
+$: {
+	if (typeof(sharebar) !== "undefined") {
+		sharebar.setVisible(sharebar_visible)
+	}
+}
+
 let details
 let details_visible = false
 let download_frame
@@ -34,44 +42,27 @@ let state = {
 	parents: initialNode.parents,
 	base: initialNode.base,
 
-	// When navigating into a file or directory the siblings array will be
-	// populated with the previous base's children
-	siblings: [],
-	current_sibling: -1,
+	// These are used to navigate forward and backward within a directory (using
+	// the previous and next buttons on the toolbar). The cached siblings will
+	// be used so that we don't need to make an extra request to the parent
+	// directory. The siblings_path variable is used to verify that the parent
+	// directory is still the same. If it's sifferent the siblings array is not
+	// used
+	siblings_path: "",
+	siblings: null,
 
 	// Root path of the bucket. Used for navigation by prepending it to a file
 	// path
 	path_root: "/d/"+initialNode.bucket.id,
 	loading: true,
-	viewer_type: ""
+	viewer_type: "",
+	shuffle: false,
 }
 
 // Tallys
 $: total_directories = state.base.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
 $: total_files = state.base.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
 $: total_file_size = state.base.children.reduce((acc, cur) => acc + cur.file_size, 0)
-
-const navigate = (path, pushHist) => {
-	state.loading = true
-
-	fs_get_node(
-		state.bucket.id, path,
-	).then(resp => {
-		window.document.title = resp.base.name+" ~ pixeldrain"
-		if (pushHist) {
-			window.history.pushState(
-				{}, window.document.title, "/d/"+resp.bucket.id+resp.base.path,
-			)
-		}
-
-		openNode(resp)
-	}).catch(err => {
-		console.error(err)
-		alert(err)
-	}).finally(() => {
-		state.loading = false
-	})
-}
 
 const sort_children = children => {
 	children.sort((a, b) => {
@@ -83,25 +74,37 @@ const sort_children = children => {
 	})
 }
 
-const openNode = (node) => {
-	// Sort directory children
-	sort_children(node.base.children)
+const navigate = (path, pushHist) => {
+	state.loading = true
 
+	fs_get_node(state.bucket.id, path).then(resp => {
+		window.document.title = resp.base.name+" ~ pixeldrain"
+		if (pushHist) {
+			window.history.pushState(
+				{}, window.document.title, "/d/"+resp.bucket.id+resp.base.path,
+			)
+		}
+
+		// Sort directory children
+		sort_children(resp.base.children)
+
+		open_node(resp)
+	}).catch(err => {
+		console.error(err)
+		alert(err)
+	}).finally(() => {
+		state.loading = false
+	})
+}
+
+const open_node = (node) => {
 	// If the new node is a child of the previous node we save the parent's
 	// children array
 	if (node.parents.length > 0 && node.parents[node.parents.length-1].path === state.base.path) {
 		console.debug("Current parent path and new node path match. Saving siblings")
-		state.siblings = state.base.children
-		state.current_sibling = -1
 
-		// Find which sibling is currently open
-		for (let i = 0; i < state.siblings.length; i++) {
-			if (state.siblings[i].name === node.base.name) {
-				state.current_sibling = i
-				console.debug("Current sibling ID is", i)
-				break
-			}
-		}
+		state.siblings_path = node.parents[node.parents.length-1].path
+		state.siblings = state.base.children
 	}
 
 	// Update shared state
@@ -126,6 +129,11 @@ const openNode = (node) => {
 		state.base.file_type === "application/x-matroska"
 	) {
 		state.viewer_type = "video"
+	} else if (
+		state.base.file_type === "application/pdf" ||
+		state.base.file_type === "application/x-pdf"
+	) {
+		state.viewer_type = "pdf"
 	} else {
 		state.viewer_type = ""
 	}
@@ -133,46 +141,77 @@ const openNode = (node) => {
 	// Remove spinner
 	state.loading = false
 }
-onMount(() => openNode(initialNode))
+onMount(() => open_node(initialNode))
 
 // Opens a sibling of the currently open file. The offset is relative to the
 // file which is currently open. Give a positive number to move forward and a
 // negative number to move backward
-const open_sibling = offset => {
+const open_sibling = async offset => {
+	if (state.parents.length == 0) {
+		return
+	}
+
 	state.loading = true
 
-	// Get the parent directory
-	fs_get_node(
-		state.bucket.id, state.parents[state.parents.length - 1].path,
-	).then(resp => {
-		// Sort directory children
-		sort_children(resp.base.children)
+	// Check if we already have siblings cached
+	if (state.siblings != null && state.siblings_path == state.parents[state.parents.length - 1].path) {
+		console.debug("Using cached siblings")
+	} else {
+		console.debug("Cached siblings not available. Fetching new")
+		try {
+			let resp = await fs_get_node(state.bucket.id, state.parents[state.parents.length - 1].path)
 
+			// Sort directory children to make sure the order is consistent
+			sort_children(resp.base.children)
+
+			// Save new siblings in global state
+			state.siblings_path = state.parents[state.parents.length - 1].path
+			state.siblings = resp.base.children
+		} catch (err) {
+			console.error(err)
+			alert(err)
+			state.loading = false
+			return
+		}
+	}
+
+	let next_sibling = null
+
+	if (state.shuffle) {
+		// Shuffle is on, pick a random sibling
+		for (let i = 0; i < 10; i++) {
+			next_sibling = state.siblings[Math.floor(Math.random()*state.siblings.length)]
+
+			// If we selected the same sibling we already have open we try
+			// again. Else we break the loop
+			if (next_sibling.name !== state.base.name) {
+				break
+			}
+		}
+	} else {
 		// Loop over the parent node's children to find the one which is
 		// currently open. Then, if possible, we save the one which comes before
 		// or after it
-		let next_sibling = null
-		for (let i = 0; i < resp.base.children.length; i++) {
+		for (let i = 0; i < state.siblings.length; i++) {
 			if (
-				resp.base.children[i].name === state.base.name &&
+				state.siblings[i].name === state.base.name &&
 				i+offset >= 0 && // Prevent underflow
-				i+offset < resp.base.children.length // Prevent overflow
+				i+offset < state.siblings.length // Prevent overflow
 			) {
-				next_sibling = resp.base.children[i+offset]
-				console.debug("Next sibling is", next_sibling)
+				next_sibling = state.siblings[i+offset]
+				break
 			}
 		}
+	}
 
-		// If we found a sibling we open it
-		if (next_sibling !== null) {
-			navigate(next_sibling.path, true)
-		}
-	}).catch(err => {
-		console.error(err)
-		alert(err)
-	}).finally(() => {
+	// If we found a sibling we open it
+	if (next_sibling !== null) {
+		console.debug("Opening sibling", next_sibling)
+		navigate(next_sibling.path,true)
+	} else {
+		console.debug("No siblings found")
 		state.loading = false
-	})
+	}
 }
 
 // Capture browser back and forward navigation buttons
@@ -185,24 +224,42 @@ window.onpopstate = (e) => {
 };
 
 const keydown = e => {
+	if (e.ctrlKey || e.altKey || e.metaKey) {
+		return // prevent custom shortcuts from interfering with system shortcuts
+	}
+
 	switch (e.key) {
 		case "Escape":
 			hide();
-			return;
+			break;
 		case "i":
 			details_window.toggle()
+			break;
 		case "s":
 			download()
+			break;
+		case "r":
+			state.shuffle = !state.shuffle
+			break;
+		case "a", "ArrowLeft":
+			open_sibling(-1)
+			break;
+		case "d", "ArrowRight":
+			open_sibling(1)
+			break;
 	}
 };
 
 const download = () => {
 	download_frame.src = fs_get_file_url(state.bucket.id, state.base.path) + "?attach"
 }
+const share = () => {
+
+}
 
 </script>
 
-<svelte:window on:keydown={keydown} on:/>
+<svelte:window on:keydown={keydown} />
 
 <div bind:this={file_viewer} class="file_viewer">
 	{#if state.loading}
@@ -215,7 +272,9 @@ const download = () => {
 		<button on:click={toolbar_toggle} class="button_toggle_toolbar" class:button_highlight={toolbar_visible}>
 			<i class="icon">menu</i>
 		</button>
-		<a href="/" id="button_home" class="button button_home"><i class="icon">home</i></a>
+		<a href="/" id="button_home" class="button button_home">
+			<PixeldrainLogo style="hieght: 1.6em; width: 1.6em; margin: 0 0.2em 0 0; color: currentColor;"></PixeldrainLogo>
+		</a>
 		<div class="file_viewer_headerbar_title">
 			{#each state.parents as parent}
 			<a
@@ -243,6 +302,18 @@ const download = () => {
 			<div class="toolbar_statistic">{formatDataVolume(total_file_size, 3)}</div>
 			{/if}
 
+			<div class="button_row">
+				<button on:click={() => {open_sibling(-1)}}>
+					<i class="icon">skip_previous</i>
+				</button>
+				<button on:click={() => {state.shuffle = !state.shuffle}} class:button_highlight={state.shuffle}>
+					<i class="icon">shuffle</i>
+				</button>
+				<button on:click={() => {open_sibling(1)}}>
+					<i class="icon">skip_next</i>
+				</button>
+			</div>
+
 			{#if state.base.type === "file"}
 			<button on:click={download} class="toolbar_button button_full_width">
 				<i class="icon">save</i> Download
@@ -254,7 +325,7 @@ const download = () => {
 			<button id="btn_copy" class="toolbar_button button_full_width">
 				<i class="icon">content_copy</i> <u>C</u>opy Link
 			</button>
-			<button on:click={sharebar.toggle} class="toolbar_button button_full_width" class:button_highlight={sharebar_visible}>
+			<button on:click={() => sharebar_visible = !sharebar_visible} class="toolbar_button button_full_width" class:button_highlight={sharebar_visible}>
 				<i class="icon">share</i> Share
 			</button>
 			<button on:click={details.toggle} class="toolbar_button button_full_width" class:button_highlight={details_visible}>
@@ -275,6 +346,8 @@ const download = () => {
 			<Image state={state} on:open_sibling={e => {open_sibling(e.detail)}}></Image>
 			{:else if state.viewer_type === "video"}
 			<Video state={state} on:open_sibling={e => {open_sibling(e.detail)}}></Video>
+			{:else if state.viewer_type === "pdf"}
+			<PDF state={state}></PDF>
 			{/if}
 		</div>
 	</div>
@@ -282,7 +355,7 @@ const download = () => {
 	<!-- This frame will load the download URL when a download button is pressed -->
 	<iframe bind:this={download_frame} title="Frame for downloading files" style="display: none; width: 1px; height: 1px;"></iframe>
 
-	<Modal bind:this={details} title="Details" width="600px">
+	<Modal bind:this={details} title="Details" width="600px" role="prompt">
 		<table style="min-width: 100%;">
 			<tr><td colspan="2"><h3>Node details</h3></td></tr>
 			<tr><td>Name</td><td>{state.base.name}</td></tr>
@@ -474,6 +547,13 @@ const download = () => {
 }
 .toolbar_statistic {
 	text-align: center;
+}
+.button_row {
+	display: flex;
+	flex-direction: row;
+}
+.button_row > * {
+	flex: 1 1 auto;
 }
 
 </style>

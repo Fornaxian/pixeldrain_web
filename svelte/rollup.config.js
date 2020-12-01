@@ -31,6 +31,7 @@ const builddir = "../res/static/svelte"
 export default [
 	"filesystem",
 	"modal",
+	"user_buckets",
 ].map((name, index) => ({
 	input: `src/${name}.js`,
 	output: {

@@ -27,7 +27,7 @@ export const upload = (file_list) => {
 	// This updates the UI
 	upload_jobs = upload_jobs
 
-	while (upload_threads <= max_upload_threads) {
+	while (upload_threads < max_upload_threads) {
 		upload_threads++
 		setTimeout(upload_file, 1)
 	}
