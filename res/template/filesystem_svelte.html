@@ -19,7 +19,7 @@
 		<link rel="shortcut icon" sizes="196x196" href="/res/img/pixeldrain_196.png" />
 		<meta name="theme-color" content="#75AD38"/>
 
-		{{.OGData}}
+		{{ template "opengraph" .OGData }}
 		<script>
 			const initialNode = {{.Other}};
 			window.api_endpoint = '{{.APIEndpoint}}';

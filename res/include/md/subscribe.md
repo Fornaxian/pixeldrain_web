@@ -65,4 +65,4 @@ See our subscription plans on Patreon
 
 After ordering you will receive an e-mail with a link to activate your
 subscription. The subscription will be linked to the pixeldrain account you're
-currently loggin into.
+currently logged into.

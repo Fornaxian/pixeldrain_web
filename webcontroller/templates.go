@@ -34,7 +34,7 @@ type TemplateData struct {
 
 	// Only used on file viewer page
 	Title  string
-	OGData template.HTML
+	OGData ogData
 
 	Other    interface{}
 	URLQuery url.Values

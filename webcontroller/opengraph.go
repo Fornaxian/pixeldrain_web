@@ -1,99 +1,87 @@
 package webcontroller
 
 import (
-	"html/template"
 	"strings"
 
 	"fornaxian.tech/pixeldrain_server/api/restapi/apitype"
 )
 
-type ogRule struct {
-	Prop    string
-	Content string
+type ogData struct {
+	OGRules      []ogProp
+	TwitterRules []ogProp
+	LinkRules    []ogProp
 }
 
-func (o ogRule) HTML() template.HTML {
-	return template.HTML(`<meta property="` + o.Prop + `" content="` + o.Content + `"/>` + "\n")
+type ogProp struct {
+	Key   string
+	Value string
 }
 
-type twitterRule struct {
-	Name    string
-	Content string
-}
+func (og *ogData) addOG(k, v string)      { og.OGRules = append(og.OGRules, ogProp{k, v}) }
+func (og *ogData) addTwitter(k, v string) { og.TwitterRules = append(og.TwitterRules, ogProp{k, v}) }
+func (og *ogData) addLink(k, v string)    { og.LinkRules = append(og.LinkRules, ogProp{k, v}) }
 
-func (o twitterRule) HTML() template.HTML {
-	return template.HTML(`<meta name="` + o.Name + `" content="` + o.Content + `"/>` + "\n")
-}
-
-type linkRule struct {
-	Rel  string
-	HREF string
-}
-
-func (o linkRule) HTML() template.HTML {
-	return template.HTML(`<link rel="` + o.Rel + `" href="` + o.HREF + `"/>` + "\n")
-}
-
-func metadataFromFile(f apitype.FileInfo) (meta template.HTML) {
-	meta += ogRule{"og:title", f.Name}.HTML()
-	meta += ogRule{"og:site_name", "pixeldrain"}.HTML()
-	meta += ogRule{"og:description", "View '" + f.Name + "' on pixeldrain"}.HTML()
-	meta += ogRule{"description", "View '" + f.Name + "' on pixeldrain"}.HTML()
-	meta += ogRule{"og:url", "/u/" + f.ID}.HTML()
-	meta += twitterRule{"twitter:title", f.Name}.HTML()
-	meta += twitterRule{"twitter:site", "@Fornax96"}.HTML()
-	meta += twitterRule{"twitter:domain", "pixeldrain.com"}.HTML()
+func metadataFromFile(f apitype.FileInfo) (og ogData) {
+	og.addOG("og:title", f.Name)
+	og.addOG("og:site_name", "pixeldrain")
+	og.addOG("og:description", "View '"+f.Name+"' on pixeldrain")
+	og.addOG("description", "View '"+f.Name+"' on pixeldrain")
+	og.addOG("og:url", "/u/"+f.ID)
+	og.addTwitter("twitter:title", f.Name)
+	og.addTwitter("twitter:site", "@Fornax96")
+	og.addTwitter("twitter:domain", "pixeldrain.com")
 
 	if strings.HasPrefix(f.MimeType, "image") {
-		meta += ogRule{"og:type", "article"}.HTML()
-		meta += ogRule{"og:image", "/api/file/" + f.ID}.HTML()
-		meta += ogRule{"og:image:url", "/api/file/" + f.ID}.HTML()
-		meta += ogRule{"og:image:secure_url", "/api/file/" + f.ID}.HTML()
-		meta += ogRule{"og:image:type", f.MimeType}.HTML()
+		og.addOG("og:type", "article")
+		og.addOG("og:image", "/api/file/"+f.ID)
+		og.addOG("og:image:url", "/api/file/"+f.ID)
+		og.addOG("og:image:secure_url", "/api/file/"+f.ID)
+		og.addOG("og:image:type", f.MimeType)
 
-		meta += twitterRule{"twitter:card", "summary_large_image"}.HTML()
-		meta += twitterRule{"twitter:image", "/api/file/" + f.ID}.HTML()
-		meta += linkRule{"image_src", "/api/file/" + f.ID}.HTML()
+		og.addTwitter("twitter:card", "summary_large_image")
+		og.addTwitter("twitter:image", "/api/file/"+f.ID)
+		og.addLink("image_src", "/api/file/"+f.ID)
 	} else if strings.HasPrefix(f.MimeType, "video") {
-		meta += ogRule{"og:type", "video.other"}.HTML()
-		meta += ogRule{"og:image", "/api/file/" + f.ID + "/thumbnail"}.HTML()
-		meta += ogRule{"og:video", "/api/file/" + f.ID}.HTML()
-		meta += ogRule{"og:video:secure_url", "/api/file/" + f.ID}.HTML()
-		meta += ogRule{"og:video:type", f.MimeType}.HTML()
+		og.addOG("og:type", "video.other")
+		og.addOG("og:image", "/api/file/"+f.ID+"/thumbnail")
+		og.addOG("og:video", "/api/file/"+f.ID)
+		og.addOG("og:video:url", "/api/file/"+f.ID)
+		og.addOG("og:video:secure_url", "/api/file/"+f.ID)
+		og.addOG("og:video:type", f.MimeType)
 
-		meta += twitterRule{"twitter:card", "player"}.HTML()
-		meta += twitterRule{"twitter:image", "/api/file/" + f.ID + "/thumbnail"}.HTML()
-		meta += twitterRule{"twitter:player", "/api/file/" + f.ID}.HTML()
-		meta += twitterRule{"twitter:player:stream", "/api/file/" + f.ID}.HTML()
-		meta += twitterRule{"twitter:player:stream:content_type", f.MimeType}.HTML()
-		meta += linkRule{"image_src", "/api/file/" + f.ID + "/thumbnail"}.HTML()
+		og.addTwitter("twitter:card", "player")
+		og.addTwitter("twitter:image", "/api/file/"+f.ID+"/thumbnail")
+		og.addTwitter("twitter:player", "/api/file/"+f.ID)
+		og.addTwitter("twitter:player:stream", "/api/file/"+f.ID)
+		og.addTwitter("twitter:player:stream:content_type", f.MimeType)
+		og.addLink("image_src", "/api/file/"+f.ID+"/thumbnail")
 	} else if strings.HasPrefix(f.MimeType, "audio") {
-		meta += ogRule{"og:type", "music.song"}.HTML()
-		meta += ogRule{"og:audio", "/api/file/" + f.ID}.HTML()
-		meta += ogRule{"og:audio:secure_url", "/api/file/" + f.ID}.HTML()
-		meta += ogRule{"og:audio:type", f.MimeType}.HTML()
-		meta += linkRule{"image_src", "/api/file/" + f.ID + "/thumbnail"}.HTML()
+		og.addOG("og:type", "music.song")
+		og.addOG("og:audio", "/api/file/"+f.ID)
+		og.addOG("og:audio:secure_url", "/api/file/"+f.ID)
+		og.addOG("og:audio:type", f.MimeType)
+		og.addLink("image_src", "/api/file/"+f.ID+"/thumbnail")
 	} else {
-		meta += ogRule{"og:type", "website"}.HTML()
-		meta += linkRule{"image_src", "/api/file/" + f.ID + "/thumbnail"}.HTML()
+		og.addOG("og:type", "website")
+		og.addLink("image_src", "/api/file/"+f.ID+"/thumbnail")
 	}
-	return meta
+	return og
 }
-func metadataFromList(l apitype.ListInfo) (meta template.HTML) {
-	meta += ogRule{"og:type", "website"}.HTML()
-	meta += ogRule{"og:title", l.Title}.HTML()
-	meta += ogRule{"og:site_name", "pixeldrain"}.HTML()
-	meta += ogRule{"og:description", "View '" + l.Title + "' on pixeldrain"}.HTML()
-	meta += ogRule{"description", "View '" + l.Title + "' on pixeldrain"}.HTML()
-	meta += ogRule{"og:url", "/l/" + l.ID}.HTML()
-	meta += twitterRule{"twitter:title", l.Title}.HTML()
-	meta += twitterRule{"twitter:site", "@Fornax96"}.HTML()
-	meta += twitterRule{"twitter:domain", "pixeldrain.com"}.HTML()
+func metadataFromList(l apitype.ListInfo) (og ogData) {
+	og.addOG("og:type", "website")
+	og.addOG("og:title", l.Title)
+	og.addOG("og:site_name", "pixeldrain")
+	og.addOG("og:description", "View '"+l.Title+"' on pixeldrain")
+	og.addOG("description", "View '"+l.Title+"' on pixeldrain")
+	og.addOG("og:url", "/l/"+l.ID)
+	og.addTwitter("twitter:title", l.Title)
+	og.addTwitter("twitter:site", "@Fornax96")
+	og.addTwitter("twitter:domain", "pixeldrain.com")
 	if l.FileCount > 0 {
-		meta += ogRule{"og:image", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
-		meta += ogRule{"og:image:url", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
-		meta += twitterRule{"twitter:image", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
-		meta += linkRule{"image_src", "/api/file/" + l.Files[0].ID + "/thumbnail"}.HTML()
+		og.addOG("og:image", "/api/file/"+l.Files[0].ID+"/thumbnail")
+		og.addOG("og:image:url", "/api/file/"+l.Files[0].ID+"/thumbnail")
+		og.addTwitter("twitter:image", "/api/file/"+l.Files[0].ID+"/thumbnail")
+		og.addLink("image_src", "/api/file/"+l.Files[0].ID+"/thumbnail")
 	}
-	return meta
+	return og
 }
