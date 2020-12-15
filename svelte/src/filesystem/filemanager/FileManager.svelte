@@ -269,7 +269,7 @@ const toggle_select = () => {
 }
 .directory :global(.node_icon) {
 	height: 32px;
-	width: auto;
+	width: 32px;
 	vertical-align: middle;
 }
 .directory :global(.node_name) {

@@ -18,6 +18,6 @@ require (
 	github.com/Fornaxian/pd_mime_type v0.0.0-20200204165508-2815edf3a145
 	github.com/google/uuid v1.1.1
 	github.com/julienschmidt/httprouter v1.3.0
-	github.com/microcosm-cc/bluemonday v1.0.3
-	github.com/russross/blackfriday/v2 v2.0.1
+	github.com/microcosm-cc/bluemonday v1.0.4
+	github.com/russross/blackfriday/v2 v2.1.0
 )

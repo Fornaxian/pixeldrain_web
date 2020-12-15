@@ -24,6 +24,7 @@
 	font-family: 'Material Icons';
 	font-style: normal;
 	font-weight: 400;
+	font-display: block;
 	src: local('Material Icons'),
 		local('MaterialIcons-Regular'),
 		url(/res/misc/MaterialIcons-Regular.woff2) format('woff2'),
@@ -95,7 +96,7 @@ body{
 	position: fixed;
 	backface-visibility: hidden;
 	z-index: 99;
-	width: 250px;
+	width: 18em;
 	height: 100%;
 	left: 0;
 	float: left;
@@ -115,7 +116,7 @@ body{
 	z-index: 200;
 	right: 0;
 	height: auto;
-	left: 250px;
+	left: 18em;
 	min-width: 300px;
 	display: inline-block;
 	text-align: center; /* Center the header and body */
@@ -127,7 +128,7 @@ body{
 }
 @media (max-width: 800px) {
 	.page_navigation {
-		left: -250px;
+		left: -18em;
 	}
 	.page_body {
 		left: 0;

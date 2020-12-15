@@ -15,8 +15,7 @@
 					<h3>Bandwidth and views</h3>
 				</div>
 				<div class="highlight_dark">
-					<button onclick="loadGraph(720, 1, true);">Live</button>
-					<button onclick="loadGraph(1440, 10, true);">Day</button>
+					<button onclick="loadGraph(1440, 1, true);">Day</button>
 					<button onclick="loadGraph(10080, 10, false);">Week</button>
 					<button onclick="loadGraph(20160, 60, false);">Two Weeks</button>
 					<button onclick="loadGraph(43200, 60, false);">Month</button>
@@ -52,19 +51,13 @@
 				<br/>
 
 				<div class="limit_width">
-					<h3>Database connection statistics</h3>
 					<table>
-						<thead>
-							<tr>
-								<td>Name</td>
-								<td>Available</td>
-								<td>Max</td>
-								<td>Open</td>
-								<td>In use</td>
-								<td>Idle</td>
-							</tr>
-						</thead>
-						<tbody id="tconnstat_body"></tbody>
+						<tr>
+							<td>DB Time</td>
+							<td id="db_time"></td>
+							<td>DB Latency</td>
+							<td id="db_latency"></td>
+						</tr>
 					</table>
 					<h3>Pixelstore peers</h3>
 					<table>

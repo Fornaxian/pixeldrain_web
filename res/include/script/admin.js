@@ -1,32 +1,32 @@
 let graphViews = drawGraph(document.getElementById("views_chart"), "Views", "number");
 let graphBandwidth = drawGraph(document.getElementById("bandwidth_chart"), "Bandwidth", "bytes");
 let graphTimeout = null;
-function loadGraph(minutes, interval, live){
+function loadGraph(minutes, interval, live) {
 	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
 	if (live) {
-		graphTimeout = setTimeout(() => {loadGraph(minutes, interval, true)}, 10000)
+		graphTimeout = setTimeout(() => { loadGraph(minutes, interval, true) }, 10000)
 	}
 
 	let today = new Date()
 	let start = new Date()
-	start.setMinutes(start.getMinutes()-minutes)
+	start.setMinutes(start.getMinutes() - minutes)
 
 	fetch(
-		apiEndpoint+"/admin/files/timeseries" +
-		"?start="+start.toISOString() +
-		"&end="+today.toISOString() +
-		"&interval="+interval
+		apiEndpoint + "/admin/files/timeseries" +
+		"?start=" + start.toISOString() +
+		"&end=" + today.toISOString() +
+		"&interval=" + interval
 	).then(resp => {
-		if (!resp.ok) { return Promise.reject("Error: "+resp.status);}
+		if (!resp.ok) { return Promise.reject("Error: " + resp.status); }
 		return resp.json();
 	}).then(resp => {
 		resp.views.timestamps.forEach((val, idx) => {
 			let date = new Date(val);
-			let dateStr = ("00"+(date.getMonth()+1)).slice(-2);
-			dateStr += "-"+("00"+date.getDate()).slice(-2);
-			dateStr += " "+("00"+date.getHours()).slice(-2);
-			dateStr += ":"+("00"+date.getMinutes()).slice(-2);
-			resp.views.timestamps[idx] = "   "+dateStr+"   "; // Poor man's padding
+			let dateStr = ("00" + (date.getMonth() + 1)).slice(-2);
+			dateStr += "-" + ("00" + date.getDate()).slice(-2);
+			dateStr += " " + ("00" + date.getHours()).slice(-2);
+			dateStr += ":" + ("00" + date.getMinutes()).slice(-2);
+			resp.views.timestamps[idx] = "   " + dateStr + "   "; // Poor man's padding
 		});
 		graphViews.data.labels = resp.views.timestamps;
 		graphViews.data.datasets[0].data = resp.views.amounts;
@@ -44,30 +44,30 @@ function loadGraph(minutes, interval, live){
 		resp.views.amounts.forEach(e => { total += e; });
 		document.getElementById("total_views").innerText = formatThousands(total);
 	}).catch(e => {
-		alert("Error requesting time series: "+e);
+		alert("Error requesting time series: " + e);
 	})
 }
 
 loadGraph(10080, 60, false);
 
-function loadGraphDate(start, end, interval){
+function loadGraphDate(start, end, interval) {
 	fetch(
-		apiEndpoint+"/admin/files/timeseries" +
-		"?start="+start.toISOString() +
-		"&end="+end.toISOString() +
-		"&interval="+interval
+		apiEndpoint + "/admin/files/timeseries" +
+		"?start=" + start.toISOString() +
+		"&end=" + end.toISOString() +
+		"&interval=" + interval
 	).then(resp => {
-		if (!resp.ok) { return Promise.reject("Error: "+resp.status);}
+		if (!resp.ok) { return Promise.reject("Error: " + resp.status); }
 		return resp.json();
 	}).then(resp => {
 		resp.views.timestamps.forEach((val, idx) => {
 			let date = new Date(val);
 			let dateStr = date.getUTCFullYear() +
-				"-"+("00"+(date.getUTCMonth()+1)).slice(-2) +
-				"-"+("00"+date.getUTCDate()).slice(-2) +
-				" "+("00"+date.getUTCHours()).slice(-2) +
-				":"+("00"+date.getUTCMinutes()).slice(-2);
-			resp.views.timestamps[idx] = "   "+dateStr+"   "; // Poor man's padding
+				"-" + ("00" + (date.getUTCMonth() + 1)).slice(-2) +
+				"-" + ("00" + date.getUTCDate()).slice(-2) +
+				" " + ("00" + date.getUTCHours()).slice(-2) +
+				":" + ("00" + date.getUTCMinutes()).slice(-2);
+			resp.views.timestamps[idx] = "   " + dateStr + "   "; // Poor man's padding
 		});
 		graphViews.data.labels = resp.views.timestamps;
 		graphViews.data.datasets[0].data = resp.views.amounts;
@@ -85,7 +85,7 @@ function loadGraphDate(start, end, interval){
 		resp.views.amounts.forEach(e => { total += e; });
 		document.getElementById("total_views").innerText = formatThousands(total);
 	}).catch(e => {
-		alert("Error requesting time series: "+e);
+		alert("Error requesting time series: " + e);
 	})
 }
 
@@ -114,19 +114,19 @@ function loadTimespan(span, base) {
 		loadGraphDate(monday, sunday, 60);
 	} else if (span === "month") {
 		let start = new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth(), 1));
-		let end = new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth()+1, 0, 23, 59, 59));
+		let end = new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth() + 1, 0, 23, 59, 59));
 
 		tsStart = start;
 		loadGraphDate(start, end, 60);
 	} else if (span === "quarter") {
-		let start = new Date(Date.UTC(base.getUTCFullYear(), 3.0 * Math.floor(base.getUTCMonth()/3.0), 1));
-		let end = new Date(Date.UTC(base.getUTCFullYear(), 3.0 * Math.ceil(base.getUTCMonth()/3.0), 0, 23, 59, 59));
+		let start = new Date(Date.UTC(base.getUTCFullYear(), 3.0 * Math.floor(base.getUTCMonth() / 3.0), 1));
+		let end = new Date(Date.UTC(base.getUTCFullYear(), 3.0 * Math.ceil(base.getUTCMonth() / 3.0), 0, 23, 59, 59));
 
 		tsStart = start;
 		loadGraphDate(start, end, 1440);
 	} else if (span === "year") {
 		let start = new Date(Date.UTC(base.getUTCFullYear(), 0, 1));
-		let end = new Date(Date.UTC(base.getUTCFullYear()+1, 0, 0, 23, 59, 59));
+		let end = new Date(Date.UTC(base.getUTCFullYear() + 1, 0, 0, 23, 59, 59));
 
 		tsStart = start;
 		loadGraphDate(start, end, 1440);
@@ -139,21 +139,21 @@ function loadTimespan(span, base) {
 function navigateTimespan(forward) {
 	let offYear = 0, offMonth = 0, offDay = 0;
 	switch (tsSpan) {
-	case "day":
-		offDay = 1;
-		break;
-	case "week":
-		offDay = 7;
-		break;
-	case "month":
-		offMonth = 1;
-		break;
-	case "quarter":
-		offMonth = 3;
-		break;
-	case "year":
-		offYear = 1;
-		break;
+		case "day":
+			offDay = 1;
+			break;
+		case "week":
+			offDay = 7;
+			break;
+		case "month":
+			offMonth = 1;
+			break;
+		case "quarter":
+			offMonth = 3;
+			break;
+		case "year":
+			offYear = 1;
+			break;
 	}
 
 	if (!forward) {
@@ -165,9 +165,9 @@ function navigateTimespan(forward) {
 	loadTimespan(
 		tsSpan,
 		new Date(Date.UTC(
-			tsStart.getUTCFullYear()+offYear,
-			tsStart.getUTCMonth()+offMonth,
-			tsStart.getUTCDay()+offDay,
+			tsStart.getUTCFullYear() + offYear,
+			tsStart.getUTCMonth() + offMonth,
+			tsStart.getUTCDay() + offDay,
 		))
 	)
 }
@@ -184,7 +184,7 @@ let lastOrder;
 function getStats(order) {
 	lastOrder = order
 
-	fetch(apiEndpoint+"/status").then(
+	fetch(apiEndpoint + "/status").then(
 		resp => resp.json()
 	).then(resp => {
 		document.getElementById("file_stats_watchers").innerText = resp.stats_watcher_threads;
@@ -210,19 +210,8 @@ function getStats(order) {
 		last_remote_read_size = resp.remote_read_size;
 
 
-		let c = document.getElementById("tconnstat_body")
-		c.innerHTML = ""
-		resp.db_connection_stats.forEach(v => {
-			let row = document.createElement("tr")
-			row.innerHTML = `\
-			<td>${v.name}</td>
-			<td>${v.available}</td>
-			<td>${v.max_connections}</td>
-			<td>${v.open_connections}</td>
-			<td>${v.connections_in_use}</td>
-			<td>${v.connections_idle}</td>`
-			c.appendChild(row)
-		})
+		document.getElementById("db_time").innerText = printDate(new Date(resp.db_time), true, true, true);
+		document.getElementById("db_latency").innerText = formatNumber(resp.db_latency / 1000, 3) + " ms";
 
 		let p = document.getElementById("tbody_peers")
 		p.innerHTML = ""
@@ -237,7 +226,7 @@ function getStats(order) {
 			<td>${formatDataVolume(v.free_space, 3)}</td>
 			<td>${formatDataVolume(v.min_free_space, 3)}</td>`
 
-			if (v.free_space < v.min_free_space/2 || !v.reachable) {
+			if (v.free_space < v.min_free_space / 2 || !v.reachable) {
 				row.classList.add("highlight_red")
 			} else if (v.free_space < v.min_free_space) {
 				row.classList.add("highlight_blue")
@@ -248,7 +237,7 @@ function getStats(order) {
 		})
 
 		resp.query_statistics.sort((a, b) => {
-			if (typeof(a[order]) === "number") {
+			if (typeof (a[order]) === "number") {
 				// Sort ints from high to low
 				return b[order] - a[order]
 			} else {
@@ -279,4 +268,4 @@ function getStats(order) {
 }
 getStats("calls")
 
-setInterval(() => {	getStats(lastOrder) }, 5000)
+setInterval(() => { getStats(lastOrder) }, 5000)
