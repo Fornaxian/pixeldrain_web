@@ -4,7 +4,6 @@
 
  * [Go](https://golang.org/)
  * [ScyllaDB](https://www.scylladb.com/)
- * [CockroachDB](https://www.cockroachlabs.com/)
  * [Nginx](https://www.nginx.com/)
  * [Ubuntu Server edition](https://ubuntu.com/)
  * [Debian](https://www.debian.org/)
@@ -13,8 +12,6 @@
 
  * [scylladb/gocql](https://github.com/scylladb/gocql)
  * [scylladb/gocqlx](https://github.com/scylladb/gocqlx)
- * [lib/pq](github.com/lib/pq)
- * [jmoiron/sqlx](https://github.com/jmoiron/sqlx)
  * [BurntSushi/toml](https://github.com/BurntSushi/toml)
  * [julienschmidt/httprouter](https://github.com/julienschmidt/httprouter)
  * [gabriel-vasile/mimetype](https://github.com/gabriel-vasile/mimetype)

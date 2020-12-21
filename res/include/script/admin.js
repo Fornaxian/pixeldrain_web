@@ -48,7 +48,7 @@ function loadGraph(minutes, interval, live) {
 	})
 }
 
-loadGraph(10080, 60, false);
+loadGraph(10080, 10, false);
 
 function loadGraphDate(start, end, interval) {
 	fetch(

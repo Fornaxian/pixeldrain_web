@@ -44,12 +44,12 @@ func adType() int {
 	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	switch i := rand.Intn(10); i {
-	case 0, 1:
+	switch i := rand.Intn(5); i {
+	case 0:
 		return amarulaSolutions
-	case 2, 3, 4:
+	case 1:
 		return adMaven
-	case 5, 6, 7, 8, 9:
+	case 2, 3, 4:
 		return propellerAds
 	default:
 		panic(fmt.Errorf(
