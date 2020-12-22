@@ -1,0 +1,25 @@
+{{define "server_status"}}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "Server status"}}
+		{{template "user_style" .}}
+
+		<style>
+			.status_frame {
+				display: block;
+				width: 100%;
+				height: 100%;
+				border: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		{{template "page_menu" .}}
+		<div class="page_body" style="padding: 0; top: 0; bottom: 0;">
+			<iframe id="page_body" src="https://status.pixeldrain.com" class="status_frame"></iframe>
+		</div>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}
