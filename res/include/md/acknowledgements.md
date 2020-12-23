@@ -30,7 +30,8 @@
 
  * 2020-12-06 Security researcher Arian Firoozfar reported a cross-site
    scripting vulnerability on the file viewer page. The issue was fixed the
-   following day.
+   following day. On the 26th another XSS vulnerability was found on the account
+   settings page, it was fixed later that day.
 
  * 2017-12-04 Security researcher Hangyi reported a cross-site scripting
    vulnerability on the file viewer page. The issue was fixed on the 6th.

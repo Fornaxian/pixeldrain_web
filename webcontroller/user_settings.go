@@ -2,6 +2,7 @@ package webcontroller
 
 import (
 	"fmt"
+	"html"
 	"html/template"
 	"net/http"
 
@@ -211,7 +212,7 @@ func (wc *WebController) usernameForm(td *TemplateData, r *http.Request) (f Form
 			// Request was a success
 			f.SubmitSuccess = true
 			f.SubmitMessages = []template.HTML{template.HTML(
-				"Success! You are now " + f.FieldVal("new_username"),
+				"Success! You are now " + html.EscapeString(f.FieldVal("new_username")),
 			)}
 		}
 	}
