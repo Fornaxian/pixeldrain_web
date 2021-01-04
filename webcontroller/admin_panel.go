@@ -110,7 +110,14 @@ func (wc *WebController) adminAbuseForm(td *TemplateData, r *http.Request) (f Fo
 				Label:        "Type",
 				DefaultValue: "unknown",
 				Type:         FieldTypeRadio,
-				RadioValues:  []string{"unknown", "copyright", "terrorism", "child_abuse"},
+				RadioValues: []string{
+					"unknown",
+					"copyright",
+					"child_abuse",
+					"terrorism",
+					"gore",
+					"malware",
+				},
 			}, {
 				Name:         "reporter",
 				Label:        "Reporter",

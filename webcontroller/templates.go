@@ -29,7 +29,7 @@ type TemplateData struct {
 	Style         pixeldrainStyleSheet
 	UserStyle     template.CSS
 	APIEndpoint   template.URL
-	PixelAPI      *apiclient.PixelAPI
+	PixelAPI      apiclient.PixelAPI
 	Hostname      template.HTML
 
 	// Only used on file viewer page
@@ -50,19 +50,19 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		Style:         userStyle(r),
 		UserStyle:     template.CSS(userStyle(r).String()),
 		APIEndpoint:   template.URL(wc.apiURLExternal),
-		PixelAPI:      apiclient.New(wc.apiURLInternal),
-		Hostname:      template.HTML(wc.hostname),
-		URLQuery:      r.URL.Query(),
-	}
 
-	// Use the user's IP address for making requests
-	t.PixelAPI.RealIP = util.RemoteAddress(r)
+		// Use the user's IP address for making requests
+		PixelAPI: wc.api.RealIP(util.RemoteAddress(r)),
+
+		Hostname: template.HTML(wc.hostname),
+		URLQuery: r.URL.Query(),
+	}
 
 	// If the user is authenticated we'll indentify him and put the user info
 	// into the templatedata. This is used for putting the username in the menu
 	// and stuff like that
 	if key, err := wc.getAPIKey(r); err == nil {
-		t.PixelAPI.APIKey = key // Use the user's API key for all requests
+		t.PixelAPI = t.PixelAPI.Login(key) // Use the user's API key for all requests
 		t.User, err = t.PixelAPI.UserInfo()
 		if err != nil {
 			// This session key doesn't work, or the backend is down, user
@@ -71,7 +71,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 
 			if err.Error() == "authentication_required" || err.Error() == "authentication_failed" {
 				// Disable API authentication
-				t.PixelAPI.APIKey = ""
+				t.PixelAPI = wc.api
 
 				// Remove the authentication cookie
 				log.Debug("Deleting invalid API key")

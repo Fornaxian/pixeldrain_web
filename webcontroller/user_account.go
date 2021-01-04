@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -16,8 +15,7 @@ func (wc *WebController) serveLogout(
 	p httprouter.Params,
 ) {
 	if key, err := wc.getAPIKey(r); err == nil {
-		var api = apiclient.New(wc.apiURLInternal)
-		api.APIKey = key
+		var api = wc.api.Login(key)
 		if err = api.UserSessionDestroy(key); err != nil {
 			log.Warn("logout failed for session '%s': %s", key, err)
 		}
@@ -150,7 +148,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 	}
 
 	if f.ReadInput(r) {
-		loginResp, err := td.PixelAPI.UserLogin(f.FieldVal("username"), f.FieldVal("password"), false)
+		loginResp, err := td.PixelAPI.UserLogin(f.FieldVal("username"), f.FieldVal("password"))
 		if err != nil {
 			formAPIError(err, &f)
 		} else {

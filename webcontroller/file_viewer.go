@@ -19,7 +19,7 @@ import (
 
 func (wc *WebController) viewTokenOrBust() (t string) {
 	var err error
-	if t, err = wc.systemPixelAPI.GetMiscViewToken(); err != nil {
+	if t, err = wc.api.GetMiscViewToken(); err != nil {
 		log.Error("Could not get viewtoken: %s", err)
 	}
 	return t
@@ -47,9 +47,7 @@ func adType() int {
 	switch i := rand.Intn(5); i {
 	case 0:
 		return amarulaSolutions
-	case 1:
-		return adMaven
-	case 2, 3, 4:
+	case 1, 2, 3, 4:
 		return propellerAds
 	default:
 		panic(fmt.Errorf(

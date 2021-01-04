@@ -36,9 +36,10 @@ type WebController struct {
 
 	httpClient *http.Client
 
-	// This API client should only be used for system functions like getting
-	// view tokens. It has no authentication and no IP forwarding
-	systemPixelAPI *apiclient.PixelAPI
+	// API client to use for all requests. If the user is authenticated you
+	// should call Login() on this object. Calling Login will create a copy and
+	// not alter the original PixelAPI, but it will use the same HTTP Transport
+	api apiclient.PixelAPI
 }
 
 // New initializes a new WebController by registering all the request handlers
@@ -60,7 +61,7 @@ func New(
 		apiURLExternal:      apiURLExternal,
 		sessionCookieDomain: sessionCookieDomain,
 		httpClient:          &http.Client{Timeout: time.Minute * 10},
-		systemPixelAPI:      apiclient.New(apiURLInternal),
+		api:                 apiclient.New(apiURLInternal),
 	}
 	wc.templates = NewTemplateManager(resourceDir, apiURLExternal, debugMode)
 	wc.templates.ParseTemplates(false)
@@ -218,7 +219,7 @@ func (wc *WebController) serveMarkdown(tpl string, requireAuth bool) httprouter.
 		var inHeader = false
 		blackfriday.New(
 			blackfriday.WithRenderer(renderer),
-			blackfriday.WithExtensions(blackfriday.CommonExtensions),
+			blackfriday.WithExtensions(blackfriday.CommonExtensions|blackfriday.AutoHeadingIDs),
 		).Parse(
 			tplBuf.Bytes(),
 		).Walk(func(node *blackfriday.Node, entering bool) blackfriday.WalkStatus {
@@ -337,8 +338,7 @@ func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {
 func (wc *WebController) captchaKey() string {
 	// This only runs on the first request
 	if wc.captchaSiteKey == "" {
-		var api = apiclient.New(wc.apiURLInternal)
-		capt, err := api.GetRecaptcha()
+		capt, err := wc.api.GetRecaptcha()
 		if err != nil {
 			log.Error("Error getting recaptcha key: %s", err)
 			return ""

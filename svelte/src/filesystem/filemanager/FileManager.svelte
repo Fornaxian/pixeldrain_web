@@ -182,7 +182,9 @@ const toggle_select = () => {
 						{child.name}
 					</td>
 					<td class="node_size">
-						{formatDataVolume(child.file_size, 3)}
+						{#if child.type === "file"}
+							{formatDataVolume(child.file_size, 3)}
+						{/if}
 					</td>
 				</a>
 			{/each}

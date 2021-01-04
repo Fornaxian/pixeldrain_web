@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strings"
 
-	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
 	"fornaxian.tech/pixeldrain_server/util"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
@@ -21,9 +20,8 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	api := apiclient.New(wc.apiURLInternal)
-	api.APIKey, _ = wc.getAPIKey(r)
-	api.RealIP = util.RemoteAddress(r)
+	apiKey, _ := wc.getAPIKey(r)
+	api := wc.api.Login(apiKey).RealIP(util.RemoteAddress(r))
 
 	file, err := api.GetFileInfo(p.ByName("id")) // TODO: Error handling
 	if err != nil {

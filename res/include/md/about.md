@@ -34,6 +34,33 @@ spare some coins. Possible methods for donating are:
  * <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">
    Donate with PayPal</a>
 
+## Content policy
+
+The following types of content are not allowed to be shared on pixeldrain. They
+will be removed when reported.
+
+ * **Copyright violation**: Works which are shared without permission from the
+   copyright holder.
+ * **Abuse of minors**: Videos, images or audio fragments depicting abuse or
+   inappropriate touching of minors will be removed and reported to the National
+   Center for Missing and Exploited Children when found.
+ * **Terrorism**: Videos, images or audio fragments which promote and
+   glorify acts of terrorism.
+ * **Gore**: Graphic and shocking videos or images depicting severe harm to
+   humans.
+ * **Malware and computer viruses**: Software designed to cause harm to computer
+   systems.
+
+If you have found content which falls in any of these categories on pixeldrain
+please report the download link to me at
+[abuse@pixeldrain.com](mailto:abuse@pixeldrain.com) and I will review it. If the
+content does not fit into one of the categories your e-mail will be ignored.
+
+Fornaxian Technologies cannot be held liable for any illegal or copyrighted
+material that's uploaded by the users of this application under the Online
+Copyright Infringement Liability Limitation Act § 512\(c) in the USA and the
+Electronic Commerce Directive 2000 Article 14 in the EU.
+
 ## How does pixeldrain store files?
 
 Pixeldrain uses a few different techniques to store files cheaply, efficiently
@@ -87,16 +114,8 @@ When uploading a file pixeldrain will save a list of file links on your
 browser's local storage. This data is **only** used for viewing your upload
 history on the [history page](/history).
 
-## Legality
-
-I cannot be held liable for any illegal and / or copyrighted material that's
-uploaded by the users of this application. Files uploaded to this website are
-subjected to local laws. If laws are being broken, and I've been notified of the
-fact I'll have to delete the offending content. If you find any files on this
-domain that break the law, please contact me at
-[abuse@pixeldrain.com](mailto:abuse@pixeldrain.com), and I'll take care of it.
-
-Please share responsibly.
+## Support
 
 For other questions you can reach me at
-[support@pixeldrain.com](mailto:support@pixeldrain.com)
+[support@pixeldrain.com](mailto:support@pixeldrain.com). Abuse reports sent to
+this address will not be reviewed, use the abuse address.

@@ -170,8 +170,7 @@ func (wc *WebController) serveEmailConfirm(
 	var err error
 	var status string
 
-	api := apiclient.New(wc.apiURLInternal)
-	err = api.UserEmailResetConfirm(r.FormValue("key"))
+	err = wc.api.UserEmailResetConfirm(r.FormValue("key"))
 	if err != nil && err.Error() == "not_found" {
 		status = "not_found"
 	} else if err != nil {
