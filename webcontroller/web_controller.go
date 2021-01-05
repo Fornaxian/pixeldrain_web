@@ -121,6 +121,7 @@ func New(
 		{GET, "hosting" /*         */, wc.serveMarkdown("hosting.md", false)},
 		{GET, "brave" /*           */, wc.serveMarkdown("brave.md", false)},
 		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", false)},
+		{GET, "business" /*        */, wc.serveMarkdown("business.md", false)},
 		{GET, "server_status" /*   */, wc.serveTemplate("server_status", false)},
 
 		// User account pages
