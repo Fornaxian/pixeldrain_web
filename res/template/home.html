@@ -26,26 +26,27 @@
 			padding: 5px;
 		}
 		.big_number {
-			font-size: 24px;
+			font-size: 1.5em;
 			font-weight: bold;
 			line-height: 1em;
 			text-align: center;
-			display: block;
+			display: inline-block;
 			box-sizing: border-box;
 			background-color: var(--highlight_color);
 			color: var(--highlight_text_color);
 			border-radius: 30px;
-			padding: 5px;
-			margin-right: 10px;
-			width: 34px;
-			height: 34px;
-			float: left;
+			padding: 0.15em;
+			margin-right: 0.4em;
+			width: 1.4em;
+			height: 1.4em;
+			vertical-align: middle;
 		}
 		.instruction_text {
-			margin: 5px;
-			font-size: 24px;
-			display: block;
+			margin: 0.1em;
+			font-size: 1.5em;
+			display: inline-block;
 			box-sizing: border-box;
+			vertical-align: middle;
 		}
 		.social_button {
 			margin: 5px;
@@ -56,44 +57,62 @@
 			margin: 5px 15px;
 		}
 
-		.features {
-			width: 100%;
-			text-align: center;
-			overflow-x: auto;
-			overflow-y: hidden;
-			white-space: nowrap;
+		.feat_table {
+			display: flex;
+			flex-direction: column;
 		}
-		.features > div {
-			display: inline-block;
-			margin: 12px;
-			width: 18em;
-			vertical-align: top;
-			text-align: left;
-			white-space: initial;
+		.feat_table > div {
+			display: flex;
+			flex-direction: row;
+		}
+		.feat_table > div > div:first-child { max-width: 14em; }
+		.feat_table > div > div {
+			flex: 1 0 0;
+			margin: 0.2em;
+			padding: 0.5em;
+			text-align: center;
+		}
+		.feat_table > div > .feat_label {
+			border-top-left-radius: 0.5em;
+			border-bottom-left-radius: 0.5em;
+			background-color: var(--layer_1_color);
+		}
+		.feat_table > div > .feat_normal {
 			background-color: var(--layer_3_color);
-			box-shadow: 1px 1px 6px -2px var(--shadow_color);
+			box-shadow: 1px 1px 3px -1px var(--shadow_color);
+			text-shadow: 1px 1px 3px var(--shadow_color);
 		}
-		.features > div > h3 {
-			text-align: center;
-			border-bottom: none;
-			margin: 10px;
+		.feat_table > div > .feat_pro {
+			background-color: var(--layer_4_color);
+			box-shadow: 1px 1px 3px 0 var(--shadow_color);
+			text-shadow: 1px 1px 6px var(--shadow_color);
 		}
-		.features > div > .price {
-			text-align: center;
-			margin-bottom: 6px;
+		.feat_table > div > .feat_highlight {
+			border: 1px solid var(--highlight_color)
 		}
-		.features > div > .feature {
-			display: block;
-			text-align: center;
-			padding: 6px;
-			border-bottom: 1px solid var(--layer_3_color_border);
+		.text_highlight {
+			color: var(--highlight_color);
+			text-shadow: 0 0 4px var(--shadow_color);
+			font-size: 1.1em;
+			font-weight: bold;
 		}
-		.features > div > ul {
-			padding-left: 20px;
+
+		@media (max-width: 800px) {
+			.feat_table > div {
+				flex-direction: column;
+				margin: 0.2em;
+				border-radius: 6px;
+			}
+			.feat_table > div > div {
+				margin: 0;
+				border-radius: 0;
+			}
 		}
-		.features > div > ul > li {
-			margin: 8px;
-			text-align: center;
+		@media (min-width: 800px) {
+			.feat_table > div > div.round_tl { border-top-left-radius:     0.5em; }
+			.feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
+			.feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
+			.feat_table > div > div.round_bl { border-bottom-left-radius:  0.5em; }
 		}
 
 		{{template `modal.css`}}
@@ -109,7 +128,9 @@
 		<br/>
 		<div class="page_content" style="padding-top: 0;">
 			<div id="instruction_1" class="instruction_highlight" style="margin-top: 0;"><div class="limit_width">
-				<span class="big_number">1</span><span class="instruction_text">Select files to upload</span>
+				<span class="big_number">1</span>
+				<span class="instruction_text">Select files to upload</span>
+				<br/>
 				You can also drop files anywhere on this page from your file
 				manager
 			</div></div>
@@ -203,152 +224,81 @@
 					For more information about pixeldrain see the
 					<a href="/about">about</a> page.
 				</p>
-				<h2>Features</h2>
+
+				<h2 id="pro">Pro</h2>
 				<p>
 					By purchasing a subscription you support pixeldrain on its
 					mission to make content sharing easier, safer and faster for
 					everyone.
 				</p>
-			</div>
-			<div class="features">
-				<div>
-					<h3>Free</h3>
-					<div class="price">€0 per month</div>
-					<img src="/res/img/benefit_0_small.png" style="width: 100%;">
-
-					<a href="#" onclick="return explainFileExpiry()" class="feature">
-						Files expire 30 days after last view
-					</a>
-					<div class="feature">No account required</div>
-					<div class="feature">Max file size 10 GB</div>
-					<div class="feature">Access your files anywhere with a pixeldrain account</div>
-					<div class="feature">Group multiple files together in a single link with lists</div>
-				</div>
-				<div>
-					<h3>I'm doing my part!</h3>
-					<div class="price">€2 per month + tax</div>
-					<img src="/res/img/benefit_1_small.png" style="width: 100%;">
-
-					<a href="#" onclick="return explainFileExpiry()" class="feature">
-						Files expire 2 months after last view
-					</a>
-
-					<div class="feature">No ads when viewing files</div>
-					<div class="feature">No ads on files you uploaded</div>
-					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
-						3 TB of direct linking bandwidth
-					</a>-->
-
-					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription.ID "patreon_1"}}
-						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
-						{{else}}
-						<a href="/subscribe?plan=t1" class="button button_highlight" style="width: 90%;">
-							Get Started
-						</a>
-						{{end}}
+				<div class="feat_table">
+					<div>
+						<div></div>
+						<div class="feat_normal round_tl">Free</div>
+						<div class="feat_pro feat_highlight round_tr">Pro</div>
+					</div>
+					<div>
+						<div class="feat_label">Size limit per file</div>
+						<div class="feat_normal">5 GB per file</div>
+						<div class="feat_pro"><span class="text_highlight">15 GB</span> per file</div>
+					</div>
+					<div>
+						<div class="feat_label"><a href="javascript:void(0);" onclick="return explainFileExpiry();">File expiry</a></div>
+						<div class="feat_normal">30 days after the last time it is viewed</div>
+						<div class="feat_pro"><span class="text_highlight">90 days</span> after the last time it is viewed</div>
+					</div>
+					<div>
+						<div class="feat_label">Advertisements</div>
+						<div class="feat_normal">Pop-up or a banner ad on the file viewer page</div>
+						<div class="feat_pro">
+							<span class="text_highlight">No ads</span> on files
+							you share, or when viewing files from other
+							users
+						</div>
+					</div>
+					<div>
+						<div class="feat_label">Privacy</div>
+						<div class="feat_normal">
+							No trackers, but advertisers can see your IP address
+							and browser fingerprint
+						</div>
+						<div class="feat_pro">
+							<span class="text_highlight">Completely
+							private</span>. No third party scripts and no
+							logging
+						</div>
+					</div>
+					<div>
+						<div class="feat_label">Online file previews</div>
+						<div class="feat_pro">View image, video, audio, PDF and text files directly in your web browser</div>
+					</div>
+					<div>
+						<div class="feat_label"><a href="javascript:void(0);" onclick="return explainDirectLinking();">Direct linking</a></div>
+						<div class="feat_pro">Rate limiting mode will be enabled when a file has 3 times more downloads than views</div>
+					</div>
+					<div>
+						<div></div>
+						<div class="feat_normal round_bl">Free</div>
+						<div class="feat_pro feat_highlight round_br">
+							<button class="button_highlight">Only € 1 per month!</button>
+							<br/>
+							Billed annually. We accept Stripe and PayPal
+						</div>
 					</div>
 				</div>
-				<div>
-					<h3>Resolve</h3>
-					<div class="price">€4 per month + tax</div>
-					<img src="/res/img/benefit_5_small.png" style="width: 100%;">
-
-					<a href="#" onclick="return explainFileExpiry()" class="feature">
-						Files expire 3 months after last view
-					</a>
-
-					<div class="feature">No ads when viewing files</div>
-					<div class="feature">No ads on files you uploaded</div>
-					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
-						6 TB of direct linking bandwidth
-					</a>-->
-
-					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription.ID "patreon_5"}}
-						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
-						{{else}}
-						<a href="/subscribe?plan=t5" class="button button_highlight" style="width: 90%;">
-							Get Started
-						</a>
-						{{end}}
-					</div>
-				</div>
-				<div>
-					<h3>Persistence</h3>
-					<div class="price">€8 per month + tax</div>
-					<img src="/res/img/benefit_2_small.png" style="width: 100%;">
-
-					<a href="#" onclick="return explainFileExpiry()" class="feature">
-						Files expire 4 months after last view
-					</a>
-
-					<div class="feature">No ads when viewing files</div>
-					<div class="feature">No ads on files you uploaded</div>
-					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
-						12 TB of direct linking bandwidth
-					</a>-->
-
-					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription.ID "patreon_2"}}
-						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
-						{{else}}
-						<a href="/subscribe?plan=t2" class="button button_highlight" style="width: 90%;">
-							Get Started
-						</a>
-						{{end}}
-					</div>
-				</div>
-				<div>
-					<h3>Tenacity</h3>
-					<div class="price">€16 per month + tax</div>
-					<img src="/res/img/benefit_3_small.png" style="width: 100%;">
-
-					<a href="#" onclick="return explainFileExpiry()" class="feature">
-						Files expire 8 months after last view
-					</a>
-
-					<div class="feature">No ads when viewing files</div>
-					<div class="feature">No ads on files you uploaded</div>
-					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
-						24 TB of direct linking bandwidth
-					</a>-->
-
-					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription.ID "patreon_3"}}
-						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
-						{{else}}
-						<a href="/subscribe?plan=t3" class="button button_highlight" style="width: 90%;">
-							Get Started
-						</a>
-						{{end}}
-					</div>
-				</div>
-				<div>
-					<h3>Eternity</h3>
-					<div class="price">€32 per month + tax</div>
-					<img src="/res/img/benefit_4_small.png" style="width: 100%;">
-
-					<a href="#" onclick="return explainFileExpiry()" class="feature">
-						Files you upload never expire
-					</a>
-
-					<div class="feature">No ads when viewing files</div>
-					<div class="feature">No ads on files you uploaded</div>
-					<!--<a href="#" onclick="return explainDirectLinking()" class="feature">
-						48 TB of direct linking bandwidth
-					</a>-->
-
-					<div style="text-align: center; padding: 8px;">
-						{{if eq .User.Subscription.ID "patreon_4"}}
-						<strong>You have this plan. Thank you for supporting pixeldrain!</strong>
-						{{else}}
-						<a href="/subscribe?plan=t4" class="button button_highlight" style="width: 90%;">
-							Get Started
-						</a>
-						{{end}}
-					</div>
-				</div>
+				<br/>
+				<h2>Premium</h2>
+				<p>
+					Premium is more catered toward file storage and content
+					delivery. This plan enables the Buckets feature which
+					provides a more structured way to manage your files on
+					pixeldrain. Buckets allow direct linking to files without
+					running into rate limiting.
+				</p>
+				<p>
+					When you choose for Premium you will also get all the
+					benefits of the Pro subscription.
+				</p>
 			</div>
 		</div>
 
@@ -361,14 +311,18 @@
 			<p>
 				Unlike most other sharing sites pixeldrain uses a postponing
 				system for expiring files. When a file is freshly uploaded it
-				gets 30 days by default (this can be extended by supporting the
-				site on patreon). After these 30 days we will check when the
-				file was last viewed. Files which are regularly viewed could
-				still bring new users to the platform, it would be rude to show
-				these people a 404 Not Found page. So if the file was viewed in
-				the last 30 days we will simply postpone the next check a month.
-				If the file was not viewed however it will immediately be
-				removed.
+				gets 30 days by default (90 days if you have the pro plan).
+				After these 30 days we will check when the file was last viewed.
+				Files which are regularly viewed could still bring new users to
+				the platform, it would be rude to show these people a 404 Not
+				Found page. So if the file was viewed in the last 30 days we
+				will simply postpone the next check a month. If the file was not
+				viewed however it will immediately be removed.
+			</p>
+			<p>
+				Views are only counted when someone visits the download page in
+				a web browser. This makes sure that users can see that the file
+				comes from pixeldrain.
 			</p>
 			<p>
 				This way we can minimize dead links, and you won't have to tell
@@ -377,9 +331,9 @@
 		</template>
 		<template id="tpl_direct_linking">
 			<p>
-				Normally when viewing a file on pixeldrain it has to go through
-				the file viewer. Files which are directly downloaded without
-				visiting the file viewer are blocked after a while.
+				When viewing a file on pixeldrain it has to go through the file
+				viewer. Files which are directly downloaded without visiting the
+				file viewer are blocked after a while.
 			</p>
 			<p>
 				Direct linking allows you to share files without going through

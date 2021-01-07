@@ -57,6 +57,7 @@ body{
 	background-repeat: repeat;
 	margin: 0;
 	font-family: system-ui, sans-serif;
+	font-size: 17px;
 	line-height: 1.8em;
 	color: #b2b2b2; /* Fallback */
 	color: var(--text_color);
@@ -261,16 +262,39 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1em;
 	margin-left: 10px;
 	margin-right: 10px;
+	font-weight: normal;
 }
-h2, h3{ /* Differentiate it a bit, else it just looks like bold text */
+
+h1 {
+	font-size: 2.5em;
+	font-family: "light", sans-serif;
+	text-align: center;
+}
+h2 {
+	font-size: 2em;
+	font-family: "light", sans-serif;
+	text-align: center;
+	border-bottom: 1px var(--layer_4_color_border) solid;
+}
+h3 {
+	font-size: 1.5em;
+	font-family: "light", sans-serif;
 	border-bottom: 1px var(--layer_3_color_border) solid;
 }
-h1{font-size: 2.25em;    font-family: "light", sans-serif; font-weight: normal;}
-h2{font-size: 2em; font-family: "light", sans-serif; font-weight: normal;}
-h3{font-size: 1.5em;  font-family: "light", sans-serif; font-weight: normal;}
-h4{font-size: 1.25em; font-family: sans-serif; font-weight: normal;}
-h5{font-size: 1em;    font-family: sans-serif; font-weight: normal;}
-h6{font-size: .75em;  font-family: sans-serif; font-weight: normal;}
+h4 {
+	font-size: 1.25em;
+	font-family: sans-serif;
+	border-bottom: 1px var(--layer_2_color_border) solid;
+}
+h5 {
+	font-size: 1em;
+	font-family: sans-serif;
+	border-bottom: 1px var(--layer_1_color_border) solid;
+}
+h6{
+	font-size: .75em;
+	font-family: sans-serif;
+}
 
 p, .indent {
 	margin: 10px;
