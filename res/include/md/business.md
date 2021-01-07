@@ -7,8 +7,8 @@ little progress in this area.
 
 ## The competition
 
-There no shortage of file sharing sites on the internet. Some of them are very
-large, but none of them are perfect.
+There is no shortage of file sharing sites on the internet. Some of them are
+very large, but none of them are perfect.
 
 ### WeTransfer
 
@@ -27,7 +27,7 @@ many flaws in my opinion.
 
 ### Zippyshare
 
-Zippyshare is the internet's 850'th largest website. It gets around 56 million
+Zippyshare is the world's 850'th largest website. It gets around 56 million
 unique visitors per month. Despite its size and popularity I think it should be
 easy to overtake. Users are not very loyal and it mostly gets used for piracy.
 
