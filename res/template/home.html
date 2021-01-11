@@ -44,7 +44,7 @@
 		.instruction_text {
 			margin: 0.1em;
 			font-size: 1.5em;
-			display: inline-block;
+			display: inline;
 			box-sizing: border-box;
 			vertical-align: middle;
 		}
@@ -57,20 +57,31 @@
 			margin: 5px 15px;
 		}
 
+		.table_container {
+			width: 100%;
+			overflow-x: auto;
+			overflow-y: hidden;
+		}
 		.feat_table {
 			display: flex;
 			flex-direction: column;
+			min-width: 400px;
 		}
 		.feat_table > div {
 			display: flex;
 			flex-direction: row;
 		}
-		.feat_table > div > div:first-child { max-width: 14em; }
+		.feat_table > div > div:first-child {
+			flex: 0 0 20%;
+			max-width: 20%;
+		}
 		.feat_table > div > div {
-			flex: 1 0 0;
+			flex: 1 1 0;
 			margin: 0.2em;
 			padding: 0.5em;
 			text-align: center;
+			word-wrap: break-word;
+			hyphens: auto;
 		}
 		.feat_table > div > .feat_label {
 			border-top-left-radius: 0.5em;
@@ -97,23 +108,10 @@
 			font-weight: bold;
 		}
 
-		@media (max-width: 800px) {
-			.feat_table > div {
-				flex-direction: column;
-				margin: 0.2em;
-				border-radius: 6px;
-			}
-			.feat_table > div > div {
-				margin: 0;
-				border-radius: 0;
-			}
-		}
-		@media (min-width: 800px) {
-			.feat_table > div > div.round_tl { border-top-left-radius:     0.5em; }
-			.feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
-			.feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
-			.feat_table > div > div.round_bl { border-bottom-left-radius:  0.5em; }
-		}
+		.feat_table > div > div.round_tl { border-top-left-radius:     0.5em; }
+		.feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
+		.feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
+		.feat_table > div > div.round_bl { border-bottom-left-radius:  0.5em; }
 
 		{{template `modal.css`}}
 		</style>
@@ -126,7 +124,7 @@
 			<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header image">
 		</picture>
 		<br/>
-		<div class="page_content" style="padding-top: 0;">
+		<div class="page_content" style="padding-top: 0; margin-bottom: 100px;">
 			<div id="instruction_1" class="instruction_highlight" style="margin-top: 0;"><div class="limit_width">
 				<span class="big_number">1</span>
 				<span class="instruction_text">Select files to upload</span>
@@ -185,7 +183,7 @@
 						{{template `tumblr.svg` .}}<br/>Tumblr
 					</button>
 				</div>
-				<br/>
+				<br/><br/>
 				<button id="btn_create_list"><i class="icon">list</i> Create list with uploaded files</button>
 				<button id="btn_copy_links"><i class="icon">content_copy</i> Copy all links to clipboard</button>
 				<button id="btn_copy_markdown"><i class="icon">content_copy</i> Copy markdown to clipboard</button>
@@ -193,44 +191,45 @@
 				<br/>
 				<div id="created_lists"></div>
 			</div>
+		</div>
 
-			<div class="limit_width">
-				<h2>What is pixeldrain?</h2>
-				<p>
-					Pixeldrain is a file sharing website built for speed and
-					ease of use. Pixeldrain does not cost any money, though
-					donations are appreciated. See how you can support
-					pixeldrain below.
-				</p>
-				<p>
-					Files can be uploaded by clicking the big green upload
-					button, or by dragging them onto this page from your file
-					manager. You can not upload directories at this time, only
-					files. The maximum file size you can upload is 10 GB.
-				</p>
-				<p>
-					You can also create lists, which are a collection of files.
-					Like a photo album, a music record or a video compilation.
-					To do this you need to upload a bunch of files at once. The
-					files will be saved in the order you uploaded them. When all
-					files have finished uploading you click the "Create list
-					with uploaded files" button and you will be asked to enter a
-					name for your list. After picking a name the list will be
-					created and opened in a new window. If your browser blocks
-					the window you can also find a link to the list at the
-					bottom of your uploaded files.
-				</p>
-				<p>
-					For more information about pixeldrain see the
-					<a href="/about">about</a> page.
-				</p>
+		<h1>What is pixeldrain?</h1>
+		<div class="page_content"><div class="limit_width">
+			<p>
+				Pixeldrain is a file sharing website built for speed and
+				ease of use. Pixeldrain does not cost any money, though
+				donations are appreciated. See how you can support
+				pixeldrain below.
+			</p>
+			<p>
+				Files can be uploaded by clicking the big green upload
+				button, or by dragging them onto this page from your file
+				manager.
+			</p>
+			<p>
+				You can also create lists, which are a collection of files.
+				Like a photo album, a music record or a video compilation.
+				To do this you need to upload a bunch of files at once. The
+				files will be saved in the order you uploaded them. When all
+				files have finished uploading you click the "Create list
+				with uploaded files" button and you will be asked to enter a
+				name for your list. After picking a name the list will be
+				created and opened in a new window. If your browser blocks
+				the window you can also find a link to the list at the
+				bottom of your uploaded files.
+			</p>
+			<p>
+				For more information about pixeldrain see the
+				<a href="/about">about</a> page.
+			</p>
 
-				<h2 id="pro">Pro</h2>
-				<p>
-					By purchasing a subscription you support pixeldrain on its
-					mission to make content sharing easier, safer and faster for
-					everyone.
-				</p>
+			<h2 id="pro">Getting more out of pixeldrain</h2>
+			<p>
+				By purchasing a subscription you support pixeldrain on its
+				mission to make content sharing easier, safer and faster for
+				everyone.
+			</p>
+			<div class="table_container">
 				<div class="feat_table">
 					<div>
 						<div></div>
@@ -248,12 +247,12 @@
 						<div class="feat_pro"><span class="text_highlight">90 days</span> after the last time it is viewed</div>
 					</div>
 					<div>
-						<div class="feat_label">Advertisements</div>
+						<div class="feat_label">Adver&shy;tise&shy;ments</div>
 						<div class="feat_normal">Pop-up or a banner ad on the file viewer page</div>
 						<div class="feat_pro">
 							<span class="text_highlight">No ads</span> on files
-							you share, or when viewing files from other
-							users
+							you share. No ads when viewing files uploaded by
+							other users
 						</div>
 					</div>
 					<div>
@@ -280,27 +279,36 @@
 						<div></div>
 						<div class="feat_normal round_bl">Free</div>
 						<div class="feat_pro feat_highlight round_br">
-							<button class="button_highlight">Only € 1 per month!</button>
+							{{if ne .User.Subscription.ID ""}}
+							You have this plan<br/>
+							Thank you for supporting pixeldrain!
+							{{else}}
+							<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427" class="button button_highlight">Only € 2 per month!</a> (Excluding tax)
 							<br/>
-							Billed annually. We accept Stripe and PayPal
+							Subscription managed by Patreon
+							{{end}}
 						</div>
 					</div>
 				</div>
-				<br/>
-				<h2>Premium</h2>
-				<p>
-					Premium is more catered toward file storage and content
-					delivery. This plan enables the Buckets feature which
-					provides a more structured way to manage your files on
-					pixeldrain. Buckets allow direct linking to files without
-					running into rate limiting.
-				</p>
-				<p>
-					When you choose for Premium you will also get all the
-					benefits of the Pro subscription.
-				</p>
 			</div>
-		</div>
+			<br/>
+			<h2>Premium</h2>
+			<div class="highlight_dark">
+				Pixeldrain Premium is still in development and not generally
+				available yet. Stay tuned.
+			</div>
+			<p>
+				Premium is more catered toward content delivery. This plan
+				enables the Buckets feature which provides a more structured way
+				to manage your files on pixeldrain. Buckets allow direct linking
+				to files without running into rate limiting.
+			</p>
+			<p>
+				When you choose for Premium you will also get all the benefits
+				of the Pro subscription. A base rate of €1 per month will be
+				billed regardless of your usage.
+			</p>
+		</div></div>
 
 		<template id="tpl_file_expiry">
 			<p>
@@ -314,7 +322,7 @@
 				gets 30 days by default (90 days if you have the pro plan).
 				After these 30 days we will check when the file was last viewed.
 				Files which are regularly viewed could still bring new users to
-				the platform, it would be rude to show these people a 404 Not
+				the platform, it would be rude to show these people a File Not
 				Found page. So if the file was viewed in the last 30 days we
 				will simply postpone the next check a month. If the file was not
 				viewed however it will immediately be removed.
@@ -332,22 +340,19 @@
 		<template id="tpl_direct_linking">
 			<p>
 				When viewing a file on pixeldrain it has to go through the file
-				viewer. Files which are directly downloaded without visiting the
-				file viewer are blocked after a while.
+				viewer. Files which have three times more downloads than views
+				will be rate limited. This happens when downloaders use external
+				downloading tools to download the file instead of a web browser.
 			</p>
 			<p>
-				Direct linking allows you to share files without going through
-				the file viewer. You can use this to embed videos / images in
-				your own webpages. Files which are direct linked won't count any
-				views but we will keep track of the downloads and used
-				bandwidth.
+				This means that the downloader will be asked to fill in a
+				captcha before they can download the file. When the file /
+				download ratio drops below 3x again the captcha will be removed
+				and direct downloads become possible again.
 			</p>
 			<p>
-				When you use up your direct linking bandwidth your direct links
-				will stop working for the rest of the month. You can always
-				upgrade to get more bandwidth. The amount of bandwidth used in
-				the month can be seen on your <a href="/user">user page</a> when
-				logged in.
+				If you need direct linking you can upgrade to the Premium plan.
+				Bandwidth will be billed per terabyte.
 			</p>
 		</template>
 

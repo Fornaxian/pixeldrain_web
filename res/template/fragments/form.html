@@ -60,7 +60,7 @@
 								<label for="input_{{$field.Name}}_choice_{{$val}}">{{$val}}</label><br/>
 								{{ end }}
 							{{else if eq $field.Type "description"}}
-								<p>{{$field.DefaultValue}}</p>
+								{{$field.DefaultValue}}
 							{{end}}
 						</td>
 					{{end}}

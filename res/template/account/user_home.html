@@ -18,22 +18,20 @@
 					<li>Username: {{.User.Username}}</li>
 					<li>E-mail address: {{.User.Email}}</li>
 					<li>
-						{{if eq .User.Subscription.Name ""}}
-							Supporter status: Not a pixeldrain supporter<br/>
-							<a href="https://www.patreon.com/pixeldrain">Learn how to support pixeldrain</a>.
-						{{else}}
-							Supporter level {{.User.Subscription.Name}}
-							<ul>
-								<li>Ads when viewing files: {{if .User.Subscription.DisableAdDisplay}}No{{else}}Yes{{end}}</li>
-								<li>Ads on your uploaded files: {{if .User.Subscription.DisableAdsOnFiles}}No{{else}}Yes{{end}}</li>
-								{{if gt .User.Subscription.FileExpiryDays 0}}
-								<li>Files expire after {{.User.Subscription.FileExpiryDays}} days</li>
-								{{else}}
-								<li>Files never expire</li>
-								{{end}}
-								<li>Direct linking bandwidth: {{formatData .User.Subscription.DirectLinkingBandwidth}}</li>
-							</ul>
+						Supporter level: {{.User.Subscription.Name}}
+						{{if ne .User.Subscription.ID ""}}
+							(<a href="https://www.patreon.com/join/pixeldrain/checkout?edit=1">Manage subscription</a>)
 						{{end}}
+						<ul>
+							<li>Ads when viewing files: {{if .User.Subscription.DisableAdDisplay}}No{{else}}Yes{{end}}</li>
+							<li>Ads on your uploaded files: {{if .User.Subscription.DisableAdsOnFiles}}No{{else}}Yes{{end}}</li>
+							{{if gt .User.Subscription.FileExpiryDays 0}}
+							<li>Files expire after {{.User.Subscription.FileExpiryDays}} days</li>
+							{{else}}
+							<li>Files never expire</li>
+							{{end}}
+							<li>File size limit: {{formatData .User.Subscription.FileSizeLimit}}</li>
+						</ul>
 					</li>
 				</ul>
 				<a href="/user/settings" class="button button_highlight">Change account settings</a>

@@ -34,14 +34,14 @@ function UploadManager(uploadEndpoint, uploadsFinished) {
 	this.jobCounter = 0;
 }
 
-UploadManager.prototype.finishedUploads = function() {
+UploadManager.prototype.finishedUploads = function () {
 	this.uploadLog.sort((a, b) => {
 		return a.jobID - b.jobID;
 	})
 	return this.uploadLog;
 }
 
-UploadManager.prototype.addFile = function(
+UploadManager.prototype.addFile = function (
 	file, // Blob
 	name, // string
 	onProgress, // func (progress: number)
@@ -67,7 +67,7 @@ UploadManager.prototype.addFile = function(
 	}
 }
 
-UploadManager.prototype.startUpload = function() {
+UploadManager.prototype.startUpload = function () {
 	if (this.uploadQueue.length === 0) {
 		return; // Nothing to upload
 	}
@@ -78,13 +78,13 @@ UploadManager.prototype.startUpload = function() {
 	}
 }
 
-UploadManager.prototype.finishUpload = function() {
+UploadManager.prototype.finishUpload = function () {
 	this.activeWorkers--;
 
 	if (
 		this.uploadQueue.length === 0 &&
 		this.activeWorkers === 0 &&
-		typeof(this.uploadsFinished) === "function"
+		typeof (this.uploadsFinished) === "function"
 	) {
 		this.uploadsFinished();
 		return;
@@ -94,7 +94,7 @@ UploadManager.prototype.finishUpload = function() {
 	this.startUpload();
 }
 
-UploadManager.prototype.uploadThread = function() {
+UploadManager.prototype.uploadThread = function () {
 	let job = this.uploadQueue.shift(); // Get the first element of the array
 	console.debug("Starting upload of " + job.name);
 
@@ -107,7 +107,7 @@ UploadManager.prototype.uploadThread = function() {
 
 	// Report progress updates back to the caller
 	xhr.upload.addEventListener("progress", evt => {
-		if (evt.lengthComputable && typeof(job.onProgress) === "function") {
+		if (evt.lengthComputable && typeof (job.onProgress) === "function") {
 			job.onProgress(evt.loaded / evt.total);
 		}
 	});
@@ -128,7 +128,7 @@ UploadManager.prototype.uploadThread = function() {
 				fileName: job.name
 			});
 
-			if (typeof(job.onFinished) === "function") {
+			if (typeof (job.onFinished) === "function") {
 				job.onFinished(resp.id);
 			}
 
@@ -138,7 +138,7 @@ UploadManager.prototype.uploadThread = function() {
 			// Request failed
 			console.log("Upload error. status: " + xhr.status + " response: " + xhr.response);
 			let resp = JSON.parse(xhr.response);
-			if (job.tries === 3) { // Upload failed
+			if (resp.value == "file_too_large" || job.tries === 3) { // Upload failed
 				job.onFailure(resp.value, resp.message);
 			} else { // Try again
 				job.tries++;
@@ -150,7 +150,7 @@ UploadManager.prototype.uploadThread = function() {
 		} else {
 			// Request did not arrive
 			if (job.tries === 3) { // Upload failed
-				if (typeof(job.onFailure) === "function") {
+				if (typeof (job.onFailure) === "function") {
 					job.onFailure(xhr.responseText, xhr.responseText);
 				}
 			} else { // Try again

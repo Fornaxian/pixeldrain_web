@@ -208,7 +208,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .7},
 	InputColor:               hsl{0, 0, .2},
 	InputTextColor:           hsl{0, 0, 1},
-	HighlightColor:           hsl{89, .51, .45},
+	HighlightColor:           hsl{89, .60, .45},
 	HighlightTextColor:       hsl{0, 0, 0},
 	DangerColor:              hsl{339, .65, .31},
 	ScrollbarForegroundColor: hsl{0, 0, .35},

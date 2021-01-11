@@ -346,7 +346,7 @@ pre {
 .file_button{
 	position: relative;
 	box-sizing: border-box;
-	width: 300px;
+	width: 400px;
 	max-width: 90%;
 	height: 3.6em;
 	margin: 10px;
@@ -432,6 +432,7 @@ select {
 	overflow: hidden;
 	font-size: 1em; /* Sometimes user-agents have different font sizes for buttons and links */
 	text-decoration: none;
+	text-shadow: none;
 	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
 	outline: 0;
