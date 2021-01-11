@@ -38,16 +38,27 @@ func adType() int {
 		amarulaSolutions   = 4
 		adMaven            = 5
 		propellerAds       = 7
-		brave              = 8
+		pdpro1             = 8
+		pdpro2             = 9
+		pdpro3             = 10
+		pdpro4             = 11
 	)
 
 	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	switch i := rand.Intn(5); i {
-	case 0:
+	switch i := rand.Intn(15); i {
+	case 0, 1, 2:
 		return amarulaSolutions
-	case 1, 2, 3, 4:
+	case 3:
+		return pdpro1
+	case 4:
+		return pdpro2
+	case 5:
+		return pdpro3
+	case 6:
+		return pdpro4
+	case 7, 8, 9, 10, 11, 12, 13, 14:
 		return propellerAds
 	default:
 		panic(fmt.Errorf(
