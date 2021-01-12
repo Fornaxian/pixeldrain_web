@@ -148,8 +148,10 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 	}
 
 	if f.ReadInput(r) {
-		loginResp, err := td.PixelAPI.UserLogin(f.FieldVal("username"), f.FieldVal("password"))
-		if err != nil {
+		if session, err := td.PixelAPI.UserLogin(
+			f.FieldVal("username"),
+			f.FieldVal("password"),
+		); err != nil {
 			formAPIError(err, &f)
 		} else {
 			// Request was a success
@@ -159,7 +161,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 			// Set the autentication cookie
 			f.Extra.SetCookie = &http.Cookie{
 				Name:    "pd_auth_key",
-				Value:   loginResp.APIKey,
+				Value:   session.AuthKey.String(),
 				Path:    "/",
 				Expires: time.Now().AddDate(50, 0, 0),
 				Domain:  wc.sessionCookieDomain,

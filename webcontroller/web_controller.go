@@ -123,6 +123,7 @@ func New(
 		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", false)},
 		{GET, "business" /*        */, wc.serveMarkdown("business.md", false)},
 		{GET, "server_status" /*   */, wc.serveTemplate("server_status", false)},
+		{GET, "apps" /*            */, wc.serveTemplate("apps", false)},
 
 		// User account pages
 		{GET, "register" /*        */, wc.serveForm(wc.registerForm, false)},
@@ -164,6 +165,9 @@ func New(
 		{GET, "click/:id" /*     */, wc.serveAdClick},
 		{GET, "campaign/:id" /*  */, wc.serveCampaignPartner},
 		{GET, "ad/revenuehits" /**/, wc.serveTemplate("revenuehits", false)},
+
+		// Misc
+		{GET, "misc/sharex/pixeldrain.com.sxcu", wc.serveShareXConfig},
 	} {
 		r.Handle(h.method, prefix+"/"+h.path, h.handler)
 	}

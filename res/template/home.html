@@ -57,15 +57,9 @@
 			margin: 5px 15px;
 		}
 
-		.table_container {
-			width: 100%;
-			overflow-x: auto;
-			overflow-y: hidden;
-		}
 		.feat_table {
 			display: flex;
 			flex-direction: column;
-			min-width: 400px;
 		}
 		.feat_table > div {
 			display: flex;
@@ -77,7 +71,7 @@
 		}
 		.feat_table > div > div {
 			flex: 1 1 0;
-			margin: 0.2em;
+			margin: 0.25em;
 			padding: 0.5em;
 			text-align: center;
 			word-wrap: break-word;
@@ -106,6 +100,13 @@
 			text-shadow: 0 0 4px var(--shadow_color);
 			font-size: 1.1em;
 			font-weight: bold;
+		}
+		.feat_table > div > .cell_background {
+			background-position: center;
+			background-size: cover;
+			text-align: left;
+			font-size: 1.2em;
+			padding: 0.2em;
 		}
 
 		.feat_table > div > div.round_tl { border-top-left-radius:     0.5em; }
@@ -225,68 +226,149 @@
 				mission to make content sharing easier, safer and faster for
 				everyone.
 			</p>
-			<div class="table_container">
-				<div class="feat_table">
-					<div>
-						<div></div>
-						<div class="feat_normal round_tl">Free</div>
-						<div class="feat_pro feat_highlight round_tr">Pro</div>
+			<div class="feat_table">
+				<div>
+					<div></div>
+					<div class="feat_normal round_tl">Free</div>
+					<div class="feat_pro feat_highlight round_tr">Pro</div>
+				</div>
+				<div>
+					<div class="feat_label">Size limit per file</div>
+					<div class="feat_normal">5 GB per file</div>
+					<div class="feat_pro"><span class="text_highlight">15 GB</span> per file</div>
+				</div>
+				<div>
+					<div class="feat_label"><a href="javascript:void(0);" onclick="return explainFileExpiry();">File expiry</a></div>
+					<div class="feat_normal">30 days after the last time it is viewed</div>
+					<div class="feat_pro"><span class="text_highlight">90 days</span> after the last time it is viewed</div>
+				</div>
+				<div>
+					<div class="feat_label">Adver&shy;tise&shy;ments</div>
+					<div class="feat_normal">Pop-up or a banner ad on the file viewer page</div>
+					<div class="feat_pro">
+						<span class="text_highlight">No ads</span> on files
+						you share. No ads when viewing files uploaded by
+						other users
 					</div>
-					<div>
-						<div class="feat_label">Size limit per file</div>
-						<div class="feat_normal">5 GB per file</div>
-						<div class="feat_pro"><span class="text_highlight">15 GB</span> per file</div>
+				</div>
+				<div>
+					<div class="feat_label">Privacy</div>
+					<div class="feat_normal">
+						No trackers, but advertisers can see your IP address
+						and browser fingerprint
 					</div>
-					<div>
-						<div class="feat_label"><a href="javascript:void(0);" onclick="return explainFileExpiry();">File expiry</a></div>
-						<div class="feat_normal">30 days after the last time it is viewed</div>
-						<div class="feat_pro"><span class="text_highlight">90 days</span> after the last time it is viewed</div>
+					<div class="feat_pro">
+						<span class="text_highlight">Completely
+						private</span>. No third party scripts and no
+						logging
 					</div>
-					<div>
-						<div class="feat_label">Adver&shy;tise&shy;ments</div>
-						<div class="feat_normal">Pop-up or a banner ad on the file viewer page</div>
-						<div class="feat_pro">
-							<span class="text_highlight">No ads</span> on files
-							you share. No ads when viewing files uploaded by
-							other users
-						</div>
-					</div>
-					<div>
-						<div class="feat_label">Privacy</div>
-						<div class="feat_normal">
-							No trackers, but advertisers can see your IP address
-							and browser fingerprint
-						</div>
-						<div class="feat_pro">
-							<span class="text_highlight">Completely
-							private</span>. No third party scripts and no
-							logging
-						</div>
-					</div>
-					<div>
-						<div class="feat_label">Online file previews</div>
-						<div class="feat_pro">View image, video, audio, PDF and text files directly in your web browser</div>
-					</div>
-					<div>
-						<div class="feat_label"><a href="javascript:void(0);" onclick="return explainDirectLinking();">Direct linking</a></div>
-						<div class="feat_pro">Rate limiting mode will be enabled when a file has 3 times more downloads than views</div>
-					</div>
-					<div>
-						<div></div>
-						<div class="feat_normal round_bl">Free</div>
-						<div class="feat_pro feat_highlight round_br">
-							{{if ne .User.Subscription.ID ""}}
-							You have this plan<br/>
-							Thank you for supporting pixeldrain!
-							{{else}}
-							<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427" class="button button_highlight">Only € 2 per month!</a> (Excluding tax)
-							<br/>
-							Subscription managed by Patreon
-							{{end}}
-						</div>
+				</div>
+				<div>
+					<div class="feat_label">Online file previews</div>
+					<div class="feat_pro">View image, video, audio, PDF and text files directly in your web browser</div>
+				</div>
+				<div>
+					<div class="feat_label"><a href="javascript:void(0);" onclick="return explainDirectLinking();">Direct linking</a></div>
+					<div class="feat_pro">Rate limiting mode will be enabled when a file has 3 times more downloads than views</div>
+				</div>
+				<div>
+					<div></div>
+					<div class="feat_normal round_bl">Free</div>
+					<div class="feat_pro feat_highlight round_br">
+						{{if eq .User.Subscription.ID "patreon_1"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427" class="button button_highlight">Only € 2 per month!</a> (Excluding tax)
+						<br/>
+						Subscription managed by Patreon
+						{{end}}
 					</div>
 				</div>
 			</div>
+			<br/><br/>
+			<div style="text-align: center;">
+				Do you need even more time and space? Check out our other plans
+			</div>
+			<br/>
+			<div class="feat_table">
+				<div>
+					<div class="feat_label">Resolve</div>
+					<div class="feat_normal">
+						<span class="text_highlight">20 GB</span> file size,
+						<span class="text_highlight">120 days</span> file expiry
+					</div>
+					<div class="feat_normal round_tr round_br cell_background" style="background-image: url('/res/img/benefit_5_small.png');">
+						{{if eq .User.Subscription.ID "patreon_5"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701" class="button button_highlight">€ 4</a>
+						{{end}}
+					</div>
+				</div>
+				<div>
+					<div class="feat_label">Persistence</div>
+					<div class="feat_normal">
+						<span class="text_highlight">20 GB</span> file size,
+						<span class="text_highlight">240 days</span> file expiry
+					</div>
+					<div class="feat_normal round_tr round_br cell_background" style="background-image: url('/res/img/benefit_2_small.png');">
+						{{if eq .User.Subscription.ID "patreon_2"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291482" class="button button_highlight">€ 8</a>
+						{{end}}
+					</div>
+				</div>
+				<div>
+					<div class="feat_label">Tenacity</div>
+					<div class="feat_normal">
+						<span class="text_highlight">20 GB</span> file size,
+						<span class="text_highlight">480 days</span> file expiry
+					</div>
+					<div class="feat_normal round_tr round_br cell_background" style="background-image: url('/res/img/benefit_3_small.png');">
+						{{if eq .User.Subscription.ID "patreon_3"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291516" class="button button_highlight">€ 16</a>
+						{{end}}
+					</div>
+				</div>
+				<div>
+					<div class="feat_label">Eternity</div>
+					<div class="feat_normal">
+						<span class="text_highlight">20 GB</span> file size,
+						<span class="text_highlight">960 days</span> file expiry
+					</div>
+					<div class="feat_normal round_tr round_br cell_background" style="background-image: url('/res/img/benefit_4_small.png');">
+						{{if eq .User.Subscription.ID "patreon_4"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291528" class="button button_highlight">€ 32</a>
+						{{end}}
+					</div>
+				</div>
+				<div>
+					<div class="feat_label">Infinity</div>
+					<div class="feat_normal">
+						<span class="text_highlight">20 GB</span> file size,
+						<span class="text_highlight">1920 days</span> file expiry
+					</div>
+					<div class="feat_normal round_tr round_br cell_background" style="background-image: url('/res/img/benefit_6_small.png');">
+						{{if eq .User.Subscription.ID "patreon_6"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=6573749" class="button button_highlight">€ 64</a>
+						{{end}}
+					</div>
+				</div>
+			</div>
+
 			<br/>
 			<h2>Premium</h2>
 			<div class="highlight_dark">

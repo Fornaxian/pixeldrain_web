@@ -71,7 +71,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 
 			if err.Error() == "authentication_required" || err.Error() == "authentication_failed" {
 				// Disable API authentication
-				t.PixelAPI = wc.api
+				t.PixelAPI = wc.api.RealIP(util.RemoteAddress(r))
 
 				// Remove the authentication cookie
 				log.Debug("Deleting invalid API key")
