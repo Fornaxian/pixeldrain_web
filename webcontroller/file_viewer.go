@@ -58,12 +58,12 @@ func adType() int {
 		return pdpro3
 	case 6:
 		return pdpro4
-	case 7, 8, 9, 10, 11, 12, 13, 14:
+	case 7, 8:
+		return adMaven
+	case 9, 10, 11, 12, 13, 14:
 		return propellerAds
 	default:
-		panic(fmt.Errorf(
-			"random number generator returned unrecognised number: %d", i),
-		)
+		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 }
 
@@ -108,7 +108,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	templateData.OGData = metadataFromFile(finfo[0].FileInfo)
+	templateData.OGData = wc.metadataFromFile(finfo[0].FileInfo)
 
 	var vd = viewerData{
 		CaptchaKey:     wc.captchaKey(),
@@ -198,7 +198,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
-	templateData.OGData = metadataFromList(list)
+	templateData.OGData = wc.metadataFromList(list)
 	templateData.Other = viewerData{
 		Type:           "list",
 		CaptchaKey:     wc.captchaSiteKey,

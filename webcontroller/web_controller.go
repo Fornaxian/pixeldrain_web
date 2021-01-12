@@ -28,6 +28,7 @@ type WebController struct {
 
 	apiURLInternal string
 	apiURLExternal string
+	websiteAddress string
 
 	sessionCookieDomain string
 
@@ -50,6 +51,7 @@ func New(
 	resourceDir string,
 	apiURLInternal string,
 	apiURLExternal string,
+	websiteAddress string,
 	sessionCookieDomain string,
 	maintenanceMode bool,
 	debugMode bool,
@@ -59,6 +61,7 @@ func New(
 		resourceDir:         resourceDir,
 		apiURLInternal:      apiURLInternal,
 		apiURLExternal:      apiURLExternal,
+		websiteAddress:      websiteAddress,
 		sessionCookieDomain: sessionCookieDomain,
 		httpClient:          &http.Client{Timeout: time.Minute * 10},
 		api:                 apiclient.New(apiURLInternal),

@@ -21,67 +21,67 @@ func (og *ogData) addOG(k, v string)      { og.OGRules = append(og.OGRules, ogPr
 func (og *ogData) addTwitter(k, v string) { og.TwitterRules = append(og.TwitterRules, ogProp{k, v}) }
 func (og *ogData) addLink(k, v string)    { og.LinkRules = append(og.LinkRules, ogProp{k, v}) }
 
-func metadataFromFile(f apitype.FileInfo) (og ogData) {
+func (wc *WebController) metadataFromFile(f apitype.FileInfo) (og ogData) {
 	og.addOG("og:title", f.Name)
 	og.addOG("og:site_name", "pixeldrain")
 	og.addOG("og:description", "View '"+f.Name+"' on pixeldrain")
 	og.addOG("description", "View '"+f.Name+"' on pixeldrain")
-	og.addOG("og:url", "/u/"+f.ID)
+	og.addOG("og:url", wc.websiteAddress+"/u/"+f.ID)
 	og.addTwitter("twitter:title", f.Name)
 	og.addTwitter("twitter:site", "@Fornax96")
 	og.addTwitter("twitter:domain", "pixeldrain.com")
 
 	if strings.HasPrefix(f.MimeType, "image") {
 		og.addOG("og:type", "article")
-		og.addOG("og:image", "/api/file/"+f.ID)
-		og.addOG("og:image:url", "/api/file/"+f.ID)
-		og.addOG("og:image:secure_url", "/api/file/"+f.ID)
+		og.addOG("og:image", wc.websiteAddress+"/api/file/"+f.ID)
+		og.addOG("og:image:url", wc.websiteAddress+"/api/file/"+f.ID)
+		og.addOG("og:image:secure_url", wc.websiteAddress+"/api/file/"+f.ID)
 		og.addOG("og:image:type", f.MimeType)
 
 		og.addTwitter("twitter:card", "summary_large_image")
-		og.addTwitter("twitter:image", "/api/file/"+f.ID)
-		og.addLink("image_src", "/api/file/"+f.ID)
+		og.addTwitter("twitter:image", wc.websiteAddress+"/api/file/"+f.ID)
+		og.addLink("image_src", wc.websiteAddress+"/api/file/"+f.ID)
 	} else if strings.HasPrefix(f.MimeType, "video") {
 		og.addOG("og:type", "video.other")
-		og.addOG("og:image", "/api/file/"+f.ID+"/thumbnail")
-		og.addOG("og:video", "/api/file/"+f.ID)
-		og.addOG("og:video:url", "/api/file/"+f.ID)
-		og.addOG("og:video:secure_url", "/api/file/"+f.ID)
+		og.addOG("og:image", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
+		og.addOG("og:video", wc.websiteAddress+"/api/file/"+f.ID)
+		og.addOG("og:video:url", wc.websiteAddress+"/api/file/"+f.ID)
+		og.addOG("og:video:secure_url", wc.websiteAddress+"/api/file/"+f.ID)
 		og.addOG("og:video:type", f.MimeType)
 
 		og.addTwitter("twitter:card", "player")
-		og.addTwitter("twitter:image", "/api/file/"+f.ID+"/thumbnail")
-		og.addTwitter("twitter:player", "/api/file/"+f.ID)
-		og.addTwitter("twitter:player:stream", "/api/file/"+f.ID)
+		og.addTwitter("twitter:image", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
+		og.addTwitter("twitter:player", wc.websiteAddress+"/api/file/"+f.ID)
+		og.addTwitter("twitter:player:stream", wc.websiteAddress+"/api/file/"+f.ID)
 		og.addTwitter("twitter:player:stream:content_type", f.MimeType)
-		og.addLink("image_src", "/api/file/"+f.ID+"/thumbnail")
+		og.addLink("image_src", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
 	} else if strings.HasPrefix(f.MimeType, "audio") {
 		og.addOG("og:type", "music.song")
-		og.addOG("og:audio", "/api/file/"+f.ID)
-		og.addOG("og:audio:secure_url", "/api/file/"+f.ID)
+		og.addOG("og:audio", wc.websiteAddress+"/api/file/"+f.ID)
+		og.addOG("og:audio:secure_url", wc.websiteAddress+"/api/file/"+f.ID)
 		og.addOG("og:audio:type", f.MimeType)
-		og.addLink("image_src", "/api/file/"+f.ID+"/thumbnail")
+		og.addLink("image_src", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
 	} else {
 		og.addOG("og:type", "website")
-		og.addLink("image_src", "/api/file/"+f.ID+"/thumbnail")
+		og.addLink("image_src", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
 	}
 	return og
 }
-func metadataFromList(l apitype.ListInfo) (og ogData) {
+func (wc *WebController) metadataFromList(l apitype.ListInfo) (og ogData) {
 	og.addOG("og:type", "website")
 	og.addOG("og:title", l.Title)
 	og.addOG("og:site_name", "pixeldrain")
 	og.addOG("og:description", "View '"+l.Title+"' on pixeldrain")
 	og.addOG("description", "View '"+l.Title+"' on pixeldrain")
-	og.addOG("og:url", "/l/"+l.ID)
+	og.addOG("og:url", wc.websiteAddress+"/l/"+l.ID)
 	og.addTwitter("twitter:title", l.Title)
 	og.addTwitter("twitter:site", "@Fornax96")
 	og.addTwitter("twitter:domain", "pixeldrain.com")
 	if l.FileCount > 0 {
-		og.addOG("og:image", "/api/file/"+l.Files[0].ID+"/thumbnail")
-		og.addOG("og:image:url", "/api/file/"+l.Files[0].ID+"/thumbnail")
-		og.addTwitter("twitter:image", "/api/file/"+l.Files[0].ID+"/thumbnail")
-		og.addLink("image_src", "/api/file/"+l.Files[0].ID+"/thumbnail")
+		og.addOG("og:image", wc.websiteAddress+"/api/file/"+l.Files[0].ID+"/thumbnail")
+		og.addOG("og:image:url", wc.websiteAddress+"/api/file/"+l.Files[0].ID+"/thumbnail")
+		og.addTwitter("twitter:image", wc.websiteAddress+"/api/file/"+l.Files[0].ID+"/thumbnail")
+		og.addLink("image_src", wc.websiteAddress+"/api/file/"+l.Files[0].ID+"/thumbnail")
 	}
 	return og
 }
