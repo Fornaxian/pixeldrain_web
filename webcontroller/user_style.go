@@ -205,7 +205,7 @@ func (h hsl) add(hue int, saturation float64, lightness float64) hsl {
 // Following are all the available styles
 
 var defaultPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .7},
+	TextColor:                hsl{0, 0, .8},
 	InputColor:               hsl{0, 0, .2},
 	InputTextColor:           hsl{0, 0, 1},
 	HighlightColor:           hsl{89, .60, .45},
