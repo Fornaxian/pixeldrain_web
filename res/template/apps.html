@@ -3,13 +3,26 @@
 	<head>
 		{{template "meta_tags" "Apps"}}
 		{{template "user_style" .}}
+
+		<style>
+			.specs {
+				text-align: center;
+				border-bottom: 1px solid var(--layer_2_color_border);
+			}
+		</style>
 	</head>
 
 	<body>
 		{{template "page_top" .}}
 		<h1>Apps</h1>
 		<div class="page_content"><div class="limit_width">
-			<h2>ShareX (Windows only)</h2>
+			<h2>ShareX</h2>
+			<div class="specs">
+				Platform: Windows 7, 8.1 and 10 |
+				License: GPL-3.0 |
+				<a href="https://getsharex.com" target="_blank">Website</a> |
+				<a href="https://github.com/ShareX/ShareX" target="_blank">GitHub</a>
+			</div>
 			<p>
 				<img src="/res/img/sharex.png" style="float: right; height: 6em; margin: 0.5em;" />
 			</p>
@@ -47,7 +60,28 @@
 				<img src="/res/img/sharex_default.png" style="max-width: 100%;" /><br/>
 			</p>
 
-			<h2>pdup (Linux only)</h2>
+			<h2>go-pixeldrain</h2>
+			<div class="specs">
+				Platform: Linux, Mac OS, Windows (CLI) |
+				License: MIT |
+				<a href="https://jkawamoto.github.io/go-pixeldrain/" target="_blank">Website</a> |
+				<a href="https://github.com/jkawamoto/go-pixeldrain" target="_blank">GitHub</a>
+			</div>
+			<p>
+				go-pixeldrain is a command line interface for pixeldrain created
+				by Junpei Kawamoto. You can use it to upload and download files
+				and directories from your terminal. Compiled binaries are
+				available on the <a
+				href="https://github.com/jkawamoto/go-pixeldrain/releases"
+				target="_blank">GitHub releases page</a>.
+			</p>
+
+			<h2>pdup</h2>
+			<div class="specs">
+				Platform: Linux, BSD, Mac OS (CLI) |
+				License: None |
+				<a href="https://github.com/Fornax96/pdup" target="_blank">GitHub</a>
+			</div>
 			<p>
 				pdup is a little bash script for uploading files to pixeldrain
 				from the terminal. It's available <a

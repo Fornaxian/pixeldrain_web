@@ -58,9 +58,9 @@ func adType() int {
 		return pdpro3
 	case 6:
 		return pdpro4
-	case 7, 8:
+	case 7, 8, 9, 10:
 		return adMaven
-	case 9, 10, 11, 12, 13, 14:
+	case 11, 12, 13, 14:
 		return propellerAds
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
