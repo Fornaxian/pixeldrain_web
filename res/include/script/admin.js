@@ -174,12 +174,6 @@ function navigateTimespan(forward) {
 
 // Load performance statistics
 
-let last_update = new Date().getTime();
-let last_local_reads = 0;
-let last_local_read_size = 0;
-let last_remote_reads = 0;
-let last_remote_read_size = 0;
-
 let lastOrder;
 function getStats(order) {
 	lastOrder = order
@@ -193,22 +187,14 @@ function getStats(order) {
 			resp.stats_watcher_listeners / resp.stats_watcher_threads
 		).toPrecision(3);
 
-		let elapsed = (new Date().getTime() - last_update) / 1000;
 		document.getElementById("local_reads").innerText = resp.local_reads;
 		document.getElementById("local_read_size").innerText = formatDataVolume(resp.local_read_size, 4);
 		document.getElementById("remote_reads").innerText = resp.remote_reads;
 		document.getElementById("remote_read_size").innerText = formatDataVolume(resp.remote_read_size, 4);
-		document.getElementById("local_reads_rate").innerText = ((resp.local_reads - last_local_reads) / elapsed).toPrecision(4) + " / s";
-		document.getElementById("local_read_size_rate").innerText = formatDataVolume((resp.local_read_size - last_local_read_size) / elapsed, 4) + " / s";
-		document.getElementById("remote_reads_rate").innerText = ((resp.remote_reads - last_remote_reads) / elapsed).toPrecision(4) + " / s";
-		document.getElementById("remote_read_size_rate").innerText = formatDataVolume((resp.remote_read_size - last_remote_read_size) / elapsed, 4) + " / s";
-
-		last_update = new Date().getTime();
-		last_local_reads = resp.local_reads;
-		last_local_read_size = resp.local_read_size;
-		last_remote_reads = resp.remote_reads;
-		last_remote_read_size = resp.remote_read_size;
-
+		document.getElementById("local_reads_rate").innerText = resp.local_reads_per_sec.toPrecision(4) + " / s";
+		document.getElementById("local_read_size_rate").innerText = formatDataVolume(resp.local_read_size_per_sec, 4) + " / s";
+		document.getElementById("remote_reads_rate").innerText = resp.remote_reads_per_sec.toPrecision(4) + " / s";
+		document.getElementById("remote_read_size_rate").innerText = formatDataVolume(resp.remote_read_size_per_sec, 4) + " / s";
 
 		document.getElementById("db_time").innerText = printDate(new Date(resp.db_time), true, true, true);
 		document.getElementById("db_latency").innerText = formatNumber(resp.db_latency / 1000, 3) + " ms";
