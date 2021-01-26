@@ -19,7 +19,7 @@
 					<li>E-mail address: {{.User.Email}}</li>
 					<li>
 						Supporter level: {{.User.Subscription.Name}}
-						{{if ne .User.Subscription.ID ""}}
+						{{if eq .User.Subscription.Type "patreon"}}
 							(<a href="https://www.patreon.com/join/pixeldrain/checkout?edit=1">Manage subscription</a>)
 						{{end}}
 						<ul>

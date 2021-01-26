@@ -157,6 +157,9 @@ func New(
 		{GET, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},
 		{PST, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},
 
+		{GET, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, true)},
+		{PST, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, true)},
+
 		// Admin settings
 		{GET, "admin" /*        */, wc.serveTemplate("admin_panel", true)},
 		{GET, "admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true)},

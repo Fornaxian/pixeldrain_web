@@ -4,8 +4,9 @@
 		{{template "meta_tags" "Buckets"}}
 		{{template "user_style" .}}
 		<script>window.api_endpoint = '{{.APIEndpoint}}';</script>
+		<link rel='stylesheet' href='/res/svelte/user_buckets.css'>
+		<script defer src='/res/svelte/user_buckets.js'></script>
 	</head>
-
 	<body>
 		{{template "page_top" .}}
 		<h1>My Buckets</h1>
@@ -13,9 +14,6 @@
 
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
-
-		<link rel='stylesheet' href='/res/svelte/user_buckets.css'>
-		<script defer src='/res/svelte/user_buckets.js'></script>
 	</body>
 </html>
 {{end}}
