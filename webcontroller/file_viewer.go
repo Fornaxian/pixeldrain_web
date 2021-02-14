@@ -48,22 +48,20 @@ func adType() int {
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
 	switch i := rand.Intn(20); i {
-	case 0, 1, 2:
+	case 0, 1: // 10%
 		return amarulaSolutions
-	case 3:
+	case 2: // 5%
 		return pdpro1
-	case 4:
+	case 3: // 5%
 		return pdpro2
-	case 5:
+	case 4: // 5%
 		return pdpro3
-	case 6:
+	case 5: // 5%
 		return pdpro4
-	case 7, 8, 9:
-		return adMaven
-	case 10, 11, 12, 13, 14, 15, 16, 17, 18, 19:
+	default: // 70%
 		return propellerAds
-	default:
-		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
+		// default:
+		// 	panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 }
 
