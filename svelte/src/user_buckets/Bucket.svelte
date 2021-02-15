@@ -1,9 +1,29 @@
 <script>
+import { fs_delete_bucket } from "../filesystem/FilesystemAPI.svelte";
 
 export let bucket
 let details_hidden = true
 const expand_bucket = () => {
 	details_hidden = !details_hidden
+}
+
+const save_bucket = () => {
+	alert("save")
+}
+const delete_bucket = async () => {
+	if (!confirm(
+		"Are you sure you want to delete this bucket? All the files within "+
+		"the bucket will be irrevocably deleted. There is no way to recover "+
+		"from this! Press OK to proceed"
+	)) {
+		return
+	}
+
+	try {
+		await fs_delete_bucket(bucket.id, true)
+	} catch (err) {
+		alert("Failed to delete bucket! "+err)
+	}
 }
 
 </script>
@@ -23,7 +43,7 @@ const expand_bucket = () => {
 		</button>
 	</div>
 	<div class="bucket_details" class:hidden={details_hidden}>
-		<form>
+		<form on:submit|preventDefault={save_bucket}>
 			<table class="form">
 				<tr class="form">
 					<td>Name</td>
@@ -31,10 +51,10 @@ const expand_bucket = () => {
 				</tr>
 				<tr class="form">
 					<td colspan="2">
-						<button class="button_red">
+						<button class="button_red" on:click|preventDefault={delete_bucket}>
 							<i class="icon">delete</i> Delete
 						</button>
-						<button class="button_highlight" style="float: right;">
+						<button class="button_highlight" type="submit" style="float: right;">
 							<i class="icon">save</i> Save
 						</button>
 					</td>
@@ -50,6 +70,7 @@ const expand_bucket = () => {
 	background-color: var(--layer_3_color);
 	transition: box-shadow 0.5s;
 	box-shadow: 1px 1px var(--layer_3_shadow) 0 var(--shadow_color);
+	margin: 1em 0;
 }
 .bucket_header {
 	display: flex;
