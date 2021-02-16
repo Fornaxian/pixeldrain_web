@@ -1,5 +1,7 @@
 <script>
 import { fs_delete_bucket } from "../filesystem/FilesystemAPI.svelte";
+import { createEventDispatcher } from "svelte";
+let dispatch = createEventDispatcher()
 
 export let bucket
 let details_hidden = true
@@ -24,6 +26,8 @@ const delete_bucket = async () => {
 	} catch (err) {
 		alert("Failed to delete bucket! "+err)
 	}
+
+	dispatch("refresh");
 }
 
 </script>

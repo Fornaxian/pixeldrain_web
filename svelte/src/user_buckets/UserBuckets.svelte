@@ -1,17 +1,17 @@
 <script>
 import { onMount } from "svelte";
-import Bucket from "./Bucket.svelte";
+import UserBucket from "./UserBucket.svelte";
 import Spinner from "../util/Spinner.svelte";
-import { fs_get_buckets } from "../filesystem/FilesystemAPI.svelte";
-import NewBucket from "./NewBucket.svelte";
+import { fs_get_buckets, fs_create_bucket } from "../filesystem/FilesystemAPI.svelte";
 
-let loading = true;
-let buckets = [];
+let loading = true
+let buckets = []
 
-let new_bucket;
-let creating_bucket = false;
+let creating_bucket = false
+let new_bucket_name
 
 const get_buckets = async () => {
+	loading = true;
 	try {
 		let resp = await fs_get_buckets();
 		buckets = resp.buckets;
@@ -21,6 +21,23 @@ const get_buckets = async () => {
 		loading = false;
 	}
 };
+
+const create_bucket = async () => {
+	if (!new_bucket_name.value) {
+		alert("Please enter a name!")
+		return
+	}
+
+	try {
+		let bucket = await fs_create_bucket(new_bucket_name.value)
+		console.log(bucket)
+	} catch (err) {
+		alert("Failed to create bucket! "+err)
+	}
+
+	creating_bucket = false
+	get_buckets();
+}
 
 onMount(get_buckets);
 </script>
@@ -42,29 +59,40 @@ onMount(get_buckets);
 			</button>
 		</div>
 		{#if creating_bucket}
-			<NewBucket bind:this={new_bucket}></NewBucket>
+			<div class="highlight_light">
+				<form on:submit|preventDefault={create_bucket}>
+					<table class="form">
+						<tr>
+							<td>
+								Name
+							</td>
+							<td>
+								<input type="text" bind:this={new_bucket_name}/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button class="button_highlight" type="submit" style="float: right;">
+									<i class="icon">save</i> Save
+								</button>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
 		{/if}
 
-		<h2>Persistent buckets</h2>
-		<p>
-			These buckets don't expire, but have limited storage space and
-			bandwidth. Their limits can be raised by buying a subscription.
-		</p>
 		{#each buckets as bucket}
-			<Bucket bucket={bucket}></Bucket>
+			<UserBucket bucket={bucket} on:refresh={get_buckets}></UserBucket>
 		{/each}
-		<br/>
-		<h2>Temporary buckets</h2>
-		<p>
-
-		</p>
 	</div>
-
 </div>
 
 <style>
 .spinner_container {
-	display: inline-block;
+	position: absolute;
+	top: 10px;
+	left: 10px;
 	height: 100px;
 	width: 100px;
 }

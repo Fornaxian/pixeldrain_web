@@ -125,62 +125,36 @@
 			<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header image">
 		</picture>
 		<br/>
-		<div class="highlight_blue">
-			<div class="limit_width">
-				<p>
-					Hello! Due to
-					<a href="https://nypost.com/2021/02/14/hundreds-of-thousands-without-power-after-oregon-ice-storm/" target="_blank">an ice storm in Oregon</a>
-					the datacenter where pixeldrain is hosted in North America
-					was cut off from the internet and has lost power. This
-					caused an outage of a few hours last saturday (it happened
-					when I was out ice skating, so I didn't notice it until I
-					got back).
-				</p>
-				<p>
-					I am now redirecting all American (north and south) traffic
-					to the UK, the server there has more than enough capacity to
-					handle it all. Due to the long distance the website might
-					feel a bit slower.
-				</p>
-				<p>
-					Files which were uploaded to the server in Oregon shortly
-					before the outage will not be available until the server is
-					back up. Normally all files are backed up in Finland, but
-					this process takes a while. Due to the abruptness of the
-					outage a lot of files could not make it over. When the
-					server comes back online your files will be downloadable
-					again.
-				</p>
-				<p>
-					I will post updates <a href="https://twitter.com/Fornax96"
-					target="_blank">on Twitter</a> when the situation changes.
-				</p>
-			</div>
-		</div>
 		<div class="page_content" style="padding-top: 0; margin-bottom: 100px;">
 			<div id="instruction_1" class="instruction_highlight" style="margin-top: 0;"><div class="limit_width">
 				<span class="big_number">1</span>
 				<span class="instruction_text">Select files to upload</span>
-				<br/>
-				You can also drop files anywhere on this page from your file
-				manager
+				<br/> You can also drop files on this page from your file
+				manager or paste an image from your clipboard
 			</div></div>
 			<input id="file_input_field" type="file" name="file" multiple="multiple"/>
 			<button id="upload_file_button" class="big_button button_highlight">
 				<i class="icon small">cloud_upload</i>
-				<u>U</u>pload Files</button>
+				<u>U</u>pload Files
+			</button>
 			<button id="upload_text_button" class="big_button button_highlight">
 				<i class="icon small">text_fields</i>
-				Upload <u>T</u>ext</button>
+				Upload <u>T</u>ext
+			</button>
 			<br/>
 			<p>
 				By uploading files to pixeldrain you acknowledge and accept our
 				<a href="/about#content-policy">content policy</a>.
 			<p>
+
 			<div id="instruction_2" class="instruction_highlight">
 				<div class="limit_width">
 					<span class="big_number">2</span><span class="instruction_text">Wait for the files to finish uploading</span>
 				</div>
+			</div>
+			<div id="file_drop_highlight" class="highlight_green" style="display: none;">
+				Gimme gimme gimme!<br/>
+				Drop your files to upload them
 			</div>
 			<div id="uploads_queue"></div>
 
@@ -197,30 +171,30 @@
 					{{template `copy.svg` .}}<br/><span><u>C</u>opy link</span>
 				</button>
 				<button id="btn_open_link" class="social_button" style="display: inline-block">
-					{{template `open_in_new.svg` .}}<br/><span>Open link</span>
+					{{template `open_in_new.svg` .}}<br/><span><u>O</u>pen link</span>
 				</button>
 				<div id="social_buttons" style="display: inline-block">
 					<button id="btn_social_email" class="social_button">
-						{{template `email.svg` .}}<br/>E-Mail
+						{{template `email.svg` .}}<br/><u>E</u>-Mail
 					</button>
 					<button id="btn_social_twitter" class="social_button">
-						{{template `twitter.svg` .}}<br/>Twitter
+						{{template `twitter.svg` .}}<br/>T<u>w</u>itter
 					</button>
 					<button id="btn_social_facebook" class="social_button">
-						{{template `facebook.svg` .}}<br/>Facebook
+						{{template `facebook.svg` .}}<br/><u>F</u>acebook
 					</button>
 					<button id="btn_social_reddit" class="social_button">
-						{{template `reddit.svg` .}}<br/>Reddit
+						{{template `reddit.svg` .}}<br/><u>R</u>eddit
 					</button>
-					<button id="btc_social_tumblr" class="social_button">
-						{{template `tumblr.svg` .}}<br/>Tumblr
+					<button id="btn_social_tumblr" class="social_button">
+						{{template `tumblr.svg` .}}<br/>Tu<u>m</u>blr
 					</button>
 				</div>
 				<br/><br/>
-				<button id="btn_create_list"><i class="icon">list</i> Create list with uploaded files</button>
-				<button id="btn_copy_links"><i class="icon">content_copy</i> Copy all links to clipboard</button>
-				<button id="btn_copy_markdown"><i class="icon">content_copy</i> Copy markdown to clipboard</button>
-				<button id="btn_copy_bbcode"><i class="icon">content_copy</i> Copy BBCode to clipboard</button>
+				<button id="btn_create_list"><i class="icon">list</i> Create <u>l</u>ist with uploaded files</button>
+				<button id="btn_copy_links"><i class="icon">content_copy</i> Copy <u>a</u>ll links to clipboard</button>
+				<button id="btn_copy_markdown"><i class="icon">content_copy</i> Copy mark<u>d</u>own to clipboard</button>
+				<button id="btn_copy_bbcode"><i class="icon">content_copy</i> Copy <u>B</u>BCode to clipboard</button>
 				<br/>
 				<div id="created_lists"></div>
 			</div>

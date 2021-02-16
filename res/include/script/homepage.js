@@ -1,4 +1,4 @@
-function UploadProgressBar(uploadManager, queueDiv, file){
+function UploadProgressBar(uploadManager, queueDiv, file) {
 	this.uploadManager = uploadManager
 	this.file = file
 	this.name = file.name
@@ -14,38 +14,38 @@ function UploadProgressBar(uploadManager, queueDiv, file){
 		this.file,
 		this.name,
 		(progress) => { this.onProgress(progress) },
-		(id)       => { this.onFinished(id) },
+		(id) => { this.onFinished(id) },
 		(val, msg) => { this.onFailure(val, msg) }
 	)
 
 	// Browsers don't render the transition if the opacity is set and
 	// updated in the same frame. So we have to wait a frame (or more)
 	// before changing the opacity to make sure the transition triggers
-	window.setTimeout(() => {this.uploadDiv.style.opacity = "1"}, 100)
+	window.setTimeout(() => { this.uploadDiv.style.opacity = "1" }, 100)
 }
 
-UploadProgressBar.prototype.onProgress = function(progress){
-	this.uploadDiv.innerText = "Uploading... " + Math.round(progress*1000)/10 + "%\n" + this.name
+UploadProgressBar.prototype.onProgress = function (progress) {
+	this.uploadDiv.innerText = "Uploading... " + Math.round(progress * 1000) / 10 + "%\n" + this.name
 	this.uploadDiv.style.background = 'linear-gradient('
-		+'to right, '
-		+'var(--layer_3_color) 0%, '
-		+'var(--highlight_color) '+ ((progress*100)) +'%, '
-		+'var(--layer_3_color) '+ ((progress*100)+1) +'%)'
+		+ 'to right, '
+		+ 'var(--layer_3_color) 0%, '
+		+ 'var(--highlight_color) ' + ((progress * 100)) + '%, '
+		+ 'var(--layer_3_color) ' + ((progress * 100) + 1) + '%)'
 }
-UploadProgressBar.prototype.onFinished = function(id){
-	console.log("Upload finished: "+this.file.name+" "+id)
+UploadProgressBar.prototype.onFinished = function (id) {
+	console.log("Upload finished: " + this.file.name + " " + id)
 
 	this.uploadDiv.style.background = 'var(--layer_3_color)'
-	this.uploadDiv.href = '/u/'+id
-	this.uploadDiv.target= "_blank"
+	this.uploadDiv.href = '/u/' + id
+	this.uploadDiv.target = "_blank"
 
 	let fileImg = document.createElement("img")
-	fileImg.src = apiEndpoint+'/file/'+id+'/thumbnail'
+	fileImg.src = apiEndpoint + '/file/' + id + '/thumbnail'
 	fileImg.alt = this.file.name
 
 	let linkSpan = document.createElement("span")
 	linkSpan.classList = "file_button_title"
-	linkSpan.innerText = domainURL()+"/u/"+id
+	linkSpan.innerText = domainURL() + "/u/" + id
 
 	this.uploadDiv.innerHTML = "" // Remove uploading progress
 	this.uploadDiv.appendChild(fileImg)
@@ -53,7 +53,7 @@ UploadProgressBar.prototype.onFinished = function(id){
 	this.uploadDiv.appendChild(document.createElement("br"))
 	this.uploadDiv.appendChild(linkSpan)
 }
-UploadProgressBar.prototype.onFailure = function(val, msg) {
+UploadProgressBar.prototype.onFailure = function (val, msg) {
 	if (val === "") {
 		val = "Could not connect to server"
 	}
@@ -62,22 +62,18 @@ UploadProgressBar.prototype.onFailure = function(val, msg) {
 	this.uploadDiv.style.background = 'var(--danger_color)'
 	this.uploadDiv.style.color = 'var(--highlight_text_color)'
 	this.uploadDiv.appendChild(document.createTextNode("Upload failed: "))
-	this.uploadDiv.appendChild(document.createTextNode(msg+" ("+val+")"))
+	this.uploadDiv.appendChild(document.createTextNode(msg + " (" + val + ")"))
 	this.uploadDiv.appendChild(document.createElement("br"))
 	this.uploadDiv.appendChild(document.createTextNode(this.file.name))
 	console.log(msg)
 }
 
 
-let uploader   = null
+let uploader = new UploadManager(apiEndpoint + "/file", uploadsFinished)
 let shareTitle = ""
-let shareLink  = ""
+let shareLink = ""
 
 function handleUploads(files) {
-	if (uploader === null){
-		uploader = new UploadManager(apiEndpoint+"/file", uploadsFinished)
-	}
-
 	if (files.length === 0) {
 		return
 	}
@@ -101,8 +97,8 @@ function uploadsFinished() {
 	let uploadLog = uploader.finishedUploads()
 
 	if (uploadLog.length === 1) {
-		shareTitle = "Download "+uploadLog[0].fileName+" here"
-		shareLink = domainURL()+"/u/"+uploadLog[0].fileID
+		shareTitle = "Download " + uploadLog[0].fileName + " here"
+		shareLink = domainURL() + "/u/" + uploadLog[0].fileID
 
 		showShareButtons()
 	} else if (uploadLog.length > 1) {
@@ -111,13 +107,13 @@ function uploadsFinished() {
 		createList(
 			title, true,
 		).then(resp => {
-			console.log("Automatic list ID "+resp.id)
-			shareTitle = "View "+title+" here"
-			shareLink = domainURL()+"/l/"+resp.id
+			console.log("Automatic list ID " + resp.id)
+			shareTitle = "View " + title + " here"
+			shareLink = domainURL() + "/l/" + resp.id
 
 			showShareButtons()
 		}).catch(err => {
-			alert("Failed to generate link. Please check your internet connection and try again.\nError: "+err)
+			alert("Failed to generate link. Please check your internet connection and try again.\nError: " + err)
 		})
 	}
 }
@@ -130,10 +126,10 @@ function createList(title, anonymous) {
 	}
 
 	return fetch(
-		apiEndpoint+"/list",
+		apiEndpoint + "/list",
 		{
 			method: "POST",
-			headers: {"Content-Type": "application/json; charset=UTF-8"},
+			headers: { "Content-Type": "application/json; charset=UTF-8" },
 			body: JSON.stringify({
 				"title": title,
 				"anonymous": anonymous,
@@ -142,7 +138,7 @@ function createList(title, anonymous) {
 		}
 	).then(resp => {
 		if (!resp.ok) {
-			return Promise.reject("HTTP error: "+resp.status)
+			return Promise.reject("HTTP error: " + resp.status)
 		}
 		return resp.json()
 	})
@@ -163,7 +159,7 @@ function showShareButtons() {
 }
 
 function copyLink() {
-	if(copyText(shareLink)) {
+	if (copyText(shareLink)) {
 		console.log('Text copied')
 		document.querySelector("#btn_copy_link>span").textContent = "Copied!"
 		document.getElementById("btn_copy_link").classList.add("button_highlight")
@@ -177,35 +173,47 @@ function copyLink() {
  * Upload Handlers
  */
 
- // Relay click event to hidden file field
-document.getElementById("upload_file_button").onclick = function() {
+// Relay click event to hidden file field
+document.getElementById("upload_file_button").onclick = () => {
 	document.getElementById("file_input_field").click()
 }
-document.getElementById("file_input_field").onchange = function(evt){
+document.getElementById("file_input_field").onchange = e => {
 	// Start uploading the files async
-	window.setTimeout(handleUploads(evt.target.files), 1)
+	window.setTimeout(handleUploads(e.target.files), 1)
 
 	// This resets the file input field
 	document.getElementById("file_input_field").nodeValue = ""
 }
 
-document.getElementById("upload_text_button").onclick = function() {
-	window.location.href = '/t/'
+document.getElementById("upload_text_button").onclick = () => {
+	window.location.href = '/t'
 }
 
 /*
  * Drag 'n Drop upload handlers
  */
 
-document.ondragover  = function(e) {
+document.addEventListener("dragover", e => {
+	document.getElementById("file_drop_highlight").style.display = ""
+
 	e.preventDefault()
 	e.stopPropagation()
-}
-document.ondragenter = function(e) {
+})
+document.addEventListener("dragenter", e => {
+	document.getElementById("file_drop_highlight").style.display = ""
+
 	e.preventDefault()
 	e.stopPropagation()
-}
-document.addEventListener('drop', function(e){
+})
+document.addEventListener("dragleave", e => {
+	document.getElementById("file_drop_highlight").style.display = "none"
+
+	e.preventDefault()
+	e.stopPropagation()
+})
+document.addEventListener("drop", e => {
+	document.getElementById("file_drop_highlight").style.display = "none"
+
 	if (e.dataTransfer && e.dataTransfer.files.length > 0) {
 		e.preventDefault()
 		e.stopPropagation()
@@ -214,37 +222,41 @@ document.addEventListener('drop', function(e){
 		window.setTimeout(handleUploads(e.dataTransfer.files), 1)
 	}
 })
+document.addEventListener("paste", e => {
+	if (e.clipboardData.files[0]) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		window.setTimeout(handleUploads(e.clipboardData.files), 1)
+	}
+})
 
 /*
  * Share buttons
  */
 
-document.getElementById("btn_social_share").addEventListener("click", function() {
-	window.navigator.share({
-		title: "Pixeldrain",
-		text: shareTitle,
-		url: shareLink
-	})
+document.getElementById("btn_social_share").addEventListener("click", () => {
+	window.navigator.share({ title: "Pixeldrain", text: shareTitle, url: shareLink })
 })
-document.getElementById("btn_copy_link").addEventListener("click", function() {
+document.getElementById("btn_copy_link").addEventListener("click", () => {
 	copyLink()
 })
-document.getElementById("btn_open_link").addEventListener("click", function() {
+document.getElementById("btn_open_link").addEventListener("click", () => {
 	window.open(shareLink, '_blank')
 })
-document.getElementById("btn_social_email").addEventListener("click", function() {
+document.getElementById("btn_social_email").addEventListener("click", () => {
 	window.open('mailto:please@set.address?subject=File%20on%20pixeldrain&body=' + shareLink)
 })
-document.getElementById("btn_social_twitter").addEventListener("click", function() {
+document.getElementById("btn_social_twitter").addEventListener("click", () => {
 	window.open('https://twitter.com/share?url=' + shareLink)
 })
-document.getElementById("btn_social_facebook").addEventListener("click", function() {
+document.getElementById("btn_social_facebook").addEventListener("click", () => {
 	window.open('http://www.facebook.com/sharer.php?u=' + shareLink)
 })
-document.getElementById("btn_social_reddit").addEventListener("click", function() {
+document.getElementById("btn_social_reddit").addEventListener("click", () => {
 	window.open('https://www.reddit.com/submit?url=' + shareLink)
 })
-document.getElementById("btc_social_tumblr").addEventListener("click", function() {
+document.getElementById("btn_social_tumblr").addEventListener("click", () => {
 	window.open('http://www.tumblr.com/share/link?url=' + shareLink)
 })
 
@@ -253,18 +265,18 @@ document.getElementById("btc_social_tumblr").addEventListener("click", function(
  */
 
 function renderListButton(apiURL, id, title, subtitle) {
-	let btn                = document.createElement("a")
-	btn.classList          = "file_button"
-	btn.href               = "/l/"+id
-	btn.target             = "_blank"
-	let thumbnail          = document.createElement("img")
-	thumbnail.src          = apiURL+"/list/"+id+"/thumbnail?width=80&height=80"
-	thumbnail.alt          = title
-	let titleSpan          = document.createElement("span")
-	titleSpan.classList    = "file_button_title"
-	titleSpan.innerText    = title
-	let br                 = document.createElement("br")
-	let subtitleSpan       = document.createElement("span")
+	let btn = document.createElement("a")
+	btn.classList = "file_button"
+	btn.href = "/l/" + id
+	btn.target = "_blank"
+	let thumbnail = document.createElement("img")
+	thumbnail.src = apiURL + "/list/" + id + "/thumbnail?width=80&height=80"
+	thumbnail.alt = title
+	let titleSpan = document.createElement("span")
+	titleSpan.classList = "file_button_title"
+	titleSpan.innerText = title
+	let br = document.createElement("br")
+	let subtitleSpan = document.createElement("span")
 	subtitleSpan.classList = "file_button_subtitle"
 	subtitleSpan.innerText = subtitle
 
@@ -276,12 +288,12 @@ function renderListButton(apiURL, id, title, subtitle) {
 }
 
 // Create list button
-document.getElementById("btn_create_list").addEventListener("click", function(evt) {
+document.getElementById("btn_create_list").addEventListener("click", function (evt) {
 	let title = prompt(
 		"You are creating a list containing " + uploader.finishedUploads().length + " files.\n"
 		+ "What do you want to call it?", "My New Album"
 	)
-	if(title === null){
+	if (title === null) {
 		return
 	}
 	createList(title, false).then(resp => {
@@ -289,11 +301,11 @@ document.getElementById("btn_create_list").addEventListener("click", function(ev
 			renderListButton(
 				apiEndpoint,
 				resp.id,
-				domainURL()+'/l/'+resp.id,
+				domainURL() + '/l/' + resp.id,
 				"List creation finished!",
 			)
 		)
-		window.open('/l/'+resp.id, '_blank')
+		window.open('/l/' + resp.id, '_blank')
 	}).catch(err => {
 		let div = document.createElement("div")
 		div.className = "file_button"
@@ -305,55 +317,55 @@ document.getElementById("btn_create_list").addEventListener("click", function(ev
 })
 
 let btnCopyLinks = document.getElementById("btn_copy_links")
-btnCopyLinks.addEventListener("click", function(){
+btnCopyLinks.addEventListener("click", function () {
 	let text = ""
 	let uploads = uploader.finishedUploads()
 
 	// Add the text to the textarea
 	for (let i = 0; i < uploads.length; i++) {
 		// Example: https://pixeldrain.com/u/abcd1234: Some_file.png
-		text += domainURL()+"/u/"+uploads[i].fileID+" "+uploads[i].fileName+"\n"
+		text += domainURL() + "/u/" + uploads[i].fileID + " " + uploads[i].fileName + "\n"
 	}
 	if (shareLink.includes("/l/")) {
-		text += "\n"+shareLink+" All "+uploads.length+" files\n"
+		text += "\n" + shareLink + " All " + uploads.length + " files\n"
 	}
 
 	// Copy the selected text
-	if(copyText(text)){
+	if (copyText(text)) {
 		btnCopyLinks.classList.add("button_highlight")
 		btnCopyLinks.innerHTML = "Links copied to clipboard!"
-	}else{
+	} else {
 		btnCopyLinks.classList.add("button_red")
 		btnCopyLinks.innerHTML = "Copying links failed"
 	}
 })
 
 let btnCopyBBCode = document.getElementById("btn_copy_bbcode")
-btnCopyBBCode.addEventListener("click", function(){
+btnCopyBBCode.addEventListener("click", function () {
 	let text = ""
 	let uploads = uploader.finishedUploads()
 
 	// Add the text to the textarea
 	for (let i = 0; i < uploads.length; i++) {
 		// Example: [url=https://pixeldrain.com/u/abcd1234]Some_file.png[/url]
-		text += "[url="+domainURL()+"/u/"+uploads[i].fileID+"]"+uploads[i].fileName+"[/url]\n"
+		text += "[url=" + domainURL() + "/u/" + uploads[i].fileID + "]" + uploads[i].fileName + "[/url]\n"
 	}
 	if (shareLink.includes("/l/")) {
-		text += "\n[url="+shareLink+"]All "+uploads.length+" files[/url]\n"
+		text += "\n[url=" + shareLink + "]All " + uploads.length + " files[/url]\n"
 	}
 
 	// Copy the selected text
-	if(copyText(text)){
+	if (copyText(text)) {
 		btnCopyBBCode.classList.add("button_highlight")
 		btnCopyBBCode.innerHTML = "BBCode copied to clipboard!"
-	}else{
+	} else {
 		btnCopyBBCode.classList.add("button_red")
 		btnCopyBBCode.innerHTML = "Copying links failed"
 	}
 })
 
 let btnCopyMarkdown = document.getElementById("btn_copy_markdown")
-btnCopyMarkdown.addEventListener("click", function(){
+btnCopyMarkdown.addEventListener("click", function () {
 	let text = ""
 	let uploads = uploader.finishedUploads()
 
@@ -362,17 +374,17 @@ btnCopyMarkdown.addEventListener("click", function(){
 		// Example: * [Some_file.png](https://pixeldrain.com/u/abcd1234)
 
 		if (uploads.length > 1) { text += " * " }
-		text += "["+uploads[i].fileName+"]("+domainURL()+"/u/"+uploads[i].fileID+")\n"
+		text += "[" + uploads[i].fileName + "](" + domainURL() + "/u/" + uploads[i].fileID + ")\n"
 	}
 	if (shareLink.includes("/l/")) {
-		text += " * [All "+uploads.length+" files]("+shareLink+")\n"
+		text += " * [All " + uploads.length + " files](" + shareLink + ")\n"
 	}
 
 	// Copy the selected text
-	if(copyText(text)){
+	if (copyText(text)) {
 		btnCopyMarkdown.classList.add("button_highlight")
 		btnCopyMarkdown.innerHTML = "Markdown copied to clipboard!"
-	}else{
+	} else {
 		btnCopyMarkdown.classList.add("button_red")
 		btnCopyMarkdown.innerHTML = "Copying links failed"
 	}
@@ -382,19 +394,35 @@ btnCopyMarkdown.addEventListener("click", function(){
 /*
  * Keyboard shortcuts
  */
-document.addEventListener("keydown", function(event){
-	if (event.ctrlKey || event.altKey || event.metaKey) {
+document.addEventListener("keydown", e => {
+	if (e.ctrlKey || e.altKey || e.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
-	if (event.keyCode === 67) { // c
-		// Copy links to clipboard
+	if (e.key === "c") {
 		document.getElementById("btn_copy_link").click()
-	} else if (event.keyCode === 85) { // u
-		// Click the upload button
+	} else if (e.key === "u") {
 		document.getElementById("file_input_field").click()
-	} else if (event.keyCode === 84) { // t
-		// Click the text button
+	} else if (e.key === "t") {
 		document.getElementById("upload_text_button").click()
+	} else if (e.key === "o") {
+		document.getElementById("btn_open_link").click()
+	} else if (e.key === "l") {
+		document.getElementById("btn_create_list").click()
+	} else if (e.key === "e") {
+		document.getElementById("btn_social_email").click()
+	} else if (e.key === "w") {
+		document.getElementById("btn_social_twitter").click()
+	} else if (e.key === "f") {
+		document.getElementById("btn_social_facebook").click()
+	} else if (e.key === "r") {
+		document.getElementById("btn_social_reddit").click()
+	} else if (e.key === "m") {
+		document.getElementById("btn_social_tumblr").click()
+	} else if (e.key === "a") {
+		document.getElementById("btn_copy_links").click()
+	} else if (e.key === "d") {
+		document.getElementById("btn_copy_markdown").click()
+	} else if (e.key === "b") {
+		document.getElementById("btn_copy_bbcode").click()
 	}
-	console.log(event.keyCode)
 })

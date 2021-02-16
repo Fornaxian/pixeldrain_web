@@ -161,11 +161,12 @@ func New(
 		{PST, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, true)},
 
 		// Admin settings
-		{GET, "admin" /*        */, wc.serveTemplate("admin_panel", true)},
-		{GET, "admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true)},
-		{PST, "admin/globals" /**/, wc.serveForm(wc.adminGlobalsForm, true)},
-		{GET, "admin/abuse" /*  */, wc.serveForm(wc.adminAbuseForm, true)},
-		{PST, "admin/abuse" /*  */, wc.serveForm(wc.adminAbuseForm, true)},
+		{GET, "admin" /*                */, wc.serveTemplate("admin_panel", true)},
+		{GET, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, true)},
+		{PST, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, true)},
+		{GET, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, true)},
+		{PST, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, true)},
+		{GET, "admin/abuse_reporters" /**/, wc.serveTemplate("admin_abuse_reporters", true)},
 
 		// Advertising related
 		{GET, "click/:id" /*     */, wc.serveAdClick},

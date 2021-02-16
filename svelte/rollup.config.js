@@ -32,6 +32,7 @@ export default [
 	"filesystem",
 	"modal",
 	"user_buckets",
+	"admin_abuse_reporters",
 ].map((name, index) => ({
 	input: `src/${name}.js`,
 	output: {
