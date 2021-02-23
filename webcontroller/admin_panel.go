@@ -28,7 +28,7 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 		return f
 	}
 	var globalsMap = make(map[string]string)
-	for _, v := range globals.Globals {
+	for _, v := range globals {
 		f.Fields = append(f.Fields, Field{
 			Name:         v.Key,
 			DefaultValue: v.Value,

@@ -1,40 +1,33 @@
-{{ define "filesystem" }}<!DOCTYPE html>
+{{define "filesystem"}}
+<!DOCTYPE html>
 <html lang="en">
 	<head>
-		{{template "meta_tags" .Title}}
+		<title>{{.Title}}</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		{{template "user_style" .}}
-		<style>{{template "file_manager.css" .}}</style>
-		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
+
+		<link rel="icon" sizes="32x32" href="/res/img/pixeldrain_32.png" />
+		<link rel="icon" sizes="128x128" href="/res/img/pixeldrain_128.png" />
+		<link rel="icon" sizes="152x152" href="/res/img/pixeldrain_152.png" />
+		<link rel="icon" sizes="180x180" href="/res/img/pixeldrain_180.png" />
+		<link rel="icon" sizes="192x192" href="/res/img/pixeldrain_192.png" />
+		<link rel="icon" sizes="196x196" href="/res/img/pixeldrain_196.png" />
+		<link rel="icon" sizes="256x256" href="/res/img/pixeldrain_256.png" />
+		<link rel="apple-touch-icon" sizes="152x152" href="/res/img/pixeldrain_152.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/res/img/pixeldrain_180.png" />
+		<link rel="shortcut icon" sizes="196x196" href="/res/img/pixeldrain_196.png" />
+		<meta name="theme-color" content="#75AD38"/>
+
+		{{ template "opengraph" .OGData }}
+		<script>
+			const initialNode = {{.Other}};
+			window.api_endpoint = '{{.APIEndpoint}}';
+		</script>
+
+		<link rel='stylesheet' href='/res/svelte/filesystem.css'>
+		<script defer src='/res/svelte/filesystem.js'></script>
 	</head>
-
-	<body>
-		{{template "page_top" .}}
-
-		<h1>{{ .Title}}</h1>
-
-		<div class="page_content">
-			<div class="limit_width">
-				<h2>
-					<a href="/fs">Buckets</a>
-					{{ range $node := .Other.Path }}
-						/ <a href="{{ $node.HREF }}">{{ $node.Name }}</a>
-					{{ end }}
-					{{ if ne .Other.Base.Name "" }}
-						/ {{ .Other.Base.Name }}
-					{{ end }}
-				</h2>
-
-				{{ range $node := .Other.Children }}
-					<a class="node" href="{{ $node.HREF }}"><div>
-						<img src="{{ $node.Icon }}"/>
-						<span>{{ $node.Name }}</span>
-					</div></a>
-				{{ end }}
-			</div>
-		</div>
-
-		{{template "page_bottom" .}}
-		{{template "analytics"}}
-	</body>
+	<body></body>
 </html>
-{{ end }}
+{{end}}

@@ -114,6 +114,7 @@ func New(
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
 		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
 		{GET, "l/:id" /*           */, wc.serveListViewer},
+		{GET, "d/*path" /*         */, wc.serveDirectory},
 		{GET, "s/:id" /*           */, wc.serveSkynetViewer},
 		{GET, "t" /*               */, wc.serveTemplate("text_editor", false)},
 		{GET, "donation" /*        */, wc.serveMarkdown("donation.md", false)},
@@ -149,10 +150,6 @@ func New(
 		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
 		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false)},
 		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false)},
-
-		// Filesystem
-		{GET, "fs/*path", wc.serveFilesystem},
-		{GET, "d/*path", wc.serveDirectory},
 
 		{GET, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},
 		{PST, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},

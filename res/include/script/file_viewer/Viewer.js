@@ -1,21 +1,21 @@
 function Viewer(type, viewToken, data) {
 	// Set defaults
-	this.toolbar        = null
-	this.listNavigator  = null
-	this.detailsWindow  = null
+	this.toolbar = null
+	this.listNavigator = null
+	this.detailsWindow = null
 	this.divFilepreview = null
-	this.file           = null
-	this.title          = "" // Contains either the file name or list title
-	this.listId         = ""
-	this.viewToken      = viewToken
-	this.isList         = false
-	this.isFile         = false
-	this.initialized    = false
-	this.viewerScript   = null
+	this.file = null
+	this.title = "" // Contains either the file name or list title
+	this.listId = ""
+	this.viewToken = viewToken
+	this.isList = false
+	this.isFile = false
+	this.initialized = false
+	this.viewerScript = null
 
-	this.toolbar       = new Toolbar(this)
+	this.toolbar = new Toolbar(this)
 	this.detailsWindow = new DetailsWindow(this)
-	this.editWindow    = new EditWindow()
+	this.editWindow = new EditWindow()
 
 	this.divFilepreview = document.getElementById("filepreview")
 
@@ -59,11 +59,11 @@ function Viewer(type, viewToken, data) {
 	this.initialized = true
 }
 
-Viewer.prototype.getFile = function() {
+Viewer.prototype.getFile = function () {
 	return this.file
 }
 
-Viewer.prototype.setFile = function(file) {
+Viewer.prototype.setFile = function (file) {
 	this.file = file
 
 	if (this.isList) {
@@ -84,11 +84,10 @@ Viewer.prototype.setFile = function(file) {
 	// do anything about it anyway
 	if (file.view_href !== "") {
 		fetch(file.view_href, {
-				method: "POST",
-				headers: {"Content-Type": "application/x-www-form-urlencoded"},
-				body: "token="+this.viewToken
-			}
-		)
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			body: "token=" + this.viewToken
+		})
 	}
 
 	// Clean up the previous viewer if possible
@@ -108,8 +107,8 @@ Viewer.prototype.setFile = function(file) {
 	}
 
 	if (file.abuse_type !== "") {
-		this.viewerScript = new AbuseViewer(this,file)
-	}else if (file.mime_type.startsWith("image")) {
+		this.viewerScript = new AbuseViewer(this, file)
+	} else if (file.mime_type.startsWith("image")) {
 		this.viewerScript = new ImageViewer(this, file)
 	} else if (
 		file.mime_type.startsWith("video") ||
@@ -140,21 +139,21 @@ Viewer.prototype.setFile = function(file) {
 	this.viewerScript.render(this.divFilepreview)
 }
 
-Viewer.prototype.renderSponsors = function() {
+Viewer.prototype.renderSponsors = function () {
 	// Check if the ad is enabled
 	if (document.querySelector(".sponsors_banner") == null) { return }
 
-	let scaleWidth      = 1
-	let scaleHeight     = 1
+	let scaleWidth = 1
+	let scaleHeight = 1
 	let minWindowHeight = 800
-	let bannerWidth     = document.querySelector(".sponsors_banner").offsetWidth
-	let bannerHeight    = document.querySelector(".sponsors_banner").offsetHeight
+	let bannerWidth = document.querySelector(".sponsors_banner").offsetWidth
+	let bannerHeight = document.querySelector(".sponsors_banner").offsetHeight
 
 	if (window.innerWidth < bannerWidth) {
-		scaleWidth = window.innerWidth/bannerWidth
+		scaleWidth = window.innerWidth / bannerWidth
 	}
 	if (window.innerHeight < minWindowHeight) {
-		scaleHeight = window.innerHeight/minWindowHeight
+		scaleHeight = window.innerHeight / minWindowHeight
 	}
 
 	// The smaller scale is the scale we'll use
@@ -165,63 +164,66 @@ Viewer.prototype.renderSponsors = function() {
 	// width of the viewport - the width of the ad to calculate the amount of
 	// pixels around the ad. We multiply the ad size by the scale we calcualted
 	// to account for the smaller size.
-	let offset = (window.innerWidth - (bannerWidth*scale)) / 2
+	let offset = (window.innerWidth - (bannerWidth * scale)) / 2
 
-	document.querySelector(".sponsors").style.height = (bannerHeight*scale)+"px"
-	document.querySelector(".sponsors_banner").style.marginLeft = offset+"px"
-	document.querySelector(".sponsors_banner").style.transform = "scale("+scale+")"
+	document.querySelector(".sponsors").style.height = (bannerHeight * scale) + "px"
+	document.querySelector(".sponsors_banner").style.marginLeft = offset + "px"
+	document.querySelector(".sponsors_banner").style.transform = "scale(" + scale + ")"
 }
 
-Viewer.prototype.keyboardEvent = function(evt) {
+Viewer.prototype.keyboardEvent = function (evt) {
 	if (evt.ctrlKey || evt.altKey || evt.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
+	if (document.activeElement.type && document.activeElement.type === "text") {
+		return // Prevent shortcuts from interfering with input fields
+	}
 
-	console.debug("Key pressed: "+evt.keyCode)
+	console.debug("Key pressed: " + evt.keyCode)
 	switch (evt.keyCode) {
-	case 65: // A or left arrow key go to previous file
-	case 37:
-		if (this.listNavigator != null) {
-			this.listNavigator.previousItem()
-		}
-		break
-	case 68: // D or right arrow key go to next file
-	case 39:
-		if (this.listNavigator != null) {
-			this.listNavigator.nextItem()
-		}
-		break
-	case 83:
-		if (evt.shiftKey) {
-			this.listNavigator.downloadList() // SHIFT + S downloads all files in list
-		} else {
-			this.toolbar.download() // S to download the current file
-		}
-		break
-	case 82: // R to toggle list shuffle
-		if (this.listNavigator != null) {
-			this.listNavigator.toggleShuffle()
-		}
-		break
-	case 67: // C to copy to clipboard
-		this.toolbar.copyUrl()
-		break
-	case 73: // I to open the details window
-		this.detailsWindow.toggle()
-		break
-	case 69: // E to open the edit window
-		this.editWindow.toggle()
-		break
-	case 81: // Q to close the window
-		window.close()
-		break
+		case 65: // A or left arrow key go to previous file
+		case 37:
+			if (this.listNavigator != null) {
+				this.listNavigator.previousItem()
+			}
+			break
+		case 68: // D or right arrow key go to next file
+		case 39:
+			if (this.listNavigator != null) {
+				this.listNavigator.nextItem()
+			}
+			break
+		case 83:
+			if (evt.shiftKey) {
+				this.listNavigator.downloadList() // SHIFT + S downloads all files in list
+			} else {
+				this.toolbar.download() // S to download the current file
+			}
+			break
+		case 82: // R to toggle list shuffle
+			if (this.listNavigator != null) {
+				this.listNavigator.toggleShuffle()
+			}
+			break
+		case 67: // C to copy to clipboard
+			this.toolbar.copyUrl()
+			break
+		case 73: // I to open the details window
+			this.detailsWindow.toggle()
+			break
+		case 69: // E to open the edit window
+			this.editWindow.toggle()
+			break
+		case 81: // Q to close the window
+			window.close()
+			break
 	}
 }
 
 
 // Against XSS attacks
 function escapeHTML(str) {
-    return String(str)
+	return String(str)
 		.replace(/&/g, '&amp;')
 		.replace(/</g, '&lt;')
 		.replace(/>/g, '&gt;')
@@ -229,15 +231,15 @@ function escapeHTML(str) {
 }
 
 function fileFromAPIResp(resp) {
-	resp.date_created    = new Date(resp.date_upload)
-	resp.date_last_view  = new Date(resp.date_last_view)
-	resp.icon_href       = apiEndpoint+"/file/"+resp.id+"/thumbnail"
-	resp.get_href        = apiEndpoint+"/file/"+resp.id
-	resp.download_href   = apiEndpoint+"/file/"+resp.id+"?download"
-	resp.view_href       = apiEndpoint+"/file/"+resp.id+"/view"
-	resp.timeseries_href = apiEndpoint+"/file/"+resp.id+"/timeseries"
-	resp.stats_href      = apiEndpoint+"/file/"+resp.id+"/stats"
-	resp.link            = domainURL()+"/u/"+resp.id
+	resp.date_created = new Date(resp.date_upload)
+	resp.date_last_view = new Date(resp.date_last_view)
+	resp.icon_href = apiEndpoint + "/file/" + resp.id + "/thumbnail"
+	resp.get_href = apiEndpoint + "/file/" + resp.id
+	resp.download_href = apiEndpoint + "/file/" + resp.id + "?download"
+	resp.view_href = apiEndpoint + "/file/" + resp.id + "/view"
+	resp.timeseries_href = apiEndpoint + "/file/" + resp.id + "/timeseries"
+	resp.stats_href = apiEndpoint + "/file/" + resp.id + "/stats"
+	resp.link = domainURL() + "/u/" + resp.id
 	if (resp.description === undefined) {
 		resp.description = ""
 	}
@@ -246,12 +248,12 @@ function fileFromAPIResp(resp) {
 }
 function fileFromSkyNet(resp) {
 	let file = fileFromAPIResp(resp)
-	file.icon_href         = "/res/img/mime/empty.png"
-	file.get_href          = "https://skydrain.net/file/"+resp.id
-	file.download_href     = "https://skydrain.net/file/"+resp.id+"?attachment=1"
-	file.view_href         = ""
-	file.timeseries_href   = ""
-	file.stats_href        = ""
-	file.link              = domainURL()+"/s/"+resp.id
+	file.icon_href = "/res/img/mime/empty.png"
+	file.get_href = "https://siasky.net/file/" + resp.id
+	file.download_href = "https://siasky.net/file/" + resp.id + "?attachment=1"
+	file.view_href = ""
+	file.timeseries_href = ""
+	file.stats_href = ""
+	file.link = domainURL() + "/s/" + resp.id
 	return file
 }

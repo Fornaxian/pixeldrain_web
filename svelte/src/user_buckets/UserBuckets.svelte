@@ -13,8 +13,7 @@ let new_bucket_name
 const get_buckets = async () => {
 	loading = true;
 	try {
-		let resp = await fs_get_buckets();
-		buckets = resp.buckets;
+		buckets = await fs_get_buckets();
 	} catch (err) {
 		alert(err);
 	} finally {

@@ -244,7 +244,15 @@
 		</template>
 
 		<template id="tpl_edit_file">
-			<h3>Delete file</h3>
+			<div class="edit_file_notification" style="display: none;"></div>
+			<h3>Rename</h3>
+			<form class="edit_file_name_form" style="display: flex; width: 100%">
+				<input class="edit_file_name_field" type="text" style="flex: 1 1 auto"/>
+				<button class="edit_file_name_submit" role="submit" style="flex: 0 0 auto">
+					<i class="icon">save</i> Save
+				</button>
+			</form>
+			<h3>Delete</h3>
 			<p>
 				When you delete a file it cannot be recovered.
 				Nobody will be able to download it and the link will
