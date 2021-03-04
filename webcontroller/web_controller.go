@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -26,11 +28,11 @@ type WebController struct {
 
 	hostname string
 
-	apiURLInternal string
-	apiURLExternal string
-	websiteAddress string
-
+	apiURLInternal      string
+	apiURLExternal      string
+	websiteAddress      string
 	sessionCookieDomain string
+	proxyAPIRequests    bool
 
 	// page-specific variables
 	captchaSiteKey string
@@ -55,6 +57,7 @@ func New(
 	sessionCookieDomain string,
 	maintenanceMode bool,
 	debugMode bool,
+	proxyAPIRequests bool,
 ) (wc *WebController) {
 	var err error
 	wc = &WebController{
@@ -63,6 +66,7 @@ func New(
 		apiURLExternal:      apiURLExternal,
 		websiteAddress:      websiteAddress,
 		sessionCookieDomain: sessionCookieDomain,
+		proxyAPIRequests:    proxyAPIRequests,
 		httpClient:          &http.Client{Timeout: time.Minute * 10},
 		api:                 apiclient.New(apiURLInternal),
 	}
@@ -94,6 +98,23 @@ func New(
 			wc.templates.Get().ExecuteTemplate(w, "maintenance", wc.newTemplateData(w, r))
 		})
 		return wc
+	}
+
+	if proxyAPIRequests {
+		proxPath := strings.TrimSuffix(apiURLInternal, "/api")
+		proxURL, err := url.Parse(proxPath)
+		if err != nil {
+			panic(fmt.Errorf("failed to parse reverse proxy URL '%s': %w", proxPath, err))
+		}
+
+		var prox = httputil.NewSingleHostReverseProxy(proxURL)
+		prox.Transport = wc.httpClient.Transport
+		r.Handler("OPTIONS", "/api/*p", prox)
+		r.Handler("POST", "/api/*p", prox)
+		r.Handler("GET", "/api/*p", prox)
+		r.Handler("PUT", "/api/*p", prox)
+		r.Handler("PATCH", "/api/*p", prox)
+		r.Handler("DELETE", "/api/*p", prox)
 	}
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)

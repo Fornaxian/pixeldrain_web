@@ -19,18 +19,32 @@ type PixelWebConfig struct {
 	SessionCookieDomain string `toml:"session_cookie_domain"`
 	ResourceDir         string `toml:"resource_dir"`
 	DebugMode           bool   `toml:"debug_mode"`
+	ProxyAPIRequests    bool   `toml:"proxy_api_requests"`
 	MaintenanceMode     bool   `toml:"maintenance_mode"`
 }
 
 // DefaultConfig is the default configuration for Pixeldrain Web
-const DefaultConfig = `# Pixeldrain Web UI server configuration
+const DefaultConfig = `## Pixeldrain Web UI server configuration
 
-api_url_external      = "/api" # Used in the web browser
-api_url_internal      = "http://127.0.0.1:8080" # Used for internal API requests to the pixeldrain server, not visible to users
+# Address used in the browser for making requests directly to the API. Can be
+# relative to the current domain name
+api_url_external      = "/api"
+
+# Address used to make internal API requests to the backend
+api_url_internal      = "https://pixeldrain.com/api"
+
 website_address       = "https://pixeldrain.com"
-session_cookie_domain = ".pixeldrain.com"
+session_cookie_domain = ""
 resource_dir          = "res"
-debug_mode            = false
+
+# Parse all the templates every time a request comes in
+debug_mode            = true
+
+# Create proxy listeners to forward all requests made to /api to
+# api_url_internal
+proxy_api_requests    = true
+
+# When this is true every request will return a maintainance HTML page
 maintenance_mode      = false
 `
 
@@ -68,5 +82,6 @@ func Init(r *httprouter.Router, prefix string, setLogLevel bool) {
 		webconf.SessionCookieDomain,
 		webconf.MaintenanceMode,
 		webconf.DebugMode,
+		webconf.ProxyAPIRequests,
 	)
 }

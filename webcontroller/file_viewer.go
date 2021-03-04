@@ -19,7 +19,7 @@ import (
 
 func (wc *WebController) viewTokenOrBust() (t string) {
 	var err error
-	if t, err = wc.api.GetMiscViewToken(); err != nil {
+	if t, err = wc.api.GetMiscViewToken(); err != nil && !wc.proxyAPIRequests {
 		log.Error("Could not get viewtoken: %s", err)
 	}
 	return t
