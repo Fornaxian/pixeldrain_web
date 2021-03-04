@@ -87,7 +87,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	templateData := wc.newTemplateData(w, r)
 
-	var finfo []apitype.ListFile
+	var files []apitype.ListFile
 	for _, id := range ids {
 		inf, err := templateData.PixelAPI.GetFileInfo(id)
 		if err != nil {
@@ -97,43 +97,50 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 			}
 			continue
 		}
-		finfo = append(finfo, apitype.ListFile{FileInfo: inf})
+		files = append(files, apitype.ListFile{FileInfo: inf})
 	}
 
-	if len(finfo) == 0 {
+	if len(files) == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		wc.templates.Get().ExecuteTemplate(w, "file_not_found", templateData)
 		return
 	}
 
-	templateData.OGData = wc.metadataFromFile(finfo[0].FileInfo)
+	templateData.OGData = wc.metadataFromFile(files[0].FileInfo)
 
 	var vd = viewerData{
 		CaptchaKey:     wc.captchaKey(),
 		ViewToken:      wc.viewTokenOrBust(),
 		AdType:         adType(),
-		FileAdsEnabled: finfo[0].ShowAds,
+		FileAdsEnabled: files[0].ShowAds,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 	}
 	if len(ids) > 1 {
-		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(finfo))
+		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(files))
 		vd.Type = "list"
 		vd.APIResponse = apitype.ListInfo{
 			Success:     true,
 			Title:       "Multiple files",
 			DateCreated: time.Now(),
-			Files:       finfo,
+			Files:       files,
 		}
 	} else {
-		templateData.Title = fmt.Sprintf("%s ~ pixeldrain", finfo[0].Name)
+		templateData.Title = fmt.Sprintf("%s ~ pixeldrain", files[0].Name)
 		vd.Type = "file"
-		vd.APIResponse = finfo[0].FileInfo
+		vd.APIResponse = files[0].FileInfo
 	}
 	templateData.Other = vd
 
 	var templateName = "file_viewer"
 	if browserCompat(r.UserAgent()) {
 		templateName = "file_viewer_compat"
+	}
+
+	for _, file := range files {
+		if file.AbuseType != "" {
+			w.WriteHeader(http.StatusUnavailableForLegalReasons)
+			break
+		}
 	}
 
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
@@ -210,6 +217,13 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	var templateName = "file_viewer"
 	if browserCompat(r.UserAgent()) {
 		templateName = "file_viewer_compat"
+	}
+
+	for _, file := range list.Files {
+		if file.AbuseType != "" {
+			w.WriteHeader(http.StatusUnavailableForLegalReasons)
+			break
+		}
 	}
 
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)

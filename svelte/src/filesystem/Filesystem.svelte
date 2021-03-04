@@ -227,6 +227,9 @@ const keydown = e => {
 	if (e.ctrlKey || e.altKey || e.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
+	if (document.activeElement.type && document.activeElement.type === "text") {
+		return // Prevent shortcuts from interfering with input fields
+	}
 
 	switch (e.key) {
 		case "Escape":
