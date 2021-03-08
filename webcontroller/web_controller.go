@@ -151,19 +151,21 @@ func New(
 		{GET, "apps" /*            */, wc.serveTemplate("apps", false)},
 
 		// User account pages
-		{GET, "register" /*        */, wc.serveForm(wc.registerForm, false)},
-		{PST, "register" /*        */, wc.serveForm(wc.registerForm, false)},
-		{GET, "login" /*           */, wc.serveForm(wc.loginForm, false)},
-		{PST, "login" /*           */, wc.serveForm(wc.loginForm, false)},
-		{GET, "password_reset" /*  */, wc.serveForm(wc.passwordResetForm, false)},
-		{PST, "password_reset" /*  */, wc.serveForm(wc.passwordResetForm, false)},
-		{GET, "logout" /*          */, wc.serveTemplate("logout", true)},
-		{PST, "logout" /*          */, wc.serveLogout},
-		{GET, "user" /*            */, wc.serveTemplate("user_home", true)},
-		{GET, "user/files" /*      */, wc.serveTemplate("user_files", true)},
-		{GET, "user/lists" /*      */, wc.serveTemplate("user_lists", true)},
-		{GET, "user/buckets" /*    */, wc.serveTemplate("user_buckets", true)},
-		{GET, "user/filemanager" /**/, wc.serveTemplate("file_manager", true)},
+		{GET, "register" /*         */, wc.serveForm(wc.registerForm, false)},
+		{PST, "register" /*         */, wc.serveForm(wc.registerForm, false)},
+		{GET, "login" /*            */, wc.serveForm(wc.loginForm, false)},
+		{PST, "login" /*            */, wc.serveForm(wc.loginForm, false)},
+		{GET, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, false)},
+		{PST, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, false)},
+		{GET, "logout" /*           */, wc.serveTemplate("logout", true)},
+		{PST, "logout" /*           */, wc.serveLogout},
+		{GET, "user" /*             */, wc.serveTemplate("user_home", true)},
+		{GET, "user/files" /*       */, wc.serveTemplate("user_files", true)},
+		{GET, "user/lists" /*       */, wc.serveTemplate("user_lists", true)},
+		{GET, "user/buckets" /*     */, wc.serveTemplate("user_buckets", true)},
+		{GET, "user/filemanager" /* */, wc.serveTemplate("file_manager", true)},
+		{GET, "user/export/files" /**/, wc.serveUserExportFiles},
+		{GET, "user/export/lists" /**/, wc.serveUserExportLists},
 
 		// User account settings
 		{GET, "user/settings" /*              */, wc.serveUserSettings},
@@ -200,15 +202,8 @@ func New(
 	return wc
 }
 
-func (wc *WebController) serveTemplate(
-	tpl string,
-	requireAuth bool,
-) httprouter.Handle {
-	return func(
-		w http.ResponseWriter,
-		r *http.Request,
-		p httprouter.Params,
-	) {
+func (wc *WebController) serveTemplate(tpl string, requireAuth bool) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		var tpld = wc.newTemplateData(w, r)
 		if requireAuth && !tpld.Authenticated {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
