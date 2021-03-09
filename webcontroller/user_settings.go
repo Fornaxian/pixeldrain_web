@@ -60,6 +60,7 @@ func (wc *WebController) serveUserSettings(
 	r *http.Request,
 	p httprouter.Params,
 ) {
+	w.Header().Set("X-Frame-Options", "DENY")
 	td := wc.newTemplateData(w, r)
 
 	if !td.Authenticated {

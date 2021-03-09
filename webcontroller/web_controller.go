@@ -129,41 +129,41 @@ func New(
 		handler httprouter.Handle // The function to run when this API is called
 	}{
 		// General navigation
-		{GET, "" /*                */, wc.serveTemplate("home", false)},
-		{GET, "api" /*             */, wc.serveMarkdown("apidoc.md", false)},
-		{GET, "history" /*         */, wc.serveTemplate("history_cookies", false)},
+		{GET, "" /*                */, wc.serveTemplate("home", handlerOpts{})},
+		{GET, "api" /*             */, wc.serveMarkdown("apidoc.md", handlerOpts{})},
+		{GET, "history" /*         */, wc.serveTemplate("history_cookies", handlerOpts{})},
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
 		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
 		{GET, "l/:id" /*           */, wc.serveListViewer},
 		{GET, "d/*path" /*         */, wc.serveDirectory},
 		{GET, "s/:id" /*           */, wc.serveSkynetViewer},
-		{GET, "t" /*               */, wc.serveTemplate("text_editor", false)},
-		{GET, "donation" /*        */, wc.serveMarkdown("donation.md", false)},
-		{GET, "subscribe" /*       */, wc.serveMarkdown("subscribe.md", false)},
-		{GET, "widgets" /*         */, wc.serveTemplate("widgets", false)},
-		{GET, "about" /*           */, wc.serveMarkdown("about.md", false)},
-		{GET, "appearance" /*      */, wc.serveTemplate("appearance", false)},
-		{GET, "hosting" /*         */, wc.serveMarkdown("hosting.md", false)},
-		{GET, "brave" /*           */, wc.serveMarkdown("brave.md", false)},
-		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", false)},
-		{GET, "business" /*        */, wc.serveMarkdown("business.md", false)},
-		{GET, "server_status" /*   */, wc.serveTemplate("server_status", false)},
-		{GET, "apps" /*            */, wc.serveTemplate("apps", false)},
+		{GET, "t" /*               */, wc.serveTemplate("text_editor", handlerOpts{})},
+		{GET, "donation" /*        */, wc.serveMarkdown("donation.md", handlerOpts{})},
+		{GET, "subscribe" /*       */, wc.serveMarkdown("subscribe.md", handlerOpts{})},
+		{GET, "widgets" /*         */, wc.serveTemplate("widgets", handlerOpts{})},
+		{GET, "about" /*           */, wc.serveMarkdown("about.md", handlerOpts{})},
+		{GET, "appearance" /*      */, wc.serveTemplate("appearance", handlerOpts{})},
+		{GET, "hosting" /*         */, wc.serveMarkdown("hosting.md", handlerOpts{})},
+		{GET, "brave" /*           */, wc.serveMarkdown("brave.md", handlerOpts{})},
+		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", handlerOpts{})},
+		{GET, "business" /*        */, wc.serveMarkdown("business.md", handlerOpts{})},
+		{GET, "server_status" /*   */, wc.serveTemplate("server_status", handlerOpts{})},
+		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
 
 		// User account pages
-		{GET, "register" /*         */, wc.serveForm(wc.registerForm, false)},
-		{PST, "register" /*         */, wc.serveForm(wc.registerForm, false)},
-		{GET, "login" /*            */, wc.serveForm(wc.loginForm, false)},
-		{PST, "login" /*            */, wc.serveForm(wc.loginForm, false)},
-		{GET, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, false)},
-		{PST, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, false)},
-		{GET, "logout" /*           */, wc.serveTemplate("logout", true)},
+		{GET, "register" /*         */, wc.serveForm(wc.registerForm, handlerOpts{NoEmbed: true})},
+		{PST, "register" /*         */, wc.serveForm(wc.registerForm, handlerOpts{NoEmbed: true})},
+		{GET, "login" /*            */, wc.serveForm(wc.loginForm, handlerOpts{NoEmbed: true})},
+		{PST, "login" /*            */, wc.serveForm(wc.loginForm, handlerOpts{NoEmbed: true})},
+		{GET, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
+		{PST, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
+		{GET, "logout" /*           */, wc.serveTemplate("logout", handlerOpts{Auth: true, NoEmbed: true})},
 		{PST, "logout" /*           */, wc.serveLogout},
-		{GET, "user" /*             */, wc.serveTemplate("user_home", true)},
-		{GET, "user/files" /*       */, wc.serveTemplate("user_files", true)},
-		{GET, "user/lists" /*       */, wc.serveTemplate("user_lists", true)},
-		{GET, "user/buckets" /*     */, wc.serveTemplate("user_buckets", true)},
-		{GET, "user/filemanager" /* */, wc.serveTemplate("file_manager", true)},
+		{GET, "user" /*             */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
+		{GET, "user/files" /*       */, wc.serveTemplate("user_files", handlerOpts{Auth: true})},
+		{GET, "user/lists" /*       */, wc.serveTemplate("user_lists", handlerOpts{Auth: true})},
+		{GET, "user/buckets" /*     */, wc.serveTemplate("user_buckets", handlerOpts{Auth: true})},
+		{GET, "user/filemanager" /* */, wc.serveTemplate("file_manager", handlerOpts{Auth: true})},
 		{GET, "user/export/files" /**/, wc.serveUserExportFiles},
 		{GET, "user/export/lists" /**/, wc.serveUserExportLists},
 
@@ -171,27 +171,26 @@ func New(
 		{GET, "user/settings" /*              */, wc.serveUserSettings},
 		{PST, "user/settings" /*              */, wc.serveUserSettings},
 		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
-		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false)},
-		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, false)},
+		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
+		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
 
-		{GET, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},
-		{PST, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, true)},
+		{GET, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, handlerOpts{Auth: true})},
+		{PST, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, handlerOpts{Auth: true})},
 
-		{GET, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, true)},
-		{PST, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, true)},
+		{GET, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
+		{PST, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
 
 		// Admin settings
-		{GET, "admin" /*                */, wc.serveTemplate("admin_panel", true)},
-		{GET, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, true)},
-		{PST, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, true)},
-		{GET, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, true)},
-		{PST, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, true)},
-		{GET, "admin/abuse_reporters" /**/, wc.serveTemplate("admin_abuse_reporters", true)},
+		{GET, "admin" /*                */, wc.serveTemplate("admin_panel", handlerOpts{Auth: true})},
+		{GET, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
+		{PST, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
+		{GET, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, handlerOpts{Auth: true})},
+		{PST, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, handlerOpts{Auth: true})},
+		{GET, "admin/abuse_reporters" /**/, wc.serveTemplate("admin_abuse_reporters", handlerOpts{Auth: true})},
 
 		// Advertising related
 		{GET, "click/:id" /*     */, wc.serveAdClick},
 		{GET, "campaign/:id" /*  */, wc.serveCampaignPartner},
-		{GET, "ad/revenuehits" /**/, wc.serveTemplate("revenuehits", false)},
 
 		// Misc
 		{GET, "misc/sharex/pixeldrain.com.sxcu", wc.serveShareXConfig},
@@ -202,25 +201,38 @@ func New(
 	return wc
 }
 
-func (wc *WebController) serveTemplate(tpl string, requireAuth bool) httprouter.Handle {
+type handlerOpts struct {
+	Auth    bool
+	NoEmbed bool
+}
+
+func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		var tpld = wc.newTemplateData(w, r)
-		if requireAuth && !tpld.Authenticated {
+		if opts.NoEmbed {
+			w.Header().Set("X-Frame-Options", "DENY")
+		}
+
+		var td = wc.newTemplateData(w, r)
+		if opts.Auth && !td.Authenticated {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
-		err := wc.templates.Get().ExecuteTemplate(w, tpl, tpld)
+		err := wc.templates.Get().ExecuteTemplate(w, tpl, td)
 		if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
 	}
 }
 
-func (wc *WebController) serveMarkdown(tpl string, requireAuth bool) httprouter.Handle {
+func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		var err error
+		if opts.NoEmbed {
+			w.Header().Set("X-Frame-Options", "DENY")
+		}
+
 		var tpld = wc.newTemplateData(w, r)
-		if requireAuth && !tpld.Authenticated {
+		if opts.Auth && !tpld.Authenticated {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
@@ -286,15 +298,19 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 
 func (wc *WebController) serveForm(
 	handler func(*TemplateData, *http.Request) Form,
-	requireAuth bool,
+	opts handlerOpts,
 ) httprouter.Handle {
 	return func(
 		w http.ResponseWriter,
 		r *http.Request,
 		p httprouter.Params,
 	) {
+		if opts.NoEmbed {
+			w.Header().Set("X-Frame-Options", "DENY")
+		}
+
 		var td = wc.newTemplateData(w, r)
-		if requireAuth && !td.Authenticated {
+		if opts.Auth && !td.Authenticated {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
