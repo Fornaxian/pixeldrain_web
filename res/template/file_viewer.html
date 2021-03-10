@@ -277,6 +277,7 @@
 			'use strict';
 			let apiEndpoint = '{{.APIEndpoint}}';
 			let captchaKey = '{{.Other.CaptchaKey}}';
+			let embeddedViewer = {{.Other.Embedded}};
 			let highlightColor = '#{{.Style.HighlightColor.RGB}}';
 			{{template `util.js`}}
 			{{template `drawGraph.js`}}

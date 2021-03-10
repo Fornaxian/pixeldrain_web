@@ -18,7 +18,7 @@ func (wc *WebController) patreonLinkForm(td *TemplateData, r *http.Request) (f F
 		return f
 	}
 
-	patron, err := td.PixelAPI.PatreonByID(r.FormValue("key"))
+	patron, err := td.PixelAPI.GetPatreonByID(r.FormValue("key"))
 	if err != nil && err.Error() == "not_found" {
 		f.Submitted = true
 		f.SubmitMessages = []template.HTML{"Patron ID not found"}
@@ -76,7 +76,7 @@ func (wc *WebController) patreonLinkForm(td *TemplateData, r *http.Request) (f F
 	}}
 
 	if f.ReadInput(r) {
-		if err := td.PixelAPI.PatreonLink(r.FormValue("key")); err != nil {
+		if err := td.PixelAPI.PostPatreonLink(r.FormValue("key")); err != nil {
 			formAPIError(err, &f)
 		} else {
 			// Request was a success
@@ -105,7 +105,7 @@ func (wc *WebController) knoxfsLinkForm(td *TemplateData, r *http.Request) (f Fo
 		return f
 	}
 
-	sub, err := td.PixelAPI.SubscriptionByID(r.FormValue("key"))
+	sub, err := td.PixelAPI.GetSubscriptionID(r.FormValue("key"))
 	if err != nil && err.Error() == "not_found" {
 		f.Submitted = true
 		f.SubmitMessages = []template.HTML{"Subscription ID not found"}
@@ -163,7 +163,7 @@ func (wc *WebController) knoxfsLinkForm(td *TemplateData, r *http.Request) (f Fo
 	}
 
 	if f.ReadInput(r) {
-		if err := td.PixelAPI.SubscriptionLink(r.FormValue("key")); err != nil {
+		if err := td.PixelAPI.PostSubscriptionLink(r.FormValue("key")); err != nil {
 			formAPIError(err, &f)
 		} else {
 			// Request was a success

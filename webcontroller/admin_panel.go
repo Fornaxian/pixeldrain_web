@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"github.com/Fornaxian/log"
 )
 
@@ -65,7 +65,7 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 
 			// Value changed, try to update global setting
 			if err = td.PixelAPI.AdminSetGlobals(v.Name, v.EnteredValue); err != nil {
-				if apiErr, ok := err.(apiclient.Error); ok {
+				if apiErr, ok := err.(pixelapi.Error); ok {
 					f.SubmitMessages = append(f.SubmitMessages, template.HTML(apiErr.Message))
 				} else {
 					log.Error("%s", err)

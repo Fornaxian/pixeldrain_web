@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"github.com/Fornaxian/log"
 	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
@@ -42,7 +42,7 @@ type WebController struct {
 	// API client to use for all requests. If the user is authenticated you
 	// should call Login() on this object. Calling Login will create a copy and
 	// not alter the original PixelAPI, but it will use the same HTTP Transport
-	api apiclient.PixelAPI
+	api pixelapi.PixelAPI
 }
 
 // New initializes a new WebController by registering all the request handlers
@@ -68,7 +68,7 @@ func New(
 		sessionCookieDomain: sessionCookieDomain,
 		proxyAPIRequests:    proxyAPIRequests,
 		httpClient:          &http.Client{Timeout: time.Minute * 10},
-		api:                 apiclient.New(apiURLInternal),
+		api:                 pixelapi.New(apiURLInternal),
 	}
 	wc.templates = NewTemplateManager(resourceDir, apiURLExternal, debugMode)
 	wc.templates.ParseTemplates(false)
@@ -379,7 +379,7 @@ func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {
 func (wc *WebController) captchaKey() string {
 	// This only runs on the first request
 	if wc.captchaSiteKey == "" {
-		capt, err := wc.api.GetRecaptcha()
+		capt, err := wc.api.GetMiscRecaptcha()
 		if err != nil {
 			log.Error("Error getting recaptcha key: %s", err)
 			return ""

@@ -25,6 +25,24 @@ function Viewer(type, viewToken, data) {
 		this.toolbar.toggle()
 	}
 
+	if (embeddedViewer) {
+		// Remove padding from the headerbar
+		document.getElementById("file_viewer_headerbar").classList += " file_viewer_headerbar_embedded"
+
+		// Hide toolbar by default
+		if (this.toolbar.visible) {
+			this.toolbar.toggle()
+		}
+
+		// Alter home button to open in a new tab
+		document.getElementById("button_home").setAttribute("target", "_blank")
+
+		// Remove sponsor bar if ads are disabled
+		if (!data.show_ads) {
+			document.getElementById("sponsors").remove()
+		}
+	}
+
 	if (type === "file") {
 		this.isFile = true
 		this.title = data.name

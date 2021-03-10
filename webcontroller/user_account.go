@@ -16,7 +16,7 @@ func (wc *WebController) serveLogout(
 ) {
 	if key, err := wc.getAPIKey(r); err == nil {
 		var api = wc.api.Login(key)
-		if err = api.UserSessionDestroy(key); err != nil {
+		if err = api.DeleteUserSession(key); err != nil {
 			log.Warn("logout failed for session '%s': %s", key, err)
 		}
 	}
@@ -28,7 +28,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 	var err error
 	// This only runs on the first request
 	if wc.captchaSiteKey == "" {
-		capt, err := td.PixelAPI.GetRecaptcha()
+		capt, err := td.PixelAPI.GetMiscRecaptcha()
 		if err != nil {
 			log.Error("Error getting recaptcha key: %s", err)
 			f.SubmitMessages = []template.HTML{
@@ -148,10 +148,11 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 	}
 
 	if f.ReadInput(r) {
-		if session, err := td.PixelAPI.UserLogin(
+		if session, err := td.PixelAPI.PostUserLogin(
 			f.FieldVal("username"),
 			f.FieldVal("password"),
 		); err != nil {
+			log.Error("Error while logging in: %s", err)
 			formAPIError(err, &f)
 		} else {
 			// Request was a success
@@ -172,6 +173,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 				// content also gets the cookie. We're not trying to track the
 				// user around the web so we use lax
 				SameSite: http.SameSiteLaxMode,
+				Secure:   true,
 			}
 			f.Extra.RedirectTo = "/user"
 		}
@@ -206,7 +208,7 @@ func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f
 	}
 
 	if f.ReadInput(r) {
-		if err := td.PixelAPI.UserPasswordReset(
+		if err := td.PixelAPI.PutUserPasswordReset(
 			f.FieldVal("email"),
 			f.FieldVal("recaptcha_response"),
 		); err != nil {
@@ -258,7 +260,7 @@ func (wc *WebController) passwordResetConfirmForm(td *TemplateData, r *http.Requ
 			return f
 		}
 
-		if err := td.PixelAPI.UserPasswordResetConfirm(resetKey, f.FieldVal("new_password")); err != nil {
+		if err := td.PixelAPI.PutUserPasswordResetConfirm(resetKey, f.FieldVal("new_password")); err != nil {
 			formAPIError(err, &f)
 		} else {
 			f.SubmitSuccess = true

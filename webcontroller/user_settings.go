@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
@@ -24,7 +24,7 @@ func formAPIError(err error, f *Form) {
 		return name
 	}
 
-	if err, ok := err.(apiclient.Error); ok {
+	if err, ok := err.(pixelapi.Error); ok {
 		if err.StatusCode == "multiple_errors" {
 			for _, err := range err.Errors {
 				// Modify the message to make it more user-friendly
@@ -116,7 +116,7 @@ func (wc *WebController) passwordForm(td *TemplateData, r *http.Request) (f Form
 
 		// Passwords match, send the request and fill in the response in the
 		// form
-		if err := td.PixelAPI.UserPasswordSet(
+		if err := td.PixelAPI.PutUserPassword(
 			f.FieldVal("old_password"),
 			f.FieldVal("new_password"),
 		); err != nil {
@@ -149,7 +149,7 @@ func (wc *WebController) emailForm(td *TemplateData, r *http.Request) (f Form) {
 	}
 
 	if f.ReadInput(r) {
-		if err := td.PixelAPI.UserEmailReset(
+		if err := td.PixelAPI.PutUserEmailReset(
 			f.FieldVal("new_email"),
 			false,
 		); err != nil {
@@ -171,7 +171,7 @@ func (wc *WebController) serveEmailConfirm(
 	var err error
 	var status string
 
-	err = wc.api.UserEmailResetConfirm(r.FormValue("key"))
+	err = wc.api.PutUserEmailResetConfirm(r.FormValue("key"))
 	if err != nil && err.Error() == "not_found" {
 		status = "not_found"
 	} else if err != nil {
@@ -206,7 +206,7 @@ func (wc *WebController) usernameForm(td *TemplateData, r *http.Request) (f Form
 	}
 
 	if f.ReadInput(r) {
-		if err := td.PixelAPI.UserSetUsername(f.FieldVal("new_username")); err != nil {
+		if err := td.PixelAPI.PutUserUsername(f.FieldVal("new_username")); err != nil {
 			formAPIError(err, &f)
 		} else {
 			// Request was a success

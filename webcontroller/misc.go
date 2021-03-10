@@ -17,7 +17,7 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 
 	w.Header().Add("Content-Disposition", "attachment; filename=pixeldrain.com.sxcu")
 	if templateData.Authenticated {
-		sess, err := templateData.PixelAPI.UserSessionCreate()
+		sess, err := templateData.PixelAPI.PostUserSession()
 		if err != nil {
 			log.Error("Failed to create user session: %s", err)
 			wc.templates.Get().ExecuteTemplate(w, "500", templateData)

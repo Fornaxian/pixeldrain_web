@@ -10,8 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
-	"fornaxian.tech/pixeldrain_server/api/restapi/apitype"
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"github.com/Fornaxian/log"
 	pdmimetype "github.com/Fornaxian/pd_mime_type"
 	"github.com/julienschmidt/httprouter"
@@ -72,6 +71,7 @@ type viewerData struct {
 	AdType         int
 	FileAdsEnabled bool
 	UserAdsEnabled bool
+	Embedded       bool
 	APIResponse    interface{}
 }
 
@@ -87,17 +87,17 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	templateData := wc.newTemplateData(w, r)
 
-	var files []apitype.ListFile
+	var files []pixelapi.ListFile
 	for _, id := range ids {
 		inf, err := templateData.PixelAPI.GetFileInfo(id)
 		if err != nil {
-			if apiclient.ErrIsServerError(err) {
+			if pixelapi.ErrIsServerError(err) {
 				wc.templates.Get().ExecuteTemplate(w, "500", templateData)
 				return
 			}
 			continue
 		}
-		files = append(files, apitype.ListFile{FileInfo: inf})
+		files = append(files, pixelapi.ListFile{FileInfo: inf})
 	}
 
 	if len(files) == 0 {
@@ -115,10 +115,11 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		FileAdsEnabled: files[0].ShowAds,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 	}
+
 	if len(ids) > 1 {
 		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(files))
 		vd.Type = "list"
-		vd.APIResponse = apitype.ListInfo{
+		vd.APIResponse = pixelapi.ListInfo{
 			Success:     true,
 			Title:       "Multiple files",
 			DateCreated: time.Now(),
@@ -129,6 +130,11 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		vd.Type = "file"
 		vd.APIResponse = files[0].FileInfo
 	}
+
+	if _, ok := r.URL.Query()["embed"]; ok {
+		vd.Embedded = true
+	}
+
 	templateData.Other = vd
 
 	var templateName = "file_viewer"
@@ -184,9 +190,9 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 // ServeListViewer controller for GET /l/:id
 func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	var templateData = wc.newTemplateData(w, r)
-	var list, err = templateData.PixelAPI.GetList(p.ByName("id"))
+	var list, err = templateData.PixelAPI.GetListID(p.ByName("id"))
 	if err != nil {
-		if err, ok := err.(apiclient.Error); ok && err.Status == http.StatusNotFound {
+		if err, ok := err.(pixelapi.Error); ok && err.Status == http.StatusNotFound {
 			w.WriteHeader(http.StatusNotFound)
 			wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
 		} else {
@@ -204,7 +210,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 
 	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
 	templateData.OGData = wc.metadataFromList(list)
-	templateData.Other = viewerData{
+	var vd = viewerData{
 		Type:           "list",
 		CaptchaKey:     wc.captchaSiteKey,
 		ViewToken:      wc.viewTokenOrBust(),
@@ -213,6 +219,11 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 		APIResponse:    list,
 	}
+
+	if _, ok := r.URL.Query()["embed"]; ok {
+		vd.Embedded = true
+	}
+	templateData.Other = vd
 
 	var templateName = "file_viewer"
 	if browserCompat(r.UserAgent()) {
@@ -307,7 +318,7 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 	templateData.Other = viewerData{
 		Type:   "skylink",
 		AdType: adType(),
-		APIResponse: apitype.FileInfo{
+		APIResponse: pixelapi.FileInfo{
 			Success:      true,
 			ID:           p.ByName("id"),
 			Name:         name,

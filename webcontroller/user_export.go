@@ -46,7 +46,7 @@ func (wc *WebController) serveUserExportFiles(
 		return
 	}
 
-	files, err := td.PixelAPI.UserFiles()
+	files, err := td.PixelAPI.GetUserFiles()
 	if err != nil {
 		log.Error("Failed to get user files: %s", err)
 		return
@@ -84,7 +84,7 @@ func (wc *WebController) serveUserExportLists(
 		return
 	}
 
-	lists, err := td.PixelAPI.UserLists()
+	lists, err := td.PixelAPI.GetUserLists()
 	if err != nil {
 		log.Error("Failed to get user lists: %s", err)
 		return

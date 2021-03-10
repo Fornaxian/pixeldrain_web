@@ -3,7 +3,7 @@ package webcontroller
 import (
 	"strings"
 
-	"fornaxian.tech/pixeldrain_server/api/restapi/apitype"
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 )
 
 type ogData struct {
@@ -21,7 +21,7 @@ func (og *ogData) addOG(k, v string)      { og.OGRules = append(og.OGRules, ogPr
 func (og *ogData) addTwitter(k, v string) { og.TwitterRules = append(og.TwitterRules, ogProp{k, v}) }
 func (og *ogData) addLink(k, v string)    { og.LinkRules = append(og.LinkRules, ogProp{k, v}) }
 
-func (wc *WebController) metadataFromFile(f apitype.FileInfo) (og ogData) {
+func (wc *WebController) metadataFromFile(f pixelapi.FileInfo) (og ogData) {
 	og.addOG("og:title", f.Name)
 	og.addOG("og:site_name", "pixeldrain")
 	og.addOG("og:description", "This file has been shared with you on pixeldrain")
@@ -67,7 +67,7 @@ func (wc *WebController) metadataFromFile(f apitype.FileInfo) (og ogData) {
 	}
 	return og
 }
-func (wc *WebController) metadataFromList(l apitype.ListInfo) (og ogData) {
+func (wc *WebController) metadataFromList(l pixelapi.ListInfo) (og ogData) {
 	og.addOG("og:type", "website")
 	og.addOG("og:title", l.Title)
 	og.addOG("og:site_name", "pixeldrain")

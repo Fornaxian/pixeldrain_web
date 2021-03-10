@@ -14,8 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"fornaxian.tech/pixeldrain_server/api/restapi/apiclient"
-	"fornaxian.tech/pixeldrain_server/api/restapi/apitype"
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"fornaxian.tech/pixeldrain_server/util"
 	"github.com/Fornaxian/log"
 )
@@ -24,12 +23,12 @@ import (
 // the field Other you can pass your own template-specific variables.
 type TemplateData struct {
 	Authenticated bool
-	User          apitype.UserInfo
+	User          pixelapi.UserInfo
 	UserAgent     string
 	Style         pixeldrainStyleSheet
 	UserStyle     template.CSS
 	APIEndpoint   template.URL
-	PixelAPI      apiclient.PixelAPI
+	PixelAPI      pixelapi.PixelAPI
 	Hostname      template.HTML
 
 	// Only used on file viewer page
@@ -63,8 +62,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 	// and stuff like that
 	if key, err := wc.getAPIKey(r); err == nil {
 		t.PixelAPI = t.PixelAPI.Login(key) // Use the user's API key for all requests
-		t.User, err = t.PixelAPI.UserInfo()
-		if err != nil {
+		if t.User, err = t.PixelAPI.GetUser(); err != nil {
 			// This session key doesn't work, or the backend is down, user
 			// cannot be authenticated
 			log.Debug("Session check for key '%s' failed: %s", key, err)
