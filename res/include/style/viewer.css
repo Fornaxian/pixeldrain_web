@@ -110,7 +110,7 @@
 	vertical-align: middle;
 	transition: left 0.5s;
 	overflow: hidden;
-	box-shadow: inset 2px 2px 8px var(--shadow_color);
+	box-shadow: inset 2px 2px 10px 2px var(--shadow_color);
 }
 
 /* Sponsors (row 4) */
