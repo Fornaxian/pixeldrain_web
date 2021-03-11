@@ -152,7 +152,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 			f.FieldVal("username"),
 			f.FieldVal("password"),
 		); err != nil {
-			log.Error("Error while logging in: %s", err)
+			log.Debug("Login failed: %s", err)
 			formAPIError(err, &f)
 		} else {
 			// Request was a success

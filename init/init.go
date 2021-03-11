@@ -50,6 +50,7 @@ maintenance_mode      = false
 
 // Init initializes the Pixeldrain Web UI controllers
 func Init(r *httprouter.Router, prefix string, setLogLevel bool) {
+	log.Colours = true
 	log.Info("Starting web UI server (PID %v)", os.Getpid())
 
 	// Seed the RNG

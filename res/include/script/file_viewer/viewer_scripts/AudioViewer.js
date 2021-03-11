@@ -1,7 +1,7 @@
 function AudioViewer(viewer, file, next) {
 	this.viewer = viewer
-	this.file   = file
-	this.next   = next
+	this.file = file
+	this.next = next
 
 	this.container = document.createElement("div")
 	this.container.classList = "image-container"
@@ -17,10 +17,12 @@ function AudioViewer(viewer, file, next) {
 	this.container.appendChild(document.createElement("br"))
 
 	this.element = document.createElement("audio")
-	this.element.autoplay = "autoplay"
 	this.element.controls = "controls"
 	this.element.style.width = "90%"
 	this.element.addEventListener("ended", () => { this.next() }, false)
+	if (!embeddedViewer) {
+		this.element.autoplay = "autoplay"
+	}
 
 	this.source = document.createElement("source")
 	this.source.src = this.file.get_href
@@ -28,6 +30,6 @@ function AudioViewer(viewer, file, next) {
 	this.container.appendChild(this.element)
 }
 
-AudioViewer.prototype.render = function(parent) {
+AudioViewer.prototype.render = function (parent) {
 	parent.appendChild(this.container)
 }
