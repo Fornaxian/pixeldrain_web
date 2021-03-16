@@ -40,7 +40,7 @@ EmbedWindow.prototype.updateCode = function () {
 	if (this.viewer.isFile) {
 		url = domainURL() + "/u/" + this.viewer.file.id + "?embed"
 	} else {
-		url = domainURL() + "/l/" + this.viewer.file.id + "?embed"
+		url = domainURL() + "/l/" + this.viewer.listId + "?embed"
 	}
 
 	this.textarea.value = `<iframe ` +
