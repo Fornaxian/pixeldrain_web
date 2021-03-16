@@ -12,6 +12,7 @@ function Viewer(type, viewToken, data) {
 	this.isFile = false
 	this.initialized = false
 	this.viewerScript = null
+	this.fullscreen = false
 
 	this.toolbar = new Toolbar(this)
 	this.detailsWindow = new DetailsWindow(this)
@@ -41,6 +42,13 @@ function Viewer(type, viewToken, data) {
 		if (!data.show_ads) {
 			document.getElementById("sponsors").remove()
 		}
+
+		// Show fullscreen button if this browser supports it
+		if (document.documentElement.requestFullscreen) {
+			let btnFullscreen = document.getElementById("btn_fullscreen")
+			btnFullscreen.style.display = ""
+			btnFullscreen.addEventListener("click", () => { this.toggleFullscreen() })
+		}
 	}
 
 	if (type === "file") {
@@ -67,6 +75,8 @@ function Viewer(type, viewToken, data) {
 		document.getElementById("stat_downloads").remove()
 		this.setFile(fileFromSkyNet(data))
 	}
+
+	this.embedWindow = new EmbedWindow(this)
 
 	this.renderSponsors()
 	window.addEventListener("resize", e => { this.renderSponsors() })
@@ -232,9 +242,24 @@ Viewer.prototype.keyboardEvent = function (evt) {
 		case 69: // E to open the edit window
 			this.editWindow.toggle()
 			break
+		case 77: // M to open the embed window
+			this.embedWindow.toggle()
+			break
 		case 81: // Q to close the window
 			window.close()
 			break
+	}
+}
+
+Viewer.prototype.toggleFullscreen = function () {
+	if (!this.fullscreen) {
+		document.documentElement.requestFullscreen()
+		document.getElementById("btn_fullscreen_icon").innerText = "fullscreen_exit"
+		this.fullscreen = true
+	} else {
+		document.exitFullscreen()
+		document.getElementById("btn_fullscreen_icon").innerText = "fullscreen"
+		this.fullscreen = false
 	}
 }
 

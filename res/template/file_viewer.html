@@ -38,6 +38,10 @@
 					<div id="file_viewer_list_title"></div>
 					<div id="file_viewer_file_title">loading...</div>
 				</div>
+				<!-- fullscreen button becomes visible on embedded viewer -->
+				<button id="btn_fullscreen" class="btn_fullscreen" style="display: none;">
+					<i class="icon" id="btn_fullscreen_icon">fullscreen</i>
+				</button>
 			</div>
 			<div id="list_navigator" class="list_navigator"></div>
 			<div id="file_viewer_window" class="file_viewer_window">
@@ -72,6 +76,10 @@
 					<button id="btn_details" class="toolbar_button button_full_width">
 						<i class="icon">help</i>
 						<span>Deta<u>i</u>ls</span>
+					</button>
+					<button id="btn_embed" class="toolbar_button button_full_width">
+						<i class="icon">code</i>
+						<span>E<u>m</u>bed</span>
 					</button>
 					<button id="btn_edit" class="toolbar_button button_full_width" style="display: none;">
 						<i class="icon">edit</i>
@@ -271,6 +279,27 @@
 			<br/>
 			<div class="captcha_popup_captcha" style="text-align: center;"></div>
 		</template>
+	</template>
+
+	<template id="tpl_embed_popup">
+		<p>
+			You can embed pixeldrain's file viewer in your own web pages. We
+			have created a special HTML code which renders a minimalistic
+			version of the file viewer where the title bar is a bit thinner and
+			the toolbar is collapsed by default.
+		</p>
+		<p>
+			Unless it was uploaded using a pixeldrain Pro account the embedded
+			file will also show advertisements.
+		</p>
+		<h3>Code</h3>
+		<textarea class="embed_html_code" style="width: 100%; height: 4em; margin: 0;"></textarea>
+		<br/>
+		<button class="embed_copy_html"><i class="icon">content_copy</i> Copy HTML</button>
+		<button class="embed_show_preview"><i class="icon">visibility</i> Show example</button>
+		<h3>Example</h3>
+		<div class="embed_preview_area" style="text-align: center;"></div>
+	</template>
 
 		<script src="/res/script/Chart.min.js"></script>
 		<script>
@@ -284,6 +313,7 @@
 			{{template `Modal.js`}}
 			{{template `Toolbar.js`}}
 			{{template `EditWindow.js`}}
+			{{template `EmbedWindow.js`}}
 			{{template `DetailsWindow.js`}}
 			{{template `ListNavigator.js`}}
 			{{template `Viewer.js`}}
