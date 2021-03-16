@@ -78,6 +78,12 @@ function Viewer(type, viewToken, data) {
 
 	this.embedWindow = new EmbedWindow(this)
 
+	if (userAuthenticated && !this.file.can_edit) {
+		let btnGrab = document.getElementById("btn_grab")
+		btnGrab.style.display = ""
+		btnGrab.addEventListener("click", () => { this.grabFile() })
+	}
+
 	this.renderSponsors()
 	window.addEventListener("resize", e => { this.renderSponsors() })
 
@@ -245,6 +251,9 @@ Viewer.prototype.keyboardEvent = function (evt) {
 		case 77: // M to open the embed window
 			this.embedWindow.toggle()
 			break
+		case 71: // G to grab this file
+			this.grabFile()
+			break
 		case 81: // Q to close the window
 			window.close()
 			break
@@ -260,6 +269,28 @@ Viewer.prototype.toggleFullscreen = function () {
 		document.exitFullscreen()
 		document.getElementById("btn_fullscreen_icon").innerText = "fullscreen"
 		this.fullscreen = false
+	}
+}
+
+Viewer.prototype.grabFile = async function () {
+	if (!userAuthenticated || this.file.can_edit) {
+		return
+	}
+
+	const form = new FormData()
+	form.append("grab_file", this.file.id)
+	console.log(this.file.id)
+
+	try {
+		const resp = await fetch(apiEndpoint + "/file", { method: "POST", body: form });
+		if (resp.status >= 400) {
+			throw (await resp.json()).message
+		}
+
+		window.open(domainURL() + "/u/" + (await resp.json()).id, "_blank")
+	} catch (err) {
+		alert("Failed to grab file: " + err)
+		return
 	}
 }
 
