@@ -204,10 +204,19 @@ func (tm *TemplateManager) Get() *template.Template {
 // Template functions. These can be called from within the template to execute
 // more specialized actions
 
+const (
+	electionStart = 1615935600
+	electionEnd   = 1616022000
+)
+
 func (tm *TemplateManager) bgPattern() template.URL {
 	var now = time.Now()
+	var epoch = now.Unix()
 	var file string
-	if now.Weekday() == time.Wednesday && now.UnixNano()%10 == 0 {
+
+	if epoch > electionStart && epoch < electionEnd {
+		file = "checker_vote.png"
+	} else if now.Weekday() == time.Wednesday && now.UnixNano()%10 == 0 {
 		file = "checker_wednesday.png"
 	} else {
 		file = fmt.Sprintf("checker%d.png", now.UnixNano()%17)
