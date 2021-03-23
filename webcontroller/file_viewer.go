@@ -83,6 +83,13 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
+	// If the user agent is Wget we redirect it to the API so that the file can
+	// be downloaded directly
+	if strings.HasPrefix(r.UserAgent(), "Wget/") {
+		http.Redirect(w, r, "/api/file/"+p.ByName("id"), http.StatusSeeOther)
+		return
+	}
+
 	var ids = strings.Split(p.ByName("id"), ",")
 
 	templateData := wc.newTemplateData(w, r)
