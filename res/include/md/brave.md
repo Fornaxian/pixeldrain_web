@@ -14,10 +14,10 @@ running. Brave tries to solve this by giving users the choice if they want to
 see ads. If you opt in to seeing ads from Brave you will receive notifications
 with promotional offers once in a while. Brave protects your privacy by putting
 the logic for showing relevant ads directly in the browser itself. This way your
-browser history never leaves your computer and Google can't follow you around
-the web. The earnings from these ads are distributed between the websites which
-you love most, a small cut goes to Brave itself for developing the browser, and
-some of it goes to you. That's right, you get paid for viewing ads!
+browser history never leaves your computer and the tech giants can't follow you
+around the web. The earnings from these ads are distributed between the websites
+which you love most, a small cut goes to Brave itself for developing the
+browser, and some of it goes to you. That's right, you get paid for viewing ads!
 
 ## <img src="/res/img/bat_full_color.svg" style="height: 0.8em;"/> Basic attention tokens
 
@@ -32,13 +32,6 @@ convert the money to your own currency and deposit it to your bank account.
 
 Of course I would really appreciate it if you tipped some coins to pixeldrain
 once in a while ;-)
-
-<br style="clear: right;"/>
-
-When you install the Brave browser and use it for 30 days they will make a
-contribution of around 5$ to pixeldrain. This is currently the site's
-biggest source of income. It allows me to get faster servers in more places and
-spend more time working on the site. So, if you're ready:
 
 <div style="text-align: center;">
 <a class="button button_highlight" style="font-size: 1.5em;" href="https://brave.com/pix009">
