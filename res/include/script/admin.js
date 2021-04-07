@@ -208,6 +208,7 @@ function getStats(order) {
 			<td>${v.position}</td>
 			<td>${v.reachable}</td>
 			<td>${v.unreachable_count}</td>
+			<td>${v.load_1_min} ${v.load_5_min} ${v.load_15_min}</td>
 			<td>${formatDuration(v.latency)}</td>
 			<td>${formatDataVolume(v.free_space, 3)}</td>
 			<td>${formatDataVolume(v.min_free_space, 3)}</td>`
@@ -219,6 +220,7 @@ function getStats(order) {
 			} else {
 				row.classList.add("highlight_green")
 			}
+			row.style.textAlign = "left"
 			p.appendChild(row)
 		})
 
