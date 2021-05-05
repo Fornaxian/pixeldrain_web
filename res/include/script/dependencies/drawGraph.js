@@ -36,7 +36,7 @@ function drawGraph(element, label, dataType) {
 							position: "left",
 							id: "ax_1",
 							ticks: {
-								callback: function(value, index, values) {
+								callback: function (value, index, values) {
 									if (dataType == "bytes") {
 										return formatDataVolume(value, 3);
 									}
@@ -44,7 +44,7 @@ function drawGraph(element, label, dataType) {
 								},
 								beginAtZero: true
 							},
-							gridLines: { display: false },
+							gridLines: { display: true },
 						}
 					],
 					xAxes: [

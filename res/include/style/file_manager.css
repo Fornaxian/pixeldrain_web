@@ -127,7 +127,6 @@ is collapsed */
 }
 .node > div > span {
 	margin: auto;
-	margin-top: 4px; /* I couldn't find another way to vertically align the text*/
 	box-sizing: border-box;
 	display: block;
 	text-overflow: ellipsis;

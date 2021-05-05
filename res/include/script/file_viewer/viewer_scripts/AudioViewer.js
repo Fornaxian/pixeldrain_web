@@ -8,7 +8,7 @@ function AudioViewer(viewer, file, next) {
 	this.container.appendChild(document.createElement("br"))
 
 	this.icon = document.createElement("img")
-	this.icon.src = "/res/img/mime/audio.png"
+	this.icon.src = "/api/file/" + this.file.id + "/thumbnail"
 	this.container.appendChild(this.icon)
 
 	this.container.appendChild(document.createElement("br"))

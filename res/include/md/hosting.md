@@ -17,8 +17,8 @@ Keep in mind that these are maximums, you are allowed to go lower.
 
 | Requirement              | Max rate EUR | Max rate SC |
 |--------------------------|--------------|-------------|
-| Storage price per month  | € 2.00 / TB  | {{ div 2.0 $price | formatSC }} / TB |
-| Download price           | € 3.00 / TB  | {{ div 3.0 $price | formatSC }} / TB |
+| Storage price per month  | € 1.80 / TB  | {{ div 1.8 $price | formatSC }} / TB |
+| Download price           | € 2.50 / TB  | {{ div 2.5 $price | formatSC }} / TB |
 | Upload price             | € 2.00 / TB  | {{ div 2.0 $price | formatSC }} / TB |
 | Collateral per month     | € 8.00 / TB  | {{ div 8.0 $price | formatSC }} / TB |
 | Contract formation price | € 0.10       | {{ div 0.1 $price | formatSC }} |

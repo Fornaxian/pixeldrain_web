@@ -36,7 +36,7 @@ func adType() int {
 		soulStudio         = 3
 		amarulaSolutions   = 4
 		adMaven            = 5
-		propellerAds       = 7
+		brave              = 7
 		pdpro1             = 8
 		pdpro2             = 9
 		pdpro3             = 10
@@ -49,18 +49,20 @@ func adType() int {
 	switch i := rand.Intn(20); i {
 	case 0, 1: // 10%
 		return amarulaSolutions
-	case 2: // 5%, also shows propellerads
+	case 2: // 5%
 		return pdpro1
-	case 3: // 5%, also shows propellerads
+	case 3: // 5%
 		return pdpro2
-	case 4: // 5%, also shows propellerads
+	case 4: // 5%
 		return pdpro3
-	case 5: // 5%, also shows propellerads
+	case 5: // 5%
 		return pdpro4
-	default: // 70%, also shows a-ads
-		return propellerAds
-		// default:
-		// 	panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
+	case 6, 7, 8, 9, 10, 11, 12, 13, 14, 15: // 50%
+		return brave
+	case 16, 17, 18, 19: // 20%
+		return aAds
+	default:
+		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 }
 

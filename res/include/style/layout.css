@@ -298,6 +298,10 @@ p, .indent {
 	margin: 10px;
 }
 
+li {
+	margin-bottom: 0.5em;
+}
+
 hr{
 	height: 1px;
 	border: none;

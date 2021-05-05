@@ -40,14 +40,17 @@ The following types of content are not allowed to be shared on pixeldrain. They
 will be removed when reported.
 
  * **Copyright violation**: Works which are shared without permission from the
-   copyright holder.
+   copyright holder. For copyright reports we need a formal DMCA takedown
+   request originating from the copyright holder or a representative. If your
+   request is not valid it will be ignored. Takedown requests which are sent to
+   any other address than abuse@pixeldrain.com will also be ignored.
  * **Abuse of minors**: Videos, images or audio fragments depicting abuse or
    inappropriate touching of minors will be removed and reported to the National
    Center for Missing and Exploited Children when found.
  * **Terrorism**: Videos, images or audio fragments which promote and
    glorify acts of terrorism.
  * **Gore**: Graphic and shocking videos or images depicting severe harm to
-   humans.
+   humans (or animals).
  * **Malware and computer viruses**: Software designed to cause harm to computer
    systems.
 
