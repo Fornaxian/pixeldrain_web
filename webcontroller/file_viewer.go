@@ -57,9 +57,9 @@ func adType() int {
 		return pdpro3
 	case 5: // 5%
 		return pdpro4
-	case 6, 7, 8, 9, 10, 11, 12, 13, 14, 15: // 50%
+	case 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17: // 60%
 		return brave
-	case 16, 17, 18, 19: // 20%
+	case 18, 19: // 10%
 		return aAds
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))

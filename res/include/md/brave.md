@@ -1,4 +1,4 @@
-# About Brave and Pixeldrain
+# Brave and Pixeldrain
 
 ## <img src="/res/img/brave_lion.svg" style="height: 0.8em;"/> What is Brave?
 
@@ -19,6 +19,14 @@ around the web. The earnings from these ads are distributed between the websites
 which you love most, a small cut goes to Brave itself for developing the
 browser, and some of it goes to you. That's right, you get paid for viewing ads!
 
+<div style="text-align: center; margin-bottom: 3em;">
+<a class="button button_highlight" style="font-size: 1.5em;"
+	href="https://pixeldrain.com/click/MdUXxSov?target=https%3A%2F%2Fbrave.com%2Fpix009">
+	<img src="/res/img/brave_lion.svg" style="height: 1.5em; vertical-align: middle;"/>
+	Get started with Brave
+</a>
+</div>
+
 ## <img src="/res/img/bat_full_color.svg" style="height: 0.8em;"/> Basic attention tokens
 
 <img src="/res/img/bat_wallet.png" style="float: right; max-width: 40%; margin: 0 0.5em;"/>
@@ -34,9 +42,10 @@ Of course I would really appreciate it if you tipped some coins to pixeldrain
 once in a while ;-)
 
 <div style="text-align: center;">
-<a class="button button_highlight" style="font-size: 1.5em;" href="https://brave.com/pix009">
-	<img src="/res/img/brave_lion.svg" style="height: 1.5em; vertical-align: middle;"/>
-	Get started with Brave
+<a class="button" style="font-size: 1.2em;"
+	href="https://pixeldrain.com/click/MdUXxSov?target=https%3A%2F%2Fbrave.com%2Fpix009">
+	<img src="/res/img/brave_lion.svg" style="height: 1.2em; vertical-align: middle;"/>
+	Download Brave here
 </a>
 </div>
 
