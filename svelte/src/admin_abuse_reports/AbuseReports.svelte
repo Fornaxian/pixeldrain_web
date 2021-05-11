@@ -6,25 +6,26 @@ import AbuseReport from "./AbuseReport.svelte";
 let loading = true
 let reports = []
 
+let startPicker
+let endPicker
+
+
 const get_reports = async () => {
 	loading = true;
-
-	let today = new Date()
-	let start = new Date()
-	start.setMonth(start.getMonth() - 1)
 
 	try {
 		const resp = await fetch(
 			window.api_endpoint+
-				"/admin/abuse_report?start="+
-				start.toISOString()+
-				"&end="+today.toISOString()
+				"/admin/abuse_report"+
+				"?start="+(new Date(startPicker.value)).toISOString()+
+				"&end="+(new Date(endPicker.value)).toISOString()
 		);
 		if(resp.status >= 400) {
 			throw new Error(resp.text());
 		}
 		reports = await resp.json();
 
+		// Sort files from new to old
 		reports.sort((a, b) => {
 			if (a.first_report_time > b.first_report_time) {
 				return -1
@@ -34,6 +35,8 @@ const get_reports = async () => {
 				return 0
 			}
 		})
+
+		// Sort individual reports from old to new
 		reports.forEach(v => {
 			v.reports.sort((a, b) => {
 				if (a.time > b.time) {
@@ -52,7 +55,16 @@ const get_reports = async () => {
 	}
 };
 
-onMount(get_reports);
+onMount(() => {
+	let start = new Date()
+	start.setMonth(start.getMonth() - 1)
+	let end = new Date()
+
+	startPicker.valueAsNumber = start.getTime()
+	endPicker.valueAsNumber = end.getTime()
+
+	get_reports()
+});
 </script>
 
 <div>
@@ -68,10 +80,12 @@ onMount(get_reports);
 				<i class="icon">arrow_back</i> Return to admin panel
 			</a>
 			<div class="toolbar_spacer"></div>
+			<div>
+				Start: <input type="date" bind:this={startPicker}/>
+				End: <input type="date" bind:this={endPicker}/>
+			</div>
 			<button on:click={get_reports}><i class="icon">refresh</i></button>
 		</div>
-
-		<br/>
 
 		<h2>Pending</h2>
 		{#each reports as report}

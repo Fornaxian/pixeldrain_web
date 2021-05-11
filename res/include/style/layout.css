@@ -502,7 +502,8 @@ textarea,
 input[type="text"],
 input[type="password"],
 input[type="email"],
-input[type="number"]{
+input[type="number"],
+input[type="date"]{
 	display: inline-block;
 	margin: 3px; /* Same as button, to make them align nicely */
 	border: none;
@@ -521,11 +522,13 @@ input[type="text"]:active,
 input[type="password"]:active,
 input[type="email"]:active,
 input[type="number"]:active,
+input[type="date"]:active,
 textarea:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
-input[type="number"]:focus{
+input[type="number"]:focus,
+input[type="date"]:focus{
 	box-shadow: var(--highlight_border), inset 3px 3px 6px -3px var(--shadow_color);
 }
 
