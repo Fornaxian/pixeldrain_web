@@ -77,6 +77,7 @@ function Viewer(type, viewToken, data) {
 	}
 
 	this.embedWindow = new EmbedWindow(this)
+	this.abuseReportWindow = new AbuseReportWindow(this)
 
 	if (userAuthenticated && !this.file.can_edit) {
 		let btnGrab = document.getElementById("btn_grab")

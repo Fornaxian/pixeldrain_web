@@ -90,6 +90,10 @@
 						<i class="icon">code</i>
 						<span>E<u>m</u>bed</span>
 					</button>
+					<button id="btn_report_abuse" class="toolbar_button button_full_width" title="Report abuse in this file">
+						<i class="icon">flag</i>
+						<span>Report</span>
+					</button>
 					<br/>
 
 					{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
@@ -175,6 +179,10 @@
 					<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarulasolutions.com/jobs">
 						<img src="/res/img/misc/banner_amarula_jobs.png" style="width: 100%; height: 100%" />
 					</a>
+					{{ else if eq .Other.AdType 7 }}
+					<a class="sponsors_banner" style="display: inline-block; width: 728px; height: 90px;" href="/brave">
+						<img src="/res/img/misc/brave-728x90.png" style="width: 100%; height: 100%" />
+					</a>
 					{{ else if eq .Other.AdType 8 }}
 					<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
 						<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
@@ -207,10 +215,6 @@
 							<a href="/click/7wy9gg2J?target=%2F%23pro" class="button button_highlight">Pixeldrain Pro: Only €2 per month</a>
 						</div>
 					</div>
-					{{ else }}
-					<a class="sponsors_banner" style="display: inline-block; width: 728px; height: 90px;" href="/click/MdUXxSov?target=https%3A%2F%2Fbrave.com%2Fpix009">
-						<img src="/res/img/misc/brave-728x90.png" style="width: 100%; height: 100%" />
-					</a>
 					{{ end }}
 				{{ else if not .Other.UserAdsEnabled }}
 				<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
@@ -309,6 +313,56 @@
 			<div class="embed_preview_area" style="text-align: center;"></div>
 		</template>
 
+		<template id="tpl_report_abuse_popup">
+			<p>
+				If you think this file violates pixeldrain's
+				<a href="/about#content-policy">content policy</a> you can
+				report it for moderation with this form. You cannot report
+				copyright abuse with this form, send a formal DMCA notification
+				to the
+				<a href="/about#content-policy">abuse e-mail address</a>
+				instead.
+			</p>
+			<form class="abuse_type_form" style="width: 100%">
+				<h3>Abuse type</h3>
+				<input type="radio" id="abuse_type_terrorism" name="abuse_type" value="terrorism">
+				<label for="abuse_type_terrorism">Terrorism</label>
+				<br/>
+				<input type="radio" id="abuse_type_gore" name="abuse_type" value="gore">
+				<label for="abuse_type_gore">Gore</label>
+				<br/>
+				<input type="radio" id="abuse_type_child_abuse" name="abuse_type" value="child_abuse">
+				<label for="abuse_type_child_abuse">Child abuse</label>
+				<br/>
+				<input type="radio" id="abuse_type_malware" name="abuse_type" value="malware">
+				<label for="abuse_type_malware">Malware</label>
+				<br/>
+				<!--
+				<h3>E-mail address</h3>
+				<p>
+					If you want to be notified when this file gets blocked you
+					can enter your e-mail address here. This is optional, you
+					can leave it empty if you want.
+				</p>
+				<input class="abuse_email_field" type="text" placeholder="e-mail address" style="width: 100%"/>
+				<br/>
+				-->
+
+				<h3>Send</h3>
+				<div class="abuse_report_notification" style="display: none;"></div>
+				<p>
+					Abuse reports are manually reviewed. Normally this shouldn't
+					take more than 24 hours. But during busy periods it can take
+					longer.
+				</p>
+				<div style="text-align: right;">
+					<button class="button_highlight abuse_report_submit" role="submit">
+						<i class="icon">send</i> Send
+					</button>
+				</div>
+			</form>
+		</template>
+
 		<script src="/res/script/Chart.min.js"></script>
 		<script>
 			'use strict';
@@ -324,6 +378,7 @@
 			{{template `EditWindow.js`}}
 			{{template `EmbedWindow.js`}}
 			{{template `DetailsWindow.js`}}
+			{{template `AbuseReportWindow.js`}}
 			{{template `ListNavigator.js`}}
 			{{template `Viewer.js`}}
 
@@ -351,7 +406,7 @@
 			{{ if eq .Other.AdType 5 }}
 			<!-- AdMaven -->
 			<script data-cfasync="false" async src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
-			{{ else if or (eq .Other.AdType 7) (eq .Other.AdType 8) (eq .Other.AdType 9) (eq .Other.AdType 10) (eq .Other.AdType 11) }}
+			{{ else if ne .Other.AdType 4 }}
 			<!-- PropellerAds -->
 			<script>
 			// Load fires when the page is completely finished loading,

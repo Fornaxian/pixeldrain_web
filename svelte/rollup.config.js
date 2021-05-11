@@ -33,6 +33,7 @@ export default [
 	"modal",
 	"user_buckets",
 	"admin_abuse_reporters",
+	"admin_abuse_reports",
 ].map((name, index) => ({
 	input: `src/${name}.js`,
 	output: {
