@@ -4,11 +4,11 @@ import Spinner from "../util/Spinner.svelte";
 import AbuseReport from "./AbuseReport.svelte";
 
 let loading = true
-let reports = []
+let reports_pending = []
+let reports_processed = []
 
 let startPicker
 let endPicker
-
 
 const get_reports = async () => {
 	loading = true;
@@ -23,11 +23,21 @@ const get_reports = async () => {
 		if(resp.status >= 400) {
 			throw new Error(resp.text());
 		}
-		reports = await resp.json();
+		let reports = await resp.json();
 
-		// Sort files from new to old
+		// Sort files by number of reports. If the number of reports is equal we
+		// sort by number of views. If the number of views is equal we sort by
+		// date of the first report received
 		reports.sort((a, b) => {
-			if (a.first_report_time > b.first_report_time) {
+			if (a.reports.length > b.reports.length) {
+				return -1
+			} else if (a.reports.length < b.reports.length) {
+				return 1
+			} else if (a.file.views > b.file.views) {
+				return -1
+			} else if (a.file.views < b.file.views) {
+				return 1
+			} else if (a.first_report_time > b.first_report_time) {
 				return -1
 			} else if (a.first_report_time < b.first_report_time) {
 				return 1
@@ -36,7 +46,11 @@ const get_reports = async () => {
 			}
 		})
 
-		// Sort individual reports from old to new
+		reports_pending = []
+		reports_processed = []
+
+		// Sort individual reports of each file from old to new, then separate
+		// pending reports and processed reports
 		reports.forEach(v => {
 			v.reports.sort((a, b) => {
 				if (a.time > b.time) {
@@ -47,7 +61,17 @@ const get_reports = async () => {
 					return 0
 				}
 			})
+
+			if (v.status === "pending") {
+				reports_pending.push(v)
+			} else {
+				reports_processed.push(v)
+			}
 		})
+
+		// Update svelte views
+		reports_processed = reports_processed
+		reports_pending = reports_pending
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -57,7 +81,7 @@ const get_reports = async () => {
 
 onMount(() => {
 	let start = new Date()
-	start.setMonth(start.getMonth() - 1)
+	start.setDate(start.getDate() - 14)
 	let end = new Date()
 
 	startPicker.valueAsNumber = start.getTime()
@@ -88,14 +112,14 @@ onMount(() => {
 		</div>
 
 		<h2>Pending</h2>
-		{#each reports as report}
+		{#each reports_pending as report}
 			{#if report.status === "pending"}
 			<AbuseReport report={report} on:refresh={get_reports}/>
 			{/if}
 		{/each}
 
 		<h2>Resolved</h2>
-		{#each reports as report}
+		{#each reports_processed as report}
 			{#if report.status !== "pending"}
 			<AbuseReport report={report} on:refresh={get_reports}/>
 			{/if}
@@ -107,9 +131,10 @@ onMount(() => {
 .spinner_container {
 	position: absolute;
 	top: 10px;
-	left: 10px;
+	right: 10px;
 	height: 100px;
 	width: 100px;
+	z-index: 1000;
 }
 .toolbar {
 	display: flex;

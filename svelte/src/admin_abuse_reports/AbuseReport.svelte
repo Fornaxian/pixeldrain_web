@@ -28,19 +28,18 @@ let set_status = async (action, report_type) => {
 		alert(err);
 	}
 }
-
 </script>
 
-<Expandable bind:this={expandable} expanded={report.status === "pending"}>
+<Expandable bind:this={expandable} expanded={report.status === "pending" && report.reports.length > 2}>
 	<div slot="header" class="header" on:click={expandable.toggle}>
 		<div class="icon_cell">
 			<img class="file_icon" src={"/api/file/"+report.file.id+"/thumbnail"} alt="File thumbnail"/>
 		</div>
 
 		<div class="title">{report.file.name}</div>
-		<div class="stats">Type<br/>
-			{report.file.abuse_type === "" ? report.type : report.file.abuse_type}
-		</div>
+			<div class="stats">Type<br/>
+				{report.file.abuse_type === "" ? report.type : report.file.abuse_type}
+			</div>
 		{#if report.status !== "pending"}
 			<div class="stats">Status<br/>{report.status}</div>
 		{/if}
@@ -77,7 +76,7 @@ let set_status = async (action, report_type) => {
 			</tr>
 			{#each report.reports as user_report}
 				<tr>
-					<td>{formatDate(user_report.time, true, true, true, true)}</td>
+					<td>{formatDate(user_report.time, true, true, false)}</td>
 					<td>{user_report.ip_address}</td>
 					<td>{user_report.type}</td>
 					<td>{user_report.status}</td>

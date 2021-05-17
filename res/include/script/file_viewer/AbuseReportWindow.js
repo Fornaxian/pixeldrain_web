@@ -4,7 +4,7 @@ function AbuseReportWindow(viewer) {
 	this.modal = new Modal(
 		document.getElementById("file_viewer"),
 		() => { this.toggle() },
-		"Report abuse", "600px", "auto",
+		"Report abuse", "650px", "auto",
 	)
 
 	this.btnReportAbuse = document.getElementById("btn_report_abuse")

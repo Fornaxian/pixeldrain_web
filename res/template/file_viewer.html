@@ -325,18 +325,30 @@
 			</p>
 			<form class="abuse_type_form" style="width: 100%">
 				<h3>Abuse type</h3>
-				<input type="radio" id="abuse_type_terrorism" name="abuse_type" value="terrorism">
-				<label for="abuse_type_terrorism">Terrorism</label>
-				<br/>
-				<input type="radio" id="abuse_type_gore" name="abuse_type" value="gore">
-				<label for="abuse_type_gore">Gore</label>
-				<br/>
-				<input type="radio" id="abuse_type_child_abuse" name="abuse_type" value="child_abuse">
-				<label for="abuse_type_child_abuse">Child abuse</label>
-				<br/>
-				<input type="radio" id="abuse_type_malware" name="abuse_type" value="malware">
-				<label for="abuse_type_malware">Malware</label>
-				<br/>
+				<p>
+					Which type of abuse is shown in this file? Pick the most
+					appropriate one.
+				</p>
+				<label for="abuse_type_terrorism">
+					<input type="radio" id="abuse_type_terrorism" name="abuse_type" value="terrorism">
+					<b>Terrorism</b>: Videos, images or audio fragments showing
+					the use of intentional violence to achieve political aims.
+				</label>
+				<label for="abuse_type_gore">
+					<input type="radio" id="abuse_type_gore" name="abuse_type" value="gore">
+					<b>Gore</b>: Graphic and shocking videos or images depicting
+					severe harm to humans (or animals).
+				</label>
+				<label for="abuse_type_child_abuse">
+					<input type="radio" id="abuse_type_child_abuse" name="abuse_type" value="child_abuse">
+					<b>Child abuse</b>: Videos or images depicting inappropriate
+					touching or nudity of minors.
+				</label>
+				<label for="abuse_type_malware">
+					<input type="radio" id="abuse_type_malware" name="abuse_type" value="malware">
+					<b>Malware</b>: Software programs designed to cause harm to
+					computer systems.
+				</label>
 				<!--
 				<h3>E-mail address</h3>
 				<p>
@@ -352,7 +364,7 @@
 				<div class="abuse_report_notification" style="display: none;"></div>
 				<p>
 					Abuse reports are manually reviewed. Normally this shouldn't
-					take more than 24 hours. But during busy periods it can take
+					take more than 24 hours. During busy periods it can take
 					longer.
 				</p>
 				<div style="text-align: right;">

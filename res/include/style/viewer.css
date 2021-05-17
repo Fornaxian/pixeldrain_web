@@ -265,6 +265,16 @@
 
 table {width: auto !important;}
 
+/* Abuse report label*/
+.abuse_type_form > label {
+	display: block;
+	border-bottom: 1px var(--layer_2_color_border) solid;
+	padding: 0.5em;
+}
+.abuse_type_form > label:last-of-type {
+	border-bottom: none;
+}
+
 
 /* ====================
    || LIST NAVIGATOR ||
