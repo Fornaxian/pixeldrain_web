@@ -1,14 +1,14 @@
 function FileManager(windowElement) {
-	this.window           = windowElement
-	this.navBar           = this.window.querySelector("#nav_bar")
-	this.btnMenu          = this.navBar.querySelector("#btn_menu")
-	this.btnBack          = this.navBar.querySelector("#btn_back")
-	this.btnUp            = this.navBar.querySelector("#btn_up")
-	this.btnForward       = this.navBar.querySelector("#btn_forward")
-	this.btnHome          = this.navBar.querySelector("#btn_home")
-	this.breadcrumbs      = this.navBar.querySelector("#breadcrumbs")
-	this.btnReload        = this.navBar.querySelector("#btn_reload")
-	this.inputSearch      = this.navBar.querySelector("#input_search")
+	this.window = windowElement
+	this.navBar = this.window.querySelector("#nav_bar")
+	this.btnMenu = this.navBar.querySelector("#btn_menu")
+	this.btnBack = this.navBar.querySelector("#btn_back")
+	this.btnUp = this.navBar.querySelector("#btn_up")
+	this.btnForward = this.navBar.querySelector("#btn_forward")
+	this.btnHome = this.navBar.querySelector("#btn_home")
+	this.breadcrumbs = this.navBar.querySelector("#breadcrumbs")
+	this.btnReload = this.navBar.querySelector("#btn_reload")
+	this.inputSearch = this.navBar.querySelector("#input_search")
 
 	// Register keyboard shortcuts
 	document.addEventListener("keydown", e => { this.keyboardEvent(e) })
@@ -34,13 +34,13 @@ function FileManager(windowElement) {
 	)
 }
 
-FileManager.prototype.setSpinner = function() {
+FileManager.prototype.setSpinner = function () {
 	this.window.appendChild(document.getElementById("tpl_spinner").content.cloneNode(true))
 }
-FileManager.prototype.delSpinner = function() {
+FileManager.prototype.delSpinner = function () {
 	for (let i in this.window.children) {
 		if (
-			typeof(this.window.children[i].classList) === "object" &&
+			typeof (this.window.children[i].classList) === "object" &&
 			this.window.children[i].classList.contains("spinner")
 		) {
 			this.window.children[i].remove()
@@ -48,24 +48,20 @@ FileManager.prototype.delSpinner = function() {
 	}
 }
 
-FileManager.prototype.getDirectory = function(path) {
-	console.log("ayy!")
-}
-
-FileManager.prototype.getUserFiles = function() {
+FileManager.prototype.getUserFiles = function () {
 	this.setSpinner()
 
 	let getAll = (page) => {
 		let numFiles = 1000
-		fetch(apiEndpoint+"/user/files?page="+page+"&limit="+numFiles).then(resp => {
+		fetch(apiEndpoint + "/user/files?page=" + page + "&limit=" + numFiles).then(resp => {
 			if (!resp.ok) { Promise.reject("yo") }
 			return resp.json()
 		}).then(resp => {
 			for (let i in resp.files) {
 				this.directoryElement.addFile(
-					apiEndpoint+"/file/"+resp.files[i].id+"/thumbnail?width=32&height=32",
+					apiEndpoint + "/file/" + resp.files[i].id + "/thumbnail?width=32&height=32",
 					resp.files[i].name,
-					"/u/"+resp.files[i].id,
+					"/u/" + resp.files[i].id,
 					resp.files[i].mime_type,
 					resp.files[i].size,
 					formatDataVolume(resp.files[i].size, 4),
@@ -76,7 +72,7 @@ FileManager.prototype.getUserFiles = function() {
 			this.directoryElement.renderFiles()
 
 			if (resp.files.length === numFiles) {
-				getAll(page+1)
+				getAll(page + 1)
 			} else {
 				// Less than the maximum number of results means we're done
 				// loading, we can remove the loading spinner
@@ -84,7 +80,7 @@ FileManager.prototype.getUserFiles = function() {
 			}
 		}).catch((err) => {
 			this.delSpinner()
-			throw(err)
+			throw (err)
 		})
 	}
 
@@ -92,22 +88,22 @@ FileManager.prototype.getUserFiles = function() {
 	getAll(0)
 }
 
-FileManager.prototype.getUserLists = function() {
+FileManager.prototype.getUserLists = function () {
 	this.setSpinner()
 	this.directoryElement.reset()
 
-	fetch(apiEndpoint+"/user/lists").then(resp => {
+	fetch(apiEndpoint + "/user/lists").then(resp => {
 		if (!resp.ok) { Promise.reject("yo") }
 		return resp.json()
 	}).then(resp => {
 		for (let i in resp.lists) {
 			this.directoryElement.addFile(
-				apiEndpoint+"/list/"+resp.lists[i].id+"/thumbnail?width=32&height=32",
+				apiEndpoint + "/list/" + resp.lists[i].id + "/thumbnail?width=32&height=32",
 				resp.lists[i].title,
-				"/l/"+resp.lists[i].id,
+				"/l/" + resp.lists[i].id,
 				"list",
 				resp.lists[i].file_count,
-				resp.lists[i].file_count+" files",
+				resp.lists[i].file_count + " files",
 				resp.lists[i].date_created,
 			)
 		}
@@ -116,12 +112,12 @@ FileManager.prototype.getUserLists = function() {
 		this.delSpinner()
 	}).catch((err) => {
 		this.delSpinner()
-		throw(err)
+		throw (err)
 	})
 }
 
-FileManager.prototype.keyboardEvent = function(e) {
-	console.log("Pressed: "+e.keyCode)
+FileManager.prototype.keyboardEvent = function (e) {
+	console.log("Pressed: " + e.keyCode)
 
 	// CTRL + F or "/" opens the search bar
 	if (e.ctrlKey && e.keyCode === 70 || !e.ctrlKey && e.keyCode === 191) {

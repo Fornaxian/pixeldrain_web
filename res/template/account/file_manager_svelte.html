@@ -1,0 +1,21 @@
+{{define "file_manager_svelte"}}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "File Manager"}}
+		{{template "user_style" .}}
+
+
+		<script>
+			window.api_endpoint = '{{.APIEndpoint}}';
+		</script>
+		<link rel='stylesheet' href='/res/svelte/user_file_manager.css'>
+		<script defer src='/res/svelte/user_file_manager.js'></script>
+	</head>
+
+	<body>
+		{{template "page_menu" .}}
+		<div id="page_body" class="page_body"></div>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

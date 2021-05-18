@@ -28,10 +28,10 @@ function DirectoryElement(directoryArea, footer) {
 	this.fieldDateWidth = "160px"
 	this.fieldSizeWidth = "90px"
 	this.fieldTypeWidth = "200px"
-	makeSortButton("name",        "Name",          "")
+	makeSortButton("name", "Name", "")
 	makeSortButton("dateCreated", "Creation Date", this.fieldDateWidth)
-	makeSortButton("size",        "Size",          this.fieldSizeWidth)
-	makeSortButton("type",        "Type",          this.fieldTypeWidth)
+	makeSortButton("size", "Size", this.fieldSizeWidth)
+	makeSortButton("type", "Type", this.fieldTypeWidth)
 
 
 	// Scroll event for rendering new file nodes when they become visible
@@ -55,21 +55,21 @@ function DirectoryElement(directoryArea, footer) {
 	// rendering the file list correctly
 
 	// type: {icon, name, href, type, size, sizeLabel, dateCreated, selected}
-	this.allFiles     = []
+	this.allFiles = []
 
 	// This array contains indexes referring to places in the allFiles array
 	this.visibleFiles = []
 
 	this.lastSearchTerm = ""
-	this.lastScrollTop  = 0
+	this.lastScrollTop = 0
 }
 
-DirectoryElement.prototype.reset = function() {
+DirectoryElement.prototype.reset = function () {
 	this.allFiles = []
 	this.visibleFiles = []
 }
 
-DirectoryElement.prototype.addFile = function(icon, name, href, type, size, sizeLabel, dateCreated) {
+DirectoryElement.prototype.addFile = function (icon, name, href, type, size, sizeLabel, dateCreated) {
 	this.allFiles.push({
 		icon: icon,
 		name: name,
@@ -82,14 +82,14 @@ DirectoryElement.prototype.addFile = function(icon, name, href, type, size, size
 	})
 }
 
-DirectoryElement.prototype.renderFiles = function() {
+DirectoryElement.prototype.renderFiles = function () {
 	this.search(this.lastSearchTerm)
 }
 
 // search filters the allFiles array on a search term. All files which match the
 // search term will be put into visibleFiles. The visibleFiles array will then
 // be rendered by renderVisibleFiles
-DirectoryElement.prototype.search = function(term) {
+DirectoryElement.prototype.search = function (term) {
 	term = term.toLowerCase()
 	this.lastSearchTerm = term
 	this.visibleFiles = []
@@ -124,7 +124,7 @@ DirectoryElement.prototype.search = function(term) {
 }
 
 // searchSubmit opens the first file in the search results
-DirectoryElement.prototype.searchSubmit = function() {
+DirectoryElement.prototype.searchSubmit = function () {
 	if (this.visibleFiles.length === 0) {
 		return // There are no files visible
 	}
@@ -132,7 +132,7 @@ DirectoryElement.prototype.searchSubmit = function() {
 	window.location = this.getVisibleFile(0).href
 }
 
-DirectoryElement.prototype.sortBy = function(field) {
+DirectoryElement.prototype.sortBy = function (field) {
 	if (field === "") {
 		// If no sort field is provided we use the last used sort field
 		field = this.currentSortField
@@ -158,9 +158,9 @@ DirectoryElement.prototype.sortBy = function(field) {
 
 	// Then prepend the arrow to the current sort label
 	if (this.currentSortAscending) {
-		this.sortButtons[field].innerText = "▼ "+this.sortButtons[field].innerText
+		this.sortButtons[field].innerText = "▼ " + this.sortButtons[field].innerText
 	} else {
-		this.sortButtons[field].innerText = "▲ "+this.sortButtons[field].innerText
+		this.sortButtons[field].innerText = "▲ " + this.sortButtons[field].innerText
 	}
 
 	let fieldA, fieldB
@@ -168,7 +168,7 @@ DirectoryElement.prototype.sortBy = function(field) {
 		fieldA = this.allFiles[a][this.currentSortField]
 		fieldB = this.allFiles[b][this.currentSortField]
 
-		if (typeof(fieldA) === "number") {
+		if (typeof (fieldA) === "number") {
 			if (this.currentSortAscending) {
 				return fieldA - fieldB
 			} else {
@@ -185,7 +185,7 @@ DirectoryElement.prototype.sortBy = function(field) {
 	this.renderVisibleFiles(true)
 }
 
-DirectoryElement.prototype.createFileButton = function(file, index) {
+DirectoryElement.prototype.createFileButton = function (file, index) {
 	let el = document.createElement("a")
 	el.classList = "node"
 	el.href = file.href
@@ -235,38 +235,38 @@ DirectoryElement.prototype.createFileButton = function(file, index) {
 // This function dereferences an index in the visibleFiles array to a real file
 // in the allFiles array. The notation is a bit confusing so the separate
 // function is just for clarity
-DirectoryElement.prototype.getVisibleFile = function(index) {
+DirectoryElement.prototype.getVisibleFile = function (index) {
 	return this.allFiles[this.visibleFiles[index]]
 }
 
-DirectoryElement.prototype.renderVisibleFiles = function(freshStart) {
+DirectoryElement.prototype.renderVisibleFiles = function (freshStart) {
 	let scrollDown = this.lastScrollTop <= this.directoryArea.scrollTop
 	this.lastScrollTop = this.directoryArea.scrollTop
 
-	let fileHeight     = 40
-	let totalHeight    = (this.visibleFiles.length * fileHeight)
+	let fileHeight = 40
+	let totalHeight = (this.visibleFiles.length * fileHeight)
 	let viewportHeight = this.directoryArea.clientHeight
 
 	if (freshStart) {
 		this.dirContainer.innerHTML = ""
-		this.dirContainer.style.height = totalHeight+"px"
+		this.dirContainer.style.height = totalHeight + "px"
 		scrollDown = true
 
 		let totalSize = 0
 		for (let i in this.visibleFiles) {
 			totalSize += this.getVisibleFile(i).size
 		}
-		this.footer.innerText = this.visibleFiles.length+" items. Total size: "+formatDataVolume(totalSize, 4)
+		this.footer.innerText = this.visibleFiles.length + " items. Total size: " + formatDataVolume(totalSize, 4)
 	}
 
-	let paddingTop = this.lastScrollTop - this.lastScrollTop%fileHeight
-	let start = Math.floor(paddingTop/fileHeight) - 5
+	let paddingTop = this.lastScrollTop - this.lastScrollTop % fileHeight
+	let start = Math.floor(paddingTop / fileHeight) - 5
 	if (start < 0) { start = 0 }
 
-	let end = Math.ceil((paddingTop+viewportHeight)/fileHeight) + 5
-	if (end > this.visibleFiles.length) { end = this.visibleFiles.length-1 }
+	let end = Math.ceil((paddingTop + viewportHeight) / fileHeight) + 5
+	if (end > this.visibleFiles.length) { end = this.visibleFiles.length - 1 }
 
-	this.dirContainer.style.paddingTop = (start*fileHeight)+"px"
+	this.dirContainer.style.paddingTop = (start * fileHeight) + "px"
 
 	// Remove the elements which are out of bounds
 	let firstEl
@@ -274,31 +274,31 @@ DirectoryElement.prototype.renderVisibleFiles = function(freshStart) {
 	let lastEl
 	let lastIdx = -1
 	while (!freshStart) {
-		firstEl  = this.dirContainer.firstElementChild
+		firstEl = this.dirContainer.firstElementChild
 		if (firstEl === null) { break }
 		firstIdx = Number.parseInt(firstEl.getAttribute("fileindex"))
-		lastEl   = this.dirContainer.lastElementChild
-		lastIdx  = Number.parseInt(lastEl.getAttribute("fileindex"))
+		lastEl = this.dirContainer.lastElementChild
+		lastIdx = Number.parseInt(lastEl.getAttribute("fileindex"))
 
 		if (firstIdx < start) {
 			this.dirContainer.removeChild(firstEl)
-			console.debug("Remove start "+firstIdx)
+			console.debug("Remove start " + firstIdx)
 		} else if (lastIdx > end) {
 			this.dirContainer.removeChild(lastEl)
-			console.debug("Remove end "+lastIdx)
+			console.debug("Remove end " + lastIdx)
 		} else {
 			break
 		}
 	}
 
 	console.debug(
-		"start "+start+
-		" end "+end+
-		" firstIdx "+firstIdx+
-		" lastIdx "+lastIdx+
-		" freshStart "+freshStart+
-		" scrollDown "+scrollDown+
-		" children "+this.dirContainer.childElementCount
+		"start " + start +
+		" end " + end +
+		" firstIdx " + firstIdx +
+		" lastIdx " + lastIdx +
+		" freshStart " + freshStart +
+		" scrollDown " + scrollDown +
+		" children " + this.dirContainer.childElementCount
 	)
 
 	// Then add the elements which have become visible. When the user scrolls
@@ -311,7 +311,7 @@ DirectoryElement.prototype.renderVisibleFiles = function(freshStart) {
 				continue
 			}
 			this.dirContainer.append(this.createFileButton(this.getVisibleFile(i), i))
-			console.debug("Append "+i);
+			console.debug("Append " + i);
 		}
 	} else {
 		for (let i = end; i >= start; i--) {
@@ -319,7 +319,7 @@ DirectoryElement.prototype.renderVisibleFiles = function(freshStart) {
 				continue
 			}
 			this.dirContainer.prepend(this.createFileButton(this.getVisibleFile(i), i))
-			console.debug("Prepend "+i);
+			console.debug("Prepend " + i);
 		}
 	}
 }

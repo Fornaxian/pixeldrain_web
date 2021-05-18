@@ -29,9 +29,11 @@ function serve() {
 
 const builddir = "../res/static/svelte"
 export default [
+	"file_viewer",
 	"filesystem",
 	"modal",
 	"user_buckets",
+	"user_file_manager",
 	"admin_abuse_reporters",
 	"admin_abuse_reports",
 ].map((name, index) => ({
