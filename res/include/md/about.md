@@ -120,5 +120,7 @@ history on the [history page](/history).
 ## Support
 
 For other questions you can reach me at
-[support@pixeldrain.com](mailto:support@pixeldrain.com). Abuse reports sent to
-this address will not be reviewed, use the abuse address.
+[support@pixeldrain.com](mailto:support@pixeldrain.com). I get a lot more e-mail
+than I can reply to, so I will only reply to urgent problems or things which I
+deem important. Abuse reports sent to this address will not be reviewed, use the
+abuse address.
