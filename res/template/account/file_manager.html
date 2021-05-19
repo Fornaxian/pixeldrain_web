@@ -3,64 +3,17 @@
 	<head>
 		{{template "meta_tags" "File Manager"}}
 		{{template "user_style" .}}
-		<style>{{template "file_manager.css" .}}</style>
+
+		<script>
+			window.api_endpoint = '{{.APIEndpoint}}';
+		</script>
+		<link rel='stylesheet' href='/res/svelte/user_file_manager.css'>
+		<script defer src='/res/svelte/user_file_manager.js'></script>
 	</head>
 
 	<body>
-		<template id="tpl_spinner"><div id="spinner" class="spinner">{{template `spinner.svg` .}}</div></template>
-
 		{{template "page_menu" .}}
-
-		<div id="page_body" class="page_body">
-			<div id="file_manager" class="file_manager">
-				<div id="nav_bar" class="nav_bar highlight_1">
-					<button id="btn_menu" onclick="toggleMenu()"><i class="icon">menu</i></button>
-					<div class="spacer"></div>
-					<input class="breadcrumbs" type="text" value="/{{.User.Username}}"/>
-					<div class="spacer"></div>
-					<input id="input_search" class="input_search" type="text" placeholder="press / to search"/>
-					<div class="spacer"></div>
-					<button id="btn_reload"><i class="icon">refresh</i></button>
-				</div>
-
-				<div id="directory_area" class="directory_area">
-					<div id="directory_sorters" class="directory_sorters"></div>
-				</div>
-				<div id="directory_footer" class="status_bar highlight_1"></div>
-			</div>
-		</div>
-
-		<script>
-			'use strict';
-			let apiEndpoint = '{{.APIEndpoint}}';
-			{{template `util.js`}}
-			{{template `DirectoryElement.js`}}
-			{{template `FileManager.js`}}
-
-			let fm = null;
-			window.addEventListener("load", () => {
-				fm = new FileManager(document.getElementById("file_manager"))
-
-				let breadcrumbs = document.querySelector("#nav_bar > .breadcrumbs")
-
-				let hashChange = () => {
-					if (window.location.hash === "#files") {
-						breadcrumbs.value = "/{{.User.Username}}/Files"
-						fm.getUserFiles()
-					} else if (window.location.hash === "#lists") {
-						breadcrumbs.value = "/{{.User.Username}}/Lists"
-						fm.getUserLists()
-					} else {
-						alert("invalid file manager type")
-					}
-				}
-
-				hashChange()
-
-				document.getElementById("btn_reload").addEventListener("click", hashChange)
-				window.addEventListener("hashchange", hashChange)
-			})
-		</script>
+		<div id="page_body" class="page_body"></div>
 		{{template "analytics"}}
 	</body>
 </html>

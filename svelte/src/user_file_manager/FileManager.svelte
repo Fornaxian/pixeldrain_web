@@ -5,20 +5,18 @@ import Spinner from "../util/Spinner.svelte";
 import DirectoryElement from "./DirectoryElement.svelte"
 
 let loading = true
-let navBar
-let breadcrumbs = ""
-let btnReload
 let inputSearch
 let directoryElement
 
 let getUserFiles = () => {
 	loading = true
-	directoryElement.reset()
 
 	fetch(window.api_endpoint + "/user/files").then(resp => {
 		if (!resp.ok) { Promise.reject("yo") }
 		return resp.json()
 	}).then(resp => {
+		directoryElement.reset()
+
 		for (let i in resp.files) {
 			directoryElement.addFile(
 				window.api_endpoint + "/file/" + resp.files[i].id + "/thumbnail?width=32&height=32",
@@ -41,12 +39,13 @@ let getUserFiles = () => {
 
 let getUserLists = () => {
 	loading = true
-	directoryElement.reset()
 
 	fetch(window.api_endpoint + "/user/lists").then(resp => {
 		if (!resp.ok) { Promise.reject("yo") }
 		return resp.json()
 	}).then(resp => {
+		directoryElement.reset()
+
 		for (let i in resp.lists) {
 			directoryElement.addFile(
 				window.api_endpoint + "/list/" + resp.lists[i].id + "/thumbnail?width=32&height=32",
@@ -97,15 +96,19 @@ let hashChange = () => {
 	if (!initialized) {
 		return
 	}
-	if (window.location.hash === "#files") {
-		breadcrumbs = "My Files"
-		getUserFiles()
-	} else if (window.location.hash === "#lists") {
-		breadcrumbs = "My Lists"
+	if (window.location.hash === "#lists") {
+		document.title = "My Lists"
 		getUserLists()
 	} else {
-		alert("invalid file manager type")
+		document.title = "My Files"
+		getUserFiles()
 	}
+}
+
+let selecting = false
+const toggleSelecting = () => {
+	selecting = !selecting
+	directoryElement.setSelectionMode(selecting)
 }
 
 onMount(() => {
@@ -118,16 +121,24 @@ onMount(() => {
 <svelte:window on:keydown={keyboardEvent} on:hashchange={hashChange} />
 
 <div id="file_manager" class="file_manager">
-
-	<div bind:this={navBar} id="nav_bar" class="nav_bar highlight_1">
+	<div id="nav_bar" class="nav_bar highlight_1">
 		<button id="btn_menu" onclick="toggleMenu()"><i class="icon">menu</i></button>
-		<div class="spacer"></div>
-		<input class="breadcrumbs" type="text" value="{breadcrumbs}"/>
+		<button on:click={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
+			<i class="icon">select_all</i> Select
+		</button>
 		<div class="spacer"></div>
 		<input bind:this={inputSearch} on:keyup={searchHandler} id="input_search" class="input_search" type="text" placeholder="press / to search"/>
 		<div class="spacer"></div>
-		<button bind:this={btnReload} on:click={hashChange()} id="btn_reload"><i class="icon">refresh</i></button>
+		<button on:click={hashChange} id="btn_reload"><i class="icon">refresh</i></button>
 	</div>
+	{#if selecting}
+		<div class="nav_bar highlight_3">
+			Buttons to make a list and bulk delete files will show up here soon. Stay tuned ;-)
+			<!-- <button ><i class="icon">list</i> Make list</button>
+			<div class="fill"></div>
+			<button class="button_red"><i class="icon">delete</i> Delete</button> -->
+		</div>
+	{/if}
 
 	{#if loading}
 	<div class="spinner">
@@ -158,7 +169,7 @@ is collapsed */
 	display:          flex;
 	flex-direction:   column;
 }
-#nav_bar {
+.nav_bar {
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: row;
@@ -166,17 +177,14 @@ is collapsed */
 #nav_bar > button {
 	flex-shrink: 0;
 }
-.spacer      {
+.spacer {
 	width: 8px;
 }
-.breadcrumbs {
-	flex-grow: .7;
-	flex-shrink: 1;
-	min-width: 0;
-}
+/* .fill {
+	flex: 1 1 auto;
+} */
 .input_search {
-	flex-grow: .3;
-	flex-shrink: 1;
+	flex: 1 1 auto;
 	min-width: 100px;
 }
 

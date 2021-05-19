@@ -7,30 +7,6 @@ let directorySorters
 let nodeContainer
 let statusBar = "Loading..."
 
-// Create sort buttons
-
-// Sorting internal state. By default we sort by dateCreated in descending
-// order (new to old)
-let currentSortField = "dateCreated"
-let currentSortAscending = false
-let tableColumns = [
-	{ name: "Name", field: "name", width: "" },
-	{ name: "Creation date", field: "dateCreated", width: "160px" },
-	{ name: "Size", field: "size", width: "90px" },
-	{ name: "Type", field: "type", width: "200px" },
-]
-
-// Scroll event for rendering new file nodes when they become visible
-let frameRequested = false;
-const onScroll = (e) => {
-	if (frameRequested) { return }
-	frameRequested = true
-	requestAnimationFrame(() => {
-		renderVisibleFiles()
-		frameRequested = false
-	})
-}
-
 // Internal state, contains a list of all files in the directory, visible
 // files in the directory and the last scroll position. These are used for
 // rendering the file list correctly
@@ -63,7 +39,7 @@ export const renderFiles = () => {
 
 // search filters the allFiles array on a search term. All files which match the
 // search term will be put into visibleFiles. The visibleFiles array will then
-// be rendered by renderVisibleFiles
+// be rendered by render_visible_files
 let lastSearchTerm = ""
 export const search = (term) => {
 	term = term.toLowerCase()
@@ -74,7 +50,7 @@ export const search = (term) => {
 			allFiles[i].filtered = false
 		}
 		sortBy("")
-		renderVisibleFiles()
+		render_visible_files()
 		return
 	}
 
@@ -93,23 +69,34 @@ export const search = (term) => {
 			allFiles[i].filtered = false
 		} else {
 			allFiles[i].filtered = true
+			allFiles[i].selected = false
 		}
 	}
 
 	sortBy("")
-	renderVisibleFiles()
+	render_visible_files()
 }
 
 // searchSubmit opens the first file in the search results
 export const searchSubmit = () => {
 	for (let i in allFiles) {
 		if (allFiles[i].visible && !allFiles[i].filtered) {
-			window.location = allFiles[i].href
+			window.open(allFiles[i].href, "_blank")
 			break
 		}
 	}
 }
 
+// Sorting internal state. By default we sort by dateCreated in descending
+// order (new to old)
+let currentSortField = "dateCreated"
+let currentSortAscending = false
+let tableColumns = [
+	{ name: "Name", field: "name", width: "" },
+	{ name: "Creation date", field: "dateCreated", width: "160px" },
+	{ name: "Size", field: "size", width: "90px" },
+	{ name: "Type", field: "type", width: "200px" },
+]
 const sortBy = (field) => {
 	if (field === "") {
 		// If no sort field is provided we use the last used sort field
@@ -168,17 +155,34 @@ const sortBy = (field) => {
 		}
 	})
 
-	renderVisibleFiles()
+	render_visible_files()
 }
 
-const renderVisibleFiles = () => {
+// Scroll event for rendering new file nodes when they become visible. For
+// performance reasons the files will only be rendered once every 100ms. If a
+// scroll event comes in and we're not done with the previous frame yet the
+// event will be ignored
+let render_timeout = false;
+const onScroll = (e) => {
+	if (render_timeout) {
+		return
+	}
+
+	render_timeout = true
+	setTimeout(() => {
+		render_visible_files()
+		render_timeout = false
+	}, 100)
+}
+
+const render_visible_files = () => {
 	const fileHeight = 40
 
 	let paddingTop = directoryArea.scrollTop - directoryArea.scrollTop % fileHeight
-	let start = Math.floor(paddingTop / fileHeight) - 3
+	let start = Math.floor(paddingTop / fileHeight) - 5
 	if (start < 0) { start = 0 }
 
-	let end = Math.ceil((paddingTop + directoryArea.clientHeight) / fileHeight) + 3
+	let end = Math.ceil((paddingTop + directoryArea.clientHeight) / fileHeight) + 5
 	if (end > allFiles.length) { end = allFiles.length - 1 }
 
 	nodeContainer.style.paddingTop = (start * fileHeight) + "px"
@@ -187,6 +191,8 @@ const renderVisibleFiles = () => {
 	// pretend that files with filtered == true do not exist
 	let totalFiles = 0
 	let totalSize = 0
+	let selectedFiles = 0
+	let selectedSize = 0
 
 	for (let i in allFiles) {
 		if (totalFiles >= start && totalFiles <= end && !allFiles[i].filtered) {
@@ -197,14 +203,20 @@ const renderVisibleFiles = () => {
 		if (!allFiles[i].filtered) {
 			totalFiles++
 			totalSize += allFiles[i].size
+
+			if (allFiles[i].selected) {
+				selectedFiles++
+				selectedSize += allFiles[i].size
+			}
 		}
 	}
 
 	nodeContainer.style.height = (totalFiles * fileHeight) + "px"
-	statusBar = totalFiles + " items. Total size: " + formatDataVolume(totalSize, 4)
+	statusBar = totalFiles + " items ("+formatDataVolume(totalSize, 4)+")"
 
-	// Update the view
-	allFiles = allFiles
+	if (selectedFiles !== 0) {
+		statusBar += ", "+selectedFiles+" selected ("+formatDataVolume(selectedSize, 4)+")"
+	}
 
 	console.debug(
 		"start " + start +
@@ -212,7 +224,50 @@ const renderVisibleFiles = () => {
 		" children " + nodeContainer.childElementCount
 	)
 }
+
+let selectionMode = false
+export const setSelectionMode = (s) => {
+	selectionMode = s
+
+	// When selection mode is disabled we automatically deselect all files
+	if (!s) {
+		for (let i in allFiles) {
+			allFiles[i].selected = false
+		}
+		render_visible_files()
+	}
+}
+
+let shift_pressed = false
+const detect_shift = (e) => {
+	if (e.key !== "Shift") {
+		return
+	}
+
+	shift_pressed = e.type === "keydown"
+}
+
+let last_selected_node = -1
+const node_click = (index) => {
+	if (selectionMode) {
+		if (shift_pressed && last_selected_node != -1) {
+
+			for (let i = last_selected_node; i <= index && !allFiles[i].filtered; i++) {
+				allFiles[i].selected = !allFiles[i].selected
+			}
+		} else {
+			allFiles[index].selected = !allFiles[index].selected
+		}
+
+		last_selected_node = index
+		render_visible_files()
+	} else {
+		window.open(allFiles[index].href, "_blank")
+	}
+}
 </script>
+
+<svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
 
 <div id="directory_element">
 	<div bind:this={directoryArea} on:scroll={onScroll} id="directory_area" class="directory_area">
@@ -222,9 +277,15 @@ const renderVisibleFiles = () => {
 			{/each}
 		</div>
 		<div bind:this={nodeContainer} id="node_container" class="directory_node_container">
-			{#each allFiles as file}
+			{#each allFiles as file, index}
 				{#if file.visible && !file.filtered}
-					<a class="node" href={file.href} target="_blank" title="{file.name}" class:node_selected={file.selected}>
+					<a class="node"
+						href={file.href}
+						target="_blank"
+						title="{file.name}"
+						class:node_selected={file.selected}
+						on:click|preventDefault={() => {node_click(index)}}
+					>
 						<div>
 							<img src={file.icon} alt="file thumbnail" />
 							<span>{file.name}</span>
