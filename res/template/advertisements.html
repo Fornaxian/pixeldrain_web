@@ -1,0 +1,114 @@
+{{ define "banner_ads"}}
+
+{{ if eq .Other.AdBannerType 0 }}
+<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
+<iframe class="sponsors_banner"
+	data-aa="73974"
+	src="//ad.a-ads.com/73974?size=728x90&background_color={{.Style.Layer1Color.RGB}}&text_color={{.Style.TextColor.RGB}}&title_color={{.Style.HighlightColor.RGB}}&title_hover_color={{.Style.HighlightColor.RGB}}&link_color={{.Style.HighlightColor.RGB}}&link_hover_color={{.Style.HighlightColor.RGB}}"
+	style="width:728px; height:90px; border:none; padding:0; overflow:hidden;"
+	scrolling="no">
+</iframe>
+{{ else if eq .Other.AdBannerType 1 }}
+<!-- Amarula electronics -->
+<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarula-electronics.com">
+	<img src="/res/img/misc/banner_as.png" style="width: 100%; height: 100%" />
+</a>
+{{else if eq .Other.AdBannerType 2}}
+<!-- Patreon -->
+<div style="text-align: center; line-height: 22px; font-size: 18px;">
+	<div style="margin: 4px 8px; display: inline-block; vertical-align: middle;">
+		Pixeldrain needs money to survive<br/>
+		<a href="/click/7wy9gg2J?target=%2Fsubscribe" class="button button_highlight">
+			Support me on Patreon and get some neat perks
+		</a>
+	</div>
+	<div style="margin: 4px 8px; display: inline-block; vertical-align: middle; text-align: left;">
+		No ads when viewing files<br/>
+		No ads on your uploaded files<br/>
+		Longer file retention<br/>
+	</div>
+<div>
+{{else if eq .Other.AdBannerType 3}}
+<!-- Soul Studio -->
+<a class="sponsors_banner" style="display: inline-block; width: 842px; height: 125px;" href="/click/RJRbh7Tn?target=https%3A%2F%2Fsoulstudio.nl%2Fonline-y">
+	<img src="/res/img/misc/banner_soul_studio.png" style="width: 100%; height: 100%" />
+</a>
+{{else if eq .Other.AdBannerType 4}}
+<!-- Amarula Jobs -->
+<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarulasolutions.com/jobs">
+	<img src="/res/img/misc/banner_amarula_jobs.png" style="width: 100%; height: 100%" />
+</a>
+{{ else if eq .Other.AdBannerType 6 }}
+<div class="sponsors_banner" style="display: inline-block; width: 728px; height: 90px;">
+	<script type="text/javascript">
+	atOptions = {
+		'key' : 'a62692cf48c3969d426a09c868ae13f7',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+	document.write('<scr' + 'ipt type="text/javascript" defer src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.highperformancedisplaycontent.com/a62692cf48c3969d426a09c868ae13f7/invoke.js"></scr' + 'ipt>');
+	</script>
+</div>
+{{ else if eq .Other.AdBannerType 7 }}
+<a class="sponsors_banner" style="display: inline-block; width: 728px; height: 90px;" href="/brave">
+	<img src="/res/img/misc/brave-728x90.png" style="width: 100%; height: 100%" />
+</a>
+{{ else if eq .Other.AdBannerType 8 }}
+<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
+	<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
+	<div style="margin: 4px; display: inline-block; vertical-align: middle;">
+		Are your files expiring too quickly?<br/>
+		<a href="/click/7wy9gg2J?target=%2F%23pro" class="button button_highlight">Pixeldrain Pro: Only €2 per month</a>
+	</div>
+</div>
+{{ else if eq .Other.AdBannerType 9 }}
+<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
+	<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
+	<div style="margin: 4px; display: inline-block; vertical-align: middle;">
+		Are your files too large to share?<br/>
+		<a href="/click/7wy9gg2J?target=%2F%23pro" class="button button_highlight">Pixeldrain Pro: Only €2 per month</a>
+	</div>
+</div>
+{{ else if eq .Other.AdBannerType 10 }}
+<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
+	<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
+	<div style="margin: 4px; display: inline-block; vertical-align: middle;">
+		Are you tired of advertisements?<br/>
+		<a href="/click/7wy9gg2J?target=%2F%23pro" class="button button_highlight">Pixeldrain Pro: Only €2 per month</a>
+	</div>
+</div>
+{{ else if eq .Other.AdBannerType 11 }}
+<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
+	<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
+	<div style="margin: 4px; display: inline-block; vertical-align: middle;">
+		Concerned about your online privacy?<br/>
+		<a href="/click/7wy9gg2J?target=%2F%23pro" class="button button_highlight">Pixeldrain Pro: Only €2 per month</a>
+	</div>
+</div>
+{{ end }}
+
+{{ end }}
+{{ define "floating_ads"}}
+
+{{ if eq .Other.AdFloaterType 3 }}
+<!-- AdMaven -->
+<script data-cfasync="false" async src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
+{{ else if eq .Other.AdFloaterType 2 }}
+<!-- AdSterra -->
+<script type='text/javascript' async src='//concoursestrickenpuppy.com/4c/4d/90/4c4d90a2e79b0e049f811a663f3e3c07.js'></script>
+{{ else if eq .Other.AdFloaterType 1 }}
+<!-- PropellerAds -->
+<script>
+// Load fires when the page is completely finished loading, including assets
+window.addEventListener("load", () => {
+	(function(d,z,s){
+		s.src='//'+d+'/400/'+z
+		try{(document.body||document.documentElement).appendChild(s)}catch(e){}
+	})('in-page-push.com',3724132,document.createElement('script'))
+})
+</script>
+{{ end }}
+
+{{ end }}

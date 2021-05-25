@@ -287,7 +287,7 @@ const node_click = (index) => {
 						on:click|preventDefault={() => {node_click(index)}}
 					>
 						<div>
-							<img src={file.icon} alt="file thumbnail" />
+							<img src={file.icon} alt="thumbnail" />
 							<span>{file.name}</span>
 						</div>
 						<div style="width: {tableColumns[1].width}">

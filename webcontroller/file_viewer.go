@@ -28,19 +28,27 @@ func browserCompat(ua string) bool {
 	return strings.Contains(ua, "MSIE") || strings.Contains(ua, "Trident/7.0")
 }
 
-func adType() int {
+func adType() (banner, floater int) {
 	const (
+		// Banners
 		aAds               = 0
 		amarulaElectronics = 1
 		patreon            = 2
 		soulStudio         = 3
 		amarulaSolutions   = 4
 		adMaven            = 5
+		adSterra           = 6
 		brave              = 7
 		pdpro1             = 8
 		pdpro2             = 9
 		pdpro3             = 10
 		pdpro4             = 11
+
+		// Floaters
+		none           = 0
+		propellerFloat = 1
+		adSterraFloat  = 2
+		adMavenFloat   = 3
 	)
 
 	// Intn returns a number up to n, but never n itself. So to get a random 0
@@ -48,21 +56,33 @@ func adType() int {
 	// splits like 1/3 1/4, etc
 	switch i := rand.Intn(10); i {
 	case 0: // 10%
-		return amarulaSolutions
+		banner = amarulaSolutions
 	case 1, 2, 3, 4, 5: // 50%
-		return brave
+		banner = brave
 	case 6, 7, 8, 9: // 40%
-		return aAds
+		banner = aAds
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
+
+	switch i := rand.Intn(4); i {
+	case 0, 1, 2: // 75%
+		floater = propellerFloat
+	case 3: // 25%
+		floater = adSterraFloat
+	default:
+		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
+	}
+
+	return banner, floater
 }
 
 type viewerData struct {
 	Type           string // file or list
 	CaptchaKey     string
 	ViewToken      string
-	AdType         int
+	AdBannerType   int
+	AdFloaterType  int
 	FileAdsEnabled bool
 	UserAdsEnabled bool
 	Embedded       bool
@@ -112,10 +132,10 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	var vd = viewerData{
 		CaptchaKey:     wc.captchaKey(),
 		ViewToken:      wc.viewTokenOrBust(),
-		AdType:         adType(),
 		FileAdsEnabled: files[0].ShowAds,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 	}
+	vd.AdBannerType, vd.AdFloaterType = adType()
 
 	if len(ids) > 1 {
 		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(files))
@@ -164,7 +184,8 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 	templateData.Other = viewerData{
 		Type:           "file",
 		CaptchaKey:     wc.captchaSiteKey,
-		AdType:         0, // Always show a-ads on the demo page
+		AdBannerType:   0, // Always show a-ads on the demo page
+		AdFloaterType:  0, // No floaters
 		FileAdsEnabled: true,
 		UserAdsEnabled: true,
 		APIResponse: map[string]interface{}{
@@ -215,11 +236,11 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		Type:           "list",
 		CaptchaKey:     wc.captchaSiteKey,
 		ViewToken:      wc.viewTokenOrBust(),
-		AdType:         adType(),
 		FileAdsEnabled: list.Files[0].ShowAds,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 		APIResponse:    list,
 	}
+	vd.AdBannerType, vd.AdFloaterType = adType()
 
 	if _, ok := r.URL.Query()["embed"]; ok {
 		vd.Embedded = true
@@ -317,8 +338,7 @@ func (wc *WebController) serveSkynetViewer(w http.ResponseWriter, r *http.Reques
 
 	templateData.Title = fmt.Sprintf("name ~ Skynet")
 	templateData.Other = viewerData{
-		Type:   "skylink",
-		AdType: adType(),
+		Type: "skylink",
 		APIResponse: pixelapi.FileInfo{
 			Success:      true,
 			ID:           p.ByName("id"),
