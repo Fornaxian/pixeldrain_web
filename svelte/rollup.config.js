@@ -36,6 +36,7 @@ export default [
 	"user_file_manager",
 	"admin_abuse_reporters",
 	"admin_abuse_reports",
+	"admin_ip_bans",
 ].map((name, index) => ({
 	input: `src/${name}.js`,
 	output: {

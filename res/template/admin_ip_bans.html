@@ -1,0 +1,19 @@
+{{define "admin_ip_bans"}}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "IP bans"}}
+		{{template "user_style" .}}
+		<script>window.api_endpoint = '{{.APIEndpoint}}';</script>
+		<link rel='stylesheet' href='/res/svelte/admin_ip_bans.css'>
+		<script defer src='/res/svelte/admin_ip_bans.js'></script>
+	</head>
+	<body>
+		{{template "page_top" .}}
+		<h1>IP bans</h1>
+		<div id="page_content" class="page_content"></div>
+
+		{{template "page_bottom" .}}
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

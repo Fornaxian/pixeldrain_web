@@ -188,6 +188,7 @@ func New(
 		{PST, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, handlerOpts{Auth: true})},
 		{GET, "admin/abuse_reporters" /**/, wc.serveTemplate("admin_abuse_reporters", handlerOpts{Auth: true})},
 		{GET, "admin/abuse_reports" /*  */, wc.serveTemplate("admin_abuse_reports", handlerOpts{Auth: true})},
+		{GET, "admin/ip_bans" /*        */, wc.serveTemplate("admin_ip_bans", handlerOpts{Auth: true})},
 
 		// Advertising related
 		{GET, "click/:id" /*     */, wc.serveAdClick},

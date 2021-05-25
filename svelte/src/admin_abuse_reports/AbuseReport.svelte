@@ -6,6 +6,7 @@ let dispatch = createEventDispatcher()
 
 export let report
 let expandable
+let preview = false
 
 let set_status = async (action, report_type) => {
 	const form = new FormData()
@@ -30,7 +31,7 @@ let set_status = async (action, report_type) => {
 }
 </script>
 
-<Expandable bind:this={expandable} expanded={report.status === "pending" && report.reports.length > 2}>
+<Expandable bind:this={expandable} expanded={report.status === "pending" && report.reports.length > 1}>
 	<div slot="header" class="header" on:click={expandable.toggle}>
 		<div class="icon_cell">
 			<img class="file_icon" src={"/api/file/"+report.file.id+"/thumbnail"} alt="File thumbnail"/>
@@ -53,6 +54,9 @@ let set_status = async (action, report_type) => {
 				<a class="button" target="_blank" href={"/u/"+report.file.id}>
 					<i class="icon">open_in_new</i> Open file
 				</a>
+				<button class:button_highlight={preview} on:click={() => {preview = !preview}}>
+					<i class="icon">visibility</i> Preview
+				</button>
 				<button class="button_highlight" on:click={() => {set_status("grant", report.type)}}>
 					<i class="icon">done</i> Block ({report.type})
 				</button>
@@ -66,6 +70,16 @@ let set_status = async (action, report_type) => {
 				<button on:click={() => {set_status("grant", "child_abuse")}}>child_abuse</button>
 				<button on:click={() => {set_status("grant", "malware")}}>malware</button>
 			</div>
+		</div>
+		<div style="text-align: center;">
+			{#if preview}
+			<br/>
+			<iframe
+				title="File preview"
+				src="/u/{report.file.id}?embed"
+				style="border: none; width: 100%; height: 400px; border-radius: 6px;"
+			></iframe>
+			{/if}
 		</div>
 		<table>
 			<tr>
