@@ -1,173 +1,33 @@
-{{define "admin_panel"}}
+{{define "admin"}}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		{{template "meta_tags" "Administrator panel"}}
-		{{template "user_style" .}}
-	</head>
-	<body>
-		{{template "page_top" .}}
-		<div class="page_content">
-			{{if and .Authenticated .User.IsAdmin}}
-				<div class="limit_width">
-					<h3>Actions</h3>
-				</div>
-				<br/>
-				<a class="button" href="/admin/abuse">
-					<i class="icon">block</i>
-					Block files
-				</a>
-				<a class="button" href="/admin/abuse_reports">
-					<i class="icon">flag</i>
-					User abuse reports
-				</a>
-				<a class="button" href="/admin/abuse_reporters">
-					<i class="icon">report</i>
-					Manage abuse reporters
-				</a>
-				<a class="button" href="/admin/globals">
-					<i class="icon">edit</i>
-					Update global settings
-				</a>
-				<br/>
-				<div class="limit_width">
-					<h3>Bandwidth and views</h3>
-				</div>
-				<div class="highlight_dark">
-					<button onclick="loadGraph(1440, 1, true);">Day</button>
-					<button onclick="loadGraph(10080, 10, false);">Week</button>
-					<button onclick="loadGraph(20160, 60, false);">Two Weeks</button>
-					<button onclick="loadGraph(43200, 60, false);">Month</button>
-					<button onclick="loadGraph(131400, 1440, false);">Quarter</button>
-					<button onclick="loadGraph(262800, 1440, false);">Half-year</button>
-					<button onclick="loadGraph(525600, 1440, false);">Year</button>
-					<button onclick="loadGraph(1051200, 1440, false);">Two Years</button>
-					<!--<br/>
-					<button onclick="navigateTimespan(false);">🠈</button>
-					<button onclick="loadTimespan('day', new Date());">Day</button>
-					<button onclick="loadTimespan('week', new Date());">Week</button>
-					<button onclick="loadTimespan('month', new Date());">Month</button>
-					<button onclick="loadTimespan('quarter', new Date());">Quarter</button>
-					<button onclick="loadTimespan('year', new Date());">Year</button>
-					<button onclick="navigateTimespan(true);">🠊</button>-->
-				</div>
-				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: 200px; padding-top: 6px;">
-					<canvas id="bandwidth_chart"></canvas>
-				</div>
-				<hr>
-				<div id="chart_container" class="chart-container" style="position: relative; width: 100%; height: 200px;">
-					<canvas id="views_chart"></canvas>
-				</div>
-				<div class="highlight_dark">
-					Total usage from <span id="time_start"></span> to <span id="time_end"></span><br/>
-					<span id="total_bandwidth"></span> bandwidth and <span id="total_views"></span> views
-				</div>
+	{{if and .Authenticated .User.IsAdmin}}
+		<head>
+			{{template "meta_tags" "Administrator panel"}}
+			{{template "user_style" .}}
 
-				<br/>
-				<a class="button" href="/api/admin/call_stack">Call stack</a>
-				<a class="button" href="/api/admin/heap_profile">Heap profile</a>
-				<a class="button" href="/api/admin/cpu_profile">CPU profile (wait 1 min)</a>
-				<br/>
-
-				<div class="limit_width">
-					<table>
-						<tr>
-							<td>DB Time</td>
-							<td id="db_time"></td>
-							<td>DB Latency</td>
-							<td id="db_latency"></td>
-						</tr>
-					</table>
-					<h3>Pixelstore peers</h3>
-					<table>
-						<thead>
-							<tr>
-								<td>Address</td>
-								<td>Pos</td>
-								<td>Alive</td>
-								<td>Err</td>
-								<td>1m</td>
-								<td>5m</td>
-								<td>15m</td>
-								<td>Ping</td>
-								<td>Free</td>
-								<td>Min free</td>
-							</tr>
-						</thead>
-						<tbody id="tbody_peers"></tbody>
-					</table>
-					<h3>Pixelstore stats</h3>
-					<table>
-						<thead>
-							<tr>
-								<td>Local reads</td>
-								<td>Local read size</td>
-								<td>Remote reads</td>
-								<td>Remote read size</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td id="local_reads"></td>
-								<td id="local_read_size"></td>
-								<td id="remote_reads"></td>
-								<td id="remote_read_size"></td>
-							</tr>
-							<tr>
-								<td id="local_reads_rate"></td>
-								<td id="local_read_size_rate"></td>
-								<td id="remote_reads_rate"></td>
-								<td id="remote_read_size_rate"></td>
-							</tr>
-						</tbody>
-					</table>
-					<h3>Websocket statistics</h3>
-					<table>
-						<thead>
-							<tr>
-								<td>Watcher</td>
-								<td>Threads</td>
-								<td>Listeners</td>
-								<td>Avg</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>File statistics</td>
-								<td id="file_stats_watchers"></td>
-								<td id="file_stats_listeners"></td>
-								<td id="file_stats_avg"></td>
-							</tr>
-						</tbody>
-					</table>
-					<h3>Query statistics</h3>
-					<table>
-						<thead>
-							<tr>
-								<td style="cursor: pointer;" onclick="getStats('query_name')">Query</td>
-								<td style="cursor: pointer;" onclick="getStats('calls')">Calls</td>
-								<td style="cursor: pointer;" onclick="getStats('average_duration')">Average Duration</td>
-								<td style="cursor: pointer;" onclick="getStats('total_duration')">Total Duration</td>
-								<td>Callers</td>
-							</tr>
-						</thead>
-						<tbody id="tstat_body"></tbody>
-					</table>
-				</div>
-				<script src="/res/script/Chart.min.js"></script>
-				<script>
-					var apiEndpoint = '{{.APIEndpoint}}';
-					var highlightColor = '#{{.Style.HighlightColor.RGB}}';
-					{{template `util.js`}}
-					{{template `drawGraph.js`}}
-					{{template `admin.js`}}
-				</script>
-				{{else}}
-				<h1 style="text-align: center;">;-)</h1>
-				{{end}}
-			</div>
+			<script>
+			window.api_endpoint = '{{.APIEndpoint}}';
+			window.highlight_color = '#{{.Style.HighlightColor.RGB}}';
+			</script>
+			<link rel='stylesheet' href='/res/svelte/admin_panel.css'>
+			<script defer src='/res/svelte/admin_panel.js'></script>
+		</head>
+		<body>
+			{{template "page_top" .}}
+			<div id="page_content" class="page_content"></div>
 			{{template "page_bottom" .}}
-		</div>
-	</body>
+		</body>
+	{{else}}
+		<head>
+			{{template "meta_tags" "Administrator panel"}}
+			{{template "user_style" .}}
+		</head>
+		<body>
+			{{template "page_top" .}}
+			<div class="page_content">;-)</div>
+			{{template "page_bottom" .}}
+		</body>
+	{{end}}
 </html>
 {{end}}

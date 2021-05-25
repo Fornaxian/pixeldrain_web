@@ -91,9 +91,6 @@ onMount(get_reporters);
 
 	<div class="limit_width">
 		<div class="toolbar" style="text-align: left;">
-			<a class="button" href="/admin">
-				<i class="icon">arrow_back</i> Return to admin panel
-			</a>
 			<div class="toolbar_spacer"></div>
 			<button class:button_highlight={creating} on:click={() => {creating = !creating}}>
 				<i class="icon">create</i> Add abuse reporter
@@ -171,6 +168,7 @@ onMount(get_reporters);
 	left: 10px;
 	height: 100px;
 	width: 100px;
+	z-index: 1000;
 }
 .toolbar {
 	display: flex;

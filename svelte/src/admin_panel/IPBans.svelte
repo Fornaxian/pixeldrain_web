@@ -86,9 +86,6 @@ onMount(get_bans);
 
 	<div class="limit_width">
 		<div class="toolbar" style="text-align: left;">
-			<a class="button" href="/admin">
-				<i class="icon">arrow_back</i> Return to admin panel
-			</a>
 			<div class="toolbar_spacer"></div>
 			<button class:button_highlight={creating} on:click={() => {creating = !creating}}>
 				<i class="icon">create</i> Add IP ban
@@ -145,14 +142,16 @@ onMount(get_bans);
 			<td>Reason</td>
 			<td>Ban time</td>
 			<td>Expire time</td>
+			<td>Offences</td>
 			<td></td>
 		</tr>
 		{#each rows as row}
 			<tr>
 				<td>{row.address}</td>
-				<td>{rows.reason}</td>
+				<td>{row.reason}</td>
 				<td>{formatDate(row.ban_time, true, true, false)}</td>
 				<td>{formatDate(row.expire_time, true, true, false)}</td>
+				<td>{row.offences}</td>
 				<td>
 					<button on:click|preventDefault={() => {delete_ban(row.address)}} class="button button_red">
 						<i class="icon">delete</i>
@@ -170,6 +169,7 @@ onMount(get_bans);
 	left: 10px;
 	height: 100px;
 	width: 100px;
+	z-index: 1000;
 }
 .toolbar {
 	display: flex;

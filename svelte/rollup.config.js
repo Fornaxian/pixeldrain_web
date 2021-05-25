@@ -34,9 +34,7 @@ export default [
 	"modal",
 	"user_buckets",
 	"user_file_manager",
-	"admin_abuse_reporters",
-	"admin_abuse_reports",
-	"admin_ip_bans",
+	"admin_panel",
 ].map((name, index) => ({
 	input: `src/${name}.js`,
 	output: {

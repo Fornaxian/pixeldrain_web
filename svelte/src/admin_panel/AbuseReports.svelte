@@ -100,15 +100,12 @@ onMount(() => {
 
 	<div class="limit_width">
 		<div class="toolbar" style="text-align: left;">
-			<a class="button" href="/admin">
-				<i class="icon">arrow_back</i> Return to admin panel
-			</a>
 			<div class="toolbar_spacer"></div>
-			<div>
-				Start: <input type="date" bind:this={startPicker}/>
-				End: <input type="date" bind:this={endPicker}/>
-			</div>
-			<button on:click={get_reports}><i class="icon">refresh</i></button>
+			<div>Start:</div>
+			<input type="date" bind:this={startPicker}/>
+			<div>End:</div>
+			<input type="date" bind:this={endPicker}/>
+			<button on:click={get_reports}>Go</button>
 		</div>
 
 		<h2>Pending</h2>
@@ -131,7 +128,7 @@ onMount(() => {
 .spinner_container {
 	position: absolute;
 	top: 10px;
-	right: 10px;
+	left: 10px;
 	height: 100px;
 	width: 100px;
 	z-index: 1000;
@@ -140,6 +137,7 @@ onMount(() => {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
+	align-items: center;
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }

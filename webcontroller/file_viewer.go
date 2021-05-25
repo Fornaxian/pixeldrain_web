@@ -65,10 +65,10 @@ func adType() (banner, floater int) {
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 
-	switch i := rand.Intn(4); i {
-	case 0, 1, 2: // 75%
+	switch i := rand.Intn(3); i {
+	case 0, 1: // 66%
 		floater = propellerFloat
-	case 3: // 25%
+	case 2: // 33%
 		floater = adSterraFloat
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))

@@ -181,14 +181,14 @@ func New(
 		{PST, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
 
 		// Admin settings
-		{GET, "admin" /*                */, wc.serveTemplate("admin_panel", handlerOpts{Auth: true})},
+		{GET, "admin" /*                */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
+		{GET, "admin/abuse_reporters" /**/, wc.serveTemplate("admin", handlerOpts{Auth: true})},
+		{GET, "admin/abuse_reports" /*  */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
+		{GET, "admin/ip_bans" /*        */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
 		{PST, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
 		{GET, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, handlerOpts{Auth: true})},
 		{PST, "admin/abuse" /*          */, wc.serveForm(wc.adminAbuseForm, handlerOpts{Auth: true})},
-		{GET, "admin/abuse_reporters" /**/, wc.serveTemplate("admin_abuse_reporters", handlerOpts{Auth: true})},
-		{GET, "admin/abuse_reports" /*  */, wc.serveTemplate("admin_abuse_reports", handlerOpts{Auth: true})},
-		{GET, "admin/ip_bans" /*        */, wc.serveTemplate("admin_ip_bans", handlerOpts{Auth: true})},
 
 		// Advertising related
 		{GET, "click/:id" /*     */, wc.serveAdClick},
