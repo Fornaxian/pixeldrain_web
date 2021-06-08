@@ -43,6 +43,7 @@ func adType() (banner, floater int) {
 		pdpro2             = 9
 		pdpro3             = 10
 		pdpro4             = 11
+		clickAduBanner     = 12
 
 		// Floaters
 		none           = 0
@@ -55,9 +56,9 @@ func adType() (banner, floater int) {
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
 	switch i := rand.Intn(10); i {
-	case 0: // 10%
-		banner = amarulaSolutions
-	case 1, 2, 3, 4, 5: // 50%
+	case 0, 1: // 20%
+		banner = clickAduBanner
+	case 2, 3, 4, 5: // 40%
 		banner = brave
 	case 6, 7, 8, 9: // 40%
 		banner = aAds
@@ -65,14 +66,7 @@ func adType() (banner, floater int) {
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 
-	switch i := rand.Intn(3); i {
-	case 0, 1: // 66%
-		floater = propellerFloat
-	case 2: // 33%
-		floater = adSterraFloat
-	default:
-		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
-	}
+	floater = propellerFloat
 
 	return banner, floater
 }
