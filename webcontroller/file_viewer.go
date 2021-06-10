@@ -28,11 +28,30 @@ func browserCompat(ua string) bool {
 	return strings.Contains(ua, "MSIE") || strings.Contains(ua, "Trident/7.0")
 }
 
-func adType() (banner, floater int) {
+type viewerData struct {
+	Type           string // file or list
+	CaptchaKey     string
+	ViewToken      string
+	AdBannerType   int
+	AdFloaterType  int
+	AdUnderType    int
+	FileAdsEnabled bool
+	UserAdsEnabled bool
+	Embedded       bool
+	APIResponse    interface{}
+}
+
+func (vd *viewerData) adType(files []pixelapi.ListFile) {
+	var avgSize int64
+	for _, v := range files {
+		avgSize += v.Size
+	}
+	avgSize /= int64(len(files))
+
 	const (
 		// Banners
-		aAds               = 0
-		amarulaElectronics = 1
+		none               = 0
+		aAds               = 1
 		patreon            = 2
 		soulStudio         = 3
 		amarulaSolutions   = 4
@@ -44,43 +63,40 @@ func adType() (banner, floater int) {
 		pdpro3             = 10
 		pdpro4             = 11
 		clickAduBanner     = 12
+		amarulaElectronics = 13
 
 		// Floaters
-		none           = 0
 		propellerFloat = 1
 		adSterraFloat  = 2
 		adMavenFloat   = 3
+
+		// Popunders
+		clickAduPopunder = 1
 	)
 
 	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	switch i := rand.Intn(10); i {
-	case 0, 1: // 20%
-		banner = clickAduBanner
-	case 2, 3, 4, 5: // 40%
-		banner = brave
-	case 6, 7, 8, 9: // 40%
-		banner = aAds
+	switch i := rand.Intn(3); i {
+	case 0: // 33%
+		vd.AdBannerType = clickAduBanner
+	case 1: // 33%
+		vd.AdBannerType = brave
+	case 2: // 33%
+		vd.AdBannerType = aAds
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 
-	floater = propellerFloat
+	// If the file is larger than 10 MB we enable popups
+	if avgSize > 10e6 {
+		vd.AdFloaterType = propellerFloat
+	}
 
-	return banner, floater
-}
-
-type viewerData struct {
-	Type           string // file or list
-	CaptchaKey     string
-	ViewToken      string
-	AdBannerType   int
-	AdFloaterType  int
-	FileAdsEnabled bool
-	UserAdsEnabled bool
-	Embedded       bool
-	APIResponse    interface{}
+	// If the file is larger than 250 MB we enable popunders
+	if avgSize > 250e6 {
+		vd.AdUnderType = clickAduPopunder
+	}
 }
 
 // ServeFileViewer controller for GET /u/:id
@@ -129,7 +145,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		FileAdsEnabled: files[0].ShowAds,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 	}
-	vd.AdBannerType, vd.AdFloaterType = adType()
+	vd.adType(files)
 
 	if len(ids) > 1 {
 		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(files))
@@ -178,8 +194,7 @@ func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Requ
 	templateData.Other = viewerData{
 		Type:           "file",
 		CaptchaKey:     wc.captchaSiteKey,
-		AdBannerType:   0, // Always show a-ads on the demo page
-		AdFloaterType:  0, // No floaters
+		AdBannerType:   1, // Always show a-ads on the demo page
 		FileAdsEnabled: true,
 		UserAdsEnabled: true,
 		APIResponse: map[string]interface{}{
@@ -234,7 +249,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 		APIResponse:    list,
 	}
-	vd.AdBannerType, vd.AdFloaterType = adType()
+	vd.adType(list.Files)
 
 	if _, ok := r.URL.Query()["embed"]; ok {
 		vd.Embedded = true
