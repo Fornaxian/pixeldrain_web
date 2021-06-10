@@ -136,7 +136,6 @@ func New(
 		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
 		{GET, "l/:id" /*           */, wc.serveListViewer},
 		{GET, "d/*path" /*         */, wc.serveDirectory},
-		{GET, "s/:id" /*           */, wc.serveSkynetViewer},
 		{GET, "t" /*               */, wc.serveTemplate("text_editor", handlerOpts{})},
 		{GET, "donation" /*        */, wc.serveMarkdown("donation.md", handlerOpts{})},
 		{GET, "subscribe" /*       */, wc.serveMarkdown("subscribe.md", handlerOpts{})},
