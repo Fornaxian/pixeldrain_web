@@ -30,7 +30,7 @@ type viewerData struct {
 	ViewToken      string
 	AdBannerType   int
 	AdFloaterType  int
-	AdUnderType    int
+	AdPopupType    int
 	FileAdsEnabled bool
 	UserAdsEnabled bool
 	Embedded       bool
@@ -38,6 +38,10 @@ type viewerData struct {
 }
 
 func (vd *viewerData) adType(files []pixelapi.ListFile) {
+	if len(files) == 0 {
+		return
+	}
+
 	var avgSize int64
 	for _, v := range files {
 		avgSize += v.Size
@@ -67,31 +71,31 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		adMavenFloat   = 3
 
 		// Popunders
-		clickAduPopunder = 1
+		clickAduPopup  = 1
+		propellerPopup = 2
 	)
 
 	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	switch i := rand.Intn(3); i {
-	case 0: // 33%
+	switch i := rand.Intn(4); i {
+	case 0: // 25%
 		vd.AdBannerType = clickAduBanner
-	case 1: // 33%
+	case 1: // 25%
 		vd.AdBannerType = brave
-	case 2: // 33%
+	case 2, 3: // 50%
 		vd.AdBannerType = aAds
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 
-	// If the file is larger than 10 MB we enable popups
+	// If the file is larger than 10 MB we enable floating popups
 	if avgSize > 10e6 {
 		vd.AdFloaterType = propellerFloat
 	}
 
-	// If the file is larger than 250 MB we enable popunders
 	if avgSize > 250e6 {
-		vd.AdUnderType = clickAduPopunder
+		vd.AdPopupType = clickAduPopup
 	}
 }
 

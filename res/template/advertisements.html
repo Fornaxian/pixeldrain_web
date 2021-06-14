@@ -113,7 +113,20 @@
 		</script>
 	{{ end }}
 
-	{{ if eq .Other.AdUnderType 1}}
+	{{ if eq .Other.AdPopupType 1 }}
 		<script data-cfasync="false" type="text/javascript" async src="//depirsmandk5.com/t/9/fret/meow4/1846775/brt.js"></script>
+	{{ else if eq .Other.AdPopupType 2 }}
+		<script>
+		window.addEventListener("load", () => {
+			(function(s,u,z,p){
+				s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);
+			})(
+				document.createElement('script'),
+				'https://iclickcdn.com/tag.min.js',
+				3750089,
+				document.body||document.documentElement,
+			)
+		})
+		</script>
 	{{ end }}
 {{ end }}

@@ -143,13 +143,13 @@
 				{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
 					{{ template "banner_ads" . }}
 				{{ else if not .Other.UserAdsEnabled }}
-				<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
-					Thank you for supporting pixeldrain!
-				</div>
+					<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
+						Thank you for supporting pixeldrain!
+					</div>
 				{{ else if not .Other.FileAdsEnabled }}
-				<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
-					The uploader of this file disabled advertisements. You can do the same for <a href="/#pro">only €2 per month</a>!
-				</div>
+					<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
+						The uploader of this file disabled advertisements. You can do the same for <a href="/#pro">only €2 per month</a>!
+					</div>
 				{{ end }}
 			</div>
 		</div>
