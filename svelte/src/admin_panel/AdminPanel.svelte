@@ -18,7 +18,7 @@ let navigate = (path, title) => {
 onMount(() => {
 	let newpage = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1)
 	if (newpage === "admin") {
-		newpage = ""
+		newpage = "status"
 	}
 	page = newpage
 })
@@ -27,8 +27,8 @@ onMount(() => {
 <div>
 	<a class="button"
 		href="/admin"
-		class:button_highlight={page === ""}
-		on:click|preventDefault={() => {navigate("", "Status")}}>
+		class:button_highlight={page === "status"}
+		on:click|preventDefault={() => {navigate("status", "Status")}}>
 		<i class="icon">home</i>
 		Status
 	</a>
@@ -63,7 +63,7 @@ onMount(() => {
 	</a>
 	<hr/>
 
-	{#if page === ""}
+	{#if page === "status"}
 	<Home></Home>
 	{:else if page === "abuse_reports"}
 	<AbuseReports></AbuseReports>

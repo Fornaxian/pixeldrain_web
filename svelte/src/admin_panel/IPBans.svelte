@@ -17,7 +17,10 @@ const get_bans = async () => {
 		if(resp.status >= 400) {
 			throw new Error(resp.text());
 		}
-		rows = await resp.json();
+		rows = await resp.json()
+		rows.sort((a, b) => {
+			return b.ban_time.localeCompare(a.ban_time)
+		});
 	} catch (err) {
 		alert(err);
 	} finally {
