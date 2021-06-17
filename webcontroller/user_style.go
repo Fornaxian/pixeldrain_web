@@ -12,6 +12,8 @@ func userStyle(r *http.Request) (style pixeldrainStyleSheet) {
 		selectedStyle = defaultPixeldrainStyle
 	} else {
 		switch cookie.Value {
+		case "classic":
+			selectedStyle = pixeldrainClassicStyle
 		case "solarized_dark":
 			selectedStyle = solarizedDarkStyle
 		case "sunny":
@@ -205,6 +207,29 @@ func (h hsl) add(hue int, saturation float64, lightness float64) hsl {
 // Following are all the available styles
 
 var defaultPixeldrainStyle = pixeldrainStyleSheet{
+	TextColor:                hsl{0, 0, .8},
+	InputColor:               hsl{242, .42, .3},
+	InputTextColor:           hsl{0, 0, 1},
+	HighlightColor:           hsl{89, .60, .45},
+	HighlightTextColor:       hsl{0, 0, 0},
+	DangerColor:              hsl{339, .65, .31},
+	ScrollbarForegroundColor: hsl{272, .5, .35},
+	ScrollbarHoverColor:      hsl{272, .5, .5},
+	ScrollbarBackgroundColor: hsl{270, .5, .07},
+
+	Layer1Color:  hsl{270, .5, .04},
+	Layer1Shadow: 3,
+	Layer2Color:  hsl{270, .5, .07},
+	Layer2Shadow: 5,
+	Layer3Color:  hsl{272, .45, .12},
+	Layer3Shadow: 7,
+	Layer4Color:  hsl{272, .45, .19},
+	Layer4Shadow: 9,
+
+	ShadowColor: hsl{0, 0, 0},
+}
+
+var pixeldrainClassicStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .8},
 	InputColor:               hsl{0, 0, .2},
 	InputTextColor:           hsl{0, 0, 1},
