@@ -304,3 +304,26 @@ table {width: auto !important;}
 	height: 100%;
 	border: none;
 }
+
+.intro_popup {
+	position: absolute;
+	width: 400px;
+	max-width: 80%;
+	height: auto;
+	background-color: var(--layer_4_color);
+	box-shadow: 1px 1px var(--layer_4_shadow) var(--shadow_color);
+	border-radius: 10px;
+	z-index: 50;
+	transition: opacity .4s;
+	transition: left .4s;
+}
+.intro_popup:before {
+	content: "";
+	display: block;
+	position: absolute;
+	left: 20px;
+	top: -15px;
+	border-bottom: 15px solid var(--layer_4_color);
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+}

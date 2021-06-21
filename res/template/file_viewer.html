@@ -309,6 +309,17 @@
 			</form>
 		</template>
 
+		<template id="intro_popup">
+			<h3>Upload your own files here!</h3>
+			<p>
+				On pixeldrain you can share your files with large or small
+				groups of people. The sky is the limit!
+			</p>
+			<button class="intro_popup_close button_highlight" style="float: right; margin: 0 10px 10px 0;">
+				<i class="icon">check</i> Got it!
+			</button>
+		</template>
+
 		<script src="/res/script/Chart.min.js"></script>
 		<script>
 			'use strict';
@@ -326,6 +337,7 @@
 			{{template `DetailsWindow.js`}}
 			{{template `AbuseReportWindow.js`}}
 			{{template `ListNavigator.js`}}
+			{{template `IntroPopup.js`}}
 			{{template `Viewer.js`}}
 
 			{{template `AbuseViewer.js`}}

@@ -91,6 +91,9 @@ function Viewer(type, viewToken, data) {
 	// Register keyboard shortcuts
 	document.addEventListener("keydown", e => { this.keyboardEvent(e) })
 
+	// Show introduction popup
+	new IntroPopup()
+
 	this.initialized = true
 }
 
