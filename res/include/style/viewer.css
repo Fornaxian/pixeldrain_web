@@ -314,8 +314,7 @@ table {width: auto !important;}
 	box-shadow: 1px 1px var(--layer_4_shadow) var(--shadow_color);
 	border-radius: 10px;
 	z-index: 50;
-	transition: opacity .4s;
-	transition: left .4s;
+	transition: opacity .4s, left .5s, top .5s;
 }
 .intro_popup:before {
 	content: "";
