@@ -125,6 +125,13 @@
 	transform-origin: 0 0;
 }
 
+/* Pop-up warning (row 5) */
+.file_viewer > .popup_warn {
+	background-color: var(--layer_1_color);
+	border-top: 1px solid var(--layer_1_color_border);
+	text-align: center;
+}
+
 /* Toolbars */
 .file_viewer > .file_viewer_window > .file_viewer_toolbar {
 	position: absolute;

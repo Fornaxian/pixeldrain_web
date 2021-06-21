@@ -152,6 +152,13 @@
 					</div>
 				{{ end }}
 			</div>
+
+			{{ if and (and .Other.FileAdsEnabled .Other.UserAdsEnabled) (ne .Other.AdPopupType 0) }}
+				<div class="popup_warn">
+					You are viewing a large file ( > 250 MB ). Pop-up ads have been
+					enabled to cover bandwidth cost.
+				</div>
+			{{ end }}
 		</div>
 
 		<template id="tpl_details_popup">
