@@ -208,7 +208,7 @@ func (h hsl) add(hue int, saturation float64, lightness float64) hsl {
 
 var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .8},
-	InputColor:               hsl{242, .42, .3},
+	InputColor:               hsl{242, .45, .35},
 	InputTextColor:           hsl{0, 0, 1},
 	HighlightColor:           hsl{89, .60, .45},
 	HighlightTextColor:       hsl{0, 0, 0},
@@ -217,13 +217,13 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{272, .5, .5},
 	ScrollbarBackgroundColor: hsl{270, .5, .07},
 
-	Layer1Color:  hsl{270, .5, .04},
+	Layer1Color:  hsl{270, .5, .05},
 	Layer1Shadow: 3,
-	Layer2Color:  hsl{270, .5, .07},
+	Layer2Color:  hsl{270, .5, .08},
 	Layer2Shadow: 5,
-	Layer3Color:  hsl{272, .45, .12},
+	Layer3Color:  hsl{272, .55, .14},
 	Layer3Shadow: 7,
-	Layer4Color:  hsl{272, .45, .19},
+	Layer4Color:  hsl{272, .6, .18},
 	Layer4Shadow: 9,
 
 	ShadowColor: hsl{0, 0, 0},
