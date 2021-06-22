@@ -251,7 +251,7 @@ const add_upload_history = id => {
 	height: 1.4em;
 	border-top: 1px solid var(--layer_3_color_border);
 	text-align: center;
-	font-family: 'monospace';
+	font-family: 'monospace', sans-serif;
 	font-size: 0.9em;
 }
 .upload_task > .queue_body > .stats > .stat {

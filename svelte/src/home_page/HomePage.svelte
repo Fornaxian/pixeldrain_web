@@ -10,7 +10,6 @@ import Tumblr from "../icons/Tumblr.svelte"
 // === UPLOAD LOGIC ===
 
 let file_input_field
-
 const file_input_change = (event) => {
 	// Start uploading the files async
 	upload_files(event.target.files)
@@ -18,18 +17,41 @@ const file_input_change = (event) => {
 	// This resets the file input field
 	file_input_field.nodeValue = ""
 }
+let dragging = false
+const drop = (e) => {
+	dragging = false;
+	if (e.dataTransfer && e.dataTransfer.items.length > 0) {
+		e.preventDefault()
+		e.stopPropagation()
+		upload_files(e.dataTransfer.files)
+	}
+}
+const paste = (e) => {
+	if (e.clipboardData.files[0]) {
+		e.preventDefault();
+		e.stopPropagation();
+		upload_files(e.clipboardData.files)
+	}
+}
 
 let active_uploads = 0
 let upload_queue = []
-
 let state = "idle" // idle, uploading, finished
 
 const upload_files = async (files) => {
+	if (files.length === 0) {
+		return
+	}
+
 	// Add files to the queue
 	for (let i = 0; i < files.length; i++) {
+		if (files[i].type === "" && files[i].size === 0) {
+			continue
+		}
+
 		upload_queue.push({
-			file: files.item(i),
-			name: files.item(i).name,
+			file: files[i],
+			name: files[i].name,
 			status: "queued",
 			component: null,
 			id: "",
@@ -50,9 +72,8 @@ const start_upload = () => {
 
 	for (let i = 0; i < upload_queue.length && active_uploads < 3; i++) {
 		if (upload_queue[i].status == "queued") {
-			upload_queue[i].status = "uploading"
 			active_uploads++
-
+			upload_queue[i].status = "uploading"
 			upload_queue[i].component.start()
 		} else if (upload_queue[i].status == "finished") {
 			finished_count++
@@ -265,23 +286,6 @@ const copy_markdown = () => {
 	} else {
 		btn_copy_markdown.classList.add("button_red")
 		btn_copy_markdown.innerHTML = "Copying links failed"
-	}
-}
-
-let dragging = false
-const drop = (e) => {
-	dragging = false;
-	if (e.dataTransfer && e.dataTransfer.files.length > 0) {
-		e.preventDefault()
-		e.stopPropagation()
-		upload_files(e.dataTransfer.files)
-	}
-}
-const paste = (e) => {
-	if (e.clipboardData.files[0]) {
-		e.preventDefault();
-		e.stopPropagation();
-		upload_files(e.clipboardData.files)
 	}
 }
 
