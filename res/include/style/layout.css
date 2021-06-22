@@ -487,6 +487,7 @@ select:disabled , select.disabled {
 	box-shadow: none;
 	transition: none;
 	padding: 4px 5px 4px 5px;
+	cursor: not-allowed;
 }
 
 /* Dropdown list of the select tag */

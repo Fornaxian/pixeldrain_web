@@ -35,6 +35,7 @@ export default [
 	"user_buckets",
 	"user_file_manager",
 	"admin_panel",
+	"home_page",
 ].map((name, index) => ({
 	input: `src/${name}.js`,
 	output: {

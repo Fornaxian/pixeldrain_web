@@ -10,53 +10,6 @@
 			max-width: 800px;
 			margin: 0 auto 50px auto;
 		}
-		.big_button{
-			width: 40%;
-			min-width: 250px;
-			max-width: 400px;
-			margin: 10px !important;
-			border-radius: 5px;
-			font-size: 1.8em;
-		}
-		.instruction_highlight {
-			border-top: 1px solid var(--layer_2_color_border);
-			border-bottom: 1px solid var(--layer_2_color_border);
-			box-sizing: border-box;
-			margin: 1.5em 0;
-			padding: 5px;
-		}
-		.big_number {
-			font-size: 1.5em;
-			font-weight: bold;
-			line-height: 1em;
-			text-align: center;
-			display: inline-block;
-			box-sizing: border-box;
-			background-color: var(--highlight_color);
-			color: var(--highlight_text_color);
-			border-radius: 30px;
-			padding: 0.15em;
-			margin-right: 0.4em;
-			width: 1.4em;
-			height: 1.4em;
-			vertical-align: middle;
-		}
-		.instruction_text {
-			margin: 0.1em;
-			font-size: 1.5em;
-			display: inline;
-			box-sizing: border-box;
-			vertical-align: middle;
-		}
-		.social_button {
-			margin: 5px;
-		}
-		.social_button > img, .social_button > svg {
-			width: 40px;
-			height: 40px;
-			margin: 5px 15px;
-		}
-
 		.feat_table {
 			display: flex;
 			flex-direction: column;
@@ -116,6 +69,10 @@
 
 		{{template `modal.css`}}
 		</style>
+
+		<script>window.api_endpoint = '{{.APIEndpoint}}';</script>
+		<link rel='stylesheet' href='/res/svelte/home_page.css'>
+		<script defer src='/res/svelte/home_page.js'></script>
 	</head>
 	<body>
 		{{template "page_top" .}}
@@ -125,80 +82,9 @@
 			<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header image">
 		</picture>
 		<br/>
-		<div class="page_content" style="padding-top: 0; margin-bottom: 100px;">
-			<div id="instruction_1" class="instruction_highlight" style="margin-top: 0;"><div class="limit_width">
-				<span class="big_number">1</span>
-				<span class="instruction_text">Select files to upload</span>
-				<br/> You can also drop files on this page from your file
-				manager or paste an image from your clipboard
-			</div></div>
-			<input id="file_input_field" type="file" name="file" multiple="multiple"/>
-			<button id="upload_file_button" class="big_button button_highlight">
-				<i class="icon small">cloud_upload</i>
-				<u>U</u>pload Files
-			</button>
-			<button id="upload_text_button" class="big_button button_highlight">
-				<i class="icon small">text_fields</i>
-				Upload <u>T</u>ext
-			</button>
-			<br/>
-			<p>
-				By uploading files to pixeldrain you acknowledge and accept our
-				<a href="/about#content-policy">content policy</a>.
-			<p>
 
-			<div id="instruction_2" class="instruction_highlight">
-				<div class="limit_width">
-					<span class="big_number">2</span><span class="instruction_text">Wait for the files to finish uploading</span>
-				</div>
-			</div>
-			<div id="file_drop_highlight" class="highlight_green" style="display: none;">
-				Gimme gimme gimme!<br/>
-				Drop your files to upload them
-			</div>
-			<div id="uploads_queue"></div>
-
-			<div id="instruction_3" class="instruction_highlight">
-				<div class="limit_width"><span class="big_number">3</span><span class="instruction_text">Share the files</span></div>
-			</div>
-			<div id="instruction_3_after" style="display: none">
-				<div id="navigator_share_button" style="display: inline-block">
-					<button id="btn_social_share" class="social_button">
-						{{template `share.svg` .}}<br/>Share
-					</button>
-				</div>
-				<button id="btn_copy_link" class="social_button" style="display: inline-block">
-					{{template `copy.svg` .}}<br/><span><u>C</u>opy link</span>
-				</button>
-				<button id="btn_open_link" class="social_button" style="display: inline-block">
-					{{template `open_in_new.svg` .}}<br/><span><u>O</u>pen link</span>
-				</button>
-				<div id="social_buttons" style="display: inline-block">
-					<button id="btn_social_email" class="social_button">
-						{{template `email.svg` .}}<br/><u>E</u>-Mail
-					</button>
-					<button id="btn_social_twitter" class="social_button">
-						{{template `twitter.svg` .}}<br/>T<u>w</u>itter
-					</button>
-					<button id="btn_social_facebook" class="social_button">
-						{{template `facebook.svg` .}}<br/><u>F</u>acebook
-					</button>
-					<button id="btn_social_reddit" class="social_button">
-						{{template `reddit.svg` .}}<br/><u>R</u>eddit
-					</button>
-					<button id="btn_social_tumblr" class="social_button">
-						{{template `tumblr.svg` .}}<br/>Tu<u>m</u>blr
-					</button>
-				</div>
-				<br/><br/>
-				<button id="btn_create_list"><i class="icon">list</i> Create <u>l</u>ist with uploaded files</button>
-				<button id="btn_copy_links"><i class="icon">content_copy</i> Copy <u>a</u>ll links to clipboard</button>
-				<button id="btn_copy_markdown"><i class="icon">content_copy</i> Copy mark<u>d</u>own to clipboard</button>
-				<button id="btn_copy_bbcode"><i class="icon">content_copy</i> Copy <u>B</u>BCode to clipboard</button>
-				<br/>
-				<div id="created_lists"></div>
-			</div>
-		</div>
+		<!-- Svelte element -->
+		<div id="uploader" class="page_content" style="padding-top: 0; margin-bottom: 100px;"></div>
 
 		<h1>What is pixeldrain?</h1>
 		<div class="page_content"><div class="limit_width">
@@ -459,11 +345,7 @@
 
 		<script>
 			'use strict';
-			let apiEndpoint = '{{.APIEndpoint}}';
-			{{template "util.js"}}
 			{{template "Modal.js"}}
-			{{template "UploadManager.js"}}
-			{{template "homepage.js"}}
 
 			function explainFileExpiry() {
 				let m = new Modal(

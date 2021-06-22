@@ -36,12 +36,12 @@ const minute = second*60
 const hour = minute*60
 const day = hour*24
 
-export const formatDuration = (ms) => {
+export const formatDuration = (ms, decimals) => {
 	let res = ""
 	if (ms >= day)    { res += Math.floor(ms/day) + "d " }
 	if (ms >= hour)   { res += Math.floor((ms%day)/hour) + "h " }
 	if (ms >= minute) { res += Math.floor((ms%hour)/minute) + "m " }
-	return res + ((ms%minute)/second).toFixed(3) + "s"
+	return res + ((ms%minute)/second).toFixed(decimals) + "s"
 }
 
 export const formatDate = (date, hours, minutes, seconds) => {
