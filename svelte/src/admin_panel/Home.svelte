@@ -184,7 +184,7 @@ onDestroy(() => {
 					<td>{peer.load_1_min}</td>
 					<td>{peer.load_5_min}</td>
 					<td>{peer.load_15_min}</td>
-					<td>{formatDuration(peer.latency)}</td>
+					<td>{formatDuration(peer.latency, 3)}</td>
 					<td>{formatDataVolume(peer.free_space, 3)}</td>
 					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
 				</tr>
@@ -251,8 +251,8 @@ onDestroy(() => {
 					<tr>
 						<td>{q.query_name}</td>
 						<td>{q.calls}</td>
-						<td>{formatDuration(q.average_duration)}</td>
-						<td>{formatDuration(q.total_duration)}</td>
+						<td>{formatDuration(q.average_duration, 3)}</td>
+						<td>{formatDuration(q.total_duration, 3)}</td>
 						<td>
 							{#each q.callers as caller}
 								{caller.count}x {caller.name}<br/>

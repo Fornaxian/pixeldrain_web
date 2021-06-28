@@ -6,6 +6,7 @@ import Facebook from "../icons/Facebook.svelte"
 import Reddit from "../icons/Reddit.svelte"
 import Twitter from "../icons/Twitter.svelte"
 import Tumblr from "../icons/Tumblr.svelte"
+import { formatDataVolume, formatDuration } from "../util/Formatting.svelte";
 
 // === UPLOAD LOGIC ===
 
@@ -55,6 +56,9 @@ const upload_files = async (files) => {
 			status: "queued",
 			component: null,
 			id: "",
+			total_size: files[i].size,
+			loaded_size: 0,
+			transfer_rate: 0,
 			on_finished: finish_upload,
 		})
 	}
@@ -82,15 +86,63 @@ const start_upload = () => {
 
 	if (active_uploads === 0 && finished_count != 0) {
 		state = "finished"
+
+		if (stats_interval !== null) {
+			clearInterval(stats_interval)
+			stats_interval = null
+			stats_finished()
+		}
+
 		uploads_finished()
 	} else {
 		state = "uploading"
+
+		if (stats_interval === null) {
+			stats_interval = setInterval(stats_update, 50)
+		}
 	}
 }
 
 const finish_upload = (file) => {
 	active_uploads--
 	start_upload()
+}
+
+let stats_interval = null
+let progress_bar_outer
+let progress_bar_inner
+let start_time = 0
+let total_progress = 0
+let total_size = 0
+let total_loaded = 0
+let total_rate = 0
+let remaining_time = 0
+const stats_update = () => {
+	if (start_time === 0) {
+		start_time = new Date().getTime()
+	}
+
+	total_size = 0
+	total_loaded = 0
+	total_rate = 0
+	for (let i = 0; i < upload_queue.length; i++) {
+		total_size += upload_queue[i].total_size
+		total_loaded += upload_queue[i].loaded_size
+		total_rate += upload_queue[i].transfer_rate
+	}
+
+	total_progress = total_loaded / total_size
+
+	let elapsed_time = new Date().getTime() - start_time
+	remaining_time = (elapsed_time/total_progress) - elapsed_time
+
+	progress_bar_inner.style.width = (total_progress * 100) + "%"
+}
+
+const stats_finished = () => {
+	start_time = 0
+	total_loaded = total_size
+	total_rate = 0
 }
 
 // === SHARING BUTTONS ===
@@ -350,11 +402,21 @@ const keydown = (e) => {
 		<a href="/about#content-policy">content policy</a>.
 	<p>
 
-	<div class="instruction">
+	<div class="instruction" style="margin-bottom: 0;">
 		<div class="limit_width">
 			<span class="big_number">2</span>
 			<span class="instruction_text">Wait for the files to finish uploading</span>
+			<br/>
+			<div class="stats_box">
+				<div>Size: {formatDataVolume(total_size, 3)}</div>
+				<div>Progress: {(total_progress*100).toPrecision(3)}%</div>
+				<div>ETA {formatDuration(remaining_time, 0)}</div>
+				<div>Rate: {formatDataVolume(total_rate, 3)}/s</div>
+			</div>
 		</div>
+	</div>
+	<div bind:this={progress_bar_outer} class="progress_bar_outer" style="margin-bottom: 1.5em;">
+		<div bind:this={progress_bar_inner} class="progress_bar_inner"></div>
 	</div>
 
 	<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
@@ -472,6 +534,27 @@ const keydown = (e) => {
 	display: inline;
 	box-sizing: border-box;
 	vertical-align: middle;
+}
+.stats_box {
+	display: inline-grid;
+	grid-template-columns: 25% 25% 25% 25%;
+	width: 100%;
+	text-align: center;
+	font-family: sans-serif, monospace;
+}
+@media (max-width: 1000px) {
+	.stats_box {
+		grid-template-columns: 50% 50%;
+	}
+}
+.progress_bar_outer {
+	width: 100%;
+	height: 3px;
+}
+.progress_bar_inner {
+	background-color: var(--highlight_color);
+	height: 100%;
+	width: 0;
 }
 
 .social_buttons {

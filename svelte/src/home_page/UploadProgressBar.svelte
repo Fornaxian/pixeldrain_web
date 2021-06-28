@@ -3,44 +3,49 @@ import { domain_url } from "../util/Util.svelte"
 import { formatDataVolume, formatDuration} from "../util/Formatting.svelte"
 
 export let job = {}
-let loaded_size
-let total_size
 let file_button
 let tries = 0
 let start_time = 0
 let remaining_time = 0
 
+let statsInterval = null
+let progress = 0
 let last_progress_time = 0
 let last_loaded_size = 0
-let transfer_rate = 0
 const on_progress = () => {
-	let now = new Date().getTime()
+	if (job.loaded_size === 0 || job.total_size === 0) {
+		return
+	}
 
-	let prog = loaded_size / total_size
+	let now = new Date().getTime()
+	progress = job.loaded_size / job.total_size
 	let elapsed_time = now - start_time
-	remaining_time = (elapsed_time/prog) - elapsed_time
+	remaining_time = (elapsed_time/progress) - elapsed_time
 
 	// Calculate transfer rate
 	if (last_progress_time != 0) {
-		let new_rate = (1000 / (now - last_progress_time)) * (loaded_size - last_loaded_size)
+		let new_rate = (1000 / (now - last_progress_time)) * (job.loaded_size - last_loaded_size)
 
 		// Apply smoothing by mixing it with the previous number 10:1
-		transfer_rate = (transfer_rate * 0.9) + (new_rate * 0.1)
+		job.transfer_rate = Math.floor((job.transfer_rate * 0.9) + (new_rate * 0.1))
 	}
 
 	last_progress_time = now
-	last_loaded_size = loaded_size
+	last_loaded_size = job.loaded_size
 
 	file_button.style.background = 'linear-gradient(' +
 		'to right, ' +
 		'var(--layer_3_color) 0%, ' +
-		'var(--highlight_color) ' + (prog * 100) + '%, ' +
-		'var(--layer_3_color) ' + ((prog * 100) + 1) + '%)'
+		'var(--highlight_color) ' + (progress * 100) + '%, ' +
+		'var(--layer_3_color) ' + ((progress * 100) + 1) + '%)'
 }
 
 let href = null
 let target = null
 const on_success = (resp) => {
+	clearInterval(statsInterval)
+	job.transfer_rate = 0
+
 	job.id = resp.id
 	job.status = "finished"
 	job.on_finished(job)
@@ -56,6 +61,10 @@ const on_success = (resp) => {
 let error_id = ""
 let error_reason = ""
 const on_failure = (status, message) => {
+	clearInterval(statsInterval)
+	job.transfer_rate = 0
+	job.loaded_size = job.total_size
+
 	error_id = status
 	error_reason = message
 	job.status = "error"
@@ -67,6 +76,7 @@ const on_failure = (status, message) => {
 
 export const start = () => {
 	start_time = new Date().getTime()
+	statsInterval = setInterval(on_progress, 50) // 20 FPS, plenty for stats
 
 	let form = new FormData();
 	form.append('file', job.file, job.name);
@@ -77,9 +87,8 @@ export const start = () => {
 
 	xhr.upload.addEventListener("progress", evt => {
 		if (evt.lengthComputable) {
-			loaded_size = evt.loaded
-			total_size = evt.total
-			on_progress()
+			job.loaded_size = evt.loaded
+			job.total_size = evt.total
 		}
 	});
 
@@ -171,13 +180,13 @@ const add_upload_history = id => {
 				Queued...
 			{:else if job.status === "uploading"}
 				<div class="stat">
-					{((loaded_size/total_size)*100).toPrecision(3)}%
+					{(progress*100).toPrecision(3)}%
 				</div>
 				<div class="stat">
 					ETA {formatDuration(remaining_time, 0)}
 				</div>
 				<div class="stat">
-					{formatDataVolume(transfer_rate, 3)}/s
+					{formatDataVolume(job.transfer_rate, 3)}/s
 				</div>
 			{:else if job.status === "finished"}
 				<span class="file_link">
@@ -243,6 +252,7 @@ const add_upload_history = id => {
 }
 .upload_task > .queue_body > .title {
 	flex: 1 1 auto;
+	overflow: hidden;
 }
 .upload_task > .queue_body > .stats {
 	flex: 0 0 auto;
@@ -251,7 +261,7 @@ const add_upload_history = id => {
 	height: 1.4em;
 	border-top: 1px solid var(--layer_3_color_border);
 	text-align: center;
-	font-family: 'monospace', sans-serif;
+	font-family: sans-serif, monospace;
 	font-size: 0.9em;
 }
 .upload_task > .queue_body > .stats > .stat {
