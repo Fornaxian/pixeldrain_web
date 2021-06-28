@@ -217,13 +217,13 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{272, .5, .5},
 	ScrollbarBackgroundColor: hsl{270, .5, .07},
 
-	Layer1Color:  hsl{270, .5, .05},
+	Layer1Color:  hsl{270, .55, .07},
 	Layer1Shadow: 3,
-	Layer2Color:  hsl{270, .5, .08},
+	Layer2Color:  hsl{270, .55, .11},
 	Layer2Shadow: 5,
-	Layer3Color:  hsl{272, .55, .14},
+	Layer3Color:  hsl{272, .55, .15},
 	Layer3Shadow: 7,
-	Layer4Color:  hsl{272, .6, .18},
+	Layer4Color:  hsl{272, .55, .2},
 	Layer4Shadow: 9,
 
 	ShadowColor: hsl{0, 0, 0},

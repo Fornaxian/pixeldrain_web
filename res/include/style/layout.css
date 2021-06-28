@@ -51,8 +51,9 @@ a > svg { vertical-align: middle; }
 html, body { overflow-x: hidden; }
 body{
 	background-color: #111111; /* Fallback */
-	background-color: var(--layer_2_color);
+	background-color: var(--layer_1_color);
 	background-repeat: repeat;
+	background-blend-mode: darken;
 	margin: 0;
 	font-family: system-ui, sans-serif;
 	font-size: 17px;
@@ -206,12 +207,14 @@ body, .checkers {
 .highlight_dark,
 .highlight_middle,
 .highlight_light,
+.highlight_lighter,
 .highlight_green,
 .highlight_blue,
 .highlight_red,
 .highlight_1,
 .highlight_2,
-.highlight_3{
+.highlight_3,
+.highlight_4 {
 	position: relative;
 	width: auto;
 	height: auto;
@@ -231,6 +234,10 @@ body, .checkers {
 .highlight_light, .highlight_3 {
 	background-color: var(--layer_3_color);
 	box-shadow: 1px 1px var(--layer_3_shadow) 0 var(--shadow_color);
+}
+.highlight_lighter, .highlight_4 {
+	background-color: var(--layer_4_color);
+	box-shadow: 1px 1px var(--layer_4_shadow) 0 var(--shadow_color);
 }
 .highlight_green {
 	background-color: rgba(0, 255, 0, 0.05);
