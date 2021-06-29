@@ -74,7 +74,7 @@ func New(
 	wc.templates.ParseTemplates(false)
 
 	if wc.hostname, err = os.Hostname(); err != nil {
-		panic(fmt.Errorf("Could not get hostname: %s", err))
+		panic(fmt.Errorf("could not get hostname: %s", err))
 	}
 
 	// Serve static files

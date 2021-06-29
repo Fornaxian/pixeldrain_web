@@ -174,11 +174,12 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 		} else if strings.HasSuffix(path, ".gif") {
 			file = []byte("data:image/gif;base64," + base64.StdEncoding.EncodeToString(file))
 		}
+
 		// Wrap the resources in a template definition
 		if _, err = tpl.Parse(
 			`{{define "` + f.Name() + `"}}` + string(file) + `{{end}}`,
 		); err != nil {
-			return err
+			return fmt.Errorf("failed to parse '%s': %w", path, err)
 		}
 
 		if !silent {
