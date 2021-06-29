@@ -67,12 +67,12 @@
 		.feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
 		.feat_table > div > div.round_bl { border-bottom-left-radius:  0.5em; }
 
-		{{template `modal.css`}}
+		{{ template `modal.css` }}
 		</style>
 
 		<script>window.api_endpoint = '{{.APIEndpoint}}';</script>
-		<link rel='stylesheet' href='/res/svelte/home_page.css'>
-		<script defer src='/res/svelte/home_page.js'></script>
+		<link rel='stylesheet' href='/res/svelte/home_page.css?v5'>
+		<script defer src='/res/svelte/home_page.js?v5'></script>
 	</head>
 	<body>
 		{{template "page_top" .}}

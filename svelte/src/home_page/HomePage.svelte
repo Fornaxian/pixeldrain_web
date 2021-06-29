@@ -58,7 +58,6 @@ const upload_files = async (files) => {
 			id: "",
 			total_size: files[i].size,
 			loaded_size: 0,
-			transfer_rate: 0,
 			on_finished: finish_upload,
 		})
 	}
@@ -98,7 +97,7 @@ const start_upload = () => {
 		state = "uploading"
 
 		if (stats_interval === null) {
-			stats_interval = setInterval(stats_update, 50)
+			stats_interval = setInterval(stats_update, stats_interval_ms)
 		}
 	}
 }
@@ -109,12 +108,14 @@ const finish_upload = (file) => {
 }
 
 let stats_interval = null
+let stats_interval_ms = 500
 let progress_bar_outer
 let progress_bar_inner
 let start_time = 0
 let total_progress = 0
 let total_size = 0
 let total_loaded = 0
+let last_total_loaded = 0
 let total_rate = 0
 let remaining_time = 0
 const stats_update = () => {
@@ -122,26 +123,31 @@ const stats_update = () => {
 		start_time = new Date().getTime()
 	}
 
+	// Get total size of upload queue and size of finished uploads
 	total_size = 0
 	total_loaded = 0
-	total_rate = 0
 	for (let i = 0; i < upload_queue.length; i++) {
 		total_size += upload_queue[i].total_size
 		total_loaded += upload_queue[i].loaded_size
-		total_rate += upload_queue[i].transfer_rate
 	}
 
 	total_progress = total_loaded / total_size
 
+	// Calculate ETA by estimating the total time and subtracting the elapsed time
 	let elapsed_time = new Date().getTime() - start_time
 	remaining_time = (elapsed_time/total_progress) - elapsed_time
 
+	// Calculate the rate by comparing the current progress with the last iteration
+	total_rate = (1000 / stats_interval_ms) * (total_loaded - last_total_loaded)
+	last_total_loaded = total_loaded
+
 	progress_bar_inner.style.width = (total_progress * 100) + "%"
 }
-
 const stats_finished = () => {
 	start_time = 0
 	total_loaded = total_size
+	total_progress = 1
+	progress_bar_inner.style.width = "100%"
 	total_rate = 0
 }
 
@@ -408,10 +414,10 @@ const keydown = (e) => {
 			<span class="instruction_text">Wait for the files to finish uploading</span>
 			<br/>
 			<div class="stats_box">
-				<div>Size: {formatDataVolume(total_size, 3)}</div>
-				<div>Progress: {(total_progress*100).toPrecision(3)}%</div>
+				<div>Size {formatDataVolume(total_size, 3)}</div>
+				<div>Progress {(total_progress*100).toPrecision(3)}%</div>
 				<div>ETA {formatDuration(remaining_time, 0)}</div>
-				<div>Rate: {formatDataVolume(total_rate, 3)}/s</div>
+				<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
 			</div>
 		</div>
 	</div>
@@ -555,6 +561,8 @@ const keydown = (e) => {
 	background-color: var(--highlight_color);
 	height: 100%;
 	width: 0;
+	transition: width 0.5s;
+	transition-timing-function: linear;
 }
 
 .social_buttons {

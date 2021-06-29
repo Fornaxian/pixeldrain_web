@@ -4,47 +4,45 @@ import { formatDataVolume, formatDuration} from "../util/Formatting.svelte"
 
 export let job = {}
 let file_button
+let progress_bar
 let tries = 0
 let start_time = 0
 let remaining_time = 0
 
-let statsInterval = null
+let stats_interval = null
+let stats_interval_ms = 300
 let progress = 0
-let last_progress_time = 0
 let last_loaded_size = 0
+let transfer_rate = 0
 const on_progress = () => {
 	if (job.loaded_size === 0 || job.total_size === 0) {
 		return
 	}
 
-	let now = new Date().getTime()
 	progress = job.loaded_size / job.total_size
-	let elapsed_time = now - start_time
+	let elapsed_time = new Date().getTime() - start_time
 	remaining_time = (elapsed_time/progress) - elapsed_time
 
-	// Calculate transfer rate
-	if (last_progress_time != 0) {
-		let new_rate = (1000 / (now - last_progress_time)) * (job.loaded_size - last_loaded_size)
+	// Calculate transfer rate, apply smoothing by mixing it with the previous
+	// rate ten to one
+	transfer_rate = Math.floor(
+		(transfer_rate * 0.9) +
+		(((1000 / stats_interval_ms) * (job.loaded_size - last_loaded_size)) * 0.1)
+	)
 
-		// Apply smoothing by mixing it with the previous number 10:1
-		job.transfer_rate = Math.floor((job.transfer_rate * 0.9) + (new_rate * 0.1))
-	}
-
-	last_progress_time = now
 	last_loaded_size = job.loaded_size
 
-	file_button.style.background = 'linear-gradient(' +
-		'to right, ' +
-		'var(--layer_3_color) 0%, ' +
-		'var(--highlight_color) ' + (progress * 100) + '%, ' +
-		'var(--layer_3_color) ' + ((progress * 100) + 1) + '%)'
+	progress_bar.style.width = (progress * 100) + "%"
 }
 
 let href = null
 let target = null
 const on_success = (resp) => {
-	clearInterval(statsInterval)
-	job.transfer_rate = 0
+	clearInterval(stats_interval)
+	stats_interval = null
+	transfer_rate = 0
+	job.loaded_size = job.total_size
+	job.file = null // Delete reference to file to free memory
 
 	job.id = resp.id
 	job.status = "finished"
@@ -56,27 +54,31 @@ const on_success = (resp) => {
 	target = "_blank"
 
 	file_button.style.background = 'var(--layer_3_color)'
+	progress_bar.style.width = "100%"
 }
 
 let error_id = ""
 let error_reason = ""
 const on_failure = (status, message) => {
-	clearInterval(statsInterval)
-	job.transfer_rate = 0
+	clearInterval(stats_interval)
+	stats_interval = null
+	transfer_rate = 0
 	job.loaded_size = job.total_size
+	job.file = null // Delete reference to file to free memory
 
 	error_id = status
 	error_reason = message
 	job.status = "error"
 	file_button.style.background = 'var(--danger_color)'
 	file_button.style.color = 'var(--highlight_text_color)'
+	progress_bar.style.width = "0"
 
 	job.on_finished(job)
 }
 
 export const start = () => {
 	start_time = new Date().getTime()
-	statsInterval = setInterval(on_progress, 50) // 20 FPS, plenty for stats
+	stats_interval = setInterval(on_progress, stats_interval_ms)
 
 	let form = new FormData();
 	form.append('file', job.file, job.name);
@@ -156,46 +158,51 @@ const add_upload_history = id => {
 </script>
 
 <a bind:this={file_button} class="upload_task" {href} {target}>
-	<div class="thumbnail">
-		{#if job.status === "queued"}
-			<i class="icon">cloud_queue</i>
-		{:else if job.status === "uploading"}
-			<i class="icon">cloud_upload</i>
-		{:else if job.status === "finished"}
-			<img src="/api/file/{job.id}/thumbnail" alt="file thumbnail" />
-		{:else if job.status === "error"}
-			<i class="icon">error</i>
-		{/if}
-	</div>
-	<div class="queue_body">
-		<div class="title">
-			{#if job.status === "error"}
-				{error_reason}
-			{:else}
-				{job.name}
-			{/if}
-		</div>
-		<div class="stats">
+	<div class="top_half">
+		<div class="thumbnail">
 			{#if job.status === "queued"}
-				Queued...
+				<i class="icon">cloud_queue</i>
 			{:else if job.status === "uploading"}
-				<div class="stat">
-					{(progress*100).toPrecision(3)}%
-				</div>
-				<div class="stat">
-					ETA {formatDuration(remaining_time, 0)}
-				</div>
-				<div class="stat">
-					{formatDataVolume(job.transfer_rate, 3)}/s
-				</div>
+				<i class="icon">cloud_upload</i>
 			{:else if job.status === "finished"}
-				<span class="file_link">
-					{domain_url() + "/u/" + job.id}
-				</span>
+				<img src="/api/file/{job.id}/thumbnail" alt="file thumbnail" />
 			{:else if job.status === "error"}
-				{error_id}
+				<i class="icon">error</i>
 			{/if}
 		</div>
+		<div class="queue_body">
+			<div class="title">
+				{#if job.status === "error"}
+					{error_reason}
+				{:else}
+					{job.name}
+				{/if}
+			</div>
+			<div class="stats">
+				{#if job.status === "queued"}
+					Queued...
+				{:else if job.status === "uploading"}
+					<div class="stat">
+						{(progress*100).toPrecision(3)}%
+					</div>
+					<div class="stat">
+						ETA {formatDuration(remaining_time, 0)}
+					</div>
+					<div class="stat">
+						{formatDataVolume(transfer_rate, 3)}/s
+					</div>
+				{:else if job.status === "finished"}
+					<span class="file_link">
+						{domain_url() + "/u/" + job.id}
+					</span>
+				{:else if job.status === "error"}
+					{error_id}
+				{/if}
+			</div>
+		</div>
+	</div>
+	<div class="progress">
+		<div bind:this={progress_bar} class="progress_bar"></div>
 	</div>
 </a>
 
@@ -204,9 +211,9 @@ const add_upload_history = id => {
 .upload_task{
 	position: relative;
 	box-sizing: border-box;
-	width: 420px;
-	max-width: 90%;
-	height: 3.8em;
+	width: 440px;
+	max-width: 95%;
+	height: 4em;
 	margin: 10px;
 	padding: 0;
 	overflow: hidden;
@@ -218,7 +225,7 @@ const add_upload_history = id => {
 	text-align: left;
 	line-height: 1.2em;
 	display: inline-flex;
-	flex-direction: row;
+	flex-direction: column;
 	transition: box-shadow 0.3s, opacity 2s;
 	white-space: normal;
 	text-overflow: ellipsis;
@@ -226,12 +233,18 @@ const add_upload_history = id => {
 	vertical-align: top;
 	cursor: pointer;
 }
+.top_half {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: row;
+	overflow: hidden;
+}
 .upload_task:hover {
 	box-shadow: 0 0 2px 2px var(--highlight_color), inset 0 0 1px 1px var(--highlight_color);
 	text-decoration: none;
 }
 
-.upload_task > .thumbnail {
+.thumbnail {
 	display: flex;
 	flex: 0 0 auto;
 	width: 3.8em;
@@ -239,22 +252,22 @@ const add_upload_history = id => {
 	align-items: center;
 	justify-content: center;
 }
-.upload_task > .thumbnail > img {
+.thumbnail > img {
 	width: 100%;
 }
-.upload_task > .thumbnail > i {
+.thumbnail > i {
 	font-size: 3em;
 }
-.upload_task > .queue_body {
+.queue_body {
 	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
 }
-.upload_task > .queue_body > .title {
+.queue_body > .title {
 	flex: 1 1 auto;
 	overflow: hidden;
 }
-.upload_task > .queue_body > .stats {
+.queue_body > .stats {
 	flex: 0 0 auto;
 	display: flex;
 	flex-direction: row;
@@ -264,11 +277,21 @@ const add_upload_history = id => {
 	font-family: sans-serif, monospace;
 	font-size: 0.9em;
 }
-.upload_task > .queue_body > .stats > .stat {
+.queue_body > .stats > .stat {
 	flex: 0 1 100%;
 }
-
 .file_link{
 	color: var(--highlight_color);
+}
+.progress {
+	flex: 0 0 auto;
+	height: 2px;
+}
+.progress_bar {
+	background-color: var(--highlight_color);
+	height: 100%;
+	width: 0;
+	transition: width 0.3s;
+	transition-timing-function: linear;
 }
 </style>
