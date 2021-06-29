@@ -10,7 +10,7 @@ let start_time = 0
 let remaining_time = 0
 
 let stats_interval = null
-let stats_interval_ms = 300
+let stats_interval_ms = 250
 let progress = 0
 let last_loaded_size = 0
 let transfer_rate = 0
@@ -55,6 +55,7 @@ const on_success = (resp) => {
 
 	file_button.style.background = 'var(--layer_3_color)'
 	progress_bar.style.width = "100%"
+	progress_bar.style.opacity = "0"
 }
 
 let error_id = ""
@@ -247,13 +248,14 @@ const add_upload_history = id => {
 .thumbnail {
 	display: flex;
 	flex: 0 0 auto;
-	width: 3.8em;
+	width: 4em;
 	margin-right: 4px;
 	align-items: center;
 	justify-content: center;
 }
 .thumbnail > img {
-	width: 100%;
+	width: 90%;
+	border-radius: 4px;
 }
 .thumbnail > i {
 	font-size: 3em;
@@ -291,7 +293,7 @@ const add_upload_history = id => {
 	background-color: var(--highlight_color);
 	height: 100%;
 	width: 0;
-	transition: width 0.3s;
-	transition-timing-function: linear;
+	transition: width 0.25s, opacity 3s;
+	transition-timing-function: linear, ease;
 }
 </style>
