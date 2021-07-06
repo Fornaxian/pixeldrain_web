@@ -53,7 +53,7 @@ body{
 	background-color: #111111; /* Fallback */
 	background-color: var(--layer_1_color);
 	background-repeat: repeat;
-	background-blend-mode: darken;
+	background-blend-mode: luminosity;
 	margin: 0;
 	font-family: system-ui, sans-serif;
 	font-size: 17px;

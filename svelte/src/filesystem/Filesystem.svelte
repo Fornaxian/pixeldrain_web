@@ -276,7 +276,7 @@ const share = () => {
 			<i class="icon">menu</i>
 		</button>
 		<a href="/" id="button_home" class="button button_home">
-			<PixeldrainLogo style="hieght: 1.6em; width: 1.6em; margin: 0 0.2em 0 0; color: currentColor;"></PixeldrainLogo>
+			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 0.2em 0 0; color: currentColor;"></PixeldrainLogo>
 		</a>
 		<div class="file_viewer_headerbar_title">
 			{#each state.parents as parent}

@@ -107,7 +107,16 @@ export const start = () => {
 		} else if (xhr.status >= 400) {
 			// Request failed
 			console.log("Upload error. status: " + xhr.status + " response: " + xhr.response);
-			let resp = JSON.parse(xhr.response);
+
+			let resp = {}
+			if (xhr.status === 429) {
+				resp = {
+					value: "too_many_requests",
+					message: "Too many requests. Please wait a few seconds",
+				}
+			} else {
+				resp = JSON.parse(xhr.response)
+			}
 
 			if (resp.value == "file_too_large" || resp.value == "ip_banned" || tries === 3) {
 				// Permanent failure
