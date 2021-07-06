@@ -1,12 +1,16 @@
 <script>
 import { onMount } from "svelte";
 import { formatDataVolume } from "../util/Formatting.svelte";
+import Modal from "../util/Modal.svelte";
 import Spinner from "../util/Spinner.svelte";
 import DirectoryElement from "./DirectoryElement.svelte"
 
 let loading = true
+let contentType = "" // files or lists
 let inputSearch
 let directoryElement
+let help_modal
+let help_modal_visible = false
 
 let getUserFiles = () => {
 	loading = true
@@ -19,6 +23,7 @@ let getUserFiles = () => {
 
 		for (let i in resp.files) {
 			directoryElement.addFile(
+				resp.files[i].id,
 				window.api_endpoint + "/file/" + resp.files[i].id + "/thumbnail?width=32&height=32",
 				resp.files[i].name,
 				"/u/" + resp.files[i].id,
@@ -48,6 +53,7 @@ let getUserLists = () => {
 
 		for (let i in resp.lists) {
 			directoryElement.addFile(
+				resp.lists[i].id,
 				window.api_endpoint + "/list/" + resp.lists[i].id + "/thumbnail?width=32&height=32",
 				resp.lists[i].title,
 				"/l/" + resp.lists[i].id,
@@ -69,8 +75,8 @@ let getUserLists = () => {
 const searchHandler = (e) => {
 	if (e.keyCode === 27) { // Escape
 		e.preventDefault()
+		inputSearch.value = ""
 		inputSearch.blur()
-		return
 	} else if (e.keyCode === 13) { // Enter
 		e.preventDefault()
 		directoryElement.searchSubmit()
@@ -81,25 +87,17 @@ const searchHandler = (e) => {
 	})
 }
 
-let keyboardEvent = (e) => {
-	console.log("Pressed: " + e.keyCode)
-
-	// CTRL + F or "/" opens the search bar
-	if (e.ctrlKey && e.keyCode === 70 || !e.ctrlKey && e.keyCode === 191) {
-		e.preventDefault()
-		inputSearch.focus()
-	}
-}
-
 let initialized = false
 let hashChange = () => {
 	if (!initialized) {
 		return
 	}
 	if (window.location.hash === "#lists") {
+		contentType = "lists"
 		document.title = "My Lists"
 		getUserLists()
 	} else {
+		contentType = "files"
 		document.title = "My Files"
 		getUserFiles()
 	}
@@ -111,6 +109,124 @@ const toggleSelecting = () => {
 	directoryElement.setSelectionMode(selecting)
 }
 
+const bulkDelete = async () => {
+	let selected = directoryElement.getSelectedFiles()
+
+	if (selected.length === 0) {
+		alert("You have not selected any files")
+		return
+	}
+
+	if (contentType === "lists") {
+		if (!confirm(
+			"You are about to delete "+selected.length+" lists. "+
+			"This is not reversible!\n"+
+			"Are you sure?"
+		)){ return }
+	} else {
+		if (!confirm(
+			"You are about to delete "+selected.length+" files. "+
+			"This is not reversible!\n"+
+			"Are you sure?"
+		)){ return }
+	}
+
+	loading = true
+
+	let endpoint = window.api_endpoint+"/file/"
+	if (contentType === "lists") {
+		endpoint = window.api_endpoint+"/list/"
+	}
+
+	for (let i in selected) {
+		try {
+			const resp = await fetch(
+				endpoint+encodeURIComponent(selected[i].id),
+				{ method: "DELETE" }
+			);
+			if(resp.status >= 400) {
+				throw new Error(resp.text())
+			}
+		} catch (err) {
+			alert("Delete failed: "+err)
+		}
+	}
+
+	hashChange()
+}
+
+function createList() {
+	let selected = directoryElement.getSelectedFiles()
+
+	if (selected.length === 0) {
+		alert("You have not selected any files")
+		return
+	}
+
+	let title = prompt(
+		"You are creating a list containing " + selected.length + " files.\n"
+		+ "What do you want to call it?", "My New Album"
+	)
+	if (title === null) {
+		return
+	}
+
+	let files = selected.reduce(
+		(acc, curr) => {
+			acc.push({"id": curr.id})
+			return acc
+		},
+		[],
+	)
+
+	fetch(
+		window.api_endpoint+"/list",
+		{
+			method: "POST",
+			headers: { "Content-Type": "application/json; charset=UTF-8" },
+			body: JSON.stringify({
+				"title": title,
+				"files": files
+			})
+		}
+	).then(resp => {
+		if (!resp.ok) {
+			return Promise.reject("HTTP error: " + resp.status)
+		}
+		return resp.json()
+	}).then(resp => {
+		window.open('/l/' + resp.id, '_blank')
+	}).catch(err => {
+		alert("Failed to create list. Server says this:\n"+err)
+	})
+}
+
+const keydown = (e) => {
+	if (e.ctrlKey && e.key === "f" || !e.ctrlKey && e.keyCode === 191) {
+		e.preventDefault()
+		inputSearch.focus()
+	}
+
+	if (e.ctrlKey || e.altKey || e.metaKey) {
+		return // prevent custom shortcuts from interfering with system shortcuts
+	}
+	if (document.activeElement.type && document.activeElement.type === "text") {
+		return // Prevent shortcuts from interfering with input fields
+	}
+
+
+	if (e.key === "i") {
+		help_modal.toggle()
+	} else if (e.key === "/") {
+		inputSearch.focus()
+	} else {
+		return
+	}
+
+	// This will only be run if a custom shortcut was triggered
+	e.preventDefault()
+}
+
 onMount(() => {
 	initialized = true
 	hashChange()
@@ -118,7 +234,7 @@ onMount(() => {
 
 </script>
 
-<svelte:window on:keydown={keyboardEvent} on:hashchange={hashChange} />
+<svelte:window on:keydown={keydown} on:hashchange={hashChange} />
 
 <div id="file_manager" class="file_manager">
 	<div id="nav_bar" class="nav_bar highlight_1">
@@ -126,17 +242,21 @@ onMount(() => {
 		<button on:click={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
 			<i class="icon">select_all</i> Select
 		</button>
-		<div class="spacer"></div>
 		<input bind:this={inputSearch} on:keyup={searchHandler} id="input_search" class="input_search" type="text" placeholder="press / to search"/>
-		<div class="spacer"></div>
-		<button on:click={hashChange} id="btn_reload"><i class="icon">refresh</i></button>
+		<button on:click={() => help_modal.toggle()} class:button_highlight={help_modal_visible}>
+			<i class="icon">info</i>
+		</button>
+		<button on:click={hashChange} id="btn_reload">
+			<i class="icon">refresh</i>
+		</button>
 	</div>
 	{#if selecting}
 		<div class="nav_bar highlight_3">
-			Buttons to make a list and bulk delete files will show up here soon. Stay tuned ;-)
-			<!-- <button ><i class="icon">list</i> Make list</button>
-			<div class="fill"></div>
-			<button class="button_red"><i class="icon">delete</i> Delete</button> -->
+			<!-- Buttons to make a list and bulk delete files will show up here soon. Stay tuned ;-) -->
+			{#if contentType === "files"}
+				<button on:click={createList}><i class="icon">list</i> Make list</button>
+			{/if}
+			<button on:click={bulkDelete}><i class="icon">delete</i> Delete</button>
 		</div>
 	{/if}
 
@@ -146,6 +266,37 @@ onMount(() => {
 	</div>
 	{/if}
 	<DirectoryElement bind:this={directoryElement}></DirectoryElement>
+
+	<Modal
+		bind:this={help_modal}
+		title="File manager help"
+		width="600px"
+		on:shown={() => help_modal_visible = true}
+		on:hidden={() => help_modal_visible = false}
+	>
+		<p>
+			In the file manager you can see the files you have uploaded and the
+			lists you have created.
+		</p>
+		<h3>Searching</h3>
+		<p>
+			By clicking the search bar or pressing the / button you can search
+			through your files or lists. Only the entries matching your search
+			term will be shown. Pressing Enter will open the first search result
+			in a new tab. Pressing Escape will cancel the search and all files
+			will be shown again.
+		</p>
+		<h3>Bulk actions</h3>
+		<p>
+			With the Select button you can click files to select them. Once you
+			have made a selection you can use the buttons on the toolbar to
+			either create a list containing the selected files or delete them.
+		</p>
+		<p>
+			Holding Shift while selecting a file will select all the files
+			between the file you last selected and the file you just clicked.
+		</p>
+	</Modal>
 </div>
 
 <style>
@@ -174,15 +325,9 @@ is collapsed */
 	display: flex;
 	flex-direction: row;
 }
-#nav_bar > button {
+.nav_bar > button {
 	flex-shrink: 0;
 }
-.spacer {
-	width: 8px;
-}
-/* .fill {
-	flex: 1 1 auto;
-} */
 .input_search {
 	flex: 1 1 auto;
 	min-width: 100px;

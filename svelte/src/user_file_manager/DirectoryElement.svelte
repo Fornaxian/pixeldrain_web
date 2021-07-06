@@ -18,8 +18,9 @@ export const reset = () => {
 	allFiles = []
 }
 
-export const addFile = (icon, name, href, type, size, sizeLabel, dateCreated) => {
+export const addFile = (id, icon, name, href, type, size, sizeLabel, dateCreated) => {
 	allFiles.push({
+		id: id,
 		icon: icon,
 		name: name,
 		href: href,
@@ -35,6 +36,18 @@ export const addFile = (icon, name, href, type, size, sizeLabel, dateCreated) =>
 
 export const renderFiles = () => {
 	search(lastSearchTerm)
+}
+
+export const getSelectedFiles = () => {
+	let selectedFiles = []
+
+	for (let i in allFiles) {
+		if (allFiles[i].selected) {
+			selectedFiles.push(allFiles[i])
+		}
+	}
+
+	return selectedFiles
 }
 
 // search filters the allFiles array on a search term. All files which match the
@@ -251,9 +264,18 @@ let last_selected_node = -1
 const node_click = (index) => {
 	if (selectionMode) {
 		if (shift_pressed && last_selected_node != -1) {
+			let id_low = last_selected_node
+			let id_high = last_selected_node
+			if (last_selected_node < index) {
+				id_high = index
+			} else {
+				id_low = index
+			}
 
-			for (let i = last_selected_node; i <= index && !allFiles[i].filtered; i++) {
-				allFiles[i].selected = !allFiles[i].selected
+			for (let i = id_low; i <= id_high && !allFiles[i].filtered; i++) {
+				if (i != last_selected_node) {
+					allFiles[i].selected = !allFiles[i].selected
+				}
 			}
 		} else {
 			allFiles[index].selected = !allFiles[index].selected
@@ -390,7 +412,7 @@ const node_click = (index) => {
 	text-decoration: none;
 }
 .node_selected {
-	background-color: var(--highlight_color);
+	background-color: var(--highlight_color_dark);
 	color: var(--highlight_text_color);
 }
 .node > div {
