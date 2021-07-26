@@ -17,6 +17,7 @@ function Viewer(type, viewToken, data) {
 	this.toolbar = new Toolbar(this)
 	this.detailsWindow = new DetailsWindow(this)
 	this.editWindow = new EditWindow()
+	this.qrCodeWindow = new QRCodeWindow(this)
 
 	this.divFilepreview = document.getElementById("filepreview")
 
@@ -117,6 +118,7 @@ Viewer.prototype.setFile = function (file) {
 	this.detailsWindow.setFile(file)
 	this.editWindow.setFile(file)
 	this.toolbar.setFile(file)
+	this.qrCodeWindow.setFile()
 
 	// Register a new view. We don't care what this returns becasue we can't
 	// do anything about it anyway
