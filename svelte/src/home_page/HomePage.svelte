@@ -160,6 +160,7 @@ let share_link = ""
 let btn_upload_text
 let btn_copy_link
 let btn_open_link
+let btn_show_qr
 let btn_share_email
 let btn_share_twitter
 let btn_share_facebook
@@ -232,7 +233,9 @@ const copy_link = () => {
 	}
 }
 
+let qr_visible = false
 const open_link = () => window.open(share_link, "_blank")
+const show_qr_code = () => qr_visible = !qr_visible
 const share_mail = () => window.open("mailto:please@set.address?subject=File%20on%20pixeldrain&body=" + share_link)
 const share_twitter = () => window.open("https://twitter.com/share?url=" + share_link)
 const share_facebook = () => window.open('https://www.facebook.com/sharer.php?u=' + share_link)
@@ -359,6 +362,7 @@ const keydown = (e) => {
 	case "t": btn_upload_text.click();    break
 	case "c": btn_copy_link.click();      break
 	case "o": btn_open_link.click();      break
+	case "q": btn_show_qr.click();        break
 	case "l": btn_create_list.click();    break
 	case "e": btn_share_email.click();    break
 	case "w": btn_share_twitter.click();  break
@@ -455,6 +459,10 @@ const keydown = (e) => {
 		<i class="icon">open_in_new</i><br/>
 		<span><u>O</u>pen link</span>
 	</button>
+	<button bind:this={btn_show_qr} on:click={show_qr_code} class="social_buttons" disabled={state !== "finished"} class:button_highlight={qr_visible}>
+		<i class="icon">qr_code</i><br/>
+		<span><u>Q</u>R code</span>
+	</button>
 	<div class="social_buttons" class:hide={navigator_share}>
 		<button bind:this={btn_share_email} on:click={share_mail} class="social_buttons" disabled={state !== "finished"}>
 			<i class="icon">email</i><br/>
@@ -477,7 +485,11 @@ const keydown = (e) => {
 			Tu<u>m</u>blr
 		</button>
 	</div>
-	<br/><br/>
+	<br/>
+	{#if qr_visible}
+		<img src="/api/misc/qr?text={encodeURIComponent(share_link)}" alt="QR code" style="width: 300px; max-width: 100%;">
+	{/if}
+	<br/>
 	<button bind:this={btn_create_list} on:click={make_list_button} disabled={state !== "finished"}>
 		<i class="icon">list</i> Create <u>l</u>ist with uploaded files
 	</button>
