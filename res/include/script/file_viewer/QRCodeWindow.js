@@ -1,6 +1,7 @@
 function QRCodeWindow(viewer) {
 	this.viewer = viewer
 	this.visible = false
+	this.src = ""
 	this.modal = new Modal(
 		document.getElementById("file_viewer"),
 		() => { this.toggle() },
@@ -27,9 +28,14 @@ QRCodeWindow.prototype.toggle = function () {
 		this.modal.open()
 		this.btnQRCode.classList.add("button_highlight")
 		this.visible = true
+		this.setFile()
 	}
 }
 
 QRCodeWindow.prototype.setFile = function () {
-	this.img.src = "/api/misc/qr?text=" + encodeURIComponent(window.location.href)
+	this.src = "/api/misc/qr?text=" + encodeURIComponent(window.location.href)
+
+	if (this.visible) {
+		this.img.src = this.src
+	}
 }
