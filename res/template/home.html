@@ -84,15 +84,17 @@
 		<br/>
 
 		<!-- Svelte element -->
-		<div id="uploader" class="page_content" style="padding-top: 0; margin-bottom: 100px;"></div>
+		<div id="uploader" class="page_content" style="padding-top: 0; margin-bottom: 50px;"></div>
 
 		<h1>What is pixeldrain?</h1>
 		<div class="page_content"><div class="limit_width">
 			<p>
-				Pixeldrain is a file sharing website built for speed and
-				ease of use. Pixeldrain does not cost any money, though
-				donations are appreciated. See how you can support
-				pixeldrain below.
+				Pixeldrain is a file sharing website built for speed and ease of
+				use. You can upload files you want to share online to our
+				servers and we will hold on to them for at least a month. During
+				this time anyone with the link will be able to download your
+				files. Pixeldrain is built to be as fast as possible, so you
+				don't have to do any unnecessary waiting when downloading files.
 			</p>
 			<p>
 				Files can be uploaded by clicking the big green upload
@@ -100,16 +102,12 @@
 				manager.
 			</p>
 			<p>
-				You can also create lists, which are a collection of files.
-				Like a photo album, a music record or a video compilation.
-				To do this you need to upload a bunch of files at once. The
-				files will be saved in the order you uploaded them. When all
-				files have finished uploading you click the "Create list
-				with uploaded files" button and you will be asked to enter a
-				name for your list. After picking a name the list will be
-				created and opened in a new window. If your browser blocks
-				the window you can also find a link to the list at the
-				bottom of your uploaded files.
+				If you uploaded multiple files at once you can also create a
+				list, which is a collection of files with one single link. Like
+				a photo album, a music record or a video compilation. Click the
+				'Create list with uploaded files' button after your uploads are
+				complete. The files will be saved in the order you uploaded
+				them.
 			</p>
 
 			<h2 id="pro">Getting more out of pixeldrain</h2>
@@ -186,14 +184,19 @@
 						You have this plan<br/>
 						Thank you for supporting pixeldrain!
 						{{else}}
-						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427" class="button button_highlight">Only € 2 per month!</a> (Excluding tax)
+						Only
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427" class="button button_highlight">€ 2 per month</a>
+						or
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button button_highlight">€ 20 per year!</a>
+						<br/>
+						(Excluding tax)
 						<br/>
 						Subscription managed by Patreon
 						{{end}}
 					</div>
 				</div>
 			</div>
-			<br/><br/>
+			<br/>
 			<div style="text-align: center;">
 				Do you need even more time and space? Check out our other plans
 			</div>
@@ -275,7 +278,7 @@
 					</div>
 				</div>
 			</div>
-
+			<!--
 			<br/>
 			<h2>Premium</h2>
 			<div class="highlight_dark">
@@ -293,6 +296,7 @@
 				of the Pro subscription. A base rate of €2 per month will be
 				billed regardless of your usage.
 			</p>
+			-->
 		</div></div>
 
 		<template id="tpl_file_expiry">

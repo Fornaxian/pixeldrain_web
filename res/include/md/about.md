@@ -34,6 +34,18 @@ spare some coins. Possible methods for donating are:
  * <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">
    Donate with PayPal</a>
 
+## Advertising
+
+You can advertise on pixeldrain! We generate millions of impressions a day from
+all over the world. Due to a current lack of advertisers our traffic is very
+cheap. Only about € 0,02 CPM.
+
+Check out our [advertising partner
+A-Ads](https://a-ads.com/campaigns/new?selected_ad_unit_id=73974&selected_source_type=ad_unit&partner=73974)
+to get started. On our [ad unit
+page](https://a-ads.com/ad_units/73974/stats?partner=73974) you can find
+statistics of our traffic (impressions, CTR, localization and language).
+
 ## Content policy
 
 The following types of content are not allowed to be shared on pixeldrain. They
