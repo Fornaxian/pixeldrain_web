@@ -31,7 +31,7 @@ let set_status = async (action, report_type) => {
 }
 </script>
 
-<Expandable bind:this={expandable} expanded={report.status === "pending" && report.reports.length > 1}>
+<Expandable bind:this={expandable} expanded={report.status === "pending" && report.reports.length > 2}>
 	<div slot="header" class="header" on:click={expandable.toggle}>
 		<div class="icon_cell">
 			<img class="file_icon" src={"/api/file/"+report.file.id+"/thumbnail"} alt="File thumbnail"/>
