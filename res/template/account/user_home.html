@@ -31,6 +31,11 @@
 							<li>Files never expire</li>
 							{{end}}
 							<li>File size limit: {{formatData .User.Subscription.FileSizeLimit}}</li>
+							<li>
+								Direct linking bandwidth:
+								{{formatData .User.Subscription.DirectLinkingBandwidth}}
+								(<span id="direct_bandwidth_month">0 B</span> used in the last 30 days)
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -44,14 +49,13 @@
 				<p>
 					Here you can see how often your files are viewed, downloaded
 					and how much bandwidth they consume. The buttons at the top
-					can be pressed to adjust the timeframe. If you choose 'Live'
-					or 'Day' the statistics will be updated periodically. No
-					need to refresh the page.
+					can be pressed to adjust the timeframe. If you choose 'Day'
+					the statistics will be updated periodically. No need to
+					refresh the page.
 				</p>
 			</div>
 			<div class="highlight_dark">
-				<button onclick="updateGraphs(720, 1, true);">Live</button>
-				<button onclick="updateGraphs(1440, 10, true);">Day</button>
+				<button onclick="updateGraphs(1440, 1, true);">Day</button>
 				<button onclick="updateGraphs(10080, 60, false);">Week</button>
 				<button onclick="updateGraphs(20160, 60, false);">Two Weeks</button>
 				<button onclick="updateGraphs(43200, 1440, false);">Month</button>
@@ -59,23 +63,63 @@
 				<button onclick="updateGraphs(262800, 1440, false);">Half-year</button>
 				<button onclick="updateGraphs(525600, 1440, false);">Year</button>
 			</div>
-			<h3>Views</h3>
+			<div class="limit_width">
+				<h3>Views</h3>
+				<p>
+					A view is counted when someone visits the download page of one
+					of your files. Views are unique per user per file.
+				</p>
+			</div>
 			<div class="chart-container" style="position: relative; width: 100%; height: 140px;">
 				<canvas id="views_chart"></canvas>
 			</div>
-			<h3>Downloads</h3>
+			<div class="limit_width">
+				<h3>Downloads</h3>
+				<p>
+					Downloads are counted when a user clicks the download button
+					on one of your files. It does not matter whether the
+					download is completed or not, only the start of the download
+					is counted.
+				</p>
+			</div>
 			<div class="chart-container" style="position: relative; width: 100%; height: 140px;">
 				<canvas id="downloads_chart"></canvas>
 			</div>
-			<h3>Bandwidth</h3>
+			<div class="limit_width">
+				<h3>Bandwidth</h3>
+				<p>
+					This is how much bandwidth your files are using in total.
+					Bandwidth is used when a file is tranferred from a
+					pixeldrain server to a user who is downloading the file.
+					When a 5 MB file is downloaded 8 times it has used 40 MB of
+					bandwidth.
+				</p>
+			</div>
 			<div class="chart-container" style="position: relative; width: 100%; height: 140px;">
 				<canvas id="bandwidth_chart"></canvas>
+			</div>
+			<div class="limit_width">
+				<h3>Direct link bandwidth</h3>
+				<p>
+					When a file is downloaded without going through pixeldrain's
+					download page it counts as a direct download. Because direct
+					downloads cost us bandwidth and don't generate any ad
+					revenue we have to limit them. When your direct link
+					bandwidth runs out people will be asked to do a test before
+					they can download your files. See our
+					<a href="/#pro">subscription options</a> to get more direct
+					linking bandwidth.
+				</p>
+			</div>
+			<div class="chart-container" style="position: relative; width: 100%; height: 140px;">
+				<canvas id="direct_bandwidth_chart"></canvas>
 			</div>
 			<div class="highlight_dark">
 				Total usage from <span id="time_start"></span> to <span id="time_end"></span><br/>
 				<span id="total_views"></span> views,
-				<span id="total_downloads"></span> downloads and
-				<span id="total_bandwidth"></span> bandwidth
+				<span id="total_downloads"></span> downloads,
+				<span id="total_bandwidth"></span> bandwidth and
+				<span id="total_direct_bandwidth"></span> direct link bandwidth
 			</div>
 		</div>
 
