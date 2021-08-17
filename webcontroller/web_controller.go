@@ -91,6 +91,7 @@ func New(
 	// Static assets
 	r.GET(prefix+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
 	r.GET(prefix+"/robots.txt" /*   */, wc.serveFile("/robots.txt"))
+	r.GET(prefix+"/ads.txt" /*      */, wc.serveFile("/ads.txt"))
 
 	if maintenanceMode {
 		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -138,7 +139,7 @@ func New(
 		{GET, "d/*path" /*         */, wc.serveDirectory},
 		{GET, "t" /*               */, wc.serveTemplate("text_editor", handlerOpts{})},
 		{GET, "donation" /*        */, wc.serveMarkdown("donation.md", handlerOpts{})},
-		{GET, "subscribe" /*       */, wc.serveMarkdown("subscribe.md", handlerOpts{})},
+		{GET, "advertising" /*     */, wc.serveMarkdown("advertising.md", handlerOpts{})},
 		{GET, "widgets" /*         */, wc.serveTemplate("widgets", handlerOpts{})},
 		{GET, "about" /*           */, wc.serveMarkdown("about.md", handlerOpts{})},
 		{GET, "appearance" /*      */, wc.serveTemplate("appearance", handlerOpts{})},
