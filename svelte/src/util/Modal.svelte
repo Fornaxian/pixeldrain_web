@@ -48,7 +48,7 @@ const keydown = e => {
 		<div class="header highlight_1">
 			<slot name="title">
 				<div class="title">{title}</div>
-				<button class="button button_red" on:click={hide}>
+				<button class="button button_red round" on:click={hide}>
 					<i class="icon">close</i>
 				</button>
 			</slot>
@@ -83,7 +83,7 @@ const keydown = e => {
 	left: 50%;
 	transform: translate(-50%, -20%);
 	padding: 0;
-	border-radius: 8px;
+	border-radius: 16px 16px 8px 8px;
 	overflow: hidden;
 	box-sizing: border-box;
 	text-align: left;

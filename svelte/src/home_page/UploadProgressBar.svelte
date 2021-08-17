@@ -227,7 +227,7 @@ const add_upload_history = id => {
 	margin: 10px;
 	padding: 0;
 	overflow: hidden;
-	border-radius: 2px;
+	border-radius: 6px;
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
 	background-color: var(--layer_3_color);
 	color: var(--text_color);

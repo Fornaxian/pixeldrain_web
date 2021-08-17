@@ -432,7 +432,7 @@ select {
 	margin: 3px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
 	padding: 6px 7px 6px 7px;
-	box-shadow: 1px 1px 5px -2px var(--shadow_color);
+	box-shadow: 1px 1px 5px -3px var(--shadow_color);
 	line-height: 1em;
 	overflow: hidden;
 	font-size: 1em; /* Sometimes user-agents have different font sizes for buttons and links */

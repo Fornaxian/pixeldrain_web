@@ -5,32 +5,32 @@ let modal_global_index = 100
 // be adjusted to the screen size. Content should be added to the `body`
 // property
 function Modal(parent, closeCallback, title, width, height) {
-	this.parent        = parent
+	this.parent = parent
 	this.closeCallback = closeCallback
-	this.title         = title
-	this.width         = width
-	this.height        = height
-	this.visible       = false
+	this.title = title
+	this.width = width
+	this.height = height
+	this.visible = false
 
 	this.background = document.createElement("div")
 	this.background.classList = "modal_background"
 	this.background.addEventListener("click", e => { this.close() })
 
 	this.window = document.createElement("div")
-	this.window.classList    = "modal_window"
-	this.window.style.width  = this.width
+	this.window.classList = "modal_window"
+	this.window.style.width = this.width
 	this.window.style.height = this.height
 	this.window.addEventListener("click", e => { e.stopPropagation() })
 
 	this.header = document.createElement("div")
-	this.header.classList   = "modal_header highlight_1"
+	this.header.classList = "modal_header highlight_1"
 
 	this.titleDiv = document.createElement("div")
 	this.titleDiv.classList = "modal_title"
 	this.titleDiv.innerText = this.title
 
 	this.btnClose = document.createElement("button")
-	this.btnClose.classList = "modal_btn_close button_red"
+	this.btnClose.classList = "modal_btn_close button_red round"
 	this.btnClose.innerHTML = '<i class="icon">close</i>'
 	this.btnClose.addEventListener("click", e => { this.close() })
 
@@ -45,25 +45,25 @@ function Modal(parent, closeCallback, title, width, height) {
 	this.background.append(this.window)
 }
 
-Modal.prototype.setTitle = function(title) {
+Modal.prototype.setTitle = function (title) {
 	this.title = title
 	this.titleDiv.innerText = title
 }
 
-Modal.prototype.setBody = function(element) {
+Modal.prototype.setBody = function (element) {
 	this.body.innerHTML = ""
 	this.body.append(element)
 }
 
-Modal.prototype.cloneTemplate = function(templateID) {
+Modal.prototype.cloneTemplate = function (templateID) {
 	this.setBody(document.getElementById(templateID).content.cloneNode(true))
 }
 
-Modal.prototype.open = function() {
+Modal.prototype.open = function () {
 	if (this.visible) { return }
 	this.visible = true
 
-	console.debug("Showing modal "+this.title)
+	console.debug("Showing modal " + this.title)
 
 	// Each time a modal is shown it gets a z-index which is one higher of the
 	// previous one. This makes sure they are always shown and closed in order
@@ -82,7 +82,7 @@ Modal.prototype.open = function() {
 	this.body.focus()
 }
 
-Modal.prototype.close = function() {
+Modal.prototype.close = function () {
 	if (!this.visible) { return }
 	this.visible = false
 
@@ -95,5 +95,5 @@ Modal.prototype.close = function() {
 	this.background.style.opacity = 0
 
 	// Wait for the animation to finish and remove the window
-	setTimeout(() => {this.parent.removeChild(this.background)}, 400)
+	setTimeout(() => { this.parent.removeChild(this.background) }, 400)
 }
