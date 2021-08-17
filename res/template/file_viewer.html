@@ -29,9 +29,11 @@
 
 	<body>
 		<div id="file_viewer" class="file_viewer">
-			<div id="file_viewer_headerbar" class="highlight_1 file_viewer_headerbar">
-				<button id="btn_toggle_toolbar" class="button_toggle_toolbar"><i class="icon">menu</i></button>
-				<a href="/" id="button_home" class="button button_home">
+			<div id="file_viewer_headerbar" class="file_viewer_headerbar">
+				<button id="btn_toggle_toolbar" class="button_toggle_toolbar round">
+					<i class="icon">menu</i>
+				</button>
+				<a href="/" id="button_home" class="button button_home round">
 					{{template `pixeldrain.svg` .}}
 				</a>
 				<div id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">
@@ -39,7 +41,7 @@
 					<div id="file_viewer_file_title">loading...</div>
 				</div>
 				<!-- fullscreen button becomes visible on embedded viewer -->
-				<button id="btn_fullscreen" class="btn_fullscreen" style="display: none;">
+				<button id="btn_fullscreen" class="btn_fullscreen round" style="display: none;">
 					<i class="icon" id="btn_fullscreen_icon">fullscreen</i>
 				</button>
 			</div>
@@ -53,6 +55,7 @@
 					<div id="stat_size_label" class="toolbar_label">Size</div>
 					<div id="stat_size" style="text-align: center;">N/A</div>
 
+					<hr/>
 					<button id="btn_download" class="toolbar_button button_full_width">
 						<i class="icon">save</i>
 						<span>Download</span>
@@ -138,7 +141,7 @@
 					</button>
 				</div>
 
-				<div id="filepreview" class="file_viewer_file_preview">
+				<div id="filepreview" class="file_viewer_file_preview checkers">
 					<div class="center" style="width: 100px; height: 100px;">{{template "spinner.svg" .}}</div>
 				</div>
 			</div>

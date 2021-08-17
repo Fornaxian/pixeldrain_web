@@ -13,6 +13,7 @@
 	bottom: 0;
 	left: 0;
 	overflow: hidden;
+	background-color: var(--layer_2_color);
 }
 
 /* Headerbar (row 1) */
@@ -24,6 +25,7 @@
 	text-align: left;
 	z-index: 10;
 	box-shadow: none;
+	padding: 6px;
 }
 .file_viewer > .file_viewer_headerbar_embedded {
 	padding: 2px;
@@ -51,7 +53,7 @@
 .file_viewer > .file_viewer_headerbar > .button_home > svg {
 	height: 1.6em;
 	width: 1.6em;
-	margin: 0 0.2em 0 0;
+	margin: 0;
 }
 .file_viewer > .file_viewer_headerbar > .button_home::after {
 	content: "pixeldrain";
@@ -81,7 +83,7 @@
 	z-index: 50;
 	white-space: nowrap;
 }
-.file_viewer > .list_navigator > .list_item{
+.file_viewer > .list_navigator > .list_item {
 	height: 2.6em !important;
 	width: 220px !important;
 }
@@ -111,11 +113,11 @@
 	transition: left 0.5s;
 	overflow: hidden;
 	box-shadow: inset 2px 2px 10px 2px var(--shadow_color);
+	border-radius: 16px;
 }
 
 /* Sponsors (row 4) */
 .file_viewer > .sponsors {
-	background-color: var(--layer_1_color);
 	font-size: 0;
 	line-height: 0;
 }
@@ -139,15 +141,15 @@
 	z-index: 49;
 	overflow: hidden;
 	float: left;
-	background-color: var(--layer_1_color);
 	left: -9em;
 	bottom: 0;
 	top: 0;
 	padding: 0;
 	text-align: left;
 	transition: left 0.5s;
+	background-color: var(--layer_2_color);
 }
-.file_viewer > .file_viewer_window > .file_viewer_sharebar{
+.file_viewer > .file_viewer_window > .file_viewer_sharebar {
 	position: absolute;
 	width: 7em;
 	left: -8em;
@@ -156,8 +158,9 @@
 	overflow-y: scroll;
 	overflow-x: hidden;
 	float: left;
-	background-color: var(--layer_1_color);
 	box-shadow: inset 1px 1px var(--layer_1_shadow) var(--shadow_color);
+	background-color: var(--layer_1_color);
+	border-radius: 16px;
 	text-align: center;
 	z-index: 48;
 	overflow: hidden;

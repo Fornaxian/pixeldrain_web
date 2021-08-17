@@ -520,7 +520,7 @@ const keydown = (e) => {
 	min-width: 250px;
 	max-width: 400px;
 	margin: 10px !important;
-	border-radius: 5px;
+	border-radius: 32px;
 	font-size: 1.8em;
 }
 .instruction {

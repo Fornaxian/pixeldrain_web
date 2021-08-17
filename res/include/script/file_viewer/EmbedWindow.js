@@ -45,7 +45,7 @@ EmbedWindow.prototype.updateCode = function () {
 
 	this.textarea.value = `<iframe ` +
 		`src="${url}" ` +
-		`style="border: none; width: 800px; max-width: 100%; height: 500px; border-radius: 6px;"` +
+		`style="border: none; width: 800px; max-width: 100%; height: 500px; border-radius: 16px;"` +
 		`></iframe>`
 }
 

@@ -24,6 +24,8 @@
 	box-sizing: border-box;
 	text-align: left;
 	box-shadow: var(--shadow_color) 0px 0px 50px;
+	border-radius: 8px;
+	overflow: hidden;
 }
 
 .modal_header {

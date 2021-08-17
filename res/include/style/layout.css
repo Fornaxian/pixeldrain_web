@@ -50,10 +50,6 @@ a > svg { vertical-align: middle; }
 /* Page rendering configuration */
 html, body { overflow-x: hidden; }
 body{
-	background-color: #111111; /* Fallback */
-	background-color: var(--layer_1_color);
-	background-repeat: repeat;
-	background-blend-mode: luminosity;
 	margin: 0;
 	font-family: system-ui, sans-serif;
 	font-size: 17px;
@@ -61,6 +57,13 @@ body{
 	color: #b2b2b2; /* Fallback */
 	color: var(--text_color);
 	padding: 0;
+}
+body, .checkers {
+	background-image: url("{{bgPattern}}");
+	background-color: #111111; /* Fallback */
+	background-color: var(--layer_1_color);
+	background-repeat: repeat;
+	background-blend-mode: luminosity;
 }
 
 /* Page layout elements */
@@ -181,7 +184,7 @@ body{
 	overflow: hidden;
 	text-overflow: ellipsis;
 	transition: background-color 0.5s;
-	border-radius: 5px;
+	border-radius: 24px;
 	text-decoration: none;
 }
 .page_navigation a:hover {
@@ -195,13 +198,6 @@ body{
 .inset {
 	box-shadow: inset 1px 1px 20px 0 #000000;
 	box-shadow: inset 1px 1px 20px 0 var(--shadow_color);
-}
-.checkers {
-	text-shadow: 0 0 20px #000000;
-	padding: 30px 10px 30px 10px;
-}
-body, .checkers {
-	background-image: url("{{bgPattern}}");
 }
 
 .highlight_dark,
@@ -361,7 +357,7 @@ pre {
 	margin: 10px;
 	padding: 0;
 	overflow: hidden;
-	border-radius: 2px;
+	border-radius: 6px;
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
 	background-color: var(--layer_3_color);
 	color: #bfbfbf; /* Fallback */
@@ -431,12 +427,12 @@ input[type="color"],
 select {
 	display: inline-block;
 	box-sizing: border-box;
-	border-radius: 2px;
+	border-radius: 8px;
 	border: none;
 	margin: 3px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
-	padding: 4px 5px 4px 5px;
-	box-shadow: 2px 2px 6px -3px var(--shadow_color);
+	padding: 6px 7px 6px 7px;
+	box-shadow: 1px 1px 5px -2px var(--shadow_color);
 	line-height: 1em;
 	overflow: hidden;
 	font-size: 1em; /* Sometimes user-agents have different font sizes for buttons and links */
@@ -475,7 +471,7 @@ select:active{
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 4px 4px 8px var(--shadow_color);
 	/* Exactly 4px offset compared to the inactive padding to give a depth effect */
-	padding: 8px 1px 0px 9px;
+	padding: 10px 3px 2px 11px;
 }
 .button_full_width      {width: calc(100% - 6px);}
 .button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: var(--highlight_text_color) !important;}
@@ -497,6 +493,10 @@ select:disabled , select.disabled {
 	cursor: not-allowed;
 }
 
+.round {
+	border-radius: 32px;
+}
+
 /* Dropdown list of the select tag */
 option{
 	background-color: var(--input_color_dark);
@@ -516,9 +516,9 @@ input[type="date"]{
 	margin: 3px; /* Same as button, to make them align nicely */
 	border: none;
 	box-sizing: border-box;
-	border-radius: 3px;
+	border-radius: 8px;
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
-	box-shadow: inset 2px 2px 6px -3px var(--shadow_color);
+	box-shadow: inset 1px 1px 4px -2px var(--shadow_color);
 	padding: 3px 5px;
 	color: var(--input_text_color);
 	font-size: 1em;
