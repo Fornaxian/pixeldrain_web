@@ -33,7 +33,7 @@
 	font-family: 'Material Icons';
 	font-weight: normal;
 	font-style: normal;
-	font-size: 1.6em;
+	font-size: 1.5em;
 	display: inline-block;
 	line-height: 1;
 	text-transform: none;
@@ -177,7 +177,7 @@ body, .checkers {
 	color: #b2b2b2; /* Fallback */
 	color: var(--text_color);
 	text-align: center;
-	padding: 6px 6px;
+	padding: 4px;
 	margin: 0.3em 15px 0.3em 15px;
 	font-family: "light", sans-serif;
 	font-size: 1.6em;
@@ -217,7 +217,7 @@ body, .checkers {
 	box-sizing: border-box;
 	overflow: hidden;
 	text-align: center;
-	padding: 8px;
+	padding: 4px;
 }
 .highlight_dark, .highlight_1 {
 	background-color: var(--layer_1_color);
@@ -309,7 +309,7 @@ hr{
 	height: 1px;
 	border: none;
 	background-color: var(--input_color);
-	margin: 16px 16px 16px 16px;
+	margin: 12px;
 }
 
 a {
@@ -354,7 +354,7 @@ pre {
 	width: 400px;
 	max-width: 90%;
 	height: 3.6em;
-	margin: 10px;
+	margin: 8px;
 	padding: 0;
 	overflow: hidden;
 	border-radius: 6px;
@@ -431,7 +431,7 @@ select {
 	border: none;
 	margin: 3px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
-	padding: 6px 7px 6px 7px;
+	padding: 5px 5px 5px 5px;
 	box-shadow: 1px 1px 5px -3px var(--shadow_color);
 	line-height: 1em;
 	overflow: hidden;
@@ -442,6 +442,7 @@ select {
 	color: var(--input_text_color);
 	outline: 0;
 	vertical-align: middle;
+	align-items: center;
 	cursor: pointer;
 	transition: padding 0.2s, box-shadow 0.2s;
 }
@@ -471,7 +472,7 @@ select:active{
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 4px 4px 8px var(--shadow_color);
 	/* Exactly 4px offset compared to the inactive padding to give a depth effect */
-	padding: 10px 3px 2px 11px;
+	padding: 9px 1px 1px 9px;
 }
 .button_full_width      {width: calc(100% - 6px);}
 .button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: var(--highlight_text_color) !important;}

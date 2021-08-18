@@ -25,7 +25,7 @@
 	text-align: left;
 	z-index: 10;
 	box-shadow: none;
-	padding: 6px;
+	padding: 4px;
 }
 .file_viewer > .file_viewer_headerbar_embedded {
 	padding: 2px;
@@ -35,8 +35,8 @@
 .file_viewer > .file_viewer_headerbar > * {
 	flex-grow: 0;
 	flex-shrink: 0;
-	margin-left: 6px;
-	margin-right: 6px;
+	margin-left: 4px;
+	margin-right: 4px;
 	display: inline;
 }
 .file_viewer > .file_viewer_headerbar > .file_viewer_headerbar_title {
@@ -49,6 +49,9 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	justify-content: center;
+}
+.file_viewer > .file_viewer_headerbar > .button_toggle_toolbar > .icon {
+	font-size: 1.6em;
 }
 .file_viewer > .file_viewer_headerbar > .button_home > svg {
 	height: 1.6em;
@@ -75,7 +78,7 @@
 	position: relative;
 	display: none; /* Becomes visible if the page is a list */
 	width: 100%;
-	background-color: var(--layer_1_color);
+	border-top: 1px solid var(--layer_2_color_border);
 	text-align: center;
 	line-height: 1em;
 	overflow-x: auto;

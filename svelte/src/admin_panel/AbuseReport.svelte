@@ -114,6 +114,7 @@ let set_status = async (action, report_type) => {
 .title {
 	flex: 1 1 auto;
 	align-self: center;
+	word-break: break-all;
 }
 .stats {
 	flex: 0 0 auto;

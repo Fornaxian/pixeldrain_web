@@ -31,6 +31,8 @@ export const toggle = () => {
 	transition: box-shadow 0.5s;
 	box-shadow: 1px 1px var(--layer_3_shadow) 0 var(--shadow_color);
 	margin: 1em 0;
+	border-radius: 8px;
+	overflow: hidden;
 }
 .header {
 	display: flex;
