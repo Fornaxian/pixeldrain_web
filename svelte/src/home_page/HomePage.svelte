@@ -512,6 +512,37 @@ const keydown = (e) => {
 			<span class="file_button_title">{list.link}</span>
 		</a>
 	{/each}
+
+	{#if window.user_subscription.name === ""}
+		<div class="instruction">
+			<div class="limit_width">
+				<span class="big_number">4</span>
+				<span class="instruction_text">Support me on Patreon!</span>
+			</div>
+		</div>
+		<div class="limit_width">
+			<p>
+				Pixeldrain is struggling to get by financially. Because anyone
+				can upload anything it's hard to find reputable advertisers who
+				want to advertise on pixeldrain. Every month the ad revenue just
+				barely covers the bandwidth costs. If this continues I will have
+				to resort to adding more shady ads, or reducing the file size
+				and bandwidth limits. That's not something I would like to do.
+			</p>
+			<p>
+				Pro costs only <b>€20 per year</b> or €2 per month. You will get
+				some nice benefits and more features are on the way. You can
+				help with making pixeldrain the easiest and fastest way to share
+				files online!
+			</p>
+		</div>
+		<br/>
+		<a href="#pro" class="button big_button" style="min-width: 350px;">
+			<i class="icon">arrow_downward</i>
+			Check out Pro
+			<i class="icon">arrow_downward</i>
+		</a>
+	{/if}
 </div>
 
 <style>

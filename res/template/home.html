@@ -70,9 +70,12 @@
 		{{ template `modal.css` }}
 		</style>
 
-		<script>window.api_endpoint = '{{.APIEndpoint}}';</script>
-		<link rel='stylesheet' href='/res/svelte/home_page.css?v8'>
-		<script defer src='/res/svelte/home_page.js?v8'></script>
+		<script>
+			window.api_endpoint = '{{.APIEndpoint}}';
+			window.user_subscription = {{.User.Subscription}};
+		</script>
+		<link rel='stylesheet' href='/res/svelte/home_page.css?v9'>
+		<script defer src='/res/svelte/home_page.js?v9'></script>
 	</head>
 	<body>
 		{{template "page_top" .}}

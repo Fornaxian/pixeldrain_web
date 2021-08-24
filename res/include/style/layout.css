@@ -63,6 +63,7 @@ body, .checkers {
 	background-color: #111111; /* Fallback */
 	background-color: var(--layer_1_color);
 	background-repeat: repeat;
+	background-attachment: fixed;
 	background-blend-mode: luminosity;
 }
 
