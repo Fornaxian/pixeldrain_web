@@ -353,13 +353,13 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{204, .05, .88},
 	ScrollbarBackgroundColor: hsl{200, .13, .27}, // hsl(200, 13%, 27%)
 
-	Layer1Color:  hsl{180, .04, .16}, // hsl(180, 4%, 16%)
+	Layer1Color:  hsl{180, .04, .16},
 	Layer1Shadow: 3,
-	Layer2Color:  hsl{170, .06, .21}, // hsl(170, 6%, 21%)
+	Layer2Color:  hsl{168, .05, .21},
 	Layer2Shadow: 5,
-	Layer3Color:  hsl{172, .06, .25}, // hsl(172, 6%, 25%)
+	Layer3Color:  hsl{170, .05, .26},
 	Layer3Shadow: 6,
-	Layer4Color:  hsl{172, .07, .30}, // hsl(172, 6%, 25%)
+	Layer4Color:  hsl{163, .04, .31},
 	Layer4Shadow: 7,
 
 	ShadowColor: hsl{0, 0, 0},
