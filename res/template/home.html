@@ -128,16 +128,28 @@
 				<div>
 					<div class="feat_label">Size limit per file</div>
 					<div class="feat_normal">5 GB per file</div>
-					<div class="feat_pro"><span class="text_highlight">15 GB</span> per file</div>
+					<div class="feat_pro">
+						<span class="text_highlight">15 GB</span> per file
+					</div>
 				</div>
 				<div>
-					<div class="feat_label"><a href="javascript:void(0);" onclick="return explainFileExpiry();">File expiry</a></div>
-					<div class="feat_normal">30 days after the last time it is viewed</div>
-					<div class="feat_pro"><span class="text_highlight">90 days</span> after the last time it is viewed</div>
+					<div class="feat_label">
+						<a href="javascript:void(0);" onclick="return explainFileExpiry();">File expiry</a>
+					</div>
+					<div class="feat_normal">
+						30 days after the last time it is viewed
+					</div>
+					<div class="feat_pro">
+						<span class="text_highlight">90 days</span> after the last time it is viewed
+					</div>
 				</div>
 				<div>
-					<div class="feat_label">Adver&shy;tise&shy;ments</div>
-					<div class="feat_normal">Pop-up or a banner ad on the file viewer page</div>
+					<div class="feat_label">
+						Adver&shy;tise&shy;ments
+					</div>
+					<div class="feat_normal">
+						Pop-up or a banner ad on the file viewer page
+					</div>
 					<div class="feat_pro">
 						<span class="text_highlight">No ads</span> on files
 						you share. No ads when viewing files uploaded by
@@ -157,26 +169,27 @@
 					</div>
 				</div>
 				<div>
-					<div class="feat_label">Bandwidth prioritization</div>
+					<div class="feat_label">
+						<a href="javascript:void(0);" onclick="return explainDirectLinking();">Direct linking</a>
+					</div>
 					<div class="feat_normal">
-						Bandwidth will be throttled if the servers are
-						overloaded
-					</div>
-					<div class="feat_pro">
-						<span class="text_highlight">High priority</span>
-						bandwidth during times of peak usage
-					</div>
-				</div>
-				<div>
-					<div class="feat_label">Online file previews</div>
-					<div class="feat_pro">View image, video, audio, PDF and text files directly in your web browser</div>
-				</div>
-				<div>
-					<div class="feat_label"><a href="javascript:void(0);" onclick="return explainDirectLinking();">Direct linking</a></div>
-					<div class="feat_pro">
 						Rate limiting mode will be enabled when a file has 3
-						times more downloads than views. Pro users will never be
-						asked to fill in a captcha
+						times more downloads than views
+					</div>
+					<div class="feat_pro">
+						<span class="text_highlight">1 terabyte</span> of
+						direct downloads per 30 days. Never have to enter a
+						CAPTCHA while logged in
+						<br/>
+						<button class="round" onclick="return explainDirectLinking()">More information</button>
+					</div>
+				</div>
+				<div>
+					<div class="feat_label">
+						Online file previews
+					</div>
+					<div class="feat_pro">
+						View image, video, audio, PDF and text files directly in your web browser
 					</div>
 				</div>
 				<div>
@@ -212,7 +225,8 @@
 				<div>
 					<div class="feat_label">Resolve</div>
 					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size,
+						<span class="text_highlight">20 GB</span> file size<br/>
+						<span class="text_highlight">2 TB</span> direct link bandwidth<br/>
 						<span class="text_highlight">120 days</span> file expiry
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_5_small.png');">
@@ -227,7 +241,8 @@
 				<div>
 					<div class="feat_label">Persistence</div>
 					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size,
+						<span class="text_highlight">20 GB</span> file size<br/>
+						<span class="text_highlight">4 TB</span> direct link bandwidth<br/>
 						<span class="text_highlight">240 days</span> file expiry
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_2_small.png');">
@@ -242,7 +257,8 @@
 				<div>
 					<div class="feat_label">Tenacity</div>
 					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size,
+						<span class="text_highlight">20 GB</span> file size<br/>
+						<span class="text_highlight">8 TB</span> direct link bandwidth<br/>
 						<span class="text_highlight">480 days</span> file expiry
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_3_small.png');">
@@ -257,8 +273,9 @@
 				<div>
 					<div class="feat_label">Eternity</div>
 					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size,
-						<span class="text_highlight">960 days</span> file expiry
+						<span class="text_highlight">20 GB</span> file size<br/>
+						<span class="text_highlight">16 TB</span> direct link bandwidth<br/>
+						<span class="text_highlight">Files never expre</span>
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_4_small.png');">
 						{{if eq .User.Subscription.ID "patreon_4"}}
@@ -272,8 +289,9 @@
 				<div>
 					<div class="feat_label">Infinity</div>
 					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size,
-						<span class="text_highlight">1920 days</span> file expiry
+						<span class="text_highlight">20 GB</span> file size<br/>
+						<span class="text_highlight">32 TB</span> direct link bandwidth<br/>
+						<span class="text_highlight">Files never expre</span>
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_6_small.png');">
 						{{if eq .User.Subscription.ID "patreon_6"}}
@@ -335,20 +353,51 @@
 		</template>
 		<template id="tpl_direct_linking">
 			<p>
-				When viewing a file on pixeldrain it has to go through the file
-				viewer. Files which have three times more downloads than views
-				will be rate limited. This happens when downloaders use external
-				downloading tools to download the file instead of a web browser.
+				Paying for bandwidth is the most expensive part of running
+				pixeldrain. Because of this we have to limit what can be
+				downloaded and by who.
 			</p>
 			<p>
-				This means that the downloader will be asked to fill in a
-				captcha before they can download the file. When the file /
-				download ratio drops below 3x again the captcha will be removed
-				and direct downloads become possible again.
+				Normally when you view a file it's on pixeldrain's file viewer.
+				The file viewer is the page with the download button, the name
+				of the file and a frame where you can view the file if it's an
+				image, video, audio, PDF or text file.
+			</p>
+			<h3>Rate limiting</h3>
+			<p>
+				It's also possible to link directly to a file instead of the
+				download page. This circumvents our advertisers and branding and
+				thus we lose money when people do this. That's why I added 'rate
+				limiting mode' to files. This mode is enabled when a file has
+				been downloaded three times more than it has been viewed through
+				the file viewer. When rate limiting mode is activated a file
+				cannot be downloaded through the API, the request needs to come
+				from the file viewer page. On the file viewer you will see a
+				CAPTCHA to fill in when you click the download button.
+			</p>
+			<h3>Direct downloading with a Pro subscription</h3>
+			<p>
+				When you have a Pro subscription you will get a monthly
+				bandwidth cap for all the files on your account combined. Normal
+				downloads through the file viewer will not be subtracted from
+				the cap, so nothing changes if you keep using the site like
+				normal. If people download your files directly from the API (by
+				replacing the /u/ part in the link with /api/file/) the
+				bandwidth usage will be subtracted from the bandwidth cap on
+				your account. If the bandwidth cap is exceeded rate limiting
+				mode will be enabled for all the files on your account with
+				three times more downloads than views.
 			</p>
 			<p>
-				If you need direct linking you can upgrade to the Premium plan.
-				Bandwidth will be billed per terabyte.
+				The bandwidth cap on your account is a 30 day rolling window.
+				This means that bandwdith usage will expire 30 days after it was
+				used. Your counter will not reset at the start of the next
+				month.
+			</p>
+			<p>
+				When a list of files is downloaded with the 'DL all files'
+				button each file in the resulting zip file will be counted
+				separately.
 			</p>
 		</template>
 
@@ -368,11 +417,15 @@
 			}
 			function explainDirectLinking() {
 				let m = new Modal(
-					document.body, null, "Direct Linking Bandwidth", "600px", "auto"
+					document.body, null, "Direct Linking Bandwidth", "800px", "auto"
 				)
 				m.cloneTemplate("tpl_direct_linking")
 				m.open()
 				return false
+			}
+
+			if (window.location.hash === "#direct_linking") {
+				explainDirectLinking()
 			}
 		</script>
 
