@@ -64,6 +64,8 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		pdpro4             = 11
 		clickAduBanner     = 12
 		amarulaElectronics = 13
+		adsPlus            = 14
+		pixFuture          = 15
 
 		// Floaters
 		propellerFloat = 1
@@ -78,17 +80,21 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	switch i := rand.Intn(5); i {
-	case 0: // 20%
+	switch i := rand.Intn(8); i {
+	case 0:
 		vd.AdBannerType = brave
-	case 1, 2, 3, 4: // 80%
+	case 1:
 		vd.AdBannerType = aAds
+	case 2, 3, 4:
+		vd.AdBannerType = adsPlus
+	case 5, 6, 7:
+		vd.AdBannerType = pixFuture
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 
-	// If the file is larger than 5 MB we enable floating popups
-	if avgSize > 5e6 {
+	// If the file is larger than 10 MB we enable floating popups
+	if avgSize > 10e6 {
 		vd.AdFloaterType = propellerFloat
 	}
 }
@@ -97,7 +103,13 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	var err error
 	if p.ByName("id") == "demo" {
-		wc.serveFileViewerDemo(w, r) // Required for a-ads.com quality check
+		wc.serveFileViewerDemo(w, r, 1) // Required for a-ads.com quality check
+		return
+	} else if p.ByName("id") == "adsplus" {
+		wc.serveFileViewerDemo(w, r, 14)
+		return
+	} else if p.ByName("id") == "pixfuture" {
+		wc.serveFileViewerDemo(w, r, 15)
 		return
 	}
 
@@ -183,12 +195,12 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 // ServeFileViewerDemo is a dummy API response that responds with info about a
 // non-existent demo file. This is required by the a-ads ad network to allow for
 // automatic checking of the presence of the ad unit on this page.
-func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Request) {
+func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Request, banner int) {
 	templateData := wc.newTemplateData(w, r)
 	templateData.Other = viewerData{
 		Type:           "file",
 		CaptchaKey:     wc.captchaSiteKey,
-		AdBannerType:   1, // Always show a-ads on the demo page
+		AdBannerType:   banner, // Always show a-ads on the demo page
 		FileAdsEnabled: true,
 		UserAdsEnabled: true,
 		APIResponse: map[string]interface{}{

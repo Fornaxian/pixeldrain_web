@@ -87,9 +87,34 @@
 			</div>
 		</div>
 	{{ else if eq .Other.AdBannerType 12 }}
+		<!-- Clickadu -->
 		<div class="sponsors_banner" style="display: inline-block; width: 300px; height: 100px;">
 			<script data-cfasync="false" type="text/javascript" src="//myolnyr5bsk18.com/lv/esnk/1846778/code.js" async id="__clb-1846778"></script>
 		</div>
+	{{ else if eq .Other.AdBannerType 14 }}
+		<!-- Ads.plus -->
+		<!-- This tag library should be placed in the head section of the page -->
+		<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+		<script>
+		window.googletag = window.googletag || {cmd: []};
+		googletag.cmd.push(function() {
+			googletag.defineSlot('/21673142571/299__pixeldrain.com__default__728x90_1', [728, 90], 'div-gpt-ad-pixeldraincom728x90_1').addService(googletag.pubads());
+			googletag.pubads().collapseEmptyDivs();
+			googletag.enableServices();
+		});
+		</script>
+		<!-- This is the tag for the unit and should be placed in the respective ad spot in the body part of the page -->
+		<!-- /21673142571/299__pixeldrain.com__default__728x90_1 -->
+		<div id='div-gpt-ad-pixeldraincom728x90_1' class="sponsors_banner" style='width: 728px; height: 90px;'>
+			<script>
+				googletag.cmd.push(function() { googletag.display('div-gpt-ad-pixeldraincom728x90_1'); });
+			</script>
+		</div>
+	{{ else if eq .Other.AdBannerType 15 }}
+	<!-- AuctionX Display platform tag START -->
+	<div id="27517x728x90x4605x_ADSLOT1" clickTrack="%%CLICK_URL_ESC%%" class="sponsors_banner" style="width: 728px; height: 90px;"></div>
+	<script type="text/javascript" async src="https://served-by.pixfuture.com/www/delivery/headerbid.js" slotId="27517x728x90x4605x_ADSLOT1" refreshTime="5" refreshInterval="60"></script>
+	<!-- AuctionX Display platform tag END -->
 	{{ end }}
 {{ end }}
 
@@ -102,14 +127,7 @@
 		<script type='text/javascript' async src='//concoursestrickenpuppy.com/4c/4d/90/4c4d90a2e79b0e049f811a663f3e3c07.js'></script>
 	{{ else if eq .Other.AdFloaterType 1 }}
 		<!-- PropellerAds -->
-		<script>
-		// Load fires when the page is completely finished loading, including assets
-		window.addEventListener("load", () => {
-			(function(d,z,s){
-				s.src='//'+d+'/400/'+z
-				try{(document.body||document.documentElement).appendChild(s)}catch(e){}
-			})('in-page-push.com',3724132,document.createElement('script'))
-		})
+		<script type="text/javascript" src="//optyruntchan.com/400/4189877" data-cfasync="false" async="async"></script>
 		</script>
 	{{ end }}
 

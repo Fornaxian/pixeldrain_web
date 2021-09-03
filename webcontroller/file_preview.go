@@ -15,7 +15,7 @@ import (
 
 // ServeFilePreview controller for GET /u/:id/preview
 func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	if p.ByName("id") == "demo" {
+	if p.ByName("id") == "demo" || p.ByName("id") == "adsplus" || p.ByName("id") == "pixfuture" {
 		serveFilePreviewDemo(w) // Required for a-ads.com quality check
 		return
 	}
