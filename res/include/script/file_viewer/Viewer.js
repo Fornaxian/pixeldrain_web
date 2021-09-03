@@ -202,7 +202,7 @@ Viewer.prototype.renderSponsors = function () {
 	// Because of the scale transformation the automatic margins don't work
 	// anymore. So we have to manually calculate the margin. Here we take the
 	// width of the viewport - the width of the ad to calculate the amount of
-	// pixels around the ad. We multiply the ad size by the scale we calcualted
+	// pixels around the ad. We multiply the ad size by the scale we calculated
 	// to account for the smaller size.
 	let offset = (window.innerWidth - (bannerWidth * scale)) / 2
 

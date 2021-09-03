@@ -17,7 +17,7 @@ function IntroPopup() {
 
 	// Sometimes the layout is not correctly calculated yet when this script
 	// runs. We adjust the values later
-	setTimeout(() => { this.moveToElement(btnHome) }, 100)
+	setTimeout(() => { this.moveToElement(btnHome) }, 400)
 }
 
 IntroPopup.prototype.moveToElement = function (el) {
