@@ -93,8 +93,8 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 
-	// If the file is larger than 10 MB we enable floating popups
-	if avgSize > 10e6 {
+	// If the file is larger than 50 MB we enable floating popups
+	if avgSize > 50e6 {
 		vd.AdFloaterType = propellerFloat
 	}
 }

@@ -124,7 +124,7 @@
 	font-size: 0;
 	line-height: 0;
 }
-.file_viewer > .sponsors > * {
+.file_viewer > .sponsors > .sponsors_banner {
 	display: block;
 	margin: auto;
 	transform-origin: 0 0;
