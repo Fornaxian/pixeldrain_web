@@ -58,7 +58,12 @@ function loadDirectBW() {
 		return resp.json();
 	}).then(resp => {
 		let total = resp.amounts.reduce((accum, val) => accum += val, 0);
-		document.getElementById("direct_bandwidth_month").innerText = formatDataVolume(total, 4)
+		document.getElementById("direct_bandwidth_progress").style.width = (total / window.user.subscription.direct_linking_bandwidth) * 100 + "%"
+		document.getElementById("direct_bandwidth_text").innerText = formatDataVolume(total, 3) + " out of " + formatDataVolume(window.user.subscription.direct_linking_bandwidth, 3)
+
+		document.getElementById("storage_progress").style.width = (window.user.storage_space_used / window.user.subscription.storage_space) * 100 + "%"
+		document.getElementById("storage_text").innerText = formatDataVolume(window.user.storage_space_used, 3) + " out of " + formatDataVolume(window.user.subscription.storage_space, 3)
+
 	}).catch(e => {
 		console.error("Error requesting time series: " + e);
 	})

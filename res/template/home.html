@@ -74,8 +74,8 @@
 			window.api_endpoint = '{{.APIEndpoint}}';
 			window.user_subscription = {{.User.Subscription}};
 		</script>
-		<link rel='stylesheet' href='/res/svelte/home_page.css?v9'>
-		<script defer src='/res/svelte/home_page.js?v9'></script>
+		<link rel='stylesheet' href='/res/svelte/home_page.css?v1'>
+		<script defer src='/res/svelte/home_page.js?v1'></script>
 	</head>
 	<body>
 		{{template "page_top" .}}
@@ -189,6 +189,17 @@
 				</div>
 				<div>
 					<div class="feat_label">
+						Storage space
+					</div>
+					<div class="feat_normal">
+						500 gigabytes
+					</div>
+					<div class="feat_pro">
+						<span class="text_highlight">1 terabyte</span>
+					</div>
+				</div>
+				<div>
+					<div class="feat_label">
 						Online file previews
 					</div>
 					<div class="feat_pro">
@@ -230,6 +241,7 @@
 					<div class="feat_normal">
 						<span class="text_highlight">20 GB</span> file size<br/>
 						<span class="text_highlight">2 TB</span> direct link bandwidth<br/>
+						<span class="text_highlight">2 TB</span> storage space<br/>
 						<span class="text_highlight">120 days</span> file expiry
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_5_small.png');">
@@ -246,6 +258,7 @@
 					<div class="feat_normal">
 						<span class="text_highlight">20 GB</span> file size<br/>
 						<span class="text_highlight">4 TB</span> direct link bandwidth<br/>
+						<span class="text_highlight">4 TB</span> storage space<br/>
 						<span class="text_highlight">240 days</span> file expiry
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_2_small.png');">
@@ -262,6 +275,7 @@
 					<div class="feat_normal">
 						<span class="text_highlight">20 GB</span> file size<br/>
 						<span class="text_highlight">8 TB</span> direct link bandwidth<br/>
+						<span class="text_highlight">8 TB</span> storage space<br/>
 						<span class="text_highlight">480 days</span> file expiry
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_3_small.png');">
@@ -278,6 +292,7 @@
 					<div class="feat_normal">
 						<span class="text_highlight">20 GB</span> file size<br/>
 						<span class="text_highlight">16 TB</span> direct link bandwidth<br/>
+						<span class="text_highlight">16 TB</span> storage space<br/>
 						<span class="text_highlight">Files never expre</span>
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_4_small.png');">
@@ -294,6 +309,7 @@
 					<div class="feat_normal">
 						<span class="text_highlight">20 GB</span> file size<br/>
 						<span class="text_highlight">32 TB</span> direct link bandwidth<br/>
+						<span class="text_highlight">32 TB</span> storage space<br/>
 						<span class="text_highlight">Files never expre</span>
 					</div>
 					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_6_small.png');">

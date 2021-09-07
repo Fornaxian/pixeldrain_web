@@ -118,7 +118,10 @@ export const start = () => {
 				resp = JSON.parse(xhr.response)
 			}
 
-			if (resp.value == "file_too_large" || resp.value == "ip_banned" || tries === 3) {
+			if (resp.value == "file_too_large"
+				|| resp.value == "ip_banned"
+				|| resp.value == "user_out_of_space"
+				|| tries === 3) {
 				// Permanent failure
 				on_failure(resp.value, resp.message)
 			} else {

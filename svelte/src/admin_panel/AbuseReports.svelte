@@ -81,7 +81,7 @@ const get_reports = async () => {
 
 onMount(() => {
 	let start = new Date()
-	start.setDate(start.getDate() - 14)
+	start.setDate(start.getDate() - 28)
 	let end = new Date()
 
 	startPicker.valueAsNumber = start.getTime()

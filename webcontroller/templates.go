@@ -135,6 +135,7 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 		"pageNr":     tm.pageNr,
 		"add":        tm.add,
 		"sub":        tm.sub,
+		"mul":        tm.mul,
 		"div":        tm.div,
 		"formatData": tm.formatData,
 		"formatSC":   tm.formatSC,
@@ -245,9 +246,10 @@ func (tm *TemplateManager) pageNr(s string) (nr int) {
 	}
 	return nr
 }
-func (tm *TemplateManager) add(a, b interface{}) int { return detectInt(a) + detectInt(b) }
-func (tm *TemplateManager) sub(a, b interface{}) int { return detectInt(a) - detectInt(b) }
-func (tm *TemplateManager) div(a, b float64) float64 { return a / b }
+func (tm *TemplateManager) add(a, b interface{}) float64 { return toFloat(a) + toFloat(b) }
+func (tm *TemplateManager) sub(a, b interface{}) float64 { return toFloat(a) - toFloat(b) }
+func (tm *TemplateManager) mul(a, b interface{}) float64 { return toFloat(a) * toFloat(b) }
+func (tm *TemplateManager) div(a, b interface{}) float64 { return toFloat(a) / toFloat(b) }
 
 func (tm *TemplateManager) formatData(i interface{}) string {
 	return util.FormatData(int64(detectInt(i)))
@@ -310,4 +312,34 @@ func detectInt(i interface{}) int {
 		return int(v)
 	}
 	panic(fmt.Sprintf("%v is not an int", i))
+}
+
+func toFloat(i interface{}) float64 {
+	switch v := i.(type) {
+	case int:
+		return float64(v)
+	case int8:
+		return float64(v)
+	case int16:
+		return float64(v)
+	case int32:
+		return float64(v)
+	case int64:
+		return float64(v)
+	case uint:
+		return float64(v)
+	case uint8:
+		return float64(v)
+	case uint16:
+		return float64(v)
+	case uint32:
+		return float64(v)
+	case uint64:
+		return float64(v)
+	case float32:
+		return float64(v)
+	case float64:
+		return float64(v)
+	}
+	panic(fmt.Sprintf("%v is not a number", i))
 }

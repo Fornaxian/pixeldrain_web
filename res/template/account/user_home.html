@@ -3,7 +3,24 @@
 	<head>
 		{{template "meta_tags" .User.Username}}
 		{{template "user_style" .}}
-		<script>var apiEndpoint = '{{.APIEndpoint}}';</script>
+		<script>
+		var apiEndpoint = '{{.APIEndpoint}}';
+		window.user = {{.User}};
+		</script>
+
+		<style>
+		.progress_bar_outer {
+			background-color: var(--layer_1_color);
+			width: 100%;
+			height: 3px;
+		}
+		.progress_bar_inner {
+			background-color: var(--highlight_color);
+			height: 100%;
+			width: 0;
+			transition: width 1s;
+		}
+		</style>
 	</head>
 
 	<body>
@@ -23,29 +40,45 @@
 							(<a href="https://www.patreon.com/join/pixeldrain/checkout?edit=1">Manage subscription</a>)
 						{{end}}
 						<ul>
-							<li>Ads when viewing files: {{if .User.Subscription.DisableAdDisplay}}No{{else}}Yes{{end}}</li>
-							<li>Ads on your uploaded files: {{if .User.Subscription.DisableAdsOnFiles}}No{{else}}Yes{{end}}</li>
+							<li>Advertisements when viewing files: {{if .User.Subscription.DisableAdDisplay}}No{{else}}Yes{{end}}</li>
+							<li>Advertisements on your uploaded files: {{if .User.Subscription.DisableAdsOnFiles}}No{{else}}Yes{{end}}</li>
 							{{if gt .User.Subscription.FileExpiryDays 0}}
 							<li>Files expire after {{.User.Subscription.FileExpiryDays}} days</li>
 							{{else}}
 							<li>Files never expire</li>
 							{{end}}
-							<li>File size limit: {{formatData .User.Subscription.FileSizeLimit}}</li>
-							<li>
-								Direct linking bandwidth:
-								{{formatData .User.Subscription.DirectLinkingBandwidth}}
-								(<span id="direct_bandwidth_month">0 B</span> used in the last 30 days)
-								<br/>
-								<a href="/#direct_linking">More information about direct linking</a>
-							</li>
 						</ul>
 					</li>
 				</ul>
-				<a href="/user/settings" class="button button_highlight">Change account settings</a>
-				<br/><br/>
-				<a href="/user/export/files" class="button">Export uploaded files to CSV</a>
-				<a href="/user/export/lists" class="button">Export created lists to CSV</a>
 
+				<h3>Limits</h3>
+				Storage: <span id="storage_text"></span><br/>
+				<div class="progress_bar_outer">
+					<div id="storage_progress" class="progress_bar_inner" style="width: 0%;"></div>
+				</div>
+				<br/>
+				Direct link bandwidth: <span id="direct_bandwidth_text"></span>
+				(<a href="/#direct_linking">More information about direct linking</a>)
+				<div class="progress_bar_outer">
+					<div id="direct_bandwidth_progress" class="progress_bar_inner" style="width: 0%;"></div>
+				</div>
+				<br/>
+
+				<h3>Settings</h3>
+				<div style="text-align: center;">
+					<a href="/user/settings" class="button button_highlight">
+						<i class="icon">edit</i>
+						Change account settings
+					</a>
+					<a href="/user/export/files" class="button">
+						<i class="icon">list</i>
+						Export uploaded files to CSV
+					</a>
+					<a href="/user/export/lists" class="button">
+						<i class="icon">list</i>
+						Export created lists to CSV
+					</a>
+				</div>
 
 				<h2>Statistics</h2>
 				<p>
