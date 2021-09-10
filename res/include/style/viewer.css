@@ -313,12 +313,12 @@ table {width: auto !important;}
 
 .intro_popup {
 	position: absolute;
-	width: 400px;
+	width: 380px;
 	max-width: 80%;
 	height: auto;
 	background-color: var(--layer_4_color);
 	box-shadow: 1px 1px var(--layer_4_shadow) var(--shadow_color);
-	border-radius: 10px;
+	border-radius: 20px;
 	z-index: 50;
 	transition: opacity .4s, left .5s, top .5s;
 }
@@ -326,7 +326,7 @@ table {width: auto !important;}
 	content: "";
 	display: block;
 	position: absolute;
-	left: 20px;
+	left: 30px;
 	top: -15px;
 	border-bottom: 15px solid var(--layer_4_color);
 	border-left: 15px solid transparent;

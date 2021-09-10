@@ -23,7 +23,7 @@ function IntroPopup() {
 IntroPopup.prototype.moveToElement = function (el) {
 	let rect = el.getBoundingClientRect()
 	this.popup.style.top = (rect.top + el.offsetHeight + 20) + "px"
-	this.popup.style.left = (rect.left + (el.clientWidth / 2) - 30) + "px"
+	this.popup.style.left = (rect.left + (el.clientWidth / 2) - 40) + "px"
 }
 
 IntroPopup.prototype.close = function () {
