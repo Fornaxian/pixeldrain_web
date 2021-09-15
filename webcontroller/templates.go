@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -206,20 +207,22 @@ func (tm *TemplateManager) Get() *template.Template {
 // Template functions. These can be called from within the template to execute
 // more specialized actions
 
-const (
-	electionStart = 1615935600
-	electionEnd   = 1616022000
-)
-
 func (tm *TemplateManager) bgPattern() template.URL {
-	var now = time.Now()
-	var epoch = now.Unix()
-	var file string
+	var (
+		now   = time.Now()
+		month = now.Month()
+		day   = now.Day()
+		file  string
+	)
 
-	if epoch > electionStart && epoch < electionEnd {
-		file = "checker_vote.png"
-	} else if now.Weekday() == time.Wednesday && now.UnixNano()%10 == 0 {
+	if now.Weekday() == time.Wednesday && rand.Intn(20) == 0 {
 		file = "checker_wednesday.png"
+	} else if month == time.August && day == 24 {
+		file = "checker_developers.png"
+	} else if month == time.October && day == 31 {
+		file = "checker_halloween.png"
+	} else if month == time.December && day == 25 || day == 26 || day == 27 {
+		file = "checker_christmas.png"
 	} else {
 		file = fmt.Sprintf("checker%d.png", now.UnixNano()%17)
 	}
@@ -309,6 +312,10 @@ func detectInt(i interface{}) int {
 	case uint32:
 		return int(v)
 	case uint64:
+		return int(v)
+	case float32:
+		return int(v)
+	case float64:
 		return int(v)
 	}
 	panic(fmt.Sprintf("%v is not an int", i))
