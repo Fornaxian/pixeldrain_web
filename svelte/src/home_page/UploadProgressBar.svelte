@@ -79,7 +79,9 @@ const on_failure = (status, message) => {
 
 export const start = () => {
 	start_time = new Date().getTime()
-	stats_interval = setInterval(on_progress, stats_interval_ms)
+	if (stats_interval === null) {
+		stats_interval = setInterval(on_progress, stats_interval_ms)
+	}
 
 	let form = new FormData();
 	form.append('file', job.file, job.name);
