@@ -43,8 +43,13 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 	}
 
 	var avgSize int64
+	var nudity = false
 	for _, v := range files {
 		avgSize += v.Size
+
+		if strings.HasPrefix(v.MimeType, "video/") {
+			nudity = true
+		}
 	}
 	avgSize /= int64(len(files))
 
@@ -80,17 +85,32 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
-	switch i := rand.Intn(10); i {
-	case 0:
-		vd.AdBannerType = brave
-	case 1:
-		vd.AdBannerType = aAds
-	case 2, 3:
-		vd.AdBannerType = adsPlus
-	case 4, 5, 6, 7, 8, 9:
-		vd.AdBannerType = pixFuture
-	default:
-		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
+
+	if nudity {
+		// Brave and a-ads don't care about nudity. I'm not sure about ads.plus
+		switch i := rand.Intn(4); i {
+		case 0:
+			vd.AdBannerType = brave
+		case 1, 2, 3:
+			vd.AdBannerType = aAds
+		default:
+			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
+		}
+	} else {
+		// PixFuture does not allow nudity, so that's what we'll show on all
+		// files which are safe
+		switch i := rand.Intn(10); i {
+		case 0:
+			vd.AdBannerType = brave
+		case 1:
+			vd.AdBannerType = aAds
+		case 2, 3, 4, 5:
+			vd.AdBannerType = adsPlus
+		case 6, 7, 8, 9:
+			vd.AdBannerType = pixFuture
+		default:
+			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
+		}
 	}
 
 	// If the file is larger than 50 MB we enable floating popups
