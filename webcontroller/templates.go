@@ -217,6 +217,8 @@ func (tm *TemplateManager) bgPattern() template.URL {
 
 	if now.Weekday() == time.Wednesday && rand.Intn(20) == 0 {
 		file = "checker_wednesday.png"
+	} else if month == time.August && day == 8 {
+		file = "checker_dwarf.png"
 	} else if month == time.August && day == 24 {
 		file = "checker_developers.png"
 	} else if month == time.October && day == 31 {
@@ -224,7 +226,7 @@ func (tm *TemplateManager) bgPattern() template.URL {
 	} else if month == time.December && day == 25 || day == 26 || day == 27 {
 		file = "checker_christmas.png"
 	} else {
-		file = fmt.Sprintf("checker%d.png", now.UnixNano()%17)
+		file = fmt.Sprintf("checker%d.png", now.UnixNano()%18)
 	}
 
 	var buf = bytes.Buffer{}
