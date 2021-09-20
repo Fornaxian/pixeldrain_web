@@ -88,10 +88,12 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 
 	if nudity {
 		// Brave and a-ads don't care about nudity. I'm not sure about ads.plus
-		switch i := rand.Intn(4); i {
+		switch i := rand.Intn(5); i {
 		case 0:
 			vd.AdBannerType = brave
-		case 1, 2, 3:
+		case 1:
+			vd.AdBannerType = adsPlus
+		case 2, 3, 4:
 			vd.AdBannerType = aAds
 		default:
 			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))

@@ -55,17 +55,31 @@
 			font-weight: bold;
 		}
 		.feat_table > div > .cell_background {
+			flex: 0 0 30%;
+			min-width: 30%;
+			border-top-left-radius: 0.5em;
+			border-bottom-left-radius: 0.5em;
 			background-position: center;
 			background-size: cover;
 			text-align: left;
-			font-size: 1.2em;
-			padding: 0.2em;
+			font-size: 1.1em;
+			color: #ffffff;
+			text-shadow: 0 0 3px #000000;
 		}
 
 		.feat_table > div > div.round_tl { border-top-left-radius:     0.5em; }
 		.feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
 		.feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
 		.feat_table > div > div.round_bl { border-bottom-left-radius:  0.5em; }
+
+		.features_cell {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.features_cell > div {
+			flex: 1 1 50%;
+			min-width: 220px;
+		}
 
 		{{ template `modal.css` }}
 		</style>
@@ -237,31 +251,27 @@
 			<br/>
 			<div class="feat_table">
 				<div>
-					<div class="feat_label">Resolve</div>
-					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size<br/>
-						<span class="text_highlight">2 TB</span> direct link bandwidth<br/>
-						<span class="text_highlight">2 TB</span> storage space<br/>
-						<span class="text_highlight">120 days</span> file expiry
-					</div>
-					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_5_small.png');">
+					<div class="cell_background" style="background-image: url('/res/img/benefit_5.webp');">
+						Resolve<br/>
 						{{if eq .User.Subscription.ID "patreon_5"}}
 						You have this plan<br/>
 						Thank you for supporting pixeldrain!
 						{{else}}
-						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701" class="button button_highlight round">€ 4</a>
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701" class="button button_highlight round">
+							€ 4
+						</a>
 						{{end}}
+					</div>
+					<div class="feat_pro features_cell round_tr">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">120 days</span> file expiry</div>
+						<div><span class="text_highlight">2 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">2 TB</span> storage space<br/></div>
 					</div>
 				</div>
 				<div>
-					<div class="feat_label">Persistence</div>
-					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size<br/>
-						<span class="text_highlight">4 TB</span> direct link bandwidth<br/>
-						<span class="text_highlight">4 TB</span> storage space<br/>
-						<span class="text_highlight">240 days</span> file expiry
-					</div>
-					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_2_small.png');">
+					<div class="cell_background" style="background-image: url('/res/img/benefit_2.webp');">
+						Persistence<br/>
 						{{if eq .User.Subscription.ID "patreon_2"}}
 						You have this plan<br/>
 						Thank you for supporting pixeldrain!
@@ -269,16 +279,16 @@
 						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291482" class="button button_highlight round">€ 8</a>
 						{{end}}
 					</div>
+					<div class="feat_pro features_cell">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">240 days</span> file expiry</div>
+						<div><span class="text_highlight">4 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">4 TB</span> storage space<br/></div>
+					</div>
 				</div>
 				<div>
-					<div class="feat_label">Tenacity</div>
-					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size<br/>
-						<span class="text_highlight">8 TB</span> direct link bandwidth<br/>
-						<span class="text_highlight">8 TB</span> storage space<br/>
-						<span class="text_highlight">480 days</span> file expiry
-					</div>
-					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_3_small.png');">
+					<div class="cell_background" style="background-image: url('/res/img/benefit_3.webp');">
+						Tenacity<br/>
 						{{if eq .User.Subscription.ID "patreon_3"}}
 						You have this plan<br/>
 						Thank you for supporting pixeldrain!
@@ -286,16 +296,16 @@
 						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291516" class="button button_highlight round">€ 16</a>
 						{{end}}
 					</div>
+					<div class="feat_pro features_cell">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">480 days</span> file expiry</div>
+						<div><span class="text_highlight">8 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">8 TB</span> storage space<br/></div>
+					</div>
 				</div>
 				<div>
-					<div class="feat_label">Eternity</div>
-					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size<br/>
-						<span class="text_highlight">16 TB</span> direct link bandwidth<br/>
-						<span class="text_highlight">16 TB</span> storage space<br/>
-						<span class="text_highlight">Files never expre</span>
-					</div>
-					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_4_small.png');">
+					<div class="cell_background" style="background-image: url('/res/img/benefit_4.webp');">
+						Eternity<br/>
 						{{if eq .User.Subscription.ID "patreon_4"}}
 						You have this plan<br/>
 						Thank you for supporting pixeldrain!
@@ -303,22 +313,104 @@
 						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291528" class="button button_highlight round">€ 32</a>
 						{{end}}
 					</div>
+					<div class="feat_pro features_cell">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">Files never expire</span></div>
+						<div><span class="text_highlight">16 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">16 TB</span> storage space<br/></div>
+					</div>
 				</div>
 				<div>
-					<div class="feat_label">Infinity</div>
-					<div class="feat_normal">
-						<span class="text_highlight">20 GB</span> file size<br/>
-						<span class="text_highlight">32 TB</span> direct link bandwidth<br/>
-						<span class="text_highlight">32 TB</span> storage space<br/>
-						<span class="text_highlight">Files never expre</span>
-					</div>
-					<div class="feat_pro round_tr round_br cell_background" style="background-image: url('/res/img/benefit_6_small.png');">
+					<div class="cell_background" style="background-image: url('/res/img/benefit_6.webp');">
+						Infinity<br/>
 						{{if eq .User.Subscription.ID "patreon_6"}}
 						You have this plan<br/>
 						Thank you for supporting pixeldrain!
 						{{else}}
 						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=6573749" class="button button_highlight round">€ 64</a>
 						{{end}}
+					</div>
+					<div class="feat_pro features_cell">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">Files never expire</span></div>
+						<div><span class="text_highlight">32 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">32 TB</span> storage space<br/></div>
+					</div>
+				</div>
+				<div>
+					<div class="cell_background" style="background-image: url('/res/img/benefit_7.webp');">
+						Omnipotence<br/>
+						{{if eq .User.Subscription.ID "patreon_7"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=7732256" class="button button_highlight round">
+							€ 96
+						</a>
+						{{end}}
+					</div>
+					<div class="feat_pro features_cell">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">Files never expire</span></div>
+						<div><span class="text_highlight">48 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">48 TB</span> storage space<br/></div>
+					</div>
+				</div>
+				<div>
+					<div class="cell_background" style="background-image: url('/res/img/benefit_8.webp');">
+						Omnipresence<br/>
+						{{if eq .User.Subscription.ID "patreon_8"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=7732262" class="button button_highlight round">
+							€ 128
+						</a>
+						{{end}}
+					</div>
+					<div class="feat_pro features_cell">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">Files never expire</span></div>
+						<div><span class="text_highlight">64 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">64 TB</span> storage space<br/></div>
+					</div>
+				</div>
+				<div>
+					<div class="cell_background" style="background-image: url('/res/img/benefit_9.webp');">
+						Omniscience<br/>
+						{{if eq .User.Subscription.ID "patreon_9"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=7732266" class="button button_highlight round">
+							€ 192
+						</a>
+						{{end}}
+					</div>
+					<div class="feat_pro features_cell">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">Files never expire</span></div>
+						<div><span class="text_highlight">96 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">96 TB</span> storage space<br/></div>
+					</div>
+				</div>
+				<div>
+					<div class="cell_background" style="background-image: url('/res/img/benefit_10.webp');">
+						Trinity<br/>
+						{{if eq .User.Subscription.ID "patreon_10"}}
+						You have this plan<br/>
+						Thank you for supporting pixeldrain!
+						{{else}}
+						<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=7732271" class="button button_highlight round">
+							€ 256
+						</a>
+						{{end}}
+					</div>
+					<div class="feat_pro features_cell round_br">
+						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
+						<div><span class="text_highlight">Files never expire</span></div>
+						<div><span class="text_highlight">128 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">128 TB</span> storage space<br/></div>
 					</div>
 				</div>
 			</div>
