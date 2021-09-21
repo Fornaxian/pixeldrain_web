@@ -131,7 +131,7 @@ func New(
 	}{
 		// General navigation
 		{GET, "" /*                */, wc.serveTemplate("home", handlerOpts{})},
-		{GET, "api" /*             */, wc.serveMarkdown("apidoc.md", handlerOpts{})},
+		{GET, "api" /*             */, wc.serveMarkdown("api.md", handlerOpts{})},
 		{GET, "history" /*         */, wc.serveTemplate("history_cookies", handlerOpts{})},
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
 		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
@@ -160,7 +160,6 @@ func New(
 		{GET, "logout" /*           */, wc.serveTemplate("logout", handlerOpts{Auth: true, NoEmbed: true})},
 		{PST, "logout" /*           */, wc.serveLogout},
 		{GET, "user_old" /*         */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
-		{GET, "user" /*             */, wc.serveTemplate("user_home_svelte", handlerOpts{Auth: true})},
 		{GET, "user/files" /*       */, wc.serveTemplate("user_files", handlerOpts{Auth: true})},
 		{GET, "user/lists" /*       */, wc.serveTemplate("user_lists", handlerOpts{Auth: true})},
 		{GET, "user/buckets" /*     */, wc.serveTemplate("user_buckets", handlerOpts{Auth: true})},
@@ -169,7 +168,9 @@ func New(
 		{GET, "user/export/lists" /**/, wc.serveUserExportLists},
 
 		// User account settings
+		{GET, "user" /*                       */, wc.serveTemplate("user_home_svelte", handlerOpts{Auth: true})},
 		{GET, "user/settings" /*              */, wc.serveTemplate("user_home_svelte", handlerOpts{Auth: true})},
+		{GET, "user/api_keys" /*              */, wc.serveTemplate("user_home_svelte", handlerOpts{Auth: true})},
 		{GET, "user/settings_old" /*          */, wc.serveUserSettings},
 		{PST, "user/settings_old" /*          */, wc.serveUserSettings},
 		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
