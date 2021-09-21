@@ -139,30 +139,32 @@ onMount(get_bans);
 
 	<br/>
 
-	<table style="text-align: left;">
-		<tr>
-			<td>Address</td>
-			<td>Reason</td>
-			<td>Ban time</td>
-			<td>Expire time</td>
-			<td>Offences</td>
-			<td></td>
-		</tr>
-		{#each rows as row}
+	<div class="table_scroll">
+		<table style="text-align: left;">
 			<tr>
-				<td>{row.address}</td>
-				<td>{row.reason}</td>
-				<td>{formatDate(row.ban_time, true, true, false)}</td>
-				<td>{formatDate(row.expire_time, true, true, false)}</td>
-				<td>{row.offences}</td>
-				<td>
-					<button on:click|preventDefault={() => {delete_ban(row.address)}} class="button button_red">
-						<i class="icon">delete</i>
-					</button>
-				</td>
+				<td>Address</td>
+				<td>Reason</td>
+				<td>Ban time</td>
+				<td>Expire time</td>
+				<td>Offences</td>
+				<td></td>
 			</tr>
-		{/each}
-	</table>
+			{#each rows as row}
+				<tr>
+					<td>{row.address}</td>
+					<td>{row.reason}</td>
+					<td>{formatDate(row.ban_time, true, true, false)}</td>
+					<td>{formatDate(row.expire_time, true, true, false)}</td>
+					<td>{row.offences}</td>
+					<td>
+						<button on:click|preventDefault={() => {delete_ban(row.address)}} class="button button_red round">
+							<i class="icon">delete</i>
+						</button>
+					</td>
+				</tr>
+			{/each}
+		</table>
+	</div>
 </div>
 
 <style>

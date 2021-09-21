@@ -133,32 +133,34 @@ onMount(get_reporters);
 
 	<br/>
 
-	<table style="text-align: left;">
-		<tr>
-			<td>E-mail</td>
-			<td>Name</td>
-			<td>Blocked</td>
-			<td>Type</td>
-			<td>Last used</td>
-			<td>Created</td>
-			<td></td>
-		</tr>
-		{#each reporters as reporter}
+	<div class="table_scroll">
+		<table style="text-align: left;">
 			<tr>
-				<td>{reporter.email}</td>
-				<td>{reporter.name}</td>
-				<td>{reporter.files_blocked}</td>
-				<td>{reporter.type}</td>
-				<td>{formatDate(reporter.last_used, true, true, false)}</td>
-				<td>{formatDate(reporter.created, false, false, false)}</td>
-				<td>
-					<button on:click|preventDefault={() => {delete_reporter(reporter.email)}} class="button button_red">
-						<i class="icon">delete</i>
-					</button>
-				</td>
+				<td>E-mail</td>
+				<td>Name</td>
+				<td>Blocked</td>
+				<td>Type</td>
+				<td>Last used</td>
+				<td>Created</td>
+				<td></td>
 			</tr>
-		{/each}
-	</table>
+			{#each reporters as reporter}
+				<tr>
+					<td>{reporter.email}</td>
+					<td>{reporter.name}</td>
+					<td>{reporter.files_blocked}</td>
+					<td>{reporter.type}</td>
+					<td>{formatDate(reporter.last_used, true, true, false)}</td>
+					<td>{formatDate(reporter.created, false, false, false)}</td>
+					<td>
+						<button on:click|preventDefault={() => {delete_reporter(reporter.email)}} class="button button_red">
+							<i class="icon">delete</i>
+						</button>
+					</td>
+				</tr>
+			{/each}
+		</table>
+	</div>
 </div>
 
 <style>

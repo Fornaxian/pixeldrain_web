@@ -331,8 +331,18 @@ table:not(.form) {
 	border-collapse: collapse;
 	width: 100%;
 }
+.table_scroll {
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+    white-space: nowrap;
+}
+.table_scroll > table {
+	min-width: 100%;
+}
+
 tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
-tr > td, tr > th {padding: 0.4em;}
+tr > td, tr > th {padding: 0.3em 0.6em;}
 @media(max-width: 30em) {
 	/* Forms will be stacked on small screens */
 	tr.form > td {

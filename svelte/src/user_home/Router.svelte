@@ -24,27 +24,29 @@ onMount(() => {
 </script>
 
 <div>
-	<a class="button tab"
-		href="/user"
-		class:button_highlight={page === ""}
-		on:click|preventDefault={() => {navigate("", "My home")}}>
-		<i class="icon">home</i>
-		My home
-	</a>
-	<a class="button tab"
-		href="/user/settings"
-		class:button_highlight={page === "settings"}
-		on:click|preventDefault={() => {navigate("settings", "Account settings")}}>
-		<i class="icon">settings</i>
-		Account settings
-	</a>
-	<a class="button tab"
-		href="/user/api_keys"
-		class:button_highlight={page === "api_keys"}
-		on:click|preventDefault={() => {navigate("api_keys", "API keys")}}>
-		<i class="icon">vpn_key</i>
-		API keys
-	</a>
+	<div class="tab_bar">
+		<a class="button tab"
+			href="/user"
+			class:button_highlight={page === ""}
+			on:click|preventDefault={() => {navigate("", "My home")}}>
+			<i class="icon">home</i>
+			My home
+		</a>
+		<a class="button tab"
+			href="/user/settings"
+			class:button_highlight={page === "settings"}
+			on:click|preventDefault={() => {navigate("settings", "Account settings")}}>
+			<i class="icon">settings</i>
+			Account settings
+		</a>
+		<a class="button tab"
+			href="/user/api_keys"
+			class:button_highlight={page === "api_keys"}
+			on:click|preventDefault={() => {navigate("api_keys", "API keys")}}>
+			<i class="icon">vpn_key</i>
+			API keys
+		</a>
+	</div>
 	<hr/>
 
 	{#if page === ""}
