@@ -25,42 +25,44 @@ onMount(() => {
 </script>
 
 <div>
-	<a class="button"
-		href="/admin"
-		class:button_highlight={page === "status"}
-		on:click|preventDefault={() => {navigate("status", "Status")}}>
-		<i class="icon">home</i>
-		Status
-	</a>
-	<a class="button" href="/admin/abuse">
-		<i class="icon">block</i>
-		Block files
-	</a>
-	<a class="button"
-		href="/admin/abuse_reports"
-		class:button_highlight={page === "abuse_reports"}
-		on:click|preventDefault={() => {navigate("abuse_reports", "Abuse reports")}}>
-		<i class="icon">flag</i>
-		User abuse reports
-	</a>
-	<a class="button"
-		href="/admin/abuse_reporters"
-		class:button_highlight={page === "abuse_reporters"}
-		on:click|preventDefault={() => {navigate("abuse_reporters", "Abuse reporters")}}>
-		<i class="icon">report</i>
-		E-mail abuse reporters
-	</a>
-	<a class="button"
-		href="/admin/ip_bans"
-		class:button_highlight={page === "ip_bans"}
-		on:click|preventDefault={() => {navigate("ip_bans", "IP bans")}}>
-		<i class="icon">remove_circle</i>
-		IP bans
-	</a>
-	<a class="button" href="/admin/globals">
-		<i class="icon">edit</i>
-		Update global settings
-	</a>
+	<div class="tab_bar">
+		<a class="button tab"
+			href="/admin"
+			class:button_highlight={page === "status"}
+			on:click|preventDefault={() => {navigate("status", "Status")}}>
+			<i class="icon">home</i>
+			Status
+		</a>
+		<a class="button tab" href="/admin/abuse">
+			<i class="icon">block</i>
+			Block files
+		</a>
+		<a class="button tab"
+			href="/admin/abuse_reports"
+			class:button_highlight={page === "abuse_reports"}
+			on:click|preventDefault={() => {navigate("abuse_reports", "Abuse reports")}}>
+			<i class="icon">flag</i>
+			User abuse reports
+		</a>
+		<a class="button tab"
+			href="/admin/abuse_reporters"
+			class:button_highlight={page === "abuse_reporters"}
+			on:click|preventDefault={() => {navigate("abuse_reporters", "Abuse reporters")}}>
+			<i class="icon">report</i>
+			E-mail abuse reporters
+		</a>
+		<a class="button tab"
+			href="/admin/ip_bans"
+			class:button_highlight={page === "ip_bans"}
+			on:click|preventDefault={() => {navigate("ip_bans", "IP bans")}}>
+			<i class="icon">remove_circle</i>
+			IP bans
+		</a>
+		<a class="button tab" href="/admin/globals">
+			<i class="icon">edit</i>
+			Update global settings
+		</a>
+	</div>
 	<hr/>
 
 	{#if page === "status"}

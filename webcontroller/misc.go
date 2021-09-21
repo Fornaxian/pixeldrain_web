@@ -44,7 +44,7 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 			)),
 		)))
 	} else {
-		w.Write([]byte(fmt.Sprintf(
+		w.Write([]byte(
 			`{
 	"Version": "12.4.1",
 	"DestinationType": "ImageUploader, TextUploader, FileUploader",
@@ -56,6 +56,6 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 	"ThumbnailURL": "https://pixeldrain.com/api/file/$json:id$/thumbnail"
 }
 `,
-		)))
+		))
 	}
 }

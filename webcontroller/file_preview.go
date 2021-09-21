@@ -21,7 +21,7 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 	}
 
 	apiKey, _ := wc.getAPIKey(r)
-	api := wc.api.Login(apiKey).RealIP(util.RemoteAddress(r))
+	api := wc.api.Login(apiKey).RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent())
 
 	file, err := api.GetFileInfo(p.ByName("id")) // TODO: Error handling
 	if err != nil {

@@ -145,7 +145,7 @@ body, .checkers {
 	display: inline-block;
 	width: 100%;
 	height: auto;
-	padding: 20px 0 20px 0;
+	padding: 0 0 20px 0;
 	background-color: #212121;
 	background-color: var(--layer_2_color);
 	box-shadow: 1px 1px 20px 0 #000000;
@@ -497,6 +497,23 @@ select:disabled , select.disabled {
 
 .round {
 	border-radius: 32px;
+}
+.tab {
+	margin: 0 0 10px 8px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+.tab:last-child {
+	margin-right: 8px;
+}
+.tab_bar {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+	box-sizing: border-box;
+	text-align: center;
 }
 
 /* Dropdown list of the select tag */

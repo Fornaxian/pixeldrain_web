@@ -159,7 +159,8 @@ func New(
 		{PST, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
 		{GET, "logout" /*           */, wc.serveTemplate("logout", handlerOpts{Auth: true, NoEmbed: true})},
 		{PST, "logout" /*           */, wc.serveLogout},
-		{GET, "user" /*             */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
+		{GET, "user_old" /*         */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
+		{GET, "user" /*             */, wc.serveTemplate("user_home_svelte", handlerOpts{Auth: true})},
 		{GET, "user/files" /*       */, wc.serveTemplate("user_files", handlerOpts{Auth: true})},
 		{GET, "user/lists" /*       */, wc.serveTemplate("user_lists", handlerOpts{Auth: true})},
 		{GET, "user/buckets" /*     */, wc.serveTemplate("user_buckets", handlerOpts{Auth: true})},
@@ -168,8 +169,9 @@ func New(
 		{GET, "user/export/lists" /**/, wc.serveUserExportLists},
 
 		// User account settings
-		{GET, "user/settings" /*              */, wc.serveUserSettings},
-		{PST, "user/settings" /*              */, wc.serveUserSettings},
+		{GET, "user/settings" /*              */, wc.serveTemplate("user_home_svelte", handlerOpts{Auth: true})},
+		{GET, "user/settings_old" /*          */, wc.serveUserSettings},
+		{PST, "user/settings_old" /*          */, wc.serveUserSettings},
 		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
 		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
 		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},

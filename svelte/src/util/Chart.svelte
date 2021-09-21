@@ -15,7 +15,7 @@ export const update = () => {
 	return chart_object.update()
 }
 
-Chart.defaults.global.defaultFontColor = "#b3b3b3";
+Chart.defaults.global.defaultFontColor = "#cccccc";
 Chart.defaults.global.defaultFontSize = 15;
 Chart.defaults.global.defaultFontFamily = "system-ui, sans-serif";
 Chart.defaults.global.maintainAspectRatio = false;

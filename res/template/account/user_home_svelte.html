@@ -1,0 +1,27 @@
+{{define "user_home_svelte"}}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" .User.Username}}
+		{{template "user_style" .}}
+
+		<script>
+		window.api_endpoint = '{{.APIEndpoint}}';
+		window.highlight_color = '#{{.Style.HighlightColor.RGB}}';
+		window.user = {{.User}};
+		</script>
+		<link rel='stylesheet' href='/res/svelte/user_home.css'>
+		<script defer src='/res/svelte/user_home.js'></script>
+	</head>
+
+	<body>
+		{{template "page_top" .}}
+
+		<h1>Welcome home, {{.User.Username}}!</h1>
+
+		<div id="page_content" class="page_content"></div>
+
+		{{template "page_bottom" .}}
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

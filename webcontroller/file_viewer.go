@@ -78,8 +78,8 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		adMavenFloat   = 3
 
 		// Popunders
-		clickAduPopup  = 1
-		propellerPopup = 2
+		// clickAduPopup  = 1
+		// propellerPopup = 2
 	)
 
 	// Intn returns a number up to n, but never n itself. So to get a random 0

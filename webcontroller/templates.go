@@ -52,7 +52,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		APIEndpoint:   template.URL(wc.apiURLExternal),
 
 		// Use the user's IP address for making requests
-		PixelAPI: wc.api.RealIP(util.RemoteAddress(r)),
+		PixelAPI: wc.api.RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent()),
 
 		Hostname: template.HTML(wc.hostname),
 		URLQuery: r.URL.Query(),
@@ -70,7 +70,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 
 			if err.Error() == "authentication_required" || err.Error() == "authentication_failed" {
 				// Disable API authentication
-				t.PixelAPI = wc.api.RealIP(util.RemoteAddress(r))
+				t.PixelAPI = wc.api.RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent())
 
 				// Remove the authentication cookie
 				log.Debug("Deleting invalid API key")
@@ -163,6 +163,9 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 	// Parse static resources
 	var file []byte
 	if err = filepath.Walk(tm.resourceDir+"/include", func(path string, f os.FileInfo, err error) error {
+		if err != nil {
+			return fmt.Errorf("walk err: %w", err)
+		}
 		if f == nil || f.IsDir() {
 			return nil
 		}
