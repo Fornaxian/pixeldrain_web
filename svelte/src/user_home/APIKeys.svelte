@@ -35,6 +35,23 @@ const load_keys = async () => {
 	}
 };
 
+const create_key = async () => {
+	loading = true
+	try {
+		const resp = await fetch(
+			window.api_endpoint+"/user/session",
+			{ method: "POST" }
+		);
+		if(resp.status >= 400) {
+			throw new Error(await resp.text());
+		}
+	} catch (err) {
+		alert("Failed to create new API key! "+err)
+	}
+
+	load_keys();
+}
+
 const logout = async (key) => {
 	loading = true
 
@@ -76,6 +93,13 @@ const logout = async (key) => {
 				</p>
 				<button class="button_red" on:click={load_keys}>
 					<i class="icon">lock_open</i> Show API keys
+				</button>
+			</div>
+		{:else}
+			<div class="toolbar" style="text-align: left;">
+				<div class="toolbar_spacer"></div>
+				<button on:click={create_key}>
+					<i class="icon">add</i> Create new API key
 				</button>
 			</div>
 		{/if}
@@ -124,4 +148,11 @@ const logout = async (key) => {
 	width: 100px;
 	z-index: 1000;
 }
+.toolbar {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+.toolbar > * { flex: 0 0 auto; }
+.toolbar_spacer { flex: 1 1 auto; }
 </style>
