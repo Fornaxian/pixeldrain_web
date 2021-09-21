@@ -2,6 +2,7 @@
 import { onMount } from "svelte";
 import Home from "./Home.svelte";
 import AccountSettings from "./AccountSettings.svelte";
+import APIKeys from "./APIKeys.svelte";
 
 let page = ""
 
@@ -37,12 +38,21 @@ onMount(() => {
 		<i class="icon">settings</i>
 		Account settings
 	</a>
+	<a class="button tab"
+		href="/user/api_keys"
+		class:button_highlight={page === "api_keys"}
+		on:click|preventDefault={() => {navigate("api_keys", "API keys")}}>
+		<i class="icon">vpn_key</i>
+		API keys
+	</a>
 	<hr/>
 
 	{#if page === ""}
 	<Home></Home>
 	{:else if page === "settings"}
 	<AccountSettings></AccountSettings>
+	{:else if page === "api_keys"}
+	<APIKeys></APIKeys>
 	{/if}
 </div>
 

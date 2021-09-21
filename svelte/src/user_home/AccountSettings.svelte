@@ -81,6 +81,7 @@ let name_change = {
 			name: "new_username",
 			label: "New name",
 			type: "username",
+			default_value: window.user.username,
 			description: `changing your username also changes the name used to
 				log in. If you forget your username you can still log in using
 				your e-mail address if you have one configured`,

@@ -130,7 +130,7 @@ body, .checkers {
 	transition: left 0.5s;
 	padding: 70px 0 100px 0;
 }
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
 	.page_navigation {
 		left: -18em;
 	}
