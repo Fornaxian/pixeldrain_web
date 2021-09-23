@@ -1,13 +1,59 @@
 package webcontroller
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"time"
 
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
+
+// formAPIError makes it easier to display errors returned by the pixeldrain
+// API. TO make use of this function the form fields should be named exactly the
+// same as the API parameters
+func formAPIError(err error, f *Form) {
+	fieldLabel := func(name string) string {
+		for _, v := range f.Fields {
+			if v.Name == name {
+				return v.Label
+			}
+		}
+		return name
+	}
+
+	if err, ok := err.(pixelapi.Error); ok {
+		if err.StatusCode == "multiple_errors" {
+			for _, err := range err.Errors {
+				// Modify the message to make it more user-friendly
+				if err.StatusCode == "string_out_of_range" {
+					err.Message = fmt.Sprintf(
+						"%s is too long or too short. Should be between %v and %v characters. Current length: %v",
+						fieldLabel(err.Extra["field"].(string)),
+						err.Extra["min_len"],
+						err.Extra["max_len"],
+						err.Extra["len"],
+					)
+				} else if err.StatusCode == "field_contains_illegal_character" {
+					err.Message = fmt.Sprintf(
+						"Character '%v' is not allowed in %s",
+						err.Extra["char"],
+						fieldLabel(err.Extra["field"].(string)),
+					)
+				}
+
+				f.SubmitMessages = append(f.SubmitMessages, template.HTML(err.Message))
+			}
+		} else {
+			f.SubmitMessages = append(f.SubmitMessages, template.HTML(err.Message))
+		}
+	} else {
+		log.Error("Error submitting form: %s", err)
+		f.SubmitMessages = []template.HTML{"Internal Server Error"}
+	}
+}
 
 func (wc *WebController) serveLogout(
 	w http.ResponseWriter,
@@ -270,4 +316,28 @@ func (wc *WebController) passwordResetConfirmForm(td *TemplateData, r *http.Requ
 		}
 	}
 	return f
+}
+
+func (wc *WebController) serveEmailConfirm(
+	w http.ResponseWriter,
+	r *http.Request,
+	p httprouter.Params,
+) {
+	var err error
+	var status string
+
+	err = wc.api.PutUserEmailResetConfirm(r.FormValue("key"))
+	if err != nil && err.Error() == "not_found" {
+		status = "not_found"
+	} else if err != nil {
+		log.Error("E-mail reset fail: %s", err)
+		status = "internal_error"
+	} else {
+		status = "success"
+	}
+
+	td := wc.newTemplateData(w, r)
+	td.Other = status
+
+	wc.templates.Get().ExecuteTemplate(w, "email_confirm", td)
 }
