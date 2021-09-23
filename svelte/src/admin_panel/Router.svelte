@@ -4,6 +4,7 @@ import AbuseReports from "./AbuseReports.svelte"
 import IpBans from "./IPBans.svelte"
 import Home from "./Home.svelte"
 import { onMount } from "svelte";
+import BlockFiles from "./BlockFiles.svelte";
 
 let page = ""
 
@@ -33,7 +34,10 @@ onMount(() => {
 			<i class="icon">home</i>
 			Status
 		</a>
-		<a class="button" href="/admin/abuse">
+		<a class="button"
+			href="/admin/block_files"
+			class:button_highlight={page === "block_files"}
+			on:click|preventDefault={() => {navigate("block_files", "Block files")}}>
 			<i class="icon">block</i>
 			Block files
 		</a>
@@ -66,6 +70,8 @@ onMount(() => {
 
 	{#if page === "status"}
 	<Home></Home>
+	{:else if page === "block_files"}
+	<BlockFiles></BlockFiles>
 	{:else if page === "abuse_reports"}
 	<AbuseReports></AbuseReports>
 	{:else if page === "abuse_reporters"}

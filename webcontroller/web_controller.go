@@ -186,6 +186,7 @@ func New(
 		// Admin settings
 		{GET, "admin" /*                */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/status" /*         */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
+		{GET, "admin/block_files" /*    */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/abuse_reporters" /**/, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/abuse_reports" /*  */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/ip_bans" /*        */, wc.serveTemplate("admin", handlerOpts{Auth: true})},

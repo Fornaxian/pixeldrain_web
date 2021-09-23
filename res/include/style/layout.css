@@ -327,7 +327,8 @@ a:hover {
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
-	max-width: 40em;
+	max-width: 30em;
+	width: 100%;
 }
 table:not(.form) {
 	border-collapse: collapse;

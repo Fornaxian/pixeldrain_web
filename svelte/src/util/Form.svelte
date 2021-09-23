@@ -40,8 +40,16 @@ let submit = async (event) => {
 
 	let field_values = {}
 
-	config.fields.forEach(val => {
-		field_values[val.name] = val.binding.value
+	config.fields.forEach(field => {
+		if (field.type === "radio") {
+			if (field.binding === undefined) {
+				field_values[field.name] = ""
+			} else {
+				field_values[field.name] = field.binding
+			}
+		} else {
+			field_values[field.name] = field.binding.value
+		}
 	})
 
 	submit_result = await config.on_submit(field_values)
@@ -115,7 +123,7 @@ let handle_errors = (response) => {
 			</div>
 		{:else}
 			<div id="submit_result" class:highlight_green={submit_result.success} class:highlight_red={!submit_result.success}>
-				{submit_result.message}
+				{@html submit_result.message}
 			</div>
 		{/if}
 	{/if}
@@ -124,68 +132,83 @@ let handle_errors = (response) => {
 	<table class="form">
 		{#each config.fields as field}
 			<tr class="form">
-				<td>{field.label}</td>
-				{#if field.type === "text"}
-					<input bind:this={field.binding}
-						id="input_{field.name}"
-						name="{field.name}"
-						value="{field.default_value}"
-						type="text"
-						class="form_input"/>
-				{:else if field.type === "number"}
-					<input bind:this={field.binding}
-						id="input_{field.name}"
-						name="{field.name}"
-						value="{field.default_value}"
-						type="number"
-						class="form_input"/>
-				{:else if field.type === "username"}
-					<input bind:this={field.binding}
-						id="input_{field.name}"
-						name="{field.name}"
-						value="{field.default_value}"
-						type="text"
-						autocomplete="username"
-						class="form_input"/>
-				{:else if field.type === "email"}
-					<input bind:this={field.binding}
-						id="input_{field.name}"
-						name="{field.name}"
-						value="{field.default_value}"
-						type="email"
-						autocomplete="email"
-						class="form_input"/>
-				{:else if field.type === "current_password"}
-					<input bind:this={field.binding}
-						id="input_{field.name}"
-						name="{field.name}"
-						value="{field.default_value}"
-						type="password"
-						autocomplete="current-password"
-						class="form_input"/>
-				{:else if field.type === "new_password"}
-					<input bind:this={field.binding}
-						id="input_{field.name}"
-						name="{field.name}"
-						value="{field.default_value}"
-						type="password"
-						autocomplete="new-password"
-						class="form_input"/>
-				{:else if field.type === "captcha"}
-					<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-					<div class="g-recaptcha" data-theme="dark" data-sitekey="{field.captcha_site_key}"></div>
-				{:else if field.type === "radio"}
-					{#each field.radio_values as val}
-					<input
-						id="input_{field.name}_choice_{val}"
-						name="{field.name}"
-						value="{val}"
-						type="radio"
-						checked={val === field.default_value}/>
-					<label for="input_{field.name}_choice_{val}">{val}</label><br/>
-					{/each}
-				{:else if field.type === "description"}
-					{field.default_value}
+				{#if field.type === "text_area"}
+					<td colspan="2">
+						{field.label}
+						<br/>
+						<textarea bind:this={field.binding}
+							id="input_{field.name}"
+							name="{field.name}"
+							class="form_input"
+							style="width: 100%; height: 10em; resize: vertical;"
+						>{field.default_value}</textarea>
+					</td>
+				{:else}
+					<td>{field.label}</td>
+					<td>
+						{#if field.type === "text"}
+							<input bind:this={field.binding}
+								id="input_{field.name}"
+								name="{field.name}"
+								value="{field.default_value}"
+								type="text"
+								class="form_input"/>
+						{:else if field.type === "number"}
+							<input bind:this={field.binding}
+								id="input_{field.name}"
+								name="{field.name}"
+								value="{field.default_value}"
+								type="number"
+								class="form_input"/>
+						{:else if field.type === "username"}
+							<input bind:this={field.binding}
+								id="input_{field.name}"
+								name="{field.name}"
+								value="{field.default_value}"
+								type="text"
+								autocomplete="username"
+								class="form_input"/>
+						{:else if field.type === "email"}
+							<input bind:this={field.binding}
+								id="input_{field.name}"
+								name="{field.name}"
+								value="{field.default_value}"
+								type="email"
+								autocomplete="email"
+								class="form_input"/>
+						{:else if field.type === "current_password"}
+							<input bind:this={field.binding}
+								id="input_{field.name}"
+								name="{field.name}"
+								value="{field.default_value}"
+								type="password"
+								autocomplete="current-password"
+								class="form_input"/>
+						{:else if field.type === "new_password"}
+							<input bind:this={field.binding}
+								id="input_{field.name}"
+								name="{field.name}"
+								value="{field.default_value}"
+								type="password"
+								autocomplete="new-password"
+								class="form_input"/>
+						{:else if field.type === "captcha"}
+							<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+							<div class="g-recaptcha" data-theme="dark" data-sitekey="{field.captcha_site_key}"></div>
+						{:else if field.type === "radio"}
+							{#each field.radio_values as val}
+								<input bind:group={field.binding}
+									id="input_{field.name}_choice_{val}"
+									name="{field.name}"
+									value={val}
+									type="radio"
+									checked={val === field.default_value}/>
+								<label for="input_{field.name}_choice_{val}">{val}</label><br/>
+							{/each}
+						{:else if field.type === "description"}
+							{field.default_value}
+						{/if}
+					</td>
 				{/if}
 			</tr>
 			{#if field.description}
