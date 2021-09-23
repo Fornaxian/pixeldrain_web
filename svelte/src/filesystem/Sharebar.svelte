@@ -73,7 +73,7 @@ const share_tumblr = () => {
 	overflow-x: hidden;
 	float: left;
 	background-color: var(--layer_1_color);
-	box-shadow: inset 1px 1px var(--layer_1_shadow) var(--shadow_color);
+	box-shadow: inset 1px 1px 5px var(--shadow_color);
 	text-align: center;
 	z-index: 48;
 	overflow: hidden;

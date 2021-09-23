@@ -155,42 +155,44 @@ onDestroy(() => {
 			</tr>
 		</table>
 		<h3>Pixelstore peers</h3>
-		<table>
-			<thead>
-				<tr>
-					<td>Address</td>
-					<td>Pos</td>
-					<td>Alive</td>
-					<td>Err</td>
-					<td>1m</td>
-					<td>5m</td>
-					<td>15m</td>
-					<td>Ping</td>
-					<td>Free</td>
-					<td>Min free</td>
-				</tr>
-			</thead>
-			<tbody>
-				{#each status.peers as peer}
-				<tr class="peer_row"
-					class:highlight_red={peer.free_space < peer.min_free_space / 2 || !peer.reachable}
-					class:highlight_blue={peer.free_space < peer.min_free_space}
-					class:highlight_green={peer.reachable}
-				>
-					<td>{peer.address}</td>
-					<td>{peer.position}</td>
-					<td>{peer.reachable}</td>
-					<td>{peer.unreachable_count}</td>
-					<td>{peer.load_1_min.toFixed(1)}</td>
-					<td>{peer.load_5_min.toFixed(1)}</td>
-					<td>{peer.load_15_min.toFixed(1)}</td>
-					<td>{formatDuration(peer.latency, 3)}</td>
-					<td>{formatDataVolume(peer.free_space, 4)}</td>
-					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
-				</tr>
-				{/each}
-			</tbody>
-		</table>
+		<div class="table_scroll">
+			<table>
+				<thead>
+					<tr>
+						<td>Address</td>
+						<td>Pos</td>
+						<td>Alive</td>
+						<td>Err</td>
+						<td>1m</td>
+						<td>5m</td>
+						<td>15m</td>
+						<td>Ping</td>
+						<td>Free</td>
+						<td>Min free</td>
+					</tr>
+				</thead>
+				<tbody>
+					{#each status.peers as peer}
+					<tr class="peer_row"
+						class:highlight_red={peer.free_space < peer.min_free_space / 2 || !peer.reachable}
+						class:highlight_yellow={peer.free_space < peer.min_free_space}
+						class:highlight_green={peer.reachable}
+					>
+						<td>{peer.address}</td>
+						<td>{peer.position}</td>
+						<td>{peer.reachable}</td>
+						<td>{peer.unreachable_count}</td>
+						<td>{peer.load_1_min.toFixed(1)}</td>
+						<td>{peer.load_5_min.toFixed(1)}</td>
+						<td>{peer.load_15_min.toFixed(1)}</td>
+						<td>{formatDuration(peer.latency, 3)}</td>
+						<td>{formatDataVolume(peer.free_space, 4)}</td>
+						<td>{formatDataVolume(peer.min_free_space, 3)}</td>
+					</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 		<h3>Pixelstore stats</h3>
 		<table>
 			<thead>
@@ -236,32 +238,34 @@ onDestroy(() => {
 			</tbody>
 		</table>
 		<h3>Query statistics</h3>
-		<table>
-			<thead>
-				<tr>
-					<td style="cursor: pointer;" on:click={() => { getStats('query_name') }}>Query</td>
-					<td style="cursor: pointer;" on:click={() => { getStats('calls') }}>Calls</td>
-					<td style="cursor: pointer;" on:click={() => { getStats('average_duration') }}>Average Duration</td>
-					<td style="cursor: pointer;" on:click={() => { getStats('total_duration') }}>Total Duration</td>
-					<td>Callers</td>
-				</tr>
-			</thead>
-			<tbody id="tstat_body">
-				{#each status.query_statistics as q}
+		<div class="table_scroll" style="text-align: left;">
+			<table>
+				<thead>
 					<tr>
-						<td>{q.query_name}</td>
-						<td>{q.calls}</td>
-						<td>{formatDuration(q.average_duration, 3)}</td>
-						<td>{formatDuration(q.total_duration, 0)}</td>
-						<td>
-							{#each q.callers as caller}
-								{caller.count}x {caller.name}<br/>
-							{/each}
-						</td>
+						<td style="cursor: pointer;" on:click={() => { getStats('query_name') }}>Query</td>
+						<td style="cursor: pointer;" on:click={() => { getStats('calls') }}>Calls</td>
+						<td style="cursor: pointer;" on:click={() => { getStats('average_duration') }}>Avg dur</td>
+						<td style="cursor: pointer;" on:click={() => { getStats('total_duration') }}>Total dur</td>
+						<td>Callers</td>
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody id="tstat_body">
+					{#each status.query_statistics as q}
+						<tr>
+							<td>{q.query_name}</td>
+							<td>{q.calls}</td>
+							<td>{q.average_duration}ms</td>
+							<td>{formatDuration(q.total_duration, 0)}</td>
+							<td>
+								{#each q.callers as caller}
+									{caller.count}x {caller.name}<br/>
+								{/each}
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 

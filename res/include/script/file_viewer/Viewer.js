@@ -95,6 +95,27 @@ function Viewer(type, viewToken, data) {
 	// Show introduction popup
 	new IntroPopup()
 
+	// Delete all the garbage that advertisers leave behind in my cookies and
+	// localstorage
+	// window.addEventListener("beforeunload", () => {
+	// 	document.cookie.split("; ").forEach(cookie => {
+	// 		let name = cookie.split("=")[0]
+	// 		if (name !== "pd_auth_key" && name !== "style") {
+	// 			document.cookie = name + "=; Max-Age=0; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Lax; path=/;"
+	// 		}
+	// 	})
+
+	// 	let keys = []
+	// 	for (let i = 0; i < localStorage.length; i++) {
+	// 		keys.push(localStorage.key(i))
+	// 	}
+	// 	keys.forEach(key => {
+	// 		if (key !== "viewer_intro_popup_dismissed" && key !== "uploaded_files") {
+	// 			localStorage.removeItem(key)
+	// 		}
+	// 	})
+	// })
+
 	this.initialized = true
 }
 

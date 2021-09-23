@@ -89,7 +89,6 @@ body, .checkers {
 	background: var(--input_color);
 	border-radius: 0;
 	border-bottom-right-radius: 90%;
-	box-shadow: 2px 2px 8px -3px #000000;
 	box-shadow: 2px 2px 8px -3px var(--shadow_color);
 }
 .button_toggle_navigation:active {
@@ -111,8 +110,7 @@ body, .checkers {
 	overflow-y: auto;
 	overflow-x: hidden;
 	text-align: left;
-	box-shadow: inset -10px 0px 10px -10px #000000;
-	box-shadow: inset -10px 0px 10px -10px var(--shadow_color);
+	box-shadow: inset -8px 0px 8px -8px var(--shadow_color);
 	transition: left 0.5s;
 }
 .page_body {
@@ -148,8 +146,7 @@ body, .checkers {
 	padding: 0 0 20px 0;
 	background-color: #212121;
 	background-color: var(--layer_2_color);
-	box-shadow: 1px 1px 20px 0 #000000;
-	box-shadow: 1px 1px 20px 0 var(--shadow_color);
+	box-shadow: 1px 1px 12px 0 var(--shadow_color);
 	box-sizing: border-box;
 	clear: both;
 }
@@ -207,6 +204,7 @@ body, .checkers {
 .highlight_lighter,
 .highlight_green,
 .highlight_blue,
+.highlight_yellow,
 .highlight_red,
 .highlight_1,
 .highlight_2,
@@ -222,27 +220,31 @@ body, .checkers {
 }
 .highlight_dark, .highlight_1 {
 	background-color: var(--layer_1_color);
-	box-shadow: 1px 1px var(--layer_1_shadow) 0 var(--shadow_color);
+	box-shadow: 1px 1px 6px -2px var(--shadow_color);
 }
 .highlight_middle, .highlight_2 {
 	background-color: var(--layer_2_color);
-	box-shadow: 1px 1px var(--layer_2_shadow) 0 var(--shadow_color);
+	box-shadow: 1px 1px 6px -2px var(--shadow_color);
 }
 .highlight_light, .highlight_3 {
 	background-color: var(--layer_3_color);
-	box-shadow: 1px 1px var(--layer_3_shadow) 0 var(--shadow_color);
+	box-shadow: 1px 1px 6px -2px var(--shadow_color);
 }
 .highlight_lighter, .highlight_4 {
 	background-color: var(--layer_4_color);
-	box-shadow: 1px 1px var(--layer_4_shadow) 0 var(--shadow_color);
+	box-shadow: 1px 1px 6px -2px var(--shadow_color);
 }
 .highlight_green {
 	background-color: rgba(0, 255, 0, 0.05);
-	border-color: #00d000;
+	border-color: #00D000;
 }
 .highlight_blue {
 	background-color: rgba(32, 32, 255, 0.2);
-	border-color: rgb(54, 54, 255);
+	border-color: #3636FF;
+}
+.highlight_yellow {
+	background-color: rgba(255, 255, 0, 0.05);
+	border-color: #A0A000;
 }
 .highlight_red {
 	background-color: rgba(255, 0, 0, 0.1);
@@ -251,6 +253,7 @@ body, .checkers {
 
 .highlight_green,
 .highlight_blue,
+.highlight_yellow,
 .highlight_red {
 	border-top-width: 1px;
 	border-top-style: solid;
@@ -262,8 +265,7 @@ body, .checkers {
 
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1em;
-	margin-left: 10px;
-	margin-right: 10px;
+	margin: 0.5em 10px;
 	font-weight: normal;
 }
 
@@ -508,22 +510,26 @@ select:disabled , select.disabled {
 .round {
 	border-radius: 32px;
 }
-.tab {
-	margin: 0 0 10px 8px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-}
-.tab:last-child {
-	margin-right: 8px;
-}
 .tab_bar {
 	display: block;
 	width: 100%;
+	margin: 0 0 16px 0;
 	overflow-x: auto;
 	overflow-y: hidden;
 	white-space: nowrap;
 	box-sizing: border-box;
 	text-align: center;
+	background-color: var(--layer_1_color);
+	box-shadow: inset 0 -10px 8px -12px var(--shadow_color);
+}
+.tab_bar > button,
+.tab_bar > .button {
+	margin: 10px 0 0 10px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.tab_bar > *:last-child {
+	margin-right: 10px;
 }
 
 /* Dropdown list of the select tag */

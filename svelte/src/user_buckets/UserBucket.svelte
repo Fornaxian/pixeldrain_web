@@ -73,7 +73,7 @@ const delete_bucket = async () => {
 	text-decoration: none;
 	background-color: var(--layer_3_color);
 	transition: box-shadow 0.5s;
-	box-shadow: 1px 1px var(--layer_3_shadow) 0 var(--shadow_color);
+	box-shadow: 1px 1px 5px 0 var(--shadow_color);
 	margin: 1em 0;
 	border-radius: 8px;
 	overflow: hidden;

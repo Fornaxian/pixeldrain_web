@@ -183,7 +183,7 @@ onDestroy(() => {
 			refresh the page.
 		</p>
 	</div>
-	<div class="highlight_dark">
+	<div class="highlight_light">
 		<button
 			on:click={() => { update_graphs(1440, 1, true) }}
 			class:button_highlight={graph_timespan == 1440}>

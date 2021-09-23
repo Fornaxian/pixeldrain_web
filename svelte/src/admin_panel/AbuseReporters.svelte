@@ -153,7 +153,7 @@ onMount(get_reporters);
 					<td>{formatDate(reporter.last_used, true, true, false)}</td>
 					<td>{formatDate(reporter.created, false, false, false)}</td>
 					<td>
-						<button on:click|preventDefault={() => {delete_reporter(reporter.email)}} class="button button_red">
+						<button on:click|preventDefault={() => {delete_reporter(reporter.email)}} class="button button_red round">
 							<i class="icon">delete</i>
 						</button>
 					</td>

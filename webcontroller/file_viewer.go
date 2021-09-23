@@ -88,12 +88,12 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 
 	if nudity {
 		// Brave and a-ads don't care about nudity. I'm not sure about ads.plus
-		switch i := rand.Intn(5); i {
-		case 0:
+		switch i := rand.Intn(10); i {
+		case 0, 1, 2, 3:
 			vd.AdBannerType = brave
-		case 1:
+		case 4, 5, 6, 7:
 			vd.AdBannerType = adsPlus
-		case 2, 3, 4:
+		case 8, 9:
 			vd.AdBannerType = aAds
 		default:
 			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
@@ -102,13 +102,11 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		// PixFuture does not allow nudity, so that's what we'll show on all
 		// files which are safe
 		switch i := rand.Intn(10); i {
-		case 0:
+		case 0, 1:
 			vd.AdBannerType = brave
-		case 1:
-			vd.AdBannerType = aAds
-		case 2, 3, 4, 5:
+		case 2, 3, 4:
 			vd.AdBannerType = adsPlus
-		case 6, 7, 8, 9:
+		case 5, 6, 7, 8, 9:
 			vd.AdBannerType = pixFuture
 		default:
 			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))

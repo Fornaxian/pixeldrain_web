@@ -49,14 +49,10 @@ type pixeldrainStyleSheet struct {
 	ScrollbarHoverColor      hsl
 	ScrollbarBackgroundColor hsl
 
-	Layer1Color  hsl // Deepest and darkest layer
-	Layer1Shadow int // Deep layers have little shadow
-	Layer2Color  hsl
-	Layer2Shadow int
-	Layer3Color  hsl
-	Layer3Shadow int
-	Layer4Color  hsl // Highest and brightest layer
-	Layer4Shadow int // High layers have lots of shadow
+	Layer1Color hsl // Deepest and darkest layer
+	Layer2Color hsl
+	Layer3Color hsl
+	Layer4Color hsl // Highest and brightest layer
 
 	ShadowColor hsl
 }
@@ -79,16 +75,12 @@ func (s pixeldrainStyleSheet) String() string {
 
 	--layer_1_color:        #%s;
 	--layer_1_color_border: #%s;
-	--layer_1_shadow:       %s;
 	--layer_2_color:        #%s;
 	--layer_2_color_border: #%s;
-	--layer_2_shadow:       %s;
 	--layer_3_color:        #%s;
 	--layer_3_color_border: #%s;
-	--layer_3_shadow:       %s;
 	--layer_4_color:        #%s;
 	--layer_4_color_border: #%s;
-	--layer_4_shadow:       %s;
 
 	--shadow_color:     #%s;
 }`,
@@ -106,16 +98,12 @@ func (s pixeldrainStyleSheet) String() string {
 		s.ScrollbarBackgroundColor.RGB(),
 		s.Layer1Color.RGB(),
 		s.Layer1Color.add(0, 0, .05).RGB(),
-		fmt.Sprintf("%dpx", s.Layer1Shadow),
 		s.Layer2Color.RGB(),
 		s.Layer2Color.add(0, 0, .05).RGB(),
-		fmt.Sprintf("%dpx", s.Layer2Shadow),
 		s.Layer3Color.RGB(),
 		s.Layer3Color.add(0, 0, .05).RGB(),
-		fmt.Sprintf("%dpx", s.Layer3Shadow),
 		s.Layer4Color.RGB(),
 		s.Layer4Color.add(0, 0, .05).RGB(),
-		fmt.Sprintf("%dpx", s.Layer4Shadow),
 		s.ShadowColor.RGB(),
 	)
 }
@@ -217,21 +205,17 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{266, .85, .50},
 	ScrollbarBackgroundColor: hsl{275, .75, .06},
 
-	Layer1Color:  hsl{275, .8, .06},
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{275, .75, .11},
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{275, .7, .18},
-	Layer3Shadow: 7,
-	Layer4Color:  hsl{275, .65, .24},
-	Layer4Shadow: 9,
+	Layer1Color: hsl{275, .8, .07},
+	Layer2Color: hsl{275, .75, .12},
+	Layer3Color: hsl{275, .7, .18},
+	Layer4Color: hsl{275, .65, .24},
 
 	ShadowColor: hsl{0, 0, 0},
 }
 
 var pixeldrainClassicStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .8},
-	InputColor:               hsl{0, 0, .2},
+	InputColor:               hsl{0, 0, .25},
 	InputTextColor:           hsl{0, 0, 1},
 	HighlightColor:           hsl{89, .60, .45},
 	HighlightTextColor:       hsl{0, 0, 0},
@@ -240,14 +224,10 @@ var pixeldrainClassicStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{0, 0, .45},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	Layer1Color:  hsl{0, 0, .08},
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{0, 0, .11},
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{0, 0, .15},
-	Layer3Shadow: 7,
-	Layer4Color:  hsl{0, 0, .18},
-	Layer4Shadow: 9,
+	Layer1Color: hsl{0, 0, .08},
+	Layer2Color: hsl{0, 0, .11},
+	Layer3Color: hsl{0, 0, .15},
+	Layer4Color: hsl{0, 0, .18},
 
 	ShadowColor: hsl{0, 0, 0},
 }
@@ -263,14 +243,12 @@ var sunnyPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{0, 0, .40},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	Layer1Color:  hsl{0, 0, .98}, // hsl(0, 0%, 13%)
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{0, 1, 1},
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{0, 1, 1},
-	Layer3Shadow: 6,
+	Layer1Color: hsl{0, 0, .98}, // hsl(0, 0%, 13%)
+	Layer2Color: hsl{0, 1, 1},
+	Layer3Color: hsl{0, 1, 1},
+	Layer4Color: hsl{0, 1, 1},
 
-	ShadowColor: hsl{0, 0, 0},
+	ShadowColor: hsl{0, 0, 0.5},
 }
 
 var solarizedDarkStyle = pixeldrainStyleSheet{
@@ -284,14 +262,10 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{192, .95, .40},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	Layer1Color:  hsl{192, .87, .09},
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{192, .81, .14},
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{192, .95, .17},
-	Layer3Shadow: 7,
-	Layer4Color:  hsl{192, .99, .19},
-	Layer4Shadow: 9,
+	Layer1Color: hsl{192, .87, .09},
+	Layer2Color: hsl{192, .81, .14},
+	Layer3Color: hsl{192, .95, .17},
+	Layer4Color: hsl{192, .99, .19},
 
 	ShadowColor: hsl{0, 0, 0},
 }
@@ -307,14 +281,10 @@ var maroonStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{0, .75, .4},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	Layer1Color:  hsl{0, .5, .05},
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{0, .6, .08}, // hsl{0, .8, .15},
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{0, .9, .14},
-	Layer3Shadow: 7,
-	Layer4Color:  hsl{0, .9, .20},
-	Layer4Shadow: 9,
+	Layer1Color: hsl{0, .5, .05},
+	Layer2Color: hsl{0, .6, .08}, // hsl{0, .8, .15},
+	Layer3Color: hsl{0, .9, .14},
+	Layer4Color: hsl{0, .9, .20},
 
 	ShadowColor: hsl{0, 0, 0},
 }
@@ -330,14 +300,10 @@ var hackerStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{120, .5, .35},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	Layer1Color:  hsl{0, 0, 0},
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{0, 0, .03},
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{120, .3, .08},
-	Layer3Shadow: 7,
-	Layer4Color:  hsl{120, .5, .12},
-	Layer4Shadow: 9,
+	Layer1Color: hsl{0, 0, 0},
+	Layer2Color: hsl{0, 0, .03},
+	Layer3Color: hsl{120, .3, .08},
+	Layer4Color: hsl{120, .5, .12},
 
 	ShadowColor: hsl{0, 0, 0},
 }
@@ -353,14 +319,10 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{204, .05, .88},
 	ScrollbarBackgroundColor: hsl{200, .13, .27}, // hsl(200, 13%, 27%)
 
-	Layer1Color:  hsl{180, .04, .16},
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{168, .05, .21},
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{170, .05, .26},
-	Layer3Shadow: 6,
-	Layer4Color:  hsl{163, .04, .31},
-	Layer4Shadow: 7,
+	Layer1Color: hsl{180, .04, .16},
+	Layer2Color: hsl{168, .05, .21},
+	Layer3Color: hsl{170, .05, .26},
+	Layer4Color: hsl{163, .04, .31},
 
 	ShadowColor: hsl{0, 0, 0},
 }
@@ -376,14 +338,10 @@ var arcPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{222, .08, .54}, // hsl(222, 8%, 44%)
 	ScrollbarBackgroundColor: hsl{223, .12, .2},  // hsl(223, 12%, 29%)
 
-	Layer1Color:  hsl{215, .17, .19},
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{227, .14, .25}, // hsl(227, 14%, 25%)
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{223, .12, .29},
-	Layer3Shadow: 7,
-	Layer4Color:  hsl{223, .10, .32},
-	Layer4Shadow: 9,
+	Layer1Color: hsl{215, .17, .19},
+	Layer2Color: hsl{227, .14, .25}, // hsl(227, 14%, 25%)
+	Layer3Color: hsl{223, .12, .29},
+	Layer4Color: hsl{223, .10, .32},
 
 	ShadowColor: hsl{0, 0, 0},
 }
@@ -399,14 +357,10 @@ var deepseaPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHoverColor:      hsl{12, .38, .26},  // hsl(12, 38%, 26%)
 	ScrollbarBackgroundColor: hsl{0, 0, .11},     // hsl(0, 0%, 11%)
 
-	Layer1Color:  hsl{160, .27, .05},
-	Layer1Shadow: 3,
-	Layer2Color:  hsl{163, .26, .09}, // hsl(163, 26%, 11%)
-	Layer2Shadow: 5,
-	Layer3Color:  hsl{161, .28, .12}, // hsl(161, 28%, 14%)
-	Layer3Shadow: 7,
-	Layer4Color:  hsl{161, .32, .15},
-	Layer4Shadow: 9,
+	Layer1Color: hsl{160, .27, .05},
+	Layer2Color: hsl{163, .26, .09}, // hsl(163, 26%, 11%)
+	Layer3Color: hsl{161, .28, .12}, // hsl(161, 28%, 14%)
+	Layer4Color: hsl{161, .32, .15},
 
 	ShadowColor: hsl{0, 0, 0},
 }

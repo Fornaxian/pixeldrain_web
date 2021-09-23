@@ -84,7 +84,7 @@ const logout = async (key) => {
 	{/if}
 	<div class="limit_width">
 		{#if !loaded}
-			<div class="highlight_blue">
+			<div class="highlight_yellow">
 				<h2>Warning</h2>
 				<p>
 					API keys are sensitive information. They can be used to gain

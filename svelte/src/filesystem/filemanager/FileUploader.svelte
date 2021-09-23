@@ -197,7 +197,7 @@ const paste = (e) => {
 		margin: 6px 0 0 0;
 		padding: 0;
 		background-color: var(--layer_2_color);
-		box-shadow: 1px 1px var(--layer_2_shadow) var(--shadow_color);
+		box-shadow: 1px 1px 5px var(--shadow_color);
 	}
 
 	.upload_progress_bar {

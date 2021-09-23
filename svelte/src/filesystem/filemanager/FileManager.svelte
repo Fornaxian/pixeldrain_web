@@ -236,7 +236,7 @@ const toggle_select = () => {
 	margin: 16px 0 16px 0;
 	text-align: left;
 	background-color: var(--layer_2_color);
-	box-shadow: 1px 1px var(--layer_2_shadow) var(--shadow_color);
+	box-shadow: 1px 1px 5px var(--shadow_color);
 	box-sizing: border-box;
 	border-collapse: collapse;
 }

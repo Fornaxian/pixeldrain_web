@@ -63,6 +63,6 @@ onMount(() => {
 	max-height: 100%;
 	top: 50%;
 	transform: translateY(-50%);
-	box-shadow: 1px 1px var(--layer_3_shadow) var(--shadow_color);
+	box-shadow: 1px 1px 5px var(--shadow_color);
 }
 </style>
