@@ -155,11 +155,11 @@ onDestroy(() => {
 			<div id="storage_progress" class="progress_bar_inner" style="width: {storage_percent*100}%;"></div>
 		</div>
 		<br/>
-		Direct link bandwidth:
+		Hotlink bandwidth:
 		{formatDataVolume(direct_link_bandwidth_used, 3)}
 		out of
 		{formatDataVolume(window.user.subscription.direct_linking_bandwidth, 3)}
-		(<a href="/#direct_linking">More information about direct linking</a>)
+		(<a href="/#hotlinking">More information about hotlinking</a>)
 		<br/>
 		<div class="progress_bar_outer">
 			<div id="direct_bandwidth_progress" class="progress_bar_inner" style="width: {direct_link_percent*100}%;"></div>

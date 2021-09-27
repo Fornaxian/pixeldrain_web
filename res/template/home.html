@@ -192,7 +192,9 @@
 				</div>
 				<div>
 					<div class="feat_label">
-						<a href="javascript:void(0);" onclick="return explainDirectLinking();">Direct linking</a>
+						<a href="javascript:void(0);" onclick="return explainDirectLinking();">
+							Hotlinking
+						</a>
 					</div>
 					<div class="feat_normal">
 						Rate limiting mode will be enabled when a file has 3
@@ -286,7 +288,7 @@
 					<div class="feat_pro features_cell round_tr">
 						<div><span class="text_highlight">20 GB</span> max file size (18.63 GiB)<br/></div>
 						<div><span class="text_highlight">120 days</span> file expiry</div>
-						<div><span class="text_highlight">2 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">2 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">2 TB</span> storage space<br/></div>
 					</div>
 				</div>
@@ -303,7 +305,7 @@
 					<div class="feat_pro features_cell">
 						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
 						<div><span class="text_highlight">240 days</span> file expiry</div>
-						<div><span class="text_highlight">4 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">4 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">4 TB</span> storage space<br/></div>
 					</div>
 				</div>
@@ -320,7 +322,7 @@
 					<div class="feat_pro features_cell">
 						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
 						<div><span class="text_highlight">480 days</span> file expiry</div>
-						<div><span class="text_highlight">8 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">8 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">8 TB</span> storage space<br/></div>
 					</div>
 				</div>
@@ -337,7 +339,7 @@
 					<div class="feat_pro features_cell">
 						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
 						<div><span class="text_highlight">Files never expire</span></div>
-						<div><span class="text_highlight">16 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">16 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">16 TB</span> storage space<br/></div>
 					</div>
 				</div>
@@ -354,7 +356,7 @@
 					<div class="feat_pro features_cell">
 						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
 						<div><span class="text_highlight">Files never expire</span></div>
-						<div><span class="text_highlight">32 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">32 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">32 TB</span> storage space<br/></div>
 					</div>
 				</div>
@@ -373,7 +375,7 @@
 					<div class="feat_pro features_cell">
 						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
 						<div><span class="text_highlight">Files never expire</span></div>
-						<div><span class="text_highlight">48 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">48 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">48 TB</span> storage space<br/></div>
 					</div>
 				</div>
@@ -392,7 +394,7 @@
 					<div class="feat_pro features_cell">
 						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
 						<div><span class="text_highlight">Files never expire</span></div>
-						<div><span class="text_highlight">64 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">64 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">64 TB</span> storage space<br/></div>
 					</div>
 				</div>
@@ -411,7 +413,7 @@
 					<div class="feat_pro features_cell">
 						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
 						<div><span class="text_highlight">Files never expire</span></div>
-						<div><span class="text_highlight">96 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">96 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">96 TB</span> storage space<br/></div>
 					</div>
 				</div>
@@ -430,30 +432,11 @@
 					<div class="feat_pro features_cell round_br">
 						<div><span class="text_highlight">20 GB</span> max file size<br/></div>
 						<div><span class="text_highlight">Files never expire</span></div>
-						<div><span class="text_highlight">128 TB</span> direct link bandwidth<br/></div>
+						<div><span class="text_highlight">128 TB</span> hotlink bandwidth<br/></div>
 						<div><span class="text_highlight">128 TB</span> storage space<br/></div>
 					</div>
 				</div>
 			</div>
-			<!--
-			<br/>
-			<h2>Premium</h2>
-			<div class="highlight_dark">
-				Pixeldrain Premium is still in development and not generally
-				available yet. Stay tuned.
-			</div>
-			<p>
-				Premium is more catered toward content delivery. This plan
-				enables the Buckets feature which provides a more structured way
-				to manage your files on pixeldrain. Buckets allow direct linking
-				to files without running into rate limiting.
-			</p>
-			<p>
-				When you choose for Premium you will also get all the benefits
-				of the Pro subscription. A base rate of €2 per month will be
-				billed regardless of your usage.
-			</p>
-			-->
 		</div></div>
 
 		<template id="tpl_file_expiry">
@@ -495,6 +478,11 @@
 				of the file and a frame where you can view the file if it's an
 				image, video, audio, PDF or text file.
 			</p>
+			<p>
+				More information about <a
+				href="https://en.wikipedia.org/wiki/Inline_linking"
+				target="_blank">Hotlinking on Wikipedia</a>.
+			</p>
 			<h3>Rate limiting</h3>
 			<p>
 				It's also possible to link directly to a file instead of the
@@ -507,7 +495,7 @@
 				from the file viewer page. On the file viewer you will see a
 				CAPTCHA to fill in when you click the download button.
 			</p>
-			<h3>Direct downloading with a Pro subscription</h3>
+			<h3>Hotlinking with a Pro subscription</h3>
 			<p>
 				When you have a Pro subscription you will get a monthly
 				bandwidth cap for all the files on your account combined. Normal
@@ -549,14 +537,14 @@
 			}
 			function explainDirectLinking() {
 				let m = new Modal(
-					document.body, null, "Direct Linking Bandwidth", "800px", "auto"
+					document.body, null, "Hotlinking Bandwidth", "800px", "auto"
 				)
 				m.cloneTemplate("tpl_direct_linking")
 				m.open()
 				return false
 			}
 
-			if (window.location.hash === "#direct_linking") {
+			if (window.location.hash === "#direct_linking" || window.location.hash === "#hotlinking") {
 				explainDirectLinking()
 			}
 		</script>

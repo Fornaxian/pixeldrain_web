@@ -7,7 +7,8 @@
 ### Description
 
 Upload a file. I recommend that you use the PUT API instead of the POST API.
-It's easier to use.
+It's easier to use and the multipart encoding of the POST API can cause
+performance issues in certain environments.
 
 ### Parameters
 
@@ -163,9 +164,8 @@ limit will be enabled if a file has three times more downloads than views. The
 owner of a file can always download it. When a file is rate limited the user
 will need to fill out a captcha in order to continue downloading the file. The
 captcha will only appear on the file viewer page (pixeldrain.com/u/{id}). Rate
-limiting has been added to prevent the spread of viruses and to stop direct
-linking. Direct linking is only allowed when files are uploaded using a Pro
-account.
+limiting has been added to prevent the spread of viruses and to stop hotlinking.
+Hotlinking is only allowed when files are uploaded using a Pro account.
 
 Pixeldrain also includes a virus scanner. If a virus has been detected in a file
 the user will also have to fill in a captcha to download it.
