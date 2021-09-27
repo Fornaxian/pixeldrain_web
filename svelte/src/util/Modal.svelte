@@ -83,7 +83,7 @@ const keydown = e => {
 	left: 50%;
 	transform: translate(-50%, -20%);
 	padding: 0;
-	border-radius: 16px 16px 8px 8px;
+	border-radius: 20px 20px 8px 8px;
 	overflow: hidden;
 	box-sizing: border-box;
 	text-align: left;

@@ -78,6 +78,17 @@ const on_failure = (status, message) => {
 }
 
 export const start = () => {
+	if (window.user_subscription.file_size_limit === 0) {
+		window.user_subscription.file_size_limit = 5e9
+	}
+	if (job.total_size > window.user_subscription.file_size_limit) {
+		on_failure(
+			"file_too_large",
+			"This file is too large. Check out the Pro subscription to increase the file size limit"
+		)
+		return
+	}
+
 	start_time = new Date().getTime()
 	if (stats_interval === null) {
 		stats_interval = setInterval(on_progress, stats_interval_ms)
