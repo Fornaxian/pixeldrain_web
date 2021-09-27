@@ -6,7 +6,8 @@
 
 ### Description
 
-Upload a file.
+Upload a file. I recommend that you use the PUT API instead of the POST API.
+It's easier to use.
 
 ### Parameters
 
@@ -22,6 +23,78 @@ HTTP 200: OK
 ```
 {
 	"success": true,
+	"id": "abc123" // ID of the newly uploaded file
+}
+```
+
+HTTP 422: Unprocessable Entity
+```
+{
+	"success": false,
+	"value": "no_file",
+	"message": "The file does not exist or is empty."
+}
+```
+
+HTTP 500: Internal Server Error
+```
+{
+	"success": false,
+	"value": "internal",
+	"message": "An internal server error occurred."
+}
+```
+
+HTTP 413: Payload Too Large
+```
+{
+	"success": false,
+	"value": "file_too_large",
+	"message": "The file you tried to upload is too large"
+}
+```
+
+HTTP 500: Internal Server Error
+```
+{
+	"success": false,
+	"value": "writing",
+	"message": "Something went wrong while writing the file to disk, the server may be out of storage space."
+}
+```
+
+HTTP 413: Payload Too Large
+```
+{
+	"success": false,
+	"value": "name_too_long",
+	"message": "File Name is too long, Max 255 characters allowed."
+}
+```
+</div>
+</details>
+
+<details class="request_put">
+<summary><span class="method">PUT</span>/file/{name}</summary>
+<div>
+
+### Description
+
+Upload a file.
+
+### Parameters
+
+Param     | Type    | Required | Location      | Maximum Size                 | Default | Description
+----------|---------|----------|---------------|------------------------------|---------|-----------------------------------
+name      | string  | true     | URL           | 255 characters               | none    | Name of the file to upload
+anonymous | boolean | false    | URL parameter | N/A                          | false   | File is not linked to user if true
+file      | file    | true     | request body  | Depends on user subscription | none    | File to upload
+
+### Returns
+
+HTTP 200: OK
+```
+{
 	"id": "abc123" // ID of the newly uploaded file
 }
 ```

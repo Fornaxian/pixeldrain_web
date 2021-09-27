@@ -94,11 +94,8 @@ export const start = () => {
 		stats_interval = setInterval(on_progress, stats_interval_ms)
 	}
 
-	let form = new FormData();
-	form.append('file', job.file, job.name);
-
 	let xhr = new XMLHttpRequest();
-	xhr.open("POST", window.api_endpoint+"/file", true);
+	xhr.open("PUT", window.api_endpoint+"/file/"+encodeURIComponent(job.name), true);
 	xhr.timeout = 86400000; // 24 hours, to account for slow connections
 
 	xhr.upload.addEventListener("progress", evt => {
@@ -142,6 +139,8 @@ export const start = () => {
 				tries++
 				setTimeout(start, 5000)
 			}
+		} else if (xhr.status === 0) {
+			on_failure("request_failed", "Your request did not arrive, or the server blocked the request")
 		} else {
 			// Request did not arrive
 			if (tries < 3) {
@@ -155,7 +154,7 @@ export const start = () => {
 		}
 	};
 
-	xhr.send(form);
+	xhr.send(job.file);
 }
 
 const add_upload_history = id => {
