@@ -5,12 +5,14 @@ import Chart from "../util/Chart.svelte";
 
 let graphViews
 let graphBandwidth
+let graphHotlink
 let graphTimeout = null
 
 let start_time = ""
 let end_time = ""
 let total_bandwidth = 0
 let total_views = 0
+let total_hotlink = 0
 const loadGraph = (minutes, interval, live) => {
 	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
 	if (live) {
@@ -42,13 +44,17 @@ const loadGraph = (minutes, interval, live) => {
 		graphViews.chart().data.datasets[0].data = resp.views.amounts;
 		graphBandwidth.chart().data.labels = resp.views.timestamps;
 		graphBandwidth.chart().data.datasets[0].data = resp.bandwidth.amounts;
+		graphHotlink.chart().data.labels = resp.views.timestamps;
+		graphHotlink.chart().data.datasets[0].data = resp.direct_link_bandwidth.amounts;
 		graphViews.update()
 		graphBandwidth.update()
+		graphHotlink.update()
 
 		start_time = resp.views.timestamps[0]
 		end_time = resp.views.timestamps.slice(-1)[0];
 		total_bandwidth = resp.bandwidth.amounts.reduce((acc, val) => acc + val)
 		total_views = resp.views.amounts.reduce((acc, val) => acc + val)
+		total_hotlink = resp.direct_link_bandwidth.amounts.reduce((acc, val) => acc + val)
 	})
 }
 
@@ -133,10 +139,14 @@ onDestroy(() => {
 	</div>
 	<Chart bind:this={graphBandwidth} dataType="bytes" label="Bandwidth" />
 	<hr/>
+	<Chart bind:this={graphHotlink} dataType="bytes" label="Hotlink bandwidth" />
+	<hr/>
 	<Chart bind:this={graphViews} dataType="number" label="Views" />
 	<div class="highlight_dark">
 		Total usage from {start_time} to {end_time}<br/>
-		{formatDataVolume(total_bandwidth, 3)} bandwidth and {formatThousands(total_views, 3)} views
+		{formatDataVolume(total_bandwidth, 3)} bandwidth,
+		{formatDataVolume(total_hotlink), 3} hotlink bandwidth and
+		{formatThousands(total_views, 3)} views
 	</div>
 
 	<br/>
