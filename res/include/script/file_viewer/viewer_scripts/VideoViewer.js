@@ -8,6 +8,7 @@ function VideoViewer(viewer, file, next) {
 
 	this.vidElement = document.createElement("video")
 	this.vidElement.controls = "controls"
+	this.vidElement.playsInline = "playsInline"
 	this.vidElement.classList = "center drop_shadow"
 	this.vidElement.addEventListener("ended", () => { this.next() }, false)
 	if (!embeddedViewer) {
@@ -16,6 +17,7 @@ function VideoViewer(viewer, file, next) {
 
 	this.videoSource = document.createElement("source")
 	this.videoSource.src = this.file.get_href
+	this.videoSource.type = this.file.mime_type
 
 	this.vidElement.appendChild(this.videoSource)
 	this.vidContainer.appendChild(this.vidElement)

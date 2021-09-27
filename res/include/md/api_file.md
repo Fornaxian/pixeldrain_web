@@ -86,12 +86,13 @@ instead of inline rendering, which causes the browser to show a 'Save File'
 dialog.
 
 Warning: If a file is using too much bandwidth it can be rate limited. The rate
-limit will be enabled if a file has ten times more downloads than views. The
+limit will be enabled if a file has three times more downloads than views. The
 owner of a file can always download it. When a file is rate limited the user
 will need to fill out a captcha in order to continue downloading the file. The
 captcha will only appear on the file viewer page (pixeldrain.com/u/{id}). Rate
 limiting has been added to prevent the spread of viruses and to stop direct
-linking.
+linking. Direct linking is only allowed when files are uploaded using a Pro
+account.
 
 Pixeldrain also includes a virus scanner. If a virus has been detected in a file
 the user will also have to fill in a captcha to download it.

@@ -138,7 +138,10 @@ const stats_update = () => {
 	remaining_time = (elapsed_time/total_progress) - elapsed_time
 
 	// Calculate the rate by comparing the current progress with the last iteration
-	total_rate = (1000 / stats_interval_ms) * (total_loaded - last_total_loaded)
+	total_rate = Math.floor(
+		(total_rate * 0.8) +
+		(((1000 / stats_interval_ms) * (total_loaded - last_total_loaded)) * 0.2)
+	)
 	last_total_loaded = total_loaded
 
 	progress_bar_inner.style.width = (total_progress * 100) + "%"

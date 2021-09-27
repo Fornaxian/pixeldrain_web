@@ -99,7 +99,7 @@ export const start = () => {
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", window.api_endpoint+"/file", true);
-	xhr.timeout = 21600000; // 6 hours, to account for slow connections
+	xhr.timeout = 86400000; // 24 hours, to account for slow connections
 
 	xhr.upload.addEventListener("progress", evt => {
 		if (evt.lengthComputable) {

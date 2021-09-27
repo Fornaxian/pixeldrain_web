@@ -52,7 +52,7 @@ onMount(() => {
 			href="/admin/abuse_reporters"
 			class:button_highlight={page === "abuse_reporters"}
 			on:click|preventDefault={() => {navigate("abuse_reporters", "Abuse reporters")}}>
-			<i class="icon">report</i>
+			<i class="icon">email</i>
 			E-mail abuse reporters
 		</a>
 		<a class="button"

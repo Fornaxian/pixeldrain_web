@@ -226,7 +226,7 @@ func (tm *TemplateManager) bgPattern() template.URL {
 		file = "checker_developers.png"
 	} else if month == time.October && day == 31 {
 		file = "checker_halloween.png"
-	} else if month == time.December && day == 25 || day == 26 || day == 27 {
+	} else if month == time.December && (day == 25 || day == 26 || day == 27) {
 		file = "checker_christmas.png"
 	} else {
 		file = fmt.Sprintf("checker%d.png", now.UnixNano()%18)

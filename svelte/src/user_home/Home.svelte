@@ -127,6 +127,9 @@ onDestroy(() => {
 				{/if}
 				<ul>
 					<li>
+						Max file size: {formatDataVolume(window.user.subscription.file_size_limit, 3)}
+					</li>
+					<li>
 						Advertisements when viewing files:
 						{#if window.user.subscription.disable_ad_display}No{:else}Yes{/if}
 					</li>
