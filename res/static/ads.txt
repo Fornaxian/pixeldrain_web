@@ -880,6 +880,69 @@ criteo.com, b-060278, DIRECT, 9fac4a4a87c2a44f
 spotxchange.com, 315414, RESELLER, 7842df1d2fe2db34
 spotx.tv, 315414, RESELLER, 7842df1d2fe2db34
 onetag.com, 719896833a6692c, DIRECT
+brightcom.com, 20543, DIRECT
+getmediamx.com, 1220543, DIRECT
+appnexus.com, 11801, RESELLER
+appnexus.com, 12366, RESELLER, f5ab79cb980f11d1
+appnexus.com, 12061, RESELLER
+pubmatic.com, 159477,RESELLER,5d62403b186f2ace
+yahoo.com, 57554, RESELLER, e1a5b5b6e3255540
+yahoo.com, 59080, RESELLER
+google.com, pub-5231479214411897, RESELLER, f08c47fec0942fa0
+google.com, pub-4207323757133151, RESELLER, f08c47fec0942fa0
+indexexchange.com, 189744, RESELLER
+audienciad.com, 205432, DIRECT
+appnexus.com, 12695, RESELLER, f5ab79cb980f11d1
+smartadserver.com, 3503, RESELLER
+adsparc.com, 720543, DIRECT
+smartadserver.com, 3439, RESELLER
+limpid.tv, 920543, DIRECT
+pubmatic.com, 160453, RESELLER, 5d62403b186f2ace
+whildey.com, 205435, DIRECT
+sovrn.com, 270524, RESELLER, fafdf38b16bf6b2b
+lijit.com, 270524, RESELLER, fafdf38b16bf6b2b
+lijit.com, 270524-eb, RESELLER, fafdf38b16bf6b2b
+rubiconproject.com, 20416, RESELLER, 0bfd66d529a55807
+onomagic.com, 205431, DIRECT
+appnexus.com, 13162, RESELLER, f5ab79cb980f11d1
+rubiconproject.com, 21310, RESELLER , 0bfd66d529a55807
+openx.com, 537153209, RESELLER, 6a698e2ec38604c6
+sonobi.com, 37dd19ad4a, RESELLER, d1a215d9eb5aee9e
+rhythmone.com, 1059622079, RESELLER, a670c89d4a324e47
+contextweb.com, 560606, RESELLER, 89ff185a4c4e857c
+appnexus.com, 3153, RESELLER, f5ab79cb980f11d1
+appnexus.com, 11924, RESELLER, f5ab79cb980f11d1
+amxrtb.com, 105199514, DIRECT
+appnexus.com, 12290, RESELLER, f5ab79cb980f11d1
+indexexchange.com, 191503, RESELLER, 50b1c356f2c5c8fc
+pubmatic.com, 158355 , RESELLER, 5d62403b186f2ace
+33across.com, 0013300001qkdlwAAA, RESELLER
+sovrn.com, 274193, DIRECT, fafdf38b16bf6b2b
+lijit.com, 274193, DIRECT, fafdf38b16bf6b2b
+lijit.com, 274193-eb, DIRECT, fafdf38b16bf6b2b
+EMXDGT.com, 2002, DIRECT, 1e1d41537f7cad7f
+Appnexus.com, 1356, RESELLER, f5ab79cb980f11d1
+yieldmo.com, 2757543169808605705, DIRECT
+lijit.com, 273657, RESELLER, fafdf38b16bf6b2b
+nativo.com, 5677, RESELLER
+nobid.io, 22579573251, RESELLER
+onetag.com, 694e68b73971b58, RESELLER
+rhythmone.com, 3736557092, RESELLER, a670c89d4a324e47
+richaudience.com, 1BTOoaD22a, RESELLER
+rubiconproject.com, 13702, RESELLER, 0bfd66d529a55807
+smartadserver.com, 4012, RESELLER
+smartadserver.com, 4016, RESELLER
+smartadserver.com, 4071, RESELLER
+smartadserver.com, 4073, RESELLER
+smartadserver.com, 4074, RESELLER
+smartadserver.com, 3447,RESELLER
+sovrn.com, 273657, RESELLER, fafdf38b16bf6b2b
+video.unrulymedia.com, 3736557092, RESELLER
+xandr.com, 11429, RESELLER, f5ab79cb980f11d1
+xandr.com, 12701, RESELLER, f5ab79cb980f11d1
+yahoo.com, 57872, RESELLER
+appnexus.com, 13099, RESELLER
+smartadserver.com, 4111, RESELLER
 
 #pixfuture START updated Aug-23-2021
 pixfuture.com, 4605, DIRECT

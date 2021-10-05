@@ -104,17 +104,17 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		switch i := rand.Intn(10); i {
 		case 0, 1:
 			vd.AdBannerType = brave
-		case 2, 3, 4:
+		case 2, 3, 4, 5:
 			vd.AdBannerType = adsPlus
-		case 5, 6, 7, 8, 9:
+		case 6, 7, 8, 9:
 			vd.AdBannerType = pixFuture
 		default:
 			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 		}
 	}
 
-	// If the file is larger than 50 MB we enable floating popups
-	if avgSize > 50e6 {
+	// If the file is larger than 30 MB we enable floating popups
+	if avgSize > 30e6 {
 		vd.AdFloaterType = propellerFloat
 	}
 }
