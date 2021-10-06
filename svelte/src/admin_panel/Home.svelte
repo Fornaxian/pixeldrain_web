@@ -125,7 +125,7 @@ onDestroy(() => {
 
 <div>
 	<div class="limit_width">
-		<h3>Bandwidth and views</h3>
+		<h3>Bandwidth, hotlinking and views</h3>
 	</div>
 	<div class="highlight_dark" style="margin-bottom: 6px;">
 		<button on:click={() => { loadGraph(1440, 1, true) }}>Day</button>
@@ -145,7 +145,7 @@ onDestroy(() => {
 	<div class="highlight_dark">
 		Total usage from {start_time} to {end_time}<br/>
 		{formatDataVolume(total_bandwidth, 3)} bandwidth,
-		{formatDataVolume(total_hotlink), 3} hotlink bandwidth and
+		{formatDataVolume(total_hotlink, 3)} hotlink bandwidth and
 		{formatThousands(total_views, 3)} views
 	</div>
 

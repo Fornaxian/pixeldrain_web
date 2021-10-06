@@ -529,8 +529,8 @@ const keydown = (e) => {
 				can upload anything it's hard to find reputable advertisers who
 				want to advertise on pixeldrain. Every month the ad revenue just
 				barely covers the bandwidth costs. If this continues I will have
-				to resort to adding more shady ads, or reducing the file size
-				and bandwidth limits. That's not something I would like to do.
+				to reduce the file size and bandwidth limits even more. That's
+				not something I would like to do.
 			</p>
 			<p>
 				Pro costs only <b>€20 per year</b> or €2 per month. You will get

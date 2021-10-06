@@ -64,7 +64,7 @@ let graph_timespan = 0
 let update_graphs = (minutes, interval, live) => {
 	if (graph_timeout !== null) { clearTimeout(graph_timeout) }
 	if (live) {
-		graph_timeout = setTimeout(() => { update_graphs(minutes, interval, true) }, 10000)
+		graph_timeout = setTimeout(() => { update_graphs(minutes, interval, true) }, 6000)
 	}
 
 	graph_timespan = minutes
@@ -154,7 +154,30 @@ onDestroy(() => {
 		<div class="progress_bar_outer">
 			<div id="storage_progress" class="progress_bar_inner" style="width: {storage_percent*100}%;"></div>
 		</div>
-		<br/>
+
+		{#if storage_percent > 0.99}
+			<div class="highlight_red">
+				You have used all of your storage space. You won't be able to
+				upload new files anymore. Please upgrade to a higher support
+				tier to continue uploading files:
+				<br/>
+				<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
+					Upgrade options
+				</a>
+			</div>
+		{:else if storage_percent > 0.8}
+			<div class="highlight_yellow">
+				You have used {(storage_percent*100).toFixed(0)}% of your
+				storage space. If your storage space runs out you won't be able
+				to upload new files anymore. Please upgrade to a higher support
+				tier to continue uploading files:
+				<br/>
+				<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
+					Upgrade options
+				</a>
+			</div>
+		{/if}
+
 		Hotlink bandwidth:
 		{formatDataVolume(direct_link_bandwidth_used, 3)}
 		out of
@@ -164,6 +187,32 @@ onDestroy(() => {
 		<div class="progress_bar_outer">
 			<div id="direct_bandwidth_progress" class="progress_bar_inner" style="width: {direct_link_percent*100}%;"></div>
 		</div>
+
+		{#if direct_link_percent > 0.99}
+			<div class="highlight_red">
+				You have used all of your hotlink bandwidth. Other people won't
+				be able to download your files directly from the API anymore.
+				Downloads will have to go through the file viewer page. Please
+				upgrade to a higher support tier to continue hotlinking files:
+				<br/>
+				<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
+					Upgrade options
+				</a>
+			</div>
+		{:else if direct_link_percent > 0.8}
+			<div class="highlight_yellow">
+				You have used {(direct_link_percent*100).toFixed(0)}% of your
+				hotlink bandwidth. If your hotlink bandwidth runs out people
+				won't be able to download your files directly from the API
+				anymore. Downloads will have to go through the file viewer page.
+				Please upgrade to a higher support tier to continue hotlinking
+				files:
+				<br/>
+				<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
+					Upgrade options
+				</a>
+			</div>
+		{/if}
 
 		<h3>Exports</h3>
 		<div style="text-align: center;">
@@ -259,26 +308,27 @@ onDestroy(() => {
 	</div>
 	<Chart bind:this={graph_bandwidth} dataType="bytes" label="Bandwidth" />
 	<div class="limit_width">
-		<h3>Direct link bandwidth</h3>
+		<h3>Hotlink bandwidth</h3>
 		<p>
 			When a file is downloaded without going through pixeldrain's
-			download page it counts as a direct download. Because direct
-			downloads cost us bandwidth and don't generate any ad
-			revenue we have to limit them. When your direct link
-			bandwidth runs out people will be asked to do a test before
-			they can download your files. See our
-			<a href="/#pro">subscription options</a> to get more direct
-			linking bandwidth.
+			download page it counts as a hotlink. Because hotlinking costs us
+			bandwidth and doesn't generate any ad revenue we have to limit it.
+			When your hotlink bandwidth runs out people will be asked to do a
+			test before they can download your files. See our
+			<a href="/#pro">subscription options</a> to get more hotlink
+			bandwidth.
 		</p>
 	</div>
-	<Chart bind:this={graph_direct_link} dataType="bytes" label="Direct link bandwidth" />
+	<Chart bind:this={graph_direct_link} dataType="bytes" label="Hotlink bandwidth" />
 </div>
 
 <style>
 .progress_bar_outer {
+	display: block;
 	background-color: var(--layer_1_color);
 	width: 100%;
 	height: 3px;
+	margin: 6px 0 12px 0;
 }
 .progress_bar_inner {
 	background-color: var(--highlight_color);
