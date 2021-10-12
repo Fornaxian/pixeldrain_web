@@ -104,18 +104,18 @@
 					<br/>
 
 					{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
-					<hr/>
-					Tired of ads?<br/>
-					Files expiring too soon?<br/>
-					<a class="button button_highlight" href="/click/7wy9gg2J?target=%2F%23pro">
-						<svg style="float: left; width: 2em; height: 2em; fill: currentColor; margin-right: 4px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-							<g fill-rule="evenodd">
-								<path d="M64.1102,0.1004 C44.259,0.1004 28.1086,16.2486 28.1086,36.0986 C28.1086,55.8884 44.259,71.989 64.1102,71.989 C83.9,71.989 100,55.8884 100,36.0986 C100,16.2486 83.9,0.1004 64.1102,0.1004"/>
-								<polygon points=".012 95.988 17.59 95.988 17.59 .1 .012 .1"/>
-							</g>
-						</svg>
-						Become a Patron!
-					</a>
+						<hr/>
+						Tired of ads?<br/>
+						Files expiring too soon?<br/>
+						<a class="button button_highlight" href="/click/7wy9gg2J?target=%2F%23pro">
+							<svg style="float: left; width: 2em; height: 2em; fill: currentColor; margin-right: 4px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+								<g fill-rule="evenodd">
+									<path d="M64.1102,0.1004 C44.259,0.1004 28.1086,16.2486 28.1086,36.0986 C28.1086,55.8884 44.259,71.989 64.1102,71.989 C83.9,71.989 100,55.8884 100,36.0986 C100,16.2486 83.9,0.1004 64.1102,0.1004"/>
+									<polygon points=".012 95.988 17.59 95.988 17.59 .1 .012 .1"/>
+								</g>
+							</svg>
+							Become a Patron!
+						</a>
 					{{ end }}
 
 					<!-- This frame will load the download URL when a download button is pressed -->
@@ -144,6 +144,13 @@
 				<div id="filepreview" class="file_viewer_file_preview checkers">
 					<div class="center" style="width: 100px; height: 100px;">{{template "spinner.svg" .}}</div>
 				</div>
+
+				<div id="skyscraper" class="skyscraper">
+					<button id="btn_skyscraper_close" class="round">
+						<i class="icon">close</i> Close ad
+					</button>
+					<div id="skyscraper_ad_space"></div>
+				</div>
 			</div>
 
 			<div id="sponsors" class="sponsors">
@@ -159,13 +166,6 @@
 					</div>
 				{{ end }}
 			</div>
-
-			{{ if and (and .Other.FileAdsEnabled .Other.UserAdsEnabled) (ne .Other.AdPopupType 0) }}
-				<div class="popup_warn">
-					You are viewing a large file ( > 250 MB ). Pop-up ads have been
-					enabled to cover bandwidth cost.
-				</div>
-			{{ end }}
 		</div>
 
 		<template id="tpl_details_popup">
@@ -290,16 +290,6 @@
 					<b>Malware</b>: Software programs designed to cause harm to
 					computer systems.
 				</label>
-				<!--
-				<h3>E-mail address</h3>
-				<p>
-					If you want to be notified when this file gets blocked you
-					can enter your e-mail address here. This is optional, you
-					can leave it empty if you want.
-				</p>
-				<input class="abuse_email_field" type="text" placeholder="e-mail address" style="width: 100%"/>
-				<br/>
-				-->
 
 				<h3>Send</h3>
 				<div class="abuse_report_notification" style="display: none;"></div>
@@ -335,10 +325,13 @@
 			let embeddedViewer = {{.Other.Embedded}};
 			let userAuthenticated = {{.Authenticated}};
 			let highlightColor = '#{{.Style.HighlightColor.RGB}}';
+			let skyscraperType = "{{.Other.AdSkyscraperType}}"
+
 			{{template `util.js`}}
 			{{template `drawGraph.js`}}
 			{{template `Modal.js`}}
 			{{template `Toolbar.js`}}
+			{{template `Skyscraper.js`}}
 			{{template `EditWindow.js`}}
 			{{template `EmbedWindow.js`}}
 			{{template `QRCodeWindow.js`}}
@@ -366,9 +359,8 @@
 			})
 		</script>
 
-		{{template "analytics"}}
-
 		{{ if and .Other.FileAdsEnabled .Other.UserAdsEnabled }}
+			{{ template "analytics" }}
 			{{ template "floating_ads" . }}
 		{{ end }}
 	</body>

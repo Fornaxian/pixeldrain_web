@@ -25,20 +25,23 @@ func browserCompat(ua string) bool {
 }
 
 type viewerData struct {
-	Type           string // file or list
-	CaptchaKey     string
-	ViewToken      string
-	AdBannerType   int
-	AdFloaterType  int
-	AdPopupType    int
-	FileAdsEnabled bool
-	UserAdsEnabled bool
-	Embedded       bool
-	APIResponse    interface{}
+	Type             string // file or list
+	CaptchaKey       string
+	ViewToken        string
+	AdBannerType     int
+	AdSkyscraperType string
+	AdFloaterType    int
+	AdPopupType      int
+	FileAdsEnabled   bool
+	UserAdsEnabled   bool
+	Embedded         bool
+	APIResponse      interface{}
 }
 
 func (vd *viewerData) adType(files []pixelapi.ListFile) {
 	if len(files) == 0 {
+		return
+	} else if !vd.FileAdsEnabled || !vd.UserAdsEnabled {
 		return
 	}
 
@@ -71,16 +74,25 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		amarulaElectronics = 13
 		adsPlus            = 14
 		pixFuture          = 15
+		publisherrest1     = 16
+		publisherrest2     = 17
+		publisherrest3     = 18
+
+		// Skyscrapers
+		aAdsSkyscraper      = "a-ads"
+		pixfutureSkyscraper = "pixfuture"
 
 		// Floaters
-		propellerFloat = 1
-		adSterraFloat  = 2
-		adMavenFloat   = 3
+		// propellerFloat = 1
+		// adSterraFloat  = 2
+		// adMavenFloat   = 3
 
 		// Popunders
 		// clickAduPopup  = 1
 		// propellerPopup = 2
 	)
+
+	vd.AdSkyscraperType = aAdsSkyscraper
 
 	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
@@ -89,12 +101,16 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 	if nudity {
 		// Brave and a-ads don't care about nudity. I'm not sure about ads.plus
 		switch i := rand.Intn(10); i {
-		case 0, 1, 2, 3:
+		case 0, 1:
 			vd.AdBannerType = brave
-		case 4, 5, 6, 7:
+		case 2, 3, 4, 5, 6:
 			vd.AdBannerType = adsPlus
-		case 8, 9:
-			vd.AdBannerType = aAds
+		case 7:
+			vd.AdBannerType = publisherrest1
+		case 8:
+			vd.AdBannerType = publisherrest2
+		case 9:
+			vd.AdBannerType = publisherrest3
 		default:
 			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 		}
@@ -104,18 +120,19 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		switch i := rand.Intn(10); i {
 		case 0, 1:
 			vd.AdBannerType = brave
-		case 2, 3, 4, 5:
+		case 2, 3:
 			vd.AdBannerType = adsPlus
-		case 6, 7, 8, 9:
+		case 4, 5, 6:
 			vd.AdBannerType = pixFuture
+		case 7:
+			vd.AdBannerType = publisherrest1
+		case 8:
+			vd.AdBannerType = publisherrest2
+		case 9:
+			vd.AdBannerType = publisherrest3
 		default:
 			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 		}
-	}
-
-	// If the file is larger than 30 MB we enable floating popups
-	if avgSize > 30e6 {
-		vd.AdFloaterType = propellerFloat
 	}
 }
 
@@ -123,13 +140,13 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	var err error
 	if p.ByName("id") == "demo" {
-		wc.serveFileViewerDemo(w, r, 1) // Required for a-ads.com quality check
+		wc.serveFileViewerDemo(w, r, 1, "a-ads") // Required for a-ads.com quality check
 		return
 	} else if p.ByName("id") == "adsplus" {
-		wc.serveFileViewerDemo(w, r, 14)
+		wc.serveFileViewerDemo(w, r, 14, "")
 		return
 	} else if p.ByName("id") == "pixfuture" {
-		wc.serveFileViewerDemo(w, r, 15)
+		wc.serveFileViewerDemo(w, r, 15, "")
 		return
 	}
 
@@ -215,14 +232,15 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 // ServeFileViewerDemo is a dummy API response that responds with info about a
 // non-existent demo file. This is required by the a-ads ad network to allow for
 // automatic checking of the presence of the ad unit on this page.
-func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Request, banner int) {
+func (wc *WebController) serveFileViewerDemo(w http.ResponseWriter, r *http.Request, banner int, scraper string) {
 	templateData := wc.newTemplateData(w, r)
 	templateData.Other = viewerData{
-		Type:           "file",
-		CaptchaKey:     wc.captchaSiteKey,
-		AdBannerType:   banner, // Always show a-ads on the demo page
-		FileAdsEnabled: true,
-		UserAdsEnabled: true,
+		Type:             "file",
+		CaptchaKey:       wc.captchaSiteKey,
+		AdBannerType:     banner, // Always show a-ads on the demo page
+		AdSkyscraperType: scraper,
+		FileAdsEnabled:   true,
+		UserAdsEnabled:   true,
 		APIResponse: map[string]interface{}{
 			"id":             "demo",
 			"name":           "Demo file",

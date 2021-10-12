@@ -18,6 +18,7 @@ function Viewer(type, viewToken, data) {
 	this.detailsWindow = new DetailsWindow(this)
 	this.editWindow = new EditWindow()
 	this.qrCodeWindow = new QRCodeWindow(this)
+	this.skyscraper = new Skyscraper()
 
 	this.divFilepreview = document.getElementById("filepreview")
 
@@ -25,6 +26,9 @@ function Viewer(type, viewToken, data) {
 	// automatically
 	if (this.divFilepreview.clientWidth > 600 && !this.toolbar.visible) {
 		this.toolbar.toggle()
+	}
+	if (this.divFilepreview.clientWidth > 1000) {
+		this.skyscraper.open()
 	}
 
 	if (embeddedViewer) {
