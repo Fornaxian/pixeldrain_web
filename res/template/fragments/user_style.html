@@ -4,3 +4,19 @@
 {{template "layout.css" .}}
 </style>
 {{end}}
+
+{{ define "user_style_js" }}
+<script>
+	window.style = {
+		textColor: "{{.Style.TextColor.RGB}}",
+		inputColor: "{{.Style.InputColor.RGB}}",
+		inputTextColor: "{{.Style.InputTextColor.RGB}}",
+		highlightColor: "{{.Style.HighlightColor.RGB}}",
+		dangerColor: "{{.Style.DangerColor.RGB}}",
+		layer1Color: "{{.Style.Layer1Color.RGB}}",
+		layer2Color: "{{.Style.Layer2Color.RGB}}",
+		layer3Color: "{{.Style.Layer3Color.RGB}}",
+		layer4Color: "{{.Style.Layer4Color.RGB}}",
+	}
+</script>
+{{ end }}

@@ -19,9 +19,16 @@ Skyscraper.prototype.open = function () {
 	}
 
 	if (skyscraperType === "a-ads") {
+		let adsColours = "&background_color=" + window.style.layer2Color +
+			"&text_color=" + window.style.textColor +
+			"&title_color=" + window.style.highlightColor +
+			"&title_hover_color=" + window.style.highlightColor +
+			"&link_color=" + window.style.highlightColor +
+			"&link_hover_color=" + window.style.highlightColor
+
 		this.divAdSpace.innerHTML = `<iframe
 				data-aa="1811738"
-				src="//ad.a-ads.com/1811738?size=160x600"
+				src="//ad.a-ads.com/1811738?size=160x600${adsColours}"
 				style="width:160px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;" >
 			</iframe>`
 	} else {

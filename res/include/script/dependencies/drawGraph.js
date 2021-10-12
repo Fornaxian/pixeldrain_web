@@ -18,7 +18,7 @@ function drawGraph(element, label, dataType) {
 				datasets: [
 					{
 						label: label,
-						backgroundColor: highlightColor,
+						backgroundColor: "#" + window.style.highlightColor,
 						borderWidth: 0,
 						lineTension: 0,
 						fill: true,
