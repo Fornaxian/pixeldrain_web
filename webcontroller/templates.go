@@ -140,6 +140,7 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 		"div":        tm.div,
 		"formatData": tm.formatData,
 		"formatSC":   tm.formatSC,
+		"noescape":   tm.noEscape,
 	})
 
 	// Parse dynamic templates
@@ -294,6 +295,9 @@ func (tm *TemplateManager) formatSC(amt float64) string {
 		return fmtSize(amt/1e-12, "pS")
 	}
 	return fmtSize(amt/1e-24, "H")
+}
+func (tm *TemplateManager) noEscape(t string) template.HTML {
+	return template.HTML(t)
 }
 
 func detectInt(i interface{}) int {

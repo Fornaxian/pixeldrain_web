@@ -46,13 +46,8 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 	}
 
 	var avgSize int64
-	var nudity = false
 	for _, v := range files {
 		avgSize += v.Size
-
-		if strings.HasPrefix(v.MimeType, "video/") {
-			nudity = true
-		}
 	}
 	avgSize /= int64(len(files))
 
@@ -98,41 +93,21 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
 
-	if nudity {
-		// Brave and a-ads don't care about nudity. I'm not sure about ads.plus
-		switch i := rand.Intn(10); i {
-		case 0, 1:
-			vd.AdBannerType = brave
-		case 2, 3, 4, 5, 6:
-			vd.AdBannerType = adsPlus
-		case 7:
-			vd.AdBannerType = publisherrest1
-		case 8:
-			vd.AdBannerType = publisherrest2
-		case 9:
-			vd.AdBannerType = publisherrest3
-		default:
-			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
-		}
-	} else {
-		// PixFuture does not allow nudity, so that's what we'll show on all
-		// files which are safe
-		switch i := rand.Intn(10); i {
-		case 0, 1:
-			vd.AdBannerType = brave
-		case 2, 3:
-			vd.AdBannerType = adsPlus
-		case 4, 5, 6:
-			vd.AdBannerType = pixFuture
-		case 7:
-			vd.AdBannerType = publisherrest1
-		case 8:
-			vd.AdBannerType = publisherrest2
-		case 9:
-			vd.AdBannerType = publisherrest3
-		default:
-			panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
-		}
+	switch i := rand.Intn(10); i {
+	case 0:
+		vd.AdBannerType = brave
+	case 1, 2, 3:
+		vd.AdBannerType = adsPlus
+	case 4, 5, 6:
+		vd.AdBannerType = pixFuture
+	case 7:
+		vd.AdBannerType = publisherrest1
+	case 8:
+		vd.AdBannerType = publisherrest2
+	case 9:
+		vd.AdBannerType = publisherrest3
+	default:
+		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 }
 

@@ -35,7 +35,7 @@ TextViewer.prototype.getCode = function () {
 
 		// Load prettyprint script
 		this.prettyprint = document.createElement("script")
-		this.prettyprint.src = "https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"
+		this.prettyprint.src = `{{noescape "https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"}}`
 		this.container.appendChild(this.prettyprint)
 	}).catch(err => {
 		this.pre.innerText = "Error loading file: " + err

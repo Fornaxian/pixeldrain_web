@@ -1,7 +1,7 @@
 function FileViewer(viewer, file, next) {
 	this.viewer = viewer
-	this.file   = file
-	this.next   = next
+	this.file = file
+	this.next = next
 
 	this.container = document.createElement("div")
 	this.container.classList = "image-container"
@@ -23,23 +23,24 @@ function FileViewer(viewer, file, next) {
 	this.fileDetails.style.paddingLeft = "8px"
 	this.fileDetails.style.verticalAlign = "middle"
 
-	this.fileDetails.appendChild(document.createTextNode("Name: "+file.name))
+	this.fileDetails.appendChild(document.createTextNode("Name: " + file.name))
 	this.fileDetails.appendChild(document.createElement("br"))
-	this.fileDetails.appendChild(document.createTextNode("Type: "+file.mime_type))
+	this.fileDetails.appendChild(document.createTextNode("Type: " + file.mime_type))
 	this.fileDetails.appendChild(document.createElement("br"))
 	this.fileDetails.appendChild(document.createTextNode(
 		"No preview is available for this file type. Download to view it locally"
 	))
 	this.fileDetails.appendChild(document.createElement("br"))
 
-	this.btnDL = document.getElementById("btn_download").cloneNode(true)
+	this.btnDL = document.createElement("button")
 	this.btnDL.addEventListener("click", () => { viewer.toolbar.download() })
+	this.btnDL.innerHTML = `<i class="icon">save</i> Download`
 	this.btnDL.classList = "button_highlight"
 	this.fileDetails.appendChild(this.btnDL)
 
 	this.container.appendChild(this.fileDetails)
 }
 
-FileViewer.prototype.render = function(parent) {
+FileViewer.prototype.render = function (parent) {
 	parent.appendChild(this.container)
 }
