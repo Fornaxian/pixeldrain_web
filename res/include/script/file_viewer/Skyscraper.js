@@ -13,7 +13,7 @@ Skyscraper.prototype.open = function () {
 	let dismissal = +localStorage.getItem("viewer_skyscraper_ad_dismissed")
 	let now = new Date().getTime()
 
-	if (dismissal > 0 && now - dismissal < 60 * 60 * 24) {
+	if (dismissal > 0 && now - dismissal < 1000 * 60 * 60 * 24) {
 		console.log("Skyscraper dismissed")
 		return
 	}
@@ -45,7 +45,7 @@ Skyscraper.prototype.close = function () {
 	this.divFilePreview.style.right = "0"
 	this.visible = false
 
-	localStorage.setItem("viewer_skyscraper_ad_dismissed", +new Date())
+	localStorage.setItem("viewer_skyscraper_ad_dismissed", new Date().getTime())
 
 	// Remove the ad from the DOM to save memory
 	setTimeout(() => { this.divSkyscraper.remove() }, 1000)

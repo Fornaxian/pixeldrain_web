@@ -27,7 +27,7 @@ function Viewer(type, viewToken, data) {
 	if (this.divFilepreview.clientWidth > 600 && !this.toolbar.visible) {
 		this.toolbar.toggle()
 	}
-	if (this.divFilepreview.clientWidth > 1000) {
+	if (this.divFilepreview.clientWidth > 800) {
 		this.skyscraper.open()
 	}
 
