@@ -47,6 +47,8 @@ let submit = async (event) => {
 			} else {
 				field_values[field.name] = field.binding
 			}
+		} else if (field.type === "description") {
+			field_values[field.name] = ""
 		} else {
 			field_values[field.name] = field.binding.value
 		}
@@ -143,7 +145,7 @@ let handle_errors = (response) => {
 							style="width: 100%; height: 10em; resize: vertical;"
 						>{field.default_value}</textarea>
 					</td>
-				{:else}
+				{:else if field.type !== "description"}
 					<td>{field.label}</td>
 					<td>
 						{#if field.type === "text"}
@@ -205,8 +207,6 @@ let handle_errors = (response) => {
 									checked={val === field.default_value}/>
 								<label for="input_{field.name}_choice_{val}">{val}</label><br/>
 							{/each}
-						{:else if field.type === "description"}
-							{field.default_value}
 						{/if}
 					</td>
 				{/if}
@@ -214,7 +214,7 @@ let handle_errors = (response) => {
 			{#if field.description}
 				<tr class="form">
 					<td colspan="2">
-						{field.description}
+						{@html field.description}
 					</td>
 				</tr>
 			{/if}

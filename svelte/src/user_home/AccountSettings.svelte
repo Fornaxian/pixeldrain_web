@@ -102,6 +102,39 @@ let name_change = {
 		return {success: true, message: "Success! You are now known as "+fields.new_username}
 	},
 }
+
+
+let delete_account = {
+	name: "delete_account",
+	fields: [
+		{
+			name: "description",
+			label: "Description",
+			type: "description",
+			description: `When you delete your pixeldrain account you will be
+				logged out on all of your devices. Your account will be
+				scheduled for deletion in seven days. If you log back in to your
+				account during those seven days the deletion will be canceled.
+				<br/><br/>
+				If you have an active Pro subscription you need to end that
+				separately through your Patreon account. Deleting your
+				pixeldrain account will not cancel the subscription.`,
+		},
+	],
+	submit_red: true,
+	submit_label: `<i class="icon">delete</i> Delete`,
+	on_submit: async fields => {
+		const resp = await fetch(
+			window.api_endpoint+"/user",
+			{ method: "DELETE" }
+		);
+		if(resp.status >= 400) {
+			return {error_json: await resp.json()}
+		}
+		setTimeout(() => { window.location = "/" }, 6000)
+		return {success: true, message: "Success! Your account has been scheduled for deletion in 7 days"}
+	},
+}
 </script>
 
 <div>
@@ -119,6 +152,11 @@ let name_change = {
 		<h2>Change name</h2>
 		<div class="highlight_dark">
 			<Form config={name_change}></Form>
+		</div>
+
+		<h2>Delete account</h2>
+		<div class="highlight_dark">
+			<Form config={delete_account}></Form>
 		</div>
 	</div>
 </div>
