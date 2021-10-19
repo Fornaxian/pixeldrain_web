@@ -271,11 +271,11 @@ const share = () => {
 	</div>
 	{/if}
 
-	<div bind:this={header_bar} class="file_viewer_headerbar highlight_1">
-		<button on:click={toolbar_toggle} class="button_toggle_toolbar" class:button_highlight={toolbar_visible}>
+	<div bind:this={header_bar} class="file_viewer_headerbar">
+		<button on:click={toolbar_toggle} class="button_toggle_toolbar round" class:button_highlight={toolbar_visible}>
 			<i class="icon">menu</i>
 		</button>
-		<a href="/" id="button_home" class="button button_home">
+		<a href="/" id="button_home" class="button button_home round">
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 0.2em 0 0; color: currentColor;"></PixeldrainLogo>
 		</a>
 		<div class="file_viewer_headerbar_title">
@@ -340,7 +340,7 @@ const share = () => {
 		</div></div></div>
 		<Sharebar bind:this={sharebar}></Sharebar>
 
-		<div class="file_viewer_file_preview" class:toolbar_visible>
+		<div class="file_viewer_file_preview checkers" class:toolbar_visible>
 			{#if state.viewer_type === "dir"}
 			<FileManager state={state} on:navigate={e => {navigate(e.detail, true)}} on:loading={e => {state.loading = e.detail}}></FileManager>
 			{:else if state.viewer_type === "audio"}
@@ -390,6 +390,7 @@ const share = () => {
 	bottom: 0;
 	left: 0;
 	overflow: hidden;
+	background-color: var(--layer_2_color);
 }
 
 /* Headerbar (row 1) */
@@ -413,6 +414,9 @@ const share = () => {
 	display: inline;
 	align-self: center;
 }
+.file_viewer > .file_viewer_headerbar > .button_toggle_toolbar > .icon {
+	font-size: 1.6em;
+}
 .file_viewer > .file_viewer_headerbar > .file_viewer_headerbar_title {
 	flex-grow: 1;
 	flex-shrink: 1;
@@ -435,7 +439,7 @@ const share = () => {
 	cursor: pointer;
 	text-decoration: none;
 	color: var(--text_color);
-	background-color: var(--layer_2_color);
+	background-color: var(--layer_3_color);
 	transition: 0.2s background-color, 0.2s color;
 }
 .breadcrumb_button:hover, .breadcrumb_button:focus, .breadcrumb_button:active {
@@ -462,7 +466,6 @@ const share = () => {
 	position: relative;
 	display: none; /* Becomes visible if the page is a list */
 	width: 100%;
-	background-color: var(--layer_1_color);
 	text-align: center;
 	line-height: 1em;
 	overflow-x: auto;
@@ -492,6 +495,7 @@ const share = () => {
 	right: 0;
 	top: 0;
 	bottom: 0;
+	border-radius: 16px;
 	display: inline-block;
 	min-height: 100px;
 	min-width: 100px;
@@ -509,13 +513,13 @@ const share = () => {
 	z-index: 49;
 	overflow: hidden;
 	float: left;
-	background-color: var(--layer_1_color);
 	left: -8em;
 	bottom: 0;
 	top: 0;
 	padding: 0;
 	text-align: left;
 	transition: left 0.5s;
+	background-color: var(--layer_2_color);
 }
 .toolbar.toolbar_visible { left: 0; }
 .file_viewer > .file_viewer_window > .file_viewer_file_preview.toolbar_visible { left: 8em; }

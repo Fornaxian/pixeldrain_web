@@ -78,6 +78,8 @@ const share_tumblr = () => {
 	z-index: 48;
 	overflow: hidden;
 	transition: left 0.5s;
+	border-top-left-radius: 16px;
+	border-bottom-left-radius: 16px;
 }
 .visible { left: 8em; }
 .button_full_width > svg {

@@ -235,7 +235,7 @@ const toggle_select = () => {
 	width: 100%;
 	margin: 16px 0 16px 0;
 	text-align: left;
-	background-color: var(--layer_2_color);
+	background-color: var(--layer_1_color);
 	box-shadow: 1px 1px 5px var(--shadow_color);
 	box-sizing: border-box;
 	border-collapse: collapse;
@@ -250,7 +250,7 @@ const toggle_select = () => {
 	box-sizing: border-box;
 }
 .directory :global(.node:not(:last-child)) {
-	border-bottom: 1px solid var(--layer_3_color);
+	border-bottom: 1px solid var(--layer_2_color);
 }
 .directory :global(.node:hover:not(.node_selected)) {
 	background-color: var(--input_color_dark);
