@@ -87,25 +87,32 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		// propellerPopup = 2
 	)
 
-	vd.AdSkyscraperType = aAdsSkyscraper
-
 	// Intn returns a number up to n, but never n itself. So to get a random 0
 	// or 1 we need to give it n=2. We can use this function to make other
 	// splits like 1/3 1/4, etc
 
-	switch i := rand.Intn(10); i {
+	switch i := rand.Intn(20); i {
 	case 0:
-		vd.AdBannerType = brave
+		vd.AdBannerType = publisherrest1 // 5%, total 5%
+	case 1:
+		vd.AdBannerType = publisherrest2 // 5%, total 10%
+	case 2:
+		vd.AdBannerType = publisherrest3 // 5%, total 15%
+	case 3, 4, 5:
+		vd.AdBannerType = brave // 15%, total 30%
+	case 6, 7, 8, 9, 10, 11, 12:
+		vd.AdBannerType = adsPlus // 35%, total 65%
+	case 13, 14, 15, 16, 17, 18, 19:
+		vd.AdBannerType = pixFuture // 35%, total 100%
+	default:
+		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
+	}
+
+	switch i := rand.Intn(4); i {
+	case 0:
+		vd.AdSkyscraperType = aAdsSkyscraper
 	case 1, 2, 3:
-		vd.AdBannerType = adsPlus
-	case 4, 5, 6:
-		vd.AdBannerType = pixFuture
-	case 7:
-		vd.AdBannerType = publisherrest1
-	case 8:
-		vd.AdBannerType = publisherrest2
-	case 9:
-		vd.AdBannerType = publisherrest3
+		vd.AdSkyscraperType = pixfutureSkyscraper
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}

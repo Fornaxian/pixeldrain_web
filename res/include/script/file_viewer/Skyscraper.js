@@ -29,8 +29,24 @@ Skyscraper.prototype.open = function () {
 		this.divAdSpace.innerHTML = `<iframe
 				data-aa="1811738"
 				src="//ad.a-ads.com/1811738?size=160x600${adsColours}"
-				style="width:160px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;" >
+				style="width:160px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;">
 			</iframe>`
+	} else if (skyscraperType === "pixfuture") {
+
+		let div = document.createElement("div")
+		div.id = "27513x160x600x4605x_ADSLOT1"
+		div.setAttribute("clickTrack", "%%CLICK_URL_ESC%%")
+		this.divAdSpace.appendChild(div)
+
+		let script = document.createElement("script")
+		script.async = "async"
+		script.type = "text/javascript"
+		script.src = "https:\/\/served-by.pixfuture.com/www/delivery/headerbid.js"
+		script.setAttribute("slotId", "27513x160x600x4605x_ADSLOT1")
+		script.setAttribute("refreshTime", "5")
+		script.setAttribute("refreshInterval", "60")
+		document.head.appendChild(script)
+
 	} else {
 		return
 	}

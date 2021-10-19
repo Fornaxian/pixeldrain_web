@@ -141,6 +141,8 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 		"formatData": tm.formatData,
 		"formatSC":   tm.formatSC,
 		"noescape":   tm.noEscape,
+		"noescapeJS": tm.noEscapeJS,
+		"slashes":    tm.slashes,
 	})
 
 	// Parse dynamic templates
@@ -296,9 +298,9 @@ func (tm *TemplateManager) formatSC(amt float64) string {
 	}
 	return fmtSize(amt/1e-24, "H")
 }
-func (tm *TemplateManager) noEscape(t string) template.HTML {
-	return template.HTML(t)
-}
+func (tm *TemplateManager) noEscape(t string) template.HTML { return template.HTML(t) }
+func (tm *TemplateManager) noEscapeJS(t string) template.JS { return template.JS(t) }
+func (tm *TemplateManager) slashes() template.HTML          { return template.HTML("//") }
 
 func detectInt(i interface{}) int {
 	switch v := i.(type) {

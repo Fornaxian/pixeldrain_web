@@ -27,8 +27,8 @@ VideoViewer.prototype.render = function (parent) {
 		parent.appendChild(vidContainer)
 
 		// Possible fix for ios 15 video bug?
-		this.videoSource.src = this.file.get_href
-		this.videoSource.type = this.file.mime_type
+		videoSource.src = this.file.get_href
+		videoSource.type = this.file.mime_type
 	} else {
 		let container = document.createElement("div")
 		container.classList = "image-container"

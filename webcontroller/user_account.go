@@ -216,9 +216,11 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 				// Strict means the Cookie will only be sent when the user
 				// reaches a page by a link from the same domain. Lax means any
 				// page on the domain gets the cookie and None means embedded
-				// content also gets the cookie. We're not trying to track the
-				// user around the web so we use lax
-				SameSite: http.SameSiteLaxMode,
+				// content also gets the cookie.
+				//
+				// Users who see pixeldrain links in iframes also expect their
+				// accounts to be logged in so we need to use None
+				SameSite: http.SameSiteNoneMode,
 				Secure:   true,
 			}
 			f.Extra.RedirectTo = "/user"
