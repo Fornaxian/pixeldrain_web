@@ -8,6 +8,7 @@
 		{{ template "opengraph" .OGData }}
 
 		{{ template "user_style" . }}
+		{{ template "user_style_js" . }}
 
 		<link rel="icon" sizes="32x32" href="/res/img/pixeldrain_32.png" />
 		<link rel="icon" sizes="128x128" href="/res/img/pixeldrain_128.png" />
@@ -23,7 +24,7 @@
 
 		<script>
 			window.api_endpoint = '{{.APIEndpoint}}';
-			window.initial_file = {{.Other.APIResponse}};
+			window.viewer_data = {{.Other}};
 		</script>
 
 		<link rel='stylesheet' href='/res/svelte/file_viewer.css'>

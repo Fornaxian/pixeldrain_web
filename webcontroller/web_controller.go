@@ -135,6 +135,8 @@ func New(
 		{GET, "history" /*         */, wc.serveTemplate("history_cookies", handlerOpts{})},
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
 		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
+		{GET, "u2/:id" /*          */, wc.serveSvelteFile},
+		{GET, "l2/:id" /*          */, wc.serveSvelteList},
 		{GET, "l/:id" /*           */, wc.serveListViewer},
 		{GET, "d/*path" /*         */, wc.serveDirectory},
 		{GET, "t" /*               */, wc.serveTemplate("text_editor", handlerOpts{})},

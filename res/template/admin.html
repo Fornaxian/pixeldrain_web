@@ -5,10 +5,10 @@
 		<head>
 			{{template "meta_tags" "Administrator panel"}}
 			{{template "user_style" .}}
+			{{template "user_style_js" . }}
 
 			<script>
 			window.api_endpoint = '{{.APIEndpoint}}';
-			window.highlight_color = '#{{.Style.HighlightColor.RGB}}';
 			</script>
 			<link rel='stylesheet' href='/res/svelte/admin_panel.css'>
 			<script defer src='/res/svelte/admin_panel.js'></script>

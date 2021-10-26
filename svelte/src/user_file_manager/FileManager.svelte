@@ -271,8 +271,7 @@ onMount(() => {
 		bind:this={help_modal}
 		title="File manager help"
 		width="600px"
-		on:shown={() => help_modal_visible = true}
-		on:hidden={() => help_modal_visible = false}
+		on:is_visible={e => {help_modal_visible = e.detail}}
 	>
 		<p>
 			In the file manager you can see the files you have uploaded and the

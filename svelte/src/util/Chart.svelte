@@ -35,7 +35,7 @@ onMount(() => {
 				datasets: [
 					{
 						label: label,
-						backgroundColor: window.highlight_color,
+						backgroundColor: "#"+window.style.highlightColor,
 						borderWidth: 0,
 						lineTension: 0,
 						fill: true,

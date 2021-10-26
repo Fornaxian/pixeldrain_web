@@ -56,7 +56,7 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		none               = 0
 		aAds               = 1
 		patreon            = 2
-		soulStudio         = 3
+		adshares           = 3
 		amarulaSolutions   = 4
 		adMaven            = 5
 		adSterra           = 6
@@ -76,6 +76,8 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		// Skyscrapers
 		aAdsSkyscraper      = "a-ads"
 		pixfutureSkyscraper = "pixfuture"
+		adsPlusSkyscraper   = "adsplus"
+		adsharesSkyscraper  = "adshares"
 
 		// Floaters
 		// propellerFloat = 1
@@ -108,10 +110,10 @@ func (vd *viewerData) adType(files []pixelapi.ListFile) {
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))
 	}
 
-	switch i := rand.Intn(4); i {
+	switch i := rand.Intn(2); i {
 	case 0:
 		vd.AdSkyscraperType = aAdsSkyscraper
-	case 1, 2, 3:
+	case 1:
 		vd.AdSkyscraperType = pixfutureSkyscraper
 	default:
 		panic(fmt.Errorf("random number generator returned unrecognised number: %d", i))

@@ -22,19 +22,18 @@ const load_modal = modal => {
 }
 
 const dispatch = createEventDispatcher();
-export const show = () => { visible = true;  dispatch("shown"); }
-export const hide = () => { visible = false; dispatch("hidden"); }
-export const toggle = () => {
-	if (visible) {
-		hide()
-	} else {
-		show()
-	}
+
+export const show = () => { set_visible(true) }
+export const hide = () => { set_visible(false) }
+export const toggle = () => { set_visible(!visible) }
+export const set_visible = vis => {
+	visible = vis
+	dispatch("is_visible", visible)
 }
 
 const keydown = e => {
 	if (e.key === 'Escape') {
-		hide();
+		set_visible(false);
 		return;
 	}
 };

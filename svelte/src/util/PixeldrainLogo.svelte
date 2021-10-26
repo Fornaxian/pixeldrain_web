@@ -7,7 +7,6 @@
 
 <style>
 svg {
-	color: var(--highlight_color);
 	fill: currentColor;
 }
 </style>

@@ -1,3 +1,11 @@
+{{ define "ad_headers" }}
+	{{ if eq .Other.AdBannerType 3 }}
+	<script type="text/javascript">
+	!function(n){var t,e=function(n,t){var e=[["a","e","i","o","u","y"],["b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z"]];if(t)for(var r=0;r<=t.length-1;r++)n=n*t.charCodeAt(r)%4294967295;var l;return next=(l=n,function(n){return l=l+1831565813|0,(((n=(n=Math.imul(l^l>>>15,1|l))+Math.imul(n^n>>>7,61|n)^n)^n>>>14)>>>0)/Math.pow(2,32)}),function(n,t){for(var r=[],l=null,o=0;o<=n-1;o++){var a=void 0;null===l?a=e[0].concat(e[1]):1==l?(a=e[0],l=0):(a=e[1],l=1);var u=a[Math.floor(next()*a.length)];r.push(u),null===l&&(l=-1!=e[0].indexOf(u)?0:1)}return r.push("."+t),r.join("")}}((t=new Date,(t/=1e3)-t%1209600),"_fa7cdd4c68507744")(8,"xyz");if(null===n)console.log("https://"+e);else{var r=n.createElement("script");r.src="https://"+e+"/main.js",(n.body||n.head).appendChild(r)}}("undefined"!=typeof document?document:null);
+	</script>
+	{{ end }}
+{{ end }}
+
 {{ define "banner_ads"}}
 	{{ if eq .Other.AdBannerType 1 }}
 		<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
@@ -28,10 +36,8 @@
 			</div>
 		<div>
 	{{else if eq .Other.AdBannerType 3}}
-		<!-- Soul Studio -->
-		<a class="sponsors_banner" style="display: inline-block; width: 842px; height: 125px;" href="/click/RJRbh7Tn?target=https%3A%2F%2Fsoulstudio.nl%2Fonline-y">
-			<img src="/res/img/misc/banner_soul_studio.png" style="width: 100%; height: 100%" />
-		</a>
+		<!-- Adshares -->
+		<div class="_fa7cdd4c68507744 sponsors_banner" data-zone="d8764be36c134d3d807abb2a073dc010" style="width:728px;height:90px;display: inline-block;margin: 0 auto"></div>
 	{{else if eq .Other.AdBannerType 4}}
 		<!-- Amarula Jobs -->
 		<a class="sponsors_banner" style="display: inline-block; width: 576px; height: 96px;" href="/click/DtZ3hHT9?target=https%3A%2F%2Fwww.amarulasolutions.com/jobs">
