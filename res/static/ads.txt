@@ -1,5 +1,5 @@
 #Ads.Plus
-#Last update on 26/07/2021
+#Last update on 2021-10-30
 
 google.com, pub-7945044863874787, DIRECT, f08c47fec0942fa0
 google.com, pub-7945044863874787, RESELLER, f08c47fec0942fa0
@@ -943,6 +943,44 @@ xandr.com, 12701, RESELLER, f5ab79cb980f11d1
 yahoo.com, 57872, RESELLER
 appnexus.com, 13099, RESELLER
 smartadserver.com, 4111, RESELLER
+themoneytizer.com, 50244, DIRECT
+smartadserver.com, 2491, RESELLER
+advertising.com, 21483, DIRECT, e1a5b5b6e3255540
+improvedigital.com, 1010, RESELLER
+indexexchange.com, 193216, DIRECT
+admanmedia.com, 722, DIRECT
+appnexus.com, 10040, RESELLER
+rubiconproject.com, 19814, RESELLER, 0bfd66d529a55807
+spotxchange.com, 178357, RESELLER, 7842df1d2fe2db34
+spotx.tv, 178357, RESELLER, 7842df1d2fe2db34
+pubmatic.com, 158810, RESELLER, 5d62403b186f2ace
+pubmatic.com, 158481, DIRECT, 5d62403b186f2ace
+spotx.tv, 238936, RESELLER, 7842df1d2fe2db34
+rubiconproject.com, 19668, RESELLER, 0bfd66d529a55807
+indexexchange.com, 190856, RESELLER, 50b1c356f2c5c8fc
+pubmatic.com, 158615, RESELLER, 5d62403b186f2ace
+pubmatic.com, 156674, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 16114, DIRECT
+azeriondigital.com, 43710415, DIRECT
+appnexus.com, 12223, RESELLER, f5ab79cb980f11d1
+improvedigital.com, 1210, RESELLER
+improvedigital.com, 1221, RESELLER
+pubmatic.com, 150561, RESELLER, 5d62403b186f2ace
+emxdgt.com, 1836, DIRECT, 1e1d41537f7cad7f
+emxdgt.com, 1289, DIRECT, 1e1d41537f7cad7f
+advertising.com, 28335, DIRECT, e1a5b5b6e3255540
+adpone.com, 59e252f6de67f6c8d1f8, DIRECT
+smilewanted.com, 1362, DIRECT
+adyoulike.com, b3e21aeb2e950aa59e5e8cc1b6dd6f8e, DIRECT, 4ad745ead2958bf7
+rubiconproject.com, 23404, DIRECT, 0bfd66d529a55807
+33across.com, 0010b00002Mq2FYAAZ, RESELLER, bbea06d9c4d2853c
+admanmedia.com, 812, RESELLER
+amxrtb.com, 105199579, RESELLER
+google.com, pub-1789253751882305, RESELLER, f08c47fec0942fa0
+google.com, pub-1835489473992347, RESELLER, f08c47fec0942fa0
+gumgum.com, 13926, RESELLER, ffdef49475d318a9
+indexexchange.com, 195491, RESELLER, 50b1c356f2c5c8fc
+# End of ads.plus
 
 #pixfuture START updated Aug-23-2021
 pixfuture.com, 4605, DIRECT

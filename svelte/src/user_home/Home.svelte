@@ -2,6 +2,8 @@
 import { onDestroy, onMount } from "svelte";
 import { formatDataVolume, formatThousands } from "../util/Formatting.svelte";
 import Chart from "../util/Chart.svelte";
+import StorageProgressBar from "./StorageProgressBar.svelte";
+import HotlinkProgressBar from "./HotlinkProgressBar.svelte";
 
 let graph_view = null
 let graph_download = null
@@ -146,73 +148,8 @@ onDestroy(() => {
 			</li>
 		</ul>
 
-		Storage:
-		{formatDataVolume(storage_space_used, 3)}
-		out of
-		{formatDataVolume(window.user.subscription.storage_space, 3)}
-		<br/>
-		<div class="progress_bar_outer">
-			<div id="storage_progress" class="progress_bar_inner" style="width: {storage_percent*100}%;"></div>
-		</div>
-
-		{#if storage_percent > 0.99}
-			<div class="highlight_red">
-				You have used all of your storage space. You won't be able to
-				upload new files anymore. Please upgrade to a higher support
-				tier to continue uploading files:
-				<br/>
-				<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
-					Upgrade options
-				</a>
-			</div>
-		{:else if storage_percent > 0.8}
-			<div class="highlight_yellow">
-				You have used {(storage_percent*100).toFixed(0)}% of your
-				storage space. If your storage space runs out you won't be able
-				to upload new files anymore. Please upgrade to a higher support
-				tier to continue uploading files:
-				<br/>
-				<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
-					Upgrade options
-				</a>
-			</div>
-		{/if}
-
-		Hotlink bandwidth:
-		{formatDataVolume(direct_link_bandwidth_used, 3)}
-		out of
-		{formatDataVolume(window.user.subscription.direct_linking_bandwidth, 3)}
-		(<a href="/#hotlinking">More information about hotlinking</a>)
-		<br/>
-		<div class="progress_bar_outer">
-			<div id="direct_bandwidth_progress" class="progress_bar_inner" style="width: {direct_link_percent*100}%;"></div>
-		</div>
-
-		{#if direct_link_percent > 0.99}
-			<div class="highlight_red">
-				You have used all of your hotlink bandwidth. Other people won't
-				be able to download your files directly from the API anymore.
-				Downloads will have to go through the file viewer page. Please
-				upgrade to a higher support tier to continue hotlinking files:
-				<br/>
-				<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
-					Upgrade options
-				</a>
-			</div>
-		{:else if direct_link_percent > 0.8}
-			<div class="highlight_yellow">
-				You have used {(direct_link_percent*100).toFixed(0)}% of your
-				hotlink bandwidth. If your hotlink bandwidth runs out people
-				won't be able to download your files directly from the API
-				anymore. Downloads will have to go through the file viewer page.
-				Please upgrade to a higher support tier to continue hotlinking
-				files:
-				<br/>
-				<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
-					Upgrade options
-				</a>
-			</div>
-		{/if}
+		<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
+		<HotlinkProgressBar used={direct_link_bandwidth_used} total={window.user.subscription.direct_linking_bandwidth}></HotlinkProgressBar>
 
 		<h3>Exports</h3>
 		<div style="text-align: center;">

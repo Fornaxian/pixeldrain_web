@@ -7,6 +7,7 @@ import Reddit from "../icons/Reddit.svelte"
 import Twitter from "../icons/Twitter.svelte"
 import Tumblr from "../icons/Tumblr.svelte"
 import { formatDataVolume, formatDuration } from "../util/Formatting.svelte";
+import StorageProgressBar from "../user_home/StorageProgressBar.svelte"
 
 // === UPLOAD LOGIC ===
 
@@ -109,7 +110,6 @@ const finish_upload = (file) => {
 
 let stats_interval = null
 let stats_interval_ms = 500
-let progress_bar_outer
 let progress_bar_inner
 let start_time = 0
 let total_progress = 0
@@ -152,6 +152,16 @@ const stats_finished = () => {
 	total_progress = 1
 	progress_bar_inner.style.width = "100%"
 	total_rate = 0
+}
+
+const leave_confirmation = e => {
+	if (state === "uploading") {
+		e.preventDefault()
+		e.returnValue = "If you close the page your files will stop uploading. Do you want to continue?"
+		return e.returnValue
+	} else {
+		return null
+	}
 }
 
 // === SHARING BUTTONS ===
@@ -386,9 +396,16 @@ const keydown = (e) => {
 	on:dragleave|preventDefault|stopPropagation={() => { dragging = false }}
 	on:drop={drop}
 	on:paste={paste}
-	on:keydown={keydown} />
+	on:keydown={keydown}
+	on:beforeunload={leave_confirmation} />
 
 <div>
+	{#if window.user.username !== ""}
+		<div class="limit_width">
+			<StorageProgressBar used={window.user.storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
+		</div>
+	{/if}
+
 	<div class="instruction" style="margin-top: 0;">
 		<div class="limit_width">
 			<span class="big_number">1</span>
@@ -428,7 +445,7 @@ const keydown = (e) => {
 			</div>
 		</div>
 	</div>
-	<div bind:this={progress_bar_outer} class="progress_bar_outer" style="margin-bottom: 1.5em;">
+	<div class="progress_bar_outer" style="margin-bottom: 1.5em;">
 		<div bind:this={progress_bar_inner} class="progress_bar_inner"></div>
 	</div>
 
@@ -516,7 +533,7 @@ const keydown = (e) => {
 		</a>
 	{/each}
 
-	{#if window.user_subscription.name === ""}
+	{#if window.user.subscription.name === ""}
 		<div class="instruction">
 			<div class="limit_width">
 				<span class="big_number">4</span>
