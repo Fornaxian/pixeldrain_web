@@ -17,7 +17,7 @@ let error_msg = ""
 
 $: update_stats(file.id)
 let update_stats = (id) => {
-	if (id === "") {
+	if (id === "" || id == "demo") {
 		return
 	}
 

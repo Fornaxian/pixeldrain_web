@@ -7,6 +7,15 @@ let ad_type = ""
 let visible = false
 
 onMount(async () => {
+	if (window.location.pathname === "/u/demo") {
+		let url_ads = new URL(window.location.href).searchParams.get("ads")
+		if (url_ads !== "") {
+			ad_type = url_ads
+			open()
+			return
+		}
+	}
+
 	if (document.body.clientWidth < 800) {
 		visible = false
 		dispatch("visibility", false)
@@ -36,12 +45,15 @@ onMount(async () => {
 			break
 	}
 
+	open()
+})
+
+const open = async () => {
 	visible = true
 	await tick()
 	dispatch("visibility", true)
 	container.style.right = "0"
-})
-
+}
 const close = () => {
 	container.style.right = -container.offsetWidth + "px"
 	dispatch("visibility", false)

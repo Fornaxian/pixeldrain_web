@@ -6,6 +6,14 @@ let banner
 let ad_type = ""
 
 onMount(() => {
+	if (window.location.pathname === "/u/demo") {
+		let url_ads = new URL(window.location.href).searchParams.get("ads")
+		if (url_ads !== "") {
+			ad_type = url_ads
+			return
+		}
+	}
+
 	switch (Math.floor(Math.random() * 20)) {
 		case 0:
 			ad_type = "publisherrest_1"
@@ -124,6 +132,13 @@ const ads_plus = () => {
 				<i class="icon">shopping_cart</i>
 			</a>
 		</div>
+	{:else if ad_type === "a-ads"}
+		<iframe bind:this={banner} class="banner"
+			data-aa="73974"
+			src="//ad.a-ads.com/73974?size=728x90&background_color={window.style.layer2Color}&text_color={window.style.textColor}&title_color={window.style.highlightColor}&title_hover_color={window.style.highlightColor}&link_color={window.style.highlightColor}&link_hover_color={window.style.highlightColor}"
+			style="width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;"
+			title="A-ads advertisement">
+		</iframe>
 	{:else if ad_type === "brave"}
 		<a bind:this={banner} class="banner" style="display: inline-block; width: 728px; height: 90px;" href="/click/MdUXxSov?target=https%3A%2F%2Fbrave.com%2Fpix009">
 			<img src="/res/img/misc/brave-728x90.png" style="width: 100%; height: 100%" alt="Brave ad"/>

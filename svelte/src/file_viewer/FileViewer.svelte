@@ -6,13 +6,14 @@ import DetailsWindow from "./DetailsWindow.svelte";
 import FilePreview from "./FilePreview.svelte";
 import ListNavigator from "./ListNavigator.svelte";
 import FileStats from "./FileStats.svelte";
-import { copy_text, domain_url } from "../util/Util.svelte";
+import { copy_text } from "../util/Util.svelte";
 import EditWindow from "./EditWindow.svelte";
 import EmbedWindow from "./EmbedWindow.svelte";
 import ReportWindow from "./ReportWindow.svelte";
 import IntroPopup from "./IntroPopup.svelte";
 import AdLeaderboard from "./AdLeaderboard.svelte";
 import AdSkyscraper from "./AdSkyscraper.svelte";
+import Sharebar from "./Sharebar.svelte";
 
 let is_list = false
 let embedded = false
@@ -47,12 +48,21 @@ let toggle_shuffle = () => {
 	list_navigator.set_shuffle(list_shuffle)
 }
 
+let sharebar
 let sharebar_visible = false
+let toggle_sharebar = () => {
+	sharebar_visible = !sharebar_visible
+	if (sharebar_visible) {
+		sharebar.show()
+	} else {
+		sharebar.hide()
+	}
+}
 let toolbar_visible = (window.innerWidth > 600)
 let toolbar_toggle = () => {
 	toolbar_visible = !toolbar_visible
-	if (!toolbar_visible) {
-		sharebar_visible = false
+	if (!toolbar_visible && sharebar_visible) {
+		toggle_sharebar()
 	}
 }
 let details_window
@@ -346,7 +356,7 @@ const keyboard_event = evt => {
 					{/if}
 				</span>
 			</button>
-			<button on:click={() => sharebar_visible = !sharebar_visible} class="toolbar_button button_full_width" class:button_highlight={sharebar_visible}>
+			<button on:click={toggle_sharebar} class="toolbar_button button_full_width" class:button_highlight={sharebar_visible}>
 				<i class="icon">share</i>
 				<span>Share</span>
 			</button>
@@ -397,24 +407,7 @@ const keyboard_event = evt => {
 			<br/>
 		</div></div></div>
 
-		<div id="sharebar" class="sharebar" class:sharebar_visible>
-			Share on:<br/>
-			<button class="sharebar-button button_full_width" onclick="window.open('mailto:please@set.address?subject=File%20on%20pixeldrain&body=' + window.location.href);">
-				E-Mail
-			</button>
-			<button class="sharebar-button button_full_width" onclick="window.open('https://www.reddit.com/submit?url=' + window.location.href);">
-				Reddit
-			</button>
-			<button class="sharebar-button button_full_width" onclick="window.open('https://twitter.com/share?url=' + window.location.href);">
-				Twitter
-			</button>
-			<button class="sharebar-button button_full_width" onclick="window.open('http://www.facebook.com/sharer.php?u=' + window.location.href);">
-				Facebook
-			</button>
-			<button class="sharebar-button button_full_width" onclick="window.open('http://www.tumblr.com/share/link?url=' + window.location.href);">
-				Tumblr
-			</button>
-		</div>
+		<Sharebar bind:this={sharebar}></Sharebar>
 
 		<div id="file_preview" class="file_preview checkers" class:toolbar_visible class:skyscraper_visible>
 			<FilePreview
@@ -462,7 +455,7 @@ const keyboard_event = evt => {
 		<EmbedWindow file={current_file} list={current_list}></EmbedWindow>
 	</Modal>
 
-	<Modal bind:this={report_window} on:is_visible={e => {report_visible = e.detail}} title="Report abuse" width="650px">
+	<Modal bind:this={report_window} on:is_visible={e => {report_visible = e.detail}} title="Report abuse" width="800px">
 		<ReportWindow file={current_file} list={current_list}></ReportWindow>
 	</Modal>
 
@@ -594,24 +587,6 @@ const keyboard_event = evt => {
 .file_preview.toolbar_visible { left: 8em; }
 .file_preview.skyscraper_visible { right: 160px; }
 
-.sharebar {
-	position: absolute;
-	width: 7em;
-	left: -8em;
-	bottom: 0;
-	top: 0;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	box-shadow: inset 1px 1px 5px var(--shadow_color);
-	background-color: var(--layer_1_color);
-	border-radius: 16px;
-	text-align: center;
-	z-index: 48;
-	overflow: hidden;
-	transition: left 0.5s;
-}
-.sharebar.sharebar_visible { left: 8em; }
-
 /* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
 .toolbar > div {
 	position: absolute;
@@ -636,17 +611,6 @@ const keyboard_event = evt => {
 }
 .toolbar_button > span {
 	vertical-align: middle;
-}
-
-/* =========================
-	|| SHAREBAR COMPONENTS ||
-	========================= */
-
-.sharebar-button {text-align: center;}
-.sharebar-button > svg,
-.sharebar-button > img {
-	width: 40px;
-	height: 40px;
 }
 
 /* =====================

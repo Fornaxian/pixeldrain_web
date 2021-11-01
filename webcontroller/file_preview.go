@@ -60,7 +60,7 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 // categorize the website.
 func serveFilePreviewDemo(w http.ResponseWriter) {
 	io.WriteString(w,
-		`<pre style="line-height: 1em;">
+		`<pre style="line-height: 1em; white-space: pre-wrap; overflow: hidden;">
  , __              _
 /|/  \o           | |    |              o
  |___/         _  | |  __|   ,_    __,      _  _

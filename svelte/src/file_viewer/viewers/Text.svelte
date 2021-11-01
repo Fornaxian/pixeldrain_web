@@ -122,5 +122,6 @@ const code = () => {
 .container > pre {
 	white-space: pre-wrap;
 	overflow: hidden;
+	border: none;
 }
 </style>

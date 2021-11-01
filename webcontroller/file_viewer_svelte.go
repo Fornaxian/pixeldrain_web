@@ -12,20 +12,21 @@ import (
 )
 
 type fileViewerData struct {
-	Type             string      `json:"type"` // file or list
-	APIResponse      interface{} `json:"api_response"`
-	CaptchaKey       string      `json:"captcha_key"`
-	ViewToken        string      `json:"view_token"`
-	AdBannerType     string      `json:"ad_banner_type"`
-	AdSkyscraperType string      `json:"ad_skyscraper_type"`
-	AdFloaterType    string      `json:"ad_floater_type"`
-	Embedded         bool        `json:"embedded"`
-	FileAdsEnabled   bool        `json:"file_ads_enabled"`
-	UserAdsEnabled   bool        `json:"user_ads_enabled"`
+	Type           string      `json:"type"` // file or list
+	APIResponse    interface{} `json:"api_response"`
+	CaptchaKey     string      `json:"captcha_key"`
+	ViewToken      string      `json:"view_token"`
+	Embedded       bool        `json:"embedded"`
+	UserAdsEnabled bool        `json:"user_ads_enabled"`
 }
 
 // ServeFileViewer controller for GET /u/:id
 func (wc *WebController) serveSvelteFile(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	if p.ByName("id") == "demo" {
+		wc.serveSvelteViewerDemo(w, r) // Required for a-ads.com quality check
+		return
+	}
+
 	// If the user agent is Wget we redirect it to the API so that the file can
 	// be downloaded directly
 	if strings.HasPrefix(r.UserAgent(), "Wget/") {
@@ -61,7 +62,6 @@ func (wc *WebController) serveSvelteFile(w http.ResponseWriter, r *http.Request,
 	var vd = fileViewerData{
 		CaptchaKey:     wc.captchaKey(),
 		ViewToken:      wc.viewTokenOrBust(),
-		FileAdsEnabled: files[0].ShowAds,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 	}
 
@@ -132,7 +132,6 @@ func (wc *WebController) serveSvelteList(w http.ResponseWriter, r *http.Request,
 		Type:           "list",
 		CaptchaKey:     wc.captchaSiteKey,
 		ViewToken:      wc.viewTokenOrBust(),
-		FileAdsEnabled: list.Files[0].ShowAds,
 		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
 		APIResponse:    list,
 	}
@@ -152,5 +151,36 @@ func (wc *WebController) serveSvelteList(w http.ResponseWriter, r *http.Request,
 	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer_svelte", templateData)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
+	}
+}
+
+// ServeFileViewerDemo is a dummy API response that responds with info about a
+// non-existent demo file. This is required by the a-ads ad network to allow for
+// automatic checking of the presence of the ad unit on this page.
+func (wc *WebController) serveSvelteViewerDemo(w http.ResponseWriter, r *http.Request) {
+	templateData := wc.newTemplateData(w, r)
+	templateData.Other = fileViewerData{
+		Type:           "file",
+		CaptchaKey:     wc.captchaSiteKey,
+		UserAdsEnabled: true,
+		APIResponse: map[string]interface{}{
+			"id":             "demo",
+			"name":           "Demo file",
+			"date_upload":    "2017-01-01 12:34:56",
+			"date_lastview":  "2017-01-01 12:34:56",
+			"size":           123456789,
+			"views":          1,
+			"bandwidth_used": 123456789,
+			"mime_type":      "text/demo",
+			"description":    "A file to demonstrate the viewer page",
+			"mime_image":     "/res/img/mime/text.png",
+			"thumbnail":      "/res/img/mime/text.png",
+			"abuse_type":     "",
+			"show_ads":       true,
+		},
+	}
+	err := wc.templates.Get().ExecuteTemplate(w, "file_viewer_svelte", templateData)
+	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+		log.Error("Error rendering demo file: %s", err)
 	}
 }
