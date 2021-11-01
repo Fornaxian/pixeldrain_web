@@ -99,10 +99,12 @@ let update_charts = () => {
 			<td>Upload Date</td>
 			<td>{formatDate(file.date_upload, true, true, true)}</td>
 		</tr>
-		<tr>
-			<td>Description</td>
-			<td>{file.description}</td>
-		</tr>
+		{#if file.description}
+			<tr>
+				<td>Description</td>
+				<td>{file.description}</td>
+			</tr>
+		{/if}
 	</table>
 
 	<h2>Downloads</h2>

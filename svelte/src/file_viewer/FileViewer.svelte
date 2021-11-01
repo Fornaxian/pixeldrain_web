@@ -51,6 +51,20 @@ let toggle_shuffle = () => {
 let sharebar
 let sharebar_visible = false
 let toggle_sharebar = () => {
+	if (navigator.share) {
+		let name = current_file.name
+		if (is_list) {
+			name = current_list.title
+		}
+
+		navigator.share({
+			title: name,
+			text: "I would like to share '" + name + "' with you",
+			url: window.location.href
+		})
+		return
+	}
+
 	sharebar_visible = !sharebar_visible
 	if (sharebar_visible) {
 		sharebar.show()
