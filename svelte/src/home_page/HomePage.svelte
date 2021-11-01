@@ -400,7 +400,8 @@ const keydown = (e) => {
 	on:beforeunload={leave_confirmation} />
 
 <div>
-	{#if window.user.username !== ""}
+	<!-- If the user is logged in and has used more than 50% of their storage space we will show a progress bar -->
+	{#if window.user.username !== "" && window.user.storage_space_used/window.user.subscription.storage_space > 0.5}
 		<div class="limit_width">
 			<StorageProgressBar used={window.user.storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
 		</div>
