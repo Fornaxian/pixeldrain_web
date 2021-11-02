@@ -15,7 +15,7 @@ configuration file for you. The default configuration serves the web UI on
 http://127.0.0.1:8081. It contains a reverse proxy server which sends all API
 requests to the production endpoint at https://pixeldrain.com/api. You can log
 in with your real pixeldrain account on your development server by going to
-http://127.0.0.0.1:8081/login.
+http://127.0.0.1:8081/login.
 
 All except for one of pixeldrain's API endpoints are publicly available. Because
 of this you can do everything with the locally hosted instance which you can do
