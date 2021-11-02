@@ -1,5 +1,6 @@
 {{ define "ad_headers" }}
 	{{ if eq .Other.AdBannerType 3 }}
+	<!-- Adshares -->
 	<script type="text/javascript">
 	!function(n){var t,e=function(n,t){var e=[["a","e","i","o","u","y"],["b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z"]];if(t)for(var r=0;r<=t.length-1;r++)n=n*t.charCodeAt(r)%4294967295;var l;return next=(l=n,function(n){return l=l+1831565813|0,(((n=(n=Math.imul(l^l>>>15,1|l))+Math.imul(n^n>>>7,61|n)^n)^n>>>14)>>>0)/Math.pow(2,32)}),function(n,t){for(var r=[],l=null,o=0;o<=n-1;o++){var a=void 0;null===l?a=e[0].concat(e[1]):1==l?(a=e[0],l=0):(a=e[1],l=1);var u=a[Math.floor(next()*a.length)];r.push(u),null===l&&(l=-1!=e[0].indexOf(u)?0:1)}return r.push("."+t),r.join("")}}((t=new Date,(t/=1e3)-t%1209600),"_fa7cdd4c68507744")(8,"xyz");if(null===n)console.log("https://"+e);else{var r=n.createElement("script");r.src="https://"+e+"/main.js",(n.body||n.head).appendChild(r)}}("undefined"!=typeof document?document:null);
 	</script>
@@ -8,6 +9,7 @@
 
 {{ define "banner_ads"}}
 	{{ if eq .Other.AdBannerType 1 }}
+		<!-- A-ads -->
 		<!-- scrolling="no" is not allowed by the W3C, but overflow: hidden doesn't work in chrome, so I have no choice -->
 		<iframe class="sponsors_banner"
 			data-aa="73974"
@@ -44,6 +46,7 @@
 			<img src="/res/img/misc/banner_amarula_jobs.png" style="width: 100%; height: 100%" />
 		</a>
 	{{ else if eq .Other.AdBannerType 6 }}
+		<!-- Adsterra -->
 		<div class="sponsors_banner" style="display: inline-block; width: 728px; height: 90px;">
 			<script type="text/javascript">
 			atOptions = {
@@ -57,10 +60,12 @@
 			</script>
 		</div>
 	{{ else if eq .Other.AdBannerType 7 }}
+		<!-- Brave -->
 		<a class="sponsors_banner" style="display: inline-block; width: 728px; height: 90px;" href="/click/MdUXxSov?target=https%3A%2F%2Fbrave.com%2Fpix009">
 			<img src="/res/img/misc/brave-728x90.png" style="width: 100%; height: 100%" />
 		</a>
 	{{ else if eq .Other.AdBannerType 8 }}
+		<!-- Pro ad 1 -->
 		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
 			<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
 			<div style="margin: 4px; display: inline-block; vertical-align: middle;">
@@ -69,6 +74,7 @@
 			</div>
 		</div>
 	{{ else if eq .Other.AdBannerType 9 }}
+	<!-- Pro ad 2 -->
 		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
 			<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
 			<div style="margin: 4px; display: inline-block; vertical-align: middle;">
@@ -77,6 +83,7 @@
 			</div>
 		</div>
 	{{ else if eq .Other.AdBannerType 10 }}
+	<!-- Pro ad 3 -->
 		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
 			<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
 			<div style="margin: 4px; display: inline-block; vertical-align: middle;">
@@ -85,6 +92,7 @@
 			</div>
 		</div>
 	{{ else if eq .Other.AdBannerType 11 }}
+	<!-- Pro ad 4 -->
 		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
 			<img src="/res/img/pixeldrain_128.png" style="height: 2.4em; vertical-align: middle; margin: 4px;"/>
 			<div style="margin: 4px; display: inline-block; vertical-align: middle;">
@@ -117,11 +125,13 @@
 			</script>
 		</div>
 	{{ else if eq .Other.AdBannerType 15 }}
+		<!-- Pixfuture -->
 		<!-- AuctionX Display platform tag START -->
 		<div id="27517x728x90x4605x_ADSLOT1" clickTrack="%%CLICK_URL_ESC%%" style="display: block; margin: auto;"></div>
 		<script type="text/javascript" async src="https://served-by.pixfuture.com/www/delivery/headerbid.js" slotId="27517x728x90x4605x_ADSLOT1" refreshTime="5" refreshInterval="60"></script>
 		<!-- AuctionX Display platform tag END -->
 	{{ else if eq .Other.AdBannerType 16 }}
+		<!-- Publisherrest ad 1 -->
 		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
 			<a href="https://pixeldrain.com/vouchercodes/" class="button button_highlight" style="margin: 8px;">
 				<i class="icon">shopping_cart</i>
@@ -130,6 +140,7 @@
 			</a>
 		</div>
 	{{ else if eq .Other.AdBannerType 17 }}
+		<!-- Publisherrest ad 2 -->
 		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
 			<a href="https://pixeldrain.com/vouchercodes/" class="button button_highlight" style="margin: 8px;">
 				<i class="icon">shopping_cart</i>
@@ -138,6 +149,7 @@
 			</a>
 		</div>
 	{{ else if eq .Other.AdBannerType 18 }}
+		<!-- Publisherrest ad 3 -->
 		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
 			<a href="https://pixeldrain.com/vouchercodes/" class="button button_highlight" style="margin: 8px;">
 				<i class="icon">shopping_cart</i>
@@ -145,36 +157,5 @@
 				<i class="icon">shopping_cart</i>
 			</a>
 		</div>
-	{{ end }}
-{{ end }}
-
-{{ define "floating_ads"}}
-	{{ if eq .Other.AdFloaterType 3 }}
-		<!-- AdMaven -->
-		<script data-cfasync="false" async src="//d227cncaprzd7y.cloudfront.net/?acncd=905608"></script>
-	{{ else if eq .Other.AdFloaterType 2 }}
-		<!-- AdSterra -->
-		<script type='text/javascript' async src='//concoursestrickenpuppy.com/4c/4d/90/4c4d90a2e79b0e049f811a663f3e3c07.js'></script>
-	{{ else if eq .Other.AdFloaterType 1 }}
-		<!-- PropellerAds -->
-		<script type="text/javascript" src="//optyruntchan.com/400/4189877" data-cfasync="false" async="async"></script>
-		</script>
-	{{ end }}
-
-	{{ if eq .Other.AdPopupType 1 }}
-		<script data-cfasync="false" type="text/javascript" async src="//depirsmandk5.com/t/9/fret/meow4/1846775/brt.js"></script>
-	{{ else if eq .Other.AdPopupType 2 }}
-		<script>
-		window.addEventListener("load", () => {
-			(function(s,u,z,p){
-				s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);
-			})(
-				document.createElement('script'),
-				'https://iclickcdn.com/tag.min.js',
-				3750089,
-				document.body||document.documentElement,
-			)
-		})
-		</script>
 	{{ end }}
 {{ end }}

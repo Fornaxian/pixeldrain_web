@@ -1,6 +1,5 @@
 .vscode
 main
 pdwebconf.toml
-go.sum
 svelte/node_modules
 res/static/svelte/*
