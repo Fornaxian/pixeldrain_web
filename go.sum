@@ -1,5 +1,7 @@
 fornaxian.tech/log v0.0.0-20190617093801-1c7ce9a7c9b3 h1:xmaCGgVg74JFhF8x9r8DYeGbe3OHZ8SyGDjMojCFSz0=
 fornaxian.tech/log v0.0.0-20190617093801-1c7ce9a7c9b3/go.mod h1:OyWUNsNPlo5AmlOHvJ4s6WcStQw+9rQyBMwmTz0buEM=
+fornaxian.tech/pixeldrain_api_client v0.0.0-20211102100427-d8ecaecb350b h1:Kr2u1Ukss+oX+o8mmb2a0xVnLqMCSjJW9OFlrbBV7OA=
+fornaxian.tech/pixeldrain_api_client v0.0.0-20211102100427-d8ecaecb350b/go.mod h1:uajB2ofEsefUtxjvs4m7SDyPVRlfrI3qzCSWcud47hY=
 fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787 h1:9ujI8Qi6+FTL/YW6xQAS9DmWDMerHBe8foQvVD/G/i0=
 fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787/go.mod h1:FqVgfghmxTGR3l9Zx4MOMeZ9KHjiEFl3s3C0BSTvBwk=
 github.com/BurntSushi/toml v0.4.1 h1:GaI7EiDXDRfa8VshkTj7Fym7ha+y8/XxIgD2okUIjLw=
