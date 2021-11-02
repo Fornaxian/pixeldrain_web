@@ -4,10 +4,10 @@ Web interface for pixeldrain.com
 
 ## Running
 
-Install the package in your $GOPATH with this command:
+Clone the repo:
 
 ```
-go get fornaxian.tech/pixeldrain_web
+git clone git@github.com:Fornaxian/pixeldrain_web.git
 ```
 
 Enter the directory and run main.go with `go run main.go`. It will generate a
@@ -26,7 +26,8 @@ requests are proxied so files you view locally will not be counted.
 ## Svelte
 
 Most of the frontend uses Svelte. These Svelte files need to be compiled before
-they can be used. The Makefile contains from help for this. Running `make run`
-starts the dev server on :8081 and compiles and hot-reloads the Svelte
-components in the background. To manually compile the Svelte files do `cd svelte
-&& npm run build`.
+they can be used. The compiled svelte files are not in the repo so you need to
+compile them yourself before you can use the development server. The Makefile
+contains help for this. Running `make run` starts the dev server on :8081 and
+compiles and hot-reloads the Svelte components in the background. To manually
+compile the Svelte files do `cd svelte && npm run build`.

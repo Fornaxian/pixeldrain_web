@@ -7,4 +7,4 @@ build:
 backgroundrun:
 	go run main.go
 backgroundsvelte:
-	cd svelte && npm run dev
+	cd svelte && npm install && npm run dev
