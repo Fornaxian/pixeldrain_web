@@ -102,20 +102,28 @@ func New(
 	}
 
 	if proxyAPIRequests {
-		proxPath := strings.TrimSuffix(apiURLInternal, "/api")
-		proxURL, err := url.Parse(proxPath)
+		remoteURL, err := url.Parse(strings.TrimSuffix(apiURLInternal, "/api"))
 		if err != nil {
-			panic(fmt.Errorf("failed to parse reverse proxy URL '%s': %w", proxPath, err))
+			panic(fmt.Errorf("failed to parse reverse proxy URL '%s': %w", apiURLInternal, err))
 		}
 
-		var prox = httputil.NewSingleHostReverseProxy(proxURL)
+		log.Info("Starting API proxy to %s", remoteURL)
+		var prox = httputil.NewSingleHostReverseProxy(remoteURL)
 		prox.Transport = wc.httpClient.Transport
-		r.Handler("OPTIONS", "/api/*p", prox)
-		r.Handler("POST", "/api/*p", prox)
-		r.Handler("GET", "/api/*p", prox)
-		r.Handler("PUT", "/api/*p", prox)
-		r.Handler("PATCH", "/api/*p", prox)
-		r.Handler("DELETE", "/api/*p", prox)
+
+		var proxyHandler = func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+			log.Info("Proxying request to %s", r.URL)
+			r.Host = remoteURL.Host
+			r.Header.Set("Origin", remoteURL.String())
+			prox.ServeHTTP(w, r)
+		}
+
+		r.Handle("OPTIONS", "/api/*p", proxyHandler)
+		r.Handle("POST", "/api/*p", proxyHandler)
+		r.Handle("GET", "/api/*p", proxyHandler)
+		r.Handle("PUT", "/api/*p", proxyHandler)
+		r.Handle("PATCH", "/api/*p", proxyHandler)
+		r.Handle("DELETE", "/api/*p", proxyHandler)
 	}
 
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
@@ -134,10 +142,8 @@ func New(
 		{GET, "api" /*             */, wc.serveMarkdown("api.md", handlerOpts{})},
 		{GET, "history" /*         */, wc.serveTemplate("history_cookies", handlerOpts{})},
 		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
-		{GET, "u/:id" /*           */, wc.serveSvelteFile},
-		{GET, "l/:id" /*           */, wc.serveSvelteList},
-		{GET, "u_old/:id" /*       */, wc.serveFileViewer},
-		{GET, "l_old/:id" /*       */, wc.serveListViewer},
+		{GET, "u/:id" /*           */, wc.serveFileViewer},
+		{GET, "l/:id" /*           */, wc.serveListViewer},
 		{GET, "d/*path" /*         */, wc.serveDirectory},
 		{GET, "t" /*               */, wc.serveTemplate("text_editor", handlerOpts{})},
 		{GET, "donation" /*        */, wc.serveMarkdown("donation.md", handlerOpts{})},
