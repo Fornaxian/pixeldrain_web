@@ -16,7 +16,7 @@ import (
 	"time"
 
 	"fornaxian.tech/pixeldrain_api_client/pixelapi"
-	"fornaxian.tech/pixeldrain_server/util"
+	"fornaxian.tech/util"
 	"github.com/Fornaxian/log"
 )
 

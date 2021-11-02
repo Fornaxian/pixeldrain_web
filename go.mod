@@ -2,14 +2,12 @@ module fornaxian.tech/pixeldrain_web
 
 go 1.17
 
-replace (
-	fornaxian.tech/pixeldrain_api_client => ../pixeldrain_api_client
-	fornaxian.tech/pixeldrain_server/util => ../pixeldrain_server/util
-)
+replace fornaxian.tech/pixeldrain_api_client => ../pixeldrain_api_client
 
 require (
+	fornaxian.tech/log v0.0.0-20190617093801-1c7ce9a7c9b3 // indirect
 	fornaxian.tech/pixeldrain_api_client v0.0.0-00010101000000-000000000000
-	fornaxian.tech/pixeldrain_server/util v0.0.0-00010101000000-000000000000
+	fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787
 	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/Fornaxian/config v0.0.0-20180915150834-ac41cf746a70
 	github.com/Fornaxian/log v0.0.0-20190617093801-1c7ce9a7c9b3

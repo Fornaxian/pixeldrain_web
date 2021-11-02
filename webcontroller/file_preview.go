@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"fornaxian.tech/pixeldrain_server/util"
+	"fornaxian.tech/util"
 	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 	"github.com/microcosm-cc/bluemonday"
