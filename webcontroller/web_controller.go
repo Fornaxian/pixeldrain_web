@@ -14,7 +14,6 @@ import (
 
 	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"github.com/Fornaxian/log"
-	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
 	blackfriday "github.com/russross/blackfriday/v2"
 )
@@ -379,7 +378,7 @@ func (wc *WebController) serveNotFound(w http.ResponseWriter, r *http.Request) {
 
 func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {
 	if cookie, err := r.Cookie("pd_auth_key"); err == nil {
-		if _, err := uuid.Parse(cookie.Value); err == nil {
+		if len(cookie.Value) == 36 {
 			return cookie.Value, nil
 		}
 	}
