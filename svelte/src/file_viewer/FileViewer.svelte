@@ -18,7 +18,6 @@ import Sharebar from "./Sharebar.svelte";
 let is_list = false
 let embedded = false
 let view_token = ""
-let file_preview
 let current_file = {
 	id: "",
 	name: "loading...",
@@ -345,15 +344,17 @@ const keyboard_event = evt => {
 			<FileStats file={current_file}></FileStats>
 
 			<hr/>
-			<button on:click={download} class="toolbar_button button_full_width">
-				<i class="icon">save</i>
-				<span>Download</span>
-			</button>
-			{#if is_list}
-				<button on:click={download_list} class="toolbar_button button_full_width">
+			{#if current_file.abuse_type === ""}
+				<button on:click={download} class="toolbar_button button_full_width">
 					<i class="icon">save</i>
-					<span>DL all files</span>
+					<span>Download</span>
 				</button>
+				{#if is_list}
+					<button on:click={download_list} class="toolbar_button button_full_width">
+						<i class="icon">save</i>
+						<span>DL all files</span>
+					</button>
+				{/if}
 			{/if}
 			<button on:click={copy_url}
 				class="toolbar_button button_full_width"
@@ -426,7 +427,6 @@ const keyboard_event = evt => {
 		<div id="file_preview" class="file_preview checkers" class:toolbar_visible class:skyscraper_visible>
 			<FilePreview
 				file={current_file}
-				bind:this={file_preview}
 				on:download={download}
 				on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
 				on:next={() => { if (list_navigator) { list_navigator.next() }}}>
@@ -443,11 +443,11 @@ const keyboard_event = evt => {
 
 	{#if current_file.show_ads && window.viewer_data.user_ads_enabled}
 		<AdLeaderboard></AdLeaderboard>
-	{:else if !window.viewer_data.user_ads_enabled}
+	{:else if !window.viewer_data.user_ads_enabled && !embedded}
 		<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
 			Thank you for supporting pixeldrain!
 		</div>
-	{:else if !current_file.show_ads}
+	{:else if !current_file.show_ads && !embedded}
 		<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
 			The uploader of this file disabled advertisements. You can do the same for <a href="/#pro">only €2 per month</a>!
 		</div>

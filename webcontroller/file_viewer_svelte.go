@@ -93,7 +93,12 @@ func (wc *WebController) serveSvelteFile(w http.ResponseWriter, r *http.Request,
 		}
 	}
 
-	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer_svelte", templateData)
+	var templateName = "file_viewer_svelte"
+	if browserCompat(r.UserAgent()) {
+		templateName = "file_viewer_compat"
+	}
+
+	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
@@ -148,7 +153,12 @@ func (wc *WebController) serveSvelteList(w http.ResponseWriter, r *http.Request,
 		}
 	}
 
-	err = wc.templates.Get().ExecuteTemplate(w, "file_viewer_svelte", templateData)
+	var templateName = "file_viewer_svelte"
+	if browserCompat(r.UserAgent()) {
+		templateName = "file_viewer_compat"
+	}
+
+	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
