@@ -14,38 +14,28 @@ onMount(() => {
 		}
 	}
 
-	switch (Math.floor(Math.random() * 20)) {
+	switch (Math.floor(Math.random() * 10)) {
 		case 0:
 			ad_type = "publisherrest_1"
 			break
 		case 1:
-			ad_type = "publisherrest_2"
-			break
-		case 2:
 			ad_type = "publisherrest_3"
 			break
+		case 2:
 		case 3:
+			ad_type = "brave"
+			break
 		case 4:
 		case 5:
-			ad_type = "brave"
+			ad_type = "ads.plus"
 			break
 		case 6:
 		case 7:
+			ad_type = "pixfuture"
+			break
 		case 8:
 		case 9:
-		case 10:
-		case 11:
-		case 12:
-			ad_type = "ads.plus"
-			break
-		case 13:
-		case 14:
-		case 15:
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-			ad_type = "pixfuture"
+			ad_type = "adaround"
 			break
 	}
 
@@ -104,6 +94,8 @@ const ads_plus = () => {
 <svelte:head>
 	{#if ad_type === "ads.plus"}
 		<script on:load={ads_plus} async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+	{:else if ad_type === "adaround"}
+		<script async src="/res/script/adaround.js"></script>
 	{/if}
 </svelte:head>
 
@@ -153,6 +145,8 @@ const ads_plus = () => {
 		<div bind:this={banner} class="banner" id="27517x728x90x4605x_ADSLOT1" clickTrack="%%CLICK_URL_ESC%%" style="display: block; margin: auto;"></div>
 		<script type="text/javascript" async src="https://served-by.pixfuture.com/www/delivery/headerbid.js" slotId="27517x728x90x4605x_ADSLOT1" refreshTime="5" refreshInterval="60"></script>
 		<!-- AuctionX Display platform tag END -->
+	{:else if ad_type === "adaround"}
+		<div bind:this={banner} class="_fa7cdd4c68507744 banner" data-zone="d8764be36c134d3d807abb2a073dc010" style="width:728px;height:90px;display: inline-block;margin: 0 auto"></div>
 	{/if}
 </div>
 

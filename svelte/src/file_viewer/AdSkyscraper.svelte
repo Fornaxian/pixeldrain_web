@@ -33,7 +33,7 @@ onMount(async () => {
 		return
 	}
 
-	switch (Math.floor(Math.random() * 3)) {
+	switch (Math.floor(Math.random() * 4)) {
 		case 0:
 			ad_type = "a-ads"
 			break
@@ -42,6 +42,9 @@ onMount(async () => {
 			break
 		case 2:
 			ad_type = "ads.plus"
+			break
+		case 3:
+			ad_type = "adaround"
 			break
 	}
 
@@ -79,6 +82,8 @@ const ads_plus = () => {
 <svelte:head>
 	{#if ad_type === "ads.plus"}
 		<script on:load={ads_plus} async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+	{:else if ad_type === "adaround"}
+		<script async src="/res/script/adaround.js"></script>
 	{/if}
 </svelte:head>
 
@@ -103,6 +108,8 @@ const ads_plus = () => {
 				<div id="27513x160x600x4605x_ADSLOT1" clickTrack="%%CLICK_URL_ESC%%" style="display: block; margin: auto;"></div>
 				<script type="text/javascript" async src="https://served-by.pixfuture.com/www/delivery/headerbid.js" slotId="27513x160x600x4605x_ADSLOT1" refreshTime="5" refreshInterval="60"></script>
 				<!-- AuctionX Display platform tag END -->
+			{:else if ad_type === "adaround"}
+				<div class="_fa7cdd4c68507744" data-zone="2a0dbd4b7c484e9e824d211a57fa6b93" style="width:160px;height:600px;display: inline-block;margin: 0 auto"></div>
 			{/if}
 		</div>
 	</div>
