@@ -76,7 +76,9 @@ let status = {
   remote_reads_per_sec: 0,
   running_since: "",
   stats_watcher_listeners: 0,
-  stats_watcher_threads: 0
+  stats_watcher_threads: 0,
+  download_clients: 0,
+  download_connections: 0,
 }
 
 function getStats(order) {
@@ -228,7 +230,7 @@ onDestroy(() => {
 				</tr>
 			</tbody>
 		</table>
-		<h3>Websocket statistics</h3>
+		<h3>Socket statistics</h3>
 		<table>
 			<thead>
 				<tr>
@@ -244,6 +246,12 @@ onDestroy(() => {
 					<td>{status.stats_watcher_threads}</td>
 					<td>{status.stats_watcher_listeners}</td>
 					<td>{(status.stats_watcher_listeners / status.stats_watcher_threads).toPrecision(3)}</td>
+				</tr>
+				<tr>
+					<td>Downloads</td>
+					<td>{status.download_clients}</td>
+					<td>{status.download_connections}</td>
+					<td>{(status.download_connections / status.download_clients).toPrecision(3)}</td>
 				</tr>
 			</tbody>
 		</table>
