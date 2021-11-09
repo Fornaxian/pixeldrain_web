@@ -1,16 +1,27 @@
 <script>
 import { createEventDispatcher, onMount, tick } from "svelte"
+import { adsplus_load, adsplus_loaded, adaround_load } from "./AdHead.svelte"
 
 let dispatch = createEventDispatcher()
 let container
 let ad_type = ""
 let visible = false
 
+let set_ad_type = (t) => {
+	ad_type = t
+	if (ad_type === "ads.plus") {
+		adsplus_load.set(true)
+	} else if (ad_type === "adaround") {
+		adaround_load.set(true)
+	}
+}
+
+
 onMount(async () => {
 	if (window.location.pathname === "/u/demo") {
 		let url_ads = new URL(window.location.href).searchParams.get("ads")
 		if (url_ads !== "") {
-			ad_type = url_ads
+			set_ad_type(url_ads)
 			open()
 			return
 		}
@@ -35,16 +46,16 @@ onMount(async () => {
 
 	switch (Math.floor(Math.random() * 4)) {
 		case 0:
-			ad_type = "a-ads"
+			set_ad_type("aads2")
 			break
 		case 1:
-			ad_type = "pixfuture"
+			set_ad_type("pixfuture")
 			break
 		case 2:
-			ad_type = "ads.plus"
+			set_ad_type("ads.plus")
 			break
 		case 3:
-			ad_type = "adaround"
+			set_ad_type("adaround")
 			break
 	}
 
@@ -67,25 +78,19 @@ const close = () => {
 	setTimeout(() => { visible = false }, 1000)
 }
 
-const ads_plus = () => {
-	window.googletag = window.googletag || {cmd: []};
-	googletag.cmd.push(function() {
-		googletag.defineSlot('/21673142571/299__pixeldrain.com__default__160x600_1', [160, 600], 'div-gpt-ad-pixeldraincom160x600_1').addService(googletag.pubads());
-		googletag.pubads().collapseEmptyDivs();
-		googletag.enableServices();
-	});
-	googletag.cmd.push(function() { googletag.display('div-gpt-ad-pixeldraincom160x600_1'); });
-}
+adsplus_loaded.subscribe(v => {
+	if (v) {
+		window.googletag = window.googletag || {cmd: []};
+		googletag.cmd.push(function() {
+			googletag.defineSlot('/21673142571/299__pixeldrain.com__default__160x600_1', [160, 600], 'div-gpt-ad-pixeldraincom160x600_1').addService(googletag.pubads());
+			googletag.pubads().collapseEmptyDivs();
+			googletag.enableServices();
+		});
+		googletag.cmd.push(function() { googletag.display('div-gpt-ad-pixeldraincom160x600_1'); });
+	}
+})
 
 </script>
-
-<svelte:head>
-	{#if ad_type === "ads.plus"}
-		<script on:load={ads_plus} async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
-	{:else if ad_type === "adaround"}
-		<script async src="/res/script/adaround.js"></script>
-	{/if}
-</svelte:head>
 
 {#if visible}
 	<div class="skyscraper" bind:this={container}>
@@ -93,7 +98,7 @@ const ads_plus = () => {
 			<i class="icon">close</i> Close ad
 		</button>
 		<div class="ad_space">
-			{#if ad_type === "a-ads"}
+			{#if ad_type === "aads2"}
 				<iframe
 					data-aa="1811738"
 					src="//ad.a-ads.com/1811738?size=160x600&background_color={window.style.layer2Color}&text_color={window.style.textColor}&title_color={window.style.highlightColor}&title_hover_color={window.style.highlightColor}&link_color={window.style.highlightColor}&link_hover_color={window.style.highlightColor}"

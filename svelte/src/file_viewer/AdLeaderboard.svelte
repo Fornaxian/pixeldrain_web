@@ -1,41 +1,51 @@
 <script>
 import { onMount } from "svelte"
+import { adsplus_load, adsplus_loaded, adaround_load } from "./AdHead.svelte"
 
 let container
 let banner
 let ad_type = ""
 
+let set_ad_type = (t) => {
+	ad_type = t
+	if (ad_type === "ads.plus") {
+		adsplus_load.set(true)
+	} else if (ad_type === "adaround") {
+		adaround_load.set(true)
+	}
+}
+
 onMount(() => {
 	if (window.location.pathname === "/u/demo") {
 		let url_ads = new URL(window.location.href).searchParams.get("ads")
 		if (url_ads !== "") {
-			ad_type = url_ads
+			set_ad_type(url_ads)
 			return
 		}
 	}
 
 	switch (Math.floor(Math.random() * 10)) {
 		case 0:
-			ad_type = "publisherrest_1"
+			set_ad_type("publisherrest_1")
 			break
 		case 1:
-			ad_type = "publisherrest_3"
+			set_ad_type("publisherrest_3")
 			break
 		case 2:
 		case 3:
-			ad_type = "brave"
+			set_ad_type("brave")
 			break
 		case 4:
 		case 5:
-			ad_type = "ads.plus"
+			set_ad_type("ads.plus")
 			break
 		case 6:
 		case 7:
-			ad_type = "pixfuture"
+			set_ad_type("pixfuture")
 			break
 		case 8:
 		case 9:
-			ad_type = "adaround"
+			set_ad_type("adaround")
 			break
 	}
 
@@ -78,7 +88,8 @@ const resize = () => {
 	banner.style.transform = "scale(" + scale + ")"
 }
 
-const ads_plus = () => {
+adsplus_loaded.subscribe(v => {
+	if (v) {
 	window.googletag = window.googletag || {cmd: []};
 	googletag.cmd.push(function() {
 		googletag.defineSlot('/21673142571/299__pixeldrain.com__default__728x90_1', [728, 90], 'div-gpt-ad-pixeldraincom728x90_1').addService(googletag.pubads());
@@ -86,18 +97,11 @@ const ads_plus = () => {
 		googletag.enableServices();
 	});
 	googletag.cmd.push(function() { googletag.display('div-gpt-ad-pixeldraincom728x90_1'); });
-}
+	}
+})
 </script>
 
 <svelte:window on:resize={resize} on:load={resize}/>
-
-<svelte:head>
-	{#if ad_type === "ads.plus"}
-		<script on:load={ads_plus} async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
-	{:else if ad_type === "adaround"}
-		<script async src="/res/script/adaround.js"></script>
-	{/if}
-</svelte:head>
 
 <div bind:this={container}>
 	{#if ad_type === "publisherrest_1"}
@@ -124,7 +128,7 @@ const ads_plus = () => {
 				<i class="icon">shopping_cart</i>
 			</a>
 		</div>
-	{:else if ad_type === "a-ads"}
+	{:else if ad_type === "aads1"}
 		<iframe bind:this={banner} class="banner"
 			data-aa="73974"
 			src="//ad.a-ads.com/73974?size=728x90&background_color={window.style.layer2Color}&text_color={window.style.textColor}&title_color={window.style.highlightColor}&title_hover_color={window.style.highlightColor}&link_color={window.style.highlightColor}&link_hover_color={window.style.highlightColor}"

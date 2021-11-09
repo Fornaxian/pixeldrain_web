@@ -11,6 +11,7 @@ import EditWindow from "./EditWindow.svelte";
 import EmbedWindow from "./EmbedWindow.svelte";
 import ReportWindow from "./ReportWindow.svelte";
 import IntroPopup from "./IntroPopup.svelte";
+import AdHead from "./AdHead.svelte";
 import AdLeaderboard from "./AdLeaderboard.svelte";
 import AdSkyscraper from "./AdSkyscraper.svelte";
 import Sharebar from "./Sharebar.svelte";
@@ -317,6 +318,9 @@ const keyboard_event = evt => {
 <svelte:window on:keydown={keyboard_event}/>
 
 <div id="file_viewer" class="file_viewer">
+	<!-- Head elements for the ads -->
+	<AdHead></AdHead>
+
 	<div id="headerbar" class="headerbar" class:embedded>
 		<button on:click={toolbar_toggle} class="button_toggle_toolbar round" class:button_highlight={toolbar_visible}>
 			<i class="icon">menu</i>
