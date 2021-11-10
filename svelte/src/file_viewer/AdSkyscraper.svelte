@@ -14,6 +14,8 @@ let set_ad_type = (t) => {
 	} else if (ad_type === "adaround") {
 		adaround_load.set(true)
 	}
+
+	console.log("skyscraper ad is " + t)
 }
 
 

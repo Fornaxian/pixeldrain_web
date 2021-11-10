@@ -59,12 +59,14 @@ func (wc *WebController) metadataFromFile(f pixelapi.FileInfo) (og ogData) {
 		og.addLink("image_src", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
 	} else if strings.HasPrefix(f.MimeType, "audio") {
 		og.addProp("og:type", "music.song")
+		og.addProp("og:image", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
 		og.addProp("og:audio", wc.websiteAddress+"/api/file/"+f.ID)
 		og.addProp("og:audio:secure_url", wc.websiteAddress+"/api/file/"+f.ID)
 		og.addProp("og:audio:type", f.MimeType)
 		og.addLink("image_src", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
 	} else {
 		og.addProp("og:type", "website")
+		og.addProp("og:image", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
 		og.addLink("image_src", wc.websiteAddress+"/api/file/"+f.ID+"/thumbnail")
 	}
 	return og

@@ -13,6 +13,8 @@ let set_ad_type = (t) => {
 	} else if (ad_type === "adaround") {
 		adaround_load.set(true)
 	}
+
+	console.log("leaderboard ad is " + t)
 }
 
 onMount(() => {
@@ -24,27 +26,23 @@ onMount(() => {
 		}
 	}
 
-	switch (Math.floor(Math.random() * 10)) {
+	switch (Math.floor(Math.random() * 6)) {
 		case 0:
 			set_ad_type("publisherrest_1")
 			break
 		case 1:
-			set_ad_type("publisherrest_3")
-			break
-		case 2:
-		case 3:
 			set_ad_type("brave")
 			break
-		case 4:
-		case 5:
+		case 2:
+			set_ad_type("aads1")
+			break
+		case 3:
 			set_ad_type("ads.plus")
 			break
-		case 6:
-		case 7:
+		case 4:
 			set_ad_type("pixfuture")
 			break
-		case 8:
-		case 9:
+		case 5:
 			set_ad_type("adaround")
 			break
 	}

@@ -114,15 +114,6 @@ type hsl struct {
 	Lightness  float64
 }
 
-func (h hsl) cssString() string {
-	return fmt.Sprintf(
-		"hsl(%d, %.3f%%, %.3f%%)",
-		h.Hue,
-		h.Saturation*100,
-		h.Lightness*100,
-	)
-}
-
 func (orig hsl) RGB() string {
 	var r, g, b, q, p float64
 	var h, s, l = float64(orig.Hue) / 360, orig.Saturation, orig.Lightness
