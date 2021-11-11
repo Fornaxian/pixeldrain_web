@@ -9,6 +9,7 @@ let loading = true
 let contentType = "" // files or lists
 let inputSearch
 let directoryElement
+let downloadFrame
 let help_modal
 let help_modal_visible = false
 
@@ -201,6 +202,23 @@ function createList() {
 	})
 }
 
+function downloadFiles() {
+	let selected = directoryElement.getSelectedFiles()
+
+	if (selected.length === 0) {
+		alert("You have not selected any files")
+		return
+	}
+
+	// Create a list of file ID's separated by commas
+	let ids = selected.reduce((acc, curr) => acc + curr.id + ",",	"")
+
+	// Remove the last comma
+	ids = ids.slice(0, -1)
+
+	downloadFrame.src = window.api_endpoint+"/file/"+ids+"?download"
+}
+
 const keydown = (e) => {
 	if (e.ctrlKey && e.key === "f" || !e.ctrlKey && e.keyCode === 191) {
 		e.preventDefault()
@@ -255,6 +273,7 @@ onMount(() => {
 			<!-- Buttons to make a list and bulk delete files will show up here soon. Stay tuned ;-) -->
 			{#if contentType === "files"}
 				<button on:click={createList}><i class="icon">list</i> Make list</button>
+				<button on:click={downloadFiles}><i class="icon">download</i> Download</button>
 			{/if}
 			<button on:click={bulkDelete}><i class="icon">delete</i> Delete</button>
 		</div>
@@ -296,6 +315,9 @@ onMount(() => {
 			between the file you last selected and the file you just clicked.
 		</p>
 	</Modal>
+
+	<!-- This frame will load the download URL when a download button is pressed -->
+	<iframe bind:this={downloadFrame} title="File download frame" style="display: none; width: 1px; height: 1px;"></iframe>
 </div>
 
 <style>
