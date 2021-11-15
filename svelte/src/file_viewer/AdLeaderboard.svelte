@@ -26,23 +26,20 @@ onMount(() => {
 		}
 	}
 
-	switch (Math.floor(Math.random() * 6)) {
+	switch (Math.floor(Math.random() * 5)) {
 		case 0:
-			set_ad_type("publisherrest_1")
-			break
-		case 1:
 			set_ad_type("brave")
 			break
-		case 2:
+		case 1:
 			set_ad_type("aads1")
 			break
-		case 3:
+		case 2:
 			set_ad_type("ads.plus")
 			break
-		case 4:
+		case 3:
 			set_ad_type("pixfuture")
 			break
-		case 5:
+		case 4:
 			set_ad_type("adaround")
 			break
 	}
@@ -88,13 +85,13 @@ const resize = () => {
 
 adsplus_loaded.subscribe(v => {
 	if (v) {
-	window.googletag = window.googletag || {cmd: []};
-	googletag.cmd.push(function() {
-		googletag.defineSlot('/21673142571/299__pixeldrain.com__default__728x90_1', [728, 90], 'div-gpt-ad-pixeldraincom728x90_1').addService(googletag.pubads());
-		googletag.pubads().collapseEmptyDivs();
-		googletag.enableServices();
-	});
-	googletag.cmd.push(function() { googletag.display('div-gpt-ad-pixeldraincom728x90_1'); });
+		window.googletag = window.googletag || {cmd: []};
+		googletag.cmd.push(function() {
+			googletag.defineSlot('/21673142571/299__pixeldrain.com__default__728x90_1', [728, 90], 'div-gpt-ad-pixeldraincom728x90_1').addService(googletag.pubads());
+			googletag.pubads().collapseEmptyDivs();
+			googletag.enableServices();
+		});
+		googletag.cmd.push(function() { googletag.display('div-gpt-ad-pixeldraincom728x90_1'); });
 	}
 })
 </script>

@@ -29,7 +29,7 @@ onMount(async () => {
 		}
 	}
 
-	if (document.body.clientWidth < 800) {
+	if (document.body.clientWidth < 700) {
 		visible = false
 		dispatch("visibility", false)
 		return

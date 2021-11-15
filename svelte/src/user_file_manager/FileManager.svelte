@@ -211,7 +211,7 @@ function downloadFiles() {
 	}
 
 	// Create a list of file ID's separated by commas
-	let ids = selected.reduce((acc, curr) => acc + curr.id + ",",	"")
+	let ids = selected.reduce((acc, curr) => acc + curr.id + ",", "")
 
 	// Remove the last comma
 	ids = ids.slice(0, -1)
