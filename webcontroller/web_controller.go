@@ -175,8 +175,10 @@ func New(
 
 		// User account settings
 		{GET, "user" /*                       */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
+		{GET, "user/home" /*                  */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/settings" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/api_keys" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
+		{GET, "user/transactions" /*          */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
 		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
 		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
@@ -194,6 +196,7 @@ func New(
 		{GET, "admin/abuse_reporters" /**/, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/abuse_reports" /*  */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/ip_bans" /*        */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
+		{GET, "admin/subscriptions" /*  */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
 		{PST, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
 

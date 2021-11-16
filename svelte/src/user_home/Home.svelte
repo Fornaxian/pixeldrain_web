@@ -79,9 +79,7 @@ let update_graphs = (minutes, interval, live) => {
 }
 
 let direct_link_bandwidth_used = 0
-let direct_link_percent = 0
 let storage_space_used = 0
-let storage_percent = 0
 let load_direct_bw = () => {
 	let today = new Date()
 	let start = new Date()
@@ -98,9 +96,7 @@ let load_direct_bw = () => {
 	}).then(resp => {
 		let total = resp.amounts.reduce((accum, val) => accum += val, 0);
 		direct_link_bandwidth_used = total
-		direct_link_percent = total / window.user.subscription.direct_linking_bandwidth
 		storage_space_used = window.user.storage_space_used
-		storage_percent = window.user.storage_space_used / window.user.subscription.storage_space
 	}).catch(e => {
 		console.error("Error requesting time series: " + e);
 	})
@@ -148,8 +144,17 @@ onDestroy(() => {
 			</li>
 		</ul>
 
-		<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
-		<HotlinkProgressBar used={direct_link_bandwidth_used} total={window.user.subscription.direct_linking_bandwidth}></HotlinkProgressBar>
+		{#if window.user.subscription.storage_space === -1}
+			Storage space used: {formatDataVolume(storage_space_used, 3)}<br/>
+		{:else}
+			<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
+		{/if}
+
+		{#if window.user.subscription.storage_space === -1}
+			Hotlink bandwidth used in the last 30 days: {formatDataVolume(direct_link_bandwidth_used, 3)}<br/>
+		{:else}
+			<HotlinkProgressBar used={direct_link_bandwidth_used} total={window.user.subscription.direct_linking_bandwidth}></HotlinkProgressBar>
+		{/if}
 
 		<h3>Exports</h3>
 		<div style="text-align: center;">

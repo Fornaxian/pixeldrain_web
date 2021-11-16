@@ -1,0 +1,70 @@
+<script>
+import { onMount } from "svelte";
+
+import Form from "./../util/Form.svelte";
+
+let credit_form = {
+	name: "give_credit",
+	fields: [
+		{
+			name: "user_id",
+			label: "User ID",
+			type: "text",
+			default_value: "",
+		}, {
+			name: "user_name",
+			label: "User name",
+			type: "text",
+			default_value: "",
+		}, {
+			name: "user_email",
+			label: "User e-mail",
+			type: "text",
+			default_value: "",
+		}, {
+			name: "credit",
+			label: "Credit",
+			type: "number",
+			default_value: 0,
+		},
+	],
+	submit_label: `<i class="icon">send</i> Submit`,
+	on_submit: async fields => {
+		const form = new FormData()
+		if (fields.user_id !== "") {
+			form.append("user_by", "id")
+			form.append("id", fields.user_id)
+		} else if (fields.user_name !== "") {
+			form.append("user_by", "name")
+			form.append("name", fields.user_name)
+		} else if (fields.user_email !== "") {
+			form.append("user_by", "email")
+			form.append("email", fields.user_email)
+		}
+		form.append("credit", fields.credit*1e6)
+
+		const resp = await fetch(
+			window.api_endpoint+"/admin/give_credit",
+			{ method: "POST", body: form }
+		);
+		if(resp.status >= 400) {
+			return {error_json: await resp.json()}
+		}
+
+		return {success: true, message: "Success: Granted user "+fields.credit+" credits"}
+	},
+}
+</script>
+
+<div>
+	<div class="limit_width">
+		<h2>Give user credit</h2>
+		<p>
+			This adds credit to a user's account. You only need to enter one of
+			the user id, username or email.
+		</p>
+		<div class="highlight_dark">
+			<Form config={credit_form}></Form>
+		</div>
+	</div>
+</div>

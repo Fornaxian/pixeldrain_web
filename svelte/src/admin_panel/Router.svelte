@@ -5,6 +5,7 @@ import IpBans from "./IPBans.svelte"
 import Home from "./Home.svelte"
 import { onMount } from "svelte";
 import BlockFiles from "./BlockFiles.svelte";
+import Subscriptions from "./Subscriptions.svelte";
 
 let page = ""
 
@@ -62,6 +63,13 @@ onMount(() => {
 			<i class="icon">remove_circle</i>
 			IP bans
 		</a>
+		<a class="button"
+			href="/admin/subscriptions"
+			class:button_highlight={page === "subscriptions"}
+			on:click|preventDefault={() => {navigate("subscriptions", "Subscriptions")}}>
+			<i class="icon">receipt_long</i>
+			Subscriptions
+		</a>
 		<a class="button" href="/admin/globals">
 			<i class="icon">edit</i>
 			Update global settings
@@ -69,14 +77,16 @@ onMount(() => {
 	</div>
 
 	{#if page === "status"}
-	<Home></Home>
+		<Home></Home>
 	{:else if page === "block_files"}
-	<BlockFiles></BlockFiles>
+		<BlockFiles></BlockFiles>
 	{:else if page === "abuse_reports"}
-	<AbuseReports></AbuseReports>
+		<AbuseReports></AbuseReports>
 	{:else if page === "abuse_reporters"}
-	<AbuseReporters></AbuseReporters>
+		<AbuseReporters></AbuseReporters>
 	{:else if page === "ip_bans"}
-	<IpBans></IpBans>
+		<IpBans></IpBans>
+	{:else if page === "subscriptions"}
+		<Subscriptions></Subscriptions>
 	{/if}
 </div>

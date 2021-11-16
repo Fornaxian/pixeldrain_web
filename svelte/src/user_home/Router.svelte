@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import Home from "./Home.svelte";
 import AccountSettings from "./AccountSettings.svelte";
 import APIKeys from "./APIKeys.svelte";
+import Transactions from "./Transactions.svelte";
 
 let page = ""
 
@@ -14,21 +15,28 @@ let navigate = (path, title) => {
 	)
 }
 
-onMount(() => {
+let get_page = () => {
 	let newpage = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1)
 	if (newpage === "user") {
-		newpage = ""
+		newpage = "home"
 	}
+
 	page = newpage
+}
+
+onMount(() => {
+	get_page()
 })
 </script>
+
+<svelte:window on:popstate={get_page} />
 
 <div>
 	<div class="tab_bar">
 		<a class="button"
 			href="/user"
-			class:button_highlight={page === ""}
-			on:click|preventDefault={() => {navigate("", "My home")}}>
+			class:button_highlight={page === "home"}
+			on:click|preventDefault={() => {navigate("home", "My home")}}>
 			<i class="icon">home</i>
 			My home
 		</a>
@@ -46,16 +54,24 @@ onMount(() => {
 			<i class="icon">vpn_key</i>
 			API keys
 		</a>
+		{#if window.user.balance_micro_eur !== 0}
+			<a class="button"
+				href="/user/transactions"
+				class:button_highlight={page === "transactions"}
+				on:click|preventDefault={() => {navigate("transactions", "Transactions")}}>
+				<i class="icon">receipt_long</i>
+				Transactions
+			</a>
+		{/if}
 	</div>
 
-	{#if page === ""}
-	<Home></Home>
+	{#if page === "home"}
+		<Home></Home>
 	{:else if page === "settings"}
-	<AccountSettings></AccountSettings>
+		<AccountSettings></AccountSettings>
 	{:else if page === "api_keys"}
-	<APIKeys></APIKeys>
+		<APIKeys></APIKeys>
+	{:else if page === "transactions"}
+		<Transactions></Transactions>
 	{/if}
 </div>
-
-<style>
-</style>

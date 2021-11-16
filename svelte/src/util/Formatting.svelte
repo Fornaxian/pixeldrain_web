@@ -15,17 +15,17 @@ export const formatThousands = (x) => {
 
 export const formatDataVolume = (amt, precision) => {
 	if (precision < 3) { precision = 3; }
-	if (amt >= 1e18) {
+	if (amt >= 1e18-1e15) {
 		return (amt/1e18).toPrecision(precision) + " EB";
-	}else if (amt >= 1e15) {
+	}else if (amt >= 1e15-1e12) {
 		return (amt/1e15).toPrecision(precision) + " PB";
-	}else if (amt >= 1e12) {
+	}else if (amt >= 1e12-1e9) {
 		return (amt/1e12).toPrecision(precision) + " TB";
-	} else if (amt >= 1e9) {
+	} else if (amt >= 1e9-1e6) {
 		return (amt/1e9).toPrecision(precision) + " GB";
-	} else if (amt >= 1e6) {
+	} else if (amt >= 1e6-1e3) {
 		return (amt/1e6).toPrecision(precision) + " MB";
-	} else if (amt >= 1e3) {
+	} else if (amt >= 1e3-1) {
 		return (amt/1e3).toPrecision(precision) + " kB";
 	}
 	return amt + " B"
@@ -57,5 +57,9 @@ export const formatDate = (date, hours, minutes, seconds) => {
 	if (minutes) { dateStr += ":"+("00"+date.getMinutes()).slice(-2) }
 	if (seconds) { dateStr += ":"+("00"+date.getMinutes()).slice(-2) }
 	return dateStr
+}
+
+export const formatEuros = (amt, precision) => {
+	return "€ "+ (amt / 1000000).toFixed(precision)
 }
 </script>
