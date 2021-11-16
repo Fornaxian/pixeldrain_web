@@ -277,7 +277,6 @@ h1 {
 h2 {
 	font-size: 2em;
 	font-family: "light", sans-serif;
-	text-align: center;
 	border-bottom: 1px var(--layer_4_color_border) solid;
 }
 h3 {
