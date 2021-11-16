@@ -179,6 +179,7 @@ func New(
 		{GET, "user/settings" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/api_keys" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/transactions" /*          */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
+		{GET, "user/subscription" /*          */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
 		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
 		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},

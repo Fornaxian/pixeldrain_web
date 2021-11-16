@@ -4,6 +4,7 @@ import { formatDataVolume, formatThousands } from "../util/Formatting.svelte";
 import Chart from "../util/Chart.svelte";
 import StorageProgressBar from "./StorageProgressBar.svelte";
 import HotlinkProgressBar from "./HotlinkProgressBar.svelte";
+import Euro from "../util/Euro.svelte"
 
 let graph_view = null
 let graph_download = null
@@ -128,11 +129,11 @@ onDestroy(() => {
 						Max file size: {formatDataVolume(window.user.subscription.file_size_limit, 3)}
 					</li>
 					<li>
-						Advertisements when viewing files:
+						Advertisements when you view files:
 						{#if window.user.subscription.disable_ad_display}No{:else}Yes{/if}
 					</li>
 					<li>
-						Advertisements on your uploaded files:
+						Advertisements when others view your files:
 						{#if window.user.subscription.disable_ads_on_files}No{:else}Yes{/if}
 					</li>
 					{#if window.user.subscription.file_expiry_days > 0}
@@ -142,6 +143,11 @@ onDestroy(() => {
 					{/if}
 				</ul>
 			</li>
+			{#if window.user.balance_micro_eur !== 0}
+				<li>
+					Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
+				</li>
+			{/if}
 		</ul>
 
 		{#if window.user.subscription.storage_space === -1}
@@ -150,7 +156,7 @@ onDestroy(() => {
 			<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
 		{/if}
 
-		{#if window.user.subscription.storage_space === -1}
+		{#if window.user.subscription.direct_linking_bandwidth === -1}
 			Hotlink bandwidth used in the last 30 days: {formatDataVolume(direct_link_bandwidth_used, 3)}<br/>
 		{:else}
 			<HotlinkProgressBar used={direct_link_bandwidth_used} total={window.user.subscription.direct_linking_bandwidth}></HotlinkProgressBar>

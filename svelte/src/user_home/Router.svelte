@@ -4,6 +4,7 @@ import Home from "./Home.svelte";
 import AccountSettings from "./AccountSettings.svelte";
 import APIKeys from "./APIKeys.svelte";
 import Transactions from "./Transactions.svelte";
+import Subscription from "./Subscription.svelte";
 
 let page = ""
 
@@ -62,6 +63,13 @@ onMount(() => {
 				<i class="icon">receipt_long</i>
 				Transactions
 			</a>
+			<a class="button"
+				href="/user/subscription"
+				class:button_highlight={page === "subscription"}
+				on:click|preventDefault={() => {navigate("subscription", "Subscription")}}>
+				<i class="icon">shopping_cart</i>
+				Subscription
+			</a>
 		{/if}
 	</div>
 
@@ -73,5 +81,7 @@ onMount(() => {
 		<APIKeys></APIKeys>
 	{:else if page === "transactions"}
 		<Transactions></Transactions>
+	{:else if page === "subscription"}
+		<Subscription></Subscription>
 	{/if}
 </div>

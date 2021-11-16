@@ -1,7 +1,8 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume, formatDate, formatEuros } from "../util/Formatting.svelte";
+import { formatDataVolume, formatDate } from "../util/Formatting.svelte";
 import Spinner from "../util/Spinner.svelte";
+import Euro from "../util/Euro.svelte"
 
 let loading = false
 let months = []
@@ -102,55 +103,6 @@ onMount(() => {
 		</div>
 	{/if}
 	<div class="limit_width">
-		<h2>Manage subscription</h2>
-		<p>
-			Current account balance: {formatEuros(window.user.balance_micro_eur, 4)}
-		</p>
-
-		{#if result !== ""}
-			<div class:highlight_green={result_success} class:highlight_red={!result_success}>
-				{result}
-			</div>
-		{/if}
-
-		<div class="highlight_dark">
-			{#if window.user.subscription.id !== "prepaid"}
-				Prepaid subscription is not active.<br/>
-				<button on:click={() => {update_subscription("prepaid")}}>
-					<i class="icon">attach_money</i>
-					Enable prepaid subscription
-				</button>
-			{:else}
-				Prepaid subscription is active.<br/>
-				Deactivating your subscription may cause your files to expire
-				sooner than expected!<br/>
-				<button on:click={() => {update_subscription("none")}}>
-					<i class="icon">money_off</i>
-					Disable prepaid subscription
-				</button>
-			{/if}
-		</div>
-		<p>
-			When your prepaid subscription is active you will be charged:
-		</p>
-		<ul>
-			<li>
-				€4 per TB per month for storage. The amount is charged per day
-				and divided by the average number of days in a month (30.4375).
-				So if you have exactly 1 TB on your account you will be charged
-				€0.131416838 per day.
-			</li>
-			<li>
-				€2 per TB of bandwidth, charged every day based on the usage of
-				the previous day
-			</li>
-			<li>
-				€2 per month for the subscription itself, because prepaid has
-				the same perks as the Pro subscription (No advertisements, no
-				bandwidth limit, video player, etc)
-			</li>
-		</ul>
-
 		<h2>Transaction log</h2>
 		<p>
 			Here is a log of all transactions on your account balance.
@@ -159,11 +111,11 @@ onMount(() => {
 		{#each months as month}
 			<h3>{month.month}</h3>
 			<ul>
-				<li>Subscription charge: {formatEuros(month.total_subscription_charge, 4)}</li>
-				<li>Storage charge: {formatEuros(month.total_storage_charge, 4)}</li>
-				<li>Bandwidth charge: {formatEuros(month.total_bandwidth_charge, 4)}</li>
-				<li>Total charge: {formatEuros(month.total_deducted, 4)}</li>
-				<li>Deposited: {formatEuros(month.total_deposited, 4)}</li>
+				<li>Subscription charge: <Euro amount={month.total_subscription_charge}></Euro></li>
+				<li>Storage charge: <Euro amount={month.total_storage_charge}></Euro></li>
+				<li>Bandwidth charge: <Euro amount={month.total_bandwidth_charge}></Euro></li>
+				<li>Total charge: <Euro amount={month.total_deducted}></Euro></li>
+				<li>Deposited: <Euro amount={month.total_deposited}></Euro></li>
 			</ul>
 
 			<div class="table_scroll">
@@ -192,13 +144,13 @@ onMount(() => {
 						{#each month.rows as row}
 							<tr>
 								<td>{formatDate(row.time, true, true, false)}</td>
-								<td>{formatEuros(row.new_balance, 4)}</td>
-								<td>{formatEuros(row.subscription_charge, 4)}</td>
-								<td>{formatEuros(row.storage_charge, 4)}</td>
+								<td><Euro amount={row.new_balance}></Euro></td>
+								<td><Euro amount={row.subscription_charge} precision="4"></Euro></td>
+								<td><Euro amount={row.storage_charge} precision="4"></Euro></td>
 								<td>{formatDataVolume(row.storage_used, 3)}</td>
-								<td>{formatEuros(row.bandwidth_charge, 4)}</td>
+								<td><Euro amount={row.bandwidth_charge} precision="4"></Euro></td>
 								<td>{formatDataVolume(row.bandwidth_used, 3)}</td>
-								<td>{formatEuros(row.deposit_amount, 4)}</td>
+								<td><Euro amount={row.deposit_amount}></Euro></td>
 							</tr>
 						{/each}
 					</tbody>
