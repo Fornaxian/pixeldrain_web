@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Fornaxian/log"
+	"fornaxian.tech/log"
 	"github.com/julienschmidt/httprouter"
 )
 

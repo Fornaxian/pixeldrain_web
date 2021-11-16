@@ -15,9 +15,9 @@ import (
 	"strings"
 	"time"
 
+	"fornaxian.tech/log"
 	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"fornaxian.tech/util"
-	"github.com/Fornaxian/log"
 )
 
 // TemplateData is a struct that every template expects when being rendered. In

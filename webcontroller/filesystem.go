@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Fornaxian/log"
+	"fornaxian.tech/log"
 	"github.com/julienschmidt/httprouter"
 )
 

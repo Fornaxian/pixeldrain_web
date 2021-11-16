@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
+	"fornaxian.tech/log"
 	"fornaxian.tech/util"
-	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 	"github.com/microcosm-cc/bluemonday"
 	blackfriday "github.com/russross/blackfriday/v2"

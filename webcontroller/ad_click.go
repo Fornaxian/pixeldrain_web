@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"fornaxian.tech/log"
 	"fornaxian.tech/util"
-	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
 

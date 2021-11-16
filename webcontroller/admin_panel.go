@@ -5,8 +5,8 @@ import (
 	"html/template"
 	"net/http"
 
+	"fornaxian.tech/log"
 	"fornaxian.tech/pixeldrain_api_client/pixelapi"
-	"github.com/Fornaxian/log"
 )
 
 func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f Form) {

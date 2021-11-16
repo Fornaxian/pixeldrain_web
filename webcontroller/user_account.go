@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"fornaxian.tech/log"
 	"fornaxian.tech/pixeldrain_api_client/pixelapi"
-	"github.com/Fornaxian/log"
 	"github.com/julienschmidt/httprouter"
 )
 
