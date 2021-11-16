@@ -24,7 +24,7 @@ let credit_form = {
 		}, {
 			name: "credit",
 			label: "Credit",
-			type: "number",
+			type: "decimal",
 			default_value: 0,
 		},
 	],

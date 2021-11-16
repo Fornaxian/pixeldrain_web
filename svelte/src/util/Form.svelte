@@ -162,6 +162,14 @@ let handle_errors = (response) => {
 								value="{field.default_value}"
 								type="number"
 								class="form_input"/>
+						{:else if field.type === "decimal"}
+							<input bind:this={field.binding}
+								id="input_{field.name}"
+								name="{field.name}"
+								value="{field.default_value}"
+								type="number"
+								step="0.1"
+								class="form_input"/>
 						{:else if field.type === "username"}
 							<input bind:this={field.binding}
 								id="input_{field.name}"
