@@ -86,7 +86,8 @@ const update_subscription = async name => {
 						<li>Base price of €2 per month (includes all the benefits of the Pro plan)</li>
 						<li>€4 per TB per month for storage</li>
 						<li>€2 per TB for hotlink bandwidth</li>
-						<li>No bandwidth limit, your files will download at the highest speed possible</li>
+						<li>All advertisements disabled</li>
+						<li>No rate limit, your files will download at the highest speed possible</li>
 					</ul>
 				</div>
 			</div>
@@ -104,9 +105,9 @@ const update_subscription = async name => {
 				</div>
 				<div class="feat_normal">
 					<ul>
-						<li>Base price of €0.10 per month</li>
+						<li>Base price of €1 per month</li>
 						<li>€4 per TB per month for storage</li>
-						<li>No hotlink bandwidth</li>
+						<li>100 GB of hotlink bandwidth per month</li>
 						<li>You don't see ads, but people downloading your files do see ads</li>
 					</ul>
 				</div>
@@ -125,10 +126,10 @@ const update_subscription = async name => {
 				</div>
 				<div class="feat_normal">
 					<ul>
-						<li>Base price of €0.10 per month</li>
+						<li>Base price of €1 per month</li>
 						<li>€2 per TB per month for storage</li>
-						<li>No hotlink bandwidth</li>
-						<li>All advertisements enabled</li>
+						<li>100 GB of hotlink bandwidth per month</li>
+						<li>You don't see ads, but people downloading your files do see ads</li>
 						<li>Files expire 90 days after the last time they're viewed</li>
 					</ul>
 				</div>
