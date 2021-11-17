@@ -445,7 +445,7 @@ const keyboard_event = evt => {
 		<iframe bind:this={download_frame} title="File download frame" style="display: none; width: 1px; height: 1px;"></iframe>
 	</div>
 
-	{#if current_file.show_ads && window.viewer_data.user_ads_enabled}
+	{#if current_file.show_ads}
 		<AdLeaderboard></AdLeaderboard>
 	{:else if !window.viewer_data.user_ads_enabled && !embedded}
 		<div style="text-align: center; line-height: 1.3em; font-size: 13px;">

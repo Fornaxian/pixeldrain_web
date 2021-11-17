@@ -83,7 +83,7 @@ const update_subscription = async name => {
 				</div>
 				<div class="feat_normal round_tr">
 					<ul>
-						<li>Base price of €2 per month</li>
+						<li>Base price of €2 per month (includes all the benefits of the Pro plan)</li>
 						<li>€4 per TB per month for storage</li>
 						<li>€2 per TB for hotlink bandwidth</li>
 						<li>No bandwidth limit, your files will download at the highest speed possible</li>
@@ -92,7 +92,7 @@ const update_subscription = async name => {
 			</div>
 			<div>
 				<div class="feat_label" class:feat_highlight={window.user.subscription.id === "prepaid_storage"}>
-					Prepaid (just storage)<br/>
+					Just storage<br/>
 					{#if window.user.subscription.id === "prepaid_storage"}
 						Currently active
 					{:else}
@@ -106,8 +106,30 @@ const update_subscription = async name => {
 					<ul>
 						<li>Base price of €0.10 per month</li>
 						<li>€4 per TB per month for storage</li>
-						<li>No hotlink bandwidth (rate limiting will be enabled when a file uses too much bandwidth)</li>
+						<li>No hotlink bandwidth</li>
 						<li>You don't see ads, but people downloading your files do see ads</li>
+					</ul>
+				</div>
+			</div>
+			<div>
+				<div class="feat_label" class:feat_highlight={window.user.subscription.id === "prepaid_storage_temp"}>
+					Temporary storage<br/>
+					{#if window.user.subscription.id === "prepaid_storage_temp"}
+						Currently active
+					{:else}
+						<button on:click={() => {update_subscription("prepaid_storage_temp")}}>
+							<i class="icon">attach_money</i>
+							Activate
+						</button>
+					{/if}
+				</div>
+				<div class="feat_normal">
+					<ul>
+						<li>Base price of €0.10 per month</li>
+						<li>€2 per TB per month for storage</li>
+						<li>No hotlink bandwidth</li>
+						<li>All advertisements enabled</li>
+						<li>Files expire 90 days after the last time they're viewed</li>
 					</ul>
 				</div>
 			</div>
@@ -178,9 +200,7 @@ const update_subscription = async name => {
 	border: 1px solid var(--highlight_color)
 }
 
-.feat_table > div > div.round_tl { border-top-left-radius:     0.5em; }
 .feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
 .feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
-.feat_table > div > div.round_bl { border-bottom-left-radius:  0.5em; }
 
 </style>
