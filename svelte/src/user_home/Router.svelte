@@ -55,6 +55,13 @@ onMount(() => {
 			<i class="icon">vpn_key</i>
 			API keys
 		</a>
+		<a class="button"
+			href="/user/subscription"
+			class:button_highlight={page === "subscription"}
+			on:click|preventDefault={() => {navigate("subscription", "Subscription")}}>
+			<i class="icon">shopping_cart</i>
+			Subscription
+		</a>
 		{#if window.user.balance_micro_eur !== 0}
 			<a class="button"
 				href="/user/transactions"
@@ -62,13 +69,6 @@ onMount(() => {
 				on:click|preventDefault={() => {navigate("transactions", "Transactions")}}>
 				<i class="icon">receipt_long</i>
 				Transactions
-			</a>
-			<a class="button"
-				href="/user/subscription"
-				class:button_highlight={page === "subscription"}
-				on:click|preventDefault={() => {navigate("subscription", "Subscription")}}>
-				<i class="icon">shopping_cart</i>
-				Subscription
 			</a>
 		{/if}
 	</div>

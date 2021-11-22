@@ -45,6 +45,9 @@ let update_charts = () => {
 		resp.bandwidth.amounts.forEach((val, idx) => {
 			resp.bandwidth.amounts[idx] = Math.round(val / file.size);
 		});
+		resp.bandwidth_paid.amounts.forEach((val, idx) => {
+			resp.bandwidth.amounts[idx] += Math.round(val / file.size);
+		});
 		download_chart.chart().data.labels = resp.views.timestamps
 		view_chart.chart().data.labels = resp.views.timestamps
 		download_chart.chart().data.datasets[0].data = resp.bandwidth.amounts
@@ -78,8 +81,20 @@ let update_charts = () => {
 			<td>{formatDataVolume(file.size, 4)} ( {formatThousands(file.size)} B )</td>
 		</tr>
 		<tr>
-			<td>Bandwidth</td>
-			<td>{formatDataVolume(file.bandwidth_used, 4)} ( {formatThousands(file.bandwidth_used)} B )</td>
+			<td>Free bandwidth used</td>
+			<td>
+				{formatDataVolume(file.bandwidth_used, 4)}
+				( {formatThousands(file.bandwidth_used)} B ),
+				{(file.bandwidth_used/file.size).toFixed(1)}x file size
+			</td>
+		</tr>
+		<tr>
+			<td>Premium bandwidth used</td>
+			<td>
+				{formatDataVolume(file.bandwidth_used_paid, 4)}
+				( {formatThousands(file.bandwidth_used_paid)} B ),
+				{(file.bandwidth_used_paid/file.size).toFixed(1)}x file size
+			</td>
 		</tr>
 		<tr style="border-bottom: none">
 			<td>Unique downloads</td>

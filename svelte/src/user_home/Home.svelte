@@ -9,13 +9,13 @@ import Euro from "../util/Euro.svelte"
 let graph_view = null
 let graph_download = null
 let graph_bandwidth = null
-let graph_direct_link = null
+let graph_transfer_paid = null
 let time_start = ""
 let time_end = ""
 let total_views = 0
 let total_downloads = 0
 let total_bandwidth = 0
-let total_direct_link = 0
+let total_transfer_paid = 0
 
 let load_graph = (graph, stat, minutes, interval) => {
 	let today = new Date()
@@ -54,8 +54,8 @@ let load_graph = (graph, stat, minutes, interval) => {
 			total_downloads = total;
 		} else if (stat == "bandwidth") {
 			total_bandwidth = total;
-		} else if (stat == "direct_bandwidth") {
-			total_direct_link = total;
+		} else if (stat == "transfer_paid") {
+			total_transfer_paid = total;
 		}
 	}).catch(e => {
 		console.error("Error requesting time series: " + e);
@@ -75,11 +75,12 @@ let update_graphs = (minutes, interval, live) => {
 	load_graph(graph_view, "views", minutes, interval)
 	load_graph(graph_download, "downloads", minutes, interval)
 	load_graph(graph_bandwidth, "bandwidth", minutes, interval)
-	load_graph(graph_direct_link, "direct_bandwidth", minutes, interval)
+	load_graph(graph_transfer_paid, "transfer_paid", minutes, interval)
 	load_direct_bw()
 }
 
-let direct_link_bandwidth_used = 0
+let transfer_cap = 0
+let transfer_used = 0
 let storage_space_used = 0
 let load_direct_bw = () => {
 	let today = new Date()
@@ -87,7 +88,7 @@ let load_direct_bw = () => {
 	start.setDate(start.getDate() - 30)
 
 	fetch(
-		window.api_endpoint + "/user/time_series/direct_bandwidth" +
+		window.api_endpoint + "/user/time_series/transfer_paid" +
 		"?start=" + start.toISOString() +
 		"&end=" + today.toISOString() +
 		"&interval=60"
@@ -96,7 +97,7 @@ let load_direct_bw = () => {
 		return resp.json();
 	}).then(resp => {
 		let total = resp.amounts.reduce((accum, val) => accum += val, 0);
-		direct_link_bandwidth_used = total
+		transfer_used = total
 		storage_space_used = window.user.storage_space_used
 	}).catch(e => {
 		console.error("Error requesting time series: " + e);
@@ -104,6 +105,14 @@ let load_direct_bw = () => {
 }
 
 onMount(() => {
+	if (window.user.subscription.monthly_transfer_cap > 0) {
+		transfer_cap = window.user.subscription.monthly_transfer_cap
+	} else if (window.user.monthly_transfer_cap > 0) {
+		transfer_cap = window.user.monthly_transfer_cap
+	} else {
+		transfer_cap = -1
+	}
+
 	update_graphs(1440, 1, true);
 })
 onDestroy(() => {
@@ -128,14 +137,6 @@ onDestroy(() => {
 					<li>
 						Max file size: {formatDataVolume(window.user.subscription.file_size_limit, 3)}
 					</li>
-					<li>
-						Advertisements when you view files:
-						{#if window.user.subscription.disable_ad_display}No{:else}Yes{/if}
-					</li>
-					<li>
-						Advertisements when others view your files:
-						{#if window.user.subscription.disable_ads_on_files}No{:else}Yes{/if}
-					</li>
 					{#if window.user.subscription.file_expiry_days > 0}
 						<li>Files expire after {window.user.subscription.file_expiry_days} days</li>
 					{:else}
@@ -156,10 +157,10 @@ onDestroy(() => {
 			<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
 		{/if}
 
-		{#if window.user.subscription.direct_linking_bandwidth === -1}
-			Hotlink bandwidth used in the last 30 days: {formatDataVolume(direct_link_bandwidth_used, 3)}<br/>
+		{#if transfer_cap === -1}
+			Paid transfers in the last 30 days: {formatDataVolume(transfer_used, 3)}<br/>
 		{:else}
-			<HotlinkProgressBar used={direct_link_bandwidth_used} total={window.user.subscription.direct_linking_bandwidth}></HotlinkProgressBar>
+			<HotlinkProgressBar used={transfer_used} total={transfer_cap}></HotlinkProgressBar>
 		{/if}
 
 		<h3>Exports</h3>
@@ -224,8 +225,18 @@ onDestroy(() => {
 		{formatThousands(total_views)} views,
 		{formatThousands(total_downloads)} downloads,
 		{formatDataVolume(total_bandwidth, 3)} bandwidth and
-		{formatDataVolume(total_direct_link, 3)} direct link bandwidth
+		{formatDataVolume(total_transfer_paid, 3)} paid transfers
 	</div>
+	<div class="limit_width">
+		<h3>Paid transfers</h3>
+		<p>
+			A paid transfer is when a file is downloaded using the data cap on
+			your subscription plan. These can be files you downloaded from other
+			people, or other people downloading your files if you have bandwidth
+			sharing enabled.
+		</p>
+	</div>
+	<Chart bind:this={graph_transfer_paid} dataType="bytes" label="Paid transfers" />
 	<div class="limit_width">
 		<h3>Views</h3>
 		<p>
@@ -255,17 +266,4 @@ onDestroy(() => {
 		</p>
 	</div>
 	<Chart bind:this={graph_bandwidth} dataType="bytes" label="Bandwidth" />
-	<div class="limit_width">
-		<h3>Hotlink bandwidth</h3>
-		<p>
-			When a file is downloaded without going through pixeldrain's
-			download page it counts as a hotlink. Because hotlinking costs us
-			bandwidth and doesn't generate any ad revenue we have to limit it.
-			When your hotlink bandwidth runs out people will be asked to do a
-			test before they can download your files. See our
-			<a href="/#pro">subscription options</a> to get more hotlink
-			bandwidth.
-		</p>
-	</div>
-	<Chart bind:this={graph_direct_link} dataType="bytes" label="Hotlink bandwidth" />
 </div>

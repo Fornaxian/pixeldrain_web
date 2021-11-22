@@ -8,7 +8,7 @@ $: frac = used / total
 </script>
 
 <div>
-	Hotlink bandwidth:
+	Paid transfers:
 	{formatDataVolume(used, 3)}
 	out of
 	{formatDataVolume(total, 3)}
@@ -20,10 +20,9 @@ $: frac = used / total
 
 	{#if frac > 0.99}
 		<div class="highlight_red">
-			You have used all of your hotlink bandwidth. Other people won't
-			be able to download your files directly from the API anymore.
-			Downloads will have to go through the file viewer page. Please
-			upgrade to a higher support tier to continue hotlinking files:
+			You have used all of your data cap. People can still download your
+			files, but not directly from the API anymore. The file viewer shows
+			ads on your files and download speeds are limited.
 			<br/>
 			<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
 				Upgrade options
@@ -31,12 +30,10 @@ $: frac = used / total
 		</div>
 	{:else if frac > 0.8}
 		<div class="highlight_yellow">
-			You have used {(frac*100).toFixed(0)}% of your
-			hotlink bandwidth. If your hotlink bandwidth runs out people
-			won't be able to download your files directly from the API
-			anymore. Downloads will have to go through the file viewer page.
-			Please upgrade to a higher support tier to continue hotlinking
-			files:
+			You have used {(frac*100).toFixed(0)}% of your data cap. If your
+			data runs out people won't be able to download your files directly
+			from the API anymore, ads will be shown on the file viewer and
+			transfer rates will be limited.
 			<br/>
 			<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
 				Upgrade options

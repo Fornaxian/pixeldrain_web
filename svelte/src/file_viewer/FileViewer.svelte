@@ -437,7 +437,7 @@ const keyboard_event = evt => {
 			</FilePreview>
 		</div>
 
-		{#if current_file.show_ads && window.viewer_data.user_ads_enabled}
+		{#if current_file.show_ads}
 			<AdSkyscraper on:visibility={e => {skyscraper_visible = e.detail}}></AdSkyscraper>
 		{/if}
 

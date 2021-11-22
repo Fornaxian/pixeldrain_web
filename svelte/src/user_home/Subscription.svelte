@@ -3,15 +3,20 @@ import Spinner from "../util/Spinner.svelte";
 import Euro from "../util/Euro.svelte"
 
 let loading = false
+let subscription = window.user.subscription.id
+let hotlinking = window.user.hotlinking_enabled
+let transfer_cap = window.user.monthly_transfer_cap / 1e12
 
 let result = ""
 let result_success = false
 
-const update_subscription = async name => {
+const update_subscription = async () => {
 	loading = true
 
 	const form = new FormData()
-	form.append("subscription", name)
+	form.append("subscription", subscription)
+	form.append("hotlinking_enabled", hotlinking)
+	form.append("transfer_cap", transfer_cap*1e12)
 	try {
 		const resp = await fetch(
 			window.api_endpoint+"/user/subscription",
@@ -62,97 +67,135 @@ const update_subscription = async name => {
 			balance to activate the subscription again.
 		</p>
 
-		{#if result !== ""}
-			<div class:highlight_green={result_success} class:highlight_red={!result_success}>
-				{result}
+		<h3>Prepaid plans</h3>
+		{#if window.user.subscription.type === "patreon"}
+			<p>Prepaid subscriptions are not available for Patreon supporters.</p>
+		{:else}
+			{#if result !== ""}
+				<div class:highlight_green={result_success} class:highlight_red={!result_success}>
+					{result}
+				</div>
+			{/if}
+
+			<div class="feat_table">
+				<div>
+					<div class="feat_label" class:feat_highlight={subscription === "prepaid"}>
+						Prepaid<br/>
+						{#if subscription === "prepaid"}
+							Currently active
+						{:else}
+							<button on:click={() => {subscription = "prepaid"; update_subscription()}}>
+								<i class="icon">attach_money</i>
+								Activate
+							</button>
+						{/if}
+					</div>
+					<div class="feat_normal round_tr">
+						<ul>
+							<li>Base price of €1 per month</li>
+							<li>€4 per TB per month for storage</li>
+							<li>€2 per TB for data transfer</li>
+							<li>Files never expire as long as subscription is active</li>
+						</ul>
+					</div>
+				</div>
+				<div>
+					<div class="feat_label" class:feat_highlight={subscription === "prepaid_temp_storage_120d"}>
+						120 days storage<br/>
+						{#if subscription === "prepaid_temp_storage_120d"}
+							Currently active
+						{:else}
+							<button on:click={() => {subscription = "prepaid_temp_storage_120d"; update_subscription()}}>
+								<i class="icon">attach_money</i>
+								Activate
+							</button>
+						{/if}
+					</div>
+					<div class="feat_normal">
+						<ul>
+							<li>Base price of €1 per month</li>
+							<li>€2 per TB per month for storage</li>
+							<li>€2 per TB for data transfer</li>
+							<li>Files expire 120 days after the last time they're viewed</li>
+						</ul>
+					</div>
+				</div>
+				<div>
+					<div class="feat_label" class:feat_highlight={subscription === "prepaid_temp_storage_60d"}>
+						60 days storage<br/>
+						{#if subscription === "prepaid_temp_storage_60d"}
+							Currently active
+						{:else}
+							<button on:click={() => {subscription = "prepaid_temp_storage_60d"; update_subscription()}}>
+								<i class="icon">attach_money</i>
+								Activate
+							</button>
+						{/if}
+					</div>
+					<div class="feat_normal">
+						<ul>
+							<li>Base price of €1 per month</li>
+							<li>€1 per TB per month for storage</li>
+							<li>€2 per TB for data transfer</li>
+							<li>Files expire 60 days after the last time they're viewed</li>
+						</ul>
+					</div>
+				</div>
+				<div>
+					<div class="feat_label" class:feat_highlight={subscription === ""}>
+						Free<br/>
+						{#if subscription === ""}
+							Currently active
+						{:else}
+							<button on:click={() => {subscription = ""; update_subscription()}}>
+								<i class="icon">money_off</i>
+								Activate
+							</button>
+						{/if}
+					</div>
+					<div class="feat_normal round_br">
+						<ul>
+							<li>Standard free plan, files expire after 30 days.</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		{/if}
 
-		<div class="feat_table">
-			<div>
-				<div class="feat_label" class:feat_highlight={window.user.subscription.id === "prepaid"}>
-					Prepaid<br/>
-					{#if window.user.subscription.id === "prepaid"}
-						Currently active
-					{:else}
-						<button on:click={() => {update_subscription("prepaid")}}>
-							<i class="icon">attach_money</i>
-							Activate
-						</button>
-					{/if}
-				</div>
-				<div class="feat_normal round_tr">
-					<ul>
-						<li>Base price of €2 per month (includes all the benefits of the Pro plan)</li>
-						<li>€4 per TB per month for storage</li>
-						<li>€2 per TB for hotlink bandwidth</li>
-						<li>All advertisements disabled</li>
-						<li>No rate limit, your files will download at the highest speed possible</li>
-					</ul>
-				</div>
-			</div>
-			<div>
-				<div class="feat_label" class:feat_highlight={window.user.subscription.id === "prepaid_storage"}>
-					Just storage<br/>
-					{#if window.user.subscription.id === "prepaid_storage"}
-						Currently active
-					{:else}
-						<button on:click={() => {update_subscription("prepaid_storage")}}>
-							<i class="icon">attach_money</i>
-							Activate
-						</button>
-					{/if}
-				</div>
-				<div class="feat_normal">
-					<ul>
-						<li>Base price of €1 per month</li>
-						<li>€4 per TB per month for storage</li>
-						<li>100 GB of hotlink bandwidth per month</li>
-						<li>You don't see ads, but people downloading your files do see ads</li>
-					</ul>
-				</div>
-			</div>
-			<div>
-				<div class="feat_label" class:feat_highlight={window.user.subscription.id === "prepaid_storage_temp"}>
-					Temporary storage<br/>
-					{#if window.user.subscription.id === "prepaid_storage_temp"}
-						Currently active
-					{:else}
-						<button on:click={() => {update_subscription("prepaid_storage_temp")}}>
-							<i class="icon">attach_money</i>
-							Activate
-						</button>
-					{/if}
-				</div>
-				<div class="feat_normal">
-					<ul>
-						<li>Base price of €1 per month</li>
-						<li>€2 per TB per month for storage</li>
-						<li>100 GB of hotlink bandwidth per month</li>
-						<li>You don't see ads, but people downloading your files do see ads</li>
-						<li>Files expire 90 days after the last time they're viewed</li>
-					</ul>
-				</div>
-			</div>
-			<div>
-				<div class="feat_label" class:feat_highlight={window.user.subscription.id === ""}>
-					Free<br/>
-					{#if window.user.subscription.id === ""}
-						Currently active
-					{:else}
-						<button on:click={() => {update_subscription("none")}}>
-							<i class="icon">money_off</i>
-							Activate
-						</button>
-					{/if}
-				</div>
-				<div class="feat_normal round_br">
-					<ul>
-						<li>Standard free plan, files expire after 30 days.</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		<h3>Bandwidth sharing</h3>
+
+		{#if hotlinking}
+			<button on:click={() => { hotlinking = false; update_subscription() }}>
+				<i class="icon green">check</i> ON (click to turn off)
+			</button>
+		{:else}
+			<button on:click={() => { hotlinking = true; update_subscription() }}>
+				<i class="icon red">close</i> OFF (click to turn on)
+			</button>
+		{/if}
+		<p>
+			When bandwidth sharing is enabled all the bandwidth that your files
+			use will be subtracted from your data cap. Advertisements will be
+			disabled on the download pages for your files and download speed
+			will be unlimited. The rate limiting captcha for files is also
+			disabled when bandwidth sharing is on. You can directly embed your
+			file's download link anywhere, you don't need to use the file viewer
+			page.
+		</p>
+
+		<h3>Bill shock limit</h3>
+		Billshock limit in terabytes per month. Set to 0 to disable<br/>
+		<input type="number" bind:value={transfer_cap}/> TB
+		<button on:click={update_subscription}>
+			<i class="icon">save</i> Save
+		</button>
+		<p>
+			The billshock limit limits how much bandwidth your account can use
+			in a 30 day window. When this limit is reached files will show ads
+			again and can only be downloaded from the file viewer page. This is
+			mostly useful for prepaid plans, but it works for patreon plans too.
+			Set to 0 to disable the limit.
+		</p>
 	</div>
 </div>
 
@@ -203,5 +246,12 @@ const update_subscription = async name => {
 
 .feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
 .feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
+
+.green {
+	color: var(--highlight_color);
+}
+.red {
+	color: var(--danger_color);
+}
 
 </style>

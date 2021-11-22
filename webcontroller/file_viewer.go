@@ -74,7 +74,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	var vd = fileViewerData{
 		CaptchaKey:     wc.captchaKey(),
 		ViewToken:      wc.viewTokenOrBust(),
-		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
+		UserAdsEnabled: templateData.User.Subscription.ID == "",
 	}
 
 	if len(ids) > 1 {
@@ -149,7 +149,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		Type:           "list",
 		CaptchaKey:     wc.captchaSiteKey,
 		ViewToken:      wc.viewTokenOrBust(),
-		UserAdsEnabled: !(templateData.Authenticated && templateData.User.Subscription.DisableAdDisplay),
+		UserAdsEnabled: templateData.User.Subscription.ID == "",
 		APIResponse:    list,
 	}
 

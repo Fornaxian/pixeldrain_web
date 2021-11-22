@@ -50,7 +50,7 @@ let update_stats = (id) => {
 		if (file.size === 0) {
 			downloads = j.downloads
 		} else {
-			downloads = Math.round(j.bandwidth / file.size)
+			downloads = Math.round((j.bandwidth + j.bandwidth_paid) / file.size)
 		}
 	}
 	socket.onerror = err => {
