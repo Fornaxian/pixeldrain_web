@@ -1,9 +1,11 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
+import { formatDuration } from "../../util/Formatting.svelte";
 let dispatch = createEventDispatcher()
 
 export let file = {
 	id: "",
+	size: 0,
 	name: "",
 	mime_type: "",
 	get_href: "",
@@ -69,7 +71,7 @@ let download = () => { dispatch("download", {}) }
 		{/if}
 	{:else}
 		<h1>This is a video file on pixeldrain</h1>
-		<img src={file.icon_href} alt="Video icon" style="display: inline-block; vertical-align: middle;">
+		<img src={file.icon_href} alt="Video icon" style="display: inline-block; vertical-align: top;">
 		<div style="display: inline-block; text-align: left; padding-left: 8px; vertical-align: middle; max-width: 600px;">
 			The online video player on pixeldrain has been disabled due to
 			repeated abuse. You can still watch videos online by upgrading to
@@ -81,6 +83,15 @@ let download = () => { dispatch("download", {}) }
 			<button on:click={download}>
 				<i class="icon">save</i> Download
 			</button>
+			{#if file.size > 1e9}
+				<hr/>
+				Your download speed is currently limited to 4 MiB/s. Downloading this
+				file for free will take {formatDuration((file.size/4194304)*1000)}.
+				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button">
+					Upgrade to Pro
+				</a>
+				to download at the fastest speed available.
+			{/if}
 		</div>
 	{/if}
 </div>

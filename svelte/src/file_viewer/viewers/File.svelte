@@ -1,9 +1,11 @@
 <script>
 import { createEventDispatcher } from "svelte";
+import { formatDuration } from "../../util/Formatting.svelte";
 let dispatch = createEventDispatcher()
 
 export let file = {
 	id: "",
+	size: 0,
 	name: "",
 	mime_type: "",
 	icon_href: "",
@@ -21,13 +23,22 @@ export let file = {
 		<button class="button_highlight" on:click={() => {dispatch("download")}}>
 			<i class="icon">save</i> Download
 		</button>
+		{#if file.size > 1e9}
+		<hr/>
+		Your download speed is currently limited to 4 MiB/s. Downloading this
+		file for free will take {formatDuration((file.size/4194304)*1000)}.
+		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button">
+			Upgrade to Pro
+		</a>
+		to download at the fastest speed available.
+		{/if}
 	</div>
 </div>
 
 <style>
 .icon {
 	display: inline-block;
-	vertical-align: middle;
+	vertical-align: top;
 }
 .description {
 	display: inline-block;
