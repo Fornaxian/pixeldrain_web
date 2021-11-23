@@ -1,5 +1,6 @@
 <script>
 import { formatDataVolume } from "../util/Formatting.svelte"
+import ProgressBar from "../util/ProgressBar.svelte";
 
 export let total = 0
 export let used = 0
@@ -8,15 +9,7 @@ $: frac = used / total
 </script>
 
 <div>
-	Paid transfers:
-	{formatDataVolume(used, 3)}
-	out of
-	{formatDataVolume(total, 3)}
-	(<a href="/#hotlinking">More information about hotlinking</a>)
-	<br/>
-	<div class="progress_bar_outer">
-		<div class="progress_bar_inner" style="width: {frac*100}%;"></div>
-	</div>
+	<ProgressBar total={total} used={used}></ProgressBar>
 
 	{#if frac > 0.99}
 		<div class="highlight_red">

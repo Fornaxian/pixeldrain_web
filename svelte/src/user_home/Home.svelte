@@ -105,10 +105,10 @@ let load_direct_bw = () => {
 }
 
 onMount(() => {
-	if (window.user.subscription.monthly_transfer_cap > 0) {
-		transfer_cap = window.user.subscription.monthly_transfer_cap
-	} else if (window.user.monthly_transfer_cap > 0) {
+	if (window.user.monthly_transfer_cap > 0) {
 		transfer_cap = window.user.monthly_transfer_cap
+	} else if (window.user.subscription.monthly_transfer_cap > 0) {
+		transfer_cap = window.user.subscription.monthly_transfer_cap
 	} else {
 		transfer_cap = -1
 	}
@@ -151,17 +151,24 @@ onDestroy(() => {
 			{/if}
 		</ul>
 
-		{#if window.user.subscription.storage_space === -1}
-			Storage space used: {formatDataVolume(storage_space_used, 3)}<br/>
-		{:else}
-			<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
-		{/if}
+		<div class="indent">
+			{#if window.user.subscription.storage_space === -1}
+				Storage space used: {formatDataVolume(storage_space_used, 3)}<br/>
+			{:else}
+				<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
+			{/if}
 
-		{#if transfer_cap === -1}
-			Paid transfers in the last 30 days: {formatDataVolume(transfer_used, 3)}<br/>
-		{:else}
-			<HotlinkProgressBar used={transfer_used} total={transfer_cap}></HotlinkProgressBar>
-		{/if}
+			{#if transfer_cap === -1}
+				Paid transfers in the last 30 days: {formatDataVolume(transfer_used, 3)}<br/>
+			{:else}
+				Paid transfers:
+				{formatDataVolume(transfer_used, 3)}
+				out of
+				{formatDataVolume(transfer_cap, 3)}
+				(<a href="/user/subscription">Set your transfer limit on the subscription page</a>)
+				<HotlinkProgressBar used={transfer_used} total={transfer_cap}></HotlinkProgressBar>
+			{/if}
+		</div>
 
 		<h3>Exports</h3>
 		<div style="text-align: center;">
@@ -233,7 +240,8 @@ onDestroy(() => {
 			A paid transfer is when a file is downloaded using the data cap on
 			your subscription plan. These can be files you downloaded from other
 			people, or other people downloading your files if you have bandwidth
-			sharing enabled.
+			sharing enabled. Bandwidth sharing can be changed on
+			<a href="/user/subscription">the subscription page</a>.
 		</p>
 	</div>
 	<Chart bind:this={graph_transfer_paid} dataType="bytes" label="Paid transfers" />

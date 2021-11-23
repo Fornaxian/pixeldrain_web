@@ -1,9 +1,9 @@
 <script>
 import { formatDataVolume } from "../util/Formatting.svelte"
+import ProgressBar from "../util/ProgressBar.svelte";
 
 export let total = 0
 export let used = 0
-
 $: frac = used / total
 </script>
 
@@ -13,9 +13,7 @@ $: frac = used / total
 	out of
 	{formatDataVolume(total, 3)}
 	<br/>
-	<div class="progress_bar_outer">
-		<div class="progress_bar_inner" style="width: {frac*100}%;"></div>
-	</div>
+	<ProgressBar total={total} used={used}></ProgressBar>
 
 	{#if frac > 2.0}
 		<div class="highlight_red">
@@ -64,18 +62,5 @@ $: frac = used / total
 .warn_text {
 	font-weight: bold;
 	font-size: 1.5em;
-}
-.progress_bar_outer {
-	display: block;
-	background-color: var(--layer_1_color);
-	width: 100%;
-	height: 3px;
-	margin: 6px 0 12px 0;
-}
-.progress_bar_inner {
-	background-color: var(--highlight_color);
-	height: 100%;
-	width: 0;
-	transition: width 1s;
 }
 </style>

@@ -1,22 +1,34 @@
 <script>
 import Spinner from "../util/Spinner.svelte";
 import Euro from "../util/Euro.svelte"
+import ProgressBar from "../util/ProgressBar.svelte";
+import { onMount } from "svelte";
+import { formatDataVolume } from "../util/Formatting.svelte";
 
 let loading = false
 let subscription = window.user.subscription.id
 let hotlinking = window.user.hotlinking_enabled
-let transfer_cap = window.user.monthly_transfer_cap / 1e12
+let transfer_cap = window.user.monthly_transfer_cap / 1e9
 
 let result = ""
 let result_success = false
 
-const update_subscription = async () => {
+const update = async (update_field) => {
 	loading = true
 
 	const form = new FormData()
-	form.append("subscription", subscription)
-	form.append("hotlinking_enabled", hotlinking)
-	form.append("transfer_cap", transfer_cap*1e12)
+	if (update_field === "subscription") {
+		form.append("update", "subscription")
+		form.append("subscription", subscription)
+	} else if (update_field === "limits") {
+		form.append("update", "limits")
+		form.append("hotlinking_enabled", hotlinking)
+		form.append("transfer_cap", transfer_cap*1e9)
+	} else {
+		console.error("Invalid update type", update_field)
+		return
+	}
+
 	try {
 		const resp = await fetch(
 			window.api_endpoint+"/user/subscription",
@@ -37,6 +49,28 @@ const update_subscription = async () => {
 		loading = false
 	}
 }
+
+let transfer_used = 0
+let load_tranfer_used = () => {
+	let today = new Date()
+	let start = new Date()
+	start.setDate(start.getDate() - 30)
+
+	fetch(
+		window.api_endpoint + "/user/time_series/transfer_paid" +
+		"?start=" + start.toISOString() +
+		"&end=" + today.toISOString() +
+		"&interval=60"
+	).then(resp => {
+		if (!resp.ok) { return Promise.reject("Error: " + resp.status); }
+		return resp.json();
+	}).then(resp => {
+		transfer_used = resp.amounts.reduce((acc, cur) => { return acc + cur }, 0)
+	}).catch(e => {
+		console.error("Error requesting time series: " + e);
+	})
+}
+onMount(load_tranfer_used)
 
 </script>
 
@@ -84,7 +118,7 @@ const update_subscription = async () => {
 						{#if subscription === "prepaid"}
 							Currently active
 						{:else}
-							<button on:click={() => {subscription = "prepaid"; update_subscription()}}>
+							<button on:click={() => {subscription = "prepaid"; update("subscription")}}>
 								<i class="icon">attach_money</i>
 								Activate
 							</button>
@@ -105,7 +139,7 @@ const update_subscription = async () => {
 						{#if subscription === "prepaid_temp_storage_120d"}
 							Currently active
 						{:else}
-							<button on:click={() => {subscription = "prepaid_temp_storage_120d"; update_subscription()}}>
+							<button on:click={() => {subscription = "prepaid_temp_storage_120d"; update("subscription")}}>
 								<i class="icon">attach_money</i>
 								Activate
 							</button>
@@ -126,7 +160,7 @@ const update_subscription = async () => {
 						{#if subscription === "prepaid_temp_storage_60d"}
 							Currently active
 						{:else}
-							<button on:click={() => {subscription = "prepaid_temp_storage_60d"; update_subscription()}}>
+							<button on:click={() => {subscription = "prepaid_temp_storage_60d"; update("subscription")}}>
 								<i class="icon">attach_money</i>
 								Activate
 							</button>
@@ -147,7 +181,7 @@ const update_subscription = async () => {
 						{#if subscription === ""}
 							Currently active
 						{:else}
-							<button on:click={() => {subscription = ""; update_subscription()}}>
+							<button on:click={() => {subscription = ""; update("subscription")}}>
 								<i class="icon">money_off</i>
 								Activate
 							</button>
@@ -163,16 +197,17 @@ const update_subscription = async () => {
 		{/if}
 
 		<h3>Bandwidth sharing</h3>
-
+		<div class="indent">
 		{#if hotlinking}
-			<button on:click={() => { hotlinking = false; update_subscription() }}>
+			<button on:click={() => { hotlinking = false; update("limits") }}>
 				<i class="icon green">check</i> ON (click to turn off)
 			</button>
 		{:else}
-			<button on:click={() => { hotlinking = true; update_subscription() }}>
+			<button on:click={() => { hotlinking = true; update("limits") }}>
 				<i class="icon red">close</i> OFF (click to turn on)
 			</button>
 		{/if}
+		</div>
 		<p>
 			When bandwidth sharing is enabled all the bandwidth that your files
 			use will be subtracted from your data cap. Advertisements will be
@@ -184,11 +219,21 @@ const update_subscription = async () => {
 		</p>
 
 		<h3>Bill shock limit</h3>
-		Billshock limit in terabytes per month. Set to 0 to disable<br/>
-		<input type="number" bind:value={transfer_cap}/> TB
-		<button on:click={update_subscription}>
-			<i class="icon">save</i> Save
-		</button>
+		<div class="indent">
+			Billshock limit in gigabytes per month (1 TB = 1000 GB). Set to 0 to disable.
+			<br/>
+			<form on:submit|preventDefault={() => {update("limits")}} class="billshock_container">
+				<input type="number" bind:value={transfer_cap} step="100" min="0"/>
+				<div style="margin: 0.5em;">GB</div>
+				<button type="submit">
+					<i class="icon">save</i> Save
+				</button>
+			</form>
+
+			Bandwidth used in the last 30 days: {formatDataVolume(transfer_used, 3)},
+			new limit: {formatDataVolume(transfer_cap*1e9, 3)}
+			<ProgressBar used={transfer_used} total={transfer_cap*1e9}></ProgressBar>
+		</div>
 		<p>
 			The billshock limit limits how much bandwidth your account can use
 			in a 30 day window. When this limit is reached files will show ads
@@ -252,6 +297,11 @@ const update_subscription = async () => {
 }
 .red {
 	color: var(--danger_color);
+}
+.billshock_container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 </style>
