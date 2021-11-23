@@ -11,6 +11,7 @@ export let file = {
 	size: 0,
 	downloads: 0,
 	bandwidth_used: 0,
+	bandwidth_used_paid: 0,
 	description: "",
 	timeseries_href: "",
 }
@@ -20,6 +21,9 @@ let view_chart
 
 $: update_charts(file.id)
 let update_charts = () => {
+	if (file.id === "") {
+		return
+	}
 	console.log("updating graph")
 
 	let today = new Date()

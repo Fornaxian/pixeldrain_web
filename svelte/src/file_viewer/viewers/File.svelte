@@ -23,16 +23,22 @@ export let file = {
 		<button class="button_highlight" on:click={() => {dispatch("download")}}>
 			<i class="icon">save</i> Download
 		</button>
-		{#if file.size > 1e9}
-		<hr/>
-		Your download speed is currently limited to 4 MiB/s. Downloading this
-		file for free will take {formatDuration((file.size/4194304)*1000)}.
-		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button">
-			Upgrade to Pro
-		</a>
-		to download at the fastest speed available.
-		{/if}
 	</div>
+	{#if file.size > 5e8}
+		<br/>
+		<div class="description" style="max-width: 700px; text-align: center;">
+			<!-- If the file is larger than 500 MB-->
+			<hr/>
+			Your download speed is currently limited to 4 MiB/s. Downloading this
+			file for free will take at least
+			{formatDuration((file.size/4194304)*1000)}.
+			You can
+			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12">
+				upgrade to Pro
+			</a>
+			to download at the fastest speed available.
+		</div>
+	{/if}
 </div>
 
 <style>

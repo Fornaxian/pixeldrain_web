@@ -1,5 +1,5 @@
 <script>
-import { createEventDispatcher, onMount } from "svelte";
+import { createEventDispatcher } from "svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -7,27 +7,17 @@ export let files = []
 let file_list_div
 let selected_file_index = 0
 
-onMount(() => {
-	// Skip to the file defined in the link hash
-	let matches = location.hash.match(new RegExp('item=([^&]*)'))
-	let hashID = matches ? matches[1] : null
-	let idx = 0
-	if (Number.isInteger(parseInt(hashID))) {
-		idx = parseInt(hashID)
-	}
-
-	set_item(idx)
-})
-
 export const next = () => {
 	if (shuffle) {
 		rand_item()
 		return
 	}
 
-	set_item(selected_file_index+1)
+	select_item_event(selected_file_index+1)
 }
-export const prev = () => { set_item(selected_file_index-1) }
+export const prev = () => {
+	select_item_event(selected_file_index-1)
+}
 
 let history = []
 export const rand_item = () => {
@@ -41,31 +31,21 @@ export const rand_item = () => {
 	set_item(rand)
 }
 
-let shuffle = false
-export const set_shuffle = s => { shuffle = s }
+export let shuffle = false
 
 export const set_item = idx => {
-	if (idx >= files.length) {
-		idx = 0
-	} else if (idx < 0) {
-		idx = files.length - 1
-	}
-
 	// Remove the class from the previous selected file
-	files[selected_file_index].selected = false
 	selected_file_index = idx
-	files[idx].selected = true
-
-	// Update the URL
-	location.hash = "item=" + idx
+	files.forEach((f, i) => {
+		f.selected = selected_file_index === i
+	})
+	files = files
 
 	// Add item to history
 	if(history.length >= (files.length - 6)){
 		history.shift()
 	}
 	history.push(idx)
-
-	dispatch("set_file", files[idx])
 
 	// Smoothly scroll the navigator to the correct element
 	let selected_file = file_list_div.children[idx]
@@ -88,11 +68,20 @@ export const set_item = idx => {
 	}
 	animateScroll(start, 0)
 }
+
+// select_item signals to the FileViewer that the file needs to be changed. The
+// FileViewer then calls set_item if the change has been approved. ListNavigator
+// cannot call set_item itself because it will cause a loop.
+const select_item_event = idx => {
+	dispatch("set_file", idx)
+}
 </script>
 
 <div bind:this={file_list_div} class="list_navigator">
 	{#each files as file, index}
-		<div class="list_item file_button" class:file_button_selected={file.selected} on:click={() => { set_item(index) }}>
+		<div class="list_item file_button"
+			class:file_button_selected={file.selected}
+			on:click={() => { select_item_event(index) }}>
 			<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" />
 			{file.name}
 		</div>

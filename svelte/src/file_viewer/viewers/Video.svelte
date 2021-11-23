@@ -72,7 +72,7 @@ let download = () => { dispatch("download", {}) }
 	{:else}
 		<h1>This is a video file on pixeldrain</h1>
 		<img src={file.icon_href} alt="Video icon" style="display: inline-block; vertical-align: top;">
-		<div style="display: inline-block; text-align: left; padding-left: 8px; vertical-align: middle; max-width: 600px;">
+		<div class="description">
 			The online video player on pixeldrain has been disabled due to
 			repeated abuse. You can still watch videos online by upgrading to
 			Pro. Or download the video and watch it locally on your computer.
@@ -83,16 +83,22 @@ let download = () => { dispatch("download", {}) }
 			<button on:click={download}>
 				<i class="icon">save</i> Download
 			</button>
-			{#if file.size > 1e9}
+		</div>
+		{#if file.size > 5e8}
+			<br/>
+			<div class="description" style="max-width: 700px; text-align: center;">
+				<!-- If the file is larger than 500 MB-->
 				<hr/>
 				Your download speed is currently limited to 4 MiB/s. Downloading this
-				file for free will take {formatDuration((file.size/4194304)*1000)}.
-				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button">
-					Upgrade to Pro
+				file for free will take at least
+				{formatDuration((file.size/4194304)*1000)}.
+				You can
+				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12">
+					upgrade to Pro
 				</a>
 				to download at the fastest speed available.
-			{/if}
-		</div>
+			</div>
+		{/if}
 	{/if}
 </div>
 
@@ -113,5 +119,12 @@ let download = () => { dispatch("download", {}) }
 	max-height: 100%;
 	top: 50%;
 	transform: translateY(-50%);
+}
+.description {
+	display: inline-block;
+	text-align: left;
+	padding-left: 8px;
+	vertical-align: middle;
+	max-width: 600px;
 }
 </style>

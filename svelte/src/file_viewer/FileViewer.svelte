@@ -15,46 +15,60 @@ import AdHead from "./AdHead.svelte";
 import AdLeaderboard from "./AdLeaderboard.svelte";
 import AdSkyscraper from "./AdSkyscraper.svelte";
 import Sharebar from "./Sharebar.svelte";
+import GalleryView from "./GalleryView.svelte";
+import Spinner from "../util/Spinner.svelte";
 
-let is_list = false
-let embedded = false
-let view_token = ""
-let current_file = {
+const file_struct = {
 	id: "",
-	name: "loading...",
+	name: "",
 	size: 0,
 	bandwidth_used: 0,
+	bandwidth_used_paid: 0,
 	downloads: 0,
 	views: 0,
 	mime_type: "",
 	availability: "",
+	abuse_type: "",
 	show_ads: false,
 	can_edit: false,
 	get_href: "",
+	info_href: "",
 	download_href: "",
 	icon_href: "",
 }
-let current_list = {
+const list_struct = {
 	id: "",
 	title: "",
 	files: [],
 	download_href: "",
+	info_href: "",
+	can_edit: false,
 }
+
+let loading = true
+let embedded = false
+let view_token = ""
+let ads_enabled = false
+
+let view = "" // file or gallery
+let file = file_struct
+let list = list_struct
+let is_list = false
+
 let button_home
 let list_navigator
 let list_shuffle = false
 let toggle_shuffle = () => {
 	list_shuffle = !list_shuffle
-	list_navigator.set_shuffle(list_shuffle)
 }
 
 let sharebar
 let sharebar_visible = false
 let toggle_sharebar = () => {
 	if (navigator.share) {
-		let name = current_file.name
+		let name = file.name
 		if (is_list) {
-			name = current_list.title
+			name = list.title
 		}
 
 		navigator.share({
@@ -104,40 +118,109 @@ onMount(() => {
 	if (viewer_data.type === "list") {
 		open_list(viewer_data.api_response)
 	} else {
-		open_file(viewer_data.api_response)
+		list.files = [viewer_data.api_response]
+		open_file_index(0)
 	}
-})
 
-const open_list = (list) => {
-	list.download_href = window.api_endpoint+"/list/"+list.id+"/zip"
-	list.files.forEach(file => {
-		file_set_href(file)
+	ads_enabled = list.files[0].show_ads
+	loading = false
+})
+const reload = async () => {
+	loading = true
+	if (is_list) {
+		try {
+			const resp = await fetch(list.info_href);
+			if (resp.status >= 400) {
+				throw (await resp.json()).message
+			}
+
+			open_list(await resp.json())
+		} catch (err) {
+			alert(err)
+		}
+	} else {
+		try {
+			const resp = await fetch(file.info_href);
+			if (resp.status >= 400) {
+				throw (await resp.json()).message
+			}
+
+			list.files = [await resp.json()]
+			open_file_index(0)
+		} catch (err) {
+			alert(err)
+		}
+	}
+	loading = false
+}
+
+const open_list = async l => {
+	l.download_href = window.api_endpoint+"/list/"+l.id+"/zip"
+	l.info_href = window.api_endpoint+"/list/"+l.id
+	l.files.forEach(f => {
+		file_set_href(f)
 	})
 
-	current_list = list
+	list = l
 
 	// Setting is_list to true activates the ListNavgator, which makes sure the
 	// correct file is opened
 	is_list = true
-}
 
-const open_file = (file) => {
-	file_set_href(file)
-	current_file = file
+	// Skip to the file defined in the link hash
+	let matches = location.hash.match(new RegExp('item=([^&]*)'))
+	let hashID = parseInt(matches ? matches[1] : null)
+	if (Number.isInteger(hashID)) {
+		// The URL contains an item number. Navigate to that item
+		view = "file"
+		open_file_index(parseInt(hashID))
+	} else {
+		view = "gallery"
+	}
+}
+const open_file_index = async index => {
+	if (index >= list.files.length) {
+		index = 0
+	} else if (index < 0) {
+		index = list.files.length - 1
+	}
+	console.debug("received request to open file", index)
+
+	file_set_href(list.files[index])
+	file = list.files[index]
+	view = "file"
+
+	if (is_list) {
+		// Wait for the ListNavigator to render
+		await tick()
+
+		// Update the URL
+		location.replace("#item=" + index)
+		list_navigator.set_item(index)
+	}
 
 	// Register a file view
-	fetch(window.api_endpoint + "/file/" + current_file.id + "/view", {
+	fetch(window.api_endpoint + "/file/" + file.id + "/view", {
 		method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
 		body: "token=" + view_token
 	})
 }
-
-const file_set_href = file => {
-	file.get_href = window.api_endpoint+"/file/"+file.id
-	file.download_href = window.api_endpoint+"/file/"+file.id+"?download"
-	file.icon_href = window.api_endpoint+"/file/"+file.id+"/thumbnail"
-	file.timeseries_href = window.api_endpoint+"/file/"+file.id+"/timeseries"
+const file_set_href = f => {
+	f.get_href = window.api_endpoint+"/file/"+f.id
+	f.info_href = window.api_endpoint+"/file/"+f.id+"/info"
+	f.download_href = window.api_endpoint+"/file/"+f.id+"?download"
+	f.icon_href = window.api_endpoint+"/file/"+f.id+"/thumbnail"
+	f.timeseries_href = window.api_endpoint+"/file/"+f.id+"/timeseries"
+}
+const toggle_gallery = () => {
+	if (view === "gallery") {
+		open_file_index(0)
+	} else {
+		location.replace("#gallery")
+		view = "gallery"
+		file = file_struct // Empty the file struct
+	}
 }
 
 let download_frame
@@ -149,12 +232,12 @@ let captcha_container
 const download = () => {
 	if (!window.viewer_data.captcha_key) {
 		console.debug("Server doesn't support captcha, starting download")
-		download_frame.src = current_file.download_href
+		download_frame.src = file.download_href
 		return
 	}
-	if (current_file.availability === "") {
+	if (file.availability === "") {
 		console.debug("File is available, starting download")
-		download_frame.src = current_file.download_href
+		download_frame.src = file.download_href
 		return
 	}
 
@@ -164,7 +247,7 @@ const download = () => {
 	// we trigger the download using the captcha token Google provided us with
 	let captcha_complete_callback = token => {
 		// Download the file using the recaptcha token
-		download_frame.src = current_file.download_href + "&recaptcha_response=" + token
+		download_frame.src = file.download_href + "&recaptcha_response=" + token
 		download_captcha_window.hide()
 	}
 
@@ -180,10 +263,10 @@ const download = () => {
 		})
 	}
 
-	if (current_file.availability === "file_rate_limited_captcha_required") {
+	if (file.availability === "file_rate_limited_captcha_required") {
 		captcha_type = "rate_limit"
 		captcha_window_title = "Rate limiting enabled!"
-	} else if (current_file.availability === "virus_detected_captcha_required") {
+	} else if (file.availability === "virus_detected_captcha_required") {
 		captcha_type = "malware"
 		captcha_window_title = "Malware warning!"
 	}
@@ -202,7 +285,7 @@ const download = () => {
 }
 const download_list = () => {
 	if (is_list) {
-		download_frame.src = current_list.download_href
+		download_frame.src = list.download_href
 	}
 }
 
@@ -233,12 +316,12 @@ const copy_url = () => {
 }
 
 const grab_file = async () => {
-	if (!window.user_authenticated || current_file.can_edit) {
+	if (!window.user_authenticated || file.can_edit) {
 		return
 	}
 
 	const form = new FormData()
-	form.append("grab_file", current_file.id)
+	form.append("grab_file", file.id)
 
 	try {
 		const resp = await fetch(
@@ -297,7 +380,7 @@ const keyboard_event = evt => {
 			details_window.toggle()
 			break
 		case 69: // E to open the edit window
-			if (current_file.can_edit) {
+			if (file.can_edit) {
 				edit_window.toggle()
 			}
 			break
@@ -321,6 +404,12 @@ const keyboard_event = evt => {
 	<!-- Head elements for the ads -->
 	<AdHead></AdHead>
 
+	{#if loading}
+		<div class="spinner_container">
+			<Spinner></Spinner>
+		</div>
+	{/if}
+
 	<div id="headerbar" class="headerbar" class:embedded>
 		<button on:click={toolbar_toggle} class="button_toggle_toolbar round" class:button_highlight={toolbar_visible}>
 			<i class="icon">menu</i>
@@ -329,8 +418,8 @@ const keyboard_event = evt => {
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 4px 0 0;"></PixeldrainLogo>
 		</a>
 		<div id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">
-			<div id="list_title">{current_list.title}</div>
-			<div id="lile_title">{current_file.name}</div>
+			{#if list.title !== ""}{list.title}<br/>{/if}
+			{#if file.name !== ""}{file.name}{/if}
 		</div>
 		{#if embedded && supports_fullscreen}
 			<button class="round" on:click={toggle_fullscreen}>
@@ -339,27 +428,43 @@ const keyboard_event = evt => {
 		{/if}
 	</div>
 
-	{#if is_list}
-		<ListNavigator bind:this={list_navigator} files={current_list.files} on:set_file={(e) => { open_file(e.detail) }}></ListNavigator>
+	{#if is_list && view === "file"}
+		<ListNavigator
+			bind:this={list_navigator}
+			files={list.files}
+			shuffle={list_shuffle}
+			on:set_file={e => { open_file_index(e.detail) }}>
+		</ListNavigator>
 	{/if}
 
 	<div id="file_preview_window" class="file_preview_window">
 		<div id="toolbar" class="toolbar" class:toolbar_visible><div><div>
-			<FileStats file={current_file}></FileStats>
+			{#if is_list}
+				<button on:click={toggle_gallery} class="toolbar_button button_full_width" class:button_highlight={view === "gallery"}>
+					<i class="icon">photo_library</i>
+					Gallery
+				</button>
+				<hr/>
+			{/if}
 
-			<hr/>
-			{#if current_file.abuse_type === ""}
+			{#if view === "file"}
+				<FileStats file={file}></FileStats>
+				<hr/>
+			{/if}
+
+			{#if file.abuse_type === "" && view === "file"}
 				<button on:click={download} class="toolbar_button button_full_width">
-					<i class="icon">save</i>
+					<i class="icon">download</i>
 					<span>Download</span>
 				</button>
-				{#if is_list}
-					<button on:click={download_list} class="toolbar_button button_full_width">
-						<i class="icon">save</i>
-						<span>DL all files</span>
-					</button>
-				{/if}
 			{/if}
+			{#if file.abuse_type === "" && is_list}
+				<button on:click={download_list} class="toolbar_button button_full_width">
+					<i class="icon">download</i>
+					<span>DL all files</span>
+				</button>
+			{/if}
+
 			<button on:click={copy_url}
 				class="toolbar_button button_full_width"
 				class:button_highlight={copy_url_status === "copied"}
@@ -375,21 +480,23 @@ const keyboard_event = evt => {
 					{/if}
 				</span>
 			</button>
+
 			<button on:click={toggle_sharebar} class="toolbar_button button_full_width" class:button_highlight={sharebar_visible}>
 				<i class="icon">share</i>
 				<span>Share</span>
 			</button>
+
 			<button class="toolbar_button button_full_width" on:click={qr_window.toggle} class:button_highlight={qr_visible}>
 				<i class="icon">qr_code</i>
 				<span>QR code</span>
 			</button>
+
 			{#if is_list}
 				<button
 					class="toolbar_button button_full_width"
 					title="Randomize the order of the files in this list"
 					class:button_highlight={list_shuffle}
-					on:click={toggle_shuffle}
-				>
+					on:click={toggle_shuffle}>
 					<i class="icon">shuffle</i>
 					{#if list_shuffle}
 						<span>Shuffle&nbsp;&#x2611;</span>
@@ -398,46 +505,65 @@ const keyboard_event = evt => {
 					{/if}
 				</button>
 			{/if}
-			<button class="toolbar_button button_full_width" on:click={details_window.toggle} class:button_highlight={details_visible}>
-				<i class="icon">help</i>
-				<span>Deta<u>i</u>ls</span>
-			</button>
+
+			{#if view === "file"}
+				<button class="toolbar_button button_full_width" on:click={details_window.toggle} class:button_highlight={details_visible}>
+					<i class="icon">help</i>
+					<span>Deta<u>i</u>ls</span>
+				</button>
+			{/if}
+
 			<hr/>
-			{#if current_file.can_edit}
+
+			{#if file.can_edit || list.can_edit}
 				<button class="toolbar_button button_full_width" on:click={edit_window.toggle} class:button_highlight={edit_visible}>
 					<i class="icon">edit</i>
 					<span><u>E</u>dit</span>
 				</button>
 			{/if}
-			{#if window.user_authenticated && !current_file.can_edit}
+
+			{#if view === "file" && window.user_authenticated && !file.can_edit}
 				<button on:click={grab_file} class="toolbar_button button_full_width" title="Copy this file to your own pixeldrain account">
 					<i class="icon">save_alt</i>
 					<span><u>G</u>rab file</span>
 				</button>
 			{/if}
+
 			<button class="toolbar_button button_full_width" title="Include this file in your own webpages" on:click={embed_window.toggle} class:button_highlight={embed_visible}>
 				<i class="icon">code</i>
 				<span>E<u>m</u>bed</span>
 			</button>
-			<button class="toolbar_button button_full_width" title="Report abuse in this file" on:click={report_window.toggle} class:button_highlight={report_visible}>
-				<i class="icon">flag</i>
-				<span>Report</span>
-			</button>
+
+			{#if view === "file"}
+				<button class="toolbar_button button_full_width" title="Report abuse in this file" on:click={report_window.toggle} class:button_highlight={report_visible}>
+					<i class="icon">flag</i>
+					<span>Report</span>
+				</button>
+			{/if}
 			<br/>
 		</div></div></div>
 
 		<Sharebar bind:this={sharebar}></Sharebar>
 
 		<div id="file_preview" class="file_preview checkers" class:toolbar_visible class:skyscraper_visible>
-			<FilePreview
-				file={current_file}
-				on:download={download}
-				on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
-				on:next={() => { if (list_navigator) { list_navigator.next() }}}>
-			</FilePreview>
+			{#if view === "file"}
+				<FilePreview
+					file={file}
+					on:download={download}
+					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
+					on:next={() => { if (list_navigator) { list_navigator.next() }}}>
+				</FilePreview>
+			{:else if view === "gallery"}
+				<GalleryView
+					list={list}
+					on:set_file={e => { open_file_index(e.detail) }}
+					on:reload={reload}
+					on:loading={e => {loading = e.detail}}>
+				</GalleryView>
+			{/if}
 		</div>
 
-		{#if current_file.show_ads}
+		{#if ads_enabled}
 			<AdSkyscraper on:visibility={e => {skyscraper_visible = e.detail}}></AdSkyscraper>
 		{/if}
 
@@ -445,36 +571,36 @@ const keyboard_event = evt => {
 		<iframe bind:this={download_frame} title="File download frame" style="display: none; width: 1px; height: 1px;"></iframe>
 	</div>
 
-	{#if current_file.show_ads}
+	{#if ads_enabled}
 		<AdLeaderboard></AdLeaderboard>
 	{:else if !window.viewer_data.user_ads_enabled && !embedded}
 		<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
 			Thank you for supporting pixeldrain!
 		</div>
-	{:else if !current_file.show_ads && !embedded}
+	{:else if !ads_enabled && !embedded}
 		<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
 			The uploader of this file disabled advertisements. You can do the same for <a href="/#pro">only €2 per month</a>!
 		</div>
 	{/if}
 
 	<Modal bind:this={details_window} on:is_visible={e => {details_visible = e.detail}} title="File details" width="1200px">
-		<DetailsWindow file={current_file}></DetailsWindow>
+		<DetailsWindow file={file}></DetailsWindow>
 	</Modal>
 
 	<Modal bind:this={qr_window} on:is_visible={e => {qr_visible = e.detail}} title="QR code" width="500px">
 		<img src="{window.api_endpoint}/misc/qr?text={encodeURIComponent(window.location.href)}" alt="QR code" style="display: block; width: 100%;"/>
 	</Modal>
 
-	<Modal bind:this={edit_window} on:is_visible={e => {edit_visible = e.detail}} title={"Editing "+current_file.name}>
-		<EditWindow file={current_file} list={current_list}></EditWindow>
+	<Modal bind:this={edit_window} on:is_visible={e => {edit_visible = e.detail}} title={"Editing "+file.name}>
+		<EditWindow file={file} list={list} on:reload={reload}></EditWindow>
 	</Modal>
 
 	<Modal bind:this={embed_window} on:is_visible={e => {embed_visible = e.detail}} title="Embed file" width="850px">
-		<EmbedWindow file={current_file} list={current_list}></EmbedWindow>
+		<EmbedWindow file={file} list={list}></EmbedWindow>
 	</Modal>
 
 	<Modal bind:this={report_window} on:is_visible={e => {report_visible = e.detail}} title="Report abuse" width="800px">
-		<ReportWindow file={current_file} list={current_list}></ReportWindow>
+		<ReportWindow file={file} list={list}></ReportWindow>
 	</Modal>
 
 	<Modal bind:this={download_captcha_window} title={captcha_window_title} width="500px">
@@ -498,17 +624,22 @@ const keyboard_event = evt => {
 	<IntroPopup target={button_home}></IntroPopup>
 </div>
 
-
 <style>
-/* Viewer container */
+.spinner_container {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	height: 100px;
+	width: 100px;
+	z-index: 10000;
+}
+
 .file_viewer {
 	position: absolute;
 	display: flex;
 	flex-direction: column;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
 	background-color: var(--layer_2_color);
 }
@@ -582,7 +713,7 @@ const keyboard_event = evt => {
 	text-align: center;
 	vertical-align: middle;
 	transition: left 0.5s, right 0.5s;
-	overflow: hidden;
+	overflow: auto;
 	box-shadow: inset 2px 2px 10px 2px var(--shadow_color);
 	border-radius: 16px;
 }

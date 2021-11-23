@@ -34,19 +34,3 @@ $: frac = used / total
 		</div>
 	{/if}
 </div>
-
-<style>
-.progress_bar_outer {
-	display: block;
-	background-color: var(--layer_1_color);
-	width: 100%;
-	height: 3px;
-	margin: 6px 0 12px 0;
-}
-.progress_bar_inner {
-	background-color: var(--highlight_color);
-	height: 100%;
-	width: 0;
-	transition: width 1s;
-}
-</style>
