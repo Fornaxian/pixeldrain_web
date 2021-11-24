@@ -154,7 +154,7 @@ const reload = async () => {
 	loading = false
 }
 
-const open_list = async l => {
+const open_list = l => {
 	l.download_href = window.api_endpoint+"/list/"+l.id+"/zip"
 	l.info_href = window.api_endpoint+"/list/"+l.id
 	l.files.forEach(f => {
@@ -172,10 +172,9 @@ const open_list = async l => {
 	let hashID = parseInt(matches ? matches[1] : null)
 	if (Number.isInteger(hashID)) {
 		// The URL contains an item number. Navigate to that item
-		view = "file"
-		open_file_index(parseInt(hashID))
-	} else {
-		view = "gallery"
+		open_file_index(hashID)
+	} else if (view !== "gallery") {
+		toggle_gallery()
 	}
 }
 const open_file_index = async index => {
@@ -188,12 +187,13 @@ const open_file_index = async index => {
 
 	file_set_href(list.files[index])
 	file = list.files[index]
-	view = "file"
+
+	if (view !== "file") {
+		view = "file"
+		await tick() // Wait for the ListNavigator to render
+	}
 
 	if (is_list) {
-		// Wait for the ListNavigator to render
-		await tick()
-
 		// Update the URL
 		location.replace("#item=" + index)
 		list_navigator.set_item(index)

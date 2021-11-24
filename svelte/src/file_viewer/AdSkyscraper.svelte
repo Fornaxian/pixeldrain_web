@@ -46,17 +46,14 @@ onMount(async () => {
 		return
 	}
 
-	switch (Math.floor(Math.random() * 4)) {
+	switch (now % 3) {
 		case 0:
 			set_ad_type("aads2")
 			break
 		case 1:
-			set_ad_type("pixfuture")
-			break
-		case 2:
 			set_ad_type("ads.plus")
 			break
-		case 3:
+		case 2:
 			set_ad_type("adaround")
 			break
 	}

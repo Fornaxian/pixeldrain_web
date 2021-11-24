@@ -82,7 +82,7 @@ const select_item_event = idx => {
 		<div class="list_item file_button"
 			class:file_button_selected={file.selected}
 			on:click={() => { select_item_event(index) }}>
-			<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" />
+			<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" loading="lazy"/>
 			{file.name}
 		</div>
 	{/each}

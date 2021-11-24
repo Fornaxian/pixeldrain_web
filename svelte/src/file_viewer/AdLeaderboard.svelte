@@ -26,7 +26,8 @@ onMount(() => {
 		}
 	}
 
-	switch (Math.floor(Math.random() * 5)) {
+	let now = new Date().getTime()
+	switch (now % 4) {
 		case 0:
 			set_ad_type("brave")
 			break
@@ -37,9 +38,6 @@ onMount(() => {
 			set_ad_type("ads.plus")
 			break
 		case 3:
-			set_ad_type("pixfuture")
-			break
-		case 4:
 			set_ad_type("adaround")
 			break
 	}
