@@ -9,6 +9,7 @@ export let file = {
 	name: "",
 	mime_type: "",
 	icon_href: "",
+	show_ads: false,
 }
 </script>
 
@@ -24,7 +25,7 @@ export let file = {
 			<i class="icon">save</i> Download
 		</button>
 	</div>
-	{#if file.size > 5e8}
+	{#if file.show_ads && file.size > 5e8}
 		<br/>
 		<div class="description" style="max-width: 700px; text-align: center;">
 			<!-- If the file is larger than 500 MB-->

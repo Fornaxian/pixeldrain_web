@@ -3,8 +3,8 @@ fornaxian.tech/config v0.0.0-20211108212237-6133aed90586/go.mod h1:ULIXF4J1DbBw4
 fornaxian.tech/log v0.0.0-20190617093801-1c7ce9a7c9b3/go.mod h1:OyWUNsNPlo5AmlOHvJ4s6WcStQw+9rQyBMwmTz0buEM=
 fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640 h1:UPDxJwLRCfh/cv80UMSanzmZ0jIcfS1mcd0Y06HYuLw=
 fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640/go.mod h1:sN82qMToeHhP2u3ehvrcE8y1IudRZJAZO9yG5OBYblo=
-fornaxian.tech/pixeldrain_api_client v0.0.0-20211122200521-a6db980e487a h1:agn27B8aKpCd1vNYS28jQ/xjxQrp3aZzA7pA85Noi3o=
-fornaxian.tech/pixeldrain_api_client v0.0.0-20211122200521-a6db980e487a/go.mod h1:uajB2ofEsefUtxjvs4m7SDyPVRlfrI3qzCSWcud47hY=
+fornaxian.tech/pixeldrain_api_client v0.0.0-20211123215854-be6e25030ad8 h1:0ueAJb5nHOpFa5TXZgVVs4ORsf2zhpxLRUx3AuAx+wM=
+fornaxian.tech/pixeldrain_api_client v0.0.0-20211123215854-be6e25030ad8/go.mod h1:uajB2ofEsefUtxjvs4m7SDyPVRlfrI3qzCSWcud47hY=
 fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787 h1:9ujI8Qi6+FTL/YW6xQAS9DmWDMerHBe8foQvVD/G/i0=
 fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787/go.mod h1:FqVgfghmxTGR3l9Zx4MOMeZ9KHjiEFl3s3C0BSTvBwk=
 github.com/BurntSushi/toml v0.4.1 h1:GaI7EiDXDRfa8VshkTj7Fym7ha+y8/XxIgD2okUIjLw=
@@ -46,8 +46,8 @@ golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871/go.mod h1:IxCIyHEi3zRg3s0
 golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3/go.mod h1:t9HGtf8HONx5eT2rtn7q6eTqICYqUVnKs3thJo3Qplg=
 golang.org/x/net v0.0.0-20210614182718-04defd469f4e/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
 golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
-golang.org/x/net v0.0.0-20211118161319-6a13c67c3ce4 h1:DZshvxDdVoeKIbudAdFEKi+f70l51luSy/7b76ibTY0=
-golang.org/x/net v0.0.0-20211118161319-6a13c67c3ce4/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
+golang.org/x/net v0.0.0-20211123203042-d83791d6bcd9 h1:0qxwC5n+ttVOINCBeRHO0nq9X7uy8SDsPoi5OaCdIEI=
+golang.org/x/net v0.0.0-20211123203042-d83791d6bcd9/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
 golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20191026070338-33540a1f6037/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=

@@ -11,6 +11,7 @@ export let file = {
 	get_href: "",
 	icon_href: "",
 	allow_video_player: true,
+	show_ads: false,
 }
 
 $: loop = file.name.includes(".loop.")
@@ -84,7 +85,7 @@ let download = () => { dispatch("download", {}) }
 				<i class="icon">save</i> Download
 			</button>
 		</div>
-		{#if file.size > 5e8}
+		{#if file.show_ads && file.size > 5e8}
 			<br/>
 			<div class="description" style="max-width: 700px; text-align: center;">
 				<!-- If the file is larger than 500 MB-->

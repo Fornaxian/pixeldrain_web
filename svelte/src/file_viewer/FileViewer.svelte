@@ -439,17 +439,16 @@ const keyboard_event = evt => {
 
 	<div id="file_preview_window" class="file_preview_window">
 		<div id="toolbar" class="toolbar" class:toolbar_visible><div><div>
+			{#if view === "file"}
+				<FileStats file={file}></FileStats>
+				<hr/>
+			{/if}
+
 			{#if is_list}
 				<button on:click={toggle_gallery} class="toolbar_button button_full_width" class:button_highlight={view === "gallery"}>
 					<i class="icon">photo_library</i>
 					Gallery
 				</button>
-				<hr/>
-			{/if}
-
-			{#if view === "file"}
-				<FileStats file={file}></FileStats>
-				<hr/>
 			{/if}
 
 			{#if file.abuse_type === "" && view === "file"}
@@ -713,7 +712,7 @@ const keyboard_event = evt => {
 	text-align: center;
 	vertical-align: middle;
 	transition: left 0.5s, right 0.5s;
-	overflow: auto;
+	overflow: hidden;
 	box-shadow: inset 2px 2px 10px 2px var(--shadow_color);
 	border-radius: 16px;
 }

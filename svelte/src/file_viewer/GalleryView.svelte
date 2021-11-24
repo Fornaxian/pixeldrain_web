@@ -77,6 +77,9 @@ const delete_file = async index => {
 .gallery{
 	padding: 16px;
 	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
 }
 .file{
 	position: relative;
