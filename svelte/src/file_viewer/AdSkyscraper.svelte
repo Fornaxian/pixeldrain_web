@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher, onMount, tick } from "svelte"
-import { adsplus_load, adsplus_loaded, adaround_load } from "./AdHead.svelte"
+import { adsplus_load, adsplus_loaded, adaround_load, flyingsquare_load } from "./AdHead.svelte"
 
 let dispatch = createEventDispatcher()
 let container
@@ -13,6 +13,8 @@ let set_ad_type = (t) => {
 		adsplus_load.set(true)
 	} else if (ad_type === "adaround") {
 		adaround_load.set(true)
+	} else if (ad_type === "flyingsquare") {
+		flyingsquare_load.set(true)
 	}
 
 	console.log("skyscraper ad is " + t)
@@ -46,7 +48,7 @@ onMount(async () => {
 		return
 	}
 
-	switch (now % 3) {
+	switch (now % 4) {
 		case 0:
 			set_ad_type("aads2")
 			break
@@ -55,6 +57,9 @@ onMount(async () => {
 			break
 		case 2:
 			set_ad_type("adaround")
+			break
+		case 3:
+			set_ad_type("flyingsquare")
 			break
 	}
 
@@ -114,6 +119,8 @@ adsplus_loaded.subscribe(v => {
 				<!-- AuctionX Display platform tag END -->
 			{:else if ad_type === "adaround"}
 				<div class="_fa7cdd4c68507744" data-zone="2a0dbd4b7c484e9e824d211a57fa6b93" style="width:160px;height:600px;display: inline-block;margin: 0 auto"></div>
+			{:else if ad_type === "flyingsquare"}
+				<div class="xc449bad4854773ff" data-zone="d675792db61d408287d0d694d03d12e5" style="width:160px;height:600px;display: inline-block;margin: 0 auto"></div>
 			{/if}
 		</div>
 	</div>

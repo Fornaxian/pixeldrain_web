@@ -4,6 +4,8 @@ export const adsplus_load = writable(false)
 export const adsplus_loaded = writable(false)
 export const adaround_load = writable(false)
 export const adaround_loaded = writable(false)
+export const flyingsquare_load = writable(false)
+export const flyingsquare_loaded = writable(false)
 
 </script>
 <script>
@@ -32,6 +34,17 @@ const adaround_load_event = () => {
 	adaround_loaded.set(true)
 	console.debug("finished loading adaround head element")
 }
+
+let flyingsquare = false
+flyingsquare_load.subscribe(v => {
+	if (v) {
+		flyingsquare = true
+	}
+})
+const flyingsquare_load_event = () => {
+	flyingsquare_loaded.set(true)
+	console.debug("finished loading flyingsquare head element")
+}
 </script>
 
 <svelte:head>
@@ -40,5 +53,8 @@ const adaround_load_event = () => {
 	{/if}
 	{#if adaround}
 		<script on:load={adaround_load_event} async src="/res/script/adaround.js"></script>
+	{/if}
+	{#if flyingsquare}
+		<script on:load={flyingsquare_load_event} async src="/res/script/flyingsquare.js"></script>
 	{/if}
 </svelte:head>

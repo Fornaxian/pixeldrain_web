@@ -63,12 +63,13 @@ func (wc *WebController) serveUserExportFiles(
 
 	writeCSVLine(
 		w, "id", "name", "size", "type", "date_upload", "date_last_view",
-		"views", "downloads", "bandwidth_used",
+		"views", "downloads", "bandwidth_used", "bandwidth_used_paid",
 	)
 	for _, file := range files.Files {
 		writeCSVLine(
 			w, file.ID, file.Name, file.Size, file.MimeType, file.DateUpload,
 			file.DateLastView, file.Views, file.Downloads, file.BandwidthUsed,
+			file.BandwidthUsedPaid,
 		)
 	}
 }

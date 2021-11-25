@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte"
-import { adsplus_load, adsplus_loaded, adaround_load } from "./AdHead.svelte"
+import { adsplus_load, adsplus_loaded, adaround_load, flyingsquare_load } from "./AdHead.svelte"
 
 let container
 let banner
@@ -12,6 +12,8 @@ let set_ad_type = (t) => {
 		adsplus_load.set(true)
 	} else if (ad_type === "adaround") {
 		adaround_load.set(true)
+	} else if (ad_type === "flyingsquare") {
+		flyingsquare_load.set(true)
 	}
 
 	console.log("leaderboard ad is " + t)
@@ -27,7 +29,7 @@ onMount(() => {
 	}
 
 	let now = new Date().getTime()
-	switch (now % 4) {
+	switch (now % 5) {
 		case 0:
 			set_ad_type("brave")
 			break
@@ -39,6 +41,9 @@ onMount(() => {
 			break
 		case 3:
 			set_ad_type("adaround")
+			break
+		case 4:
+			set_ad_type("flyingsquare")
 			break
 	}
 
@@ -144,6 +149,8 @@ adsplus_loaded.subscribe(v => {
 		<!-- AuctionX Display platform tag END -->
 	{:else if ad_type === "adaround"}
 		<div bind:this={banner} class="_fa7cdd4c68507744 banner" data-zone="d8764be36c134d3d807abb2a073dc010" style="width:728px;height:90px;display: inline-block;margin: 0 auto"></div>
+	{:else if ad_type === "flyingsquare"}
+		<div bind:this={banner} class="xc449bad4854773ff banner" data-zone="28ebf286bb7d4446a5ba43b0ead8f1bb" style="width:728px;height:90px;display: inline-block;margin: 0 auto"></div>
 	{/if}
 </div>
 
