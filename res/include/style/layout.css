@@ -570,6 +570,18 @@ input[type="number"]:focus,
 input[type="date"]:focus{
 	box-shadow: var(--highlight_border), inset 3px 3px 6px -3px var(--shadow_color);
 }
+textarea:disabled,
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="email"]:disabled,
+input[type="number"]:disabled,
+input[type="date"]:disabled{
+	background: var(--layer_1_color);
+	color: var(--input_color);
+	box-shadow: none;
+	transition: none;
+	cursor: not-allowed;
+}
 
 input[type=file]{
 	visibility: hidden;

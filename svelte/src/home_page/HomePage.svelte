@@ -169,6 +169,7 @@ const leave_confirmation = e => {
 let navigator_share = !!(window.navigator && window.navigator.share)
 let share_title = ""
 let share_link = ""
+let input_album_name = ""
 
 let btn_upload_text
 let btn_copy_link
@@ -258,29 +259,12 @@ const share_navigator = () => {
 	window.navigator.share({ title: "Pixeldrain", text: share_title, url: share_link })
 }
 
-let created_lists = []
-const make_list_button = () => {
-	let count = upload_queue.reduce(
-		(acc, curr) => curr.status === "finished" ? acc + 1 : acc,
-		0,
-	)
-
-	let title = prompt(
-		"You are creating a list containing " + count + " files.\n"
-		+ "What do you want to call it?", "My New Album"
-	)
-	if (title === null) {
+const create_album = () => {
+	if (!input_album_name) {
 		return
 	}
-	create_list(title, false).then(resp => {
-		created_lists.push({
-			title: title,
-			id: resp.id,
-			link: domain_url()+"/l/"+resp.id,
-			thumbnail: "/api/list/"+resp.id+"/thumbnail",
-		})
-		created_lists = created_lists
-		window.open('/l/' + resp.id, '_blank')
+	create_list(input_album_name, false).then(resp => {
+		window.location = '/l/' + resp.id
 	}).catch(err => {
 		alert("Failed to create list. Server says this:\n"+err)
 	})
@@ -466,6 +450,20 @@ const keydown = (e) => {
 		</div>
 	</div>
 
+	{#if upload_queue.length > 1}
+		You can create an album to group your files together into one link<br/>
+		Name:
+		<form class="album_name_form" on:submit|preventDefault={create_album}>
+			<input bind:value={input_album_name} type="text" disabled={state !== "finished"} placeholder="My album"/>
+			<button type="submit" disabled={state !== "finished"}>
+				<i class="icon">create_new_folder</i> Create
+			</button>
+		</form>
+		<br/><br/>
+		Other sharing methods:
+		<br/>
+	{/if}
+
 	<div class="social_buttons" class:hide={!navigator_share}>
 		<button id="btn_social_share" on:click={share_navigator} class="social_buttons" disabled={state !== "finished"}>
 			<i class="icon">share</i><br/>
@@ -511,9 +509,6 @@ const keydown = (e) => {
 		<img src="/api/misc/qr?text={encodeURIComponent(share_link)}" alt="QR code" style="width: 300px; max-width: 100%;">
 	{/if}
 	<br/>
-	<button bind:this={btn_create_list} on:click={make_list_button} disabled={state !== "finished"}>
-		<i class="icon">list</i> Create <u>l</u>ist with uploaded files
-	</button>
 	<button bind:this={btn_copy_links} on:click={copy_links} disabled={state !== "finished"}>
 		<i class="icon">content_copy</i> Copy <u>a</u>ll links to clipboard
 	</button>
@@ -524,15 +519,6 @@ const keydown = (e) => {
 		<i class="icon">content_copy</i> Copy <u>B</u>BCode to clipboard
 	</button>
 	<br/>
-
-	{#each created_lists as list}
-		<a class="file_button" href="{list.link}" target="_blank">
-			<img src="/api/list/{list.id}/thumbnail" alt="list icon"/>
-			List created!<br/>
-			{list.title}<br/>
-			<span class="file_button_title">{list.link}</span>
-		</a>
-	{/each}
 
 	{#if window.user.subscription.name === ""}
 		<div class="instruction">
@@ -627,6 +613,12 @@ const keydown = (e) => {
 	width: 0;
 	transition: width 0.5s;
 	transition-timing-function: linear;
+}
+
+.album_name_form {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .social_buttons {
