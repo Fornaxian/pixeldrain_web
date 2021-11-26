@@ -1,5 +1,6 @@
 <script>
-import { createEventDispatcher } from "svelte";
+import { createEventDispatcher } from "svelte"
+import { flip } from "svelte/animate"
 let dispatch = createEventDispatcher()
 
 export let list = {
@@ -15,19 +16,35 @@ const click_file = index => {
 	dispatch("set_file", index)
 }
 
-const delete_file = async index => {
+const update_list = async new_files => {
 	dispatch("loading", true)
+
+	list.files = new_files
+
+	// If the list is empty we simply delete it
+	if (list.files.length === 0) {
+		try {
+			let resp = await fetch(list.info_href, {method: "DELETE"})
+			if (resp.status >= 400) {
+				throw (await resp.json()).message
+			}
+			window.close()
+		} catch (err) {
+			alert("Failed to delete album: "+err)
+		} finally {
+			dispatch("loading", false)
+		}
+		return
+	}
 
 	let listjson = {
 		title: list.title,
 		files: [],
 	}
-	list.files.forEach((f, idx) => {
-		if (idx !== index) {
-			listjson.files.push({
-				id: f.id,
-			})
-		}
+	list.files.forEach(f => {
+		listjson.files.push({
+			id: f.id,
+		})
 	})
 
 	try {
@@ -41,22 +58,77 @@ const delete_file = async index => {
 	} catch (err) {
 		alert("Failed to update album: "+err)
 	} finally {
-		dispatch("reload")
+		dispatch("loading", false)
 	}
+}
+
+const delete_file = async index => {
+	let list_files = list.files
+	list_files.splice(index, 1)
+	update_list(list_files)
+}
+
+const move_left = index => {
+	if (index === 0) {
+		return;
+	}
+	let f = list.files;
+	[f[index], f[index-1]] = [f[index-1], f[index]];
+	update_list(f);
+}
+const move_right = index => {
+	if (index >= list.files.length-1) {
+		return;
+	}
+	let f = list.files;
+	[f[index], f[index+1]] = [f[index+1], f[index]];
+	update_list(f);
+}
+
+let hovering = -1
+const drag = (e, index) => {
+	e.dataTransfer.effectAllowed = 'move';
+	e.dataTransfer.dropEffect = 'move';
+	e.dataTransfer.setData('text/plain', index);
+}
+const drop = (e, index) => {
+	e.dataTransfer.dropEffect = 'move';
+	let start = parseInt(e.dataTransfer.getData("text/plain"));
+	let list_files = list.files
+
+	if (start < index) {
+		list_files.splice(index + 1, 0, list_files[start]);
+		list_files.splice(start, 1);
+	} else {
+		list_files.splice(index, 0, list_files[start]);
+		list_files.splice(start + 1, 1);
+	}
+	hovering = -1
+
+	update_list(list_files)
 }
 </script>
 
 <div class="gallery">
-	{#each list.files as file, index}
-		<div class="file" on:click={() => {click_file(index)}}>
+	{#each list.files as file, index (file)}
+		<div
+			class="file"
+			on:click={() => {click_file(index)}}
+			draggable={list.can_edit}
+			on:dragstart={e => drag(e, index)}
+			on:drop|preventDefault={e => drop(e, index)}
+			on:dragover|preventDefault|stopPropagation
+			on:dragenter={() => {hovering = index}}
+			class:highlight={hovering === index}
+			animate:flip={{duration: 500}}>
 			<div
 				class="icon_container"
 				class:editing={list.can_edit}
 				style="background-image: url('{file.icon_href}?width=256&height=256');">
 				{#if list.can_edit}
-					<!-- <i class="icon" style="cursor: grab;">drag_indicator</i>
-					<i class="icon">chevron_left</i>
-					<i class="icon">chevron_right</i> -->
+					<i class="icon" on:click|stopPropagation style="cursor: grab;">drag_indicator</i>
+					<i class="icon" on:click|stopPropagation={() => {move_left(index)}}>chevron_left</i>
+					<i class="icon" on:click|stopPropagation={() => {move_right(index)}}>chevron_right</i>
 					<i class="icon" on:click|stopPropagation={() => {delete_file(index)}}>delete</i>
 				{/if}
 			</div>
@@ -85,7 +157,7 @@ const delete_file = async index => {
 	position: relative;
 	box-sizing: border-box;
 	width: 200px;
-	max-width: 90%;
+	max-width: 40%;
 	height: 200px;
 	margin: 8px;
 	padding: 0;
@@ -101,7 +173,7 @@ const delete_file = async index => {
 	text-decoration: none;
 	vertical-align: top;
 }
-.file:hover {
+.file:hover, .highlight {
 	box-shadow: 0 0 2px 2px var(--highlight_color);
 	text-decoration: none;
 }
@@ -110,7 +182,7 @@ const delete_file = async index => {
 	height: 136px;
 	background-position: center;
 	background-size: cover;
-	font-size: 20px;
+	font-size: 22px;
 	text-align: left;
 }
 .icon_container.editing {
