@@ -1,12 +1,12 @@
 <script>
 import { onMount, tick } from "svelte";
+import { copy_text } from "../util/Util.svelte";
 import Modal from "../util/Modal.svelte";
 import PixeldrainLogo from "../util/PixeldrainLogo.svelte";
 import DetailsWindow from "./DetailsWindow.svelte";
 import FilePreview from "./FilePreview.svelte";
 import ListNavigator from "./ListNavigator.svelte";
 import FileStats from "./FileStats.svelte";
-import { copy_text } from "../util/Util.svelte";
 import EditWindow from "./EditWindow.svelte";
 import EmbedWindow from "./EmbedWindow.svelte";
 import ReportWindow from "./ReportWindow.svelte";
@@ -17,6 +17,7 @@ import AdSkyscraper from "./AdSkyscraper.svelte";
 import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
 import Spinner from "../util/Spinner.svelte";
+import Downloader from "./Downloader.svelte";
 
 const file_struct = {
 	id: "",
@@ -93,6 +94,8 @@ let toolbar_toggle = () => {
 		toggle_sharebar()
 	}
 }
+
+let downloader
 let details_window
 let details_visible = false
 let qr_window
@@ -220,72 +223,6 @@ const toggle_gallery = () => {
 		location.replace("#gallery")
 		view = "gallery"
 		file = file_struct // Empty the file struct
-	}
-}
-
-let download_frame
-let is_captcha_script_loaded = false
-let download_captcha_window
-let captcha_type = "" // rate_limit or malware
-let captcha_window_title = ""
-let captcha_container
-const download = () => {
-	if (!window.viewer_data.captcha_key) {
-		console.debug("Server doesn't support captcha, starting download")
-		download_frame.src = file.download_href
-		return
-	}
-	if (file.availability === "") {
-		console.debug("File is available, starting download")
-		download_frame.src = file.download_href
-		return
-	}
-
-	console.debug("File is not readily available, showing captcha dialog")
-
-	// When the captcha is filled in by the user this function is called. Here
-	// we trigger the download using the captcha token Google provided us with
-	let captcha_complete_callback = token => {
-		// Download the file using the recaptcha token
-		download_frame.src = file.download_href + "&recaptcha_response=" + token
-		download_captcha_window.hide()
-	}
-
-	// Function which will be called when the captcha script is loaded. This
-	// renders the checkbox in the modal window
-	window.captcha_script_loaded = async () => {
-		download_captcha_window.show()
-		await tick()
-		grecaptcha.render(captcha_container, {
-			sitekey: window.viewer_data.captcha_key,
-			theme: "dark",
-			callback: captcha_complete_callback,
-		})
-	}
-
-	if (file.availability === "file_rate_limited_captcha_required") {
-		captcha_type = "rate_limit"
-		captcha_window_title = "Rate limiting enabled!"
-	} else if (file.availability === "virus_detected_captcha_required") {
-		captcha_type = "malware"
-		captcha_window_title = "Malware warning!"
-	}
-
-	if (is_captcha_script_loaded) {
-		console.debug("Captcha script is already loaded. Show the modal")
-		captcha_script_loaded()
-	} else {
-		console.debug("Captcha script has not been loaded yet. Embedding now")
-
-		let script = document.createElement("script")
-		script.src = "https://www.google.com/recaptcha/api.js?onload=captcha_script_loaded&render=explicit"
-		document.body.appendChild(script)
-		is_captcha_script_loaded = true
-	}
-}
-const download_list = () => {
-	if (is_list) {
-		download_frame.src = list.download_href
 	}
 }
 
@@ -452,13 +389,13 @@ const keyboard_event = evt => {
 			{/if}
 
 			{#if file.abuse_type === "" && view === "file"}
-				<button on:click={download} class="toolbar_button button_full_width">
+				<button on:click={downloader.download_file} class="toolbar_button button_full_width">
 					<i class="icon">download</i>
 					<span>Download</span>
 				</button>
 			{/if}
 			{#if file.abuse_type === "" && is_list}
-				<button on:click={download_list} class="toolbar_button button_full_width">
+				<button on:click={downloader.download_list} class="toolbar_button button_full_width">
 					<i class="icon">download</i>
 					<span>DL all files</span>
 				</button>
@@ -548,7 +485,7 @@ const keyboard_event = evt => {
 			{#if view === "file"}
 				<FilePreview
 					file={file}
-					on:download={download}
+					on:download={downloader.download_file}
 					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
 					on:next={() => { if (list_navigator) { list_navigator.next() }}}>
 				</FilePreview>
@@ -565,9 +502,6 @@ const keyboard_event = evt => {
 		{#if ads_enabled}
 			<AdSkyscraper on:visibility={e => {skyscraper_visible = e.detail}}></AdSkyscraper>
 		{/if}
-
-		<!-- This frame will load the download URL when a download button is pressed -->
-		<iframe bind:this={download_frame} title="File download frame" style="display: none; width: 1px; height: 1px;"></iframe>
 	</div>
 
 	{#if ads_enabled}
@@ -602,25 +536,9 @@ const keyboard_event = evt => {
 		<ReportWindow file={file} list={list}></ReportWindow>
 	</Modal>
 
-	<Modal bind:this={download_captcha_window} title={captcha_window_title} width="500px">
-		{#if captcha_type === "rate_limit"}
-			<p>
-				This file is using a suspicious amount of bandwidth relative to
-				its popularity. To continue downloading this file you will have
-				to prove that you're a human first.
-			</p>
-		{:else if captcha_type === "malware"}
-			<p>
-				According to our scanning systems this file may contain a virus.
-				You can continue downloading this file at your own risk, but you
-				will have to prove that you're a human first.
-			</p>
-		{/if}
-		<br/>
-		<div bind:this={captcha_container} class="captcha_container"></div>
-	</Modal>
-
 	<IntroPopup target={button_home}></IntroPopup>
+
+	<Downloader bind:this={downloader} file={file} list={list}></Downloader>
 </div>
 
 <style>
@@ -759,17 +677,5 @@ const keyboard_event = evt => {
 }
 .toolbar_button > span {
 	vertical-align: middle;
-}
-
-/* =====================
-	|| MISC COMPONENTS ||
-	===================== */
-
-.captcha_container {
-	text-align: center;
-}
-/* global() to silence the unused selector warning */
-.captcha_container > :global(div) {
-	display: inline-block;
 }
 </style>
