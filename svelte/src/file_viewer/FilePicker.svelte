@@ -55,7 +55,10 @@ const search = (e) => {
 }
 
 let done = () => {
-	dispatch("files", directory_element.getSelectedFiles())
+	let selected_files = directory_element.getSelectedFiles()
+	if (selected_files.length > 0) {
+		dispatch("files", selected_files)
+	}
 	modal.hide()
 }
 

@@ -158,16 +158,19 @@ const drop = (e, index) => {
 			Add files
 		</div>
 	{/if}
-
-	<FilePicker bind:this={file_picker} on:files={e => {add_files(e.detail)}}></FilePicker>
 </div>
+
+<FilePicker bind:this={file_picker} on:files={e => {add_files(e.detail)}}></FilePicker>
 
 <style>
 .gallery{
 	padding: 16px;
 	width: 100%;
-	height: 100%;
+	max-height: 100%;
 	overflow: auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 .file{
 	position: relative;
