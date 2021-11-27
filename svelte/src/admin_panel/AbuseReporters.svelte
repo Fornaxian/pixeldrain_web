@@ -144,7 +144,7 @@ onMount(get_reporters);
 				<td>Created</td>
 				<td></td>
 			</tr>
-			{#each reporters as reporter}
+			{#each reporters as reporter (reporter.email)}
 				<tr>
 					<td>{reporter.email}</td>
 					<td>{reporter.name}</td>

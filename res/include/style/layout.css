@@ -48,6 +48,9 @@
 a > svg { vertical-align: middle; }
 
 /* Page rendering configuration */
+*, *::before, *::after {
+	box-sizing: border-box;
+}
 html, body { overflow-x: hidden; }
 body{
 	margin: 0;
@@ -106,7 +109,6 @@ body, .checkers {
 	background-color: #1c1c1c;
 	background-color: var(--layer_1_color);
 	padding: 20px 0 0.5em 0;
-	box-sizing: border-box;
 	overflow-y: auto;
 	overflow-x: hidden;
 	text-align: left;
@@ -147,7 +149,6 @@ body, .checkers {
 	background-color: #212121;
 	background-color: var(--layer_2_color);
 	box-shadow: 1px 1px 12px 0 var(--shadow_color);
-	box-sizing: border-box;
 	clear: both;
 }
 .limit_width {
@@ -157,7 +158,6 @@ body, .checkers {
 	width: 100%;
 	height: auto;
 	padding: 0;
-	box-sizing: border-box;
 	text-align: left;
 	clear: both;
 }
@@ -171,7 +171,6 @@ body, .checkers {
 .page_navigation a {
 	float: none;
 	display: block;
-	box-sizing: border-box;
 	color: #b2b2b2; /* Fallback */
 	color: var(--text_color);
 	text-align: center;
@@ -213,7 +212,6 @@ body, .checkers {
 	position: relative;
 	width: auto;
 	height: auto;
-	box-sizing: border-box;
 	overflow: hidden;
 	text-align: center;
 	padding: 4px;
@@ -344,7 +342,6 @@ tr > td, tr > th {padding: 0.3em 0.6em;}
 @media(max-width: 30em) {
 	/* Forms will be stacked on small screens */
 	tr.form > td {
-		box-sizing: border-box;
 		float: left;
 		width: 100%;
 		padding: 0.5em;
@@ -359,7 +356,6 @@ pre {
 
 .file_button{
 	position: relative;
-	box-sizing: border-box;
 	width: 400px;
 	max-width: 90%;
 	height: 3.6em;
@@ -435,7 +431,6 @@ input[type="button"],
 input[type="color"],
 select {
 	display: inline-block;
-	box-sizing: border-box;
 	border-radius: 8px;
 	border: none;
 	margin: 3px;
@@ -513,7 +508,6 @@ select:disabled , select.disabled {
 	overflow-x: auto;
 	overflow-y: hidden;
 	white-space: nowrap;
-	box-sizing: border-box;
 	text-align: center;
 	background-color: var(--layer_1_color);
 	box-shadow: inset 0 -10px 8px -12px var(--shadow_color);
@@ -546,7 +540,6 @@ input[type="date"]{
 	display: inline-block;
 	margin: 3px; /* Same as button, to make them align nicely */
 	border: none;
-	box-sizing: border-box;
 	border-radius: 8px;
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 1px 1px 4px -2px var(--shadow_color);

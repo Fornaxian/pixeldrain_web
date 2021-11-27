@@ -215,7 +215,6 @@ const toggle_select = () => {
 	width: 100%;
 	margin: 16px 0 0 0;
 	padding: 0;
-	box-sizing: border-box;
 	justify-content: center;
 }
 .toolbar > * { flex: 0 0 auto; }
@@ -237,7 +236,6 @@ const toggle_select = () => {
 	text-align: left;
 	background-color: var(--layer_1_color);
 	box-shadow: 1px 1px 5px var(--shadow_color);
-	box-sizing: border-box;
 	border-collapse: collapse;
 }
 .directory > * { display: table-row; }
@@ -247,7 +245,6 @@ const toggle_select = () => {
 	text-decoration: none;
 	color: var(--text-color);
 	padding: 6px;
-	box-sizing: border-box;
 }
 .directory :global(.node:not(:last-child)) {
 	border-bottom: 1px solid var(--layer_2_color);

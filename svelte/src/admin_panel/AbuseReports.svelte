@@ -109,14 +109,14 @@ onMount(() => {
 		</div>
 
 		<h2>Pending</h2>
-		{#each reports_pending as report}
+		{#each reports_pending as report (report.id)}
 			{#if report.status === "pending"}
 			<AbuseReport report={report} on:refresh={get_reports}/>
 			{/if}
 		{/each}
 
 		<h2>Resolved</h2>
-		{#each reports_processed as report}
+		{#each reports_processed as report (report.id)}
 			{#if report.status !== "pending"}
 			<AbuseReport report={report} on:refresh={get_reports}/>
 			{/if}

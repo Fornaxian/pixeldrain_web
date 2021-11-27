@@ -235,7 +235,6 @@ const add_upload_history = id => {
 
 .upload_task{
 	position: relative;
-	box-sizing: border-box;
 	width: 440px;
 	max-width: 95%;
 	height: 4em;

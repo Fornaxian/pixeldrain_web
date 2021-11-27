@@ -121,7 +121,7 @@ const logout = async (key) => {
 				<td>IP address</td>
 				<td></td>
 			</tr>
-			{#each rows as row}
+			{#each rows as row (row.auth_key)}
 				<tr style="border-bottom: none;">
 					<td>{row.auth_key}</td>
 					<td>{formatDate(row.creation_time, true, true, false)}</td>

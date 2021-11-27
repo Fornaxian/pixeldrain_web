@@ -353,7 +353,6 @@ const node_click = (index) => {
 	display: inline-block;
 	margin: 4px 10px;
 	padding: 4px;
-	box-sizing: border-box;
 	border-bottom: 1px solid var(--input_color);
 	cursor: pointer;
 }
@@ -375,12 +374,8 @@ const node_click = (index) => {
 	padding: 0;
 	overflow-x: auto;
 	text-align: left;
-	box-sizing: border-box;
 }
 #node_container {
-	/* Required because we use padding for moving the nodes down when items
-	above are out of view*/
-	box-sizing: border-box;
 	display: block;
 	min-width: 850px;
 }
@@ -402,7 +397,6 @@ const node_click = (index) => {
 	control over the size.
 	Check out https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing*/
 	margin: 0;
-	box-sizing: border-box;
 	color: var(--text_color);
 	text-decoration: none;
 }
@@ -420,14 +414,12 @@ const node_click = (index) => {
 	overflow: hidden;
 	margin: auto 10px;
 	padding: 4px;
-	box-sizing: border-box;
 	display: inline-block;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 .node > div > span {
 	margin: auto;
-	box-sizing: border-box;
 	display: block;
 	text-overflow: ellipsis;
 	white-space: nowrap;

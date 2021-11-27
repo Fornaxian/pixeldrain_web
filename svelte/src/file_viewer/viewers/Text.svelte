@@ -115,7 +115,6 @@ const code = () => {
 	font-size: 0.9em;
 	line-height: 1.5em;
 	padding: 5px 5px 5px 20px;
-	box-sizing: border-box;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }

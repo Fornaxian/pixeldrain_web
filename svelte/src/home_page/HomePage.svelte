@@ -564,7 +564,6 @@ const keydown = (e) => {
 .instruction {
 	border-top: 1px solid var(--layer_2_color_border);
 	border-bottom: 1px solid var(--layer_2_color_border);
-	box-sizing: border-box;
 	margin: 1.5em 0;
 	padding: 5px;
 }
@@ -574,7 +573,6 @@ const keydown = (e) => {
 	line-height: 1em;
 	text-align: center;
 	display: inline-block;
-	box-sizing: border-box;
 	background-color: var(--highlight_color);
 	color: var(--highlight_text_color);
 	border-radius: 30px;
@@ -588,7 +586,6 @@ const keydown = (e) => {
 	margin: 0.1em;
 	font-size: 1.5em;
 	display: inline;
-	box-sizing: border-box;
 	vertical-align: middle;
 }
 .stats_box {

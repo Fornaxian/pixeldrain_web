@@ -149,7 +149,7 @@ onMount(get_bans);
 				<td>Offences</td>
 				<td></td>
 			</tr>
-			{#each rows as row}
+			{#each rows as row (row.address)}
 				<tr>
 					<td>{row.address}</td>
 					<td>{row.reason}</td>

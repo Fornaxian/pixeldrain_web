@@ -84,7 +84,6 @@ const keydown = e => {
 	padding: 0;
 	border-radius: 20px 20px 8px 8px;
 	overflow: hidden;
-	box-sizing: border-box;
 	text-align: left;
 	box-shadow: var(--shadow_color) 0px 0px 50px;
 }

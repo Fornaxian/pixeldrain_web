@@ -110,7 +110,7 @@ const drop = (e, index) => {
 </script>
 
 <div class="gallery">
-	{#each list.files as file, index (file)}
+	{#each list.files as file, index (file.id)}
 		<div
 			class="file"
 			on:click={() => {click_file(index)}}
@@ -148,16 +148,14 @@ const drop = (e, index) => {
 <style>
 .gallery{
 	padding: 16px;
-	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
 	overflow: auto;
 }
 .file{
 	position: relative;
-	box-sizing: border-box;
 	width: 200px;
-	max-width: 40%;
+	max-width: 45%;
 	height: 200px;
 	margin: 8px;
 	padding: 0;
