@@ -121,17 +121,19 @@ const keydown = (e) => {
 	flex-grow: 1;
 	flex-shrink: 1;
 }
-@media(max-width: 800px) {
-	.title {
-		/* display: none; */
-		content: "";
-	}
-}
 .search {
 	min-width: 100px;
 	max-width: 300px;
 	flex-grow: 1;
 	flex-shrink: 1;
+}
+@media(max-width: 700px) {
+	.title {
+		display: none;
+	}
+	.search {
+		max-width: none;
+	}
 }
 .button {
 	flex-grow: 0;
