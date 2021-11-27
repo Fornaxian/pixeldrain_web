@@ -32,8 +32,12 @@ export const set_visible = vis => {
 }
 
 const keydown = e => {
+	if (document.activeElement.type && document.activeElement.type === "text") {
+		return // Prevent shortcuts from interfering with input fields
+	}
 	if (e.key === 'Escape') {
 		set_visible(false);
+		e.preventDefault()
 		return;
 	}
 };
@@ -114,6 +118,5 @@ const keydown = e => {
 	flex-grow: 1;
 	flex-shrink: 1;
 	overflow: auto;
-	padding: 10px;
 }
 </style>

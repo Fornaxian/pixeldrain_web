@@ -1,6 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte"
 import { flip } from "svelte/animate"
+import FilePicker from "./FilePicker.svelte"
 let dispatch = createEventDispatcher()
 
 export let list = {
@@ -12,14 +13,14 @@ export let list = {
 	can_edit: false,
 }
 
+let file_picker;
+
 const click_file = index => {
 	dispatch("set_file", index)
 }
 
 const update_list = async new_files => {
 	dispatch("loading", true)
-
-	list.files = new_files
 
 	// If the list is empty we simply delete it
 	if (list.files.length === 0) {
@@ -62,27 +63,39 @@ const update_list = async new_files => {
 	}
 }
 
-const delete_file = async index => {
-	let list_files = list.files
-	list_files.splice(index, 1)
-	update_list(list_files)
+const add_files = async files => {
+	let list_files = list.files;
+	files.forEach(f => {
+		list_files.push(f)
+	})
+	await update_list(list_files)
+	dispatch("reload")
 }
 
-const move_left = index => {
+const delete_file = async index => {
+	const list_files = list.files
+	list_files.splice(index, 1)
+	await update_list(list_files)
+	list.files = list_files
+}
+
+const move_left = async index => {
 	if (index === 0) {
 		return;
 	}
-	let f = list.files;
+	const f = list.files;
 	[f[index], f[index-1]] = [f[index-1], f[index]];
-	update_list(f);
+	await update_list(f)
+	list.files = f
 }
-const move_right = index => {
+const move_right = async index => {
 	if (index >= list.files.length-1) {
 		return;
 	}
-	let f = list.files;
+	const f = list.files;
 	[f[index], f[index+1]] = [f[index+1], f[index]];
-	update_list(f);
+	await update_list(f)
+	list.files = f
 }
 
 let hovering = -1
@@ -99,18 +112,19 @@ const drop = (e, index) => {
 	if (start < index) {
 		list_files.splice(index + 1, 0, list_files[start]);
 		list_files.splice(start, 1);
-	} else {
+	} else if (start > index) {
 		list_files.splice(index, 0, list_files[start]);
 		list_files.splice(start + 1, 1);
+	} else {
+		return; // Nothing changed
 	}
-	hovering = -1
 
 	update_list(list_files)
 }
 </script>
 
 <div class="gallery">
-	{#each list.files as file, index (file.id)}
+	{#each list.files as file, index (file)}
 		<div
 			class="file"
 			on:click={() => {click_file(index)}}
@@ -119,6 +133,7 @@ const drop = (e, index) => {
 			on:drop|preventDefault={e => drop(e, index)}
 			on:dragover|preventDefault|stopPropagation
 			on:dragenter={() => {hovering = index}}
+			on:dragend={() => {hovering = -1}}
 			class:highlight={hovering === index}
 			animate:flip={{duration: 500}}>
 			<div
@@ -136,13 +151,15 @@ const drop = (e, index) => {
 		</div>
 	{/each}
 
-	<!-- {#if list.can_edit}
-		<div class="file" style="font-size: 1.5em; padding-top: 2.5em; cursor: pointer;">
+	{#if list.can_edit}
+		<div class="file" on:click={file_picker.open} style="font-size: 1.5em; padding-top: 2.5em; cursor: pointer;">
 			<i class="icon">add</i>
 			<br/>
 			Add files
 		</div>
-	{/if} -->
+	{/if}
+
+	<FilePicker bind:this={file_picker} on:files={e => {add_files(e.detail)}}></FilePicker>
 </div>
 
 <style>

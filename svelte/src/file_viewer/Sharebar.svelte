@@ -74,7 +74,6 @@ const share_tumblr = () => {
 	background-color: var(--layer_1_color);
 	border-radius: 16px;
 	text-align: center;
-	z-index: 48;
 	overflow: hidden;
 	transition: left 0.5s;
 }

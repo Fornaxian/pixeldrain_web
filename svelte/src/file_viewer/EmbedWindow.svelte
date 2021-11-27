@@ -55,9 +55,9 @@ const example = () => {
 		file will also show advertisements.
 	</p>
 	<h3>Code</h3>
-	<textarea bind:value={embed_html} style="width: 100%; height: 4em; margin: 0;"></textarea>
+	<textarea bind:value={embed_html} style="width: 100%; height: 4em;" class="indent"></textarea>
 	<br/>
-	<button on:click={copy} class:button_highlight={copy_status === "success"} class:button_red={copy_status === "error"}>
+	<button on:click={copy} class="indent" class:button_highlight={copy_status === "success"} class:button_red={copy_status === "error"}>
 		<i class="icon">content_copy</i>
 		{#if copy_status === "success"}
 			Copied!

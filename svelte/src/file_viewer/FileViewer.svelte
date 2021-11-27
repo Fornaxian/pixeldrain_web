@@ -1,3 +1,39 @@
+<script context="module">
+export const file_struct = {
+	id: "",
+	name: "",
+	size: 0,
+	bandwidth_used: 0,
+	bandwidth_used_paid: 0,
+	downloads: 0,
+	views: 0,
+	mime_type: "",
+	availability: "",
+	abuse_type: "",
+	show_ads: false,
+	can_edit: false,
+	get_href: "",
+	info_href: "",
+	download_href: "",
+	icon_href: "",
+}
+export const list_struct = {
+	id: "",
+	title: "",
+	files: [],
+	download_href: "",
+	info_href: "",
+	can_edit: false,
+}
+export const file_set_href = f => {
+	f.get_href = window.api_endpoint+"/file/"+f.id
+	f.info_href = window.api_endpoint+"/file/"+f.id+"/info"
+	f.download_href = window.api_endpoint+"/file/"+f.id+"?download"
+	f.icon_href = window.api_endpoint+"/file/"+f.id+"/thumbnail"
+	f.timeseries_href = window.api_endpoint+"/file/"+f.id+"/timeseries"
+}
+</script>
+
 <script>
 import { onMount, tick } from "svelte";
 import { copy_text } from "../util/Util.svelte";
@@ -18,33 +54,6 @@ import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
 import Spinner from "../util/Spinner.svelte";
 import Downloader from "./Downloader.svelte";
-
-const file_struct = {
-	id: "",
-	name: "",
-	size: 0,
-	bandwidth_used: 0,
-	bandwidth_used_paid: 0,
-	downloads: 0,
-	views: 0,
-	mime_type: "",
-	availability: "",
-	abuse_type: "",
-	show_ads: false,
-	can_edit: false,
-	get_href: "",
-	info_href: "",
-	download_href: "",
-	icon_href: "",
-}
-const list_struct = {
-	id: "",
-	title: "",
-	files: [],
-	download_href: "",
-	info_href: "",
-	can_edit: false,
-}
 
 let loading = true
 let embedded = false
@@ -208,13 +217,6 @@ const open_file_index = async index => {
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
 		body: "token=" + view_token
 	})
-}
-const file_set_href = f => {
-	f.get_href = window.api_endpoint+"/file/"+f.id
-	f.info_href = window.api_endpoint+"/file/"+f.id+"/info"
-	f.download_href = window.api_endpoint+"/file/"+f.id+"?download"
-	f.icon_href = window.api_endpoint+"/file/"+f.id+"/thumbnail"
-	f.timeseries_href = window.api_endpoint+"/file/"+f.id+"/timeseries"
 }
 const toggle_gallery = () => {
 	if (view === "gallery") {
@@ -479,8 +481,6 @@ const keyboard_event = evt => {
 			<br/>
 		</div></div></div>
 
-		<Sharebar bind:this={sharebar}></Sharebar>
-
 		<div id="file_preview" class="file_preview checkers" class:toolbar_visible class:skyscraper_visible>
 			{#if view === "file"}
 				<FilePreview
@@ -498,6 +498,8 @@ const keyboard_event = evt => {
 				</GalleryView>
 			{/if}
 		</div>
+
+		<Sharebar bind:this={sharebar}></Sharebar>
 
 		{#if ads_enabled}
 			<AdSkyscraper on:visibility={e => {skyscraper_visible = e.detail}}></AdSkyscraper>
@@ -568,7 +570,6 @@ const keyboard_event = evt => {
 	display: flex;
 	flex-direction: row;
 	text-align: left;
-	z-index: 10;
 	box-shadow: none;
 	padding: 4px;
 }
@@ -616,7 +617,6 @@ const keyboard_event = evt => {
 	width: auto;
 	height: auto;
 	margin: 0;
-	z-index: 9;
 }
 .file_preview {
 	position: absolute;
@@ -639,7 +639,6 @@ const keyboard_event = evt => {
 .toolbar {
 	position: absolute;
 	width: 8em;
-	z-index: 49;
 	overflow: hidden;
 	left: -8em;
 	bottom: 0;
@@ -648,6 +647,7 @@ const keyboard_event = evt => {
 	text-align: left;
 	transition: left 0.5s, right 0.5s;
 	background-color: var(--layer_2_color);
+	z-index: 1;
 }
 .toolbar.toolbar_visible { left: 0; }
 .file_preview.toolbar_visible { left: 8em; }

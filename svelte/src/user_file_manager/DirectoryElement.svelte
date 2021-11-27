@@ -82,7 +82,6 @@ export const search = (term) => {
 			allFiles[i].filtered = false
 		} else {
 			allFiles[i].filtered = true
-			allFiles[i].selected = false
 		}
 	}
 

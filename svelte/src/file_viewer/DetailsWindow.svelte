@@ -136,8 +136,10 @@ let update_charts = () => {
 	</p>
 
 	<h3>About</h3>
-	Pixeldrain is a file sharing platform.
-	<a href="/" target="_blank">Visit the home page for more information.</a>
+	<p>
+		Pixeldrain is a file sharing platform.
+		<a href="/" target="_blank">Visit the home page for more information.</a>
+	</p>
 
 	<h3>Keyboard Controls</h3>
 	<table style="max-width: 100%;">

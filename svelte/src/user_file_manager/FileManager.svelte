@@ -97,10 +97,12 @@ let hashChange = () => {
 		contentType = "lists"
 		document.title = "My Lists"
 		getUserLists()
+		resetMenu()
 	} else {
 		contentType = "files"
 		document.title = "My Files"
 		getUserFiles()
+		resetMenu()
 	}
 }
 

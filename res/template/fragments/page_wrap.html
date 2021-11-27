@@ -5,7 +5,7 @@
 	<hr />
 	{{if .Authenticated}}<a href="/user">{{.User.Username}}</a>
 	<a href="/user/filemanager#files">My Files</a>
-	<a href="/user/filemanager#lists">My Lists</a>
+	<a href="/user/filemanager#lists">My Albums</a>
 	{{if .User.IsAdmin}}
 		<a href="/user/buckets">Buckets</a>
 		<a href="/admin">Admin Panel</a>
@@ -28,19 +28,23 @@
 	{{end}}
 </div>
 <script>
-	function toggleMenu() {
-		var nav  = document.getElementById("page_navigation");
-		var body = document.getElementById("page_body");
-		if (nav.offsetLeft === 0) {
-			// Menu is visible, hide it
-			nav.style.left = -nav.offsetWidth + "px";
-			body.style.left = "0";
-		} else {
-			// Menu is hidden, show it
-			nav.style.left = "0";
-			body.style.left = nav.offsetWidth + "px";
-		}
+function toggleMenu() {
+	var nav  = document.getElementById("page_navigation");
+	var body = document.getElementById("page_body");
+	if (nav.offsetLeft === 0) {
+		// Menu is visible, hide it
+		nav.style.left = -nav.offsetWidth + "px";
+		body.style.left = "0";
+	} else {
+		// Menu is hidden, show it
+		nav.style.left = "0";
+		body.style.left = nav.offsetWidth + "px";
 	}
+}
+function resetMenu() {
+	document.getElementById("page_navigation").style.left = "";
+	document.getElementById("page_body").style.left = "";
+}
 </script>
 {{end}}
 
