@@ -7,28 +7,11 @@ let container
 let ad_type = ""
 let visible = false
 
-let set_ad_type = (t) => {
-	ad_type = t
-	if (ad_type === "ads.plus") {
-		adsplus_load.set(true)
-	} else if (ad_type === "adaround") {
-		adaround_load.set(true)
-	} else if (ad_type === "flyingsquare") {
-		flyingsquare_load.set(true)
-	}
-
-	console.log("skyscraper ad is " + t)
-}
-
-
 onMount(async () => {
-	if (window.location.pathname === "/u/demo") {
-		let url_ads = new URL(window.location.href).searchParams.get("ads")
-		if (url_ads !== "") {
-			set_ad_type(url_ads)
-			open()
-			return
-		}
+	let url_ads = new URL(window.location.href).searchParams.get("ads")
+	if (url_ads) {
+		set_ad_type(url_ads)
+		return
 	}
 
 	if (document.body.clientWidth < 700) {
@@ -48,30 +31,37 @@ onMount(async () => {
 		return
 	}
 
-	switch (now % 4) {
+	switch (now % 3) {
 		case 0:
-			set_ad_type("aads2")
-			break
-		case 1:
 			set_ad_type("ads.plus")
 			break
-		case 2:
+		case 1:
 			set_ad_type("adaround")
 			break
-		case 3:
+		case 2:
 			set_ad_type("flyingsquare")
 			break
 	}
-
-	open()
 })
 
-const open = async () => {
+let set_ad_type = async (t) => {
+	ad_type = t
+	if (ad_type === "ads.plus") {
+		adsplus_load.set(true)
+	} else if (ad_type === "adaround") {
+		adaround_load.set(true)
+	} else if (ad_type === "flyingsquare") {
+		flyingsquare_load.set(true)
+	}
+
 	visible = true
 	await tick()
 	dispatch("visibility", true)
 	container.style.right = "0"
+
+	console.log("skyscraper ad is " + t)
 }
+
 const close = () => {
 	container.style.right = -container.offsetWidth + "px"
 	dispatch("visibility", false)
@@ -102,7 +92,7 @@ adsplus_loaded.subscribe(v => {
 			<i class="icon">close</i> Close ad
 		</button>
 		<div class="ad_space">
-			{#if ad_type === "aads2"}
+			{#if ad_type === "aads"}
 				<iframe
 					data-aa="1811738"
 					src="//ad.a-ads.com/1811738?size=160x600&background_color={window.style.layer2Color}&text_color={window.style.textColor}&title_color={window.style.highlightColor}&title_hover_color={window.style.highlightColor}&link_color={window.style.highlightColor}&link_hover_color={window.style.highlightColor}"

@@ -71,7 +71,7 @@ let submit = async e => {
 }
 </script>
 
-<div>
+<div class="container">
 	<p>
 		If you think this file violates pixeldrain's
 		<a href="/about#content-policy">content policy</a> you can
@@ -147,6 +147,11 @@ let submit = async e => {
 </div>
 
 <style>
+.container {
+	width: 100%;
+	padding: 10px;
+	overflow: hidden;
+}
 label {
 	display: block;
 	border-bottom: 1px var(--layer_2_color_border) solid;

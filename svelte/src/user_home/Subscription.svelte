@@ -82,29 +82,27 @@ onMount(load_tranfer_used)
 	{/if}
 	<div class="limit_width">
 		<h2>Manage subscription</h2>
-		<p>
-			Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
-		</p>
-		<p>
-			When your prepaid subscription is active you will be charged daily
-			based on usage. Hotlink bandwidth is charged per TB based on the
-			usage of the previous day. The amount charged for storage each day
-			is your storage usage at the end of the day multiplied by the
-			storage price (€4 / TB) and divided by the average number of days in
-			a month (30.4375). So if you have exactly 1 TB on your account you
-			will be charged €0.131416838 per day.
-		</p>
-		<p>
-			The prepaid subscription will stay active for as long as you have
-			credit on your account. When you reach negative balance the
-			subscription will automatically end. You will need a positive
-			balance to activate the subscription again.
-		</p>
+		{#if window.user.subscription.type !== "patreon"}
+			<p>
+				Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
+			</p>
+			<p>
+				When your prepaid subscription is active you will be charged daily
+				based on usage. Hotlink bandwidth is charged per TB based on the
+				usage of the previous day. The amount charged for storage each day
+				is your storage usage at the end of the day multiplied by the
+				storage price (€4 / TB) and divided by the average number of days in
+				a month (30.4375). So if you have exactly 1 TB on your account you
+				will be charged €0.131416838 per day.
+			</p>
+			<p>
+				The prepaid subscription will stay active for as long as you have
+				credit on your account. When you reach negative balance the
+				subscription will automatically end. You will need a positive
+				balance to activate the subscription again.
+			</p>
 
-		<h3>Prepaid plans</h3>
-		{#if window.user.subscription.type === "patreon"}
-			<p>Prepaid subscriptions are not available for Patreon supporters.</p>
-		{:else}
+			<h3>Prepaid plans</h3>
 			{#if result !== ""}
 				<div class:highlight_green={result_success} class:highlight_red={!result_success}>
 					{result}

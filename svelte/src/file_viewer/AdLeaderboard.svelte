@@ -20,29 +20,30 @@ let set_ad_type = (t) => {
 }
 
 onMount(() => {
-	if (window.location.pathname === "/u/demo") {
-		let url_ads = new URL(window.location.href).searchParams.get("ads")
-		if (url_ads !== "") {
-			set_ad_type(url_ads)
-			return
-		}
+	let url_ads = new URL(window.location.href).searchParams.get("ads")
+	if (url_ads) {
+		set_ad_type(url_ads)
+		return
 	}
 
 	let now = new Date().getTime()
-	switch (now % 5) {
+	switch (now % 8) {
 		case 0:
-			set_ad_type("brave")
-			break
 		case 1:
-			set_ad_type("aads1")
-			break
 		case 2:
-			set_ad_type("ads.plus")
-			break
 		case 3:
-			set_ad_type("adaround")
+			set_ad_type("aads")
 			break
 		case 4:
+			set_ad_type("brave")
+			break
+		case 5:
+			set_ad_type("ads.plus")
+			break
+		case 6:
+			set_ad_type("adaround")
+			break
+		case 7:
 			set_ad_type("flyingsquare")
 			break
 	}
@@ -60,7 +61,7 @@ const resize = () => {
 
 	let scaleWidth = 1
 	let scaleHeight = 1
-	let minWindowHeight = 800
+	let minWindowHeight = 600
 	let bannerWidth = banner.offsetWidth
 	let bannerHeight = banner.offsetHeight
 
@@ -126,7 +127,7 @@ adsplus_loaded.subscribe(v => {
 				<i class="icon">shopping_cart</i>
 			</a>
 		</div>
-	{:else if ad_type === "aads1"}
+	{:else if ad_type === "aads"}
 		<iframe bind:this={banner} class="banner"
 			data-aa="73974"
 			src="//ad.a-ads.com/73974?size=728x90&background_color={window.style.layer2Color}&text_color={window.style.textColor}&title_color={window.style.highlightColor}&title_hover_color={window.style.highlightColor}&link_color={window.style.highlightColor}&link_hover_color={window.style.highlightColor}"

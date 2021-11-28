@@ -54,7 +54,7 @@ export const set_item = idx => {
 
 	let start = file_list_div.scrollLeft
 	let end = ((idx * itemWidth) + (itemWidth / 2)) - (file_list_div.clientWidth / 2)
-	let steps = 60 // One second
+	let steps = 30 // One second
 	let stepSize = (end - start)/steps
 
 	let animateScroll = (pos, step) => {
@@ -77,33 +77,53 @@ const select_item_event = idx => {
 }
 </script>
 
-<div bind:this={file_list_div} class="list_navigator">
-	{#each files as file, index}
-		<div class="list_item file_button"
-			class:file_button_selected={file.selected}
-			on:click={() => { select_item_event(index) }}>
-			<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" loading="lazy"/>
-			{file.name}
-		</div>
-	{/each}
+<div class="nav_container">
+	<button class="nav_button" style="margin-right: 0;" on:click={prev}>
+		<i class="icon">chevron_left</i>
+	</button>
+	<div bind:this={file_list_div} class="list_navigator">
+		{#each files as file, index}
+			<div class="list_item file_button"
+				class:file_button_selected={file.selected}
+				on:click={() => { select_item_event(index) }}>
+				<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" loading="lazy"/>
+				{file.name}
+			</div>
+		{/each}
+	</div>
+	<button class="nav_button" style="margin-left: 0;" on:click={next}>
+		<i class="icon">chevron_right</i>
+	</button>
 </div>
 
 <style>
-.list_item {
-	height: 2.6em !important;
-	width: 220px !important;
-}
-.list_navigator {
+.nav_container{
 	flex-grow: 0;
 	flex-shrink: 0;
+	display: flex;
 	position: relative;
 	width: 100%;
 	border-top: 1px solid var(--layer_2_color_border);
 	text-align: center;
 	line-height: 1em;
+
+}
+.nav_button{
+	flex-grow: 0;
+	flex-shrink: 0;
+	height: 2.6em;
+	margin-top: 8px;
+}
+
+.list_item {
+	height: 2.6em !important;
+	width: 220px !important;
+}
+.list_navigator {
+	flex-grow: 1;
+	flex-shrink: 1;
 	overflow-x: auto;
 	overflow-y: hidden;
-	z-index: 50;
 	white-space: nowrap;
 }
 </style>

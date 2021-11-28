@@ -1,42 +1,7 @@
-<script context="module">
-export const file_struct = {
-	id: "",
-	name: "",
-	size: 0,
-	bandwidth_used: 0,
-	bandwidth_used_paid: 0,
-	downloads: 0,
-	views: 0,
-	mime_type: "",
-	availability: "",
-	abuse_type: "",
-	show_ads: false,
-	can_edit: false,
-	get_href: "",
-	info_href: "",
-	download_href: "",
-	icon_href: "",
-}
-export const list_struct = {
-	id: "",
-	title: "",
-	files: [],
-	download_href: "",
-	info_href: "",
-	can_edit: false,
-}
-export const file_set_href = f => {
-	f.get_href = window.api_endpoint+"/file/"+f.id
-	f.info_href = window.api_endpoint+"/file/"+f.id+"/info"
-	f.download_href = window.api_endpoint+"/file/"+f.id+"?download"
-	f.icon_href = window.api_endpoint+"/file/"+f.id+"/thumbnail"
-	f.timeseries_href = window.api_endpoint+"/file/"+f.id+"/timeseries"
-}
-</script>
-
 <script>
 import { onMount, tick } from "svelte";
 import { copy_text } from "../util/Util.svelte";
+import { file_struct, list_struct, file_set_href } from "./FileUtilities.svelte";
 import Modal from "../util/Modal.svelte";
 import PixeldrainLogo from "../util/PixeldrainLogo.svelte";
 import DetailsWindow from "./DetailsWindow.svelte";

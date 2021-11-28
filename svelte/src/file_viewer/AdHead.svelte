@@ -6,8 +6,8 @@ export const adaround_load = writable(false)
 export const adaround_loaded = writable(false)
 export const flyingsquare_load = writable(false)
 export const flyingsquare_loaded = writable(false)
-
 </script>
+
 <script>
 // This script makes sure that each head element is only loaded once. The _load
 // stores are for telling this script to load a head element, and the _loaded
