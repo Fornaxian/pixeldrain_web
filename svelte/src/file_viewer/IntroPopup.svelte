@@ -36,13 +36,13 @@ onMount(() => {
 
 {#if visible}
 	<div bind:this={popup} in:fade out:fade class="intro_popup">
-		<h3>Upload your own files here!</h3>
+		<h3>Upload your own files here</h3>
 		<p>
-			On pixeldrain you can share your files with large or small
-			groups of people. The sky is the limit!
+			With pixeldrain you can share your files anywhere on the web. The
+			sky is the limit!
 		</p>
 		<button on:click={close} class="close button_highlight round">
-			<i class="icon">check</i> Got it!
+			<i class="icon">check</i> Got it
 		</button>
 	</div>
 {/if}
@@ -52,7 +52,7 @@ onMount(() => {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 380px;
+	width: 360px;
 	max-width: 80%;
 	height: auto;
 	background-color: var(--layer_4_color);
