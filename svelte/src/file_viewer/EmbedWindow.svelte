@@ -164,6 +164,14 @@ const example = () => {
 				Deep sea
 			</button>
 		</div>
+	{:else}
+		<h3>Direct link</h3>
+		<p>
+			You can directly download the file from this link without using the
+			file viewer:
+			<br/>
+			{domain_url()}{file.get_href}
+		</p>
 	{/if}
 
 	<h3>Code</h3>
@@ -171,7 +179,7 @@ const example = () => {
 		Put this code in your website to embed the file.
 	</p>
 	<div class="center">
-		<textarea bind:value={embed_html} style="width: 95%; height: 4em;"></textarea>
+		<textarea bind:value={embed_html} style="width: 96%; height: 4em;"></textarea>
 		<br/>
 		<button on:click={copy} class:button_highlight={copy_status === "success"} class:button_red={copy_status === "error"}>
 			<i class="icon">content_copy</i>

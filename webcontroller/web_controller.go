@@ -184,11 +184,14 @@ func New(
 		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
 		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
 
-		{GET, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, handlerOpts{Auth: true})},
-		{PST, "patreon_activate" /*  */, wc.serveForm(wc.patreonLinkForm, handlerOpts{Auth: true})},
+		{GET, "patreon_activate", wc.serveForm(wc.patreonLinkForm, handlerOpts{Auth: true})},
+		{PST, "patreon_activate", wc.serveForm(wc.patreonLinkForm, handlerOpts{Auth: true})},
 
-		{GET, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
-		{PST, "knoxfs_activate" /*  */, wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
+		{GET, "knoxfs_activate", wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
+		{PST, "knoxfs_activate", wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
+
+		{GET, "coupon_redeem", wc.serveForm(wc.couponForm, handlerOpts{Auth: true})},
+		{PST, "coupon_redeem", wc.serveForm(wc.couponForm, handlerOpts{Auth: true})},
 
 		// Admin settings
 		{GET, "admin" /*                */, wc.serveTemplate("admin", handlerOpts{Auth: true})},

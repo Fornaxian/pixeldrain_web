@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -170,6 +171,71 @@ func (wc *WebController) knoxfsLinkForm(td *TemplateData, r *http.Request) (f Fo
 			f.SubmitSuccess = true
 			f.SubmitMessages = []template.HTML{template.HTML(
 				"Success! Your account has been upgraded to the " + sub.SubscriptionType.Name + " plan.",
+			)}
+		}
+	}
+	return f
+}
+
+func (wc *WebController) couponForm(td *TemplateData, r *http.Request) (f Form) {
+	f.Name = "redeem_coupon"
+	f.Title = "Redeem coupon code"
+	f.SubmitLabel = "Redeem"
+
+	if r.FormValue("code") == "" {
+		f.Submitted = true
+		f.SubmitMessages = []template.HTML{"Coupon code not found"}
+		return f
+	}
+
+	coupon, err := td.PixelAPI.GetCouponID(r.FormValue("code"))
+	if err != nil && err.Error() == "not_found" {
+		f.Submitted = true
+		f.SubmitMessages = []template.HTML{"Coupon code not found"}
+		return f
+	} else if err != nil {
+		f.Submitted = true
+		formAPIError(err, &f)
+		return f
+	}
+
+	f.Fields = []Field{{
+		Name:         "1",
+		Label:        "",
+		DefaultValue: "",
+		Description: `When redeeming this coupon code the value will be ` +
+			`added to your pixeldrain account. Go to the ` +
+			`<a href="/user/subscription" target="_blank">subscription page</a> ` +
+			`afterwards to activate your subscription.`,
+		Type: FieldTypeDescription,
+	}, {
+		Name:         "2",
+		Label:        "Coupon value:",
+		DefaultValue: fmt.Sprintf("€ %.2f", float64(coupon.Credit)/1e6),
+		Type:         FieldTypeDescription,
+	}, {
+		Name:         "2",
+		Label:        "Coupon uses left:",
+		DefaultValue: strconv.Itoa(coupon.Uses),
+		Type:         FieldTypeDescription,
+	}}
+
+	if coupon.Uses < 1 {
+		f.Submitted = true
+		f.SubmitMessages = []template.HTML{"Coupon has been used up"}
+		return f
+	}
+
+	if f.ReadInput(r) {
+		if err := td.PixelAPI.PostCouponRedeem(r.FormValue("code")); err != nil {
+			formAPIError(err, &f)
+		} else {
+			// Request was a success
+			f.SubmitSuccess = true
+			f.SubmitMessages = []template.HTML{template.HTML(
+				`Success! Your account credit has been increased. Visit the ` +
+					`<a href="/user/subscription">subscription page</a> to ` +
+					`activate your subscription`,
 			)}
 		}
 	}
