@@ -5,37 +5,39 @@ import (
 	"net/http"
 )
 
-func userStyle(r *http.Request) (style pixeldrainStyleSheet) {
-	var selectedStyle pixeldrainStyleSheet
+func userStyle(r *http.Request) pixeldrainStyleSheet {
+	// Get the chosen style from the URL
+	var style = r.URL.Query().Get("style")
 
-	if cookie, err := r.Cookie("style"); err != nil {
-		selectedStyle = defaultPixeldrainStyle
-	} else {
-		switch cookie.Value {
-		case "classic":
-			selectedStyle = pixeldrainClassicStyle
-		case "solarized_dark":
-			selectedStyle = solarizedDarkStyle
-		case "sunny":
-			selectedStyle = sunnyPixeldrainStyle
-		case "maroon":
-			selectedStyle = maroonStyle
-		case "hacker":
-			selectedStyle = hackerStyle
-		case "canta":
-			selectedStyle = cantaPixeldrainStyle
-		case "arc":
-			selectedStyle = arcPixeldrainStyle
-		case "deepsea":
-			selectedStyle = deepseaPixeldrainStyle
-		case "default":
-			fallthrough // use default case
-		default:
-			selectedStyle = defaultPixeldrainStyle
+	// If the URL style was empty use the cookie value
+	if style == "" {
+		if cookie, err := r.Cookie("style"); err == nil {
+			style = cookie.Value
 		}
 	}
 
-	return selectedStyle
+	switch style {
+	case "classic":
+		return pixeldrainClassicStyle
+	case "solarized_dark":
+		return solarizedDarkStyle
+	case "sunny":
+		return sunnyPixeldrainStyle
+	case "maroon":
+		return maroonStyle
+	case "hacker":
+		return hackerStyle
+	case "canta":
+		return cantaPixeldrainStyle
+	case "arc":
+		return arcPixeldrainStyle
+	case "deepsea":
+		return deepseaPixeldrainStyle
+	case "default":
+		fallthrough // use default case
+	default:
+		return defaultPixeldrainStyle
+	}
 }
 
 type pixeldrainStyleSheet struct {

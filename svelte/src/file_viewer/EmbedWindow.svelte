@@ -29,15 +29,26 @@ let update_file = () => {
 	}
 }
 
+let style = ""
+let set_style = s => {
+	style = s
+	embed_iframe()
+}
+
 let embed_iframe = () => {
 	tab = "iframe"
+
+	let style_part = ""
+	if (style) {
+		style_part = "&style="+style
+	}
 
 	let url
 	if (list.id === "") {
 		// Not a list, use file ID
-		url = domain_url()+"/u/"+file.id+"?embed"
+		url = domain_url()+"/u/"+file.id+"?embed"+style_part
 	} else {
-		url = domain_url()+"/l/"+list.id+"?embed"+window.location.hash
+		url = domain_url()+"/l/"+list.id+"?embed"+style_part+window.location.hash
 	}
 
 	embed_html = `<iframe ` +
@@ -120,6 +131,41 @@ const example = () => {
 			</button>
 		{/if}
 	</div>
+
+	{#if tab === "iframe"}
+		<h3>Appearance</h3>
+		<p>
+			You can change the pixeldrain theme for your embedded file. Try the
+			available themes <a href="/appearance">here</a>.
+		</p>
+		<div class="center">
+			<button class:button_highlight={style===""} on:click={() => {set_style("")}}>
+				Default
+			</button>
+			<button class:button_highlight={style==="classic"} on:click={() => {set_style("classic")}}>
+				Classic
+			</button>
+			<button class:button_highlight={style==="solarized_dark"} on:click={() => {set_style("solarized_dark")}}>
+				Solarized
+			</button>
+			<button class:button_highlight={style==="maroon"} on:click={() => {set_style("maroon")}}>
+				Maroon
+			</button>
+			<button class:button_highlight={style==="hacker"} on:click={() => {set_style("hacker")}}>
+				Hacker
+			</button>
+			<button class:button_highlight={style==="canta"} on:click={() => {set_style("canta")}}>
+				Canta
+			</button>
+			<button class:button_highlight={style==="arc"} on:click={() => {set_style("arc")}}>
+				Arc
+			</button>
+			<button class:button_highlight={style==="deepsea"} on:click={() => {set_style("deepsea")}}>
+				Deep sea
+			</button>
+		</div>
+	{/if}
+
 	<h3>Code</h3>
 	<p>
 		Put this code in your website to embed the file.
