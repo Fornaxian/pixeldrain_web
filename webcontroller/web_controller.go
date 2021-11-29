@@ -193,8 +193,8 @@ func New(
 		{GET, "knoxfs_activate", wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
 		{PST, "knoxfs_activate", wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
 
-		{GET, "coupon_redeem", wc.serveForm(wc.couponForm, handlerOpts{Auth: true})},
-		{PST, "coupon_redeem", wc.serveForm(wc.couponForm, handlerOpts{Auth: true})},
+		{GET, "coupon_redeem", wc.serveForm(wc.couponForm, handlerOpts{})},
+		{PST, "coupon_redeem", wc.serveForm(wc.couponForm, handlerOpts{})},
 
 		// Admin settings
 		{GET, "admin" /*                */, wc.serveTemplate("admin", handlerOpts{Auth: true})},

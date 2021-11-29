@@ -226,6 +226,15 @@ func (wc *WebController) couponForm(td *TemplateData, r *http.Request) (f Form) 
 		return f
 	}
 
+	if !td.Authenticated {
+		f.Submitted = true
+		f.SubmitMessages = []template.HTML{
+			`You need to log in to a pixeldrain account to use the coupon. ` +
+				`<a href="/login">Click here to log in</a>`,
+		}
+		return f
+	}
+
 	if f.ReadInput(r) {
 		if err := td.PixelAPI.PostCouponRedeem(r.FormValue("code")); err != nil {
 			formAPIError(err, &f)
