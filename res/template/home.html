@@ -88,8 +88,8 @@
 			window.api_endpoint = '{{.APIEndpoint}}';
 			window.user = {{.User}};
 		</script>
-		<link rel='stylesheet' href='/res/svelte/home_page.css?v3'>
-		<script defer src='/res/svelte/home_page.js?v3'></script>
+		<link rel='stylesheet' href='/res/svelte/home_page.css?v{{.CacheID}}'>
+		<script defer src='/res/svelte/home_page.js?v{{.CacheID}}'></script>
 	</head>
 	<body>
 		{{template "page_top" .}}

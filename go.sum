@@ -5,6 +5,8 @@ fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640 h1:UPDxJwLRCfh/cv80UMSanzm
 fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640/go.mod h1:sN82qMToeHhP2u3ehvrcE8y1IudRZJAZO9yG5OBYblo=
 fornaxian.tech/pixeldrain_api_client v0.0.0-20211128192613-093515ebeaa7 h1:Gx7SRu906VslyPcIL9D3uw3B2uO6u7mIwsMD7SPr+9k=
 fornaxian.tech/pixeldrain_api_client v0.0.0-20211128192613-093515ebeaa7/go.mod h1:uajB2ofEsefUtxjvs4m7SDyPVRlfrI3qzCSWcud47hY=
+fornaxian.tech/pixeldrain_api_client v0.0.0-20211128195924-7b5d3f7293df h1:eFpcIMRUYqqYr+VeBDvVENsFBjV/UotMqJfWdWbprYE=
+fornaxian.tech/pixeldrain_api_client v0.0.0-20211128195924-7b5d3f7293df/go.mod h1:uajB2ofEsefUtxjvs4m7SDyPVRlfrI3qzCSWcud47hY=
 fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787 h1:9ujI8Qi6+FTL/YW6xQAS9DmWDMerHBe8foQvVD/G/i0=
 fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787/go.mod h1:FqVgfghmxTGR3l9Zx4MOMeZ9KHjiEFl3s3C0BSTvBwk=
 github.com/BurntSushi/toml v0.4.1 h1:GaI7EiDXDRfa8VshkTj7Fym7ha+y8/XxIgD2okUIjLw=

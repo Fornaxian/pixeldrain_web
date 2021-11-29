@@ -36,6 +36,9 @@ type WebController struct {
 	// page-specific variables
 	captchaSiteKey string
 
+	// The cache ID is used to invalidate caches when the webserver is restarted
+	cacheID int64
+
 	httpClient *http.Client
 
 	// API client to use for all requests. If the user is authenticated you
@@ -66,6 +69,7 @@ func New(
 		websiteAddress:      websiteAddress,
 		sessionCookieDomain: sessionCookieDomain,
 		proxyAPIRequests:    proxyAPIRequests,
+		cacheID:             time.Now().Unix() / 3600,
 		httpClient:          &http.Client{Timeout: time.Minute * 10},
 		api:                 pixelapi.New(apiURLInternal),
 	}
@@ -78,14 +82,15 @@ func New(
 
 	// Serve static files
 	var fs = http.FileServer(http.Dir(resourceDir + "/static"))
-	r.GET(prefix+"/res/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	var resourceHandler = func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		// Cache resources for a year
-		if !debugMode {
-			w.Header().Set("Cache-Control", "public, max-age=31536000")
-		}
+		w.Header().Set("Cache-Control", "public, max-age=31536000")
 		r.URL.Path = p.ByName("filepath")
 		fs.ServeHTTP(w, r)
-	})
+	}
+	r.HEAD(prefix+"/res/*filepath", resourceHandler)
+	r.OPTIONS(prefix+"/res/*filepath", resourceHandler)
+	r.GET(prefix+"/res/*filepath", resourceHandler)
 
 	// Static assets
 	r.GET(prefix+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
@@ -166,8 +171,6 @@ func New(
 		{PST, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
 		{GET, "logout" /*           */, wc.serveTemplate("logout", handlerOpts{Auth: true, NoEmbed: true})},
 		{PST, "logout" /*           */, wc.serveLogout},
-		{GET, "user/files" /*       */, wc.serveTemplate("user_files", handlerOpts{Auth: true})},
-		{GET, "user/lists" /*       */, wc.serveTemplate("user_lists", handlerOpts{Auth: true})},
 		{GET, "user/buckets" /*     */, wc.serveTemplate("user_buckets", handlerOpts{Auth: true})},
 		{GET, "user/filemanager" /* */, wc.serveTemplate("file_manager", handlerOpts{Auth: true})},
 		{GET, "user/export/files" /**/, wc.serveUserExportFiles},

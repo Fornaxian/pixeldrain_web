@@ -34,16 +34,9 @@ let credit_form = {
 	submit_label: `<i class="icon">send</i> Submit`,
 	on_submit: async fields => {
 		const form = new FormData()
-		if (fields.user_id !== "") {
-			form.append("user_by", "id")
-			form.append("id", fields.user_id)
-		} else if (fields.user_name !== "") {
-			form.append("user_by", "name")
-			form.append("name", fields.user_name)
-		} else if (fields.user_email !== "") {
-			form.append("user_by", "email")
-			form.append("email", fields.user_email)
-		}
+		form.append("id", fields.user_id)
+		form.append("name", fields.user_name)
+		form.append("email", fields.user_email)
 		form.append("credit", fields.credit*1e6)
 
 		const resp = await fetch(
@@ -55,6 +48,47 @@ let credit_form = {
 		}
 
 		return {success: true, message: "Success: Granted user "+fields.credit+" credits"}
+	},
+}
+
+let impersonate_form = {
+	name: "impersonate",
+	fields: [
+		{
+			name: "user_id",
+			label: "User ID",
+			type: "text",
+			default_value: "",
+		}, {
+			name: "user_name",
+			label: "User name",
+			type: "text",
+			default_value: "",
+		}, {
+			name: "user_email",
+			label: "User e-mail",
+			type: "text",
+			default_value: "",
+		},
+	],
+	submit_label: `<i class="icon">send</i> Submit`,
+	on_submit: async fields => {
+		const form = new FormData()
+		form.append("id", fields.user_id)
+		form.append("name", fields.user_name)
+		form.append("email", fields.user_email)
+
+		const resp = await fetch(
+			window.api_endpoint+"/admin/impersonate",
+			{ method: "POST", body: form }
+		);
+		if(resp.status >= 400) {
+			return {error_json: await resp.json()}
+		}
+
+		window.location = "/user"
+
+		return {success: true, message: "Success"}
 	},
 }
 
@@ -152,6 +186,11 @@ onMount(get_coupons)
 	</p>
 	<div class="highlight_dark">
 		<Form config={credit_form}></Form>
+	</div>
+
+	<h2>Impersonate user</h2>
+	<div class="highlight_dark">
+		<Form config={impersonate_form}></Form>
 	</div>
 
 	<h2>Create coupon codes</h2>

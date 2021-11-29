@@ -5,7 +5,7 @@ go 1.17
 require (
 	fornaxian.tech/config v0.0.0-20211108212237-6133aed90586
 	fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640
-	fornaxian.tech/pixeldrain_api_client v0.0.0-20211128192613-093515ebeaa7
+	fornaxian.tech/pixeldrain_api_client v0.0.0-20211128195924-7b5d3f7293df
 	fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/microcosm-cc/bluemonday v1.0.16

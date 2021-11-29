@@ -36,6 +36,9 @@ type TemplateData struct {
 	Title  string
 	OGData ogData
 
+	// The cache ID is used to invalidate caches when the webserver is restarted
+	CacheID int64
+
 	Other    interface{}
 	URLQuery url.Values
 
@@ -54,6 +57,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		// Use the user's IP address for making requests
 		PixelAPI: wc.api.RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent()),
 
+		CacheID:  wc.cacheID,
 		Hostname: template.HTML(wc.hostname),
 		URLQuery: r.URL.Query(),
 	}

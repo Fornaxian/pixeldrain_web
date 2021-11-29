@@ -28,8 +28,8 @@
 			window.user_authenticated = {{.Authenticated}};
 		</script>
 
-		<link rel='stylesheet' href='/res/svelte/file_viewer.css?v3'>
-		<script defer src='/res/svelte/file_viewer.js?v3'></script>
+		<link rel='stylesheet' href='/res/svelte/file_viewer.css?v{{.CacheID}}'>
+		<script defer src='/res/svelte/file_viewer.js?v{{.CacheID}}'></script>
 
 		{{template "analytics"}}
 	</head>

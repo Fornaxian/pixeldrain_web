@@ -10,8 +10,8 @@
 			<script>
 			window.api_endpoint = '{{.APIEndpoint}}';
 			</script>
-			<link rel='stylesheet' href='/res/svelte/admin_panel.css'>
-			<script defer src='/res/svelte/admin_panel.js'></script>
+			<link rel='stylesheet' href='/res/svelte/admin_panel.css?v{{.CacheID}}'>
+			<script defer src='/res/svelte/admin_panel.js?v{{.CacheID}}'></script>
 		</head>
 		<body>
 			{{template "page_top" .}}
