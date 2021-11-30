@@ -62,7 +62,7 @@ onMount(() => {
 			<i class="icon">shopping_cart</i>
 			Subscription
 		</a>
-		{#if window.user.balance_micro_eur !== 0}
+		{#if window.user.subscription.type !== "patreon"}
 			<a class="button"
 				href="/user/transactions"
 				class:button_highlight={page === "transactions"}

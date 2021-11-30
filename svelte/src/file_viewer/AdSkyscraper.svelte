@@ -31,7 +31,7 @@ onMount(async () => {
 		return
 	}
 
-	switch (now % 3) {
+	switch (now % 4) {
 		case 0:
 			set_ad_type("ads.plus")
 			break
@@ -40,6 +40,9 @@ onMount(async () => {
 			break
 		case 2:
 			set_ad_type("flyingsquare")
+			break
+		case 3:
+			set_ad_type("aads")
 			break
 	}
 })

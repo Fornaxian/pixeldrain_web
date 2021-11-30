@@ -62,37 +62,59 @@ const load_transactions = async () => {
 	}
 };
 
-let result = ""
-let result_success = false
+let credit_amount = 10
 
-const update_subscription = async name => {
+const checkout = async () => {
 	loading = true
-
 	const form = new FormData()
-	form.append("subscription", name)
+	form.set("amount", credit_amount*1e6)
+
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/user/subscription",
-			{ method: "PUT", body: form },
+			window.api_endpoint+"/btcpay/deposit",
+			{ method: "POST", body: form },
 		)
 		if(resp.status >= 400) {
 			let json = await resp.json()
 			throw json.message
 		}
 
-		result_success = true
-		result = "Subscription updated"
-
-		setTimeout(() => {location.reload()}, 2000)
+		window.location = (await resp.json()).checkout_url
 	} catch (err) {
-		result_success = false
-		result = "Failed to update subscription: "+err
+		alert(err)
+	} finally {
 		loading = false
 	}
 }
 
+let show_expired = false
+let invoices = []
+const load_invoices = async () => {
+	loading = true
+	try {
+		const resp = await fetch(window.api_endpoint+"/btcpay/invoice")
+		if(resp.status >= 400) {
+			throw new Error((await resp.json()).message)
+		}
+
+		let invoices_tmp = await resp.json()
+		invoices_tmp.forEach(row => {
+			row.time = new Date(row.time)
+		})
+		invoices_tmp.sort((a, b) => {
+			return b.time - a.time
+		})
+		invoices = invoices_tmp
+	} catch (err) {
+		alert(err)
+	} finally {
+		loading = false
+	}
+};
+
 onMount(() => {
 	load_transactions()
+	load_invoices()
 })
 </script>
 
@@ -103,6 +125,80 @@ onMount(() => {
 		</div>
 	{/if}
 	<div class="limit_width">
+		<h2>Deposit Bitcoin</h2>
+		<p>
+			You can deposit credit on your pixeldrain account with Bitcoin. We
+			support regular Bitcoin transactions and Lightning transactions. You
+			must pay the full amount as stated on the invoice, else your payment
+			will fail.
+		</p>
+		<div class="indent" style="text-align: center;">
+			<img src="/res/img/btcpay.svg" alt="BTCPay server logo"/>
+			<br/>
+			<form on:submit|preventDefault={checkout} class="checkout_form">
+				<div style="margin: 0.5em;">€</div>
+				<input type="number" bind:value={credit_amount} min="1"/>
+				<button type="submit">
+					<i class="icon">paid</i> Checkout
+				</button>
+			</form>
+		</div>
+
+		<h3>Open invoices</h3>
+		<div class="table_scroll">
+			<table style="text-align: left;">
+				<thead>
+					<tr>
+						<td>Created</td>
+						<td>Amount</td>
+						<td>Status</td>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody>
+					{#each invoices as row (row.id)}
+						{#if row.status === "New" || row.status === "InvoiceCreated" || show_expired}
+							<tr>
+								<td>{formatDate(row.time, true, true, false)}</td>
+								<td><Euro amount={row.amount}></Euro></td>
+								<td>
+									{#if row.status === "New" || row.status === "InvoiceCreated"}
+										New (waiting for payment)
+									{:else if row.status === "InvoiceProcessing"}
+										Payment received, waiting for confirmations
+									{:else if row.status === "InvoiceSettled"}
+										Paid
+									{:else if row.status === "InvoiceExpired"}
+										Expired
+									{:else}
+										{row.status}
+									{/if}
+								</td>
+								<td>
+									{#if row.status === "New" || row.status === "InvoiceCreated"}
+										<a href={row.checkout_url} class="button button_highlight">
+											<i class="icon">paid</i> Pay
+										</a>
+									{/if}
+								</td>
+							</tr>
+						{/if}
+					{/each}
+				</tbody>
+			</table>
+			<div style="text-align: center;">
+				<button on:click={() => {show_expired = !show_expired}}>
+					{#if show_expired}
+						Hide
+					{:else}
+						Show
+					{/if}
+					expired and settled invoices
+				</button>
+			</div>
+		</div>
+
+
 		<h2>Transaction log</h2>
 		<p>
 			Here is a log of all transactions on your account balance.
@@ -168,5 +264,11 @@ onMount(() => {
 	height: 100px;
 	width: 100px;
 	z-index: 1000;
+}
+.checkout_form {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
 </style>
