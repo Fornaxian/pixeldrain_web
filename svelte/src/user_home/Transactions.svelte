@@ -128,9 +128,16 @@ onMount(() => {
 		<h2>Deposit Bitcoin</h2>
 		<p>
 			You can deposit credit on your pixeldrain account with Bitcoin. We
-			support regular Bitcoin transactions and Lightning transactions. You
-			must pay the full amount as stated on the invoice, else your payment
-			will fail.
+			support regular Bitcoin transactions and Lightning transactions (if
+			you open a
+			<a href="https://btcpay.pixeldrain.com/embed/uS2mbWjXUuaAqMh8XLjkjwi8oehFuxeBZxekMxv68LN/BTC/ln" target="_blank">channel</a>
+			). You must pay the full amount as stated on the invoice, else your
+			payment will fail.
+		</p>
+		<p>
+			Do note that it is not possible to withdraw Bitcoin from your
+			pixeldrain account. It's not a wallet. Any amount of money you
+			deposit has to be used up.
 		</p>
 		<div class="indent" style="text-align: center;">
 			<img src="/res/img/btcpay.svg" alt="BTCPay server logo"/>
@@ -157,12 +164,12 @@ onMount(() => {
 				</thead>
 				<tbody>
 					{#each invoices as row (row.id)}
-						{#if row.status === "New" || row.status === "InvoiceCreated" || show_expired}
+						{#if row.status === "InvoiceCreated" || row.status === "InvoiceProcessing" || show_expired}
 							<tr>
 								<td>{formatDate(row.time, true, true, false)}</td>
 								<td><Euro amount={row.amount}></Euro></td>
 								<td>
-									{#if row.status === "New" || row.status === "InvoiceCreated"}
+									{#if row.status === "InvoiceCreated"}
 										New (waiting for payment)
 									{:else if row.status === "InvoiceProcessing"}
 										Payment received, waiting for confirmations
