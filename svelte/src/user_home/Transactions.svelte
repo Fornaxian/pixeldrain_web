@@ -64,10 +64,11 @@ const load_transactions = async () => {
 
 let credit_amount = 10
 
-const checkout = async () => {
+const checkout = async (network) => {
 	loading = true
 	const form = new FormData()
 	form.set("amount", credit_amount*1e6)
+	form.set("network", network)
 
 	try {
 		const resp = await fetch(
@@ -125,28 +126,33 @@ onMount(() => {
 		</div>
 	{/if}
 	<div class="limit_width">
-		<h2>Deposit Bitcoin</h2>
+		<h2>Deposit credits</h2>
 		<p>
-			You can deposit credit on your pixeldrain account with Bitcoin. We
-			support regular Bitcoin transactions and Lightning transactions (if
-			you open a
-			<a href="https://btcpay.pixeldrain.com/embed/uS2mbWjXUuaAqMh8XLjkjwi8oehFuxeBZxekMxv68LN/BTC/ln" target="_blank">channel</a>
-			). You must pay the full amount as stated on the invoice, else your
-			payment will fail.
+			You can deposit credit on your pixeldrain account with Bitcoin,
+			Lightning network (<a
+			href="https://btcpay.pixeldrain.com/embed/uS2mbWjXUuaAqMh8XLjkjwi8oehFuxeBZxekMxv68LN/BTC/ln"
+			target="_blank">node info</a>) and Dogecoin. You must pay the full
+			amount as stated on the invoice, else your payment will fail.
 		</p>
 		<p>
-			Do note that it is not possible to withdraw Bitcoin from your
+			Do note that it is not possible to withdraw coins from your
 			pixeldrain account. It's not a wallet. Any amount of money you
 			deposit has to be used up.
 		</p>
 		<div class="indent" style="text-align: center;">
-			<img src="/res/img/btcpay.svg" alt="BTCPay server logo"/>
-			<br/>
-			<form on:submit|preventDefault={checkout} class="checkout_form">
-				<div style="margin: 0.5em;">€</div>
+			<form on:submit|preventDefault={() => {checkout("")}} class="checkout_form">
+				Deposit amount €
 				<input type="number" bind:value={credit_amount} min="1"/>
-				<button type="submit">
-					<i class="icon">paid</i> Checkout
+				<br/>
+				Pay with:<br/>
+				<button on:click={() => {checkout("btc")}}>
+					<span class="icon_unicode">₿</span> Bitcoin
+				</button>
+				<button on:click={() => {checkout("btc_lightning")}}>
+					<i class="icon">bolt</i> Lightning network
+				</button>
+				<button on:click={() => {checkout("doge")}}>
+					<span class="icon_unicode">Ð</span> Dogecoin
 				</button>
 			</form>
 		</div>
@@ -271,11 +277,5 @@ onMount(() => {
 	height: 100px;
 	width: 100px;
 	z-index: 1000;
-}
-.checkout_form {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
 }
 </style>

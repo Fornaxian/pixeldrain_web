@@ -27,21 +27,20 @@ onMount(() => {
 	}
 
 	let now = new Date().getTime()
-	switch (now % 6) {
+	switch (now % 5) {
 		case 0:
-		case 1:
 			set_ad_type("aads")
 			break
-		case 2:
+		case 1:
 			set_ad_type("brave")
 			break
-		case 3:
+		case 2:
 			set_ad_type("ads.plus")
 			break
-		case 4:
+		case 3:
 			set_ad_type("adaround")
 			break
-		case 5:
+		case 4:
 			set_ad_type("flyingsquare")
 			break
 	}

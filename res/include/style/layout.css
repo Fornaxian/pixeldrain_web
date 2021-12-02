@@ -44,6 +44,14 @@
 	text-rendering: optimizeLegibility;
 	vertical-align: middle;
 }
+.icon_unicode {
+	font-size: 1.5em;
+	display: inline-block;
+	font-weight: normal;
+	font-style: normal;
+	vertical-align: middle;
+	line-height: 1;
+}
 .icon.small { font-size: 1.2em; }
 a > svg { vertical-align: middle; }
 
@@ -440,6 +448,7 @@ select {
 	line-height: 1em;
 	overflow: hidden;
 	font-size: 1em; /* Sometimes user-agents have different font sizes for buttons and links */
+	font-weight: normal;
 	text-decoration: none;
 	text-shadow: none;
 	color: #bfbfbf; /* Fallback */
