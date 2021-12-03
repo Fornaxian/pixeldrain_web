@@ -107,6 +107,7 @@ const load_invoices = async () => {
 		})
 		invoices = invoices_tmp
 	} catch (err) {
+		console.error(err)
 		alert(err)
 	} finally {
 		loading = false
@@ -170,7 +171,11 @@ onMount(() => {
 				</thead>
 				<tbody>
 					{#each invoices as row (row.id)}
-						{#if row.status === "InvoiceCreated" || row.status === "InvoiceProcessing" || show_expired}
+						{#if row.status === "New" ||
+							row.status === "InvoiceCreated" ||
+							row.status === "InvoiceProcessing" ||
+							show_expired
+						}
 							<tr>
 								<td>{formatDate(row.time, true, true, false)}</td>
 								<td><Euro amount={row.amount}></Euro></td>
