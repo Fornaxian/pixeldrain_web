@@ -8,6 +8,7 @@ export let target_dir;
 let upload_jobs = [];
 let upload_threads = 0;
 let max_upload_threads = 3;
+let last_reload = 0;
 
 // Adds files to the upload queue. The file_list parameter needs to be of type
 // FileList. Upload will also create the necessary directories to place nested
@@ -35,10 +36,6 @@ export const upload = (file_list) => {
 	}
 };
 
-const uploads_finished = () => {
-	dispatch("finished");
-};
-
 const upload_file = () => {
 	let job = null;
 	for (let i = 0; i < upload_jobs.length; i++) {
@@ -62,7 +59,7 @@ const upload_file = () => {
 		upload_threads--;
 
 		if (upload_threads === 0) {
-			uploads_finished();
+			dispatch("reload");
 		}
 		return;
 	}
@@ -99,6 +96,13 @@ const upload_file = () => {
 
 		if (xhr.status >= 100 && xhr.status < 400) {
 			// Request is a success
+
+			let now = new Date().getTime()
+			if (now - last_reload > 4000) {
+				// If the last reload was more than 4 seconds ago we do another reload
+				last_reload = now
+				dispatch("reload");
+			}
 
 			// Finish the upload job
 			job.uploading = false;

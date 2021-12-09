@@ -38,9 +38,10 @@ let download_frame
 
 // State
 let state = {
-	bucket: initialNode.bucket,
-	parents: initialNode.parents,
-	base: initialNode.base,
+	bucket: window.initial_node.bucket,
+	parents: window.initial_node.parents,
+	base: window.initial_node.base,
+	children: window.initial_node.children,
 
 	// These are used to navigate forward and backward within a directory (using
 	// the previous and next buttons on the toolbar). The cached siblings will
@@ -53,16 +54,16 @@ let state = {
 
 	// Root path of the bucket. Used for navigation by prepending it to a file
 	// path
-	path_root: "/d/"+initialNode.bucket.id,
+	path_root: "/d/"+window.initial_node.bucket.id,
 	loading: true,
 	viewer_type: "",
 	shuffle: false,
 }
 
 // Tallys
-$: total_directories = state.base.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
-$: total_files = state.base.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
-$: total_file_size = state.base.children.reduce((acc, cur) => acc + cur.file_size, 0)
+$: total_directories = state.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
+$: total_files = state.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
+$: total_file_size = state.children.reduce((acc, cur) => acc + cur.file_size, 0)
 
 const sort_children = children => {
 	children.sort((a, b) => {
@@ -86,7 +87,7 @@ const navigate = (path, pushHist) => {
 		}
 
 		// Sort directory children
-		sort_children(resp.base.children)
+		sort_children(resp.children)
 
 		open_node(resp)
 	}).catch(err => {
@@ -104,13 +105,14 @@ const open_node = (node) => {
 		console.debug("Current parent path and new node path match. Saving siblings")
 
 		state.siblings_path = node.parents[node.parents.length-1].path
-		state.siblings = state.base.children
+		state.siblings = state.children
 	}
 
 	// Update shared state
 	state.bucket = node.bucket
 	state.parents = node.parents
 	state.base = node.base
+	state.children = node.children
 
 	// Update the viewer area with the right viewer type
 	if (state.base.type === "bucket" || state.base.type === "dir") {
@@ -141,7 +143,7 @@ const open_node = (node) => {
 	// Remove spinner
 	state.loading = false
 }
-onMount(() => open_node(initialNode))
+onMount(() => open_node(window.initial_node))
 
 // Opens a sibling of the currently open file. The offset is relative to the
 // file which is currently open. Give a positive number to move forward and a
@@ -280,12 +282,12 @@ const share = () => {
 		</a>
 		<div class="file_viewer_headerbar_title">
 			{#each state.parents as parent}
-			<a
-				href={state.path_root+parent.path}
-				class="breadcrumb breadcrumb_button"
-				on:click|preventDefault={() => {navigate(parent.path, true)}}>
-				{parent.name}
-			</a> /
+				<a
+					href={state.path_root+parent.path}
+					class="breadcrumb breadcrumb_button"
+					on:click|preventDefault={() => {navigate(parent.path, true)}}>
+					{parent.name}
+				</a> /
 			{/each}
 			<div class="breadcrumb breadcrumb_last">{state.base.name}</div>
 		</div>

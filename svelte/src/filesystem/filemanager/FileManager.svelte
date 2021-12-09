@@ -17,9 +17,9 @@ const node_click = (index) => {
 	// We prefix our custom state properties with fm_ to not interfere with
 	// other modules
 	if (mode === "viewing") {
-		dispatch("navigate", state.base.children[index].path)
+		dispatch("navigate", state.children[index].path)
 	} else if (mode === "selecting") {
-		state.base.children[index].fm_selected = !state.base.children[index].fm_selected
+		state.children[index].fm_selected = !state.children[index].fm_selected
 	}
 }
 const navigate_up = () => {
@@ -69,7 +69,7 @@ const delete_selected = () => {
 		return
 	}
 
-	let count = state.base.children.reduce((acc, cur) => {
+	let count = state.children.reduce((acc, cur) => {
 		if (cur.fm_selected) {
 			acc++
 		}
@@ -88,7 +88,7 @@ const delete_selected = () => {
 
 	// Save all promises with deletion requests in an array
 	let promises = []
-	state.base.children.forEach(child => {
+	state.children.forEach(child => {
 		if (!child.fm_selected) { return }
 		promises.push(fs_delete_node(state.bucket.id, child.path))
 	})
@@ -108,9 +108,9 @@ const toggle_select = () => {
 	}
 
 	// Unmark all the selected files and return to viewing mode
-	state.base.children.forEach((child, i) => {
+	state.children.forEach((child, i) => {
 		if (child.fm_selected) {
-			state.base.children[i].fm_selected = false
+			state.children[i].fm_selected = false
 		}
 	})
 	mode = "viewing"
@@ -156,7 +156,7 @@ const toggle_select = () => {
 			<br/>
 		{/if}
 
-		<FileUploader bind:this={uploader} bucket_id={state.bucket.id} target_dir={state.base.path} on:finished={reload}></FileUploader>
+		<FileUploader bind:this={uploader} bucket_id={state.bucket.id} target_dir={state.base.path} on:reload={reload}></FileUploader>
 
 		<div class="directory">
 			<tr>
@@ -169,7 +169,7 @@ const toggle_select = () => {
 				<CreateDirectory state={state} on:done={() => {reload(); creating_dir = false;}} on:loading></CreateDirectory>
 			{/if}
 
-			{#each state.base.children as child, index}
+			{#each state.children as child, index (child.path)}
 				<a
 					href={state.path_root+child.path}
 					on:click|preventDefault={() => {node_click(index)}}

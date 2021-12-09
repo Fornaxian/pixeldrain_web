@@ -21,7 +21,7 @@
 
 		{{ template "opengraph" .OGData }}
 		<script>
-			const initialNode = {{.Other}};
+			window.initial_node = {{.Other}};
 			window.api_endpoint = '{{.APIEndpoint}}';
 		</script>
 
