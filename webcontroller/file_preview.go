@@ -31,7 +31,7 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 
 	if strings.HasPrefix(file.MimeType, "text") &&
 		(strings.HasSuffix(file.Name, ".md") || strings.HasSuffix(file.Name, ".markdown")) {
-		if file.Size > 1e6 { // Prevent out of memory errors
+		if file.Size > 1<<22 { // Prevent out of memory errors
 			w.Write([]byte("File is too large to view online.\nPlease download and view it locally."))
 			return
 		}

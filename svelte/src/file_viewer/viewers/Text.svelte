@@ -42,7 +42,7 @@ let text_pre
 const text = () => {
 	text_type = "text"
 
-	if (file.size > 1 << 20) { // File larger than 1 MiB
+	if (file.size > 1 << 22) { // File larger than 4 MiB
 		text_pre.innerText = "File is too large to view online.\nPlease download and view it locally."
 		return
 	}
@@ -62,7 +62,7 @@ let prettyprint = false
 const code = () => {
 	text_type = "code"
 
-	if (file.size > 1 << 20) { // File larger than 1 MiB
+	if (file.size > 1 << 22) { // File larger than 4 MiB
 		code_pre.innerText = "File is too large to view online.\nPlease download and view it locally."
 		return
 	}

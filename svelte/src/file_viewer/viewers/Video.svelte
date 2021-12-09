@@ -74,9 +74,9 @@ let download = () => { dispatch("download", {}) }
 		<h1>This is a video file on pixeldrain</h1>
 		<img src={file.icon_href} alt="Video icon" style="display: inline-block; vertical-align: top;">
 		<div class="description">
-			The online video player on pixeldrain has been disabled due to
-			repeated abuse. You can still watch videos online by upgrading to
-			Pro. Or download the video and watch it locally on your computer.
+			The online video player on pixeldrain has been disabled to prevent
+			abuse. You can still watch videos online by upgrading to Pro. Or
+			download the video and watch it locally on your computer.
 			<br/>
 			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button button_highlight">
 				<i class="icon">upgrade</i> Upgrade to Pro
@@ -126,6 +126,6 @@ let download = () => { dispatch("download", {}) }
 	text-align: left;
 	padding-left: 8px;
 	vertical-align: middle;
-	max-width: 600px;
+	max-width: 550px;
 }
 </style>

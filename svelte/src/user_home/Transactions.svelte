@@ -141,21 +141,19 @@ onMount(() => {
 			deposit has to be used up.
 		</p>
 		<div class="indent" style="text-align: center;">
-			<form on:submit|preventDefault={() => {checkout("")}} class="checkout_form">
-				Deposit amount €
-				<input type="number" bind:value={credit_amount} min="1"/>
-				<br/>
-				Pay with:<br/>
-				<button on:click={() => {checkout("btc")}}>
-					<span class="icon_unicode">₿</span> Bitcoin
-				</button>
-				<button on:click={() => {checkout("btc_lightning")}}>
-					<i class="icon">bolt</i> Lightning network
-				</button>
-				<button on:click={() => {checkout("doge")}}>
-					<span class="icon_unicode">Ð</span> Dogecoin
-				</button>
-			</form>
+			Deposit amount €
+			<input type="number" bind:value={credit_amount} min="1"/>
+			<br/>
+			Pay with:<br/>
+			<button on:click={() => {checkout("btc")}}>
+				<span class="icon_unicode">₿</span> Bitcoin
+			</button>
+			<button on:click={() => {checkout("btc_lightning")}}>
+				<i class="icon">bolt</i> Lightning network
+			</button>
+			<button on:click={() => {checkout("doge")}}>
+				<span class="icon_unicode">Ð</span> Dogecoin
+			</button>
 		</div>
 
 		<h3>Open invoices</h3>
