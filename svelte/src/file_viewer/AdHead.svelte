@@ -6,6 +6,20 @@ export const adaround_load = writable(false)
 export const adaround_loaded = writable(false)
 export const flyingsquare_load = writable(false)
 export const flyingsquare_loaded = writable(false)
+export const valueimpression_load = writable(false)
+export const valueimpression_loaded = writable(false)
+
+export const load_ad = (ad_type) => {
+	if (ad_type === "ads.plus") {
+		adsplus_load.set(true)
+	} else if (ad_type === "adaround") {
+		adaround_load.set(true)
+	} else if (ad_type === "flyingsquare") {
+		flyingsquare_load.set(true)
+	} else if (ad_type === "valueimpression") {
+		valueimpression_load.set(true)
+	}
+}
 </script>
 
 <script>
@@ -14,36 +28,31 @@ export const flyingsquare_loaded = writable(false)
 // stores are for telling the ads that the head element has finished loading
 
 let adsplus = false
-adsplus_load.subscribe(v => {
-	if (v) {
-		adsplus = true
-	}
-})
+adsplus_load.subscribe(v => adsplus = v)
 const adsplus_load_event = () => {
 	adsplus_loaded.set(true)
 	console.debug("finished loading adsplus head element")
 }
 
 let adaround = false
-adaround_load.subscribe(v => {
-	if (v) {
-		adaround = true
-	}
-})
+adaround_load.subscribe(v => adaround = v)
 const adaround_load_event = () => {
 	adaround_loaded.set(true)
 	console.debug("finished loading adaround head element")
 }
 
 let flyingsquare = false
-flyingsquare_load.subscribe(v => {
-	if (v) {
-		flyingsquare = true
-	}
-})
+flyingsquare_load.subscribe(v => flyingsquare = v)
 const flyingsquare_load_event = () => {
 	flyingsquare_loaded.set(true)
 	console.debug("finished loading flyingsquare head element")
+}
+
+let valueimpression = false
+valueimpression_load.subscribe(v => valueimpression = v)
+const valueimpression_load_event = () => {
+	valueimpression_loaded.set(true)
+	console.debug("finished loading valueimpression head element")
 }
 </script>
 
@@ -56,5 +65,9 @@ const flyingsquare_load_event = () => {
 	{/if}
 	{#if flyingsquare}
 		<script on:load={flyingsquare_load_event} async src="/res/script/flyingsquare.js"></script>
+	{/if}
+	{#if valueimpression}
+		<script on:load={valueimpression_load_event} async defer src="//services.vlitag.com/adv1/?q=f8197b031408cd00d0ba7385af21bec5"></script>
+		<script> var vitag = vitag || {};</script>
 	{/if}
 </svelte:head>

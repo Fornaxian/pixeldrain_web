@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher, onMount, tick } from "svelte"
-import { adsplus_load, adsplus_loaded, adaround_load, flyingsquare_load } from "./AdHead.svelte"
+import * as head from "./AdHead.svelte"
 
 let dispatch = createEventDispatcher()
 let container
@@ -31,7 +31,7 @@ onMount(async () => {
 		return
 	}
 
-	switch (now % 4) {
+	switch (Math.floor(Math.random()*5)) {
 		case 0:
 			set_ad_type("ads.plus")
 			break
@@ -44,18 +44,15 @@ onMount(async () => {
 		case 3:
 			set_ad_type("aads")
 			break
+		case 4:
+			set_ad_type("valueimpression")
+			break
 	}
 })
 
 let set_ad_type = async (t) => {
 	ad_type = t
-	if (ad_type === "ads.plus") {
-		adsplus_load.set(true)
-	} else if (ad_type === "adaround") {
-		adaround_load.set(true)
-	} else if (ad_type === "flyingsquare") {
-		flyingsquare_load.set(true)
-	}
+	head.load_ad(t)
 
 	visible = true
 	await tick()
@@ -75,7 +72,7 @@ const close = () => {
 	setTimeout(() => { visible = false }, 1000)
 }
 
-adsplus_loaded.subscribe(v => {
+head.adsplus_loaded.subscribe(v => {
 	if (v) {
 		window.googletag = window.googletag || {cmd: []};
 		googletag.cmd.push(function() {
@@ -84,6 +81,11 @@ adsplus_loaded.subscribe(v => {
 			googletag.enableServices();
 		});
 		googletag.cmd.push(function() { googletag.display('div-gpt-ad-pixeldraincom160x600_1'); });
+	}
+})
+head.valueimpression_loaded.subscribe(v => {
+	if (v) {
+		(vitag.Init = window.vitag.Init || []).push(function(){viAPItag.display("vi_1994884988")})
 	}
 })
 
@@ -114,6 +116,8 @@ adsplus_loaded.subscribe(v => {
 				<div class="_fa7cdd4c68507744" data-zone="2a0dbd4b7c484e9e824d211a57fa6b93" style="width:160px;height:600px;display: inline-block;margin: 0 auto"></div>
 			{:else if ad_type === "flyingsquare"}
 				<div class="xc449bad4854773ff" data-zone="d675792db61d408287d0d694d03d12e5" style="width:160px;height:600px;display: inline-block;margin: 0 auto"></div>
+			{:else if ad_type === "valueimpression"}
+				<div class="adsbyvli" data-ad-slot="vi_1994884988" style="width: 160px; height: 600px"></div>
 			{/if}
 		</div>
 	</div>

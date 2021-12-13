@@ -1,23 +1,10 @@
 <script>
 import { onMount } from "svelte"
-import { adsplus_load, adsplus_loaded, adaround_load, flyingsquare_load } from "./AdHead.svelte"
+import * as head from "./AdHead.svelte"
 
 let container
 let banner
 let ad_type = ""
-
-let set_ad_type = (t) => {
-	ad_type = t
-	if (ad_type === "ads.plus") {
-		adsplus_load.set(true)
-	} else if (ad_type === "adaround") {
-		adaround_load.set(true)
-	} else if (ad_type === "flyingsquare") {
-		flyingsquare_load.set(true)
-	}
-
-	console.log("leaderboard ad is " + t)
-}
 
 onMount(() => {
 	let url_ads = new URL(window.location.href).searchParams.get("ads")
@@ -26,8 +13,7 @@ onMount(() => {
 		return
 	}
 
-	let now = new Date().getTime()
-	switch (now % 5) {
+	switch (Math.floor(Math.random()*6)) {
 		case 0:
 			set_ad_type("aads")
 			break
@@ -43,10 +29,19 @@ onMount(() => {
 		case 4:
 			set_ad_type("flyingsquare")
 			break
+		case 5:
+			set_ad_type("valueimpression")
+			break
 	}
-
-	resize()
 })
+
+let set_ad_type = (t) => {
+	ad_type = t
+	head.load_ad(t)
+	resize()
+
+	console.log("leaderboard ad is " + t)
+}
 
 // We scale the size of the banner based on the size of the screen. But because
 // some things don't scale easily like iframes and javascript ads we use a CSS
@@ -84,7 +79,7 @@ const resize = () => {
 	banner.style.transform = "scale(" + scale + ")"
 }
 
-adsplus_loaded.subscribe(v => {
+head.adsplus_loaded.subscribe(v => {
 	if (v) {
 		window.googletag = window.googletag || {cmd: []};
 		googletag.cmd.push(function() {
@@ -93,6 +88,11 @@ adsplus_loaded.subscribe(v => {
 			googletag.enableServices();
 		});
 		googletag.cmd.push(function() { googletag.display('div-gpt-ad-pixeldraincom728x90_1'); });
+	}
+})
+head.valueimpression_loaded.subscribe(v => {
+	if (v) {
+		(vitag.Init = window.vitag.Init || []).push(function(){viAPItag.display("vi_1994884987")})
 	}
 })
 </script>
@@ -149,6 +149,8 @@ adsplus_loaded.subscribe(v => {
 		<div bind:this={banner} class="_fa7cdd4c68507744 banner" data-zone="d8764be36c134d3d807abb2a073dc010" style="width:728px;height:90px;display: inline-block;margin: 0 auto"></div>
 	{:else if ad_type === "flyingsquare"}
 		<div bind:this={banner} class="xc449bad4854773ff banner" data-zone="28ebf286bb7d4446a5ba43b0ead8f1bb" style="width:728px;height:90px;display: inline-block;margin: 0 auto"></div>
+	{:else if ad_type === "valueimpression"}
+		<div bind:this={banner} class="adsbyvli banner" data-ad-slot="vi_1994884987" style="width: 728px; height: 90px"></div>
 	{/if}
 </div>
 
