@@ -1,9 +1,9 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
-import { formatDuration } from "../../util/Formatting.svelte";
+import LargeFileMessage from "./LargeFileMessage.svelte";
 let dispatch = createEventDispatcher()
 
-export let file = {
+let file = {
 	id: "",
 	size: 0,
 	name: "",
@@ -20,8 +20,10 @@ let player
 let video_reload = false
 let media_session = false
 
-$: update_file(file.id)
-const update_file = async () => {
+export const set_file = async f => {
+	let same_file = f.id == file.id
+	file = f
+
 	if (media_session) {
 		navigator.mediaSession.metadata = new MediaMetadata({
 			title: file.name,
@@ -31,12 +33,14 @@ const update_file = async () => {
 		console.log("updating media session")
 	}
 
-	// When the component receives a new ID the video track does not automatically
-	// start playing the new video. So we use this little hack to make sure that the
-	// video is unloaded and loaded when the ID changes
-	video_reload = true
-	await tick()
-	video_reload = false
+	// When the component receives a new ID the video track does not
+	// automatically start playing the new video. So we use this little hack to
+	// make sure that the video is unloaded and loaded when the ID changes
+	if (!same_file) {
+		video_reload = true
+		await tick()
+		video_reload = false
+	}
 }
 
 onMount(() => {
@@ -47,7 +51,6 @@ onMount(() => {
 		navigator.mediaSession.setActionHandler('stop', () => player.stop());
 		navigator.mediaSession.setActionHandler('previoustrack', () => dispatch("prev", {}));
 		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("next", {}));
-		update_file()
 	}
 })
 
@@ -74,9 +77,9 @@ let download = () => { dispatch("download", {}) }
 		<h1>This is a video file on pixeldrain</h1>
 		<img src={file.icon_href} alt="Video icon" style="display: inline-block; vertical-align: top;">
 		<div class="description">
-			The online video player on pixeldrain has been disabled to prevent
-			abuse. You can still watch videos online by upgrading to Pro. Or
-			download the video and watch it locally on your computer.
+			The online video player on pixeldrain is only available when the
+			uploader of the file or the viewer pays for the bandwidth usage. You
+			can still download the video and watch it locally on your computer.
 			<br/>
 			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button button_highlight">
 				<i class="icon">upgrade</i> Upgrade to Pro
@@ -85,21 +88,8 @@ let download = () => { dispatch("download", {}) }
 				<i class="icon">save</i> Download
 			</button>
 		</div>
-		{#if file.show_ads && file.size > 5e8}
-			<br/>
-			<div class="description" style="max-width: 700px; text-align: center;">
-				<!-- If the file is larger than 500 MB-->
-				<hr/>
-				Your download speed is currently limited to 4 MiB/s. Downloading this
-				file for free will take at least
-				{formatDuration((file.size/4194304)*1000)}.
-				You can
-				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12">
-					upgrade to Pro
-				</a>
-				to download at the fastest speed available.
-			</div>
-		{/if}
+		<br/>
+		<LargeFileMessage file={file}></LargeFileMessage>
 	{/if}
 </div>
 
@@ -123,7 +113,7 @@ let download = () => { dispatch("download", {}) }
 }
 .description {
 	display: inline-block;
-	text-align: left;
+	text-align: justify;
 	padding-left: 8px;
 	vertical-align: middle;
 	max-width: 550px;

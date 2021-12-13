@@ -1,11 +1,12 @@
 <script>
-
-export let file = {
+export const set_file = f => file = f
+let file = {
 	id: "",
 	name: "",
 	mime_type: "",
 	get_href: "",
 }
+
 let container
 let zoom = false
 let x, y = 0

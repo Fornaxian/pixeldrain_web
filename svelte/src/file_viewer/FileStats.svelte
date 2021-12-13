@@ -16,7 +16,7 @@ let socket = null
 let error_msg = ""
 
 $: update_stats(file.id)
-let update_stats = (id) => {
+let update_stats = async id => {
 	if (id === "" || id == "demo") {
 		return
 	}

@@ -1,9 +1,10 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { formatDuration } from "../../util/Formatting.svelte";
+import LargeFileMessage from "./LargeFileMessage.svelte";
 let dispatch = createEventDispatcher()
 
-export let file = {
+export const set_file = f => file = f
+let file = {
 	id: "",
 	size: 0,
 	name: "",
@@ -25,21 +26,8 @@ export let file = {
 			<i class="icon">save</i> Download
 		</button>
 	</div>
-	{#if file.show_ads && file.size > 5e8}
-		<br/>
-		<div class="description" style="max-width: 700px; text-align: center;">
-			<!-- If the file is larger than 500 MB-->
-			<hr/>
-			Your download speed is currently limited to 4 MiB/s. Downloading this
-			file for free will take at least
-			{formatDuration((file.size/4194304)*1000)}.
-			You can
-			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12">
-				upgrade to Pro
-			</a>
-			to download at the fastest speed available.
-		</div>
-	{/if}
+	<br/>
+	<LargeFileMessage file={file}></LargeFileMessage>
 </div>
 
 <style>

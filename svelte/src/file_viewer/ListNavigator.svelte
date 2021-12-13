@@ -4,6 +4,7 @@ import { createEventDispatcher } from "svelte";
 let dispatch = createEventDispatcher()
 
 export let files = []
+export let shuffle = false
 let file_list_div
 let selected_file_index = 0
 
@@ -24,14 +25,19 @@ export const rand_item = () => {
 	// Avoid viewing the same file multiple times
 	let rand
 	do {
-		rand = Math.round(Math.random() * files.length)
+		rand = Math.floor(Math.random() * files.length)
 		console.log("rand is " + rand)
 	} while(history.indexOf(rand) > -1)
 
-	set_item(rand)
+	select_item_event(rand)
 }
 
-export let shuffle = false
+// select_item_event signals to the FileViewer that the file needs to be
+// changed. The FileViewer then calls set_item if the change has been approved.
+// ListNavigator cannot call set_item itself because it will cause a loop.
+const select_item_event = idx => {
+	dispatch("set_file", idx)
+}
 
 export const set_item = idx => {
 	// Remove the class from the previous selected file
@@ -67,13 +73,6 @@ export const set_item = idx => {
 		}
 	}
 	animateScroll(start, 0)
-}
-
-// select_item signals to the FileViewer that the file needs to be changed. The
-// FileViewer then calls set_item if the change has been approved. ListNavigator
-// cannot call set_item itself because it will cause a loop.
-const select_item_event = idx => {
-	dispatch("set_file", idx)
 }
 </script>
 

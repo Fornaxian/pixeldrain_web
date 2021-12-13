@@ -1,31 +1,21 @@
 <script>
-import { onMount } from "svelte";
-
-export let file = {
-	id: "",
-	name: "",
-	mime_type: "",
-	size: 0,
-	get_href: "",
-}
 let container
 let text_type = ""
 
-$: update_file(file.id)
-const update_file = async () => {
+export const set_file = file => {
+	console.log("loading text file", file.id)
+
 	if (file.name.endsWith(".md") || file.name.endsWith(".markdown") || file.mime_type === "text/demo") {
-		markdown()
+		markdown(file)
 	} else if (file.name.endsWith(".txt")) {
-		text()
+		text(file)
 	} else {
-		code()
+		code(file)
 	}
 }
 
-onMount(update_file)
-
 let md_container
-const markdown = () => {
+const markdown = file => {
 	text_type = "markdown"
 
 	fetch("/u/" + file.id + "/preview").then(resp => {
@@ -39,7 +29,7 @@ const markdown = () => {
 }
 
 let text_pre
-const text = () => {
+const text = file => {
 	text_type = "text"
 
 	if (file.size > 1 << 22) { // File larger than 4 MiB
@@ -59,7 +49,7 @@ const text = () => {
 
 let code_pre
 let prettyprint = false
-const code = () => {
+const code = file => {
 	text_type = "code"
 
 	if (file.size > 1 << 22) { // File larger than 4 MiB

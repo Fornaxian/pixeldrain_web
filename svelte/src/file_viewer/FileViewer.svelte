@@ -5,7 +5,7 @@ import { file_struct, list_struct, file_set_href } from "./FileUtilities.svelte"
 import Modal from "../util/Modal.svelte";
 import PixeldrainLogo from "../util/PixeldrainLogo.svelte";
 import DetailsWindow from "./DetailsWindow.svelte";
-import FilePreview from "./FilePreview.svelte";
+import FilePreview from "./viewers/FilePreview.svelte";
 import ListNavigator from "./ListNavigator.svelte";
 import FileStats from "./FileStats.svelte";
 import EditWindow from "./EditWindow.svelte";
@@ -29,6 +29,7 @@ let view = "" // file or gallery
 let file = file_struct
 let list = list_struct
 let is_list = false
+let file_preview
 
 let button_home
 let list_navigator
@@ -167,8 +168,10 @@ const open_file_index = async index => {
 
 	if (view !== "file") {
 		view = "file"
-		await tick() // Wait for the ListNavigator to render
+		await tick() // Wait for the file_preview and list_navigator to render
 	}
+
+	file_preview.set_file(file)
 
 	if (is_list) {
 		// Update the URL
@@ -449,7 +452,7 @@ const keyboard_event = evt => {
 		<div id="file_preview" class="file_preview checkers" class:toolbar_visible class:skyscraper_visible>
 			{#if view === "file"}
 				<FilePreview
-					file={file}
+					bind:this={file_preview}
 					on:download={downloader.download_file}
 					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
 					on:next={() => { if (list_navigator) { list_navigator.next() }}}>

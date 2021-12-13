@@ -1,5 +1,6 @@
 <script>
-export let file = {
+export const set_file = f => file = f
+let file = {
 	id: "",
 	name: "",
 	abuse_type: "",

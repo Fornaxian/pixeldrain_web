@@ -1,5 +1,6 @@
 <script>
-import { onMount,  createEventDispatcher, tick } from "svelte";
+import { createEventDispatcher, tick } from "svelte";
+import LargeFileMessage from "./LargeFileMessage.svelte";
 let dispatch = createEventDispatcher()
 
 export let file = {
@@ -14,11 +15,17 @@ $: loop = file.name.includes(".loop.")
 let player
 let playing = false
 let audio_reload = false
-let media_session = false
 
-$: update_file(file.id)
-const update_file = async () => {
-	if (media_session) {
+export const set_file = async f => {
+	let same_file = f.id == file.id
+	file = f
+
+	if ('mediaSession' in navigator) {
+		navigator.mediaSession.setActionHandler('play', () => player.play());
+		navigator.mediaSession.setActionHandler('pause', () => player.pause());
+		navigator.mediaSession.setActionHandler('stop', () => player.stop());
+		navigator.mediaSession.setActionHandler('previoustrack', () => dispatch("prev", {}));
+		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("next", {}));
 		navigator.mediaSession.metadata = new MediaMetadata({
 			title: file.name,
 			artist: "pixeldrain",
@@ -27,27 +34,17 @@ const update_file = async () => {
 		console.log("updating media session")
 	}
 
-	// When the component receives a new ID the video track does not automatically
-	// start playing the new video. So we use this little hack to make sure that the
-	// video is unloaded and loaded when the ID changes
-	audio_reload = true
-	await tick()
-	audio_reload = false
+	// When the component receives a new ID the video track does not
+	// automatically start playing the new video. So we use this little hack to
+	// make sure that the video is unloaded and loaded when the ID changes
+	if (!same_file) {
+		audio_reload = true
+		await tick()
+		audio_reload = false
+	}
 }
 
 const toggle_play = () => playing ? player.pause() : player.play()
-
-onMount(() => {
-	if ('mediaSession' in navigator) {
-		media_session = true
-		navigator.mediaSession.setActionHandler('play', () => player.play());
-		navigator.mediaSession.setActionHandler('pause', () => player.pause());
-		navigator.mediaSession.setActionHandler('stop', () => player.stop());
-		navigator.mediaSession.setActionHandler('previoustrack', () => dispatch("prev", {}));
-		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("next", {}));
-		update_file()
-	}
-})
 
 </script>
 
@@ -89,6 +86,9 @@ onMount(() => {
 			<source src={file.get_href} type={file.mime_type} />
 		</audio>
 	{/if}
+
+	<br/>
+	<LargeFileMessage file={file}></LargeFileMessage>
 </div>
 
 <style>
