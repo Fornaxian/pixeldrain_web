@@ -1,4 +1,7 @@
 <script>
+import { tick } from "svelte";
+
+
 let container
 let text_type = ""
 
@@ -15,8 +18,9 @@ export const set_file = file => {
 }
 
 let md_container
-const markdown = file => {
+const markdown = async file => {
 	text_type = "markdown"
+	await tick()
 
 	fetch("/u/" + file.id + "/preview").then(resp => {
 		if (!resp.ok) { return Promise.reject(resp.status) }
@@ -29,8 +33,9 @@ const markdown = file => {
 }
 
 let text_pre
-const text = file => {
+const text = async file => {
 	text_type = "text"
+	await tick()
 
 	if (file.size > 1 << 22) { // File larger than 4 MiB
 		text_pre.innerText = "File is too large to view online.\nPlease download and view it locally."
@@ -49,8 +54,9 @@ const text = file => {
 
 let code_pre
 let prettyprint = false
-const code = file => {
+const code = async file => {
 	text_type = "code"
+	await tick()
 
 	if (file.size > 1 << 22) { // File larger than 4 MiB
 		code_pre.innerText = "File is too large to view online.\nPlease download and view it locally."

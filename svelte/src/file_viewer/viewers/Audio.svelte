@@ -70,7 +70,7 @@ const toggle_play = () => playing ? player.pause() : player.play()
 	</button>
 	<br/><br/>
 
-	{#if !audio_reload}
+	{#if file.id && !audio_reload}
 		<!-- svelte-ignore a11y-media-has-caption -->
 		<audio
 			bind:this={player}
