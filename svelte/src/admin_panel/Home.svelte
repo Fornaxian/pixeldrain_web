@@ -5,7 +5,6 @@ import Chart from "../util/Chart.svelte";
 
 let graphViews
 let graphBandwidth
-let graphBandwidthPaid
 let graphTimeout = null
 
 let start_time = ""
@@ -43,12 +42,10 @@ const loadGraph = (minutes, interval, live) => {
 		graphViews.chart().data.labels = resp.views.timestamps;
 		graphViews.chart().data.datasets[0].data = resp.views.amounts;
 		graphBandwidth.chart().data.labels = resp.views.timestamps;
-		graphBandwidth.chart().data.datasets[0].data = resp.bandwidth.amounts;
-		graphBandwidthPaid.chart().data.labels = resp.views.timestamps;
-		graphBandwidthPaid.chart().data.datasets[0].data = resp.bandwidth_paid.amounts;
+		graphBandwidth.chart().data.datasets[0].data = resp.bandwidth.amounts
+		graphBandwidth.chart().data.datasets[1].data = resp.bandwidth_paid.amounts
 		graphViews.update()
 		graphBandwidth.update()
-		graphBandwidthPaid.update()
 
 		start_time = resp.views.timestamps[0]
 		end_time = resp.views.timestamps.slice(-1)[0];
@@ -109,6 +106,33 @@ function getStats(order) {
 
 let statsInterval = null
 onMount(() => {
+	// Prepare chart datasets
+	graphBandwidth.chart().data.datasets = [
+		{
+			label: "Bandwidth (free)",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.highlightColor,
+			backgroundColor: "#"+window.style.highlightColor,
+		},
+		{
+			label: "Bandwidth (premium)",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.dangerColor,
+			backgroundColor: "#"+window.style.dangerColor,
+		},
+	];
+	graphViews.chart().data.datasets = [
+		{
+			label: "Views",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.highlightColor,
+			backgroundColor: "#"+window.style.highlightColor,
+		},
+	];
+
 	loadGraph(10080, 10, false);
 	getStats("calls")
 	statsInterval = setInterval(() => {
@@ -127,7 +151,7 @@ onDestroy(() => {
 
 <div>
 	<div class="limit_width">
-		<h3>Bandwidth, paid transfers and views</h3>
+		<h3>Bandwidth usage and file views</h3>
 	</div>
 	<div class="highlight_dark" style="margin-bottom: 6px;">
 		<button on:click={() => { loadGraph(1440, 1, true) }}>Day</button>
@@ -140,9 +164,6 @@ onDestroy(() => {
 		<button on:click={() => { loadGraph(1051200, 1440, false) }}>Two Years</button>
 	</div>
 	<Chart bind:this={graphBandwidth} dataType="bytes" label="Bandwidth" />
-	<hr/>
-	<Chart bind:this={graphBandwidthPaid} dataType="bytes" label="Paid bandwidth" />
-	<hr/>
 	<Chart bind:this={graphViews} dataType="number" label="Views" />
 	<div class="highlight_dark">
 		Total usage from {start_time} to {end_time}<br/>

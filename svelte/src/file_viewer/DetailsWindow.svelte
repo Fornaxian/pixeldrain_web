@@ -127,9 +127,9 @@ let update_charts = () => {
 	</table>
 
 	<h2>Downloads</h2>
-	<Chart bind:this={download_chart}></Chart>
+	<Chart bind:this={download_chart} label="Downloads"></Chart>
 	<h2>Views</h2>
-	<Chart bind:this={view_chart}></Chart>
+	<Chart bind:this={view_chart} label="Views"></Chart>
 
 	<p style="text-align: center">
 		Charts rendered by the amazing <a href="https://www.chartjs.org/" target="_blank">Chart.js</a>.

@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import { formatDataVolume, formatNumber } from "./Formatting.svelte";
-import { Chart } from "chart.js"
+import { Chart, PointElement, LineElement, LinearScale, CategoryScale, LineController, Filler, Tooltip } from "chart.js"
 
 let chart_element
 let chart_object
@@ -15,16 +15,16 @@ export const update = () => {
 	return chart_object.update()
 }
 
-Chart.defaults.global.defaultFontColor = "#cccccc";
-Chart.defaults.global.defaultFontSize = 15;
-Chart.defaults.global.defaultFontFamily = "system-ui, sans-serif";
-Chart.defaults.global.maintainAspectRatio = false;
-Chart.defaults.global.elements.point.radius = 0;
-Chart.defaults.global.tooltips.mode = "index";
-Chart.defaults.global.tooltips.axis = "x";
-Chart.defaults.global.tooltips.intersect = false;
-Chart.defaults.global.animation.duration = 500;
-Chart.defaults.global.animation.easing = "linear";
+Chart.register(PointElement, LineElement, LinearScale, CategoryScale, LineController, Filler, Tooltip)
+Chart.defaults.color = "#"+window.style.textColor;
+Chart.defaults.font.size = 15;
+Chart.defaults.font.family = "system-ui, sans-serif";
+Chart.defaults.maintainAspectRatio = false;
+Chart.defaults.plugins.tooltip.mode = "index";
+Chart.defaults.plugins.tooltip.axis = "x";
+Chart.defaults.plugins.tooltip.intersect = false;
+Chart.defaults.animation.duration = 500;
+Chart.defaults.animation.easing = "linear";
 
 onMount(() => {
 	chart_object = new Chart(
@@ -35,46 +35,54 @@ onMount(() => {
 				datasets: [
 					{
 						label: label,
-						backgroundColor: "#"+window.style.highlightColor,
 						borderWidth: 0,
-						lineTension: 0,
-						fill: true,
-						yAxisID: "ax_1"
+						pointRadius: 0,
+						fill: 'origin',
+						backgroundColor: "#"+window.style.highlightColor,
 					}
 				]
 			},
 			options: {
 				legend: { display: false },
+				layout: {
+					padding: {
+						left: 4,
+						right: 10,
+					}
+				},
 				scales: {
-					yAxes: [
-						{
-							type: "linear",
+					y: {
+						type: "linear",
+						display: true,
+						position: "left",
+						ticks: {
+							callback: function (value, index, values) {
+								if (dataType == "bytes") {
+									return formatDataVolume(value, 3);
+								}
+								return formatNumber(value, 3);
+							},
+						},
+						beginAtZero: true,
+						grid: {
 							display: true,
-							position: "left",
-							id: "ax_1",
-							ticks: {
-								callback: function (value, index, values) {
-									if (dataType == "bytes") {
-										return formatDataVolume(value, 3);
-									}
-									return formatNumber(value, 3);
-								},
-								beginAtZero: true
-							},
-							gridLines: { display: true },
+							drawBorder: false,
+							color: "#"+window.style.layer3Color,
+						},
+					},
+					x: {
+						display: true,
+						ticks: {
+							sampleSize: 1,
+							padding: 4,
+							minRotation: 0,
+							maxRotation: 0
+						},
+						grid: {
+							display: false,
+							drawBorder: false,
 						}
-					],
-					xAxes: [
-						{
-							ticks: {
-								sampleSize: 1,
-								padding: 4,
-								minRotation: 0,
-								maxRotation: 0
-							},
-							gridLines: { display: false }
-						}
-					]
+					}
 				}
 			}
 		}

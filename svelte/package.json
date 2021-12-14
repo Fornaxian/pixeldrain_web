@@ -8,7 +8,8 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
-    "@rollup/plugin-node-resolve": "^8.0.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@types/jsmediatags": "^3.9.3",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^6.0.0",
@@ -16,7 +17,7 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
-    "chart.js": "^2.8.0",
+    "chart.js": "^3.6.2",
     "sirv-cli": "^1.0.0"
   }
 }
