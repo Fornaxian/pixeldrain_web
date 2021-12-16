@@ -1402,3 +1402,8 @@ interdogmedia.com, 17207, DIRECT
 apacdex.com, 17207, DIRECT
 valueimpression.com, 17207, DIRECT
 quantumdex.io, 17207, DIRECT
+disqus.com, 4715692, DIRECT
+onetag.com, 5cd7fb62fac7ec9, DIRECT
+openx.com, 537133236, RESELLER, 6a698e2ec38604c6
+pubmatic.com, 158685, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 13380, RESELLER, 0bfd66d529a55807

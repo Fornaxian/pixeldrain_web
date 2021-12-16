@@ -150,7 +150,12 @@ head.valueimpression_loaded.subscribe(v => {
 	{:else if ad_type === "flyingsquare"}
 		<div bind:this={banner} class="xc449bad4854773ff banner" data-zone="28ebf286bb7d4446a5ba43b0ead8f1bb" style="width:728px;height:90px;display: inline-block;margin: 0 auto"></div>
 	{:else if ad_type === "valueimpression"}
-		<div bind:this={banner} class="adsbyvli banner" data-ad-slot="vi_1994884987" style="width: 728px; height: 90px"></div>
+		<!-- Valueimpression overrides the style of its div after loading,
+			messing up our scaling script, so we wrap it in another div of the
+			correct size -->
+		<div bind:this={banner} class="banner" style="width: 728px; height: 90px; overflow: hidden;">
+			<div class="adsbyvli" data-ad-slot="vi_1994884987" style="width: 728px; height: 90px"></div>
+		</div>
 	{/if}
 </div>
 
