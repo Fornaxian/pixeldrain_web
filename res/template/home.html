@@ -174,10 +174,29 @@
 				</div>
 				<div>
 					<div class="feat_label">
+						Data transfer limit
+					</div>
+					<div class="feat_normal">
+						Rate limiting mode will be enabled when a file has 3
+						times more downloads than views
+					</div>
+					<div class="feat_pro">
+						Transfer limit of <span class="text_highlight">1
+						terabyte</span>. If the transfer limit is exceeded
+						advertisements will be enabled again
+						<br/>
+						<button class="round" onclick="return explainDirectLinking()">
+							<i class="icon">info</i>
+							More information
+						</button>
+					</div>
+				</div>
+				<div>
+					<div class="feat_label">
 						Adver&shy;tise&shy;ments
 					</div>
 					<div class="feat_normal">
-						Pop-up or a banner ad on the file viewer page
+						Banner advertisements on the file viewer page
 					</div>
 					<div class="feat_pro">
 						<span class="text_highlight">No ads</span> on files
@@ -195,25 +214,6 @@
 						<span class="text_highlight">Completely
 						private</span>. No third party scripts and no
 						logging
-					</div>
-				</div>
-				<div>
-					<div class="feat_label">
-						Transfer limit
-					</div>
-					<div class="feat_normal">
-						Rate limiting mode will be enabled when a file has 3
-						times more downloads than views
-					</div>
-					<div class="feat_pro">
-						Transfer limit of <span class="text_highlight">1
-						terabyte</span>. If the transfer limit is exceeded files
-						will show ads again and rate limiting is enabled
-						<br/>
-						<button class="round" onclick="return explainDirectLinking()">
-							<i class="icon">info</i>
-							More information
-						</button>
 					</div>
 				</div>
 				<div>
@@ -513,11 +513,6 @@
 				of the file and a frame where you can view the file if it's an
 				image, video, audio, PDF or text file.
 			</p>
-			<p>
-				More information about <a
-				href="https://en.wikipedia.org/wiki/Inline_linking"
-				target="_blank">Hotlinking on Wikipedia</a>.
-			</p>
 			<h3>Rate limiting</h3>
 			<p>
 				It's also possible to link directly to a file instead of the
@@ -530,19 +525,40 @@
 				from the file viewer page. On the file viewer you will see a
 				CAPTCHA to fill in when you click the download button.
 			</p>
+			<p>
+				More information about <a
+				href="https://en.wikipedia.org/wiki/Inline_linking"
+				target="_blank">Hotlinking on Wikipedia</a>.
+			</p>
 			<h3>Hotlinking with a Pro subscription</h3>
 			<p>
-				When you have a Pro subscription you will get a monthly
-				bandwidth cap for all the files on your account combined. Normal
-				downloads through the file viewer will not be subtracted from
-				the cap, so nothing changes if you keep using the site like
-				normal. If people download your files directly from the API (by
-				replacing the /u/ part in the link with /api/file/) the
-				bandwidth usage will be subtracted from the bandwidth cap on
-				your account. If the bandwidth cap is exceeded rate limiting
-				mode will be enabled for all the files on your account with
-				three times more downloads than views.
+				When you have a Pro subscription you will get a monthly data
+				transfer limit for all the files on your account combined. Files
+				you download from pixeldrain are subtracted from the data cap.
+				If you have <a href="/user/subscription">Bandwidth sharing</a>
+				enabled your data cap is also used when other people download
+				your files.
 			</p>
+			<p>
+				In principle there is always someone who pays for the bandwidth
+				usage when a file is being downloaded:
+			</p>
+			<ol>
+				<li>
+					If the person downloading the file has a Pro subscription
+					their data cap is used.
+				</li>
+				<li>
+					If the person who uploaded the file has a Pro subscription
+					and Bandwidth sharing is enabled on their account, then the
+					uploader's data cap is used.
+				</li>
+				<li>
+					If neither the uploader nor the downloader has a Pro
+					subscription the download will be supported by
+					advertisements on the download page.
+				</li>
+			</ol>
 			<p>
 				The bandwidth cap on your account is a 30 day rolling window.
 				This means that bandwidth usage will expire 30 days after it was
