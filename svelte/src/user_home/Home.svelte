@@ -6,10 +6,8 @@ import StorageProgressBar from "./StorageProgressBar.svelte";
 import HotlinkProgressBar from "./HotlinkProgressBar.svelte";
 import Euro from "../util/Euro.svelte"
 
-let graph_view = null
-let graph_download = null
+let graph_views_downloads = null
 let graph_bandwidth = null
-let graph_transfer_paid = null
 let time_start = ""
 let time_end = ""
 let total_views = 0
@@ -17,49 +15,73 @@ let total_downloads = 0
 let total_bandwidth = 0
 let total_transfer_paid = 0
 
-let load_graph = (graph, stat, minutes, interval) => {
-	let today = new Date()
+let load_graphs = async (minutes, interval) => {
+	let end = new Date()
 	let start = new Date()
 	start.setMinutes(start.getMinutes() - minutes)
 
-	fetch(
+	try {
+		let views = get_graph_data("views", start, end, interval);
+		let downloads = get_graph_data("downloads", start, end, interval);
+		let bandwidth = get_graph_data("bandwidth", start, end, interval);
+		let transfer_paid = get_graph_data("transfer_paid", start, end, interval);
+		views = await views
+		downloads = await downloads
+		bandwidth = await bandwidth
+		transfer_paid = await transfer_paid
+
+		graph_views_downloads.data().labels = views.timestamps;
+		graph_views_downloads.data().datasets[0].data = views.amounts
+		graph_views_downloads.data().datasets[1].data = downloads.amounts
+		graph_bandwidth.data().labels = bandwidth.timestamps;
+		graph_bandwidth.data().datasets[0].data = bandwidth.amounts
+		graph_bandwidth.data().datasets[1].data = transfer_paid.amounts
+
+		graph_views_downloads.update()
+		graph_bandwidth.update()
+
+		time_start = views.timestamps[0];
+		time_end = views.timestamps.slice(-1)[0];
+	} catch (err) {
+		console.error("Failed to update graphs", err)
+		return
+	}
+}
+
+let get_graph_data = async (stat, start, end, interval) => {
+	let resp = await fetch(
 		window.api_endpoint + "/user/time_series/" + stat +
 		"?start=" + start.toISOString() +
-		"&end=" + today.toISOString() +
+		"&end=" + end.toISOString() +
 		"&interval=" + interval
-	).then(resp => {
-		if (!resp.ok) { return Promise.reject("Error: " + resp.status); }
-		return resp.json();
-	}).then(resp => {
-		resp.timestamps.forEach((val, idx) => {
-			let date = new Date(val);
-			let dateStr = ("00" + (date.getMonth() + 1)).slice(-2);
-			dateStr += "-" + ("00" + date.getDate()).slice(-2);
-			dateStr += " " + ("00" + date.getHours()).slice(-2);
-			dateStr += ":" + ("00" + date.getMinutes()).slice(-2);
-			resp.timestamps[idx] = "   " + dateStr + "   "; // Poor man's padding
-		});
-		graph.chart().data.labels = resp.timestamps;
-		graph.chart().data.datasets[0].data = resp.amounts;
-		graph.chart().update();
+	)
+	resp = await resp.json()
 
-		time_start = resp.timestamps[0];
-		time_end = resp.timestamps.slice(-1)[0];
+	// Convert the timestamps to a human-friendly format
+	resp.timestamps.forEach((val, idx) => {
+		let date = new Date(val);
+		let str = ("00" + (date.getMonth() + 1)).slice(-2);
+		str += "-" + ("00" + date.getDate()).slice(-2);
+		str += " " + ("00" + date.getHours()).slice(-2);
+		str += ":" + ("00" + date.getMinutes()).slice(-2);
+		resp.timestamps[idx] = "  " + str + "  "; // Poor man's padding
+	});
 
-		let total = resp.amounts.reduce((acc, cur) => { return acc + cur }, 0)
+	// Add up the total amount and save it in the correct place
+	let total = resp.amounts.reduce((acc, cur) => { return acc + cur }, 0)
 
-		if (stat == "views") {
-			total_views = total;
-		} else if (stat == "downloads") {
-			total_downloads = total;
-		} else if (stat == "bandwidth") {
-			total_bandwidth = total;
-		} else if (stat == "transfer_paid") {
-			total_transfer_paid = total;
-		}
-	}).catch(e => {
-		console.error("Error requesting time series: " + e);
-	})
+	if (stat == "views") {
+		total_views = total;
+	} else if (stat == "downloads") {
+		total_downloads = total;
+		graph_views_downloads.update()
+	} else if (stat == "bandwidth") {
+		total_bandwidth = total;
+	} else if (stat == "transfer_paid") {
+		total_transfer_paid = total;
+	}
+
+	return resp
 }
 
 let graph_timeout = null
@@ -72,10 +94,7 @@ let update_graphs = (minutes, interval, live) => {
 
 	graph_timespan = minutes
 
-	load_graph(graph_view, "views", minutes, interval)
-	load_graph(graph_download, "downloads", minutes, interval)
-	load_graph(graph_bandwidth, "bandwidth", minutes, interval)
-	load_graph(graph_transfer_paid, "transfer_paid", minutes, interval)
+	load_graphs(minutes, interval)
 	load_direct_bw()
 }
 
@@ -112,6 +131,39 @@ onMount(() => {
 	} else {
 		transfer_cap = -1
 	}
+
+	graph_views_downloads.data().datasets = [
+		{
+			label: "Views",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.highlightColor,
+			backgroundColor: "#"+window.style.highlightColor,
+		},
+		{
+			label: "Downloads",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.dangerColor,
+			backgroundColor: "#"+window.style.dangerColor,
+		},
+	];
+	graph_bandwidth.data().datasets = [
+		{
+			label: "Bandwidth (total)",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.highlightColor,
+			backgroundColor: "#"+window.style.highlightColor,
+		},
+		{
+			label: "Bandwidth (premium)",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.dangerColor,
+			backgroundColor: "#"+window.style.dangerColor,
+		},
+	];
 
 	update_graphs(1440, 1, true);
 })
@@ -235,43 +287,31 @@ onDestroy(() => {
 		{formatDataVolume(total_transfer_paid, 3)} paid transfers
 	</div>
 	<div class="limit_width">
-		<h3>Paid transfers</h3>
+		<h3>Premium transfers and total bandwidth usage</h3>
 		<p>
-			A paid transfer is when a file is downloaded using the data cap on
-			your subscription plan. These can be files you downloaded from other
-			people, or other people downloading your files if you have bandwidth
-			sharing enabled. Bandwidth sharing can be changed on
+			A premium transfer is when a file is downloaded using the data cap
+			on your subscription plan. These can be files you downloaded from
+			other people, or other people downloading your files if you have
+			bandwidth sharing enabled. Bandwidth sharing can be changed on
 			<a href="/user/subscription">the subscription page</a>.
 		</p>
-	</div>
-	<Chart bind:this={graph_transfer_paid} dataType="bytes" label="Paid transfers" />
-	<div class="limit_width">
-		<h3>Views</h3>
 		<p>
-			A view is counted when someone visits the download page of one
-			of your files. Views are unique per user per file.
+			Total bandwidth usage is the combined bandwidth usage of all the
+			files on your account. This includes paid transfers.
 		</p>
 	</div>
-	<Chart bind:this={graph_view} dataType="number" label="Views" />
+	<Chart bind:this={graph_bandwidth} data_type="bytes"/>
 	<div class="limit_width">
-		<h3>Downloads</h3>
+		<h3>Views and downloads</h3>
 		<p>
-			Downloads are counted when a user clicks the download button
-			on one of your files. It does not matter whether the
-			download is completed or not, only the start of the download
-			is counted.
+			A view is counted when someone visits the download page of one of
+			your files. Views are unique per user per file.
+		</p>
+		<p>
+			Downloads are counted when a user clicks the download button on one
+			of your files. It does not matter whether the download is completed
+			or not, only the start of the download is counted.
 		</p>
 	</div>
-	<Chart bind:this={graph_download} dataType="number" label="Downloads" />
-	<div class="limit_width">
-		<h3>Bandwidth</h3>
-		<p>
-			This is how much bandwidth your files are using in total.
-			Bandwidth is used when a file is tranferred from a
-			pixeldrain server to a user who is downloading the file.
-			When a 5 MB file is downloaded 8 times it has used 40 MB of
-			bandwidth.
-		</p>
-	</div>
-	<Chart bind:this={graph_bandwidth} dataType="bytes" label="Bandwidth" />
+	<Chart bind:this={graph_views_downloads} data_type="number"/>
 </div>

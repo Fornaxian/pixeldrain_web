@@ -1,7 +1,8 @@
 <script>
-import Chart from "../util/Chart.svelte";
+import { onMount } from "svelte";
 import { formatDataVolume, formatDate, formatThousands } from "../util/Formatting.svelte"
 import { domain_url } from "../util/Util.svelte";
+import Chart from "../util/Chart.svelte";
 
 export let file = {
 	id: "",
@@ -16,24 +17,31 @@ export let file = {
 	timeseries_href: "",
 }
 
-let download_chart
-let view_chart
+let chart
+let chart_timespan = 43200
+let chart_interval = 60
 
-$: update_charts(file.id)
-let update_charts = () => {
-	if (file.id === "") {
-		return
+$: update_file(file.id)
+let update_file = id => {
+	if (id) {
+		update_chart(chart_timespan, chart_interval)
 	}
+}
+
+let update_chart = (timespan, interval) => {
+	chart_timespan = timespan
+	chart_interval = interval
+
 	console.log("updating graph")
 
-	let today = new Date()
 	let start = new Date()
-	start.setDate(start.getDate() - 90)
+	start.setMinutes(start.getMinutes() - timespan)
+	let end = new Date()
 
 	fetch(
 		file.timeseries_href +
 		"?start=" + start.toISOString() +
-		"&end=" + today.toISOString() +
+		"&end=" + end.toISOString() +
 		"&interval=" + 60
 	).then(resp => {
 		if (!resp.ok) { return null }
@@ -41,10 +49,10 @@ let update_charts = () => {
 	}).then(resp => {
 		resp.views.timestamps.forEach((val, idx) => {
 			let date = new Date(val);
-			let dateStr = ("00" + (date.getMonth() + 1)).slice(-2);
-			dateStr += "-" + ("00" + date.getDate()).slice(-2);
-			dateStr += " " + ("00" + date.getHours()).slice(-2) + "h";
-			resp.views.timestamps[idx] = "   " + dateStr + "   "; // Poor man's padding
+			let str = ("00" + (date.getMonth() + 1)).slice(-2);
+			str += "-" + ("00" + date.getDate()).slice(-2);
+			str += " " + ("00" + date.getHours()).slice(-2) + "h";
+			resp.views.timestamps[idx] = "  " + str + "  "; // Poor man's padding
 		});
 		resp.bandwidth.amounts.forEach((val, idx) => {
 			resp.bandwidth.amounts[idx] = Math.round(val / file.size);
@@ -52,14 +60,31 @@ let update_charts = () => {
 		resp.bandwidth_paid.amounts.forEach((val, idx) => {
 			resp.bandwidth.amounts[idx] += Math.round(val / file.size);
 		});
-		download_chart.chart().data.labels = resp.views.timestamps
-		view_chart.chart().data.labels = resp.views.timestamps
-		download_chart.chart().data.datasets[0].data = resp.bandwidth.amounts
-		view_chart.chart().data.datasets[0].data = resp.views.amounts
-		download_chart.update()
-		view_chart.update()
+		chart.data().labels = resp.views.timestamps
+		chart.data().datasets[0].data = resp.views.amounts
+		chart.data().datasets[1].data = resp.bandwidth.amounts
+		chart.update()
 	})
 }
+
+onMount(() => {
+	chart.data().datasets = [
+		{
+			label: "Views",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.highlightColor,
+			backgroundColor: "#"+window.style.highlightColor,
+		},
+		{
+			label: "Downloads",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.dangerColor,
+			backgroundColor: "#"+window.style.dangerColor,
+		},
+	];
+})
 </script>
 
 <div>
@@ -126,10 +151,42 @@ let update_charts = () => {
 		{/if}
 	</table>
 
-	<h2>Downloads</h2>
-	<Chart bind:this={download_chart} label="Downloads"></Chart>
-	<h2>Views</h2>
-	<Chart bind:this={view_chart} label="Views"></Chart>
+	<h2>Views and downloads</h2>
+
+	<div class="button_bar">
+		<button
+			on:click={() => { update_chart(1440, 1) }}
+			class:button_highlight={chart_timespan == 1440}>
+			Day (1m)
+		</button>
+		<button
+			on:click={() => { update_chart(10080, 60) }}
+			class:button_highlight={chart_timespan == 10080}>
+			Week (1h)
+		</button>
+		<button
+			on:click={() => { update_chart(43200, 1440) }}
+			class:button_highlight={chart_timespan == 43200}>
+			Month (1d)
+		</button>
+		<button
+			on:click={() => { update_chart(131400, 1440) }}
+			class:button_highlight={chart_timespan == 131400}>
+			Quarter (1d)
+		</button>
+		<button
+			on:click={() => { update_chart(525600, 1440) }}
+			class:button_highlight={chart_timespan == 525600}>
+			Year (1d)
+		</button>
+		<button
+			on:click={() => { update_chart(1051200, 1440) }}
+			class:button_highlight={chart_timespan == 1051200}>
+			Two Years (1d)
+		</button>
+	</div>
+
+	<Chart bind:this={chart} />
 
 	<p style="text-align: center">
 		Charts rendered by the amazing <a href="https://www.chartjs.org/" target="_blank">Chart.js</a>.
@@ -155,3 +212,11 @@ let update_charts = () => {
 		<tr><td>SHIFT + s</td><td> = Download all the files in the list as a zip archive</td></tr>
 	</table>
 </div>
+
+<style>
+.button_bar {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+</style>

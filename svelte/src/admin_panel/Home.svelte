@@ -39,11 +39,12 @@ const loadGraph = (minutes, interval, live) => {
 			dateStr += ":" + ("00" + date.getMinutes()).slice(-2);
 			resp.views.timestamps[idx] = "   " + dateStr + "   "; // Poor man's padding
 		});
-		graphViews.chart().data.labels = resp.views.timestamps;
-		graphViews.chart().data.datasets[0].data = resp.views.amounts;
-		graphBandwidth.chart().data.labels = resp.views.timestamps;
-		graphBandwidth.chart().data.datasets[0].data = resp.bandwidth.amounts
-		graphBandwidth.chart().data.datasets[1].data = resp.bandwidth_paid.amounts
+		graphViews.data().labels = resp.views.timestamps;
+		graphViews.data().datasets[0].data = resp.views.amounts;
+		graphViews.data().datasets[1].data = resp.downloads.amounts;
+		graphBandwidth.data().labels = resp.views.timestamps;
+		graphBandwidth.data().datasets[0].data = resp.bandwidth.amounts
+		graphBandwidth.data().datasets[1].data = resp.bandwidth_paid.amounts
 		graphViews.update()
 		graphBandwidth.update()
 
@@ -107,7 +108,7 @@ function getStats(order) {
 let statsInterval = null
 onMount(() => {
 	// Prepare chart datasets
-	graphBandwidth.chart().data.datasets = [
+	graphBandwidth.data().datasets = [
 		{
 			label: "Bandwidth (free)",
 			borderWidth: 2,
@@ -123,13 +124,20 @@ onMount(() => {
 			backgroundColor: "#"+window.style.dangerColor,
 		},
 	];
-	graphViews.chart().data.datasets = [
+	graphViews.data().datasets = [
 		{
 			label: "Views",
 			borderWidth: 2,
 			pointRadius: 0,
 			borderColor: "#"+window.style.highlightColor,
 			backgroundColor: "#"+window.style.highlightColor,
+		},
+		{
+			label: "Downloads",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.dangerColor,
+			backgroundColor: "#"+window.style.dangerColor,
 		},
 	];
 
@@ -163,8 +171,8 @@ onDestroy(() => {
 		<button on:click={() => { loadGraph(525600, 1440, false) }}>Year</button>
 		<button on:click={() => { loadGraph(1051200, 1440, false) }}>Two Years</button>
 	</div>
-	<Chart bind:this={graphBandwidth} dataType="bytes" label="Bandwidth" />
-	<Chart bind:this={graphViews} dataType="number" label="Views" />
+	<Chart bind:this={graphBandwidth} data_type="bytes" />
+	<Chart bind:this={graphViews} data_type="number" />
 	<div class="highlight_dark">
 		Total usage from {start_time} to {end_time}<br/>
 		{formatDataVolume(total_bandwidth, 3)} bandwidth,

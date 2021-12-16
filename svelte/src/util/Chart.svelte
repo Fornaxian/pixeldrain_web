@@ -5,11 +5,13 @@ import { Chart, PointElement, LineElement, LinearScale, CategoryScale, LineContr
 
 let chart_element
 let chart_object
-export let label = "label"
-export let dataType = ""
+export let data_type = ""
 
 export const chart = () => {
 	return chart_object
+}
+export const data = () => {
+	return chart_object.data
 }
 export const update = () => {
 	return chart_object.update()
@@ -32,15 +34,8 @@ onMount(() => {
 		{
 			type: 'line',
 			data: {
-				datasets: [
-					{
-						label: label,
-						borderWidth: 0,
-						pointRadius: 0,
-						fill: 'origin',
-						backgroundColor: "#"+window.style.highlightColor,
-					}
-				]
+				labels: [],
+				datasets: [],
 			},
 			options: {
 				legend: { display: false },
@@ -57,7 +52,7 @@ onMount(() => {
 						position: "left",
 						ticks: {
 							callback: function (value, index, values) {
-								if (dataType == "bytes") {
+								if (data_type == "bytes") {
 									return formatDataVolume(value, 3);
 								}
 								return formatNumber(value, 3);
@@ -88,7 +83,6 @@ onMount(() => {
 		}
 	);
 })
-
 </script>
 
 <div class="chart-container">
