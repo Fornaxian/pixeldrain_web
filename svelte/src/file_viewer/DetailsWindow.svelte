@@ -42,7 +42,7 @@ let update_chart = (timespan, interval) => {
 		file.timeseries_href +
 		"?start=" + start.toISOString() +
 		"&end=" + end.toISOString() +
-		"&interval=" + 60
+		"&interval=" + interval
 	).then(resp => {
 		if (!resp.ok) { return null }
 		return resp.json()
@@ -51,7 +51,8 @@ let update_chart = (timespan, interval) => {
 			let date = new Date(val);
 			let str = ("00" + (date.getMonth() + 1)).slice(-2);
 			str += "-" + ("00" + date.getDate()).slice(-2);
-			str += " " + ("00" + date.getHours()).slice(-2) + "h";
+			str += " " + ("00" + date.getHours()).slice(-2);
+			str += ":" + ("00" + date.getMinutes()).slice(-2);
 			resp.views.timestamps[idx] = "  " + str + "  "; // Poor man's padding
 		});
 		resp.bandwidth.amounts.forEach((val, idx) => {
@@ -165,9 +166,9 @@ onMount(() => {
 			Week (1h)
 		</button>
 		<button
-			on:click={() => { update_chart(43200, 1440) }}
+			on:click={() => { update_chart(43200, 60) }}
 			class:button_highlight={chart_timespan == 43200}>
-			Month (1d)
+			Month (1h)
 		</button>
 		<button
 			on:click={() => { update_chart(131400, 1440) }}
