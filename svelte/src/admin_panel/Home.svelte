@@ -171,8 +171,8 @@ onDestroy(() => {
 		<button on:click={() => { loadGraph(525600, 1440, false) }}>Year</button>
 		<button on:click={() => { loadGraph(1051200, 1440, false) }}>Two Years</button>
 	</div>
-	<Chart bind:this={graphBandwidth} data_type="bytes" />
-	<Chart bind:this={graphViews} data_type="number" />
+	<Chart bind:this={graphBandwidth} data_type="bytes" legend={false} />
+	<Chart bind:this={graphViews} data_type="number" legend={false} />
 	<div class="highlight_dark">
 		Total usage from {start_time} to {end_time}<br/>
 		{formatDataVolume(total_bandwidth, 3)} bandwidth,

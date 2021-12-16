@@ -1,11 +1,32 @@
 <script>
 import { onMount } from "svelte";
 import { formatDataVolume, formatNumber } from "./Formatting.svelte";
-import { Chart, PointElement, LineElement, LinearScale, CategoryScale, LineController, Filler, Tooltip } from "chart.js"
+import {
+	Chart,
+	PointElement,
+	LineElement,
+	LinearScale,
+	CategoryScale,
+	LineController,
+	Filler,
+	Tooltip,
+	Legend,
+} from "chart.js"
+Chart.register(
+	PointElement,
+	LineElement,
+	LinearScale,
+	CategoryScale,
+	LineController,
+	Filler,
+	Tooltip,
+	Legend,
+)
 
 let chart_element
 let chart_object
 export let data_type = ""
+export let legend = true
 
 export const chart = () => {
 	return chart_object
@@ -17,7 +38,6 @@ export const update = () => {
 	return chart_object.update()
 }
 
-Chart.register(PointElement, LineElement, LinearScale, CategoryScale, LineController, Filler, Tooltip)
 Chart.defaults.color = "#"+window.style.textColor;
 Chart.defaults.font.size = 15;
 Chart.defaults.font.family = "system-ui, sans-serif";
@@ -29,6 +49,7 @@ Chart.defaults.animation.duration = 500;
 Chart.defaults.animation.easing = "linear";
 
 onMount(() => {
+	console.log(legend)
 	chart_object = new Chart(
 		chart_element.getContext("2d"),
 		{
@@ -38,7 +59,15 @@ onMount(() => {
 				datasets: [],
 			},
 			options: {
-				legend: { display: false },
+				plugins: {
+					legend: {
+						display: legend,
+						labels: {
+							boxWidth: 12,
+							boxHeight: 12,
+						}
+					},
+				},
 				layout: {
 					padding: {
 						left: 4,
@@ -93,6 +122,6 @@ onMount(() => {
 .chart-container {
 	position: relative;
 	width: 100%;
-	height: 200px;
+	height: 250px;
 }
 </style>
