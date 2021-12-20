@@ -5,6 +5,7 @@ import AccountSettings from "./AccountSettings.svelte";
 import APIKeys from "./APIKeys.svelte";
 import Transactions from "./Transactions.svelte";
 import Subscription from "./Subscription.svelte";
+import ConnectApp from "./ConnectApp.svelte";
 
 let page = ""
 
@@ -74,14 +75,16 @@ onMount(() => {
 	</div>
 
 	{#if page === "home"}
-		<Home></Home>
+		<Home/>
 	{:else if page === "settings"}
-		<AccountSettings></AccountSettings>
+		<AccountSettings/>
 	{:else if page === "api_keys"}
-		<APIKeys></APIKeys>
+		<APIKeys/>
+	{:else if page === "connect_app"}
+		<ConnectApp/>
 	{:else if page === "transactions"}
-		<Transactions></Transactions>
+		<Transactions/>
 	{:else if page === "subscription"}
-		<Subscription></Subscription>
+		<Subscription/>
 	{/if}
 </div>

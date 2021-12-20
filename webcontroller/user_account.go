@@ -197,6 +197,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 		if session, err := td.PixelAPI.PostUserLogin(
 			f.FieldVal("username"),
 			f.FieldVal("password"),
+			"Pixeldrain Website",
 		); err != nil {
 			log.Debug("Login failed: %s", err)
 			formAPIError(err, &f)
