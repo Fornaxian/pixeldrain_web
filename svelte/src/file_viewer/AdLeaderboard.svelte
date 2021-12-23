@@ -13,7 +13,7 @@ onMount(() => {
 		return
 	}
 
-	switch (Math.floor(Math.random()*6)) {
+	switch (Math.floor(Math.random()*4)) {
 		case 0:
 			set_ad_type("aads")
 			break
@@ -24,12 +24,6 @@ onMount(() => {
 			set_ad_type("ads.plus")
 			break
 		case 3:
-			set_ad_type("adaround")
-			break
-		case 4:
-			set_ad_type("flyingsquare")
-			break
-		case 5:
 			set_ad_type("valueimpression")
 			break
 	}
