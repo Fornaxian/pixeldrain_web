@@ -129,7 +129,6 @@ head.valueimpression_loaded.subscribe(v => {
 	padding: 0;
 	text-align: center;
 	transition: right 0.5s;
-	background-color: var(--layer_2_color);
 }
 .ad_space {
 	width: 100%;

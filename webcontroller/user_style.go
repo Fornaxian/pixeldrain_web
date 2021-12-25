@@ -36,7 +36,8 @@ func userStyle(r *http.Request) pixeldrainStyleSheet {
 	case "default":
 		fallthrough // use default case
 	default:
-		return defaultPixeldrainStyle
+		// return defaultPixeldrainStyle
+		return maroonStyle
 	}
 }
 
@@ -264,7 +265,7 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 }
 
 var maroonStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .7},
+	TextColor:                hsl{0, 0, .8},
 	InputColor:               hsl{0, .75, .25},
 	InputTextColor:           hsl{0, 0, 1},
 	HighlightColor:           hsl{0, 1, .4},
