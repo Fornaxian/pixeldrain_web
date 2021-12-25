@@ -266,17 +266,17 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 
 var maroonStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .8},
-	InputColor:               hsl{0, .75, .25},
+	InputColor:               hsl{0, .87, .40}, // hsl(0, 87%, 40%)
 	InputTextColor:           hsl{0, 0, 1},
-	HighlightColor:           hsl{0, 1, .4},
-	HighlightTextColor:       hsl{0, 0, 1},
-	DangerColor:              hsl{0, .1, .1},
+	HighlightColor:           hsl{137, 1, .37}, //hsl(137, 100%, 37%)
+	HighlightTextColor:       hsl{0, 0, 0},
+	DangerColor:              hsl{9, .96, .42}, //hsl(9, 96%, 42%)
 	ScrollbarForegroundColor: hsl{0, .75, .3},
 	ScrollbarHoverColor:      hsl{0, .75, .4},
 	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
-	Layer1Color: hsl{0, .5, .05},
-	Layer2Color: hsl{0, .6, .08}, // hsl{0, .8, .15},
+	Layer1Color: hsl{0, .7, .05},
+	Layer2Color: hsl{0, .8, .08}, // hsl{0, .8, .15},
 	Layer3Color: hsl{0, .9, .14},
 	Layer4Color: hsl{0, .9, .20},
 
