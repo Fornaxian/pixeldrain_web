@@ -7,7 +7,7 @@ let container
 let ad_type = ""
 let visible = false
 
-onMount(async () => {
+onMount(() => {
 	let url_ads = new URL(window.location.href).searchParams.get("ads")
 	if (url_ads) {
 		set_ad_type(url_ads)
@@ -44,7 +44,7 @@ onMount(async () => {
 	}
 })
 
-let set_ad_type = async (t) => {
+let set_ad_type = async t => {
 	ad_type = t
 	head.load_ad(t)
 

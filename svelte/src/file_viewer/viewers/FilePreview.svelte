@@ -10,6 +10,7 @@ import Text from "./Text.svelte";
 import File from "./File.svelte";
 import Abuse from "./Abuse.svelte";
 import { file_type } from "../FileUtilities.svelte";
+import RateLimit from "./RateLimit.svelte";
 
 let viewer
 let viewer_type = "loading"
@@ -20,6 +21,8 @@ export const set_file = async file => {
 		return
 	} else if (file.abuse_type !== "") {
 		viewer_type = "abuse"
+	} else if (file.availability === "file_rate_limited_captcha_required") {
+		viewer_type = "rate_limit"
 	} else {
 		viewer_type = file_type(file)
 	}
@@ -45,6 +48,8 @@ const prev = () => { dispatch("prev") }
 		</div>
 	{:else if viewer_type === "abuse"}
 		<Abuse bind:this={viewer}></Abuse>
+	{:else if viewer_type === "rate_limit"}
+		<RateLimit bind:this={viewer} on:download={download}></RateLimit>
 	{:else if viewer_type === "image"}
 		<Image bind:this={viewer}></Image>
 	{:else if viewer_type === "video"}

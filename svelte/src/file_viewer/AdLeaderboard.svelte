@@ -29,7 +29,7 @@ onMount(() => {
 	}
 })
 
-let set_ad_type = (t) => {
+let set_ad_type = async t => {
 	ad_type = t
 	head.load_ad(t)
 	resize()

@@ -531,11 +531,10 @@ const keyboard_event = evt => {
 	/* background-color: var(--layer_2_color); */
 	background: repeating-linear-gradient(
 		315deg,
-		#0b3100 0px,
-		#0b3100 18px,
-		#3d0000 20px,
-		#3d0000 38px,
-		#0b3100 40px
+		#034215 0px,
+		#034215 20px,
+		#430303 20px,
+		#430303 40px
 	);
 }
 
