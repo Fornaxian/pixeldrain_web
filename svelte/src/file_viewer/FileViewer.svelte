@@ -528,14 +528,7 @@ const keyboard_event = evt => {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-	/* background-color: var(--layer_2_color); */
-	background: repeating-linear-gradient(
-		315deg,
-		#034215 0px,
-		#034215 20px,
-		#430303 20px,
-		#430303 40px
-	);
+	background-color: var(--layer_2_color);
 }
 
 /* Headerbar (row 1) */
@@ -621,7 +614,7 @@ const keyboard_event = evt => {
 	padding: 0;
 	text-align: left;
 	transition: left 0.5s, right 0.5s;
-	/* background-color: var(--layer_2_color); */
+	background-color: var(--layer_2_color);
 	z-index: 1;
 }
 .toolbar.toolbar_visible { left: 0; }

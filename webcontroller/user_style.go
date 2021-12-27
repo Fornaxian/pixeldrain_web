@@ -36,8 +36,7 @@ func userStyle(r *http.Request) pixeldrainStyleSheet {
 	case "default":
 		fallthrough // use default case
 	default:
-		// return defaultPixeldrainStyle
-		return maroonStyle
+		return defaultPixeldrainStyle
 	}
 }
 
