@@ -211,7 +211,7 @@ const toggle_gallery = () => {
 	if (view === "gallery") {
 		window.location.hash = "#item=0"
 	} else {
-		window.location.hash = "#gallery"
+		window.location.hash = ""
 	}
 }
 
