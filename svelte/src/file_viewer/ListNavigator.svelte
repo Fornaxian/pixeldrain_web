@@ -11,13 +11,12 @@ let selected_file_index = 0
 export const next = () => {
 	if (shuffle) {
 		rand_item()
-		return
+	} else {
+		dispatch("set_file", selected_file_index+1)
 	}
-
-	select_item_event(selected_file_index+1)
 }
 export const prev = () => {
-	select_item_event(selected_file_index-1)
+	dispatch("set_file", selected_file_index-1)
 }
 
 let history = []
@@ -29,14 +28,7 @@ export const rand_item = () => {
 		console.log("rand is " + rand)
 	} while(history.indexOf(rand) > -1)
 
-	select_item_event(rand)
-}
-
-// select_item_event signals to the FileViewer that the file needs to be
-// changed. The FileViewer then calls set_item if the change has been approved.
-// ListNavigator cannot call set_item itself because it will cause a loop.
-const select_item_event = idx => {
-	dispatch("set_file", idx)
+	dispatch("set_file", rand)
 }
 
 export const set_item = idx => {
@@ -81,13 +73,14 @@ export const set_item = idx => {
 		<i class="icon">chevron_left</i>
 	</button>
 	<div bind:this={file_list_div} class="list_navigator">
-		{#each files as file, index}
-			<div class="list_item file_button"
-				class:file_button_selected={file.selected}
-				on:click={() => { select_item_event(index) }}>
+		{#each files as file, index (file)}
+			<a
+				href="#item={index}"
+				class="list_item file_button"
+				class:file_button_selected={file.selected}>
 				<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" loading="lazy"/>
 				{file.name}
-			</div>
+			</a>
 		{/each}
 	</div>
 	<button class="nav_button" style="margin-left: 0;" on:click={next}>

@@ -15,10 +15,6 @@ export let list = {
 
 let file_picker;
 
-const click_file = index => {
-	dispatch("set_file", index)
-}
-
 const update_list = async new_files => {
 	dispatch("loading", true)
 
@@ -125,9 +121,9 @@ const drop = (e, index) => {
 
 <div class="gallery">
 	{#each list.files as file, index (file)}
-		<div
+		<a
+			href="#item={index}"
 			class="file"
-			on:click={() => {click_file(index)}}
 			draggable={list.can_edit}
 			on:dragstart={e => drag(e, index)}
 			on:drop|preventDefault={e => drop(e, index)}
@@ -141,14 +137,14 @@ const drop = (e, index) => {
 				class:editing={list.can_edit}
 				style="background-image: url('{file.icon_href}?width=256&height=256');">
 				{#if list.can_edit}
-					<i class="icon" on:click|stopPropagation style="cursor: grab;">drag_indicator</i>
-					<i class="icon" on:click|stopPropagation={() => {move_left(index)}}>chevron_left</i>
-					<i class="icon" on:click|stopPropagation={() => {move_right(index)}}>chevron_right</i>
-					<i class="icon" on:click|stopPropagation={() => {delete_file(index)}}>delete</i>
+					<i class="icon" on:click|stopPropagation|preventDefault style="cursor: grab;">drag_indicator</i>
+					<i class="icon" on:click|stopPropagation|preventDefault={() => {move_left(index)}}>chevron_left</i>
+					<i class="icon" on:click|stopPropagation|preventDefault={() => {move_right(index)}}>chevron_right</i>
+					<i class="icon" on:click|stopPropagation|preventDefault={() => {delete_file(index)}}>delete</i>
 				{/if}
 			</div>
 			{file.name}
-		</div>
+		</a>
 	{/each}
 
 	{#if list.can_edit}
@@ -190,6 +186,7 @@ const drop = (e, index) => {
 	text-overflow: ellipsis;
 	text-decoration: none;
 	vertical-align: top;
+	color: var(--text_color);
 }
 .file:hover, .highlight {
 	box-shadow: 0 0 2px 2px var(--highlight_color);

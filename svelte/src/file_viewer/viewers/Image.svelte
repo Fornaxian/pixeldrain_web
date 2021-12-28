@@ -1,4 +1,7 @@
 <script>
+import { createEventDispatcher } from "svelte"
+let dispatch = createEventDispatcher()
+
 export const set_file = f => file = f
 let file = {
 	id: "",
@@ -51,6 +54,8 @@ const mouseup = (e) => {
 
 <div bind:this={container} class="container" class:zoom>
 	<img
+		on:loadstart={() => {dispatch("loading", true)}}
+		on:load={() => {dispatch("loading", false)}}
 		on:dblclick={() => {zoom = !zoom}}
 		on:doubletap={() => {zoom = !zoom}}
 		on:mousedown={mousedown}

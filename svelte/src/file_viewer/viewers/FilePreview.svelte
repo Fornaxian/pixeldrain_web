@@ -38,6 +38,7 @@ let dispatch = createEventDispatcher()
 const download = () => { dispatch("download") }
 const next = () => { dispatch("next") }
 const prev = () => { dispatch("prev") }
+const loading = e => {dispatch("loading", e.detail)}
 
 </script>
 
@@ -51,11 +52,11 @@ const prev = () => { dispatch("prev") }
 	{:else if viewer_type === "rate_limit"}
 		<RateLimit bind:this={viewer} on:download={download}></RateLimit>
 	{:else if viewer_type === "image"}
-		<Image bind:this={viewer}></Image>
+		<Image bind:this={viewer} on:loading={loading}></Image>
 	{:else if viewer_type === "video"}
-		<Video bind:this={viewer} on:download={download} on:prev={prev} on:next={next}></Video>
+		<Video bind:this={viewer} on:loading={loading} on:download={download} on:prev={prev} on:next={next}></Video>
 	{:else if viewer_type === "audio"}
-		<Audio bind:this={viewer} on:prev={prev} on:next={next}></Audio>
+		<Audio bind:this={viewer} on:loading={loading} on:prev={prev} on:next={next}></Audio>
 	{:else if viewer_type === "pdf"}
 		<PDF bind:this={viewer}></PDF>
 	{:else if viewer_type === "text"}

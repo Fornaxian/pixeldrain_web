@@ -20,7 +20,15 @@ import GalleryView from "./GalleryView.svelte";
 import Spinner from "../util/Spinner.svelte";
 import Downloader from "./Downloader.svelte";
 
-let loading = true
+let loading = 0
+const on_loading = e => {
+	if (e.detail) {
+		loading++
+	} else {
+		loading--
+	}
+}
+
 let embedded = false
 let view_token = ""
 let ads_enabled = false
@@ -84,6 +92,7 @@ let embed_visible = false
 let skyscraper_visible = false
 
 onMount(() => {
+	loading++
 	let viewer_data = window.viewer_data
 	embedded = viewer_data.embedded
 
@@ -101,10 +110,10 @@ onMount(() => {
 	}
 
 	ads_enabled = list.files[0].show_ads
-	loading = false
+	loading--
 })
 const reload = async () => {
-	loading = true
+	loading++
 	if (is_list) {
 		try {
 			const resp = await fetch(list.info_href);
@@ -129,7 +138,7 @@ const reload = async () => {
 			alert(err)
 		}
 	}
-	loading = false
+	loading--
 }
 
 const open_list = l => {
@@ -145,14 +154,18 @@ const open_list = l => {
 	// correct file is opened
 	is_list = true
 
+	hash_change()
+}
+const hash_change = () => {
 	// Skip to the file defined in the link hash
-	let matches = location.hash.match(new RegExp('item=([^&]*)'))
-	let hashID = parseInt(matches ? matches[1] : null)
-	if (Number.isInteger(hashID)) {
+	let matches = location.hash.match(/item=([\d]+)/)
+	let index = parseInt(matches ? matches[1] : null)
+	if (Number.isInteger(index)) {
 		// The URL contains an item number. Navigate to that item
-		open_file_index(hashID)
+		open_file_index(index)
 	} else if (view !== "gallery") {
-		toggle_gallery()
+		view = "gallery"
+		file = file_struct // Empty the file struct
 	}
 }
 const open_file_index = async index => {
@@ -161,6 +174,11 @@ const open_file_index = async index => {
 	} else if (index < 0) {
 		index = list.files.length - 1
 	}
+	if (list.files[index] === file) {
+		console.debug("ignoring request to load the same file that is currently loaded")
+		return
+	}
+
 	console.debug("received request to open file", index)
 
 	file_set_href(list.files[index])
@@ -174,8 +192,8 @@ const open_file_index = async index => {
 	file_preview.set_file(file)
 
 	if (is_list) {
-		// Update the URL
-		location.replace("#item=" + index)
+		// Update the URL without pushing a new history entry
+		window.location.replace("#item=" + index)
 		list_navigator.set_item(index)
 	}
 
@@ -188,11 +206,9 @@ const open_file_index = async index => {
 }
 const toggle_gallery = () => {
 	if (view === "gallery") {
-		open_file_index(0)
+		window.location.hash = "#item=0"
 	} else {
-		location.replace("#gallery")
-		view = "gallery"
-		file = file_struct // Empty the file struct
+		window.location.hash = "#gallery"
 	}
 }
 
@@ -305,31 +321,45 @@ const keyboard_event = evt => {
 
 </script>
 
-<svelte:window on:keydown={keyboard_event}/>
+<svelte:window on:keydown={keyboard_event} on:hashchange={hash_change}/>
 
 <div id="file_viewer" class="file_viewer">
 	<!-- Head elements for the ads -->
 	<AdHead></AdHead>
 
-	{#if loading}
+	{#if loading !== 0}
 		<div class="spinner_container">
 			<Spinner></Spinner>
 		</div>
 	{/if}
 
 	<div id="headerbar" class="headerbar" class:embedded>
-		<button on:click={toolbar_toggle} class="button_toggle_toolbar round" class:button_highlight={toolbar_visible}>
+		<button
+			on:click={toolbar_toggle}
+			class="button_toggle_toolbar round"
+			class:button_highlight={toolbar_visible}
+			title="Open or close the toolbar">
 			<i class="icon">menu</i>
 		</button>
-		<a href="/" bind:this={button_home} class="button button_home round" target={embedded ? "_blank" : ""}>
+
+		<a
+			href="/"
+			bind:this={button_home}
+			class="button button_home round"
+			target={embedded ? "_blank" : ""}
+			title="Go to the pixeldrain home page">
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 4px 0 0;"></PixeldrainLogo>
 		</a>
+
 		<div id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">
 			{#if list.title !== ""}{list.title}<br/>{/if}
 			{#if file.name !== ""}{file.name}{/if}
 		</div>
 		{#if embedded && supports_fullscreen}
-			<button class="round" on:click={toggle_fullscreen}>
+			<button
+				class="round"
+				on:click={toggle_fullscreen}
+				title="Open this page in full-screen mode">
 				<i class="icon" id="btn_fullscreen_icon">fullscreen</i>
 			</button>
 		{/if}
@@ -352,29 +382,42 @@ const keyboard_event = evt => {
 			{/if}
 
 			{#if is_list}
-				<button on:click={toggle_gallery} class="toolbar_button button_full_width" class:button_highlight={view === "gallery"}>
+				<button
+					on:click={toggle_gallery}
+					class="toolbar_button button_full_width"
+					class:button_highlight={view === "gallery"}
+					title="Opens a gallery view of the album">
 					<i class="icon">photo_library</i>
 					Gallery
 				</button>
 			{/if}
 
 			{#if file.abuse_type === "" && view === "file"}
-				<button on:click={downloader.download_file} class="toolbar_button button_full_width">
+				<button
+					on:click={downloader.download_file}
+					class="toolbar_button button_full_width"
+					title="Save this file to your computer">
 					<i class="icon">download</i>
 					<span>Download</span>
 				</button>
 			{/if}
+
 			{#if file.abuse_type === "" && is_list}
-				<button on:click={downloader.download_list} class="toolbar_button button_full_width">
+				<button
+					on:click={downloader.download_list}
+					class="toolbar_button button_full_width"
+					title="Download all files in this album as a zip archive">
 					<i class="icon">download</i>
 					<span>DL all files</span>
 				</button>
 			{/if}
 
-			<button on:click={copy_url}
+			<button
+				on:click={copy_url}
 				class="toolbar_button button_full_width"
 				class:button_highlight={copy_url_status === "copied"}
-				class:button_red={copy_url_status === "error"}>
+				class:button_red={copy_url_status === "error"}
+				title="Copy a link to this page to your clipboard">
 				<i class="icon">content_copy</i>
 				<span>
 					{#if copy_url_status === "copied"}
@@ -387,12 +430,20 @@ const keyboard_event = evt => {
 				</span>
 			</button>
 
-			<button on:click={toggle_sharebar} class="toolbar_button button_full_width" class:button_highlight={sharebar_visible}>
+			<button
+				on:click={toggle_sharebar}
+				class="toolbar_button button_full_width"
+				class:button_highlight={sharebar_visible}
+				title="Share this file on social media">
 				<i class="icon">share</i>
 				<span>Share</span>
 			</button>
 
-			<button class="toolbar_button button_full_width" on:click={qr_window.toggle} class:button_highlight={qr_visible}>
+			<button
+				class="toolbar_button button_full_width"
+				on:click={qr_window.toggle}
+				class:button_highlight={qr_visible}
+				title="Show a QR code with a link to this page. Useful for sharing files in-person">
 				<i class="icon">qr_code</i>
 				<span>QR code</span>
 			</button>
@@ -400,7 +451,7 @@ const keyboard_event = evt => {
 			{#if is_list}
 				<button
 					class="toolbar_button button_full_width"
-					title="Randomize the order of the files in this list"
+					title="Go to a random file when pressing → or clicking the next file button"
 					class:button_highlight={list_shuffle}
 					on:click={toggle_shuffle}>
 					<i class="icon">shuffle</i>
@@ -413,7 +464,11 @@ const keyboard_event = evt => {
 			{/if}
 
 			{#if view === "file"}
-				<button class="toolbar_button button_full_width" on:click={details_window.toggle} class:button_highlight={details_visible}>
+				<button
+					class="toolbar_button button_full_width"
+					on:click={details_window.toggle}
+					class:button_highlight={details_visible}
+					title="Information and statistics about this file">
 					<i class="icon">help</i>
 					<span>Deta<u>i</u>ls</span>
 				</button>
@@ -422,26 +477,41 @@ const keyboard_event = evt => {
 			<hr/>
 
 			{#if file.can_edit || list.can_edit}
-				<button class="toolbar_button button_full_width" on:click={edit_window.toggle} class:button_highlight={edit_visible}>
+				<button
+					class="toolbar_button button_full_width"
+					on:click={edit_window.toggle}
+					class:button_highlight={edit_visible}
+					title="Edit or delete this file or album">
 					<i class="icon">edit</i>
 					<span><u>E</u>dit</span>
 				</button>
 			{/if}
 
 			{#if view === "file" && window.user_authenticated && !file.can_edit}
-				<button on:click={grab_file} class="toolbar_button button_full_width" title="Copy this file to your own pixeldrain account">
+				<button
+					on:click={grab_file}
+					class="toolbar_button button_full_width"
+					title="Copy this file to your own pixeldrain account">
 					<i class="icon">save_alt</i>
 					<span><u>G</u>rab file</span>
 				</button>
 			{/if}
 
-			<button class="toolbar_button button_full_width" title="Include this file in your own webpages" on:click={embed_window.toggle} class:button_highlight={embed_visible}>
+			<button
+				class="toolbar_button button_full_width"
+				title="Include this file in your own webpages"
+				on:click={embed_window.toggle}
+				class:button_highlight={embed_visible}>
 				<i class="icon">code</i>
 				<span>E<u>m</u>bed</span>
 			</button>
 
 			{#if view === "file"}
-				<button class="toolbar_button button_full_width" title="Report abuse in this file" on:click={report_window.toggle} class:button_highlight={report_visible}>
+				<button
+					class="toolbar_button button_full_width"
+					title="Report this file as abusive"
+					on:click={report_window.toggle}
+					class:button_highlight={report_visible}>
 					<i class="icon">flag</i>
 					<span>Report</span>
 				</button>
@@ -455,14 +525,14 @@ const keyboard_event = evt => {
 					bind:this={file_preview}
 					on:download={downloader.download_file}
 					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
-					on:next={() => { if (list_navigator) { list_navigator.next() }}}>
+					on:next={() => { if (list_navigator) { list_navigator.next() }}}
+					on:loading={on_loading}>
 				</FilePreview>
 			{:else if view === "gallery"}
 				<GalleryView
 					list={list}
-					on:set_file={e => { open_file_index(e.detail) }}
 					on:reload={reload}
-					on:loading={e => {loading = e.detail}}>
+					on:loading={on_loading}>
 				</GalleryView>
 			{/if}
 		</div>
