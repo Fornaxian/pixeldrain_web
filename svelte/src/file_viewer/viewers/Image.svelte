@@ -56,6 +56,7 @@ const mouseup = (e) => {
 	<img
 		on:loadstart={() => {dispatch("loading", true)}}
 		on:load={() => {dispatch("loading", false)}}
+		on:error={() => {dispatch("loading", false)}}
 		on:dblclick={() => {zoom = !zoom}}
 		on:doubletap={() => {zoom = !zoom}}
 		on:mousedown={mousedown}

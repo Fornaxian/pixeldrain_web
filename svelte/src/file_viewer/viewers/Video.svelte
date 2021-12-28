@@ -62,8 +62,6 @@ let download = () => { dispatch("download", {}) }
 		{#if !video_reload}
 			<!-- svelte-ignore a11y-media-has-caption -->
 			<video
-				on:loadstart={() => {dispatch("loading", true)}}
-				on:load={() => {dispatch("loading", false)}}
 				bind:this={player}
 				controls
 				playsinline

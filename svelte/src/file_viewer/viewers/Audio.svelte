@@ -73,8 +73,6 @@ const toggle_play = () => playing ? player.pause() : player.play()
 	{#if file.id && !audio_reload}
 		<!-- svelte-ignore a11y-media-has-caption -->
 		<audio
-			on:loadstart={() => {dispatch("loading", true)}}
-			on:load={() => {dispatch("loading", false)}}
 			bind:this={player}
 			class="player"
 			controls

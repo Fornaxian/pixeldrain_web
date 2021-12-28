@@ -20,15 +20,7 @@ import GalleryView from "./GalleryView.svelte";
 import Spinner from "../util/Spinner.svelte";
 import Downloader from "./Downloader.svelte";
 
-let loading = 0
-const on_loading = e => {
-	if (e.detail) {
-		loading++
-	} else {
-		loading--
-	}
-}
-
+let loading = true
 let embedded = false
 let view_token = ""
 let ads_enabled = false
@@ -92,7 +84,6 @@ let embed_visible = false
 let skyscraper_visible = false
 
 onMount(() => {
-	loading++
 	let viewer_data = window.viewer_data
 	embedded = viewer_data.embedded
 
@@ -110,10 +101,10 @@ onMount(() => {
 	}
 
 	ads_enabled = list.files[0].show_ads
-	loading--
+	loading = false
 })
 const reload = async () => {
-	loading++
+	loading = true
 	if (is_list) {
 		try {
 			const resp = await fetch(list.info_href);
@@ -138,7 +129,7 @@ const reload = async () => {
 			alert(err)
 		}
 	}
-	loading--
+	loading = false
 }
 
 const open_list = l => {
@@ -163,9 +154,14 @@ const hash_change = () => {
 	if (Number.isInteger(index)) {
 		// The URL contains an item number. Navigate to that item
 		open_file_index(index)
-	} else if (view !== "gallery") {
+		return
+	}
+
+	// If the hash does not contain a file ID we open the gallery
+	if (view !== "gallery") {
 		view = "gallery"
 		file = file_struct // Empty the file struct
+		document.title = list.title+" ~ pixeldrain"
 	}
 }
 const open_file_index = async index => {
@@ -184,17 +180,24 @@ const open_file_index = async index => {
 	file_set_href(list.files[index])
 	file = list.files[index]
 
+	// Switch from gallery view to file view if it's not already so
 	if (view !== "file") {
 		view = "file"
 		await tick() // Wait for the file_preview and list_navigator to render
 	}
 
+	// Tell the preview window to start rendering the file
 	file_preview.set_file(file)
 
+	// Tell the list_navigator to highlight the loaded file
 	if (is_list) {
-		// Update the URL without pushing a new history entry
-		window.location.replace("#item=" + index)
+		// Update the URL. This triggers the hash_change again, but it gets
+		// ignored because the file is already loaded
+		window.location.hash = "#item=" + index
+		document.title = file.name+" ~ "+list.title+" ~ pixeldrain"
 		list_navigator.set_item(index)
+	} else {
+		document.title = file.name+" ~ pixeldrain"
 	}
 
 	// Register a file view
@@ -327,7 +330,7 @@ const keyboard_event = evt => {
 	<!-- Head elements for the ads -->
 	<AdHead></AdHead>
 
-	{#if loading !== 0}
+	{#if loading}
 		<div class="spinner_container">
 			<Spinner></Spinner>
 		</div>
@@ -526,13 +529,13 @@ const keyboard_event = evt => {
 					on:download={downloader.download_file}
 					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
 					on:next={() => { if (list_navigator) { list_navigator.next() }}}
-					on:loading={on_loading}>
+					on:loading={e => {loading = e.detail}}>
 				</FilePreview>
 			{:else if view === "gallery"}
 				<GalleryView
 					list={list}
 					on:reload={reload}
-					on:loading={on_loading}>
+					on:loading={e => {loading = e.detail}}>
 				</GalleryView>
 			{/if}
 		</div>

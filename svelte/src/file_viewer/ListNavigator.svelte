@@ -69,13 +69,14 @@ export const set_item = idx => {
 </script>
 
 <div class="nav_container">
-	<button class="nav_button" style="margin-right: 0;" on:click={prev}>
+	<button class="nav_button" style="margin-right: 0;" on:click={prev} title="Open the previous file">
 		<i class="icon">chevron_left</i>
 	</button>
 	<div bind:this={file_list_div} class="list_navigator">
 		{#each files as file, index (file)}
 			<a
 				href="#item={index}"
+				title="Open {file.name}"
 				class="list_item file_button"
 				class:file_button_selected={file.selected}>
 				<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" loading="lazy"/>
@@ -83,7 +84,7 @@ export const set_item = idx => {
 			</a>
 		{/each}
 	</div>
-	<button class="nav_button" style="margin-left: 0;" on:click={next}>
+	<button class="nav_button" style="margin-left: 0;" on:click={next} title="Open the next file">
 		<i class="icon">chevron_right</i>
 	</button>
 </div>
