@@ -1,5 +1,4 @@
 {{define "form"}}
-	<h1>{{.Title}}</h1>
 	{{.PreFormHTML}}
 	<form class="highlight_dark" method="POST">
 		{{if eq .Submitted true}}
@@ -111,10 +110,14 @@
 	<body>
 		<div id='body' class="body">
 			{{template "page_top" .}}
-			<div class="page_content"><div class="limit_width">
+			<div class="checkers inset">
+				<h1>{{.Form.Title}}</h1>
+			</div>
+			<br/>
+			<div class="limit_width">
 				{{template "form" .Form}}
 				<br/>
-			</div></div>
+			</div>
 			{{template "page_bottom" .}}
 		</div>
 

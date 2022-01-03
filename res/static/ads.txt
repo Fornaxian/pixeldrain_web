@@ -1407,3 +1407,4 @@ onetag.com, 5cd7fb62fac7ec9, DIRECT
 openx.com, 537133236, RESELLER, 6a698e2ec38604c6
 pubmatic.com, 158685, RESELLER, 5d62403b186f2ace
 rubiconproject.com, 13380, RESELLER, 0bfd66d529a55807
+triplelift.com, 10992, RESELLER, 6c33edb13117fd86

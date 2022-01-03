@@ -7,10 +7,12 @@
 
 	<body>
 		{{template "page_top" .}}
-		<h1>{{.Title}}</h1>
-		<div class="page_content"><div class="limit_width">
+		<div class="checkers inset">
+			<h1>{{.Title}}</h1>
+		</div>
+		<div class="limit_width">
 			{{.Other}}
-		</div></div>
+		</div>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>

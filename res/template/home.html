@@ -8,7 +8,7 @@
 		.header_image{
 			width: 100%;
 			max-width: 800px;
-			margin: 0 auto 50px auto;
+			margin: auto;
 		}
 		.feat_table {
 			display: flex;
@@ -93,18 +93,21 @@
 	</head>
 	<body>
 		{{template "page_top" .}}
-
-		<picture>
-			<source media="(max-width: 800px)" srcset="/res/img/header_orbitron.png">
-			<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header image">
-		</picture>
-		<br/>
+		<div class="checkers inset" style="padding-bottom: 60px;">
+			<picture>
+				<source media="(max-width: 800px)" srcset="/res/img/header_orbitron.png">
+				<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header image">
+			</picture>
+		</div>
 
 		<!-- Svelte element -->
-		<div id="uploader" class="page_content" style="margin-bottom: 50px;"></div>
+		<div id="uploader" class="page_content"></div>
 
-		<h1>What is pixeldrain?</h1>
-		<div class="page_content"><div class="limit_width">
+		<div class="checkers inset">
+			<h1>What is pixeldrain?</h1>
+		</div>
+
+		<div class="limit_width">
 			<p>
 				Pixeldrain is a file sharing website built for speed and ease of
 				use. You can upload files you want to share online to our
@@ -472,7 +475,7 @@
 				logging in head to the <a href="/user/transactions">transactions
 				page</a> to deposit your coins.
 			</p>
-		</div></div>
+		</div>
 
 		<template id="tpl_file_expiry">
 			<p>

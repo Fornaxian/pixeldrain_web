@@ -7,8 +7,12 @@
 	<body>
 		<div id='body' class="body">
 			{{template "page_top" .}}
-			<h1>Upload History</h1>
-			<div class="page_content"><div class="limit_width">
+
+			<div class="checkers inset">
+				<h1>Upload History</h1>
+			</div>
+
+			<div class="limit_width">
 				<p>
 				Here are all files you have previously uploaded to pixeldrain using this computer.
 				This data is saved locally in your web browser and gets updated every time you upload a file through your current browser.
@@ -16,7 +20,7 @@
 				<br/>
 
 				<div id="uploaded_files" class="highlight_dark"></div>
-			</div></div>
+			</div>
 			{{template "page_bottom" .}}
 		</div>
 		<script>

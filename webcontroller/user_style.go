@@ -241,7 +241,7 @@ var sunnyPixeldrainStyle = pixeldrainStyleSheet{
 	Layer3Color: hsl{0, 1, 1},
 	Layer4Color: hsl{0, 1, 1},
 
-	ShadowColor: hsl{0, 0, 0.5},
+	ShadowColor: hsl{0, 0, 0},
 }
 
 var solarizedDarkStyle = pixeldrainStyleSheet{

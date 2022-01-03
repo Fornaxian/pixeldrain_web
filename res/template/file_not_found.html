@@ -7,8 +7,10 @@
 
 	<body>
 		{{template "page_top" .}}
-		<h1>404, File Not Found!</h1>
-		<div class="page_content"><div class="limit_width">
+		<div class="checkers inset">
+			<h1>404, File Not Found!</h1>
+		</div>
+		<div class="limit_width">
 			<p>
 				This file does not exist, or it has been removed. Possible
 				reasons for this are:
@@ -18,7 +20,7 @@
 					The file has not been viewed for 30 days and has expired
 				</li>
 				<li>
-					The user who uploaded the file has deleted it
+					The person who uploaded the file has deleted it
 				</li>
 				<li>
 					Something went wrong on the pixeldrain servers causing the
@@ -32,8 +34,7 @@
 			<p>
 				I'm sorry for the inconvenience.
 			</p>
-
-		</div></div>
+		</div>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
@@ -48,21 +49,28 @@
 
 	<body>
 		{{template "page_top" .}}
-		<h1>404, List Not Found!</h1>
-		<div class="page_content"><div class="limit_width">
+		<div class="checkers inset">
+			<h1>404, List Not Found!</h1>
+		</div>
+		<div class="limit_width">
 			<p>
 				This list does not exist, or it has been removed. Possible
 				reasons for this are:
 			</p>
 			<ul>
-				<li>All files in this list have not been viewed for 30 days and have expired</li>
-				<li>Something went wrong on the pixeldrain servers causing the list to be temporarily unavailable</li>
+				<li>
+					All files in this list have not been viewed for 30 days and
+					have expired
+				</li>
+				<li>
+					Something went wrong on the pixeldrain servers causing the
+					list to be temporarily unavailable
+				</li>
 			</ul>
 			<p>
 				I'm sorry for the inconvenience.
 			</p>
-
-		</div></div>
+		</div>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>

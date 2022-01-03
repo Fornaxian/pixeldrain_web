@@ -159,7 +159,6 @@ func New(
 		{GET, "brave" /*           */, wc.serveMarkdown("brave.md", handlerOpts{})},
 		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", handlerOpts{})},
 		{GET, "business" /*        */, wc.serveMarkdown("business.md", handlerOpts{})},
-		{GET, "server_status" /*   */, wc.serveTemplate("server_status", handlerOpts{})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
 
 		// User account pages

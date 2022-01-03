@@ -391,15 +391,14 @@ const keydown = (e) => {
 		</div>
 	{/if}
 
-	<div class="instruction" style="margin-top: 0;">
-		<div class="limit_width">
-			<span class="big_number">1</span>
-			<span class="instruction_text">Select files to upload</span>
-			<br/>
-			You can also drop files on this page from your file
-			manager or paste an image from your clipboard
-		</div>
+	<div class="instruction limit_width" style="margin-top: 0; border-top: none;">
+		<span class="big_number">1</span>
+		<span class="instruction_text">Select files to upload</span>
+		<br/>
+		You can also drop files on this page from your file manager or
+		paste an image from your clipboard
 	</div>
+	<br/>
 
 	<input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple"/>
 	<button on:click={() => { file_input_field.click() }} class="big_button button_highlight">
@@ -417,22 +416,21 @@ const keydown = (e) => {
 		<a href="/about#content-policy">content policy</a>.
 	<p>
 
-	<div class="instruction" style="margin-bottom: 0;">
-		<div class="limit_width">
-			<span class="big_number">2</span>
-			<span class="instruction_text">Wait for the files to finish uploading</span>
-			<br/>
-			<div class="stats_box">
-				<div>Size {formatDataVolume(total_size, 3)}</div>
-				<div>Progress {(total_progress*100).toPrecision(3)}%</div>
-				<div>ETA {formatDuration(remaining_time, 0)}</div>
-				<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
-			</div>
+	<div class="instruction limit_width" style="margin-bottom: 0;">
+		<span class="big_number">2</span>
+		<span class="instruction_text">Wait for the files to finish uploading</span>
+		<br/>
+		<div class="stats_box">
+			<div>Size {formatDataVolume(total_size, 3)}</div>
+			<div>Progress {(total_progress*100).toPrecision(3)}%</div>
+			<div>ETA {formatDuration(remaining_time, 0)}</div>
+			<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
 		</div>
 	</div>
 	<div class="progress_bar_outer" style="margin-bottom: 1.5em;">
 		<div bind:this={progress_bar_inner} class="progress_bar_inner"></div>
 	</div>
+	<br/>
 
 	<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
 		Gimme gimme gimme!<br/>
@@ -443,12 +441,11 @@ const keydown = (e) => {
 		<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>
 	{/each}
 
-	<div class="instruction">
-		<div class="limit_width">
-			<span class="big_number">3</span>
-			<span class="instruction_text">Share the files</span>
-		</div>
+	<div class="instruction limit_width">
+		<span class="big_number">3</span>
+		<span class="instruction_text">Share the files</span>
 	</div>
+	<br/>
 
 	{#if upload_queue.length > 1}
 		You can create an album to group your files together into one link<br/>
@@ -507,8 +504,8 @@ const keydown = (e) => {
 	<br/>
 	{#if qr_visible}
 		<img src="/api/misc/qr?text={encodeURIComponent(share_link)}" alt="QR code" style="width: 300px; max-width: 100%;">
+		<br/>
 	{/if}
-	<br/>
 	<button bind:this={btn_copy_links} on:click={copy_links} disabled={state !== "finished"}>
 		<i class="icon">content_copy</i> Copy <u>a</u>ll links to clipboard
 	</button>
@@ -521,11 +518,9 @@ const keydown = (e) => {
 	<br/>
 
 	{#if window.user.subscription.name === ""}
-		<div class="instruction">
-			<div class="limit_width">
-				<span class="big_number">4</span>
-				<span class="instruction_text">Support me on Patreon!</span>
-			</div>
+		<div class="instruction limit_width">
+			<span class="big_number">4</span>
+			<span class="instruction_text">Support me on Patreon!</span>
 		</div>
 		<div class="limit_width">
 			<p>

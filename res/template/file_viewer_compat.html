@@ -24,8 +24,11 @@
 
 	<body>
 		{{template "page_top" .}}
-		<h1>{{.Title}}</h1>
-		<div class="page_content"><div class="limit_width">
+
+		<div class="checkers inset">
+			<h1>{{.Title}}</h1>
+		</div>
+		<div class="limit_width">
 			{{if eq .Other.Type "file"}}
 				Download <a href="{{.APIEndpoint}}/file/{{.Other.APIResponse.ID}}?download">{{.Other.APIResponse.Name}}</a> here.
 			{{else}}
@@ -63,7 +66,7 @@
 				<li><a href="https://www.apple.com/safari/">Safari</a> (Mac OS)</li>
 				<li><a href="https://www.microsoft.com/en-us/edge">Edge</a> (Windows)</li>
 			</ul>
-		</div></div>
+		</div>
 		{{template "analytics"}}
 	</body>
 </html>

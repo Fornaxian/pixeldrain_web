@@ -10,8 +10,9 @@ let graphTimeout = null
 let start_time = ""
 let end_time = ""
 let total_bandwidth = 0
-let total_views = 0
 let total_bandwidth_paid = 0
+let total_views = 0
+let total_downloads = 0
 const loadGraph = (minutes, interval, live) => {
 	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
 	if (live) {
@@ -51,8 +52,9 @@ const loadGraph = (minutes, interval, live) => {
 		start_time = resp.views.timestamps[0]
 		end_time = resp.views.timestamps.slice(-1)[0];
 		total_bandwidth = resp.bandwidth.amounts.reduce((acc, val) => acc + val)
-		total_views = resp.views.amounts.reduce((acc, val) => acc + val)
 		total_bandwidth_paid = resp.bandwidth_paid.amounts.reduce((acc, val) => acc + val)
+		total_views = resp.views.amounts.reduce((acc, val) => acc + val)
+		total_downloads = resp.downloads.amounts.reduce((acc, val) => acc + val)
 	})
 }
 
@@ -176,8 +178,9 @@ onDestroy(() => {
 	<div class="highlight_dark">
 		Total usage from {start_time} to {end_time}<br/>
 		{formatDataVolume(total_bandwidth, 3)} bandwidth,
-		{formatDataVolume(total_bandwidth_paid, 3)} paid bandwidth and
-		{formatThousands(total_views, 3)} views
+		{formatDataVolume(total_bandwidth_paid, 3)} paid bandwidth,
+		{formatThousands(total_views, 3)} views and
+		{formatThousands(total_downloads, 3)} downloads
 	</div>
 
 	<br/>

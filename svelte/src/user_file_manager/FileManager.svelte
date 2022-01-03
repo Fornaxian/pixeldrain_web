@@ -256,8 +256,16 @@ onMount(() => {
 
 <svelte:window on:keydown={keydown} on:hashchange={hashChange} />
 
+<svetle:head>
+	<style>
+		#footer {
+			border-top-left-radius: 16px;
+		}
+	</style>
+</svetle:head>
+
 <div id="file_manager" class="file_manager">
-	<div id="nav_bar" class="nav_bar highlight_1">
+	<div id="nav_bar" class="nav_bar" class:expanded={selecting}>
 		<button id="btn_menu" onclick="toggleMenu()"><i class="icon">menu</i></button>
 		<button on:click={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
 			<i class="icon">select_all</i> Select
@@ -271,7 +279,7 @@ onMount(() => {
 		</button>
 	</div>
 	{#if selecting}
-		<div class="nav_bar highlight_3">
+		<div class="nav_bar">
 			<!-- Buttons to make a list and bulk delete files will show up here soon. Stay tuned ;-) -->
 			{#if contentType === "files"}
 				<button on:click={createList}><i class="icon">list</i> Make list</button>
@@ -337,7 +345,6 @@ is collapsed */
 #file_manager {
 	position:         absolute;
 	padding:          0;
-	background-color: var(--layer_2_color);
 	width:            100%;
 	height:           100%;
 	display:          flex;
@@ -347,6 +354,12 @@ is collapsed */
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: row;
+	border-bottom-left-radius: 16px;
+	background-color: var(--layer_1_color);
+	padding: 4px;
+}
+.nav_bar.expanded {
+	border-bottom-left-radius: 0;
 }
 .nav_bar > button {
 	flex-shrink: 0;

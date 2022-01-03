@@ -26,7 +26,9 @@ onMount(() => {
 })
 </script>
 
-<div>
+<div class="checkers inset">
+	<h1>Admin Panel</h1>
+
 	<div class="tab_bar">
 		<a class="button"
 			href="/admin"
@@ -75,18 +77,18 @@ onMount(() => {
 			Update global settings
 		</a>
 	</div>
-
-	{#if page === "status"}
-		<Home></Home>
-	{:else if page === "block_files"}
-		<BlockFiles></BlockFiles>
-	{:else if page === "abuse_reports"}
-		<AbuseReports></AbuseReports>
-	{:else if page === "abuse_reporters"}
-		<AbuseReporters></AbuseReporters>
-	{:else if page === "ip_bans"}
-		<IpBans></IpBans>
-	{:else if page === "subscriptions"}
-		<Subscriptions></Subscriptions>
-	{/if}
 </div>
+
+{#if page === "status"}
+	<Home></Home>
+{:else if page === "block_files"}
+	<BlockFiles></BlockFiles>
+{:else if page === "abuse_reports"}
+	<AbuseReports></AbuseReports>
+{:else if page === "abuse_reporters"}
+	<AbuseReporters></AbuseReporters>
+{:else if page === "ip_bans"}
+	<IpBans></IpBans>
+{:else if page === "subscriptions"}
+	<Subscriptions></Subscriptions>
+{/if}

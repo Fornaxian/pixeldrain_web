@@ -325,7 +325,7 @@ const node_click = (index) => {
 			{/each}
 		</div>
 	</div>
-	<div id="footer" class="status_bar highlight_1">
+	<div id="footer">
 		{statusBar}
 	</div>
 </div>
@@ -382,6 +382,8 @@ const node_click = (index) => {
 #footer {
 	flex-shrink: 0;
 	text-align: left;
+	background-color: var(--layer_1_color);
+	padding: 4px;
 }
 
 .node {

@@ -33,7 +33,9 @@ onMount(() => {
 
 <svelte:window on:popstate={get_page} />
 
-<div>
+<div class="checkers inset">
+	<h1>Welcome home, {window.user.username}!</h1>
+
 	<div class="tab_bar">
 		<a class="button"
 			href="/user"
@@ -73,18 +75,18 @@ onMount(() => {
 			</a>
 		{/if}
 	</div>
-
-	{#if page === "home"}
-		<Home/>
-	{:else if page === "settings"}
-		<AccountSettings/>
-	{:else if page === "api_keys"}
-		<APIKeys/>
-	{:else if page === "connect_app"}
-		<ConnectApp/>
-	{:else if page === "transactions"}
-		<Transactions/>
-	{:else if page === "subscription"}
-		<Subscription/>
-	{/if}
 </div>
+
+{#if page === "home"}
+	<Home/>
+{:else if page === "settings"}
+	<AccountSettings/>
+{:else if page === "api_keys"}
+	<APIKeys/>
+{:else if page === "connect_app"}
+	<ConnectApp/>
+{:else if page === "transactions"}
+	<Transactions/>
+{:else if page === "subscription"}
+	<Subscription/>
+{/if}
