@@ -76,6 +76,7 @@ onMount(() => {
 		{/if}
 	</div>
 </div>
+<br/>
 
 {#if page === "home"}
 	<Home/>

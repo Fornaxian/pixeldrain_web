@@ -23,7 +23,7 @@ function Modal(parent, closeCallback, title, width, height) {
 	this.window.addEventListener("click", e => { e.stopPropagation() })
 
 	this.header = document.createElement("div")
-	this.header.classList = "modal_header highlight_1"
+	this.header.classList = "modal_header"
 
 	this.titleDiv = document.createElement("div")
 	this.titleDiv.classList = "modal_title"

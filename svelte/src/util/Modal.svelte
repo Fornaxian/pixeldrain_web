@@ -48,7 +48,7 @@ const keydown = e => {
 {#if visible}
 <div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}}>
 	<div class="window" use:load_modal on:click|stopPropagation role="dialog" aria-modal="true">
-		<div class="header highlight_1">
+		<div class="header">
 			<slot name="title">
 				<div class="title">{title}</div>
 				<button class="button button_red round" on:click={hide}>
@@ -97,6 +97,7 @@ const keydown = e => {
 	display: flex;
 	flex-direction: row;
 	padding: 1px;
+	background-color: var(--layer_1_color);
 }
 .title {
 	flex-grow: 1;

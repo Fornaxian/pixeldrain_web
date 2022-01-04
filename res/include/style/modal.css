@@ -32,6 +32,7 @@
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: row;
+	background: var(--layer_1_color);
 	padding: 1px;
 }
 

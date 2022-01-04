@@ -256,16 +256,8 @@ onMount(() => {
 
 <svelte:window on:keydown={keydown} on:hashchange={hashChange} />
 
-<svetle:head>
-	<style>
-		#footer {
-			border-top-left-radius: 16px;
-		}
-	</style>
-</svetle:head>
-
 <div id="file_manager" class="file_manager">
-	<div id="nav_bar" class="nav_bar" class:expanded={selecting}>
+	<div id="nav_bar" class="nav_bar">
 		<button id="btn_menu" onclick="toggleMenu()"><i class="icon">menu</i></button>
 		<button on:click={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
 			<i class="icon">select_all</i> Select
@@ -349,17 +341,13 @@ is collapsed */
 	height:           100%;
 	display:          flex;
 	flex-direction:   column;
+	background-color: var(--layer_1_color);
 }
 .nav_bar {
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: row;
-	border-bottom-left-radius: 16px;
-	background-color: var(--layer_1_color);
 	padding: 4px;
-}
-.nav_bar.expanded {
-	border-bottom-left-radius: 0;
 }
 .nav_bar > button {
 	flex-shrink: 0;

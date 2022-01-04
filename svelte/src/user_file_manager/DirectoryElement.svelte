@@ -373,6 +373,8 @@ const node_click = (index) => {
 	padding: 0;
 	overflow-x: auto;
 	text-align: left;
+	background-color: var(--layer_2_color);
+	border-radius: 16px;
 }
 #node_container {
 	display: block;

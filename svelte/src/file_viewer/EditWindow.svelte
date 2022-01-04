@@ -138,7 +138,7 @@ let delete_list = async e => {
 
 </script>
 
-<div>
+<div class="indent">
 	{#if loading}
 		<div class="spinner_container">
 			<Spinner></Spinner>
@@ -153,7 +153,7 @@ let delete_list = async e => {
 	{#if list.can_edit}
 		<h3>Edit album</h3>
 		<h4>Rename</h4>
-		<form on:submit={rename_list} class="indent" style="display: flex;">
+		<form on:submit={rename_list} style="display: flex;">
 			<input bind:value={list_name} type="text" style="flex: 1 1 auto"/>
 			<button type="submit" style="flex: 0 0 auto">
 				<i class="icon">save</i> Save
@@ -164,17 +164,15 @@ let delete_list = async e => {
 			When you delete an album the files in the album will not be deleted,
 			only the album itself.
 		</p>
-		<div class="indent">
-			<button on:click={delete_list} class="button_red">
-				<i class="icon small">delete</i> Delete album
-			</button>
-		</div>
+		<button on:click={delete_list} class="button_red">
+			<i class="icon small">delete</i> Delete album
+		</button>
 	{/if}
 
 	{#if file.can_edit}
 		<h3>Edit file</h3>
 		<h4>Rename</h4>
-		<form on:submit={rename_file} class="indent" style="display: flex;">
+		<form on:submit={rename_file} style="display: flex;">
 			<input bind:value={file_name} type="text" style="flex: 1 1 auto"/>
 			<button type="submit" style="flex: 0 0 auto">
 				<i class="icon">save</i> Save
@@ -187,11 +185,9 @@ let delete_list = async e => {
 			stop working. The file will also disappear from any
 			lists it's contained in.
 		</p>
-		<div class="indent">
-			<button on:click={delete_file} class="button_red">
-				<i class="icon small">delete</i> Delete file
-			</button>
-		</div>
+		<button on:click={delete_file} class="button_red">
+			<i class="icon small">delete</i> Delete file
+		</button>
 	{/if}
 </div>
 

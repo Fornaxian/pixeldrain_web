@@ -88,7 +88,7 @@ onMount(() => {
 })
 </script>
 
-<div>
+<div class="indent">
 	<table>
 		<tr>
 			<td>Name</td>

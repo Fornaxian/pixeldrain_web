@@ -101,24 +101,27 @@ const example = () => {
 </script>
 
 <div class="container">
-	<p>
-		If you have a website you can embed pixeldrain files in your own
-		webpages here.
-	</p>
-	<p>
-		The IFrame embed gives you a frame with a slightly more minimalistic
-		file viewer in it. The embedded file viewer has a fullscreen button and
-		the toolbar is collapsed by default. If you do not have a pixeldrain Pro
-		account the frame will also have advertisements in it.
-	</p>
-	<p>
-		The hotlink embed option only works for single files uploaded with a Pro
-		account. You can use this to directly embed a video player, audio
-		player, photo element or a download button in your site. Make sure you
-		have bandwidth sharing enabled on your
-		<a href="/user/subscription">subscription page</a> or the embed will not
-		work.
-	</p>
+	<div class="indent">
+		<p>
+			If you have a website you can embed pixeldrain files in your own
+			webpages here.
+		</p>
+		<p>
+			The IFrame embed gives you a frame with a slightly more minimalistic
+			file viewer in it. The embedded file viewer has a fullscreen button
+			and the toolbar is collapsed by default. If you do not have a
+			pixeldrain Pro account the frame will also have advertisements in
+			it.
+		</p>
+		<p>
+			The hotlink embed option only works for single files uploaded with a
+			Pro account. You can use this to directly embed a video player,
+			audio player, photo element or a download button in your site. Make
+			sure you have bandwidth sharing enabled on your
+			<a href="/user/subscription">subscription page</a> or the embed will
+			not work.
+		</p>
+	</div>
 	<div class="tab_bar">
 		<button on:click={embed_iframe} class:button_highlight={tab === "iframe"}>
 			<i class="icon">code</i>
@@ -132,70 +135,72 @@ const example = () => {
 		{/if}
 	</div>
 
-	{#if tab === "iframe"}
-		<h3>Appearance</h3>
+	<div class="indent">
+		{#if tab === "iframe"}
+			<h3>Appearance</h3>
+			<p>
+				You can change the pixeldrain theme for your embedded file. Try the
+				available themes <a href="/appearance">here</a>.
+			</p>
+			<div class="center">
+				<button class:button_highlight={style===""} on:click={() => {set_style("")}}>
+					Default
+				</button>
+				<button class:button_highlight={style==="classic"} on:click={() => {set_style("classic")}}>
+					Classic
+				</button>
+				<button class:button_highlight={style==="solarized_dark"} on:click={() => {set_style("solarized_dark")}}>
+					Solarized
+				</button>
+				<button class:button_highlight={style==="maroon"} on:click={() => {set_style("maroon")}}>
+					Maroon
+				</button>
+				<button class:button_highlight={style==="hacker"} on:click={() => {set_style("hacker")}}>
+					Hacker
+				</button>
+				<button class:button_highlight={style==="canta"} on:click={() => {set_style("canta")}}>
+					Canta
+				</button>
+				<button class:button_highlight={style==="arc"} on:click={() => {set_style("arc")}}>
+					Arc
+				</button>
+				<button class:button_highlight={style==="deepsea"} on:click={() => {set_style("deepsea")}}>
+					Deep sea
+				</button>
+			</div>
+		{:else}
+			<h3>Direct link</h3>
+			<p>
+				You can directly download the file from this link without using the
+				file viewer:
+				<br/>
+				{domain_url()}{file.get_href}
+			</p>
+		{/if}
+
+		<h3>Code</h3>
 		<p>
-			You can change the pixeldrain theme for your embedded file. Try the
-			available themes <a href="/appearance">here</a>.
+			Put this code in your website to embed the file.
 		</p>
 		<div class="center">
-			<button class:button_highlight={style===""} on:click={() => {set_style("")}}>
-				Default
+			<textarea bind:value={embed_html} style="width: 99%; height: 4em;"></textarea>
+			<br/>
+			<button on:click={copy} class:button_highlight={copy_status === "success"} class:button_red={copy_status === "error"}>
+				<i class="icon">content_copy</i>
+				{#if copy_status === "success"}
+					Copied!
+				{:else if copy_status === "error"}
+					Error!
+				{:else}
+					Copy HTML
+				{/if}
 			</button>
-			<button class:button_highlight={style==="classic"} on:click={() => {set_style("classic")}}>
-				Classic
-			</button>
-			<button class:button_highlight={style==="solarized_dark"} on:click={() => {set_style("solarized_dark")}}>
-				Solarized
-			</button>
-			<button class:button_highlight={style==="maroon"} on:click={() => {set_style("maroon")}}>
-				Maroon
-			</button>
-			<button class:button_highlight={style==="hacker"} on:click={() => {set_style("hacker")}}>
-				Hacker
-			</button>
-			<button class:button_highlight={style==="canta"} on:click={() => {set_style("canta")}}>
-				Canta
-			</button>
-			<button class:button_highlight={style==="arc"} on:click={() => {set_style("arc")}}>
-				Arc
-			</button>
-			<button class:button_highlight={style==="deepsea"} on:click={() => {set_style("deepsea")}}>
-				Deep sea
+			<button on:click={example}>
+				<i class="icon">visibility</i> Show example
 			</button>
 		</div>
-	{:else}
-		<h3>Direct link</h3>
-		<p>
-			You can directly download the file from this link without using the
-			file viewer:
-			<br/>
-			{domain_url()}{file.get_href}
-		</p>
-	{/if}
-
-	<h3>Code</h3>
-	<p>
-		Put this code in your website to embed the file.
-	</p>
-	<div class="center">
-		<textarea bind:value={embed_html} style="width: 96%; height: 4em;"></textarea>
-		<br/>
-		<button on:click={copy} class:button_highlight={copy_status === "success"} class:button_red={copy_status === "error"}>
-			<i class="icon">content_copy</i>
-			{#if copy_status === "success"}
-				Copied!
-			{:else if copy_status === "error"}
-				Error!
-			{:else}
-				Copy HTML
-			{/if}
-		</button>
-		<button on:click={example}>
-			<i class="icon">visibility</i> Show example
-		</button>
+		<h3>Example</h3>
 	</div>
-	<h3>Example</h3>
 	<div bind:this={preview_area} style="text-align: center;"></div>
 </div>
 

@@ -53,7 +53,7 @@ body{
 	font-size: 17px;
 	line-height: 1.8em;
 	color: var(--text_color);
-	background-color: var(--layer_2_color);
+	background-color: var(--layer_1_color);
 	padding: 0;
 }
 .checkers {
@@ -66,7 +66,7 @@ body{
 .inset {
 	padding-top: 70px;
 	box-shadow: inset 1px 1px 10px 0 var(--shadow_color);
-	border-radius: 16px;
+	border-radius: 12px;
 	text-align: center;
 	overflow: hidden;
 }
@@ -106,7 +106,6 @@ body{
 	height: 100%;
 	left: 0;
 	float: left;
-	background-color: var(--layer_2_color);
 	padding: 20px 10px 10px 0;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -124,6 +123,9 @@ body{
 	overflow-y: auto;
 	overflow-x: hidden;
 	background-color: var(--layer_2_color);
+	border-top-left-radius: 12px;
+	border-bottom-left-radius: 12px;
+	padding: 8px;
 	transition: left 0.5s;
 }
 @media (max-width: 1000px) {
@@ -133,6 +135,7 @@ body{
 	.page_body {
 		left: 0;
 		width: 100%;
+		padding: 4px;
 	}
 }
 .limit_width {
@@ -240,7 +243,7 @@ body{
 
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1em;
-	margin: 0.5em 10px;
+	margin: 0.5em 0;
 	font-weight: normal;
 	font-weight: lighter;
 	font-family: sans-serif;
@@ -270,9 +273,8 @@ h5 {
 h6 {
 	font-size: 1em;
 }
-
-p, .indent {
-	margin: 10px;
+.indent {
+	margin: 8px;
 }
 
 hr {
@@ -484,7 +486,7 @@ select:disabled , select.disabled {
 	white-space: nowrap;
 	text-align: center;
 	background-color: var(--layer_1_color);
-	box-shadow: inset 0 -10px 8px -12px var(--shadow_color), 0 0 10px var(--shadow_color);
+	box-shadow: inset 0 -10px 8px -12px var(--shadow_color);
 }
 .tab_bar > button,
 .tab_bar > .button {
