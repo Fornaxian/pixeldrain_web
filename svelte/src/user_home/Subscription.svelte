@@ -195,7 +195,6 @@ onMount(load_tranfer_used)
 		{/if}
 
 		<h3>Bandwidth sharing</h3>
-		<div class="indent">
 		{#if hotlinking}
 			<button on:click={() => { hotlinking = false; update("limits") }}>
 				<i class="icon green">check</i> ON (click to turn off)
@@ -205,7 +204,6 @@ onMount(load_tranfer_used)
 				<i class="icon red">close</i> OFF (click to turn on)
 			</button>
 		{/if}
-		</div>
 		<p>
 			When bandwidth sharing is enabled all the bandwidth that your files
 			use will be subtracted from your data cap. Advertisements will be
@@ -217,21 +215,20 @@ onMount(load_tranfer_used)
 		</p>
 
 		<h3>Bill shock limit</h3>
-		<div class="indent">
+		<p>
 			Billshock limit in gigabytes per month (1 TB = 1000 GB). Set to 0 to disable.
-			<br/>
-			<form on:submit|preventDefault={() => {update("limits")}} class="billshock_container">
-				<input type="number" bind:value={transfer_cap} step="100" min="0"/>
-				<div style="margin: 0.5em;">GB</div>
-				<button type="submit">
-					<i class="icon">save</i> Save
-				</button>
-			</form>
+		</p>
+		<form on:submit|preventDefault={() => {update("limits")}} class="billshock_container">
+			<input type="number" bind:value={transfer_cap} step="100" min="0"/>
+			<div style="margin: 0.5em;">GB</div>
+			<button type="submit">
+				<i class="icon">save</i> Save
+			</button>
+		</form>
 
-			Bandwidth used in the last 30 days: {formatDataVolume(transfer_used, 3)},
-			new limit: {formatDataVolume(transfer_cap*1e9, 3)}
-			<ProgressBar used={transfer_used} total={transfer_cap*1e9}></ProgressBar>
-		</div>
+		Bandwidth used in the last 30 days: {formatDataVolume(transfer_used, 3)},
+		new limit: {formatDataVolume(transfer_cap*1e9, 3)}
+		<ProgressBar used={transfer_used} total={transfer_cap*1e9}></ProgressBar>
 		<p>
 			The billshock limit limits how much bandwidth your account can use
 			in a 30 day window. When this limit is reached files will show ads

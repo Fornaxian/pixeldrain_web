@@ -140,7 +140,7 @@ onMount(() => {
 			pixeldrain account. It's not a wallet. Any amount of money you
 			deposit has to be used up.
 		</p>
-		<div class="indent" style="text-align: center;">
+		<div style="text-align: center;">
 			Deposit amount €
 			<input type="number" bind:value={credit_amount} min="1"/>
 			<br/>

@@ -87,7 +87,7 @@ onMount(() => {
 			{:else}
 				<h3>Key created</h3>
 
-				<div class="copy_container indent">
+				<div class="copy_container">
 					<button on:click={copy_key} class="copy_button" class:button_highlight={copied}>
 						<i class="icon">content_copy</i>
 						{#if copied}

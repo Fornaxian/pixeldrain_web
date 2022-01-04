@@ -203,24 +203,22 @@ onDestroy(() => {
 			{/if}
 		</ul>
 
-		<div class="indent">
-			{#if window.user.subscription.storage_space === -1}
-				Storage space used: {formatDataVolume(storage_space_used, 3)}<br/>
-			{:else}
-				<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
-			{/if}
+		{#if window.user.subscription.storage_space === -1}
+			Storage space used: {formatDataVolume(storage_space_used, 3)}<br/>
+		{:else}
+			<StorageProgressBar used={storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
+		{/if}
 
-			{#if transfer_cap === -1}
-				Paid transfers in the last 30 days: {formatDataVolume(transfer_used, 3)}<br/>
-			{:else}
-				Paid transfers:
-				{formatDataVolume(transfer_used, 3)}
-				out of
-				{formatDataVolume(transfer_cap, 3)}
-				(<a href="/user/subscription">Set your transfer limit on the subscription page</a>)
-				<HotlinkProgressBar used={transfer_used} total={transfer_cap}></HotlinkProgressBar>
-			{/if}
-		</div>
+		{#if transfer_cap === -1}
+			Paid transfers in the last 30 days: {formatDataVolume(transfer_used, 3)}<br/>
+		{:else}
+			Paid transfers:
+			{formatDataVolume(transfer_used, 3)}
+			out of
+			{formatDataVolume(transfer_cap, 3)}
+			(<a href="/user/subscription">Set your transfer limit on the subscription page</a>)
+			<HotlinkProgressBar used={transfer_used} total={transfer_cap}></HotlinkProgressBar>
+		{/if}
 
 		<h3>Exports</h3>
 		<div style="text-align: center;">
