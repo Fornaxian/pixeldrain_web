@@ -294,28 +294,32 @@ onMount(() => {
 		width="600px"
 		on:is_visible={e => {help_modal_visible = e.detail}}
 	>
-		<p>
-			In the file manager you can see the files you have uploaded and the
-			lists you have created.
-		</p>
-		<h3>Searching</h3>
-		<p>
-			By clicking the search bar or pressing the / button you can search
-			through your files or lists. Only the entries matching your search
-			term will be shown. Pressing Enter will open the first search result
-			in a new tab. Pressing Escape will cancel the search and all files
-			will be shown again.
-		</p>
-		<h3>Bulk actions</h3>
-		<p>
-			With the Select button you can click files to select them. Once you
-			have made a selection you can use the buttons on the toolbar to
-			either create a list containing the selected files or delete them.
-		</p>
-		<p>
-			Holding Shift while selecting a file will select all the files
-			between the file you last selected and the file you just clicked.
-		</p>
+		<div class="indent">
+			<p>
+				In the file manager you can see the files you have uploaded and
+				the lists you have created.
+			</p>
+			<h3>Searching</h3>
+			<p>
+				By clicking the search bar or pressing the / button you can
+				search through your files or lists. Only the entries matching
+				your search term will be shown. Pressing Enter will open the
+				first search result in a new tab. Pressing Escape will cancel
+				the search and all files will be shown again.
+			</p>
+			<h3>Bulk actions</h3>
+			<p>
+				With the Select button you can click files to select them. Once
+				you have made a selection you can use the buttons on the toolbar
+				to either create a list containing the selected files or delete
+				them.
+			</p>
+			<p>
+				Holding Shift while selecting a file will select all the files
+				between the file you last selected and the file you just
+				clicked.
+			</p>
+		</div>
 	</Modal>
 
 	<!-- This frame will load the download URL when a download button is pressed -->

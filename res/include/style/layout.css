@@ -72,13 +72,6 @@ body{
 }
 
 /* Page layout elements */
-.page_wrapper {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-}
 
 .button_toggle_navigation {
 	position: fixed;
@@ -241,12 +234,11 @@ body{
 
 /* Common elements */
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, .title {
 	line-height: 1em;
 	margin: 0.5em 0;
-	font-weight: normal;
 	font-weight: lighter;
-	font-family: sans-serif;
+	font-family: 'Open Sans Light', sans-serif;
 }
 
 h1 {
