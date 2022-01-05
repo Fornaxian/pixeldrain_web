@@ -289,9 +289,9 @@ const keyboard_event = evt => {
 			break
 		case 83:
 			if (evt.shiftKey) {
-				download_list() // SHIFT + S downloads all files in list
+				downloader.download_list() // SHIFT + S downloads all files in list
 			} else {
-				download() // S to download the current file
+				downloader.download_file() // S to download the current file
 			}
 			break
 		case 82: // R to toggle list shuffle

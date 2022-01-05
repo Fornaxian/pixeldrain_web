@@ -84,13 +84,13 @@ export const download_list = () => {
 <iframe class="download_frame" bind:this={download_frame} title="File download frame"></iframe>
 <Modal bind:this={download_captcha_window} title={captcha_window_title} width="500px">
 	{#if captcha_type === "rate_limit"}
-		<p>
+		<p class="indent">
 			This file is using a suspicious amount of bandwidth relative to
 			its popularity. To continue downloading this file you will have
 			to prove that you're a human first.
 		</p>
 	{:else if captcha_type === "malware"}
-		<p>
+		<p class="indent">
 			According to our scanning systems this file may contain a virus.
 			You can continue downloading this file at your own risk, but you
 			will have to prove that you're a human first.
