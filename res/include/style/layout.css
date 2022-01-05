@@ -234,7 +234,7 @@ body{
 
 /* Common elements */
 
-h1, h2, h3, h4, h5, h6, .title {
+h1, h2, h3, h4, h5, h6, .light {
 	line-height: 1em;
 	margin: 0.5em 0;
 	font-weight: lighter;

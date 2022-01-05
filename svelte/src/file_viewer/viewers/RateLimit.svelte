@@ -20,7 +20,7 @@ let file = {
 		a file is downloaded many times outside of our file viewer page (this
 		page). Usually this means people are using download managers like
 		JDownloader 2, Aria2 or wget. Using a download manager circumvents
-		pixeldrain's advertisements and we lose money because of it. More
+		pixeldrain's advertisements and we lose money because of that. More
 		information about this protection mechanism can be found on <a
 		href="/#hotlinking">the home page</a>.
 	</p>
@@ -67,6 +67,8 @@ let file = {
 	background-color: rgba(0, 0, 0, 0.2);
 	border-radius: 16px;
 	text-align: left;
+	padding: 10px;
+	border-radius: 16px;
 }
 
 .file_thumbnail {

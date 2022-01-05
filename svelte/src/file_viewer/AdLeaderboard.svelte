@@ -17,10 +17,10 @@ onMount(() => {
 		case 0:
 			set_ad_type("aads")
 			break
-		case 2:
+		case 1:
 			set_ad_type("ads.plus")
 			break
-		case 3:
+		case 2:
 			set_ad_type("valueimpression")
 			break
 	}
