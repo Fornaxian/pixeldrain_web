@@ -167,6 +167,9 @@ const example = () => {
 				<button class:button_highlight={style==="deepsea"} on:click={() => {set_style("deepsea")}}>
 					Deep sea
 				</button>
+				<button class:button_highlight={style==="skeuos"} on:click={() => {set_style("skeuos")}}>
+					Skeuos
+				</button>
 			</div>
 		{:else}
 			<h3>Direct link</h3>

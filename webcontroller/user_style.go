@@ -196,7 +196,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	HighlightColor:           hsl{117, .63, .46},
 	HighlightTextColor:       hsl{0, 0, 0},
 	DangerColor:              hsl{357, .63, .46},
-	ScrollbarForegroundColor: hsl{266, .85, .38},
+	ScrollbarForegroundColor: hsl{266, .85, .40},
 	ScrollbarHoverColor:      hsl{266, .85, .50},
 	ScrollbarBackgroundColor: hsl{275, .75, .12},
 
@@ -215,8 +215,8 @@ var pixeldrainClassicStyle = pixeldrainStyleSheet{
 	HighlightColor:           hsl{89, .60, .45},
 	HighlightTextColor:       hsl{0, 0, 0},
 	DangerColor:              hsl{339, .65, .31},
-	ScrollbarForegroundColor: hsl{0, 0, .35},
-	ScrollbarHoverColor:      hsl{0, 0, .45},
+	ScrollbarForegroundColor: hsl{0, 0, .40},
+	ScrollbarHoverColor:      hsl{0, 0, .50},
 	ScrollbarBackgroundColor: hsl{0, 0, .11},
 
 	Layer1Color: hsl{0, 0, .08},
@@ -312,7 +312,7 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{40, 1, .5},     // hsl(40, 100%, 50%)
 	ScrollbarForegroundColor: hsl{204, .05, .78}, // hsl(204, 5%, 78%)
 	ScrollbarHoverColor:      hsl{204, .05, .88},
-	ScrollbarBackgroundColor: hsl{200, .13, .27}, // hsl(200, 13%, 27%)
+	ScrollbarBackgroundColor: hsl{168, .05, .21},
 
 	Layer1Color: hsl{180, .04, .16},
 	Layer2Color: hsl{168, .05, .21},
