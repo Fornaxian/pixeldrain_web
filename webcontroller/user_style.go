@@ -51,7 +51,6 @@ type pixeldrainStyleSheet struct {
 	DangerColor              hsl
 	ScrollbarForegroundColor hsl
 	ScrollbarHoverColor      hsl
-	ScrollbarBackgroundColor hsl
 
 	Layer1Color hsl // Deepest and darkest layer
 	Layer2Color hsl
@@ -99,7 +98,7 @@ func (s pixeldrainStyleSheet) String() string {
 		s.DangerColor.Add(0, 0, -.02).RGB(),
 		s.ScrollbarForegroundColor.RGB(),
 		s.ScrollbarHoverColor.RGB(),
-		s.ScrollbarBackgroundColor.RGB(),
+		s.Layer2Color.RGB(), // Scrollbar background
 		s.Layer1Color.RGB(),
 		s.Layer1Color.Add(0, 0, .05).RGB(),
 		s.Layer2Color.RGB(),
@@ -198,7 +197,6 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{357, .63, .46},
 	ScrollbarForegroundColor: hsl{266, .85, .40},
 	ScrollbarHoverColor:      hsl{266, .85, .50},
-	ScrollbarBackgroundColor: hsl{275, .75, .12},
 
 	Layer1Color: hsl{275, .8, .07},
 	Layer2Color: hsl{275, .75, .12},
@@ -217,7 +215,6 @@ var pixeldrainClassicStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{339, .65, .31},
 	ScrollbarForegroundColor: hsl{0, 0, .40},
 	ScrollbarHoverColor:      hsl{0, 0, .50},
-	ScrollbarBackgroundColor: hsl{0, 0, .11},
 
 	Layer1Color: hsl{0, 0, .08},
 	Layer2Color: hsl{0, 0, .11},
@@ -236,7 +233,6 @@ var sunnyPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{345, .99, .33}, // hsl(345, 99%, 33%)
 	ScrollbarForegroundColor: hsl{0, 0, .30},
 	ScrollbarHoverColor:      hsl{0, 0, .40},
-	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	Layer1Color: hsl{0, 0, .98}, // hsl(0, 0%, 13%)
 	Layer2Color: hsl{0, 1, 1},
@@ -255,7 +251,6 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{343, .63, .42},
 	ScrollbarForegroundColor: hsl{192, .95, .30},
 	ScrollbarHoverColor:      hsl{192, .95, .40},
-	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	Layer1Color: hsl{192, .87, .09},
 	Layer2Color: hsl{192, .81, .14},
@@ -274,7 +269,6 @@ var maroonStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{9, .96, .42}, //hsl(9, 96%, 42%)
 	ScrollbarForegroundColor: hsl{0, .75, .3},
 	ScrollbarHoverColor:      hsl{0, .75, .4},
-	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	Layer1Color: hsl{0, .7, .05},
 	Layer2Color: hsl{0, .8, .08}, // hsl{0, .8, .15},
@@ -293,7 +287,6 @@ var hackerStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{0, 1, .4},
 	ScrollbarForegroundColor: hsl{120, .5, .25},
 	ScrollbarHoverColor:      hsl{120, .5, .35},
-	ScrollbarBackgroundColor: hsl{0, 0, 0},
 
 	Layer1Color: hsl{0, 0, 0},
 	Layer2Color: hsl{0, 0, .03},
@@ -312,7 +305,6 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{40, 1, .5},     // hsl(40, 100%, 50%)
 	ScrollbarForegroundColor: hsl{204, .05, .78}, // hsl(204, 5%, 78%)
 	ScrollbarHoverColor:      hsl{204, .05, .88},
-	ScrollbarBackgroundColor: hsl{168, .05, .21},
 
 	Layer1Color: hsl{180, .04, .16},
 	Layer2Color: hsl{168, .05, .21},
@@ -331,7 +323,6 @@ var arcPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{357, .53, .57}, // hsl(357, 53%, 57%)
 	ScrollbarForegroundColor: hsl{222, .08, .44}, // hsl(222, 8%, 44%)
 	ScrollbarHoverColor:      hsl{222, .08, .54}, // hsl(222, 8%, 44%)
-	ScrollbarBackgroundColor: hsl{223, .12, .2},  // hsl(223, 12%, 29%)
 
 	Layer1Color: hsl{215, .17, .19},
 	Layer2Color: hsl{227, .14, .25}, // hsl(227, 14%, 25%)
@@ -350,7 +341,6 @@ var deepseaPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{5, .77, .55},
 	ScrollbarForegroundColor: hsl{162, .28, .23}, // hsl(162, 28%, 23%)
 	ScrollbarHoverColor:      hsl{12, .38, .26},  // hsl(12, 38%, 26%)
-	ScrollbarBackgroundColor: hsl{0, 0, .11},     // hsl(0, 0%, 11%)
 
 	Layer1Color: hsl{160, .27, .05},
 	Layer2Color: hsl{163, .26, .09}, // hsl(163, 26%, 11%)
@@ -369,7 +359,6 @@ var skeuosPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{0, .79, .43},   // hsl(0, 79%, 43%)
 	ScrollbarForegroundColor: hsl{220, .02, .62}, // hsl(220, 2%, 62%)
 	ScrollbarHoverColor:      hsl{220, .02, .80},
-	ScrollbarBackgroundColor: hsl{229, .14, .16}, // hsl(226, 14%, 18%)
 
 	Layer1Color: hsl{232, .14, .11}, //hsl(232, 14%, 11%)
 	Layer2Color: hsl{229, .14, .16}, // hsl(229, 14%, 16%)
