@@ -156,7 +156,7 @@ body{
 	text-align: center;
 	padding: 4px;
 	margin: 0.3em 15px 0.3em 15px;
-	font-family: sans-serif;
+	font-family: 'Open Sans Light', sans-serif;
 	font-weight: lighter;
 	font-size: 1.5em;
 	overflow: hidden;
@@ -399,7 +399,7 @@ input[type="button"],
 input[type="color"],
 select {
 	display: inline-block;
-	border-radius: 8px;
+	border-radius: 6px;
 	border: none;
 	margin: 3px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
@@ -508,7 +508,7 @@ input[type="date"]{
 	display: inline-block;
 	margin: 3px; /* Same as button, to make them align nicely */
 	border: none;
-	border-radius: 8px;
+	border-radius: 6px;
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 1px 1px 4px -2px var(--shadow_color);
 	padding: 3px 5px;

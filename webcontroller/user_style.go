@@ -33,6 +33,8 @@ func userStyle(r *http.Request) pixeldrainStyleSheet {
 		return arcPixeldrainStyle
 	case "deepsea":
 		return deepseaPixeldrainStyle
+	case "skeuos":
+		return skeuosPixeldrainStyle
 	case "default":
 		fallthrough // use default case
 	default:
@@ -88,24 +90,24 @@ func (s pixeldrainStyleSheet) String() string {
 }`,
 		s.TextColor.RGB(),
 		s.InputColor.RGB(),
-		s.InputColor.add(0, 0, -.02).RGB(),
+		s.InputColor.Add(0, 0, -.02).RGB(),
 		s.InputTextColor.RGB(),
 		s.HighlightColor.RGB(),
-		s.HighlightColor.add(0, 0, -.02).RGB(),
+		s.HighlightColor.Add(0, 0, -.02).RGB(),
 		s.HighlightTextColor.RGB(),
 		s.DangerColor.RGB(),
-		s.DangerColor.add(0, 0, -.02).RGB(),
+		s.DangerColor.Add(0, 0, -.02).RGB(),
 		s.ScrollbarForegroundColor.RGB(),
 		s.ScrollbarHoverColor.RGB(),
 		s.ScrollbarBackgroundColor.RGB(),
 		s.Layer1Color.RGB(),
-		s.Layer1Color.add(0, 0, .05).RGB(),
+		s.Layer1Color.Add(0, 0, .05).RGB(),
 		s.Layer2Color.RGB(),
-		s.Layer2Color.add(0, 0, .05).RGB(),
+		s.Layer2Color.Add(0, 0, .05).RGB(),
 		s.Layer3Color.RGB(),
-		s.Layer3Color.add(0, 0, .05).RGB(),
+		s.Layer3Color.Add(0, 0, .05).RGB(),
 		s.Layer4Color.RGB(),
-		s.Layer4Color.add(0, 0, .05).RGB(),
+		s.Layer4Color.Add(0, 0, .05).RGB(),
 		s.ShadowColor.RGB(),
 	)
 }
@@ -157,7 +159,7 @@ func (orig hsl) RGB() string {
 }
 
 // Add returns a NEW HSL struct, it doesn't modify the current one
-func (h hsl) add(hue int, saturation float64, lightness float64) hsl {
+func (h hsl) Add(hue int, saturation float64, lightness float64) hsl {
 	var new = hsl{
 		h.Hue + hue,
 		h.Saturation + saturation,
@@ -196,7 +198,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{357, .63, .46},
 	ScrollbarForegroundColor: hsl{266, .85, .38},
 	ScrollbarHoverColor:      hsl{266, .85, .50},
-	ScrollbarBackgroundColor: hsl{275, .75, .06},
+	ScrollbarBackgroundColor: hsl{275, .75, .12},
 
 	Layer1Color: hsl{275, .8, .07},
 	Layer2Color: hsl{275, .75, .12},
@@ -215,7 +217,7 @@ var pixeldrainClassicStyle = pixeldrainStyleSheet{
 	DangerColor:              hsl{339, .65, .31},
 	ScrollbarForegroundColor: hsl{0, 0, .35},
 	ScrollbarHoverColor:      hsl{0, 0, .45},
-	ScrollbarBackgroundColor: hsl{0, 0, 0},
+	ScrollbarBackgroundColor: hsl{0, 0, .11},
 
 	Layer1Color: hsl{0, 0, .08},
 	Layer2Color: hsl{0, 0, .11},
@@ -354,6 +356,25 @@ var deepseaPixeldrainStyle = pixeldrainStyleSheet{
 	Layer2Color: hsl{163, .26, .09}, // hsl(163, 26%, 11%)
 	Layer3Color: hsl{161, .28, .12}, // hsl(161, 28%, 14%)
 	Layer4Color: hsl{161, .32, .15},
+
+	ShadowColor: hsl{0, 0, 0},
+}
+
+var skeuosPixeldrainStyle = pixeldrainStyleSheet{
+	TextColor:                hsl{60, .06, .93},  // hsl(60, 6%, 93%)
+	InputColor:               hsl{226, .15, .23}, //hsl(226, 15%, 23%)
+	InputTextColor:           hsl{60, .06, .93},
+	HighlightColor:           hsl{282, .65, .54}, // hsl(282, 65%, 54%)
+	HighlightTextColor:       hsl{0, 0, 1},
+	DangerColor:              hsl{0, .79, .43},   // hsl(0, 79%, 43%)
+	ScrollbarForegroundColor: hsl{220, .02, .62}, // hsl(220, 2%, 62%)
+	ScrollbarHoverColor:      hsl{220, .02, .80},
+	ScrollbarBackgroundColor: hsl{229, .14, .16}, // hsl(226, 14%, 18%)
+
+	Layer1Color: hsl{232, .14, .11}, //hsl(232, 14%, 11%)
+	Layer2Color: hsl{229, .14, .16}, // hsl(229, 14%, 16%)
+	Layer3Color: hsl{225, .14, .17}, // hsl(225, 14%, 17%)
+	Layer4Color: hsl{226, .14, .18}, // hsl(226, 14%, 18%)
 
 	ShadowColor: hsl{0, 0, 0},
 }
