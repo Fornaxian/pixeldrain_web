@@ -427,20 +427,21 @@ const keydown = (e) => {
 			<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
 		</div>
 	</section>
-	<div class="progress_bar_outer" style="margin-bottom: 1.5em;">
+	<div class="progress_bar_outer">
 		<div bind:this={progress_bar_inner} class="progress_bar_inner"></div>
 	</div>
-	<br/>
 
 	<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
 		Gimme gimme gimme!<br/>
 		Drop your files to upload them
 	</div>
+	<br/>
 
 	{#each upload_queue as file}
 		<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>
 	{/each}
 
+	<br/>
 	<section class="instruction">
 		<span class="big_number">3</span>
 		<span class="instruction_text">Share the files</span>
