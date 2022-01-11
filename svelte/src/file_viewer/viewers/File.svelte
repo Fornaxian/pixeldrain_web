@@ -23,17 +23,18 @@ let file = {
 		No preview is available for this file type. Download to view it locally.
 		<br/>
 		<button class="button_highlight" on:click={() => {dispatch("download")}}>
-			<i class="icon">save</i> Download
+			<i class="icon">save</i>
+			<span>Download</span>
 		</button>
 	</div>
-	<br/>
+	<br/><br/>
 	<LargeFileMessage file={file}></LargeFileMessage>
 </div>
 
 <style>
 .icon {
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: middle;
 }
 .description {
 	display: inline-block;
@@ -41,6 +42,9 @@ let file = {
 	padding-left: 8px;
 	vertical-align: middle;
 	max-width: 600px;
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 16px;
+	padding: 8px;
 }
 .container {
 	position: relative;

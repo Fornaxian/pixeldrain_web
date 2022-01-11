@@ -88,7 +88,7 @@ let download = () => { dispatch("download", {}) }
 				<i class="icon">save</i> Download
 			</button>
 		</div>
-		<br/>
+		<br/><br/>
 		<LargeFileMessage file={file}></LargeFileMessage>
 	{/if}
 </div>

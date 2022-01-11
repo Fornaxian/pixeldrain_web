@@ -140,7 +140,8 @@ let submit = async e => {
 		</p>
 		<div style="text-align: right;">
 			<button class="button_highlight abuse_report_submit" type="submit">
-				<i class="icon">send</i> Send
+				<i class="icon">send</i>
+				<span>Send</span>
 			</button>
 		</div>
 	</form>

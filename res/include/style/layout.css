@@ -249,7 +249,7 @@ h1, h2, h3, h4, h5, h6, .light {
 h1 {
 	font-size: 2.5em;
 	text-align: center;
-	margin-bottom: 50px;
+	margin-bottom: 1em;
 }
 h2 {
 	font-size: 2em;
@@ -405,24 +405,25 @@ input[type="color"],
 select {
 	display: inline-block;
 	border-radius: 6px;
-	border: none;
 	margin: 3px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
 	padding: 5px 5px 5px 5px;
 	box-shadow: 1px 1px 5px -3px var(--shadow_color);
-	line-height: 1em;
 	overflow: hidden;
-	font-size: 1em; /* Sometimes user-agents have different font sizes for buttons and links */
-	font-weight: normal;
-	text-decoration: none;
-	text-shadow: none;
-	color: #bfbfbf; /* Fallback */
 	color: var(--input_text_color);
-	outline: 0;
 	vertical-align: middle;
 	align-items: center;
 	cursor: pointer;
 	transition: padding 0.2s, box-shadow 0.2s;
+
+	/* Remove default styles set by the user-agent */
+	outline: 0;
+	font-size: 1em;
+	font-weight: normal;
+	line-height: 1em;
+	text-decoration: none;
+	text-shadow: none;
+	border: none;
 }
 button:hover,
 .button:hover,
@@ -470,6 +471,11 @@ select:disabled , select.disabled {
 	transition: none;
 	padding: 4px 5px 4px 5px;
 	cursor: not-allowed;
+}
+button > *,
+.button > * {
+	vertical-align: middle;
+	line-height: 1em;
 }
 
 .round {

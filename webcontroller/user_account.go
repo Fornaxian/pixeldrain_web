@@ -333,7 +333,7 @@ func (wc *WebController) serveEmailConfirm(
 	if err != nil && err.Error() == "not_found" {
 		status = "not_found"
 	} else if err != nil {
-		log.Error("E-mail reset fail: %s", err)
+		log.Debug("E-mail reset fail: %s", err)
 		status = "internal_error"
 	} else {
 		status = "success"

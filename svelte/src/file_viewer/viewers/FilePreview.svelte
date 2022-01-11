@@ -11,6 +11,7 @@ import File from "./File.svelte";
 import Abuse from "./Abuse.svelte";
 import { file_type } from "../FileUtilities.svelte";
 import RateLimit from "./RateLimit.svelte";
+import Torrent from "./Torrent.svelte";
 
 let viewer
 let viewer_type = "loading"
@@ -61,6 +62,8 @@ const loading = e => {dispatch("loading", e.detail)}
 		<PDF bind:this={viewer}></PDF>
 	{:else if viewer_type === "text"}
 		<Text bind:this={viewer}></Text>
+	{:else if viewer_type === "torrent"}
+		<Torrent bind:this={viewer} on:loading={loading} on:download={download}></Torrent>
 	{:else if viewer_type === "file"}
 		<File bind:this={viewer} on:download={download}></File>
 	{/if}

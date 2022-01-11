@@ -87,7 +87,7 @@ const toggle_play = () => playing ? player.pause() : player.play()
 		</audio>
 	{/if}
 
-	<br/>
+	<br/><br/>
 	<LargeFileMessage file={file}></LargeFileMessage>
 </div>
 

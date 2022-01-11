@@ -34,7 +34,9 @@ export const file_set_href = file => {
 	file.timeseries_href = window.api_endpoint+"/file/"+file.id+"/timeseries"
 }
 export const file_type = file => {
-	if (file.mime_type.startsWith("image")) {
+	if (file.mime_type === "application/bittorrent" || file.mime_type === "application/x-bittorrent") {
+		return "torrent"
+	} else if (file.mime_type.startsWith("image")) {
 		return "image"
 	} else if (
 		file.mime_type.startsWith("video") ||

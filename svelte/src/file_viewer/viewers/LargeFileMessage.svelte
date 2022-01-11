@@ -12,7 +12,6 @@ export let file = {
 {#if file.show_ads && file.size > 1e8}
 	<!-- If the file is larger than 100 MB we show a warning about the transfer speed -->
 	<div class="description">
-		<hr/>
 		Your download speed is currently limited to 4 MiB/s. Downloading this
 		file for free will take at least
 		{formatDuration((file.size/4194304)*1000)} (under ideal conditions).
@@ -31,5 +30,8 @@ export let file = {
 	padding-left: 8px;
 	vertical-align: middle;
 	max-width: 700px;
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 16px;
+	padding: 8px;
 }
 </style>
