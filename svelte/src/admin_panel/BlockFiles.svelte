@@ -65,17 +65,12 @@ onMount(() => {
 })
 </script>
 
-<div>
-	<div class="limit_width">
-		<h2>File removal</h2>
-		<p>
-			Paste any pixeldrain file links in here to remove them
-		</p>
-		<div class="highlight_dark">
-			<Form config={block_form}></Form>
-		</div>
+<section>
+	<h2>File removal</h2>
+	<p>
+		Paste any pixeldrain file links in here to remove them
+	</p>
+	<div class="highlight_dark">
+		<Form config={block_form}></Form>
 	</div>
-</div>
-
-<style>
-</style>
+</section>

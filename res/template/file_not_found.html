@@ -7,10 +7,10 @@
 
 	<body>
 		{{template "page_top" .}}
-		<div class="checkers inset">
+		<header>
 			<h1>404, File Not Found!</h1>
-		</div>
-		<div class="limit_width">
+		</header>
+		<section>
 			<p>
 				This file does not exist, or it has been removed. Possible
 				reasons for this are:
@@ -34,7 +34,7 @@
 			<p>
 				I'm sorry for the inconvenience.
 			</p>
-		</div>
+		</section>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>
@@ -49,10 +49,10 @@
 
 	<body>
 		{{template "page_top" .}}
-		<div class="checkers inset">
+		<header>
 			<h1>404, List Not Found!</h1>
-		</div>
-		<div class="limit_width">
+		</header>
+		<section>
 			<p>
 				This list does not exist, or it has been removed. Possible
 				reasons for this are:
@@ -70,7 +70,7 @@
 			<p>
 				I'm sorry for the inconvenience.
 			</p>
-		</div>
+		</section>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>

@@ -137,29 +137,24 @@ let delete_account = {
 }
 </script>
 
-<div>
-	<div class="limit_width">
-		<h2>Change password</h2>
-		<div class="highlight_dark">
-			<Form config={password_change}></Form>
-		</div>
-
-		<h2>Change e-mail address</h2>
-		<div class="highlight_dark">
-			<Form config={email_change}></Form>
-		</div>
-
-		<h2>Change name</h2>
-		<div class="highlight_dark">
-			<Form config={name_change}></Form>
-		</div>
-
-		<h2>Delete account</h2>
-		<div class="highlight_dark">
-			<Form config={delete_account}></Form>
-		</div>
+<section>
+	<h2>Change password</h2>
+	<div class="highlight_dark">
+		<Form config={password_change}></Form>
 	</div>
-</div>
 
-<style>
-</style>
+	<h2>Change e-mail address</h2>
+	<div class="highlight_dark">
+		<Form config={email_change}></Form>
+	</div>
+
+	<h2>Change name</h2>
+	<div class="highlight_dark">
+		<Form config={name_change}></Form>
+	</div>
+
+	<h2>Delete account</h2>
+	<div class="highlight_dark">
+		<Form config={delete_account}></Form>
+	</div>
+</section>

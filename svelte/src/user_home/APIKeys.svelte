@@ -82,87 +82,85 @@ const logout = async (key) => {
 }
 </script>
 
-<div>
-	{#if loading}
-		<div class="spinner_container">
-			<Spinner />
+{#if loading}
+	<div class="spinner_container">
+		<Spinner />
+	</div>
+{/if}
+
+<section>
+	{#if !loaded}
+		<div class="highlight_yellow">
+			<h2>Warning</h2>
+			<p>
+				API keys are sensitive information. They can be used to gain
+				full control over your account. Do not show your API keys to
+				someone or something you don't trust!
+			</p>
+			<button class="button_red" on:click={load_keys}>
+				<i class="icon">lock_open</i> Show API keys
+			</button>
+		</div>
+	{:else}
+		<div class="toolbar" style="text-align: left;">
+			<div class="toolbar_spacer"></div>
+			<button on:click={create_key}>
+				<i class="icon">add</i> Create new API key
+			</button>
 		</div>
 	{/if}
 
-	<div class="limit_width">
-		{#if !loaded}
-			<div class="highlight_yellow">
-				<h2>Warning</h2>
-				<p>
-					API keys are sensitive information. They can be used to gain
-					full control over your account. Do not show your API keys to
-					someone or something you don't trust!
-				</p>
-				<button class="button_red" on:click={load_keys}>
-					<i class="icon">lock_open</i> Show API keys
-				</button>
-			</div>
-		{:else}
-			<div class="toolbar" style="text-align: left;">
-				<div class="toolbar_spacer"></div>
-				<button on:click={create_key}>
-					<i class="icon">add</i> Create new API key
-				</button>
-			</div>
-		{/if}
-
-		<p>
-			If you delete the API key that you are currently using you will be
-			logged out of your account. API keys expire 90 days after the last
-			time they're used. If you think someone is using your account
-			without your authorization it's probably a good idea to delete all
-			your keys.
-		</p>
-	</div>
-	<div class="table_scroll">
-		<table style="text-align: left;">
-			<tr>
-				<td>Key</td>
-				<td>Created</td>
-				<td>Last used ▼</td>
-				<td>IP address</td>
-				<td></td>
+	<p>
+		If you delete the API key that you are currently using you will be
+		logged out of your account. API keys expire 90 days after the last
+		time they're used. If you think someone is using your account
+		without your authorization it's probably a good idea to delete all
+		your keys.
+	</p>
+</section>
+<div class="table_scroll">
+	<table style="text-align: left;">
+		<tr>
+			<td>Key</td>
+			<td>Created</td>
+			<td>Last used ▼</td>
+			<td>IP address</td>
+			<td></td>
+		</tr>
+		{#each rows as row (row.auth_key)}
+			<tr style="border-bottom: none;">
+				<td>{row.auth_key}</td>
+				<td>{formatDate(row.creation_time, true, true, false)}</td>
+				<td>{formatDate(row.last_used_time, true, true, false)}</td>
+				<td>{row.creation_ip_address}</td>
+				<td>
+					<button on:click|preventDefault={() => {logout(row.auth_key)}} class="button button_red round">
+						<i class="icon">delete</i>
+					</button>
+				</td>
 			</tr>
-			{#each rows as row (row.auth_key)}
-				<tr style="border-bottom: none;">
-					<td>{row.auth_key}</td>
-					<td>{formatDate(row.creation_time, true, true, false)}</td>
-					<td>{formatDate(row.last_used_time, true, true, false)}</td>
-					<td>{row.creation_ip_address}</td>
-					<td>
-						<button on:click|preventDefault={() => {logout(row.auth_key)}} class="button button_red round">
-							<i class="icon">delete</i>
-						</button>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="1">
-						{#if row.app_name === "website login"}
-							<img src="/res/img/pixeldrain_32.png" alt="Pixeldrain logo" class="app_icon"/>
-							Pixeldrain website
-						{:else if row.app_name === "website keys page"}
-							<i class="icon">vpn_key</i>
-							Pixeldrain keys page
-						{:else if row.app_name === "sharex"}
-							<img src="/res/img/sharex.png" alt="ShareX logo" class="app_icon"/>
-							ShareX
-						{:else if row.app_name === "jdownloader"}
-							<img src="/res/img/jdownloader.png" alt="JDownloader logo" class="app_icon"/>
-							JDownloader
-						{:else}
-							Unknown app: {row.app_name}
-						{/if}
-					</td>
-					<td colspan="4">User-Agent: {row.user_agent}</td>
-				</tr>
-			{/each}
-		</table>
-	</div>
+			<tr>
+				<td colspan="1">
+					{#if row.app_name === "website login"}
+						<img src="/res/img/pixeldrain_32.png" alt="Pixeldrain logo" class="app_icon"/>
+						Pixeldrain website
+					{:else if row.app_name === "website keys page"}
+						<i class="icon">vpn_key</i>
+						Pixeldrain keys page
+					{:else if row.app_name === "sharex"}
+						<img src="/res/img/sharex.png" alt="ShareX logo" class="app_icon"/>
+						ShareX
+					{:else if row.app_name === "jdownloader"}
+						<img src="/res/img/jdownloader.png" alt="JDownloader logo" class="app_icon"/>
+						JDownloader
+					{:else}
+						Unknown app: {row.app_name}
+					{/if}
+				</td>
+				<td colspan="4">User-Agent: {row.user_agent}</td>
+			</tr>
+		{/each}
+	</table>
 </div>
 
 <style>

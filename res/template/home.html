@@ -93,21 +93,21 @@
 	</head>
 	<body>
 		{{template "page_top" .}}
-		<div class="checkers inset" style="padding-bottom: 60px;">
+		<header style="padding-bottom: 60px;">
 			<picture>
 				<source media="(max-width: 800px)" srcset="/res/img/header_orbitron.png">
 				<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header image">
 			</picture>
-		</div>
+		</header>
 
 		<!-- Svelte element -->
 		<div id="uploader" class="page_content"></div>
 
-		<div class="checkers inset">
+		<header>
 			<h1>What is pixeldrain?</h1>
-		</div>
+		</header>
 
-		<div class="limit_width">
+		<section>
 			<p>
 				Pixeldrain is a file sharing website built for speed and ease of
 				use. You can upload files you want to share online to our
@@ -475,7 +475,7 @@
 				logging in head to the <a href="/user/transactions">transactions
 				page</a> to deposit your coins.
 			</p>
-		</div>
+		</section>
 
 		<template id="tpl_file_expiry">
 			<p>

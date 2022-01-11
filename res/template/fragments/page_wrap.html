@@ -1,6 +1,6 @@
 {{define "page_menu"}}
 <button id="button_toggle_navigation" class="button_toggle_navigation" onclick="toggleMenu();">☰</button>
-<div id="page_navigation" class="page_navigation">
+<nav id="page_navigation" class="page_navigation">
 	<a href="/">Home</a>
 	<hr />
 	{{if .Authenticated}}<a href="/user">{{.User.Username}}</a>
@@ -26,7 +26,7 @@
 	{{if eq .User.Subscription.ID ""}}
 		<a href="https://pixeldrain.com/vouchercodes">Shopping discounts</a>
 	{{end}}
-</div>
+</nav>
 <script>
 function toggleMenu() {
 	var nav  = document.getElementById("page_navigation");
@@ -54,7 +54,7 @@ function resetMenu() {
 {{end}}
 
 {{define "page_bottom"}}
-	<div class="inset checkers" style="padding-top: 150px">
+	<footer>
 		<div style="display: inline-block; margin: 0 8px 0 8px;">
 			Pixeldrain is a product by <a href="//fornaxian.tech" target="_blank">Fornaxian Technologies</a>
 		</div>
@@ -71,8 +71,6 @@ function resetMenu() {
 		<span class="small_footer_text" style="font-size: .75em; line-height: .75em;">
 			page rendered by {{.Hostname}}
 		</span>
-		<br/>
-		<br/>
-	</div>
+	</footer>
 </div><!-- end page_body -->
 {{end}}

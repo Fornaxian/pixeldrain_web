@@ -6,15 +6,14 @@
 	</head>
 	<body>
 		{{template "page_top" .}}
-		<div class="checkers inset">
+		<header>
 			<h1>Please confirm that you want to log out of your pixeldrain account</h1>
-			<br/>
-		</div>
+		</header>
 		<br/>
 		<form method="POST" action="/logout">
 			<input type="submit" value="I want to log out of pixeldrain on this computer" class="button_highlight"/>
 		</form>
-		<div class="limit_width">
+		<section>
 			<br/>
 			<h2>Why do I need to confirm my logout?</h2>
 			<p>
@@ -31,7 +30,7 @@
 				page visit we can confirm that you really want to log out.
 			</p>
 			<br/>
-		</div>
+		</section>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>

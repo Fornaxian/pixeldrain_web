@@ -28,10 +28,8 @@ export const toggle = () => {
 .expandable {
 	text-decoration: none;
 	background-color: var(--layer_3_color);
-	transition: box-shadow 0.5s;
-	box-shadow: 1px 1px 6px -2px var(--shadow_color);
-	margin: 1em 0;
-	border-radius: 8px;
+	margin: 0.8em 0;
+	border-radius: 6px;
 	overflow: hidden;
 }
 .header {

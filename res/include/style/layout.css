@@ -46,8 +46,11 @@ a > svg { vertical-align: middle; }
 *, *::before, *::after {
 	box-sizing: border-box;
 }
-html, body { overflow-x: hidden; }
-body{
+html, body {
+	/* This makes sure that no scrollbar shows up when the menu is open on small screens*/
+	overflow-x: hidden;
+}
+body {
 	margin: 0;
 	font-family: system-ui, sans-serif;
 	font-size: 17px;
@@ -56,19 +59,25 @@ body{
 	background-color: var(--layer_1_color);
 	padding: 0;
 }
-.checkers {
+header, footer, .checkers {
 	background-image: url("{{bgPattern}}");
 	background-color: #111111; /* Fallback */
 	background-color: var(--layer_1_color);
 	background-repeat: repeat;
 	background-blend-mode: luminosity;
 }
-.inset {
+header, footer {
 	padding-top: 70px;
 	box-shadow: inset 1px 1px 10px 0 var(--shadow_color);
 	border-radius: 12px;
 	text-align: center;
 	overflow: hidden;
+}
+header > h1 {
+	text-shadow: 1px 1px 10px var(--shadow_color);
+}
+footer {
+	padding: 200px 8px 40px 8px;
 }
 
 /* Page layout elements */
@@ -131,7 +140,7 @@ body{
 		padding: 4px;
 	}
 }
-.limit_width {
+section {
 	position: relative;
 	display: inline-block;
 	max-width: 1000px;
@@ -140,10 +149,6 @@ body{
 	padding: 0;
 	text-align: left;
 	clear: both;
-}
-.page_body > h1 {
-	text-shadow: 1px 1px 25px #000000;
-	text-shadow: 1px 1px 25px var(--shadow_color);
 }
 
 /* Page contents */

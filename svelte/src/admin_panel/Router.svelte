@@ -26,7 +26,7 @@ onMount(() => {
 })
 </script>
 
-<div class="checkers inset">
+<header>
 	<h1>Admin Panel</h1>
 
 	<div class="tab_bar">
@@ -77,7 +77,7 @@ onMount(() => {
 			Update global settings
 		</a>
 	</div>
-</div>
+</header>
 
 {#if page === "status"}
 	<Home></Home>

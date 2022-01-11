@@ -33,7 +33,7 @@ onMount(() => {
 
 <svelte:window on:popstate={get_page} />
 
-<div class="checkers inset">
+<header>
 	<h1>Welcome home, {window.user.username}!</h1>
 
 	<div class="tab_bar">
@@ -75,7 +75,7 @@ onMount(() => {
 			</a>
 		{/if}
 	</div>
-</div>
+</header>
 <br/>
 
 {#if page === "home"}

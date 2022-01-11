@@ -5,24 +5,23 @@
 		{{template "user_style" .}}
 	</head>
 	<body>
-		<div id='body' class="body">
-			{{template "page_top" .}}
+		{{template "page_top" .}}
 
-			<div class="checkers inset">
-				<h1>Upload History</h1>
-			</div>
+		<header>
+			<h1>Upload History</h1>
+		</header>
 
-			<div class="limit_width">
-				<p>
-				Here are all files you have previously uploaded to pixeldrain using this computer.
-				This data is saved locally in your web browser and gets updated every time you upload a file through your current browser.
-				</p>
-				<br/>
+		<section>
+			<p>
+			Here are all files you have previously uploaded to pixeldrain using this computer.
+			This data is saved locally in your web browser and gets updated every time you upload a file through your current browser.
+			</p>
+			<br/>
 
-				<div id="uploaded_files" class="highlight_dark"></div>
-			</div>
-			{{template "page_bottom" .}}
-		</div>
+			<div id="uploaded_files" class="highlight_dark"></div>
+		</section>
+		{{template "page_bottom" .}}
+
 		<script>
 			let apiEndpoint = '{{.APIEndpoint}}';
 			{{template `util.js`}}

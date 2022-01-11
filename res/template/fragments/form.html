@@ -110,14 +110,14 @@
 	<body>
 		<div id='body' class="body">
 			{{template "page_top" .}}
-			<div class="checkers inset">
+			<header>
 				<h1>{{.Form.Title}}</h1>
-			</div>
+			</header>
 			<br/>
-			<div class="limit_width">
+			<section>
 				{{template "form" .Form}}
 				<br/>
-			</div>
+			</section>
 			{{template "page_bottom" .}}
 		</div>
 

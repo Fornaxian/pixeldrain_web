@@ -173,7 +173,7 @@ onMount(get_coupons)
 
 </script>
 
-<div class="limit_width">
+<section>
 	{#if loading}
 		<div class="spinner_container">
 			<Spinner />
@@ -221,7 +221,7 @@ onMount(get_coupons)
 			{/each}
 		</table>
 	</div>
-</div>
+</section>
 
 <style>
 .spinner_container {

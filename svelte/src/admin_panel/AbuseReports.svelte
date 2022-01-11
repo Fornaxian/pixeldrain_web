@@ -91,38 +91,36 @@ onMount(() => {
 });
 </script>
 
-<div>
-	{#if loading}
-		<div class="spinner_container">
-			<Spinner />
-		</div>
-	{/if}
-
-	<div class="limit_width">
-		<div class="toolbar" style="text-align: left;">
-			<div class="toolbar_spacer"></div>
-			<div>Start:</div>
-			<input type="date" bind:this={startPicker}/>
-			<div>End:</div>
-			<input type="date" bind:this={endPicker}/>
-			<button on:click={get_reports}>Go</button>
-		</div>
-
-		<h2>Pending</h2>
-		{#each reports_pending as report (report.id)}
-			{#if report.status === "pending"}
-			<AbuseReport report={report} on:refresh={get_reports}/>
-			{/if}
-		{/each}
-
-		<h2>Resolved</h2>
-		{#each reports_processed as report (report.id)}
-			{#if report.status !== "pending"}
-			<AbuseReport report={report} on:refresh={get_reports}/>
-			{/if}
-		{/each}
+{#if loading}
+	<div class="spinner_container">
+		<Spinner />
 	</div>
-</div>
+{/if}
+
+<section>
+	<div class="toolbar" style="text-align: left;">
+		<div class="toolbar_spacer"></div>
+		<div>Start:</div>
+		<input type="date" bind:this={startPicker}/>
+		<div>End:</div>
+		<input type="date" bind:this={endPicker}/>
+		<button on:click={get_reports}>Go</button>
+	</div>
+
+	<h2>Pending</h2>
+	{#each reports_pending as report (report.id)}
+		{#if report.status === "pending"}
+		<AbuseReport report={report} on:refresh={get_reports}/>
+		{/if}
+	{/each}
+
+	<h2>Resolved</h2>
+	{#each reports_processed as report (report.id)}
+		{#if report.status !== "pending"}
+		<AbuseReport report={report} on:refresh={get_reports}/>
+		{/if}
+	{/each}
+</section>
 
 <style>
 .spinner_container {

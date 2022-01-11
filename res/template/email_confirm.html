@@ -7,27 +7,38 @@
 	<body>
 		{{template "page_top" .}}
 
-		<div class="limit_width">
-			{{if eq .Other "success"}}
+		{{if eq .Other "success"}}
+			<header>
 				<h1>Success!</h1>
+			</header>
+			<section>
 				<p>
 					Your account's e-mail address has been updated.
 				</p>
-			{{else if eq .Other "not_found"}}
+			</section>
+		{{else if eq .Other "not_found"}}
+			<header>
 				<h1>E-mail change failed</h1>
+			</header>
+			<section>
 				<p>
 					This e-mail change request does not exist or has expired.
 					Please try again if you still want to change your e-mail
 					address.
 				</p>
-			{{else}}
+			</section>
+		{{else}}
+			<header>
 				<h1>Error</h1>
+			</header>
+			<section>
 				<p>
 					Something went wrong while processing this request. Please
 					try again later.
 				</p>
-			{{end}}
-		</div>
+			</section>
+		{{end}}
+
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>

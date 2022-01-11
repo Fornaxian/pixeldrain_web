@@ -386,18 +386,18 @@ const keydown = (e) => {
 <div>
 	<!-- If the user is logged in and has used more than 50% of their storage space we will show a progress bar -->
 	{#if window.user.username !== "" && window.user.storage_space_used/window.user.subscription.storage_space > 0.5}
-		<div class="limit_width">
+		<section>
 			<StorageProgressBar used={window.user.storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
-		</div>
+		</section>
 	{/if}
 
-	<div class="instruction limit_width" style="margin-top: 0; border-top: none;">
+	<section class="instruction" style="margin-top: 0; border-top: none;">
 		<span class="big_number">1</span>
 		<span class="instruction_text">Select files to upload</span>
 		<br/>
 		You can also drop files on this page from your file manager or
 		paste an image from your clipboard
-	</div>
+	</section>
 	<br/>
 
 	<input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple"/>
@@ -416,7 +416,7 @@ const keydown = (e) => {
 		<a href="/about#content-policy">content policy</a>.
 	<p>
 
-	<div class="instruction limit_width" style="margin-bottom: 0;">
+	<section class="instruction" style="margin-bottom: 0;">
 		<span class="big_number">2</span>
 		<span class="instruction_text">Wait for the files to finish uploading</span>
 		<br/>
@@ -426,7 +426,7 @@ const keydown = (e) => {
 			<div>ETA {formatDuration(remaining_time, 0)}</div>
 			<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
 		</div>
-	</div>
+	</section>
 	<div class="progress_bar_outer" style="margin-bottom: 1.5em;">
 		<div bind:this={progress_bar_inner} class="progress_bar_inner"></div>
 	</div>
@@ -441,10 +441,10 @@ const keydown = (e) => {
 		<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>
 	{/each}
 
-	<div class="instruction limit_width">
+	<section class="instruction">
 		<span class="big_number">3</span>
 		<span class="instruction_text">Share the files</span>
-	</div>
+	</section>
 	<br/>
 
 	{#if upload_queue.length > 1}
@@ -518,11 +518,11 @@ const keydown = (e) => {
 	<br/>
 
 	{#if window.user.subscription.name === ""}
-		<div class="instruction limit_width">
-			<span class="big_number">4</span>
-			<span class="instruction_text">Support me on Patreon!</span>
-		</div>
-		<div class="limit_width">
+		<section>
+			<div class="instruction">
+				<span class="big_number">4</span>
+				<span class="instruction_text">Support me on Patreon!</span>
+			</div>
 			<p>
 				Pixeldrain is struggling to get by financially. Because anyone
 				can upload anything it's hard to find reputable advertisers who
@@ -537,13 +537,15 @@ const keydown = (e) => {
 				help with making pixeldrain the easiest and fastest way to share
 				files online!
 			</p>
-		</div>
-		<br/>
-		<a href="#pro" class="button big_button" style="min-width: 350px;">
-			<i class="icon">arrow_downward</i>
-			Check out Pro
-			<i class="icon">arrow_downward</i>
-		</a>
+			<br/>
+			<div style="text-align: center;">
+				<a href="#pro" class="button big_button" style="min-width: 350px;">
+					<i class="icon">arrow_downward</i>
+					Check out Pro
+					<i class="icon">arrow_downward</i>
+				</a>
+			</div>
+		</section>
 	{/if}
 </div>
 

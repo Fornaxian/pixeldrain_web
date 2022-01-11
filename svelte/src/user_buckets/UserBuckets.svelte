@@ -41,51 +41,49 @@ const create_bucket = async () => {
 onMount(get_buckets);
 </script>
 
-<div>
-	{#if loading}
-		<div class="spinner_container">
-			<Spinner />
+{#if loading}
+	<div class="spinner_container">
+		<Spinner />
+	</div>
+{/if}
+
+<section>
+	<div class="toolbar" style="text-align: right;">
+		<button
+			class:button_highlight={creating_bucket}
+			on:click={() => {creating_bucket = !creating_bucket}}
+		>
+			<i class="icon">create_new_folder</i> New bucket
+		</button>
+	</div>
+	{#if creating_bucket}
+		<div class="highlight_light">
+			<form on:submit|preventDefault={create_bucket}>
+				<table class="form">
+					<tr>
+						<td>
+							Name
+						</td>
+						<td>
+							<input type="text" bind:this={new_bucket_name}/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button class="button_highlight" type="submit" style="float: right;">
+								<i class="icon">save</i> Save
+							</button>
+						</td>
+					</tr>
+				</table>
+			</form>
 		</div>
 	{/if}
 
-	<div class="limit_width">
-		<div class="toolbar" style="text-align: right;">
-			<button
-				class:button_highlight={creating_bucket}
-				on:click={() => {creating_bucket = !creating_bucket}}
-			>
-				<i class="icon">create_new_folder</i> New bucket
-			</button>
-		</div>
-		{#if creating_bucket}
-			<div class="highlight_light">
-				<form on:submit|preventDefault={create_bucket}>
-					<table class="form">
-						<tr>
-							<td>
-								Name
-							</td>
-							<td>
-								<input type="text" bind:this={new_bucket_name}/>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<button class="button_highlight" type="submit" style="float: right;">
-									<i class="icon">save</i> Save
-								</button>
-							</td>
-						</tr>
-					</table>
-				</form>
-			</div>
-		{/if}
-
-		{#each buckets as bucket}
-			<UserBucket bucket={bucket} on:refresh={get_buckets}></UserBucket>
-		{/each}
-	</div>
-</div>
+	{#each buckets as bucket (bucket.id)}
+		<UserBucket bucket={bucket} on:refresh={get_buckets}></UserBucket>
+	{/each}
+</section>
 
 <style>
 .spinner_container {

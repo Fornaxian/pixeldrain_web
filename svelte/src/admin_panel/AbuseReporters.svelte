@@ -82,85 +82,83 @@ const delete_reporter = async (email) => {
 onMount(get_reporters);
 </script>
 
-<div>
-	{#if loading}
-		<div class="spinner_container">
-			<Spinner />
+{#if loading}
+	<div class="spinner_container">
+		<Spinner />
+	</div>
+{/if}
+
+<section>
+	<div class="toolbar" style="text-align: left;">
+		<div class="toolbar_spacer"></div>
+		<button class:button_highlight={creating} on:click={() => {creating = !creating}}>
+			<i class="icon">create</i> Add abuse reporter
+		</button>
+	</div>
+	{#if creating}
+		<div class="highlight_light">
+			<form on:submit|preventDefault={create_reporter}>
+				<table class="form">
+					<tr>
+						<td>E-mail address</td>
+						<td><input type="text" bind:this={new_reporter_email}/></td>
+					</tr>
+					<tr>
+						<td>Name</td>
+						<td><input type="text" bind:this={new_reporter_name} value="Anonymous tip"/></td>
+					</tr>
+					<tr>
+						<td>Type</td>
+						<td>
+							<input id="reporter_type_individual" name="reporter_type" type="radio" bind:group={new_reporter_type} value="individual" />
+							<label for="reporter_type_individual">Individual</label>
+							<br/>
+							<input id="reporter_type_org" name="reporter_type" type="radio" bind:group={new_reporter_type} value="org" />
+							<label for="reporter_type_org">Organisation</label>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button class="button_highlight" type="submit" style="float: right;">
+								<i class="icon">save</i> Save
+							</button>
+						</td>
+					</tr>
+				</table>
+			</form>
 		</div>
 	{/if}
+</section>
 
-	<div class="limit_width">
-		<div class="toolbar" style="text-align: left;">
-			<div class="toolbar_spacer"></div>
-			<button class:button_highlight={creating} on:click={() => {creating = !creating}}>
-				<i class="icon">create</i> Add abuse reporter
-			</button>
-		</div>
-		{#if creating}
-			<div class="highlight_light">
-				<form on:submit|preventDefault={create_reporter}>
-					<table class="form">
-						<tr>
-							<td>E-mail address</td>
-							<td><input type="text" bind:this={new_reporter_email}/></td>
-						</tr>
-						<tr>
-							<td>Name</td>
-							<td><input type="text" bind:this={new_reporter_name} value="Anonymous tip"/></td>
-						</tr>
-						<tr>
-							<td>Type</td>
-							<td>
-								<input id="reporter_type_individual" name="reporter_type" type="radio" bind:group={new_reporter_type} value="individual" />
-								<label for="reporter_type_individual">Individual</label>
-								<br/>
-								<input id="reporter_type_org" name="reporter_type" type="radio" bind:group={new_reporter_type} value="org" />
-								<label for="reporter_type_org">Organisation</label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<button class="button_highlight" type="submit" style="float: right;">
-									<i class="icon">save</i> Save
-								</button>
-							</td>
-						</tr>
-					</table>
-				</form>
-			</div>
-		{/if}
-	</div>
+<br/>
 
-	<br/>
-
-	<div class="table_scroll">
-		<table style="text-align: left;">
+<div class="table_scroll">
+	<table style="text-align: left;">
+		<tr>
+			<td>E-mail</td>
+			<td>Name</td>
+			<td>Blocked</td>
+			<td>Type</td>
+			<td>Last used</td>
+			<td>Created</td>
+			<td></td>
+		</tr>
+		{#each reporters as reporter (reporter.email)}
 			<tr>
-				<td>E-mail</td>
-				<td>Name</td>
-				<td>Blocked</td>
-				<td>Type</td>
-				<td>Last used</td>
-				<td>Created</td>
-				<td></td>
+				<td>{reporter.email}</td>
+				<td>{reporter.name}</td>
+				<td>{reporter.files_blocked}</td>
+				<td>{reporter.type}</td>
+				<td>{formatDate(reporter.last_used, true, true, false)}</td>
+				<td>{formatDate(reporter.created, false, false, false)}</td>
+				<td>
+					<button on:click|preventDefault={() => {delete_reporter(reporter.email)}} class="button button_red round">
+						<i class="icon">delete</i>
+					</button>
+				</td>
 			</tr>
-			{#each reporters as reporter (reporter.email)}
-				<tr>
-					<td>{reporter.email}</td>
-					<td>{reporter.name}</td>
-					<td>{reporter.files_blocked}</td>
-					<td>{reporter.type}</td>
-					<td>{formatDate(reporter.last_used, true, true, false)}</td>
-					<td>{formatDate(reporter.created, false, false, false)}</td>
-					<td>
-						<button on:click|preventDefault={() => {delete_reporter(reporter.email)}} class="button button_red round">
-							<i class="icon">delete</i>
-						</button>
-					</td>
-				</tr>
-			{/each}
-		</table>
-	</div>
+		{/each}
+	</table>
 </div>
 
 <style>
