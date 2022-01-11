@@ -78,15 +78,14 @@ const copy_magnet = () => {
 </script>
 
 <div class="container">
-	<h1>Torrent file on pixeldrain</h1>
+	<h1>{file.name}</h1>
 	<img src={file.icon_href} alt="File icon" class="icon">
 	<div class="description" style="max-width: 650px">
-		Name: {file.name}<br/>
 		{#if status === "finished"}
 			Created by: {torrent.created_by}<br/>
+			Comment: {torrent.comment}<br/>
 			Created at: {formatDate(new Date(torrent.created_at), true, true, true)}<br/>
 			Info hash: {torrent.info_hash}<br/>
-			Comment: {torrent.comment}<br/>
 			<a href={magnet} class="button button_highlight">
 				<Magnet></Magnet>
 				<span>Open magnet link</span>
@@ -95,7 +94,7 @@ const copy_magnet = () => {
 				on:click={copy_magnet}
 				class="button"
 				class:button_highlight={copy_magnet_status === "copied"}
-				class:button_red={copy_magnet_status === "erorr"}
+				class:button_red={copy_magnet_status === "error"}
 			>
 				<Magnet></Magnet>
 				<span>
