@@ -78,8 +78,11 @@ const on_failure = (status, message) => {
 }
 
 export const start = () => {
+	job.status = "uploading"
+
+	// Check the file size limit. For free accounts it's 10 GB
 	if (window.user.subscription.file_size_limit === 0) {
-		window.user.subscription.file_size_limit = 5e9
+		window.user.subscription.file_size_limit = 10e9
 	}
 	if (job.total_size > window.user.subscription.file_size_limit) {
 		on_failure(

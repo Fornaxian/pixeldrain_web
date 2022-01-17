@@ -77,9 +77,11 @@ const start_upload = () => {
 	for (let i = 0; i < upload_queue.length && active_uploads < 3; i++) {
 		if (upload_queue[i].status == "queued") {
 			active_uploads++
-			upload_queue[i].status = "uploading"
 			upload_queue[i].component.start()
-		} else if (upload_queue[i].status == "finished") {
+		} else if (
+			upload_queue[i].status == "finished" ||
+			upload_queue[i].status == "error"
+		) {
 			finished_count++
 		}
 	}
@@ -204,7 +206,7 @@ const uploads_finished = () => {
 	}
 }
 
-function create_list(title, anonymous) {
+async function create_list(title, anonymous) {
 	let files = upload_queue.reduce(
 		(acc, curr) => {
 			if (curr.status === "finished") {
@@ -215,7 +217,7 @@ function create_list(title, anonymous) {
 		[],
 	)
 
-	return fetch(
+	const resp = await fetch(
 		window.api_endpoint+"/list",
 		{
 			method: "POST",
@@ -226,12 +228,11 @@ function create_list(title, anonymous) {
 				"files": files
 			})
 		}
-	).then(resp => {
-		if (!resp.ok) {
-			return Promise.reject("HTTP error: " + resp.status)
-		}
-		return resp.json()
-	})
+	)
+	if(!resp.ok) {
+		return Promise.reject("HTTP error: "+resp.status)
+	}
+	return await resp.json()
 }
 
 const copy_link = () => {

@@ -54,7 +54,7 @@ body {
 	margin: 0;
 	font-family: system-ui, sans-serif;
 	font-size: 17px;
-	line-height: 1.8em;
+	line-height: 1.6em;
 	color: var(--text_color);
 	background-color: var(--layer_1_color);
 	padding: 0;
@@ -241,7 +241,7 @@ section {
 /* Common elements */
 
 h1, h2, h3, h4, h5, h6, .light {
-	line-height: 1em;
+	line-height: 1;
 	margin: 0.5em 0;
 	font-weight: lighter;
 	font-family: 'Open Sans Light', sans-serif;
@@ -311,7 +311,7 @@ table:not(.form) {
 }
 
 tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
-tr > td, tr > th {padding: 0.3em 0.6em;}
+tr > td, tr > th {padding: 0.2em 0.5em;}
 @media(max-width: 30em) {
 	/* Forms will be stacked on small screens */
 	tr.form > td {
@@ -420,7 +420,7 @@ select {
 	outline: 0;
 	font-size: 1em;
 	font-weight: normal;
-	line-height: 1em;
+	line-height: 1;
 	text-decoration: none;
 	text-shadow: none;
 	border: none;
@@ -475,7 +475,7 @@ select:disabled , select.disabled {
 button > *,
 .button > * {
 	vertical-align: middle;
-	line-height: 1em;
+	line-height: 1;
 }
 
 .round {

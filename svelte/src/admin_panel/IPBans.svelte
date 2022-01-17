@@ -2,10 +2,12 @@
 import { onMount } from "svelte";
 import { formatDate } from "../util/Formatting.svelte";
 import Spinner from "../util/Spinner.svelte";
+import Expandable from "../util/Expandable.svelte";
 
 let loading = true
 let rows = []
 
+let expanded = false
 let creating = false
 let new_ban_address
 let new_ban_reason = "unknown"
@@ -18,9 +20,6 @@ const get_bans = async () => {
 			throw new Error(resp.text());
 		}
 		rows = await resp.json()
-		rows.sort((a, b) => {
-			return b.ban_time.localeCompare(a.ban_time)
-		});
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -87,8 +86,15 @@ onMount(get_bans);
 {/if}
 
 <section>
-	<div class="toolbar" style="text-align: left;">
+	<div class="toolbar">
 		<div class="toolbar_spacer"></div>
+		<button class:button_highlight={expanded} on:click={() => {expanded = !expanded}}>
+			{#if expanded}
+				<i class="icon">unfold_less</i> Collapse all
+			{:else}
+				<i class="icon">unfold_more</i> Expand all
+			{/if}
+		</button>
 		<button class:button_highlight={creating} on:click={() => {creating = !creating}}>
 			<i class="icon">create</i> Add IP ban
 		</button>
@@ -134,36 +140,50 @@ onMount(get_bans);
 			</form>
 		</div>
 	{/if}
+
+	{#each rows as row (row.address)}
+		<Expandable expanded={expanded}>
+			<div slot="header" class="header">
+				<div class="title">{row.address}</div>
+				<div class="stats">
+					Offences<br/>
+					{row.offences.length}
+				</div>
+				<div class="stats">
+					Date<br/>
+					{formatDate(row.offences[0].ban_time, false, false, false)}
+				</div>
+				<button on:click|preventDefault={() => {delete_ban(row.address)}} class="button button_red" style="align-self: center;">
+					<i class="icon">delete</i>
+				</button>
+			</div>
+			<table>
+				<tr>
+					<td>Reason</td>
+					<td>Reporter</td>
+					<td>Ban time</td>
+					<td>Expire time</td>
+					<td>File</td>
+				</tr>
+				{#each row.offences as offence (offence.ban_time)}
+					<tr>
+						<td>{offence.reason}</td>
+						<td>{offence.reporter}</td>
+						<td>{formatDate(offence.ban_time, true, true, false)}</td>
+						<td>{formatDate(offence.expire_time, true, true, false)}</td>
+						<td>
+							{#if offence.file_public_id}
+								<a href="/u/{offence.file_public_id}" target="_blank">
+									{offence.file_name}
+								</a>
+							{/if}
+						</td>
+					</tr>
+				{/each}
+			</table>
+		</Expandable>
+	{/each}
 </section>
-
-<br/>
-
-<div class="table_scroll">
-	<table style="text-align: left;">
-		<tr>
-			<td>Address</td>
-			<td>Reason</td>
-			<td>Ban time</td>
-			<td>Expire time</td>
-			<td>Offences</td>
-			<td></td>
-		</tr>
-		{#each rows as row (row.address)}
-			<tr>
-				<td>{row.address}</td>
-				<td>{row.reason}</td>
-				<td>{formatDate(row.ban_time, true, true, false)}</td>
-				<td>{formatDate(row.expire_time, true, true, false)}</td>
-				<td>{row.offences}</td>
-				<td>
-					<button on:click|preventDefault={() => {delete_ban(row.address)}} class="button button_red round">
-						<i class="icon">delete</i>
-					</button>
-				</td>
-			</tr>
-		{/each}
-	</table>
-</div>
 
 <style>
 .spinner_container {
@@ -178,7 +198,28 @@ onMount(get_bans);
 	display: flex;
 	flex-direction: row;
 	width: 100%;
+	text-align: left;
+	margin-top: 10px;
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }
+
+
+.header {
+	display: flex;
+	flex-direction: row;
+	line-height: 1.2em;
+}
+.title {
+	flex: 1 1 auto;
+	align-self: center;
+	word-break: break-all;
+	padding-left: 8px;
+}
+.stats {
+	flex: 0 0 auto;
+	padding: 3px 4px;
+	border-left: 1px solid var(--layer_3_color_border);
+	text-align: center;
+}
 </style>
