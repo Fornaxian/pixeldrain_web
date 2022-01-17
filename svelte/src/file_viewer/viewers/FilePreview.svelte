@@ -1,6 +1,5 @@
 <script>
 import { createEventDispatcher, tick } from "svelte";
-
 import Spinner from "../../util/Spinner.svelte";
 import Video from "./Video.svelte";
 import Audio from "./Audio.svelte";
@@ -43,42 +42,38 @@ const loading = e => {dispatch("loading", e.detail)}
 
 </script>
 
-<div class="file_container">
-	{#if viewer_type === "loading"}
-		<div class="center" style="width: 100px; height: 100px;">
-			<Spinner></Spinner>
-		</div>
-	{:else if viewer_type === "abuse"}
-		<Abuse bind:this={viewer}></Abuse>
-	{:else if viewer_type === "rate_limit"}
-		<RateLimit bind:this={viewer} on:download={download}></RateLimit>
-	{:else if viewer_type === "image"}
-		<Image bind:this={viewer} on:loading={loading}></Image>
-	{:else if viewer_type === "video"}
-		<Video bind:this={viewer} on:loading={loading} on:download={download} on:prev={prev} on:next={next}></Video>
-	{:else if viewer_type === "audio"}
-		<Audio bind:this={viewer} on:loading={loading} on:prev={prev} on:next={next}></Audio>
-	{:else if viewer_type === "pdf"}
-		<PDF bind:this={viewer}></PDF>
-	{:else if viewer_type === "text"}
-		<Text bind:this={viewer}></Text>
-	{:else if viewer_type === "torrent"}
-		<Torrent bind:this={viewer} on:loading={loading} on:download={download}></Torrent>
-	{:else if viewer_type === "file"}
-		<File bind:this={viewer} on:download={download}></File>
-	{/if}
-</div>
+{#if viewer_type === "loading"}
+	<div class="center">
+		<Spinner></Spinner>
+	</div>
+{:else if viewer_type === "abuse"}
+	<Abuse bind:this={viewer}></Abuse>
+{:else if viewer_type === "rate_limit"}
+	<RateLimit bind:this={viewer} on:download={download}></RateLimit>
+{:else if viewer_type === "image"}
+	<Image bind:this={viewer} on:loading={loading}></Image>
+{:else if viewer_type === "video"}
+	<Video bind:this={viewer} on:loading={loading} on:download={download} on:prev={prev} on:next={next}></Video>
+{:else if viewer_type === "audio"}
+	<Audio bind:this={viewer} on:loading={loading} on:prev={prev} on:next={next}></Audio>
+{:else if viewer_type === "pdf"}
+	<PDF bind:this={viewer}></PDF>
+{:else if viewer_type === "text"}
+	<Text bind:this={viewer}></Text>
+{:else if viewer_type === "torrent"}
+	<Torrent bind:this={viewer} on:loading={loading} on:download={download}></Torrent>
+{:else if viewer_type === "file"}
+	<File bind:this={viewer} on:download={download}></File>
+{/if}
 
 <style>
-.file_container {
-	width: 100%;
-	height: 100%;
-}
 .center{
 	position: relative;
 	display: block;
 	margin: auto;
+	width: 100px;
 	max-width: 100%;
+	height: 100px;
 	max-height: 100%;
 	top: 50%;
 	transform: translateY(-50%);

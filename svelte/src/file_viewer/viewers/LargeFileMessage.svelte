@@ -27,7 +27,6 @@ export let file = {
 .description {
 	display: inline-block;
 	text-align: center;
-	padding-left: 8px;
 	vertical-align: middle;
 	max-width: 700px;
 	background-color: rgba(0, 0, 0, 0.3);

@@ -671,7 +671,7 @@ const keyboard_event = evt => {
 	text-align: center;
 	vertical-align: middle;
 	transition: left 0.5s, right 0.5s;
-	overflow: hidden;
+	overflow: auto;
 	box-shadow: inset 2px 2px 10px 2px var(--shadow_color);
 	border-radius: 16px;
 }

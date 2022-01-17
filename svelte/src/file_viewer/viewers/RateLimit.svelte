@@ -1,5 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
+import LargeFileMessage from "./LargeFileMessage.svelte";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f
@@ -54,6 +55,8 @@ let file = {
 		</a>
 	</div>
 </div>
+<br/><br/>
+<LargeFileMessage file={file}></LargeFileMessage>
 
 <style>
 .container {
@@ -61,9 +64,7 @@ let file = {
 	display: inline-block;
 	width: 800px;
 	max-width: 100%;
-	max-height: 100%;
 	text-align: center;
-	overflow: auto;
 	background-color: rgba(0, 0, 0, 0.2);
 	border-radius: 16px;
 	text-align: left;

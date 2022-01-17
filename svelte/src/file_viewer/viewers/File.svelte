@@ -14,22 +14,20 @@ let file = {
 }
 </script>
 
-<div class="container">
-	<h1>You are viewing a file on pixeldrain</h1>
-	<img src={file.icon_href} alt="File icon" class="icon">
-	<div class="description">
-		Name: {file.name}<br/>
-		Type: {file.mime_type}<br/>
-		No preview is available for this file type. Download to view it locally.
-		<br/>
-		<button class="button_highlight" on:click={() => {dispatch("download")}}>
-			<i class="icon">save</i>
-			<span>Download</span>
-		</button>
-	</div>
-	<br/><br/>
-	<LargeFileMessage file={file}></LargeFileMessage>
+<h1>You are viewing a file on pixeldrain</h1>
+<img src={file.icon_href} alt="File icon" class="icon">
+<div class="description">
+	Name: {file.name}<br/>
+	Type: {file.mime_type}<br/>
+	No preview is available for this file type. Download to view it locally.
+	<br/>
+	<button class="button_highlight" on:click={() => {dispatch("download")}}>
+		<i class="icon">save</i>
+		<span>Download</span>
+	</button>
 </div>
+<br/><br/>
+<LargeFileMessage file={file}></LargeFileMessage>
 
 <style>
 .icon {
@@ -45,13 +43,5 @@ let file = {
 	background-color: rgba(0, 0, 0, 0.3);
 	border-radius: 16px;
 	padding: 8px;
-}
-.container {
-	position: relative;
-	display: block;
-	height: 100%;
-	width: 100%;
-	text-align: center;
-	overflow: hidden;
 }
 </style>

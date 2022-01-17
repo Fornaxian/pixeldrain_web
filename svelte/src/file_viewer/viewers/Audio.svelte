@@ -93,11 +93,9 @@ const toggle_play = () => playing ? player.pause() : player.play()
 
 <style>
 .container {
-	height: 100%;
 	width: 100%;
 	margin: 50px 0 0 0;
 	padding: 0;
-	overflow-y: auto;
 	text-align: center;
 }
 .player {

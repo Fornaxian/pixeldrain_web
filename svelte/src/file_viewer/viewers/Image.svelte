@@ -67,7 +67,6 @@ const mouseup = (e) => {
 
 <style>
 .container {
-	position: relative;
 	display: block;
 	height: 100%;
 	width: 100%;

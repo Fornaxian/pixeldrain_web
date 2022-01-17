@@ -77,60 +77,58 @@ const copy_magnet = () => {
 }
 </script>
 
-<div class="container">
-	<h1>{file.name}</h1>
-	<img src={file.icon_href} alt="File icon" class="icon">
-	<div class="description" style="max-width: 650px">
-		{#if status === "finished"}
-			Created by: {torrent.created_by}<br/>
-			Comment: {torrent.comment}<br/>
-			Created at: {formatDate(new Date(torrent.created_at), true, true, true)}<br/>
-			Info hash: {torrent.info_hash}<br/>
-			<a href={magnet} class="button button_highlight">
-				<Magnet></Magnet>
-				<span>Open magnet link</span>
-			</a>
-			<button
-				on:click={copy_magnet}
-				class="button"
-				class:button_highlight={copy_magnet_status === "copied"}
-				class:button_red={copy_magnet_status === "error"}
-			>
-				<Magnet></Magnet>
-				<span>
-					{#if copy_magnet_status === ""}
-						Copy magnet link
-					{:else if copy_magnet_status === "copied"}
-						Copied magnet
-					{:else if copy_magnet_status === "error"}
-						Error!
-					{/if}
-				</span>
-			</button>
-		{:else if status === "too_large"}
-			<p>
-				Torrent file is too large to parse. Please download the file and
-				add it to your torrent client locally.
-			</p>
-		{:else if status === "parse_failed"}
-			<p>
-				Torrent file could not be parsed. It may be corrupted.
-			</p>
-		{/if}
-		<button on:click={() => {dispatch("download")}} class="button">
-			<i class="icon">download</i>
-			<span>Download torrent file</span>
-		</button>
-	</div>
+<h1>{file.name}</h1>
+<img src={file.icon_href} alt="File icon" class="icon">
+<div class="description" style="max-width: 650px">
 	{#if status === "finished"}
-		<br/>
-		<br/>
-		<div class="description">
-			<h2>Files in this torrent</h2>
-			<TorrentItem item={torrent.files} />
-		</div>
+		Created by: {torrent.created_by}<br/>
+		Comment: {torrent.comment}<br/>
+		Created at: {formatDate(new Date(torrent.created_at), true, true, true)}<br/>
+		Info hash: {torrent.info_hash}<br/>
+		<a href={magnet} class="button button_highlight">
+			<Magnet></Magnet>
+			<span>Open magnet link</span>
+		</a>
+		<button
+			on:click={copy_magnet}
+			class="button"
+			class:button_highlight={copy_magnet_status === "copied"}
+			class:button_red={copy_magnet_status === "error"}
+		>
+			<Magnet></Magnet>
+			<span>
+				{#if copy_magnet_status === ""}
+					Copy magnet link
+				{:else if copy_magnet_status === "copied"}
+					Copied magnet
+				{:else if copy_magnet_status === "error"}
+					Error!
+				{/if}
+			</span>
+		</button>
+	{:else if status === "too_large"}
+		<p>
+			Torrent file is too large to parse. Please download the file and
+			add it to your torrent client locally.
+		</p>
+	{:else if status === "parse_failed"}
+		<p>
+			Torrent file could not be parsed. It may be corrupted.
+		</p>
 	{/if}
+	<button on:click={() => {dispatch("download")}} class="button">
+		<i class="icon">download</i>
+		<span>Download torrent file</span>
+	</button>
 </div>
+{#if status === "finished"}
+	<br/>
+	<br/>
+	<div class="description">
+		<h2>Files in this torrent</h2>
+		<TorrentItem item={torrent.files} />
+	</div>
+{/if}
 
 <style>
 .icon {
@@ -146,13 +144,5 @@ const copy_magnet = () => {
 	background-color: rgba(0, 0, 0, 0.3);
 	border-radius: 16px;
 	padding: 8px;
-}
-.container {
-	position: relative;
-	display: block;
-	height: 100%;
-	width: 100%;
-	text-align: center;
-	overflow: auto;
 }
 </style>

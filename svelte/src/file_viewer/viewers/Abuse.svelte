@@ -8,6 +8,7 @@ let file = {
 }
 </script>
 
+<br/>
 <div class="container">
 	<h1>Unavailable for legal reasons</h1>
 	<p>
@@ -20,11 +21,10 @@ let file = {
 
 <style>
 .container {
-	position: relative;
-	display: block;
-	height: 100%;
-	width: 100%;
-	text-align: center;
-	overflow: hidden;
+	display: inline-block;
+	max-width: 100%;
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 16px;
+	padding: 8px;
 }
 </style>
