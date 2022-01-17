@@ -157,30 +157,32 @@ onMount(get_bans);
 					<i class="icon">delete</i>
 				</button>
 			</div>
-			<table>
-				<tr>
-					<td>Reason</td>
-					<td>Reporter</td>
-					<td>Ban time</td>
-					<td>Expire time</td>
-					<td>File</td>
-				</tr>
-				{#each row.offences as offence (offence.ban_time)}
+			<div class="table_scroll">
+				<table>
 					<tr>
-						<td>{offence.reason}</td>
-						<td>{offence.reporter}</td>
-						<td>{formatDate(offence.ban_time, true, true, false)}</td>
-						<td>{formatDate(offence.expire_time, true, true, false)}</td>
-						<td>
-							{#if offence.file_public_id}
-								<a href="/u/{offence.file_public_id}" target="_blank">
-									{offence.file_name}
-								</a>
-							{/if}
-						</td>
+						<td>Reason</td>
+						<td>Reporter</td>
+						<td>Ban time</td>
+						<td>Expire time</td>
+						<td>File</td>
 					</tr>
-				{/each}
-			</table>
+					{#each row.offences as offence (offence.ban_time)}
+						<tr>
+							<td>{offence.reason}</td>
+							<td>{offence.reporter}</td>
+							<td>{formatDate(offence.ban_time, true, true, false)}</td>
+							<td>{formatDate(offence.expire_time, true, true, false)}</td>
+							<td>
+								{#if offence.file_public_id}
+									<a href="/u/{offence.file_public_id}" target="_blank">
+										{offence.file_name}
+									</a>
+								{/if}
+							</td>
+						</tr>
+					{/each}
+				</table>
+			</div>
 		</Expandable>
 	{/each}
 </section>

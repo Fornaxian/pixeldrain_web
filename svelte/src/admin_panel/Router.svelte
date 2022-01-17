@@ -49,14 +49,14 @@ onMount(() => {
 			class:button_highlight={page === "abuse_reports"}
 			on:click|preventDefault={() => {navigate("abuse_reports", "Abuse reports")}}>
 			<i class="icon">flag</i>
-			User abuse reports
+			User reports
 		</a>
 		<a class="button"
 			href="/admin/abuse_reporters"
 			class:button_highlight={page === "abuse_reporters"}
 			on:click|preventDefault={() => {navigate("abuse_reporters", "Abuse reporters")}}>
 			<i class="icon">email</i>
-			E-mail abuse reporters
+			E-mail reporters
 		</a>
 		<a class="button"
 			href="/admin/ip_bans"
@@ -74,7 +74,7 @@ onMount(() => {
 		</a>
 		<a class="button" href="/admin/globals">
 			<i class="icon">edit</i>
-			Update global settings
+			Global settings
 		</a>
 	</div>
 </header>
