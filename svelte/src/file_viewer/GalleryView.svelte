@@ -201,7 +201,7 @@ const drop = (e, index) => {
 	text-align: left;
 }
 .icon_container.editing {
-	box-shadow: inset 0 60px 40px -40px #000000;
+	box-shadow: inset 0 60px 40px -40px var(--shadow_color);
 }
 .icon_container > i:hover {
 	color: var(--highlight_color);

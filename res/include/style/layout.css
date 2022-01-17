@@ -60,7 +60,7 @@ body {
 	padding: 0;
 }
 header, footer, .checkers {
-	background-image: url("{{bgPattern}}");
+	background-image: url("{{.BackgroundPattern}}");
 	background-color: #111111; /* Fallback */
 	background-color: var(--layer_1_color);
 	background-repeat: repeat;
@@ -157,8 +157,7 @@ section {
 .page_navigation a {
 	float: none;
 	display: block;
-	color: #b2b2b2; /* Fallback */
-	color: var(--text_color);
+	color: var(--layer_1_text_color);
 	text-align: center;
 	padding: 4px;
 	margin: 0.3em 15px 0.3em 15px;
@@ -172,9 +171,7 @@ section {
 	text-decoration: none;
 }
 .page_navigation a:hover {
-	background-color: #3f3f3f;
 	background-color: var(--input_color);
-	color: #ffffff;
 	color: var(--input_text_color);
 	text-decoration: none;
 }
@@ -201,6 +198,7 @@ section {
 }
 .highlight_dark, .highlight_1 {
 	background-color: var(--layer_1_color);
+	color: var(--layer_1_text_color);
 }
 .highlight_middle, .highlight_2 {
 	background-color: var(--layer_2_color);
@@ -282,11 +280,7 @@ hr {
 }
 
 a {
-	color: #74ad38;
-	color: var(--highlight_color_dark);
-}
-a:hover {
-	color: var(--highlight_color);
+	color: var(--link_color);
 }
 
 .form{
@@ -364,7 +358,7 @@ pre {
 	display: block;
 }
 .file_button > .file_button_title{
-	color: var(--highlight_color);
+	color: var(--link_color);
 }
 
 /* API documentation markup */

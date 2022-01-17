@@ -4,7 +4,7 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.7);
 	opacity: 0;
 	transition: opacity .4s;
 }
@@ -22,7 +22,7 @@
 	transform: translate(-50%, -20%);
 	padding: 0;
 	text-align: left;
-	box-shadow: var(--shadow_color) 0px 0px 50px;
+	/* box-shadow: var(--shadow_color) 0px 0px 50px; */
 	border-radius: 20px 20px 8px 8px;
 	overflow: hidden;
 }
@@ -33,6 +33,7 @@
 	display: flex;
 	flex-direction: row;
 	background: var(--layer_1_color);
+	color: var(--layer_1_text_color);
 	padding: 1px;
 }
 

@@ -1,12 +1,10 @@
 package webcontroller
 
 import (
-	"bytes"
 	"encoding/base64"
 	"fmt"
 	"html/template"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -23,14 +21,15 @@ import (
 // TemplateData is a struct that every template expects when being rendered. In
 // the field Other you can pass your own template-specific variables.
 type TemplateData struct {
-	Authenticated bool
-	User          pixelapi.UserInfo
-	UserAgent     string
-	Style         pixeldrainStyleSheet
-	UserStyle     template.CSS
-	APIEndpoint   template.URL
-	PixelAPI      pixelapi.PixelAPI
-	Hostname      template.HTML
+	Authenticated     bool
+	User              pixelapi.UserInfo
+	UserAgent         string
+	Style             pixeldrainStyleSheet
+	UserStyle         template.CSS
+	BackgroundPattern template.URL
+	APIEndpoint       template.URL
+	PixelAPI          pixelapi.PixelAPI
+	Hostname          template.HTML
 
 	// Only used on file viewer page
 	Title  string
@@ -47,12 +46,14 @@ type TemplateData struct {
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {
+	var style = userStyle(r)
 	t = &TemplateData{
-		Authenticated: false,
-		UserAgent:     r.UserAgent(),
-		Style:         userStyle(r),
-		UserStyle:     template.CSS(userStyle(r).String()),
-		APIEndpoint:   template.URL(wc.apiURLExternal),
+		Authenticated:     false,
+		UserAgent:         r.UserAgent(),
+		Style:             style,
+		UserStyle:         template.CSS(style.String()),
+		BackgroundPattern: style.Background(wc.templates.tpl),
+		APIEndpoint:       template.URL(wc.apiURLExternal),
 
 		// Use the user's IP address for making requests
 		PixelAPI: wc.api.RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent()),
@@ -133,7 +134,6 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 
 	// Import template functions
 	tpl.Funcs(template.FuncMap{
-		"bgPattern":  tm.bgPattern,
 		"isBrave":    tm.isBrave,
 		"debugMode":  tm.debugMode,
 		"apiUrl":     tm.apiURL,
@@ -217,34 +217,6 @@ func (tm *TemplateManager) Get() *template.Template {
 // Template functions. These can be called from within the template to execute
 // more specialized actions
 
-func (tm *TemplateManager) bgPattern() template.URL {
-	var (
-		now   = time.Now()
-		month = now.Month()
-		day   = now.Day()
-		file  string
-	)
-
-	if now.Weekday() == time.Wednesday && rand.Intn(20) == 0 {
-		file = "checker_wednesday.png"
-	} else if month == time.August && day == 8 {
-		file = "checker_dwarf.png"
-	} else if month == time.August && day == 24 {
-		file = "checker_developers.png"
-	} else if month == time.October && day == 31 {
-		file = "checker_halloween.png"
-	} else if month == time.December && (day == 25 || day == 26 || day == 27) {
-		file = "checker_christmas.png"
-	} else {
-		file = fmt.Sprintf("checker%d.png", now.UnixNano()%18)
-	}
-
-	var buf = bytes.Buffer{}
-	if err := tm.tpl.ExecuteTemplate(&buf, file, nil); err != nil {
-		panic(err)
-	}
-	return template.URL(buf.String())
-}
 func (tm *TemplateManager) isBrave(useragent string) bool {
 	return strings.Contains(useragent, "Brave")
 }

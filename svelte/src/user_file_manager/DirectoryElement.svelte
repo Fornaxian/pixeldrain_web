@@ -385,6 +385,7 @@ const node_click = (index) => {
 	flex-shrink: 0;
 	text-align: left;
 	background-color: var(--layer_1_color);
+	color: var(--layer_1_text_color);
 	padding: 4px;
 }
 

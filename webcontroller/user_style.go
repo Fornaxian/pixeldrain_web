@@ -1,8 +1,12 @@
 package webcontroller
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 func userStyle(r *http.Request) pixeldrainStyleSheet {
@@ -35,6 +39,8 @@ func userStyle(r *http.Request) pixeldrainStyleSheet {
 		return skeuosPixeldrainStyle
 	case "nord":
 		return nordPixeldrainStyle
+	case "snowstorm":
+		return snowstormPixeldrainStyle
 	case "default":
 		fallthrough // use default case
 	default:
@@ -43,27 +49,46 @@ func userStyle(r *http.Request) pixeldrainStyleSheet {
 }
 
 type pixeldrainStyleSheet struct {
-	TextColor                hsl
-	InputColor               hsl // Buttons, text fields
-	InputTextColor           hsl
-	HighlightColor           hsl // Links, highlighted buttons, list navigation
-	HighlightTextColor       hsl // Text on buttons
-	DangerColor              hsl
-	ScrollbarForegroundColor hsl
-	ScrollbarHoverColor      hsl
+	Text                hsl
+	Link                hsl // Based on Highlight if undefined
+	Input               hsl // Buttons, text fields
+	InputText           hsl
+	Highlight           hsl // Links, highlighted buttons, list navigation
+	HighlightText       hsl // Text on buttons
+	Danger              hsl
+	ScrollbarForeground hsl // Based on Highlight if undefined
+	ScrollbarHover      hsl // Based on ScrollbarForeground if undefined
 
-	Layer1Color hsl // Deepest and darkest layer
-	Layer2Color hsl
-	Layer3Color hsl
-	Layer4Color hsl // Highest and brightest layer
+	Layer1     hsl // Deepest and darkest layer
+	Layer1Text hsl // Based on Text if undefined
+	Layer2     hsl
+	Layer3     hsl
+	Layer4     hsl // Highest and brightest layer
 
-	ShadowColor hsl
+	Shadow hsl
+	Light  bool // If this is a light theme
 }
 
 func (s pixeldrainStyleSheet) String() string {
+	var noColor = hsl{0, 0, 0}
+
+	if s.Link == noColor {
+		s.Link = s.Highlight.Add(0, 0, -.05)
+	}
+	if s.ScrollbarForeground == noColor {
+		s.ScrollbarForeground = s.Input
+	}
+	if s.ScrollbarHover == noColor {
+		s.ScrollbarHover = s.ScrollbarForeground.Add(0, 0, .1)
+	}
+	if s.Layer1Text == noColor {
+		s.Layer1Text = s.Text
+	}
+
 	return fmt.Sprintf(
 		`:root {
 	--text_color:                 #%s;
+	--link_color:                 #%s;
 	--input_color:                #%s;
 	--input_color_dark:           #%s;
 	--input_text_color:           #%s;
@@ -78,6 +103,7 @@ func (s pixeldrainStyleSheet) String() string {
 
 	--layer_1_color:        #%s;
 	--layer_1_color_border: #%s;
+	--layer_1_text_color:   #%s;
 	--layer_2_color:        #%s;
 	--layer_2_color_border: #%s;
 	--layer_3_color:        #%s;
@@ -87,28 +113,63 @@ func (s pixeldrainStyleSheet) String() string {
 
 	--shadow_color:     #%s;
 }`,
-		s.TextColor.RGB(),
-		s.InputColor.RGB(),
-		s.InputColor.Add(0, 0, -.02).RGB(),
-		s.InputTextColor.RGB(),
-		s.HighlightColor.RGB(),
-		s.HighlightColor.Add(0, 0, -.02).RGB(),
-		s.HighlightTextColor.RGB(),
-		s.DangerColor.RGB(),
-		s.DangerColor.Add(0, 0, -.02).RGB(),
-		s.ScrollbarForegroundColor.RGB(),
-		s.ScrollbarHoverColor.RGB(),
-		s.Layer2Color.RGB(), // Scrollbar background
-		s.Layer1Color.RGB(),
-		s.Layer1Color.Add(0, 0, .05).RGB(),
-		s.Layer2Color.RGB(),
-		s.Layer2Color.Add(0, 0, .05).RGB(),
-		s.Layer3Color.RGB(),
-		s.Layer3Color.Add(0, 0, .05).RGB(),
-		s.Layer4Color.RGB(),
-		s.Layer4Color.Add(0, 0, .05).RGB(),
-		s.ShadowColor.RGB(),
+		s.Text.RGB(),
+		s.Link.RGB(),
+		s.Input.RGB(),
+		s.Input.Add(0, 0, -.02).RGB(),
+		s.InputText.RGB(),
+		s.Highlight.RGB(),
+		s.Highlight.Add(0, 0, -.02).RGB(),
+		s.HighlightText.RGB(),
+		s.Danger.RGB(),
+		s.Danger.Add(0, 0, -.02).RGB(),
+		s.ScrollbarForeground.RGB(),
+		s.ScrollbarHover.RGB(),
+		s.Layer2.RGB(), // Scrollbar background
+		s.Layer1.RGB(),
+		s.Layer1.Add(0, 0, .05).RGB(),
+		s.Layer1Text.RGB(),
+		s.Layer2.RGB(),
+		s.Layer2.Add(0, 0, .05).RGB(),
+		s.Layer3.RGB(),
+		s.Layer3.Add(0, 0, .05).RGB(),
+		s.Layer4.RGB(),
+		s.Layer4.Add(0, 0, .05).RGB(),
+		s.Shadow.RGB(),
 	)
+}
+
+func (s pixeldrainStyleSheet) Background(tpl *template.Template) template.URL {
+	var (
+		now   = time.Now()
+		month = now.Month()
+		day   = now.Day()
+		file  string
+	)
+
+	if now.Weekday() == time.Wednesday && rand.Intn(20) == 0 {
+		file = "checker_wednesday"
+	} else if month == time.August && day == 8 {
+		file = "checker_dwarf"
+	} else if month == time.August && day == 24 {
+		file = "checker_developers"
+	} else if month == time.October && day == 31 {
+		file = "checker_halloween"
+	} else if month == time.December && (day == 25 || day == 26 || day == 27) {
+		file = "checker_christmas"
+	} else {
+		file = fmt.Sprintf("checker%d", now.UnixNano()%18)
+	}
+
+	if s.Light {
+		file += "_light"
+	}
+
+	var buf = bytes.Buffer{}
+	if err := tpl.ExecuteTemplate(&buf, file+".png", nil); err != nil {
+		panic(err)
+	}
+	return template.URL(buf.String())
 }
 
 type hsl struct {
@@ -189,181 +250,202 @@ func (h hsl) Add(hue int, saturation float64, lightness float64) hsl {
 // Following are all the available styles
 
 var defaultPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .8},
-	InputColor:               hsl{266, .85, .38},
-	InputTextColor:           hsl{0, 0, 1},
-	HighlightColor:           hsl{117, .63, .46},
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{357, .63, .46},
-	ScrollbarForegroundColor: hsl{266, .85, .40},
-	ScrollbarHoverColor:      hsl{266, .85, .50},
+	Text:                hsl{0, 0, .8},
+	Input:               hsl{266, .85, .38},
+	InputText:           hsl{0, 0, 1},
+	Highlight:           hsl{117, .63, .46},
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{357, .63, .46},
+	ScrollbarForeground: hsl{266, .85, .40},
+	ScrollbarHover:      hsl{266, .85, .50},
 
-	Layer1Color: hsl{275, .8, .07},
-	Layer2Color: hsl{275, .75, .12},
-	Layer3Color: hsl{275, .7, .18},
-	Layer4Color: hsl{275, .65, .24},
+	Layer1: hsl{275, .8, .07},
+	Layer2: hsl{275, .75, .12},
+	Layer3: hsl{275, .7, .18},
+	Layer4: hsl{275, .65, .24},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var pixeldrainClassicStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .8},
-	InputColor:               hsl{0, 0, .25},
-	InputTextColor:           hsl{0, 0, 1},
-	HighlightColor:           hsl{89, .60, .45},
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{339, .65, .31},
-	ScrollbarForegroundColor: hsl{0, 0, .40},
-	ScrollbarHoverColor:      hsl{0, 0, .50},
+	Text:                hsl{0, 0, .8},
+	Input:               hsl{0, 0, .25},
+	InputText:           hsl{0, 0, 1},
+	Highlight:           hsl{89, .60, .45},
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{339, .65, .31},
+	ScrollbarForeground: hsl{0, 0, .40},
+	ScrollbarHover:      hsl{0, 0, .50},
 
-	Layer1Color: hsl{0, 0, .08},
-	Layer2Color: hsl{0, 0, .11},
-	Layer3Color: hsl{0, 0, .15},
-	Layer4Color: hsl{0, 0, .18},
+	Layer1: hsl{0, 0, .08},
+	Layer2: hsl{0, 0, .11},
+	Layer3: hsl{0, 0, .15},
+	Layer4: hsl{0, 0, .18},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var sunnyPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .1},
-	InputColor:               hsl{0, 0, .96}, // hsl(0, 0%, 96%)
-	InputTextColor:           hsl{0, 0, .1},
-	HighlightColor:           hsl{89, .74, .5}, // hsl(89, 73%, 50%)
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{345, .99, .33}, // hsl(345, 99%, 33%)
-	ScrollbarForegroundColor: hsl{0, 0, .30},
-	ScrollbarHoverColor:      hsl{0, 0, .40},
+	Text:                hsl{0, 0, .1},
+	Input:               hsl{0, 0, .96}, // hsl(0, 0%, 96%)
+	InputText:           hsl{0, 0, .1},
+	Highlight:           hsl{89, .74, .5}, // hsl(89, 73%, 50%)
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{345, .99, .33}, // hsl(345, 99%, 33%)
+	ScrollbarForeground: hsl{0, 0, .30},
+	ScrollbarHover:      hsl{0, 0, .40},
 
-	Layer1Color: hsl{0, 0, .98}, // hsl(0, 0%, 13%)
-	Layer2Color: hsl{0, 1, 1},
-	Layer3Color: hsl{0, 1, 1},
-	Layer4Color: hsl{0, 1, 1},
+	Layer1: hsl{0, 0, .98}, // hsl(0, 0%, 13%)
+	Layer2: hsl{0, 1, 1},
+	Layer3: hsl{0, 1, 1},
+	Layer4: hsl{0, 1, 1},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var solarizedDarkStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .75},
-	InputColor:               hsl{192, .95, .25},
-	InputTextColor:           hsl{0, 0, 1},
-	HighlightColor:           hsl{145, .63, .42},
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{343, .63, .42},
-	ScrollbarForegroundColor: hsl{192, .95, .30},
-	ScrollbarHoverColor:      hsl{192, .95, .40},
+	Text:                hsl{0, 0, .75},
+	Input:               hsl{192, .95, .25},
+	InputText:           hsl{0, 0, 1},
+	Highlight:           hsl{145, .63, .42},
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{343, .63, .42},
+	ScrollbarForeground: hsl{192, .95, .30},
+	ScrollbarHover:      hsl{192, .95, .40},
 
-	Layer1Color: hsl{192, .87, .09},
-	Layer2Color: hsl{192, .81, .14},
-	Layer3Color: hsl{192, .95, .17},
-	Layer4Color: hsl{192, .99, .19},
+	Layer1: hsl{192, .87, .09},
+	Layer2: hsl{192, .81, .14},
+	Layer3: hsl{192, .95, .17},
+	Layer4: hsl{192, .99, .19},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var maroonStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .8},
-	InputColor:               hsl{0, .87, .40}, // hsl(0, 87%, 40%)
-	InputTextColor:           hsl{0, 0, 1},
-	HighlightColor:           hsl{137, 1, .37}, //hsl(137, 100%, 37%)
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{9, .96, .42}, //hsl(9, 96%, 42%)
-	ScrollbarForegroundColor: hsl{0, .75, .3},
-	ScrollbarHoverColor:      hsl{0, .75, .4},
+	Text:                hsl{0, 0, .8},
+	Input:               hsl{0, .87, .40}, // hsl(0, 87%, 40%)
+	InputText:           hsl{0, 0, 1},
+	Highlight:           hsl{137, 1, .37}, //hsl(137, 100%, 37%)
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{9, .96, .42}, //hsl(9, 96%, 42%)
+	ScrollbarForeground: hsl{0, .75, .3},
+	ScrollbarHover:      hsl{0, .75, .4},
 
-	Layer1Color: hsl{0, .7, .05},
-	Layer2Color: hsl{0, .8, .08}, // hsl{0, .8, .15},
-	Layer3Color: hsl{0, .9, .14},
-	Layer4Color: hsl{0, .9, .20},
+	Layer1: hsl{0, .7, .05},
+	Layer2: hsl{0, .8, .08}, // hsl{0, .8, .15},
+	Layer3: hsl{0, .9, .14},
+	Layer4: hsl{0, .9, .20},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var hackerStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .8},
-	InputColor:               hsl{120, .5, .1}, // hsl(120, 50%, 10%)
-	InputTextColor:           hsl{0, 0, 1},
-	HighlightColor:           hsl{120, 1, .5},
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{0, 1, .4},
-	ScrollbarForegroundColor: hsl{120, .5, .25},
-	ScrollbarHoverColor:      hsl{120, .5, .35},
+	Text:                hsl{0, 0, .8},
+	Input:               hsl{120, .5, .1}, // hsl(120, 50%, 10%)
+	InputText:           hsl{0, 0, 1},
+	Highlight:           hsl{120, 1, .5},
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{0, 1, .4},
+	ScrollbarForeground: hsl{120, .5, .25},
+	ScrollbarHover:      hsl{120, .5, .35},
 
-	Layer1Color: hsl{0, 0, 0},
-	Layer2Color: hsl{0, 0, .03},
-	Layer3Color: hsl{120, .3, .08},
-	Layer4Color: hsl{120, .5, .12},
+	Layer1: hsl{0, 0, 0},
+	Layer2: hsl{0, 0, .03},
+	Layer3: hsl{120, .3, .08},
+	Layer4: hsl{120, .5, .12},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var cantaPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .8},
-	InputColor:               hsl{167, .06, .30}, // hsl(167, 6%, 30%)
-	InputTextColor:           hsl{0, 0, 1},
-	HighlightColor:           hsl{165, 1, .40}, // hsl(165, 100%, 40%)
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{40, 1, .5},     // hsl(40, 100%, 50%)
-	ScrollbarForegroundColor: hsl{204, .05, .78}, // hsl(204, 5%, 78%)
-	ScrollbarHoverColor:      hsl{204, .05, .88},
+	Text:                hsl{0, 0, .8},
+	Input:               hsl{167, .06, .30}, // hsl(167, 6%, 30%)
+	InputText:           hsl{0, 0, 1},
+	Highlight:           hsl{165, 1, .40}, // hsl(165, 100%, 40%)
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{40, 1, .5},     // hsl(40, 100%, 50%)
+	ScrollbarForeground: hsl{204, .05, .78}, // hsl(204, 5%, 78%)
+	ScrollbarHover:      hsl{204, .05, .88},
 
-	Layer1Color: hsl{180, .04, .16},
-	Layer2Color: hsl{168, .05, .21},
-	Layer3Color: hsl{170, .05, .26},
-	Layer4Color: hsl{163, .04, .31},
+	Layer1: hsl{180, .04, .16},
+	Layer2: hsl{168, .05, .21},
+	Layer3: hsl{170, .05, .26},
+	Layer4: hsl{163, .04, .31},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var deepseaPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, .7},
-	InputColor:               hsl{41, .58, .47},
-	InputTextColor:           hsl{0, 0, 0},
-	HighlightColor:           hsl{5, .77, .55},
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{5, .77, .55},
-	ScrollbarForegroundColor: hsl{162, .28, .23}, // hsl(162, 28%, 23%)
-	ScrollbarHoverColor:      hsl{12, .38, .26},  // hsl(12, 38%, 26%)
+	Text:                hsl{0, 0, .7},
+	Input:               hsl{41, .58, .47},
+	InputText:           hsl{0, 0, 0},
+	Highlight:           hsl{5, .77, .55},
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{5, .77, .55},
+	ScrollbarForeground: hsl{162, .28, .23}, // hsl(162, 28%, 23%)
+	ScrollbarHover:      hsl{12, .38, .26},  // hsl(12, 38%, 26%)
 
-	Layer1Color: hsl{160, .27, .05},
-	Layer2Color: hsl{163, .26, .09}, // hsl(163, 26%, 11%)
-	Layer3Color: hsl{161, .28, .12}, // hsl(161, 28%, 14%)
-	Layer4Color: hsl{161, .32, .15},
+	Layer1: hsl{160, .27, .05},
+	Layer2: hsl{163, .26, .09}, // hsl(163, 26%, 11%)
+	Layer3: hsl{161, .28, .12}, // hsl(161, 28%, 14%)
+	Layer4: hsl{161, .32, .15},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var skeuosPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{60, .06, .93},  // hsl(60, 6%, 93%)
-	InputColor:               hsl{226, .15, .23}, //hsl(226, 15%, 23%)
-	InputTextColor:           hsl{60, .06, .93},
-	HighlightColor:           hsl{282, .65, .54}, // hsl(282, 65%, 54%)
-	HighlightTextColor:       hsl{0, 0, 1},
-	DangerColor:              hsl{0, .79, .43},   // hsl(0, 79%, 43%)
-	ScrollbarForegroundColor: hsl{220, .02, .62}, // hsl(220, 2%, 62%)
-	ScrollbarHoverColor:      hsl{220, .02, .80},
+	Text:                hsl{60, .06, .93},  // hsl(60, 6%, 93%)
+	Input:               hsl{226, .15, .23}, //hsl(226, 15%, 23%)
+	InputText:           hsl{60, .06, .93},
+	Highlight:           hsl{282, .65, .54}, // hsl(282, 65%, 54%)
+	HighlightText:       hsl{0, 0, 1},
+	Danger:              hsl{0, .79, .43},   // hsl(0, 79%, 43%)
+	ScrollbarForeground: hsl{220, .02, .62}, // hsl(220, 2%, 62%)
+	ScrollbarHover:      hsl{220, .02, .80},
 
-	Layer1Color: hsl{232, .14, .11}, //hsl(232, 14%, 11%)
-	Layer2Color: hsl{229, .14, .16}, // hsl(229, 14%, 16%)
-	Layer3Color: hsl{225, .14, .17}, // hsl(225, 14%, 17%)
-	Layer4Color: hsl{226, .14, .18}, // hsl(226, 14%, 18%)
+	Layer1: hsl{232, .14, .11}, //hsl(232, 14%, 11%)
+	Layer2: hsl{229, .14, .16}, // hsl(229, 14%, 16%)
+	Layer3: hsl{225, .14, .17}, // hsl(225, 14%, 17%)
+	Layer4: hsl{226, .14, .18}, // hsl(226, 14%, 18%)
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
 }
 
 var nordPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{210, .34, .63},
-	InputColor:               hsl{193, .43, .67},
-	InputTextColor:           hsl{180, .19, .23},
-	HighlightColor:           hsl{145, .63, .42},
-	HighlightTextColor:       hsl{0, 0, 0},
-	DangerColor:              hsl{354, .42, .56},
-	ScrollbarForegroundColor: hsl{193, .43, .67},
-	ScrollbarHoverColor:      hsl{193, .43, .76},
+	Text:                hsl{210, .34, .63},
+	Input:               hsl{193, .43, .67},
+	InputText:           hsl{180, .19, .23},
+	Highlight:           hsl{145, .63, .42},
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{354, .42, .56},
+	ScrollbarForeground: hsl{193, .43, .67},
+	ScrollbarHover:      hsl{193, .43, .76},
 
-	Layer1Color: hsl{220, .16, .22},
-	Layer2Color: hsl{222, .16, .28},
-	Layer3Color: hsl{220, .17, .32},
-	Layer4Color: hsl{220, .16, .36},
+	Layer1: hsl{220, .16, .22},
+	Layer2: hsl{222, .16, .28},
+	Layer3: hsl{220, .17, .32},
+	Layer4: hsl{220, .16, .36},
 
-	ShadowColor: hsl{0, 0, 0},
+	Shadow: hsl{0, 0, 0},
+}
+
+var snowstormPixeldrainStyle = pixeldrainStyleSheet{
+	Text:                hsl{220, .16, .36}, // hsl(220, 16%, 36%)
+	Link:                hsl{92, .28, .40},
+	Input:               hsl{193, .43, .67}, // hsl(193, 43%, 67%)
+	InputText:           hsl{180, .19, .23},
+	Highlight:           hsl{92, .28, .65}, // hsl(92, 28%, 65%)
+	HighlightText:       hsl{0, 0, 0},
+	Danger:              hsl{354, .42, .56},
+	ScrollbarForeground: hsl{193, .43, .67},
+	ScrollbarHover:      hsl{193, .43, .76},
+
+	Layer1:     hsl{220, .16, .36}, // hsl(220, 16%, 36%)
+	Layer1Text: hsl{219, .28, .88},
+	Layer2:     hsl{219, .28, .88}, // hsl(219, 28%, 88%)
+	Layer3:     hsl{218, .27, .92}, // hsl(218, 27%, 92%)
+	Layer4:     hsl{218, .27, .94}, // hsl(218, 27%, 94%)
+
+	Shadow: hsl{0, .0, .70},
+	Light:  true,
 }

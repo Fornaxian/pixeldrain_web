@@ -161,8 +161,11 @@ const example = () => {
 				<button class:button_highlight={style==="canta"} on:click={() => {set_style("canta")}}>
 					Canta
 				</button>
-				<button class:button_highlight={style==="arc"} on:click={() => {set_style("arc")}}>
-					Arc
+				<button class:button_highlight={style==="nord"} on:click={() => {set_style("nord")}}>
+					Nord
+				</button>
+				<button class:button_highlight={style==="snowstorm"} on:click={() => {set_style("snowstorm")}}>
+					Snowstorm
 				</button>
 				<button class:button_highlight={style==="deepsea"} on:click={() => {set_style("deepsea")}}>
 					Deep sea
