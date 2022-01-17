@@ -52,7 +52,8 @@ export let highlight = false
 	color: var(--text_color);
 }
 .click_expand:hover, .highlight:hover {
-	background-color: var(--input_color_dark)
+	background-color: var(--input_color_dark);
+	color: var(--input_text_color);
 }
 .click_expand {
 	cursor: pointer;

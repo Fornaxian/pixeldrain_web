@@ -472,8 +472,8 @@ select:disabled , select.disabled {
 	padding: 4px 5px 4px 5px;
 	cursor: not-allowed;
 }
-button > *,
-.button > * {
+button > i,
+.button > i {
 	vertical-align: middle;
 	line-height: 1;
 }

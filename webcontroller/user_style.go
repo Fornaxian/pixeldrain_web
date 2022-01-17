@@ -29,12 +29,12 @@ func userStyle(r *http.Request) pixeldrainStyleSheet {
 		return hackerStyle
 	case "canta":
 		return cantaPixeldrainStyle
-	case "arc":
-		return arcPixeldrainStyle
 	case "deepsea":
 		return deepseaPixeldrainStyle
 	case "skeuos":
 		return skeuosPixeldrainStyle
+	case "nord":
+		return nordPixeldrainStyle
 	case "default":
 		fallthrough // use default case
 	default:
@@ -314,24 +314,6 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	ShadowColor: hsl{0, 0, 0},
 }
 
-var arcPixeldrainStyle = pixeldrainStyleSheet{
-	TextColor:                hsl{0, 0, 1},
-	InputColor:               hsl{218, .16, .30},
-	InputTextColor:           hsl{215, .19, .75},
-	HighlightColor:           hsl{212, .71, .60},
-	HighlightTextColor:       hsl{215, .19, .9},
-	DangerColor:              hsl{357, .53, .57}, // hsl(357, 53%, 57%)
-	ScrollbarForegroundColor: hsl{222, .08, .44}, // hsl(222, 8%, 44%)
-	ScrollbarHoverColor:      hsl{222, .08, .54}, // hsl(222, 8%, 44%)
-
-	Layer1Color: hsl{215, .17, .19},
-	Layer2Color: hsl{227, .14, .25}, // hsl(227, 14%, 25%)
-	Layer3Color: hsl{223, .12, .29},
-	Layer4Color: hsl{223, .10, .32},
-
-	ShadowColor: hsl{0, 0, 0},
-}
-
 var deepseaPixeldrainStyle = pixeldrainStyleSheet{
 	TextColor:                hsl{0, 0, .7},
 	InputColor:               hsl{41, .58, .47},
@@ -364,6 +346,24 @@ var skeuosPixeldrainStyle = pixeldrainStyleSheet{
 	Layer2Color: hsl{229, .14, .16}, // hsl(229, 14%, 16%)
 	Layer3Color: hsl{225, .14, .17}, // hsl(225, 14%, 17%)
 	Layer4Color: hsl{226, .14, .18}, // hsl(226, 14%, 18%)
+
+	ShadowColor: hsl{0, 0, 0},
+}
+
+var nordPixeldrainStyle = pixeldrainStyleSheet{
+	TextColor:                hsl{210, .34, .63},
+	InputColor:               hsl{193, .43, .67},
+	InputTextColor:           hsl{180, .19, .23},
+	HighlightColor:           hsl{145, .63, .42},
+	HighlightTextColor:       hsl{0, 0, 0},
+	DangerColor:              hsl{354, .42, .56},
+	ScrollbarForegroundColor: hsl{193, .43, .67},
+	ScrollbarHoverColor:      hsl{193, .43, .76},
+
+	Layer1Color: hsl{220, .16, .22},
+	Layer2Color: hsl{222, .16, .28},
+	Layer3Color: hsl{220, .17, .32},
+	Layer4Color: hsl{220, .16, .36},
 
 	ShadowColor: hsl{0, 0, 0},
 }
