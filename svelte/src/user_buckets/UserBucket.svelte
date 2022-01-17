@@ -29,7 +29,7 @@ const delete_bucket = async () => {
 
 </script>
 
-<Expandable>
+<Expandable highlight>
 	<div slot="header">
 		<a href={'/d/' + bucket.id} class="bucket_title">
 			<img class="bucket_icon" src="/res/img/mime/folder-remote.png" alt="Bucket icon"/>

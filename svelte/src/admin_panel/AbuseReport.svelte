@@ -5,7 +5,6 @@ import { createEventDispatcher } from "svelte";
 let dispatch = createEventDispatcher()
 
 export let report
-let expandable
 let preview = false
 
 let set_status = async (action, report_type) => {
@@ -31,8 +30,8 @@ let set_status = async (action, report_type) => {
 }
 </script>
 
-<Expandable bind:this={expandable} expanded={report.status === "pending" && report.reports.length > 2}>
-	<div slot="header" class="header" on:click={expandable.toggle}>
+<Expandable expanded={report.status === "pending" && report.reports.length > 2} click_expand>
+	<div slot="header" class="header">
 		<div class="icon_cell">
 			<img class="file_icon" src={"/api/file/"+report.file.id+"/thumbnail"} alt="File thumbnail"/>
 		</div>
@@ -118,7 +117,7 @@ let set_status = async (action, report_type) => {
 }
 .stats {
 	flex: 0 0 auto;
-	padding: 3px 4px;
+	padding: 0 4px;
 	border-left: 1px solid var(--layer_3_color_border);
 	text-align: center;
 }

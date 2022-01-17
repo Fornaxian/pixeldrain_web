@@ -142,7 +142,7 @@ onMount(get_bans);
 	{/if}
 
 	{#each rows as row (row.address)}
-		<Expandable expanded={expanded}>
+		<Expandable expanded={expanded} click_expand>
 			<div slot="header" class="header">
 				<div class="title">{row.address}</div>
 				<div class="stats">
@@ -153,7 +153,7 @@ onMount(get_bans);
 					Date<br/>
 					{formatDate(row.offences[0].ban_time, false, false, false)}
 				</div>
-				<button on:click|preventDefault={() => {delete_ban(row.address)}} class="button button_red" style="align-self: center;">
+				<button on:click|stopPropagation={() => {delete_ban(row.address)}} class="button button_red" style="align-self: center;">
 					<i class="icon">delete</i>
 				</button>
 			</div>
@@ -218,7 +218,7 @@ onMount(get_bans);
 }
 .stats {
 	flex: 0 0 auto;
-	padding: 3px 4px;
+	padding: 0 4px;
 	border-left: 1px solid var(--layer_3_color_border);
 	text-align: center;
 }
