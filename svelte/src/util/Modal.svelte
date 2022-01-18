@@ -71,7 +71,7 @@ const keydown = e => {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: rgba(0, 0, 0, 0.7);
+	background-color: rgba(0, 0, 0, 0.6);
 }
 .window {
 	position: absolute;
@@ -89,7 +89,6 @@ const keydown = e => {
 	border-radius: 20px 20px 16px 16px;
 	overflow: hidden;
 	text-align: left;
-	/* box-shadow: var(--shadow_color) 0px 0px 50px; Does not work with light theme */
 }
 .header {
 	flex-grow: 0;

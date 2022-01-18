@@ -13,12 +13,15 @@ onMount(() => {
 		return
 	}
 
-	switch (Math.floor(Math.random()*2)) {
+	switch (Math.floor(Math.random()*3)) {
 		case 0:
 			set_ad_type("ads.plus")
 			break
 		case 1:
 			set_ad_type("valueimpression")
+			break
+		case 2:
+			set_ad_type("pixfuture")
 			break
 	}
 })
@@ -130,7 +133,7 @@ head.valueimpression_loaded.subscribe(v => {
 		</div>
 	{:else if ad_type === "pixfuture"}
 		<!-- AuctionX Display platform tag START -->
-		<div bind:this={banner} class="banner" id="27517x728x90x4605x_ADSLOT1" clickTrack="%%CLICK_URL_ESC%%" style="display: block; margin: auto;"></div>
+		<div bind:this={banner} class="banner" id="27517x728x90x4605x_ADSLOT1" clickTrack="%%CLICK_URL_ESC%%"></div>
 		<script type="text/javascript" async src="https://served-by.pixfuture.com/www/delivery/headerbid.js" slotId="27517x728x90x4605x_ADSLOT1" refreshTime="5" refreshInterval="60"></script>
 		<!-- AuctionX Display platform tag END -->
 	{:else if ad_type === "adaround"}

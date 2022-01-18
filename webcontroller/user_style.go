@@ -53,6 +53,7 @@ type pixeldrainStyleSheet struct {
 	Link                hsl // Based on Highlight if undefined
 	Input               hsl // Buttons, text fields
 	InputText           hsl
+	InputDisabled       hsl
 	Highlight           hsl // Links, highlighted buttons, list navigation
 	HighlightText       hsl // Text on buttons
 	Danger              hsl
@@ -75,6 +76,9 @@ func (s pixeldrainStyleSheet) String() string {
 	if s.Link == noColor {
 		s.Link = s.Highlight.Add(0, 0, -.05)
 	}
+	if s.InputDisabled == noColor {
+		s.InputDisabled = s.Input.Add(0, -.2, -.2)
+	}
 	if s.ScrollbarForeground == noColor {
 		s.ScrollbarForeground = s.Input
 	}
@@ -92,6 +96,7 @@ func (s pixeldrainStyleSheet) String() string {
 	--input_color:                #%s;
 	--input_color_dark:           #%s;
 	--input_text_color:           #%s;
+	--input_disabled_color:       #%s;
 	--highlight_color:            #%s;
 	--highlight_color_dark:       #%s;
 	--highlight_text_color:       #%s;
@@ -118,6 +123,7 @@ func (s pixeldrainStyleSheet) String() string {
 		s.Input.RGB(),
 		s.Input.Add(0, 0, -.02).RGB(),
 		s.InputText.RGB(),
+		s.InputDisabled.RGB(),
 		s.Highlight.RGB(),
 		s.Highlight.Add(0, 0, -.02).RGB(),
 		s.HighlightText.RGB(),
@@ -431,7 +437,7 @@ var nordPixeldrainStyle = pixeldrainStyleSheet{
 
 var snowstormPixeldrainStyle = pixeldrainStyleSheet{
 	Text:                hsl{220, .16, .36}, // hsl(220, 16%, 36%)
-	Link:                hsl{92, .28, .40},
+	Link:                hsl{92, .40, .40},
 	Input:               hsl{193, .43, .67}, // hsl(193, 43%, 67%)
 	InputText:           hsl{180, .19, .23},
 	Highlight:           hsl{92, .28, .65}, // hsl(92, 28%, 65%)
@@ -440,7 +446,7 @@ var snowstormPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarForeground: hsl{193, .43, .67},
 	ScrollbarHover:      hsl{193, .43, .76},
 
-	Layer1:     hsl{220, .16, .36}, // hsl(220, 16%, 36%)
+	Layer1:     hsl{220, .17, .32}, // hsl(220, 17%, 32%)
 	Layer1Text: hsl{219, .28, .88},
 	Layer2:     hsl{219, .28, .88}, // hsl(219, 28%, 88%)
 	Layer3:     hsl{218, .27, .92}, // hsl(218, 27%, 92%)

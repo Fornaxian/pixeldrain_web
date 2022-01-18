@@ -31,12 +31,15 @@ onMount(() => {
 		return
 	}
 
-	switch (Math.floor(Math.random()*2)) {
+	switch (Math.floor(Math.random()*3)) {
 		case 0:
 			set_ad_type("ads.plus")
 			break
 		case 1:
 			set_ad_type("valueimpression")
+			break
+		case 2:
+			set_ad_type("pixfuture")
 			break
 	}
 })

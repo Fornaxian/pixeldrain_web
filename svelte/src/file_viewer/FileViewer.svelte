@@ -273,50 +273,51 @@ const keyboard_event = evt => {
 		return // Prevent shortcuts from interfering with input fields
 	}
 
-	console.debug("Key pressed: " + evt.keyCode)
-	switch (evt.keyCode) {
-		case 65: // A or left arrow key go to previous file
-		case 37:
+	console.debug("Key pressed: " + evt.key)
+	switch (evt.key) {
+		case "a": // A or left arrow key go to previous file
+		case "ArrowLeft":
 			if (list_navigator) {
 				list_navigator.prev()
 			}
 			break
-		case 68: // D or right arrow key go to next file
-		case 39:
+		case "d": // D or right arrow key go to next file
+		case "ArrowRight":
 			if (list_navigator) {
 				list_navigator.next()
 			}
 			break
-		case 83:
+		case "s":
+		case "S":
 			if (evt.shiftKey) {
 				downloader.download_list() // SHIFT + S downloads all files in list
 			} else {
 				downloader.download_file() // S to download the current file
 			}
 			break
-		case 82: // R to toggle list shuffle
+		case "r": // R to toggle list shuffle
 			if (list_navigator) {
 				toggle_shuffle()
 			}
 			break
-		case 67: // C to copy to clipboard
+		case "c": // C to copy to clipboard
 			copy_url()
 			break
-		case 73: // I to open the details window
+		case "i": // I to open the details window
 			details_window.toggle()
 			break
-		case 69: // E to open the edit window
-			if (file.can_edit) {
+		case "e": // E to open the edit window
+			if (file.can_edit || list.can_edit) {
 				edit_window.toggle()
 			}
 			break
-		case 77: // M to open the embed window
+		case "m": // M to open the embed window
 			embed_window.toggle()
 			break
-		case 71: // G to grab this file
+		case "g": // G to grab this file
 			this.grabFile()
 			break
-		case 81: // Q to close the window
+		case "q": // Q to close the window
 			window.close()
 			break
 	}

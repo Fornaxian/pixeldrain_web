@@ -81,7 +81,6 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateData.Title = fmt.Sprintf("%d files on pixeldrain", len(files))
 		vd.Type = "list"
 		vd.APIResponse = pixelapi.ListInfo{
-			Success:     true,
 			Title:       "Multiple files",
 			DateCreated: time.Now(),
 			Files:       files,

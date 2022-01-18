@@ -86,7 +86,7 @@ footer {
 .button_toggle_navigation {
 	position: fixed;
 	backface-visibility: hidden;
-	z-index: 300;
+	z-index: 10;
 	top: 0;
 	left: 0;
 	padding: 10px 20px 15px 10px;
@@ -459,7 +459,7 @@ input[type="submit"]:disabled, input[type="submit"].disabled,
 input[type="button"]:disabled, input[type="button"].disabled,
 input[type="color"]:disabled, input[type="color"].disabled,
 select:disabled , select.disabled {
-	background: var(--layer_1_color);
+	background: var(--input_disabled_color);
 	color: var(--input_color);
 	box-shadow: none;
 	transition: none;
@@ -542,7 +542,7 @@ input[type="password"]:disabled,
 input[type="email"]:disabled,
 input[type="number"]:disabled,
 input[type="date"]:disabled{
-	background: var(--layer_1_color);
+	background: var(--input_disabled_color);
 	color: var(--input_color);
 	box-shadow: none;
 	transition: none;
