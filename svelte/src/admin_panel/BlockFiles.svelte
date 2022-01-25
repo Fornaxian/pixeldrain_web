@@ -21,6 +21,7 @@ let block_form = {
 				"terrorism",
 				"gore",
 				"malware",
+				"doxing",
 			]
 		}, {
 			name: "reporter",

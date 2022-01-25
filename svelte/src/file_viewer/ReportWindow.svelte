@@ -103,6 +103,11 @@ let submit = async e => {
 			<b>Child abuse</b>: Videos or images depicting inappropriate
 			touching or nudity of minors.
 		</label>
+		<label for="type_doxing">
+			<input type="radio" bind:group={abuse_type} id="type_doxing" name="doxing" value="doxing">
+			<b>Doxing</b>: Personally identifiable information uploaded without
+			the consent of the owner.
+		</label>
 		<label for="type_malware" style="border-bottom: none;">
 			<input type="radio" bind:group={abuse_type} id="type_malware" name="abuse_type" value="malware">
 			<b>Malware</b>: Software programs designed to cause harm to
