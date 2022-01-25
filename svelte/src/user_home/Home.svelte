@@ -25,10 +25,12 @@ let load_graphs = async (minutes, interval) => {
 		let downloads = get_graph_data("downloads", start, end, interval);
 		let bandwidth = get_graph_data("bandwidth", start, end, interval);
 		let transfer_paid = get_graph_data("transfer_paid", start, end, interval);
+		let transfer_kickback = get_graph_data("transfer_kickback", start, end, interval);
 		views = await views
 		downloads = await downloads
 		bandwidth = await bandwidth
 		transfer_paid = await transfer_paid
+		transfer_kickback = await transfer_kickback
 
 		graph_views_downloads.data().labels = views.timestamps;
 		graph_views_downloads.data().datasets[0].data = views.amounts
@@ -36,6 +38,7 @@ let load_graphs = async (minutes, interval) => {
 		graph_bandwidth.data().labels = bandwidth.timestamps;
 		graph_bandwidth.data().datasets[0].data = bandwidth.amounts
 		graph_bandwidth.data().datasets[1].data = transfer_paid.amounts
+		graph_bandwidth.data().datasets[2].data = transfer_kickback.amounts
 
 		graph_views_downloads.update()
 		graph_bandwidth.update()
@@ -150,18 +153,25 @@ onMount(() => {
 	];
 	graph_bandwidth.data().datasets = [
 		{
-			label: "Bandwidth (total)",
+			label: "Total bandwidth",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.highlightColor,
-			backgroundColor: "#"+window.style.highlightColor,
+			borderColor: "#"+window.style.chart1Color,
+			backgroundColor: "#"+window.style.chart1Color,
 		},
 		{
-			label: "Bandwidth (premium)",
+			label: "Premium bandwidth",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.dangerColor,
-			backgroundColor: "#"+window.style.dangerColor,
+			borderColor: "#"+window.style.chart2Color,
+			backgroundColor: "#"+window.style.chart2Color,
+		},
+		{
+			label: "Kickback bandwidth",
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: "#"+window.style.chart3Color,
+			backgroundColor: "#"+window.style.chart3Color,
 		},
 	];
 
@@ -287,15 +297,22 @@ onDestroy(() => {
 <section>
 	<h3>Premium transfers and total bandwidth usage</h3>
 	<p>
-		A premium transfer is when a file is downloaded using the data cap
-		on your subscription plan. These can be files you downloaded from
-		other people, or other people downloading your files if you have
-		bandwidth sharing enabled. Bandwidth sharing can be changed on
+		Total bandwidth usage is the combined bandwidth usage of all the files
+		on your account. This includes paid transfers.
+	</p>
+	<p>
+		A premium transfer is when a file is downloaded using the data cap on
+		your subscription plan. These can be files you downloaded from other
+		people, or other people downloading your files if you have bandwidth
+		sharing enabled. Bandwidth sharing can be changed on
 		<a href="/user/subscription">the subscription page</a>.
 	</p>
 	<p>
-		Total bandwidth usage is the combined bandwidth usage of all the
-		files on your account. This includes paid transfers.
+		Kickback bandwidth is counted when a paying pixeldrain user downloads
+		one of your files using their data cap. If you are on a prepaid plan
+		this usage will be compensated at a rate of €1 per TB. When this happens
+		a positive transaction will be logged on the
+		<a href="/user/transactions">transactions page</a>.
 	</p>
 </section>
 <Chart bind:this={graph_bandwidth} data_type="bytes"/>

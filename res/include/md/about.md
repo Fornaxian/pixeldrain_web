@@ -13,16 +13,12 @@ logged in and you accidentally upload something you shouldn't have, just don't
 share the link. The file will expire eventually. File links are not indexed or
 published anywhere. As long as you don't share it nobody will see it.
 
-## Does pixeldrain cost any money?
+## Can I donate to pixeldrain?
 
-No, pixeldrain is completely free at the moment. While there is an advertisement
-on the file downloading page, it doesn't generate nearly enough revenue to pay
-for maintaining this service. That's why I'd really appreciate it if you could
-spare some coins. Possible methods for donating are:
+We provide extra features for users who support us on Patreon, but if you just
+want to give some money and don't care about the perks these options are also
+available:
 
- * <a href="https://www.patreon.com/join/pixeldrain" target="_blank">
-	{{template `patreon.svg` .}} Support me on Patreon and get some perks too!
-   </a>
  * Bitcoin:
    [bc1qy8c2lx2zhetmnwwkpl9y7ygzs6yfaaev8nx09n](bitcoin:bc1qy8c2lx2zhetmnwwkpl9y7ygzs6yfaaev8nx09n?label=Pixeldrain%20Donation)
  * BasicAttentionToken: Donate BAT by clicking the BAT icon in your address bar.

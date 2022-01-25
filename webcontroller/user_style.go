@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func userStyle(r *http.Request) pixeldrainStyleSheet {
+func userStyle(r *http.Request) (s pixeldrainStyleSheet) {
 	// Get the chosen style from the URL
 	var style = r.URL.Query().Get("style")
 
@@ -22,30 +22,48 @@ func userStyle(r *http.Request) pixeldrainStyleSheet {
 
 	switch style {
 	case "classic":
-		return pixeldrainClassicStyle
+		s = pixeldrainClassicStyle
 	case "solarized_dark":
-		return solarizedDarkStyle
+		s = solarizedDarkStyle
 	case "sunny":
-		return sunnyPixeldrainStyle
+		s = sunnyPixeldrainStyle
 	case "maroon":
-		return maroonStyle
+		s = maroonStyle
 	case "hacker":
-		return hackerStyle
+		s = hackerStyle
 	case "canta":
-		return cantaPixeldrainStyle
+		s = cantaPixeldrainStyle
 	case "deepsea":
-		return deepseaPixeldrainStyle
+		s = deepseaPixeldrainStyle
 	case "skeuos":
-		return skeuosPixeldrainStyle
+		s = skeuosPixeldrainStyle
 	case "nord":
-		return nordPixeldrainStyle
+		s = nordPixeldrainStyle
 	case "snowstorm":
-		return snowstormPixeldrainStyle
+		s = snowstormPixeldrainStyle
 	case "default":
 		fallthrough // use default case
 	default:
-		return defaultPixeldrainStyle
+		s = defaultPixeldrainStyle
 	}
+
+	// Set default colors
+	var noColor = hsl{0, 0, 0}
+	var setDefault = func(color *hsl, def hsl) {
+		if *color == noColor {
+			*color = def
+		}
+	}
+	setDefault(&s.Link, s.Highlight.Add(0, 0, -.05))
+	setDefault(&s.InputDisabled, s.Input.Add(0, -.2, -.2))
+	setDefault(&s.ScrollbarForeground, s.Input)
+	setDefault(&s.ScrollbarHover, s.ScrollbarForeground.Add(0, 0, .1))
+	setDefault(&s.Layer1Text, s.Text)
+	setDefault(&s.Chart1, s.Highlight)
+	setDefault(&s.Chart2, s.Chart1.Add(120, 0, 0))
+	setDefault(&s.Chart3, s.Chart2.Add(120, 0, 0))
+
+	return s
 }
 
 type pixeldrainStyleSheet struct {
@@ -66,29 +84,16 @@ type pixeldrainStyleSheet struct {
 	Layer3     hsl
 	Layer4     hsl // Highest and brightest layer
 
+	// Colors to use in graphs
+	Chart1 hsl
+	Chart2 hsl
+	Chart3 hsl
+
 	Shadow hsl
 	Light  bool // If this is a light theme
 }
 
 func (s pixeldrainStyleSheet) String() string {
-	var noColor = hsl{0, 0, 0}
-
-	if s.Link == noColor {
-		s.Link = s.Highlight.Add(0, 0, -.05)
-	}
-	if s.InputDisabled == noColor {
-		s.InputDisabled = s.Input.Add(0, -.2, -.2)
-	}
-	if s.ScrollbarForeground == noColor {
-		s.ScrollbarForeground = s.Input
-	}
-	if s.ScrollbarHover == noColor {
-		s.ScrollbarHover = s.ScrollbarForeground.Add(0, 0, .1)
-	}
-	if s.Layer1Text == noColor {
-		s.Layer1Text = s.Text
-	}
-
 	return fmt.Sprintf(
 		`:root {
 	--text_color:                 #%s;
@@ -116,6 +121,10 @@ func (s pixeldrainStyleSheet) String() string {
 	--layer_4_color:        #%s;
 	--layer_4_color_border: #%s;
 
+	--chart_1_color: #%s;
+	--chart_2_color: #%s;
+	--chart_3_color: #%s;
+
 	--shadow_color:     #%s;
 }`,
 		s.Text.RGB(),
@@ -141,6 +150,9 @@ func (s pixeldrainStyleSheet) String() string {
 		s.Layer3.Add(0, 0, .05).RGB(),
 		s.Layer4.RGB(),
 		s.Layer4.Add(0, 0, .05).RGB(),
+		s.Chart1.RGB(),
+		s.Chart2.RGB(),
+		s.Chart3.RGB(),
 		s.Shadow.RGB(),
 	)
 }
