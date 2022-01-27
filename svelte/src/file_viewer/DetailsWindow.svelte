@@ -14,6 +14,7 @@ export let file = {
 	bandwidth_used: 0,
 	bandwidth_used_paid: 0,
 	description: "",
+	hash_sha256: "",
 	timeseries_href: "",
 }
 
@@ -150,6 +151,10 @@ onMount(() => {
 				<td>{file.description}</td>
 			</tr>
 		{/if}
+		<tr>
+			<td>SHA256 hash</td>
+			<td style="word-break: break-all;">{file.hash_sha256}</td>
+		</tr>
 	</table>
 
 	<h2>Views and downloads</h2>

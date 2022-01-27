@@ -222,7 +222,7 @@ HTTP 403: Forbidden
 
 Returns information about one or more files. You can also put a comma separated
 list of file IDs in the URL and it will return an array of file info, instead of
-a single object.
+a single object. There's a limit of 1000 files per request.
 
 ### Parameters
 
@@ -235,16 +235,27 @@ id    | true     | URL      | ID of the file
 HTTP 200: OK
 ```
 {
-	"success": true,
 	"id": "1234abcd",
 	"name": "screenshot.png",
+	// Size of the file in bytes
+	"size": 5694837,
+	// Number of unique file views, views are counted once per IP address
+	"views" 1234,
+	// Total bandwidth usage of the file
+	"bandwidth_used": 1234567890,
+	// Premium bandwidth usage, from users with a Pro subscription or bandwidth sharing
+	"bandwidth_used_paid": 1234567890,
+	// Unique downloads per IP address
+	"downloads": 1234,
 	"date_upload": 2020-02-04T18:34:05.706801Z,
 	"date_last_view": 2020-02-04T18:34:05.706801Z,
-	"size": 5694837, // Bytes
-	"views" 1234, // Amount of unique file views
-	"bandwidth_used": 1234567890, // Bytes
 	"mime_type" "image/png",
-	"thumbnail_href": "/file/1234abcd/thumbnail" // Link to a thumbnail of this file
+	// Link to a thumbnail of this file
+	"thumbnail_href": "/file/1234abcd/thumbnail"
+	// SHA256 sum of the file, encoded in hexadecimal
+	"hash_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+	// If the current logged in user can edit the file
+	"can_edit": true,
 }
 ```
 

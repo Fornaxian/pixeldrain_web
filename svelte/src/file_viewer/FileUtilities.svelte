@@ -10,6 +10,7 @@ export const file_struct = {
 	mime_type: "",
 	availability: "",
 	abuse_type: "",
+	hash_sha256: "",
 	show_ads: false,
 	can_edit: false,
 	get_href: "",
