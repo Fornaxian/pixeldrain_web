@@ -180,6 +180,7 @@ func New(
 		{GET, "user/home" /*                  */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/settings" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/api_keys" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
+		{GET, "user/activity" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/connect_app" /*           */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/transactions" /*          */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/subscription" /*          */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},

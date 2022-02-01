@@ -10,9 +10,11 @@ let months = []
 const load_transactions = async () => {
 	loading = true
 	try {
-		// We keep fetching history until there is no history left
+		// We keep fetching history until we have fetched three months without
+		// any transactions
+		let empty_months = 0
 		let now = new Date()
-		while (true) {
+		while (empty_months < 3) {
 			const resp = await fetch(
 				window.api_endpoint+"/user/transactions/" +
 					now.getFullYear()+"-"+("00"+(now.getMonth()+1)).slice(-2),
@@ -39,7 +41,8 @@ const load_transactions = async () => {
 			}
 
 			if (month.rows.length === 0) {
-				break
+				empty_months++
+				continue
 			}
 
 			month.rows.forEach(row => {

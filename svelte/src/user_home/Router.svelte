@@ -6,6 +6,7 @@ import APIKeys from "./APIKeys.svelte";
 import Transactions from "./Transactions.svelte";
 import Subscription from "./Subscription.svelte";
 import ConnectApp from "./ConnectApp.svelte";
+import ActivityLog from "./ActivityLog.svelte";
 
 let page = ""
 
@@ -59,6 +60,13 @@ onMount(() => {
 			API keys
 		</a>
 		<a class="button"
+			href="/user/activity"
+			class:button_highlight={page === "activity"}
+			on:click|preventDefault={() => {navigate("activity", "Activity log")}}>
+			<i class="icon">list</i>
+			Activity log
+		</a>
+		<a class="button"
 			href="/user/subscription"
 			class:button_highlight={page === "subscription"}
 			on:click|preventDefault={() => {navigate("subscription", "Subscription")}}>
@@ -84,6 +92,8 @@ onMount(() => {
 	<AccountSettings/>
 {:else if page === "api_keys"}
 	<APIKeys/>
+{:else if page === "activity"}
+	<ActivityLog/>
 {:else if page === "connect_app"}
 	<ConnectApp/>
 {:else if page === "transactions"}

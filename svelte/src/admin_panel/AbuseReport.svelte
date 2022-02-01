@@ -77,7 +77,7 @@ let set_status = async (action, report_type) => {
 			<iframe
 				title="File preview"
 				src="/u/{report.file.id}?embed"
-				style="border: none; width: 100%; height: 500px; border-radius: 6px;"
+				style="border: none; width: 100%; height: 600px; border-radius: 16px;"
 			></iframe>
 			{/if}
 		</div>

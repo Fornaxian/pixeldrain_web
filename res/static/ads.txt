@@ -1552,6 +1552,15 @@ interdogmedia.com, 17207, DIRECT
 apacdex.com, 17207, DIRECT
 valueimpression.com, 17207, DIRECT
 quantumdex.io, 17207, DIRECT
+smilewanted.com, 3583, RESELLER
+appnexus.com, 10040, RESELLER, f5ab79cb980f11d1
+indexexchange.com, 193216, DIRECT, 50b1c356f2c5c8fc
+rubiconproject.com, 16114, DIRECT, 0bfd66d529a55807
+verve.com, 15503, RESELLER, 0c8f5958fc2d6270
+loopme.com, 11013, DIRECT, 6c8d5f95897a5a3b
+connectad.io, 204, DIRECT, 85ac85a30c93b3e5
+appnexus.com, 2579, RESELLER, f5ab79cb980f11d1
+quantum-advertising.com, 6222, RESELLER
 # End of Valueimpression
 
 # Pixfuture
