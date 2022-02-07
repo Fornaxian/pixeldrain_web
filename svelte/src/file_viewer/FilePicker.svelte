@@ -5,6 +5,7 @@ import DirectoryElement from "../user_file_manager/DirectoryElement.svelte";
 import Modal from "../util/Modal.svelte";
 let dispatch = createEventDispatcher()
 
+export let multi_select = true
 let modal;
 let directory_element;
 let input_search;
@@ -92,7 +93,7 @@ const keydown = (e) => {
 		</button>
 	</div>
 	<div class="dir_container">
-		<DirectoryElement bind:this={directory_element}></DirectoryElement>
+		<DirectoryElement bind:this={directory_element} multi_select={multi_select}></DirectoryElement>
 	</div>
 </Modal>
 

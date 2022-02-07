@@ -3,8 +3,6 @@ fornaxian.tech/config v0.0.0-20211108212237-6133aed90586/go.mod h1:ULIXF4J1DbBw4
 fornaxian.tech/log v0.0.0-20190617093801-1c7ce9a7c9b3/go.mod h1:OyWUNsNPlo5AmlOHvJ4s6WcStQw+9rQyBMwmTz0buEM=
 fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640 h1:UPDxJwLRCfh/cv80UMSanzmZ0jIcfS1mcd0Y06HYuLw=
 fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640/go.mod h1:sN82qMToeHhP2u3ehvrcE8y1IudRZJAZO9yG5OBYblo=
-fornaxian.tech/pixeldrain_api_client v0.0.0-20220127185304-6a60644d957e h1:/PLg0AMCPx6Uft5oPb70ogK127/oWrRGadPU0kvqRv8=
-fornaxian.tech/pixeldrain_api_client v0.0.0-20220127185304-6a60644d957e/go.mod h1:uajB2ofEsefUtxjvs4m7SDyPVRlfrI3qzCSWcud47hY=
 fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787 h1:9ujI8Qi6+FTL/YW6xQAS9DmWDMerHBe8foQvVD/G/i0=
 fornaxian.tech/util v0.0.0-20211102152345-9a486dee9787/go.mod h1:FqVgfghmxTGR3l9Zx4MOMeZ9KHjiEFl3s3C0BSTvBwk=
 github.com/BurntSushi/toml v0.4.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=

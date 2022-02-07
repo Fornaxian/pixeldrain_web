@@ -21,6 +21,7 @@ import (
 // TemplateData is a struct that every template expects when being rendered. In
 // the field Other you can pass your own template-specific variables.
 type TemplateData struct {
+	tpm               *TemplateManager
 	Authenticated     bool
 	User              pixelapi.UserInfo
 	UserAgent         string
@@ -45,15 +46,18 @@ type TemplateData struct {
 	Form Form
 }
 
+func (td *TemplateData) setStyle(style pixeldrainStyleSheet) {
+	td.Style = style
+	td.UserStyle = template.CSS(style.String())
+	td.BackgroundPattern = style.Background(td.tpm.tpl)
+}
+
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {
-	var style = userStyle(r)
 	t = &TemplateData{
-		Authenticated:     false,
-		UserAgent:         r.UserAgent(),
-		Style:             style,
-		UserStyle:         template.CSS(style.String()),
-		BackgroundPattern: style.Background(wc.templates.tpl),
-		APIEndpoint:       template.URL(wc.apiURLExternal),
+		tpm:           wc.templates,
+		Authenticated: false,
+		UserAgent:     r.UserAgent(),
+		APIEndpoint:   template.URL(wc.apiURLExternal),
 
 		// Use the user's IP address for making requests
 		PixelAPI: wc.api.RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent()),
@@ -62,6 +66,8 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		Hostname: template.HTML(wc.hostname),
 		URLQuery: r.URL.Query(),
 	}
+
+	t.setStyle(userStyleFromRequest(r))
 
 	// If the user is authenticated we'll indentify him and put the user info
 	// into the templatedata. This is used for putting the username in the menu

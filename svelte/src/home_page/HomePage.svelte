@@ -8,6 +8,7 @@ import Twitter from "../icons/Twitter.svelte"
 import Tumblr from "../icons/Tumblr.svelte"
 import { formatDataVolume, formatDuration } from "../util/Formatting.svelte";
 import StorageProgressBar from "../user_home/StorageProgressBar.svelte"
+import Konami from "../util/Konami.svelte"
 
 // === UPLOAD LOGIC ===
 
@@ -383,6 +384,8 @@ const keydown = (e) => {
 	on:paste={paste}
 	on:keydown={keydown}
 	on:beforeunload={leave_confirmation} />
+
+<Konami></Konami>
 
 <div>
 	<!-- If the user is logged in and has used more than 50% of their storage space we will show a progress bar -->

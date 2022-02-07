@@ -97,6 +97,8 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	templateData.Other = vd
 
+	fileStyleOverride(templateData, files)
+
 	for _, file := range files {
 		if file.AbuseType != "" {
 			w.WriteHeader(http.StatusUnavailableForLegalReasons)
@@ -157,6 +159,8 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 	templateData.Other = vd
 
+	fileStyleOverride(templateData, list.Files)
+
 	for _, file := range list.Files {
 		if file.AbuseType != "" {
 			w.WriteHeader(http.StatusUnavailableForLegalReasons)
@@ -172,6 +176,16 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
+	}
+}
+
+func fileStyleOverride(td *TemplateData, files []pixelapi.ListFile) {
+	if len(files) == 0 {
+		return
+	}
+
+	if files[0].CustomTheme != "" {
+		td.setStyle(userStyle(files[0].CustomTheme))
 	}
 }
 

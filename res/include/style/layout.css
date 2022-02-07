@@ -105,7 +105,7 @@ footer {
 .page_navigation {
 	position: fixed;
 	backface-visibility: hidden;
-	width: 18em;
+	width: 17em;
 	height: 100%;
 	left: 0;
 	float: left;
@@ -119,7 +119,7 @@ footer {
 	position: absolute;
 	right: 0;
 	height: auto;
-	left: 18em;
+	left: 17em;
 	min-width: 300px;
 	display: inline-block;
 	text-align: center; /* Center the header and body */
@@ -131,7 +131,7 @@ footer {
 	padding: 8px;
 	transition: left 0.5s;
 }
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
 	.page_navigation {
 		left: -18em;
 	}
@@ -467,7 +467,9 @@ select:disabled , select.disabled {
 	cursor: not-allowed;
 }
 button > i,
-.button > i {
+.button > i,
+button > svg,
+.button > svg {
 	vertical-align: middle;
 	line-height: 1;
 }

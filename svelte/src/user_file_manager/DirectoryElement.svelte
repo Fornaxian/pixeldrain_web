@@ -259,10 +259,11 @@ const detect_shift = (e) => {
 	shift_pressed = e.type === "keydown"
 }
 
+export let multi_select = true
 let last_selected_node = -1
 const node_click = (index) => {
 	if (selectionMode) {
-		if (shift_pressed && last_selected_node != -1) {
+		if (multi_select && shift_pressed && last_selected_node != -1) {
 			let id_low = last_selected_node
 			let id_high = last_selected_node
 			if (last_selected_node < index) {
@@ -277,6 +278,14 @@ const node_click = (index) => {
 				}
 			}
 		} else {
+			// If multi select is disabled we deselect all other files before
+			// selecting this one
+			if (!multi_select) {
+				for (let i in allFiles) {
+					allFiles[i].selected = false
+				}
+			}
+
 			allFiles[index].selected = !allFiles[index].selected
 		}
 

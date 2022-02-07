@@ -1,4 +1,5 @@
 <script>
+import ThemePicker from "../util/ThemePicker.svelte";
 import { copy_text, domain_url } from "../util/Util.svelte";
 import { file_type } from "./FileUtilities.svelte";
 
@@ -33,6 +34,7 @@ let style = ""
 let set_style = s => {
 	style = s
 	embed_iframe()
+	update_example()
 }
 
 let embed_iframe = () => {
@@ -95,8 +97,17 @@ const copy = () => {
 	}
 }
 
-const example = () => {
-	preview_area.innerHTML = embed_html
+let example = false
+const toggle_example = () => {
+	example = !example
+	update_example()
+}
+const update_example = () => {
+	if (example) {
+		preview_area.innerHTML = embed_html
+	} else {
+		preview_area.innerHTML = ""
+	}
 }
 </script>
 
@@ -142,38 +153,8 @@ const example = () => {
 				You can change the pixeldrain theme for your embedded file. Try the
 				available themes <a href="/appearance">here</a>.
 			</p>
-			<div class="center">
-				<button class:button_highlight={style===""} on:click={() => {set_style("")}}>
-					Default
-				</button>
-				<button class:button_highlight={style==="classic"} on:click={() => {set_style("classic")}}>
-					Classic
-				</button>
-				<button class:button_highlight={style==="solarized_dark"} on:click={() => {set_style("solarized_dark")}}>
-					Solarized
-				</button>
-				<button class:button_highlight={style==="maroon"} on:click={() => {set_style("maroon")}}>
-					Maroon
-				</button>
-				<button class:button_highlight={style==="hacker"} on:click={() => {set_style("hacker")}}>
-					Hacker
-				</button>
-				<button class:button_highlight={style==="canta"} on:click={() => {set_style("canta")}}>
-					Canta
-				</button>
-				<button class:button_highlight={style==="nord"} on:click={() => {set_style("nord")}}>
-					Nord
-				</button>
-				<button class:button_highlight={style==="snowstorm"} on:click={() => {set_style("snowstorm")}}>
-					Snowstorm
-				</button>
-				<button class:button_highlight={style==="deepsea"} on:click={() => {set_style("deepsea")}}>
-					Deep sea
-				</button>
-				<button class:button_highlight={style==="skeuos"} on:click={() => {set_style("skeuos")}}>
-					Skeuos
-				</button>
-			</div>
+
+			<ThemePicker on:theme_change={e => set_style(e.detail)}></ThemePicker>
 		{:else}
 			<h3>Direct link</h3>
 			<p>
@@ -201,7 +182,7 @@ const example = () => {
 					Copy HTML
 				{/if}
 			</button>
-			<button on:click={example}>
+			<button on:click={toggle_example} class:button_highlight={example}>
 				<i class="icon">visibility</i> Show example
 			</button>
 		</div>

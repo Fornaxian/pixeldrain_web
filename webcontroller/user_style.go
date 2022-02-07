@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func userStyle(r *http.Request) (s pixeldrainStyleSheet) {
+func userStyleFromRequest(r *http.Request) (s pixeldrainStyleSheet) {
 	// Get the chosen style from the URL
 	var style = r.URL.Query().Get("style")
 
@@ -20,6 +20,10 @@ func userStyle(r *http.Request) (s pixeldrainStyleSheet) {
 		}
 	}
 
+	return userStyle(style)
+}
+
+func userStyle(style string) (s pixeldrainStyleSheet) {
 	switch style {
 	case "classic":
 		s = pixeldrainClassicStyle

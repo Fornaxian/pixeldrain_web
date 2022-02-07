@@ -19,6 +19,7 @@ import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
 import Spinner from "../util/Spinner.svelte";
 import Downloader from "./Downloader.svelte";
+import CustomBanner from "./CustomBanner.svelte";
 
 let loading = true
 let embedded = false
@@ -145,6 +146,10 @@ const open_list = l => {
 	// correct file is opened
 	is_list = true
 
+	if (l.files.length !== 0) {
+		apply_customizations(l.files[0])
+	}
+
 	hash_change()
 }
 const hash_change = () => {
@@ -200,6 +205,8 @@ const open_file_index = async index => {
 		document.title = file.name+" ~ pixeldrain"
 	}
 
+	apply_customizations(file)
+
 	// Register a file view
 	fetch(window.api_endpoint + "/file/" + file.id + "/view", {
 		method: "POST",
@@ -212,6 +219,30 @@ const toggle_gallery = () => {
 		window.location.hash = "#item=0"
 	} else {
 		window.location.hash = ""
+	}
+}
+
+// Premium page customizations. In the gallery view we will use the
+// customizations for the first file in the list, else we simply use the
+// selected file. In most cases they are all the same so the user won't notice
+// any change
+let file_preview_background
+let custom_header = ""
+let custom_background = ""
+let custom_footer = ""
+const apply_customizations = file => {
+	if (file.custom_header) {
+		custom_header = window.api_endpoint+"/file/"+file.custom_header
+	}
+	if (file.custom_footer) {
+		custom_footer = window.api_endpoint+"/file/"+file.custom_footer
+	}
+
+	if (file.custom_background) {
+		custom_background = window.api_endpoint+"/file/"+file.custom_background
+		file_preview_background.style.backgroundImage = "url('"+custom_background+"')"
+	} else {
+		file_preview_background.style.backgroundImage = ""
 	}
 }
 
@@ -378,6 +409,8 @@ const keyboard_event = evt => {
 		</ListNavigator>
 	{/if}
 
+	<CustomBanner src={custom_header} border_top={true}></CustomBanner>
+
 	<div id="file_preview_window" class="file_preview_window">
 		<div id="toolbar" class="toolbar" class:toolbar_visible><div><div>
 			{#if view === "file"}
@@ -523,7 +556,13 @@ const keyboard_event = evt => {
 			<br/>
 		</div></div></div>
 
-		<div id="file_preview" class="file_preview checkers" class:toolbar_visible class:skyscraper_visible>
+		<div bind:this={file_preview_background}
+			class="file_preview_container"
+			class:checkers={!custom_background}
+			class:custom_background={!!custom_background}
+			class:toolbar_visible
+			class:skyscraper_visible
+		>
 			{#if view === "file"}
 				<FilePreview
 					bind:this={file_preview}
@@ -550,6 +589,8 @@ const keyboard_event = evt => {
 
 	{#if ads_enabled}
 		<AdLeaderboard></AdLeaderboard>
+	{:else if custom_footer}
+		<CustomBanner src={custom_footer}></CustomBanner>
 	{:else if !window.viewer_data.user_ads_enabled && !embedded}
 		<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
 			Thank you for supporting pixeldrain!
@@ -660,7 +701,7 @@ const keyboard_event = evt => {
 	height: auto;
 	margin: 0;
 }
-.file_preview {
+.file_preview_container {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -675,6 +716,12 @@ const keyboard_event = evt => {
 	overflow: auto;
 	box-shadow: inset 2px 2px 10px 2px var(--shadow_color);
 	border-radius: 16px;
+}
+.file_preview_container.toolbar_visible { left: 8em; }
+.file_preview_container.skyscraper_visible { right: 160px; }
+.file_preview_container.custom_background {
+	background-size: cover;
+	background-position: center;
 }
 
 /* Toolbars */
@@ -692,8 +739,6 @@ const keyboard_event = evt => {
 	z-index: 1;
 }
 .toolbar.toolbar_visible { left: 0; }
-.file_preview.toolbar_visible { left: 8em; }
-.file_preview.skyscraper_visible { right: 160px; }
 
 /* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
 .toolbar > div {

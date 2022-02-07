@@ -91,7 +91,6 @@ const copy_magnet = () => {
 		</a>
 		<button
 			on:click={copy_magnet}
-			class="button"
 			class:button_highlight={copy_magnet_status === "copied"}
 			class:button_red={copy_magnet_status === "error"}
 		>

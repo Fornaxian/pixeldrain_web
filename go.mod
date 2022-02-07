@@ -2,6 +2,8 @@ module fornaxian.tech/pixeldrain_web
 
 go 1.17
 
+replace fornaxian.tech/pixeldrain_api_client => ../pixeldrain_api_client
+
 require (
 	fornaxian.tech/config v0.0.0-20211108212237-6133aed90586
 	fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640
