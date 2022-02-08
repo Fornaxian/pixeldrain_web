@@ -25,7 +25,7 @@ let update_stats = async id => {
 	if (file.size === 0) {
 		downloads = file.downloads
 	} else {
-		downloads = Math.round(file.bandwidth_used / file.size)
+		downloads = Math.round((file.bandwidth_used + file.bandwidth_used_paid) / file.size)
 	}
 	size = file.size
 
