@@ -76,17 +76,18 @@ let download = () => { dispatch("download", {}) }
 		{/if}
 	{:else}
 		<h1>{file.name}</h1>
-		<img src={file.icon_href} alt="Video icon" style="display: inline-block; vertical-align: top;">
+		<img src={file.icon_href} class="video_icon" alt="Video icon">
 		<TextBlock width="600px">
 			The online video player on pixeldrain is only available when the
-			uploader of the file or the viewer pays for the bandwidth usage. You
-			can still download the video and watch it locally on your computer.
+			uploader of the video has a Pro account, or if you have a Pro
+			account. You can still download the video and watch it locally on
+			your computer.
 			<br/>
 			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button button_highlight">
 				<i class="icon">upgrade</i> Upgrade to Pro
 			</a>
 			<button on:click={download}>
-				<i class="icon">save</i> Download
+				<i class="icon">download</i> Download
 			</button>
 		</TextBlock>
 		<br/><br/>
@@ -110,5 +111,10 @@ let download = () => { dispatch("download", {}) }
 	max-height: 100%;
 	top: 50%;
 	transform: translateY(-50%);
+}
+.video_icon {
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 8px;
 }
 </style>

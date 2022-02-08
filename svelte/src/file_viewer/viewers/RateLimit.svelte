@@ -62,8 +62,9 @@ let file = {
 <style>
 .file_thumbnail {
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: middle;
 	height: 6em;
+	border-radius: 8px;
 }
 .file_description {
 	display: inline-block;

@@ -23,7 +23,7 @@ let file = {
 	No preview is available for this file type. Download to view it locally.
 	<br/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>
-		<i class="icon">save</i>
+		<i class="icon">download</i>
 		<span>Download</span>
 	</button>
 </TextBlock>

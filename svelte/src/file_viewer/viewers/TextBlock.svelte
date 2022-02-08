@@ -15,7 +15,7 @@ export let center = false
 	vertical-align: middle;
 
 	background-color: rgba(0, 0, 0, 0.5);
-	border-radius: 16px;
+	border-radius: 8px;
 	padding: 8px;
 }
 .center {

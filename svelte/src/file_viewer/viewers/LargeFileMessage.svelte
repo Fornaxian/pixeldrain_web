@@ -12,7 +12,7 @@ export let file = {
 
 {#if file.show_ads && file.size > 1e8}
 	<!-- If the file is larger than 100 MB we show a warning about the transfer speed -->
-	<TextBlock width="650px">
+	<TextBlock width="650px" center={true}>
 		Your download speed is currently limited to 4 MiB/s. Downloading this
 		file for free will take at least
 		{formatDuration((file.size/4194304)*1000)} (under ideal conditions).
