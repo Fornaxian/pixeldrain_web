@@ -722,6 +722,7 @@ const keyboard_event = evt => {
 .file_preview_container.custom_background {
 	background-size: cover;
 	background-position: center;
+	background-color: var(--layer_1_color);
 }
 
 /* Toolbars */

@@ -139,7 +139,9 @@ let delete_account = {
 		return {success: true, message: "Success! Your account has been scheduled for deletion in 7 days"}
 	},
 }
+
 let success_message
+let changes_made = false
 
 let file_picker
 let theme = ""
@@ -169,6 +171,8 @@ let add_file = files => {
 	} else if (currently_selecting === "footer") {
 		footer_image_id = files[0].id
 	}
+
+	changes_made = true
 }
 let save = async () => {
 	const form = new FormData()
@@ -189,6 +193,7 @@ let save = async () => {
 	}
 
 	success_message.set(true, "Changes saved")
+	changes_made = false
 }
 
 onMount(() => {
@@ -246,7 +251,7 @@ onMount(() => {
 		theme preference of the person viewing the file. Set to 'None' to let
 		the viewer choose their own theme.
 	</p>
-	<ThemePicker theme={theme} on:theme_change={e => theme = e.detail}></ThemePicker>
+	<ThemePicker theme={theme} on:theme_change={e => {theme = e.detail; changes_made = true}}></ThemePicker>
 
 	<h3>Header image</h3>
 	<p>
@@ -307,12 +312,14 @@ onMount(() => {
 		</div>
 	{/if}
 
-	<br/>
-	<br/>
+	<hr/>
 
-	<button on:click={save}>
+
+	<button on:click={save} class:button_highlight={changes_made}>
 		<i class="icon">save</i> Save
 	</button>
+	<br/>
+	<br/>
 </section>
 
 <FilePicker bind:this={file_picker} on:files={e => {add_file(e.detail)}} multi_select={false}></FilePicker>

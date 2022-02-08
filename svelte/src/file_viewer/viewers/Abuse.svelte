@@ -11,7 +11,7 @@ let file = {
 </script>
 
 <br/>
-<TextBlock>
+<TextBlock center={true}>
 	<h1>Unavailable for legal reasons</h1>
 	<p>
 		This file has received an abuse report and was taken down.

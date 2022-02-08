@@ -94,7 +94,11 @@ onMount(() => {
 								{/if}
 							</td>
 							<td>
-								{row.file_name}
+								{#if row.event === "file_instance_blocked"}
+									<a href="/u/{row.file_id}">{row.file_name}</a>
+								{:else}
+									{row.file_name}
+								{/if}
 							</td>
 							<td>
 								{row.file_removal_reason}

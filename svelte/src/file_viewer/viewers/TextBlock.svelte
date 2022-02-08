@@ -1,8 +1,9 @@
 <script>
 export let width = "800px"
+export let center = false
 </script>
 
-<div class="block" style="max-width: {width};">
+<div class="block" class:center style="max-width: {width};">
 	<slot></slot>
 </div>
 
@@ -16,5 +17,8 @@ export let width = "800px"
 	background-color: rgba(0, 0, 0, 0.5);
 	border-radius: 16px;
 	padding: 8px;
+}
+.center {
+	text-align: center;
 }
 </style>

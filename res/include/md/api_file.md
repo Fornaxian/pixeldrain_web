@@ -93,7 +93,7 @@ file      | file    | true     | request body  | Depends on user subscription | 
 
 ### Returns
 
-HTTP 200: OK
+HTTP 201: OK
 ```
 {
 	"id": "abc123" // ID of the newly uploaded file
