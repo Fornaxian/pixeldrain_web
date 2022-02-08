@@ -1,6 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import LargeFileMessage from "./LargeFileMessage.svelte";
+import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f
@@ -16,7 +17,7 @@ let file = {
 
 <h1>You are viewing a file on pixeldrain</h1>
 <img src={file.icon_href} alt="File icon" class="icon">
-<div class="description">
+<TextBlock>
 	Name: {file.name}<br/>
 	Type: {file.mime_type}<br/>
 	No preview is available for this file type. Download to view it locally.
@@ -25,7 +26,7 @@ let file = {
 		<i class="icon">save</i>
 		<span>Download</span>
 	</button>
-</div>
+</TextBlock>
 <br/><br/>
 <LargeFileMessage file={file}></LargeFileMessage>
 
@@ -33,15 +34,5 @@ let file = {
 .icon {
 	display: inline-block;
 	vertical-align: middle;
-}
-.description {
-	display: inline-block;
-	text-align: left;
-	padding-left: 8px;
-	vertical-align: middle;
-	max-width: 600px;
-	background-color: rgba(0, 0, 0, 0.3);
-	border-radius: 16px;
-	padding: 8px;
 }
 </style>

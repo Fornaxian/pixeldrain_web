@@ -1,4 +1,6 @@
 <script>
+import TextBlock from "./TextBlock.svelte"
+
 export const set_file = f => file = f
 let file = {
 	id: "",
@@ -9,7 +11,7 @@ let file = {
 </script>
 
 <br/>
-<div class="container">
+<TextBlock>
 	<h1>Unavailable for legal reasons</h1>
 	<p>
 		This file has received an abuse report and was taken down.
@@ -17,14 +19,4 @@ let file = {
 	<p>
 		Type of abuse: {file.abuse_type}. Reporter: {file.abuse_reporter_name}.
 	</p>
-</div>
-
-<style>
-.container {
-	display: inline-block;
-	max-width: 100%;
-	background-color: rgba(0, 0, 0, 0.3);
-	border-radius: 16px;
-	padding: 8px;
-}
-</style>
+</TextBlock>

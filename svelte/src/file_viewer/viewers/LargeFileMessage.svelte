@@ -1,5 +1,6 @@
 <script>
 import { formatDuration } from "../../util/Formatting.svelte";
+import TextBlock from "./TextBlock.svelte";
 
 export let file = {
 	id: "",
@@ -11,7 +12,7 @@ export let file = {
 
 {#if file.show_ads && file.size > 1e8}
 	<!-- If the file is larger than 100 MB we show a warning about the transfer speed -->
-	<div class="description">
+	<TextBlock width="650px">
 		Your download speed is currently limited to 4 MiB/s. Downloading this
 		file for free will take at least
 		{formatDuration((file.size/4194304)*1000)} (under ideal conditions).
@@ -20,17 +21,5 @@ export let file = {
 			upgrade to Pro
 		</a>
 		to download at the fastest speed available.
-	</div>
+	</TextBlock>
 {/if}
-
-<style>
-.description {
-	display: inline-block;
-	text-align: center;
-	vertical-align: middle;
-	max-width: 700px;
-	background-color: rgba(0, 0, 0, 0.3);
-	border-radius: 16px;
-	padding: 8px;
-}
-</style>

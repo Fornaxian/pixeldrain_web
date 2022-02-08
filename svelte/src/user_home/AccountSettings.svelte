@@ -246,7 +246,7 @@ onMount(() => {
 		theme preference of the person viewing the file. Set to 'None' to let
 		the viewer choose their own theme.
 	</p>
-	<ThemePicker on:theme_change={e => theme = e.detail}></ThemePicker>
+	<ThemePicker theme={theme} on:theme_change={e => theme = e.detail}></ThemePicker>
 
 	<h3>Header image</h3>
 	<p>

@@ -1,6 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import LargeFileMessage from "./LargeFileMessage.svelte";
+import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f
@@ -10,7 +11,7 @@ let file = {
 }
 </script>
 
-<div class="container">
+<TextBlock width="800px">
 	<h1>
 		<i class="icon">file_download_off</i>
 		Hotlink protection enabled
@@ -54,24 +55,11 @@ let file = {
 			<i class="icon">upgrade</i> Support Pixeldrain on Patreon
 		</a>
 	</div>
-</div>
+</TextBlock>
 <br/><br/>
 <LargeFileMessage file={file}></LargeFileMessage>
 
 <style>
-.container {
-	position: relative;
-	display: inline-block;
-	width: 800px;
-	max-width: 100%;
-	text-align: center;
-	background-color: rgba(0, 0, 0, 0.2);
-	border-radius: 16px;
-	text-align: left;
-	padding: 10px;
-	border-radius: 16px;
-}
-
 .file_thumbnail {
 	display: inline-block;
 	vertical-align: top;

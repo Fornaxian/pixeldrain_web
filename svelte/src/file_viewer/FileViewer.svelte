@@ -714,7 +714,7 @@ const keyboard_event = evt => {
 	vertical-align: middle;
 	transition: left 0.5s, right 0.5s;
 	overflow: auto;
-	box-shadow: inset 2px 2px 10px 2px var(--shadow_color);
+	box-shadow: inset 2px 2px 10px var(--shadow_color);
 	border-radius: 16px;
 }
 .file_preview_container.toolbar_visible { left: 8em; }

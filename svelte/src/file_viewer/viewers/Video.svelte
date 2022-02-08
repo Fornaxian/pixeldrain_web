@@ -1,6 +1,7 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
 import LargeFileMessage from "./LargeFileMessage.svelte";
+import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
 let file = {
@@ -74,9 +75,9 @@ let download = () => { dispatch("download", {}) }
 			</video>
 		{/if}
 	{:else}
-		<h1>This is a video file on pixeldrain</h1>
+		<h1>{file.name}</h1>
 		<img src={file.icon_href} alt="Video icon" style="display: inline-block; vertical-align: top;">
-		<div class="description">
+		<TextBlock width="600px">
 			The online video player on pixeldrain is only available when the
 			uploader of the file or the viewer pays for the bandwidth usage. You
 			can still download the video and watch it locally on your computer.
@@ -87,7 +88,7 @@ let download = () => { dispatch("download", {}) }
 			<button on:click={download}>
 				<i class="icon">save</i> Download
 			</button>
-		</div>
+		</TextBlock>
 		<br/><br/>
 		<LargeFileMessage file={file}></LargeFileMessage>
 	{/if}
@@ -109,12 +110,5 @@ let download = () => { dispatch("download", {}) }
 	max-height: 100%;
 	top: 50%;
 	transform: translateY(-50%);
-}
-.description {
-	display: inline-block;
-	text-align: justify;
-	padding-left: 8px;
-	vertical-align: middle;
-	max-width: 550px;
 }
 </style>
