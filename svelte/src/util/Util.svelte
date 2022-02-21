@@ -35,4 +35,28 @@ export function domain_url() {
 	return url;
 }
 
+
+export const add_upload_history = id => {
+	// Make sure the user is not logged in, for privacy. This keeps the
+	// files uploaded while logged in and anonymously uploaded files
+	// separated
+	if (document.cookie.includes("pd_auth_key")) { return; }
+
+	let uploads = localStorage.getItem("uploaded_files");
+	if (uploads === null) { uploads = ""; }
+
+	// Check if there are not too many values stored
+	if (uploads.length > 3600) {
+		// 3600 characters is enough to store 400 file IDs. If we exceed that
+		// number we'll drop the last two items
+		uploads = uploads.substring(
+			uploads.indexOf(",") + 1
+		).substring(
+			uploads.indexOf(",") + 1
+		);
+	}
+
+	// Save the new ID
+	localStorage.setItem("uploaded_files", id + "," + uploads);
+}
 </script>

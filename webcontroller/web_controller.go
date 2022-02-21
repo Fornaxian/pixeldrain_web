@@ -149,7 +149,7 @@ func New(
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
 		{GET, "l/:id" /*           */, wc.serveListViewer},
 		{GET, "d/*path" /*         */, wc.serveDirectory},
-		{GET, "t" /*               */, wc.serveTemplate("text_editor", handlerOpts{})},
+		{GET, "t" /*               */, wc.serveTemplate("text_upload", handlerOpts{})},
 		{GET, "donation" /*        */, wc.serveMarkdown("donation.md", handlerOpts{})},
 		{GET, "advertising" /*     */, wc.serveMarkdown("advertising.md", handlerOpts{})},
 		{GET, "widgets" /*         */, wc.serveTemplate("widgets", handlerOpts{})},

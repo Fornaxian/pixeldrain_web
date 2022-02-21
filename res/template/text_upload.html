@@ -1,0 +1,17 @@
+{{define "text_upload"}}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "Text upload"}}
+		{{template "user_style" .}}
+
+		<script>
+			window.api_endpoint = '{{.APIEndpoint}}';
+		</script>
+		<link rel='stylesheet' href='/res/svelte/text_upload.css?v{{.CacheID}}'>
+		<script defer src='/res/svelte/text_upload.js?v{{.CacheID}}'></script>
+	</head>
+	<body id="body"></body>
+	{{template "analytics"}}
+</html>
+{{end}}

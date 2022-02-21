@@ -1,16 +1,16 @@
 function renderFileButton(apiURL, id, title, subtitle) {
-	let btn                = document.createElement("a")
-	btn.classList          = "file_button"
-	btn.href               = "/u/"+id
-	btn.target             = "_blank"
-	let thumbnail          = document.createElement("img")
-	thumbnail.src          = apiURL+"/file/"+id+"/thumbnail?width=80&height=80"
-	thumbnail.alt          = title
-	let titleSpan          = document.createElement("span")
-	titleSpan.classList    = "file_button_title"
-	titleSpan.innerText    = title
-	let br                 = document.createElement("br")
-	let subtitleSpan       = document.createElement("span")
+	let btn = document.createElement("a")
+	btn.classList = "file_button"
+	btn.href = "/u/" + id
+	btn.target = "_blank"
+	let thumbnail = document.createElement("img")
+	thumbnail.src = apiURL + "/file/" + id + "/thumbnail?width=80&height=80"
+	thumbnail.alt = title
+	let titleSpan = document.createElement("span")
+	titleSpan.classList = "file_button_title"
+	titleSpan.innerText = title
+	let br = document.createElement("br")
+	let subtitleSpan = document.createElement("span")
 	subtitleSpan.classList = "file_button_subtitle"
 	subtitleSpan.innerText = subtitle
 
@@ -24,6 +24,17 @@ function renderFileButton(apiURL, id, title, subtitle) {
 function getCookie(name) {
 	var result = new RegExp('(?:^|; )' + encodeURIComponent(name) + '=([^;]*)').exec(document.cookie)
 	return result ? result[1] : null
+}
+
+function printDate(date, hours, minutes, seconds) {
+	let dateStr = date.getFullYear()
+		+ "-" + ("00" + (date.getMonth() + 1)).slice(-2)
+		+ "-" + ("00" + date.getDate()).slice(-2)
+
+	if (hours) { dateStr += " " + ("00" + date.getHours()).slice(-2) }
+	if (minutes) { dateStr += ":" + ("00" + date.getMinutes()).slice(-2) }
+	if (seconds) { dateStr += ":" + ("00" + date.getMinutes()).slice(-2) }
+	return dateStr
 }
 
 // Get the uploads from localstorage
@@ -51,7 +62,7 @@ function getHistoryItem() {
 	if (item === undefined || item === "") { return }
 
 	fetch(
-		apiEndpoint+"/file/"+item+"/info"
+		apiEndpoint + "/file/" + item + "/info"
 	).then(resp => {
 		if (!resp.ok) {
 			return Promise.reject()
@@ -68,7 +79,7 @@ function getHistoryItem() {
 		)
 		getHistoryItem()
 	}).catch(err => {
-		console.log("Fetch failed: "+err)
+		console.log("Fetch failed: " + err)
 		getHistoryItem()
 	})
 }

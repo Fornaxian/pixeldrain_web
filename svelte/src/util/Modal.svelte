@@ -10,6 +10,7 @@ import { fade } from 'svelte/transition';
 export let title = "";
 export let width = "800px";
 export let height = "auto";
+export let padding = false;
 let visible = false;
 
 const load_bg = background => {
@@ -56,7 +57,7 @@ const keydown = e => {
 				</button>
 			</slot>
 		</div>
-		<div class="body">
+		<div class="body" class:padding>
 			<slot></slot>
 		</div>
 	</div>
@@ -119,5 +120,8 @@ const keydown = e => {
 	flex-grow: 1;
 	flex-shrink: 1;
 	overflow: auto;
+}
+.padding {
+	padding: 10px;
 }
 </style>
