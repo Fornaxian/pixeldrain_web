@@ -322,7 +322,7 @@ onMount(() => {
 	<br/>
 </section>
 
-<FilePicker bind:this={file_picker} on:files={e => {add_file(e.detail)}} multi_select={false}></FilePicker>
+<FilePicker bind:this={file_picker} on:files={e => {add_file(e.detail)}} multi_select={false} title="Select image file"></FilePicker>
 
 <style>
 .banner_preview {

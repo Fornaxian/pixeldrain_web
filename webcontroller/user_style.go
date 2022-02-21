@@ -468,6 +468,6 @@ var snowstormPixeldrainStyle = pixeldrainStyleSheet{
 	Layer3:     hsl{218, .27, .92}, // hsl(218, 27%, 92%)
 	Layer4:     hsl{218, .27, .94}, // hsl(218, 27%, 94%)
 
-	Shadow: hsl{0, .0, .70},
+	Shadow: hsl{0, .0, .60},
 	Light:  true,
 }

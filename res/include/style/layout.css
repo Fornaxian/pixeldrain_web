@@ -61,24 +61,27 @@ body {
 }
 header, footer, .checkers {
 	background-image: url("{{.BackgroundPattern}}");
-	background-color: #111111; /* Fallback */
 	background-color: var(--layer_1_color);
 	background-repeat: repeat;
 	background-blend-mode: luminosity;
 }
 header, footer {
-	padding-top: 70px;
-	box-shadow: inset 1px 1px 10px 0 var(--shadow_color);
+	box-shadow: inset 1px 1px 8px 0 var(--shadow_color);
 	border-radius: 12px;
 	text-align: center;
 	overflow: hidden;
+	color: var(--layer_1_text_color);
 }
 header > h1 {
-	text-shadow: 1px 1px 10px var(--shadow_color);
-	margin-bottom: 50px;
+	text-shadow: 1px 1px 4px var(--shadow_color);
+	margin-top: 69px;
+	margin-bottom: 69px;
 }
-footer {
-	padding: 200px 8px 40px 8px;
+footer > .footer_content {
+	background-color: rgba(0, 0, 0, 0.5);
+	display: inline-block;
+	border-radius: 8px;
+	margin: 300px 0 69px 0;
 }
 
 /* Page layout elements */

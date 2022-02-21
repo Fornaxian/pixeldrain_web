@@ -7,14 +7,14 @@
 	<body>
 		{{template "page_top" .}}
 		<header>
-			<h1>Please confirm that you want to log out of your pixeldrain account</h1>
+			<h1>Logging out of your pixeldrain account</h1>
 		</header>
 		<br/>
 		<form method="POST" action="/logout">
 			<input type="submit" value="I want to log out of pixeldrain on this computer" class="button_highlight"/>
 		</form>
+		<br/>
 		<section>
-			<br/>
 			<h2>Why do I need to confirm my logout?</h2>
 			<p>
 				We need you to confirm your action so we can be sure that you
@@ -29,7 +29,6 @@
 				logout button triggers a different request type than normal
 				page visit we can confirm that you really want to log out.
 			</p>
-			<br/>
 		</section>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}

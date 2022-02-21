@@ -5,6 +5,16 @@
 		{{template "meta_tags" "Free file sharing service"}}
 		{{template "user_style" .}}
 		<style>
+		/* Override the default background with something spectacular */
+		header, footer, .checkers {
+			background-image: url("/res/img/horsehead.webp");
+			background-color: var(--layer_1_color);
+			background-repeat: no-repeat;
+			background-blend-mode: luminosity;
+			background-attachment: fixed;
+			background-position: center;
+			background-size: cover;
+		}
 		.header_image{
 			width: 100%;
 			max-width: 800px;
@@ -91,9 +101,9 @@
 	</head>
 	<body>
 		{{template "page_top" .}}
-		<header style="padding-bottom: 60px;">
+		<header style="padding-bottom: 80px; padding-top: 80px;">
 			<picture>
-				<source media="(max-width: 800px)" srcset="/res/img/header_orbitron.png">
+				<source media="(max-width: 700px)" srcset="/res/img/header_orbitron.png">
 				<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header image">
 			</picture>
 		</header>
@@ -128,7 +138,11 @@
 				them.
 			</p>
 
-			<h2 id="pro">Getting more out of pixeldrain</h2>
+		</section>
+		<header>
+			<h1 id="pro">Getting more out of pixeldrain</h1>
+		</header>
+		<section>
 			<p>
 				By purchasing a subscription you support pixeldrain on its
 				mission to make content sharing easier, safer and faster for

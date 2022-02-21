@@ -1561,6 +1561,9 @@ loopme.com, 11013, DIRECT, 6c8d5f95897a5a3b
 connectad.io, 204, DIRECT, 85ac85a30c93b3e5
 appnexus.com, 2579, RESELLER, f5ab79cb980f11d1
 quantum-advertising.com, 6222, RESELLER
+ucfunnel.com, pub-34BAB998A98E4882C33BA88776232BA2, DIRECT
+aralego.com, pub-34BAB998A98E4882C33BA88776232BA2, DIRECT
+adiiix.com, pub-34BAB998A98E4882C33BA88776232BA2, DIRECT
 # End of Valueimpression
 
 # Pixfuture

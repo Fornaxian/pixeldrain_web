@@ -156,7 +156,7 @@ const drop = (e, index) => {
 	{/if}
 </div>
 
-<FilePicker bind:this={file_picker} on:files={e => {add_files(e.detail)}} multi_select={true}></FilePicker>
+<FilePicker bind:this={file_picker} on:files={e => {add_files(e.detail)}} multi_select={true} title="Select files to add to album"></FilePicker>
 
 <style>
 .gallery{

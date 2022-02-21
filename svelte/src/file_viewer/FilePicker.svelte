@@ -6,6 +6,7 @@ import Modal from "../util/Modal.svelte";
 let dispatch = createEventDispatcher()
 
 export let multi_select = true
+export let title = ""
 let modal;
 let directory_element;
 let input_search;
@@ -86,7 +87,9 @@ const keydown = (e) => {
 		<button class="button round" on:click={modal.hide}>
 			<i class="icon">close</i> Cancel
 		</button>
-		<div class="title">Select files to add to album</div>
+		<div class="title">
+			{title}
+		</div>
 		<input bind:this={input_search} on:keyup={search} class="search" type="text" placeholder="press / to search"/>
 		<button class="button button_highlight round" on:click={done}>
 			<i class="icon">done</i> Add
@@ -121,6 +124,7 @@ const keydown = (e) => {
 .title {
 	flex-grow: 1;
 	flex-shrink: 1;
+	text-align: center;
 }
 .search {
 	min-width: 100px;
