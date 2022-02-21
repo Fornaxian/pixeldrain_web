@@ -1,0 +1,25 @@
+{{define "directory_upload"}}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "Directory upload"}}
+		{{template "user_style" . }}
+		{{template "user_style_js" . }}
+
+		<script>
+		window.api_endpoint = '{{.APIEndpoint}}';
+		window.user = {{.User}};
+		</script>
+		<link rel='stylesheet' href='/res/svelte/directory_upload.css?v{{.CacheID}}'>
+		<script defer src='/res/svelte/directory_upload.js?v{{.CacheID}}'></script>
+	</head>
+
+	<body>
+		{{template "page_top" .}}
+
+		<div id="page_content" class="page_content"></div>
+
+		{{template "page_bottom" .}}
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

@@ -7,9 +7,13 @@ import FileUploader from './FileUploader.svelte'
 let dispatch = createEventDispatcher()
 
 export let state
+let uploader
 let mode = "viewing"
 let creating_dir = false
-let uploader
+
+export const upload = files => {
+	return uploader.upload(files)
+}
 
 const node_click = (index) => {
 	creating_dir = false
@@ -203,7 +207,7 @@ const toggle_select = () => {
 .width_container {
 	position: relative;
 	display: inline-block;
-	max-width: 94%;
+	max-width: 95%;
 	width: 1000px;
 	margin: 0;
 	padding: 0;

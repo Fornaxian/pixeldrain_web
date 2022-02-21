@@ -37,6 +37,7 @@ export default [
 	"user_file_manager",
 	"admin_panel",
 	"home_page",
+	"directory_upload",
 ].map((name, index) => ({
 	input: `src/${name}.js`,
 	output: {

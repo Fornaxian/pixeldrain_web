@@ -1,15 +1,17 @@
 <script context="module">
 
-export const fs_create_bucket = async (name) => {
+export const fs_create_bucket = async (name = "", read_pw = "", write_pw = "") => {
 	const form = new FormData()
 	form.append("name", name)
+	form.append("read_password", read_pw)
+	form.append("write_password", write_pw)
 
 	const resp = await fetch(
 		window.api_endpoint+"/filesystem",
 		{ method: "POST", body: form }
 	);
 	if(resp.status >= 400) {
-		throw new Error(resp.text());
+		throw new Error(await resp.text());
 	}
 	return resp.json()
 }
@@ -17,7 +19,7 @@ export const fs_create_bucket = async (name) => {
 export const fs_get_buckets = async () => {
 	const resp = await fetch(window.api_endpoint+"/filesystem");
 	if(resp.status >= 400) {
-		throw new Error(resp.text());
+		throw new Error(await resp.text());
 	}
 	return resp.json();
 }
@@ -30,7 +32,7 @@ export const fs_delete_bucket = async (id, recursive) => {
 
 	const resp = await fetch(uri, { method: "DELETE" });
 	if(resp.status >= 400) {
-		throw new Error(resp.text());
+		throw new Error(await resp.text());
 	}
 }
 
@@ -47,7 +49,7 @@ export const fs_create_directory = async (bucket, path, dir_name) => {
 		{ method: "POST", body: form }
 	);
 	if(resp.status >= 400) {
-		throw new Error(resp.text())
+		throw new Error(await resp.text())
 	}
 }
 
@@ -60,7 +62,7 @@ export const fs_get_node = async (bucket, path) => {
 		window.api_endpoint+"/filesystem/"+bucket+encodeURIComponent(path)+"?stat"
 	);
 	if(resp.status >= 400) {
-		throw new Error(resp.text())
+		throw new Error(await resp.text())
 	}
 	return resp.json()
 }
@@ -79,12 +81,12 @@ export const fs_rename_node = async (bucket, old_path, new_path) => {
 	const form = new FormData()
 	form.append("move_to", new_path)
 
-	const resp=await fetch(
+	const resp = await fetch(
 		window.api_endpoint+"/filesystem/"+bucket+encodeURIComponent(old_path),
 		{ method: "PUT", body: form }
 	)
-	if(resp.status >= 400) {
-		throw new Error(resp.text())
+	if (resp.status >= 400) {
+		throw new Error(await resp.text())
 	}
 }
 
@@ -97,8 +99,8 @@ export const fs_delete_node = async (bucket, path) => {
 		window.api_endpoint+"/filesystem/"+bucket+encodeURIComponent(path)+"?recursive",
 		{ method: "DELETE" }
 	);
-	if(resp.status >= 400) {
-		throw new Error(resp.text())
+	if (resp.status >= 400) {
+		throw new Error(await resp.text())
 	}
 }
 

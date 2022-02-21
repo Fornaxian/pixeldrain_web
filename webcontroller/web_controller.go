@@ -160,6 +160,7 @@ func New(
 		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", handlerOpts{})},
 		{GET, "business" /*        */, wc.serveMarkdown("business.md", handlerOpts{})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
+		{GET, "directory_upload" /**/, wc.serveTemplate("directory_upload", handlerOpts{})},
 
 		// User account pages
 		{GET, "register" /*         */, wc.serveForm(wc.registerForm, handlerOpts{NoEmbed: true})},
