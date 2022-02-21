@@ -6,8 +6,8 @@ import UploadWidget from "./UploadWidget.svelte";
 </script>
 <header style="padding-bottom: 80px; padding-top: 80px;">
 <picture>
-	<source media="(max-width: 700px)" srcset="/res/img/header_orbitron.png">
-	<img class="header_image" src="/res/img/header_orbitron_wide.png" alt="Header">
+	<source media="(max-width: 700px)" srcset="/res/img/header_orbitron.webp">
+	<img class="header_image" src="/res/img/header_orbitron_wide.webp" alt="Header">
 </picture>
 </header>
 
@@ -83,7 +83,7 @@ import UploadWidget from "./UploadWidget.svelte";
 		option if your files are accessed often.
 	</p>
 	<div style="text-align: center;">
-		<img src="/res/img/coins.png" alt="supported coins" style="width: 250px;"/>
+		<img src="/res/img/coins.webp" alt="supported coins" style="width: 250px;"/>
 	</div>
 	<p>
 		To use prepaid you need to register a pixeldrain account. After
