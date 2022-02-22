@@ -6,7 +6,6 @@ import { copy_text } from "../util/Util.svelte";
 let loading = false
 let app_name = ""
 let api_key = ""
-
 const create_key = async () => {
 	loading = true
 	try {
@@ -63,12 +62,38 @@ onMount(() => {
 {/if}
 
 <section>
+	<!-- Show a back button if an app is selected -->
+	{#if app_name}
+		<a href="/user/connect_app" class="button">
+			<i class="icon">arrow_back</i>
+			Back to apps
+		</a>
+	{/if}
+
 	{#if app_name === "jdownloader"}
 		<h2>
 			Connect
 			<img src="/res/img/jdownloader.png" alt="JDownloader logo" class="app_icon_small"/>
 			JDownloader to your pixeldrain account
 		</h2>
+		<p>
+			JDownloader is a software program which makes it easier to download
+			things from the web. You can connect JDownloader to your pixeldrain
+			account to benefit from faster download speed and other pixeldrain
+			Pro features.
+		</p>
+		<h3>Step 1: Install JDownloader</h3>
+		<p>
+			Download JDownloader from its website:
+			<a href="https://jdownloader.org/download/index"
+			target="_blank">jdownloader.org</a>. Open JDownloader from your
+			start menu after the installation is complete.
+		</p>
+		<h3>Step 2: Open the account manager</h3>
+		<div class="center">
+			<img src="/res/img/jdownloader_account_manager.webp" alt="Go to settings, then Account Manager, click Add account"/>
+		</div>
+		<h3>Step 3: Generate an app key</h3>
 		<p>
 			To connect JDownloader to pixeldrain you need to generate an API
 			key and enter it in JDownloader's Account Manager.
@@ -85,7 +110,7 @@ onMount(() => {
 				</button>
 			</div>
 		{:else}
-			<h3>Key created</h3>
+			<h4>Key created</h4>
 
 			<div class="copy_container">
 				<button on:click={copy_key} class="copy_button" class:button_highlight={copied}>
@@ -100,14 +125,24 @@ onMount(() => {
 					<i class="icon">visibility</i>
 					{#if show_key === ""}
 						Show key
+					{:else}
+						Hide key
 					{/if}
 				</button>
 				<input bind:value={show_key} class="copy_textarea" type="text" placeholder="Your key will show up here" disabled={show_key === ""}/>
 			</div>
 		{/if}
 
+		<h3>Step 4: Add the key to JDownloader</h3>
 		<p>
 			Paste the key in JDownloader to authenticate the app.
+		</p>
+		<div class="center">
+			<img src="/res/img/jdownloader_add_key.webp" alt="Go to settings, then Account Manager, click Add account"/>
+		</div>
+		<p>
+			Click Save and you're done! You can now download files from
+			pixeldrain with JDownloader.
 		</p>
 	{:else if app_name === "sharex"}
 		<h2>
@@ -149,16 +184,16 @@ onMount(() => {
 		<h2>Connect an app to your pixeldrain account</h2>
 		<ul>
 			<li>
-				<button on:click={() => {app_name = "jdownloader"}}>
+				<a href="?app=jdownloader" class="button">
 					<img src="/res/img/jdownloader.png" alt="JDownloader logo" class="app_icon"/>
 					Connect JDownloader
-				</button>
+				</a>
 			</li>
 			<li>
-				<button on:click={() => {app_name = "sharex"}}>
+				<a href="?app=sharex" class="button">
 					<img src="/res/img/sharex.png" alt="ShareX logo" class="app_icon"/>
 					Connect ShareX
-				</button>
+				</a>
 			</li>
 		</ul>
 	{/if}
@@ -185,6 +220,9 @@ onMount(() => {
 
 .center {
 	text-align: center;
+}
+.center > img {
+	max-width: 100%;
 }
 .copy_container {
 	display: flex;

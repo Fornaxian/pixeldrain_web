@@ -48,16 +48,23 @@ onMount(() => {
 		<a class="button"
 			href="/user/settings"
 			class:button_highlight={page === "settings"}
-			on:click|preventDefault={() => {navigate("settings", "Account settings")}}>
+			on:click|preventDefault={() => {navigate("settings", "Settings")}}>
 			<i class="icon">settings</i>
-			Account settings
+			Settings
+		</a>
+		<a class="button"
+			href="/user/connect_app"
+			class:button_highlight={page === "connect_app"}
+			on:click|preventDefault={() => {navigate("connect_app", "Apps")}}>
+			<i class="icon">app_registration</i>
+			Apps
 		</a>
 		<a class="button"
 			href="/user/api_keys"
 			class:button_highlight={page === "api_keys"}
 			on:click|preventDefault={() => {navigate("api_keys", "API keys")}}>
 			<i class="icon">vpn_key</i>
-			API keys
+			Keys
 		</a>
 		<a class="button"
 			href="/user/activity"
