@@ -58,6 +58,12 @@ export const download_file = () => {
 	} else if (file.availability === "virus_detected_captcha_required") {
 		captcha_type = "malware"
 		captcha_window_title = "Malware warning!"
+	} else if (
+		file.availability === "ip_download_limited_captcha_required" ||
+		file.availability === "ip_transfer_limited_captcha_required"
+	) {
+		captcha_type = "ip_rate_limit"
+		captcha_window_title = "IP address rate limited"
 	}
 
 	if (load_captcha_script) {
@@ -94,6 +100,11 @@ export const download_list = () => {
 			According to our scanning systems this file may contain a virus.
 			You can continue downloading this file at your own risk, but you
 			will have to prove that you're a human first.
+		</p>
+	{:else if captcha_type === "ip_rate_limit"}
+		<p class="indent">
+			A lot of downloads have originated from this IP address lately.
+			Please prove that you are not a robot:
 		</p>
 	{/if}
 	<br/>
