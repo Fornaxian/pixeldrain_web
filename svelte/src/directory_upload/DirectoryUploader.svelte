@@ -1,6 +1,5 @@
 <script>
 import { tick } from "svelte";
-
 import FileManager from "../filesystem/filemanager/FileManager.svelte";
 import { fs_create_bucket, fs_get_node } from "../filesystem/FilesystemAPI.svelte";
 
@@ -18,6 +17,7 @@ export const add_files = async files => {
 			let bucket = await fs_create_bucket("", "", write_password)
 			bucket_id = bucket.id
 			bucket_state = await fs_get_node(bucket_id, "")
+			bucket_state.write_password = write_password
 		} catch (err) {
 			alert("Failed to create bucket! "+err)
 		}

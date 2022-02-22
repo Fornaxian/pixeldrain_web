@@ -4,6 +4,7 @@ let dispatch = createEventDispatcher();
 
 export let bucket_id;
 export let target_dir;
+export let write_password = "";
 
 let upload_jobs = [];
 let upload_threads = 0;
@@ -70,14 +71,13 @@ const upload_file = () => {
 	form.append("type", "file");
 	form.append("file", job.file);
 
+	let url = window.api_endpoint+"/filesystem/"+bucket_id+encodeURIComponent(job.target_dir + "/" + job.file.name)
+	if (write_password) {
+		url += "?write_password="+write_password
+	}
+
 	let xhr = new XMLHttpRequest();
-	xhr.open(
-		"POST",
-		"/api/filesystem/" +
-			bucket_id +
-			encodeURIComponent(job.target_dir + "/" + job.file.name),
-		true
-	);
+	xhr.open("POST", url, true);
 	xhr.timeout = 21600000; // 6 hours, to account for slow connections
 
 	// Report progress updates back to the caller

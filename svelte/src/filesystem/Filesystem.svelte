@@ -43,6 +43,11 @@ let state = {
 	base: window.initial_node.base,
 	children: window.initial_node.children,
 
+	// Passwords for accessing this bucket. Passwords are not always required
+	// but sometimes they are
+	read_password: "",
+	write_password: "",
+
 	// These are used to navigate forward and backward within a directory (using
 	// the previous and next buttons on the toolbar). The cached siblings will
 	// be used so that we don't need to make an extra request to the parent
@@ -86,9 +91,6 @@ const navigate = (path, pushHist) => {
 			)
 		}
 
-		// Sort directory children
-		sort_children(resp.children)
-
 		open_node(resp)
 	}).catch(err => {
 		console.error(err)
@@ -107,6 +109,9 @@ const open_node = (node) => {
 		state.siblings_path = node.parents[node.parents.length-1].path
 		state.siblings = state.children
 	}
+
+	// Sort directory children
+	sort_children(node.children)
 
 	// Update shared state
 	state.bucket = node.bucket

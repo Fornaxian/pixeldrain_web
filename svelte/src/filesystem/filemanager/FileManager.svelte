@@ -1,12 +1,14 @@
 <script>
-import { formatDataVolume } from '../../util/Formatting.svelte'
 import { fs_delete_node } from './../FilesystemAPI.svelte'
 import { createEventDispatcher } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
 import FileUploader from './FileUploader.svelte'
+import ListView from './ListView.svelte'
+import GalleryView from './GalleryView.svelte'
 let dispatch = createEventDispatcher()
 
 export let state
+export let directory_view = "gallery"
 let uploader
 let mode = "viewing"
 let creating_dir = false
@@ -15,7 +17,9 @@ export const upload = files => {
 	return uploader.upload(files)
 }
 
-const node_click = (index) => {
+const node_click = e => {
+	let index = e.detail
+
 	creating_dir = false
 
 	// We prefix our custom state properties with fm_ to not interfere with
@@ -35,38 +39,6 @@ const navigate_up = () => {
 	}
 }
 const reload = () => { dispatch("navigate", state.base.path) }
-
-const node_icon = node => {
-	if (node.type === "dir") {
-		return "/res/img/mime/folder.png"
-	}
-
-	switch (node.file_type) {
-		case "image/gif":
-			return "/res/img/mime/image-gif.png"
-		case "image/png", "image/apng":
-			return "/res/img/mime/image-png.png"
-		case "image/jpeg":
-			return "/res/img/mime/image-jpeg.png"
-		case "application/pdf":
-			return "/res/img/mime/pdf.png"
-		case "application/ogg":
-			return "/res/img/mime/audio.png"
-	}
-
-	if (node.file_type.startsWith("audio/")) {
-		return "/res/img/mime/audio.png"
-	} else if (node.file_type.startsWith("video/")) {
-		return "/res/img/mime/video.png"
-	} else if (node.file_type.startsWith("text/")) {
-		return "/res/img/mime/text.png"
-	} else if (node.file_type.startsWith("image/")) {
-		return "/res/img/mime/image-png.png"
-	} else if (node.file_type.startsWith("application/")) {
-		return "/res/img/mime/archive.png"
-	}
-	return "/res/img/mime/empty.png"
-}
 
 const delete_selected = () => {
 	if (mode !== "selecting") {
@@ -126,10 +98,22 @@ const toggle_select = () => {
 		<div class="toolbar">
 			<button on:click={navigate_up} disabled={state.parents.length === 0}><i class="icon">arrow_back</i></button>
 			<button on:click={reload}><i class="icon">refresh</i></button>
+			{#if directory_view === "list"}
+				<button on:click={() => {directory_view = "gallery"}} alt="Switch to gallery view">
+					<i class="icon">collections</i>
+				</button>
+			{:else if directory_view === "gallery"}
+				<button on:click={() => {directory_view = "list"}} alt="Switch to list view">
+					<i class="icon">list</i>
+				</button>
+			{/if}
+
 			<div class="toolbar_spacer"></div>
 			{#if state.bucket.permissions.update}
 				<button on:click={uploader.picker}><i class="icon">cloud_upload</i></button>
-				<button on:click={() => {creating_dir = true}}><i class="icon">create_new_folder</i></button>
+				<button on:click={() => {creating_dir = !creating_dir}} class:button_highlight={creating_dir}>
+					<i class="icon">create_new_folder</i>
+				</button>
 
 				<button
 					on:click={toggle_select}
@@ -159,41 +143,25 @@ const toggle_select = () => {
 			</div>
 			<br/>
 		{/if}
+		{#if creating_dir}
+			<CreateDirectory state={state} on:done={() => {reload(); creating_dir = false;}} on:loading></CreateDirectory>
+		{/if}
 
-		<FileUploader bind:this={uploader} bucket_id={state.bucket.id} target_dir={state.base.path} on:reload={reload}></FileUploader>
+		<FileUploader
+			bind:this={uploader}
+			bucket_id={state.bucket.id}
+			target_dir={state.base.path}
+			on:reload={reload}
+			write_password={state.write_password}
+		></FileUploader>
 
-		<div class="directory">
-			<tr>
-				<td></td>
-				<td>name</td>
-				<td>size</td>
-			</tr>
-
-			{#if creating_dir}
-				<CreateDirectory state={state} on:done={() => {reload(); creating_dir = false;}} on:loading></CreateDirectory>
-			{/if}
-
-			{#each state.children as child, index (child.path)}
-				<a
-					href={state.path_root+child.path}
-					on:click|preventDefault={() => {node_click(index)}}
-					class="node"
-					class:node_selected={child.fm_selected}>
-					<td>
-						<img src={node_icon(child)} class="node_icon" alt="icon"/>
-					</td>
-					<td class="node_name">
-						{child.name}
-					</td>
-					<td class="node_size">
-						{#if child.type === "file"}
-							{formatDataVolume(child.file_size, 3)}
-						{/if}
-					</td>
-				</a>
-			{/each}
-		</div>
 	</div>
+
+	{#if directory_view === "list"}
+		<ListView state={state} on:node_click={node_click}></ListView>
+	{:else if directory_view === "gallery"}
+		<GalleryView state={state} on:node_click={node_click}></GalleryView>
+	{/if}
 </div>
 
 <style>
@@ -206,10 +174,10 @@ const toggle_select = () => {
 }
 .width_container {
 	position: relative;
-	display: inline-block;
+	display: block;
 	max-width: 95%;
 	width: 1000px;
-	margin: 0;
+	margin: auto;
 	padding: 0;
 }
 .toolbar {
@@ -228,61 +196,5 @@ const toggle_select = () => {
 	.toolbar_edit {
 		flex-direction: column;
 	}
-}
-
-.directory {
-	display: table;
-	position: relative;
-	overflow-x: auto;
-	overflow-y: hidden;
-	width: 100%;
-	margin: 16px 0 16px 0;
-	text-align: left;
-	background-color: var(--layer_1_color);
-	box-shadow: 1px 1px 5px var(--shadow_color);
-	border-collapse: collapse;
-}
-.directory > * { display: table-row; }
-.directory > * > * { display: table-cell; }
-.directory :global(.node) {
-	display: table-row;
-	text-decoration: none;
-	color: var(--text-color);
-	padding: 6px;
-}
-.directory :global(.node:not(:last-child)) {
-	border-bottom: 1px solid var(--layer_2_color);
-}
-.directory :global(.node:hover:not(.node_selected)) {
-	background-color: var(--input_color_dark);
-	color: var(--input_text_color);
-	text-decoration: none;
-}
-.directory :global(.node.node_selected) {
-	background-color: var(--highlight_color) !important;
-	color: var(--highlight_text_color);
-}
-.directory :global(.node.node_delete) {
-	background-color: var(--danger_color) !important;
-	color: var(--highlight_text_color);
-}
-.directory :global(td) {
-	padding: 4px;
-	vertical-align: middle;
-}
-.directory :global(.node_icon) {
-	height: 32px;
-	width: 32px;
-	vertical-align: middle;
-}
-.directory :global(.node_name) {
-	width: 100%;
-	overflow: hidden;
-	line-height: 1.2em;
-	word-break: break-all;
-}
-.directory :global(.node_size) {
-	min-width: 50px;
-	white-space: nowrap;
 }
 </style>
