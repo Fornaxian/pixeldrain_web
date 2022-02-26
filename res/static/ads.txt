@@ -1564,6 +1564,7 @@ quantum-advertising.com, 6222, RESELLER
 ucfunnel.com, pub-34BAB998A98E4882C33BA88776232BA2, DIRECT
 aralego.com, pub-34BAB998A98E4882C33BA88776232BA2, DIRECT
 adiiix.com, pub-34BAB998A98E4882C33BA88776232BA2, DIRECT
+themediagrid.com, 8GZCTF, DIRECT, 35d5010d7789b49d
 # End of Valueimpression
 
 # Pixfuture
@@ -1738,3 +1739,134 @@ adform.com, 2600, RESELLER
 stroeer.com, 17938, RESELLER
 themediagrid.com, QDC97I, DIRECT, 35d5010d7789b49d
 #pixfuture END updated Jan-18-2022
+
+# Next Millennium Ads.txt File
+# Last updated 12-02-2021
+
+#Next Millennium
+nextmillennium.io, 16001, DIRECT, 65bd090fa4a1e3d6
+
+google.com, pub-7269238500499280, RESELLER, f08c47fec0942fa0
+aps.amazon.com, 79e40b05-e673-4b6c-85f9-79252a7f96a5, DIRECT
+pubmatic.com, 157150, RESELLER, 5d62403b186f2ace
+districtm.io, 100962, RESELLER
+openx.com, 540191398, RESELLER, 6a698e2ec38604c6
+yldbt.com, 5b522cc167f6b300b89dc6d3, RESELLER, cd184cb30abaabb5
+coxmt.com, 2000068024302, RESELLER
+rubiconproject.com, 18020, RESELLER, 0bfd66d529a55807
+themediagrid.com,JTQKMP,RESELLER,35d5010d7789b49d
+smartadserver.com, 4125, RESELLER, 060d053dcf45cbf3
+appnexus.com, 9284, DIRECT, f5ab79cb980f11d1
+rubiconproject.com, 17888, RESELLER, 0bfd66d529a55807
+rubiconproject.com, 19142, RESELLER, 0bfd66d529a55807
+pubmatic.com, 157689, DIRECT, 5d62403b186f2ace
+pubmatic.com, 157577, DIRECT, 5d62403b186f2ace
+indexexchange.com, 188029, RESELLER
+indexexchange.com, 188333, RESELLER
+indexexchange.com, 194293, RESELLER, 50b1c356f2c5c8fc
+indexexchange.com, 194648, RESELLER, 50b1c356f2c5c8fc
+openx.com, 540224251, DIRECT, 6a698e2ec38604c6
+openx.com, 540233824, RESELLER, 6a698e2ec38604c6
+openx.com, 540225743, DIRECT, 6a698e2ec38604c6
+Rhythmone.com, 2059465938, DIRECT, a670c89d4a324e47
+video.unrulymedia.com, 2059465938, DIRECT
+Rhythmone.com, 316817661, DIRECT, a670c89d4a324e47
+video.unrulymedia.com, 316817661, DIRECT
+yieldmo.com, 2230523609997805235, DIRECT
+gumgum.com, 13165, DIRECT, ffdef49475d318a9
+gumgum.com, 13615, RESELLER, ffdef49475d318a9
+undertone.com, 3757, RESELLER
+appnexus.com, 2234, RESELLER
+openx.com, 537153564, RESELLER, 6a698e2ec38604c6
+triplelift.com, 7001, DIRECT, 6c33edb13117fd86
+appnexus.com, 1314, RESELLER
+contextweb.com, 562019, RESELLER, 89ff185a4c4e857c
+33across.com, 0010b00002e4MRRAA2, DIRECT, bbea06d9c4d2853c
+rubiconproject.com, 16414, RESELLER, 0bfd66d529a55807
+conversantmedia.com, 100141, DIRECT
+yahoo.com, 57289, RESELLER, e1a5b5b6e3255540
+152media.info, 152M6, RESELLER
+appnexus.com, 3153, RESELLER, f5ab79cb980f11d1
+appnexus.com, 11924, RESELLER, f5ab79cb980f11d1
+onetag.com, 654029d9a61214b, DIRECT
+onetag.com, 654029d9a61214b-OB, DIRECT
+appnexus.com, 13099, RESELLER
+sovrn.com, 323999, DIRECT, fafdf38b16bf6b2b
+lijit.com, 323999, DIRECT, fafdf38b16bf6b2b
+lijit.com, 323999-eb, DIRECT, fafdf38b16bf6b2b
+adyoulike.com, dc673a8592ce6af7285d9352c566df1b, DIRECT
+appnexus.com, 9733, RESELLER
+spotxchange.com, 230037, RESELLER, 7842df1d2fe2db34
+spotx.tv, 230037, RESELLER, 7842df1d2fe2db34
+rubiconproject.com, 20736, RESELLER, 0bfd66d529a55807
+teads.tv, 18141, RESELLER, 15a9c44f6d26cbe1
+loopme.com, 11364, RESELLER, 6c8d5f95897a5a3b
+rubiconproject.com, 20744, RESELLER, 0bfd66d529a55807
+engagebdr.com, 10181, RESELLER
+smartyads.com,100034, RESELLER, fd2bde0ff2e62c5d
+Eskimi.com, eas-2020000005, RESELLER
+pubmatic.com, 158154, RESELLER, 5d62403b186f2ace
+admanmedia.com, 594, RESELLER
+admixer.net, eab09ea6-bcf7-4eff-965d-b4f43962c73c, RESELLER
+outbrain.com, 0012d9f0ac51b05ef9b320793a03ba4a9c, DIRECT
+appnexus.com, 7597, RESELLER, f5ab79cb980f11d1
+facebook.com, 590126751405962, RESELLER, c3e20eee3f780d68
+emxdgt.com, 1896, DIRECT, 1e1d41537f7cad7f
+appnexus.com, 1356, RESELLER, f5ab79cb980f11d1
+themediagrid.com, R5STMD, DIRECT, 35d5010d7789b49d
+smaato.com, 1100048492, DIRECT, 07bcf65f187117b4
+smaato.com, 1100004890, DIRECT, 07bcf65f187117b4
+bidmachine.io, 60, RESELLER
+blis.com, 86, RESELLER, 61453ae19a4b73f4
+engagebdr.com, 16, RESELLER
+pokkt.com, 5886, RESELLER, c45702d9311e25fd
+rhythmone.com, 4201299756, RESELLER, a670c89d4a324e47
+pubnative.net, 1007194, RESELLER, d641df8625486a7b
+adtiming.com, a-105, RESELLER, bf66753b8f380142
+nativo.com, 5676, DIRECT, 59521ca7cc5e9fee
+appnexus.com, 8035, RESELLER, f5ab79cb980f11d1
+contextweb.com, 560921, RESELLER, 89ff185a4c4e857c
+mobfox.com, 82187, RESELLER, 5529a3d1f59865be
+rubiconproject.com, 16156, RESELLER, 0bfd66d529a55807
+inmobi.com, 91346250dd664b86878eef0420d8e0d3, DIRECT, 83e75a7ae333ca9d
+inmobi.com, 7f4b0b3e3efb4133b3563cb482b9c8f5, DIRECT, 83e75a7ae333ca9d
+lkqd.net, 687, RESELLER, 59c49fa9598a0117
+lkqd.net, 687, DIRECT, 59c49fa9598a0117
+mediafuse.com, 316569, DIRECT
+appnexus.com, 9538, DIRECT
+yahoo.com, 57872, DIRECT
+amxrtb.com, 2141, DIRECT
+appnexus.com, 12290, RESELLER, f5ab79cb980f11d1
+appnexus.com, 11786, RESELLER, f5ab79cb980f11d1
+indexexchange.com, 191503, RESELLER, 50b1c356f2c5c8fc
+lijit.com, 260380, RESELLER, fafdf38b16bf6b2b
+sovrn.com, 260380, RESELLER, fafdf38b16bf6b2b
+pubmatic.com, 158355, RESELLER, 5d62403b186f2ace
+supply.colossusssp.com, 348, DIRECT, 6c5b49d96ec1b458
+admanmedia.com, 870, DIRECT
+openx.com, 543886194, RESELLER, 6a698e2ec38604c6
+indexexchange.com, 191497, RESELLER
+smartadserver.com, 3713, RESELLER
+sonobi.com, 7b37f8ccbc, RESELLER, d1a215d9eb5aee9e
+video.unrulymedia.com, 3948367200, RESELLER
+rhythmone.com, 3948367200, RESELLER, a670c89d4a324e47
+adform.com, 2671, RESELLER
+stitchvideo.tv, 448612, DIRECT
+appnexus.com, 12840, DIRECT
+google.com, pub-5717092533913515, RESELLER, f08c47fec0942fa0
+indexexchange.com, 194886, RESELLER
+rubiconproject.com, 17346, RESELLER, 0bfd66d529a55807
+improvedigital.com, 2006, DIRECT
+mopub.com, 62d864d1e3054f76b35a14051ddd1b41, DIRECT, 74b46c0ea83967ca
+yahoo.com, 59507, RESELLER, e1a5b5b6e3255540
+yahoo.com, 59508, RESELLER, e1a5b5b6e3255540
+yahoo.com, 59509, RESELLER, e1a5b5b6e3255540
+videobyte.com, hpFuTtb, DIRECT, ed26dcbc74bbdfd0
+yahoo.com, 59490, RESELLER
+sonobi.com, a99ec6ebd1, RESELLER, d1a215d9eb5aee9e
+video.unrulymedia.com, 3526474056, RESELLER, 6f752381ad5ec0e5
+rhythmone.com, 3526474056, RESELLER, a670c89d4a324e47
+pubmatic.com, 161365, DIRECT, 5d62403b186f2ace
+openx.com, 537112839, RESELLER, 6a698e2ec38604c6
+adswizz.com, videobyte, RESELLER
+# Next Millennium end

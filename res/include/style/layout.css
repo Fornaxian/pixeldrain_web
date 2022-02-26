@@ -70,7 +70,6 @@ header, footer {
 	border-radius: 12px;
 	text-align: center;
 	overflow: hidden;
-	color: var(--layer_1_text_color);
 }
 header > h1 {
 	text-shadow: 1px 1px 4px var(--shadow_color);
@@ -78,7 +77,7 @@ header > h1 {
 	margin-bottom: 69px;
 }
 footer > .footer_content {
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.2);
 	display: inline-block;
 	border-radius: 8px;
 	margin: 300px 0 69px 0;

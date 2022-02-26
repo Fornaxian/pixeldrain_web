@@ -1,7 +1,6 @@
 <script>
 import { formatDate } from "../util/Formatting.svelte";
 import Spinner from "../util/Spinner.svelte";
-import ConnectApp from "./ConnectApp.svelte";
 
 let loading = false
 let loaded = false
@@ -88,8 +87,6 @@ const logout = async (key) => {
 		<Spinner />
 	</div>
 {/if}
-
-<ConnectApp></ConnectApp>
 
 <section>
 	{#if !loaded}

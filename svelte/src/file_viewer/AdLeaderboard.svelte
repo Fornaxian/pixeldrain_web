@@ -90,6 +90,12 @@ head.valueimpression_loaded.subscribe(v => {
 
 <svelte:window on:resize={resize} on:load={resize}/>
 
+<svelte:head>
+	{#if ad_type === "nextmillennium"}
+		<script async src="https://powerad.ai/script.js"></script>
+	{/if}
+</svelte:head>
+
 <div bind:this={container}>
 	{#if ad_type === "publisherrest_1"}
 		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
@@ -147,6 +153,8 @@ head.valueimpression_loaded.subscribe(v => {
 		<div bind:this={banner} class="banner" style="width: 728px; height: 90px; overflow: hidden;">
 			<div class="adsbyvli" data-ad-slot="vi_1994884987" style="width: 728px; height: 90px"></div>
 		</div>
+	{:else if ad_type === "nextmillennium"}
+		<div bind:this={banner} class="banner" style="width: 728px; height: 90px;"></div>
 	{/if}
 </div>
 
