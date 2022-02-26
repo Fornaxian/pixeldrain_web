@@ -103,7 +103,7 @@ const code = async file => {
 
 <style>
 .container {
-	background: #333 none;
+	background: var(--layer_3_color);
 	position: relative;
 	text-align: left;
 	height: 100%;
@@ -111,7 +111,7 @@ const code = async file => {
 	font-size: 0.9em;
 	line-height: 1.5em;
 	padding: 5px 5px 5px 20px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	overflow-x: hidden;
 }
 .container > pre {
