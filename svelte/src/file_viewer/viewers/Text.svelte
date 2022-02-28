@@ -87,9 +87,9 @@ const code = async file => {
 
 <div bind:this={container} class="container">
 	{#if text_type === "markdown"}
-		<div bind:this={md_container}>
+		<section bind:this={md_container} class="md">
 			Loading...
-		</div>
+		</section>
 	{:else if text_type === "text"}
 		<pre bind:this={text_pre}>
 			Loading...
@@ -110,13 +110,19 @@ const code = async file => {
 	width: 100%;
 	font-size: 0.9em;
 	line-height: 1.5em;
-	padding: 5px 5px 5px 20px;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
 .container > pre {
+	margin: 0;
+	padding: 10px;
 	white-space: pre-wrap;
 	overflow: hidden;
 	border: none;
+}
+.container > .md {
+	display: block;
+	padding: 10px;
+	margin: auto;
 }
 </style>

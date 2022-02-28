@@ -159,6 +159,7 @@ func New(
 		{GET, "brave" /*           */, wc.serveMarkdown("brave.md", handlerOpts{})},
 		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", handlerOpts{})},
 		{GET, "business" /*        */, wc.serveMarkdown("business.md", handlerOpts{})},
+		{GET, "limits" /*          */, wc.serveMarkdown("limits.md", handlerOpts{})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
 		{GET, "directory_upload" /**/, wc.serveTemplate("directory_upload", handlerOpts{})},
 

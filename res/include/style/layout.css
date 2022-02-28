@@ -150,7 +150,7 @@ section {
 	width: 100%;
 	height: auto;
 	padding: 0;
-	text-align: left;
+	text-align: initial;
 	clear: both;
 }
 
@@ -318,7 +318,7 @@ tr > td, tr > th {padding: 0.2em 0.5em;}
 }
 
 pre {
-	margin: 16px;
+	padding: 10px;
 	border-bottom: 1px var(--layer_2_color_border) solid;
 	overflow-x: auto;
 }

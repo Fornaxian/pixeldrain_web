@@ -45,17 +45,32 @@ onMount(() => {
 			Data transfer limit
 		</div>
 		<div class="feat_normal">
-			Rate limiting mode will be enabled when a file has 3
-			times more downloads than views
+			Up to 1000 files or 50 GB data transfer per day. Rate limiting mode
+			will be enabled if a file has 5 times more downloads than views, and
+			you will be asked to complete a CAPTCHA
 		</div>
 		<div class="feat_pro">
-			Transfer limit of <span class="text_highlight">1 terabyte</span>. If
-			the transfer limit is exceeded advertisements will be enabled again
+			Transfer limit of <span class="text_highlight">1 terabyte</span> per
+			month. If the transfer limit is exceeded the restrictions of the
+			free plan will apply
 			<br/>
 			<button class="round" on:click={direct_linking.toggle}>
 				<i class="icon">info</i>
 				More information
 			</button>
+		</div>
+	</div>
+	<div>
+		<div class="feat_label">
+			Download speed
+		</div>
+		<div class="feat_normal">
+			Up to 2 MiB/s, may be slower during busy periods
+		</div>
+		<div class="feat_pro">
+			<span class="text_highlight">High priority</span>
+			bandwidth for files you download and files on your
+			account
 		</div>
 	</div>
 	<div>
@@ -92,19 +107,6 @@ onMount(() => {
 		</div>
 		<div class="feat_pro">
 			<span class="text_highlight">1 terabyte</span>
-		</div>
-	</div>
-	<div>
-		<div class="feat_label">
-			Download speed
-		</div>
-		<div class="feat_normal">
-			Up to 4 MiB/s, may be slower during busy periods
-		</div>
-		<div class="feat_pro">
-			<span class="text_highlight">High priority</span>
-			bandwidth for files you download and files on your
-			account
 		</div>
 	</div>
 	<div>
