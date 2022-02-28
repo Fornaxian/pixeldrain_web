@@ -22,9 +22,9 @@ export const set_file = async file => {
 	} else if (file.abuse_type !== "") {
 		viewer_type = "abuse"
 	} else if (
-		file.availability !== "file_rate_limited_captcha_required" ||
-		file.availability !== "ip_download_limited_captcha_required" ||
-		file.availability !== "ip_transfer_limited_captcha_required"
+		file.availability === "file_rate_limited_captcha_required" ||
+		file.availability === "ip_download_limited_captcha_required" ||
+		file.availability === "ip_transfer_limited_captcha_required"
 	) {
 		viewer_type = "rate_limit"
 	} else {

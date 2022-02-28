@@ -79,16 +79,16 @@ let download = () => { dispatch("download", {}) }
 		<img src={file.icon_href} class="video_icon" alt="Video icon">
 		<TextBlock width="600px">
 			The online video player on pixeldrain is only available when the
-			uploader of the video has a Pro account, or if you have a Pro
-			account. You can still download the video and watch it locally on
-			your computer.
+			uploader of the file you is a Patreon supporter, or if you are a
+			Patreon supporter. You can still download the video and watch it
+			locally on your computer.
 			<br/>
-			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button button_highlight">
-				<i class="icon">upgrade</i> Upgrade to Pro
-			</a>
 			<button on:click={download}>
 				<i class="icon">download</i> Download
 			</button>
+			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button button_highlight">
+				<i class="icon">bolt</i> Support Pixeldrain on Patreon
+			</a>
 		</TextBlock>
 		<br/><br/>
 		<LargeFileMessage file={file}></LargeFileMessage>

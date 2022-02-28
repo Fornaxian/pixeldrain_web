@@ -55,11 +55,10 @@ onMount(async () => {
 			Download limit reached
 		</h1>
 		<p>
-			You have reached your download limit for today. People without a
-			pixeldrain account are limited to downloading
-			{limits.download_limit} files or
-			{formatDataVolume(limits.transfer_limit, 3)} per day. This limit is
-			counted per IP address, so if you're on a shared network it's
+			You have reached your download limit for today. Without a pixeldrain
+			account you are limited to downloading {limits.download_limit} files
+			or {formatDataVolume(limits.transfer_limit, 3)} per day. This limit
+			is counted per IP address, so if you're on a shared network it's
 			possible that others have also contributed to this limit.
 		</p>
 		<p>
@@ -90,11 +89,11 @@ onMount(async () => {
 	<div class="file_description">
 		Name: {file.name}<br/>
 		Type: {file.mime_type}<br/>
-		<button class="button_highlight" on:click={() => {dispatch("download")}}>
-			<i class="icon">save</i> Download
+		<button on:click={() => {dispatch("download")}}>
+			<i class="icon">download</i> Download
 		</button>
 		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" target="_blank" class="button button_highlight">
-			<i class="icon">upgrade</i> Support Pixeldrain on Patreon
+			<i class="icon">bolt</i> Support Pixeldrain on Patreon
 		</a>
 	</div>
 </TextBlock>

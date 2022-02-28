@@ -10,7 +10,7 @@ export let center = false
 <style>
 .block {
 	display: inline-block;
-	text-align: left;
+	text-align: initial;
 	padding-left: 8px;
 	vertical-align: middle;
 
