@@ -411,7 +411,7 @@ const keyboard_event = evt => {
 
 	<CustomBanner src={custom_header} border_top={true}></CustomBanner>
 
-	<div id="file_preview_window" class="file_preview_window">
+	<div class="file_preview_row">
 		<div id="toolbar" class="toolbar" class:toolbar_visible><div><div>
 			{#if view === "file"}
 				<FileStats file={file}></FileStats>
@@ -557,7 +557,7 @@ const keyboard_event = evt => {
 		</div></div></div>
 
 		<div bind:this={file_preview_background}
-			class="file_preview_container"
+			class="file_preview"
 			class:checkers={!custom_background}
 			class:custom_background={!!custom_background}
 			class:toolbar_visible
@@ -692,34 +692,30 @@ const keyboard_event = evt => {
 }
 
 /* File preview area (row 3) */
-.file_preview_window {
+.file_preview_row {
 	flex-grow: 1;
 	flex-shrink: 1;
 	position: relative;
-	display: inline-block;
-	width: auto;
-	height: auto;
-	margin: 0;
+	display: block;
 }
-.file_preview_container {
+.file_preview {
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
-	display: inline-block;
+	display: block;
 	min-height: 100px;
 	min-width: 100px;
-	text-align: center;
-	vertical-align: middle;
 	transition: left 0.5s, right 0.5s;
 	overflow: auto;
-	box-shadow: inset 2px 2px 10px var(--shadow_color);
+	text-align: center;
+	box-shadow: inset 1px 1px 8px var(--shadow_color);
 	border-radius: 16px;
 }
-.file_preview_container.toolbar_visible { left: 8em; }
-.file_preview_container.skyscraper_visible { right: 160px; }
-.file_preview_container.custom_background {
+.file_preview.toolbar_visible { left: 8em; }
+.file_preview.skyscraper_visible { right: 160px; }
+.file_preview.custom_background {
 	background-size: cover;
 	background-position: center;
 	background-color: var(--layer_1_color);

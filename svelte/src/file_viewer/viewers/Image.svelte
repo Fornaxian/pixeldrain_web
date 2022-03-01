@@ -85,7 +85,7 @@ const mouseup = (e) => {
 	top: 50%;
 	cursor: pointer;
 	transform: translateY(-50%);
-	box-shadow: 1px 1px 5px var(--shadow_color);
+	box-shadow: 1px 1px 6px var(--shadow_color);
 }
 .image.zoom {
 	max-width: none;
