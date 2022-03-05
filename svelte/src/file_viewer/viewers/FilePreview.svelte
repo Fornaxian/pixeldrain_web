@@ -27,7 +27,7 @@ export const set_file = async file => {
 		file.availability === "ip_download_limited_captcha_required"
 	) {
 		viewer_type = "rate_limit"
-	} else if (file.download_speed_limit > 0) {
+	} else if (file.download_speed_limit > 0 && file.download_speed_limit <= 1<<20) {
 		viewer_type = "speed_limit"
 	} else {
 		viewer_type = file_type(file)

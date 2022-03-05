@@ -14,7 +14,7 @@ let file = {
 let limits = {
 	download_limit: 1000,
 	download_limit_used: 0,
-	transfer_limit: 50e9,
+	transfer_limit: 10e9,
 	transfer_limit_used: 0,
 }
 onMount(async () => {
@@ -34,11 +34,11 @@ onMount(async () => {
 <TextBlock width="800px">
 	<img src="/res/img/slow_down.webp" class="header_image" alt="Yea, I'm gonna need you to slow down a bit"/>
 	<p>
-		Yea, so pixeldrain's free tier is supported by advertisements. And
-		there's only so much that you can do with the budget those ads provide
-		(spoiler: it's not a lot). {formatDataVolume(limits.transfer_limit, 3)}
-		every 48 hours is about the most I can give away for free, according to
-		our records you have already downloaded
+		Pixeldrain's free tier is supported by advertisements. There's only so
+		much that you can do with the budget those ads provide (spoiler: it's
+		not a lot). {formatDataVolume(limits.transfer_limit, 3)} per day is
+		about the most I can give away for free, and according to our records
+		you have already downloaded
 		{formatDataVolume(limits.transfer_limit_used, 3)}.
 	</p>
 	<p>
@@ -48,10 +48,11 @@ onMount(async () => {
 		a few options:
 	</p>
 	<ul>
-		<li>Come back in 48 hours when your free transfer limit resets</li>
+		<li>Come back tomorrow when your free transfer limit resets</li>
 		<li>
-			Download the file at a rate of {limits.speed_limit/(1<<20)} MiB/s.
-			This will take at least {formatDuration((file.size/2097152)*1000)}
+			Download the file at a rate of {file.download_speed_limit/(1<<20)}
+			MiB/s. This will take at least
+			{formatDuration((file.size/file.download_speed_limit)*1000)}
 		</li>
 		<li>
 			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" target="_blank" class="button button_highlight">
