@@ -63,7 +63,7 @@ header, footer, .checkers {
 	background-image: url("{{.BackgroundPattern}}");
 	background-color: var(--layer_1_color);
 	background-repeat: repeat;
-	background-blend-mode: luminosity;
+	/* background-blend-mode: luminosity; */
 }
 header, footer {
 	box-shadow: inset 1px 1px 8px 0 var(--shadow_color);

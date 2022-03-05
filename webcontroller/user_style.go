@@ -180,7 +180,8 @@ func (s pixeldrainStyleSheet) Background(tpl *template.Template) template.URL {
 	} else if month == time.December && (day == 25 || day == 26 || day == 27) {
 		file = "checker_christmas"
 	} else {
-		file = fmt.Sprintf("checker%d", now.UnixNano()%18)
+		file = "checker_ukraine"
+		// file = fmt.Sprintf("checker%d", now.UnixNano()%18)
 	}
 
 	if s.Light {

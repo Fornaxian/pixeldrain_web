@@ -7,5 +7,6 @@ convert checker_dwarf.png -brightness-contrast 80x0 checker_dwarf_light.png
 convert checker_developers.png -brightness-contrast 80x0 checker_developers_light.png
 convert checker_halloween.png -brightness-contrast 80x0 checker_halloween_light.png
 convert checker_christmas.png -brightness-contrast 80x0 checker_christmas_light.png
+convert checker_ukraine.png -brightness-contrast 80x0 checker_ukraine_light.png
 
 optipng *.png

@@ -20,6 +20,7 @@ import GalleryView from "./GalleryView.svelte";
 import Spinner from "../util/Spinner.svelte";
 import Downloader from "./Downloader.svelte";
 import CustomBanner from "./CustomBanner.svelte";
+import UkrainePopup from "./UkrainePopup.svelte";
 
 let loading = true
 let embedded = false
@@ -400,6 +401,10 @@ const keyboard_event = evt => {
 		{/if}
 	</div>
 
+	{#if ads_enabled}
+		<UkrainePopup></UkrainePopup>
+	{/if}
+
 	{#if is_list && view === "file"}
 		<ListNavigator
 			bind:this={list_navigator}
@@ -591,14 +596,6 @@ const keyboard_event = evt => {
 		<AdLeaderboard></AdLeaderboard>
 	{:else if custom_footer}
 		<CustomBanner src={custom_footer}></CustomBanner>
-	{:else if !window.viewer_data.user_ads_enabled && !embedded}
-		<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
-			Thank you for supporting pixeldrain!
-		</div>
-	{:else if !ads_enabled && !embedded}
-		<div style="text-align: center; line-height: 1.3em; font-size: 13px;">
-			The uploader of this file disabled advertisements. You can do the same for <a href="/#pro">only €2 per month</a>!
-		</div>
 	{/if}
 
 	<Modal bind:this={details_window} on:is_visible={e => {details_visible = e.detail}} title="File details" width="1200px">
@@ -621,7 +618,9 @@ const keyboard_event = evt => {
 		<ReportWindow file={file} list={list}></ReportWindow>
 	</Modal>
 
-	<IntroPopup target={button_home}></IntroPopup>
+	{#if ads_enabled}
+		<IntroPopup target={button_home}></IntroPopup>
+	{/if}
 
 	<Downloader bind:this={downloader} file={file} list={list}></Downloader>
 </div>
