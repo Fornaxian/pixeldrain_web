@@ -1,7 +1,6 @@
 <script>
 import { createEventDispatcher, onMount } from "svelte";
 import { formatDataVolume } from "../../util/Formatting.svelte";
-import LargeFileMessage from "./LargeFileMessage.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
@@ -31,6 +30,7 @@ onMount(async () => {
 })
 </script>
 
+<br/>
 <TextBlock width="800px">
 	{#if file.availability === "file_rate_limited_captcha_required"}
 		<h1>
@@ -46,10 +46,7 @@ onMount(async () => {
 			information about this protection mechanism can be found on <a
 			href="/#hotlinking">the home page</a>.
 		</p>
-	{:else if
-		file.availability === "ip_download_limited_captcha_required" ||
-		file.availability === "ip_transfer_limited_captcha_required"
-	}
+	{:else if file.availability === "ip_download_limited_captcha_required"}
 		<h1>
 			<i class="icon">file_download_off</i>
 			Download limit reached
@@ -57,7 +54,7 @@ onMount(async () => {
 		<p>
 			You have reached your download limit for today. Without a pixeldrain
 			account you are limited to downloading {limits.download_limit} files
-			or {formatDataVolume(limits.transfer_limit, 3)} per day. This limit
+			or {formatDataVolume(limits.transfer_limit, 3)} per 48 hours. This limit
 			is counted per IP address, so if you're on a shared network it's
 			possible that others have also contributed to this limit.
 		</p>
@@ -97,8 +94,6 @@ onMount(async () => {
 		</a>
 	</div>
 </TextBlock>
-<br/><br/>
-<LargeFileMessage file={file}></LargeFileMessage>
 
 <style>
 .file_thumbnail {

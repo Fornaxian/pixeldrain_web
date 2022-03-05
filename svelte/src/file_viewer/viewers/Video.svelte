@@ -1,6 +1,5 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
-import LargeFileMessage from "./LargeFileMessage.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
@@ -164,8 +163,6 @@ const fullscreen = () => {
 			<i class="icon">bolt</i> Support Pixeldrain on Patreon
 		</a>
 	</TextBlock>
-	<br/><br/>
-	<LargeFileMessage file={file}></LargeFileMessage>
 {/if}
 
 <style>

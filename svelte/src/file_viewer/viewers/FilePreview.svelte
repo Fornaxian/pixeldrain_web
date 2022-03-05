@@ -11,6 +11,7 @@ import Abuse from "./Abuse.svelte";
 import { file_type } from "../FileUtilities.svelte";
 import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
+import SpeedLimit from "./SpeedLimit.svelte";
 
 let viewer
 let viewer_type = "loading"
@@ -23,10 +24,11 @@ export const set_file = async file => {
 		viewer_type = "abuse"
 	} else if (
 		file.availability === "file_rate_limited_captcha_required" ||
-		file.availability === "ip_download_limited_captcha_required" ||
-		file.availability === "ip_transfer_limited_captcha_required"
+		file.availability === "ip_download_limited_captcha_required"
 	) {
 		viewer_type = "rate_limit"
+	} else if (file.download_speed_limit > 0) {
+		viewer_type = "speed_limit"
 	} else {
 		viewer_type = file_type(file)
 	}
@@ -54,6 +56,8 @@ const loading = e => {dispatch("loading", e.detail)}
 	<Abuse bind:this={viewer}></Abuse>
 {:else if viewer_type === "rate_limit"}
 	<RateLimit bind:this={viewer} on:download={download}></RateLimit>
+{:else if viewer_type === "speed_limit"}
+	<SpeedLimit bind:this={viewer} on:download={download}></SpeedLimit>
 {:else if viewer_type === "image"}
 	<Image bind:this={viewer} on:loading={loading}></Image>
 {:else if viewer_type === "video"}

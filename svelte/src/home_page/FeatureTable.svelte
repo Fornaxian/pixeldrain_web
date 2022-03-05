@@ -45,9 +45,8 @@ onMount(() => {
 			Data transfer limit
 		</div>
 		<div class="feat_normal">
-			Up to 1000 files or 50 GB data transfer per day. Rate limiting mode
-			will be enabled if a file has 5 times more downloads than views, and
-			you will be asked to complete a CAPTCHA
+			10 GB data transfer per 48 hours. When this threshold is reached
+			your download speed will be limited
 		</div>
 		<div class="feat_pro">
 			Transfer limit of <span class="text_highlight">1 terabyte</span> per

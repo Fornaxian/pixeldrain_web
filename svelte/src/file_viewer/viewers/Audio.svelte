@@ -1,6 +1,5 @@
 <script>
 import { createEventDispatcher, tick } from "svelte";
-import LargeFileMessage from "./LargeFileMessage.svelte";
 let dispatch = createEventDispatcher()
 
 export let file = {
@@ -86,9 +85,6 @@ const toggle_play = () => playing ? player.pause() : player.play()
 			<source src={file.get_href} type={file.mime_type} />
 		</audio>
 	{/if}
-
-	<br/><br/>
-	<LargeFileMessage file={file}></LargeFileMessage>
 </div>
 
 <style>
