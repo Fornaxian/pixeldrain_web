@@ -45,8 +45,8 @@ onMount(() => {
 			Data transfer limit
 		</div>
 		<div class="feat_normal">
-			10 GB data transfer per 24 hours. When this threshold is reached
-			your download speed will be limited
+			5 GB data transfer per 24 hours. When this threshold is reached
+			your download speed will be reduced to 512 kiB/s
 		</div>
 		<div class="feat_pro">
 			Transfer limit of <span class="text_highlight">1 terabyte</span> per

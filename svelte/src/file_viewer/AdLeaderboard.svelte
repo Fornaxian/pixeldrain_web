@@ -13,14 +13,11 @@ onMount(() => {
 		return
 	}
 
-	switch (Math.floor(Math.random()*3)) {
+	switch (Math.floor(Math.random()*2)) {
 		case 0:
-			set_ad_type("ads.plus")
-			break
-		case 1:
 			set_ad_type("pixfuture")
 			break
-		case 2:
+		case 1:
 			set_ad_type("nextmillennium")
 			break
 	}
@@ -138,8 +135,9 @@ head.valueimpression_loaded.subscribe(v => {
 		<div bind:this={banner} class="banner" id='div-gpt-ad-pixeldraincom728x90_1' style='width: 728px; height: 90px;'>
 		</div>
 	{:else if ad_type === "pixfuture"}
+		<!-- We don't bind the pixfuture ad to the banner variable because pixfuture does its own scaling -->
 		<!-- AuctionX Display platform tag START -->
-		<div bind:this={banner} class="banner" id="27517x728x90x4605x_ADSLOT1" clickTrack="%%CLICK_URL_ESC%%"></div>
+		<div class="banner" id="27517x728x90x4605x_ADSLOT1" clickTrack="%%CLICK_URL_ESC%%"></div>
 		<script type="text/javascript" async src="https://served-by.pixfuture.com/www/delivery/headerbid.js" slotId="27517x728x90x4605x_ADSLOT1" refreshTime="5" refreshInterval="60"></script>
 		<!-- AuctionX Display platform tag END -->
 	{:else if ad_type === "adaround"}

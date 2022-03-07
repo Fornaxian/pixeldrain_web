@@ -1,5 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
+import LargeFileMessage from "./LargeFileMessage.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
@@ -25,6 +26,9 @@ let file = {
 		<span>Download</span>
 	</button>
 </TextBlock>
+
+<br/><br/>
+<LargeFileMessage file={file}></LargeFileMessage>
 
 <style>
 h1 {

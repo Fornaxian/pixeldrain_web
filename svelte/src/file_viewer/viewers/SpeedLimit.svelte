@@ -50,8 +50,8 @@ onMount(async () => {
 	<ul>
 		<li>Come back tomorrow when your free transfer limit resets</li>
 		<li>
-			Download the file at a rate of {file.download_speed_limit/(1<<20)}
-			MiB/s. This will take at least
+			Download the file at a rate of {file.download_speed_limit/(1<<10)}
+			kiB/s. This will take at least
 			{formatDuration((file.size/file.download_speed_limit)*1000)}
 		</li>
 		<li>
