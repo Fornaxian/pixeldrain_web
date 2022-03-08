@@ -426,7 +426,7 @@ const keyboard_event = evt => {
 			{#if is_list}
 				<button
 					on:click={toggle_gallery}
-					class="toolbar_button button_full_width"
+					class="toolbar_button"
 					class:button_highlight={view === "gallery"}
 					title="Opens a gallery view of the album">
 					<i class="icon">photo_library</i>
@@ -437,7 +437,7 @@ const keyboard_event = evt => {
 			{#if file.abuse_type === "" && view === "file"}
 				<button
 					on:click={downloader.download_file}
-					class="toolbar_button button_full_width"
+					class="toolbar_button"
 					title="Save this file to your computer">
 					<i class="icon">download</i>
 					<span>Download</span>
@@ -447,7 +447,7 @@ const keyboard_event = evt => {
 			{#if file.abuse_type === "" && is_list}
 				<button
 					on:click={downloader.download_list}
-					class="toolbar_button button_full_width"
+					class="toolbar_button"
 					title="Download all files in this album as a zip archive">
 					<i class="icon">download</i>
 					<span>DL all files</span>
@@ -456,7 +456,7 @@ const keyboard_event = evt => {
 
 			<button
 				on:click={copy_url}
-				class="toolbar_button button_full_width"
+				class="toolbar_button"
 				class:button_highlight={copy_url_status === "copied"}
 				class:button_red={copy_url_status === "error"}
 				title="Copy a link to this page to your clipboard">
@@ -474,7 +474,7 @@ const keyboard_event = evt => {
 
 			<button
 				on:click={toggle_sharebar}
-				class="toolbar_button button_full_width"
+				class="toolbar_button"
 				class:button_highlight={sharebar_visible}
 				title="Share this file on social media">
 				<i class="icon">share</i>
@@ -482,7 +482,7 @@ const keyboard_event = evt => {
 			</button>
 
 			<button
-				class="toolbar_button button_full_width"
+				class="toolbar_button"
 				on:click={qr_window.toggle}
 				class:button_highlight={qr_visible}
 				title="Show a QR code with a link to this page. Useful for sharing files in-person">
@@ -492,7 +492,7 @@ const keyboard_event = evt => {
 
 			{#if is_list}
 				<button
-					class="toolbar_button button_full_width"
+					class="toolbar_button"
 					title="Go to a random file when pressing → or clicking the next file button"
 					class:button_highlight={list_shuffle}
 					on:click={toggle_shuffle}>
@@ -507,7 +507,7 @@ const keyboard_event = evt => {
 
 			{#if view === "file"}
 				<button
-					class="toolbar_button button_full_width"
+					class="toolbar_button"
 					on:click={details_window.toggle}
 					class:button_highlight={details_visible}
 					title="Information and statistics about this file">
@@ -520,7 +520,7 @@ const keyboard_event = evt => {
 
 			{#if file.can_edit || list.can_edit}
 				<button
-					class="toolbar_button button_full_width"
+					class="toolbar_button"
 					on:click={edit_window.toggle}
 					class:button_highlight={edit_visible}
 					title="Edit or delete this file or album">
@@ -532,7 +532,7 @@ const keyboard_event = evt => {
 			{#if view === "file" && window.user_authenticated && !file.can_edit}
 				<button
 					on:click={grab_file}
-					class="toolbar_button button_full_width"
+					class="toolbar_button"
 					title="Copy this file to your own pixeldrain account">
 					<i class="icon">save_alt</i>
 					<span><u>G</u>rab file</span>
@@ -540,7 +540,7 @@ const keyboard_event = evt => {
 			{/if}
 
 			<button
-				class="toolbar_button button_full_width"
+				class="toolbar_button"
 				title="Include this file in your own webpages"
 				on:click={embed_window.toggle}
 				class:button_highlight={embed_visible}>
@@ -550,7 +550,7 @@ const keyboard_event = evt => {
 
 			{#if view === "file"}
 				<button
-					class="toolbar_button button_full_width"
+					class="toolbar_button"
 					title="Report this file as abusive"
 					on:click={report_window.toggle}
 					class:button_highlight={report_visible}>
@@ -754,9 +754,9 @@ const keyboard_event = evt => {
 	height: auto;
 	text-align: center;
 }
-
 .toolbar_button{
 	text-align: left;
+	width: calc(100% - 6px);
 }
 .toolbar_button > span {
 	vertical-align: middle;

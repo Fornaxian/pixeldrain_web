@@ -45,6 +45,8 @@ func userStyle(style string) (s pixeldrainStyleSheet) {
 		s = nordPixeldrainStyle
 	case "snowstorm":
 		s = snowstormPixeldrainStyle
+	case "sweet":
+		s = sweetPixeldrainStyle
 	case "default":
 		fallthrough // use default case
 	default:
@@ -68,6 +70,10 @@ func userStyle(style string) (s pixeldrainStyleSheet) {
 	setDefault(&s.Chart3, s.Chart2.Add(120, 0, 0))
 
 	return s
+}
+
+type Colour interface {
+	CSS() string
 }
 
 type pixeldrainStyleSheet struct {
@@ -100,64 +106,64 @@ type pixeldrainStyleSheet struct {
 func (s pixeldrainStyleSheet) String() string {
 	return fmt.Sprintf(
 		`:root {
-	--text_color:                 #%s;
-	--link_color:                 #%s;
-	--input_color:                #%s;
-	--input_color_dark:           #%s;
-	--input_text_color:           #%s;
-	--input_disabled_color:       #%s;
-	--highlight_color:            #%s;
-	--highlight_color_dark:       #%s;
-	--highlight_text_color:       #%s;
-	--danger_color:               #%s;
-	--danger_color_dark:          #%s;
-	--scrollbar_foreground_color: #%s;
-	--scrollbar_hover_color:      #%s;
-	--scrollbar_background_color: #%s;
+	--text_color:                 %s;
+	--link_color:                 %s;
+	--input_color:                %s;
+	--input_color_dark:           %s;
+	--input_text_color:           %s;
+	--input_disabled_color:       %s;
+	--highlight_color:            %s;
+	--highlight_color_dark:       %s;
+	--highlight_text_color:       %s;
+	--danger_color:               %s;
+	--danger_color_dark:          %s;
+	--scrollbar_foreground_color: %s;
+	--scrollbar_hover_color:      %s;
+	--scrollbar_background_color: %s;
 
-	--layer_1_color:        #%s;
-	--layer_1_color_border: #%s;
-	--layer_1_text_color:   #%s;
-	--layer_2_color:        #%s;
-	--layer_2_color_border: #%s;
-	--layer_3_color:        #%s;
-	--layer_3_color_border: #%s;
-	--layer_4_color:        #%s;
-	--layer_4_color_border: #%s;
+	--layer_1_color:        %s;
+	--layer_1_color_border: %s;
+	--layer_1_text_color:   %s;
+	--layer_2_color:        %s;
+	--layer_2_color_border: %s;
+	--layer_3_color:        %s;
+	--layer_3_color_border: %s;
+	--layer_4_color:        %s;
+	--layer_4_color_border: %s;
 
-	--chart_1_color: #%s;
-	--chart_2_color: #%s;
-	--chart_3_color: #%s;
+	--chart_1_color: %s;
+	--chart_2_color: %s;
+	--chart_3_color: %s;
 
-	--shadow_color:     #%s;
+	--shadow_color: %s;
 }`,
-		s.Text.RGB(),
-		s.Link.RGB(),
-		s.Input.RGB(),
-		s.Input.Add(0, 0, -.02).RGB(),
-		s.InputText.RGB(),
-		s.InputDisabled.RGB(),
-		s.Highlight.RGB(),
-		s.Highlight.Add(0, 0, -.02).RGB(),
-		s.HighlightText.RGB(),
-		s.Danger.RGB(),
-		s.Danger.Add(0, 0, -.02).RGB(),
-		s.ScrollbarForeground.RGB(),
-		s.ScrollbarHover.RGB(),
-		s.Layer2.RGB(), // Scrollbar background
-		s.Layer1.RGB(),
-		s.Layer1.Add(0, 0, .05).RGB(),
-		s.Layer1Text.RGB(),
-		s.Layer2.RGB(),
-		s.Layer2.Add(0, 0, .05).RGB(),
-		s.Layer3.RGB(),
-		s.Layer3.Add(0, 0, .05).RGB(),
-		s.Layer4.RGB(),
-		s.Layer4.Add(0, 0, .05).RGB(),
-		s.Chart1.RGB(),
-		s.Chart2.RGB(),
-		s.Chart3.RGB(),
-		s.Shadow.RGB(),
+		s.Text.CSS(),
+		s.Link.CSS(),
+		s.Input.CSS(),
+		s.Input.Add(0, 0, -.02).CSS(),
+		s.InputText.CSS(),
+		s.InputDisabled.CSS(),
+		s.Highlight.CSS(),
+		s.Highlight.Add(0, 0, -.02).CSS(),
+		s.HighlightText.CSS(),
+		s.Danger.CSS(),
+		s.Danger.Add(0, 0, -.02).CSS(),
+		s.ScrollbarForeground.CSS(),
+		s.ScrollbarHover.CSS(),
+		s.Layer2.CSS(), // Scrollbar background
+		s.Layer1.CSS(),
+		s.Layer1.Add(0, 0, .05).CSS(),
+		s.Layer1Text.CSS(),
+		s.Layer2.CSS(),
+		s.Layer2.Add(0, 0, .05).CSS(),
+		s.Layer3.CSS(),
+		s.Layer3.Add(0, 0, .05).CSS(),
+		s.Layer4.CSS(),
+		s.Layer4.Add(0, 0, .05).CSS(),
+		s.Chart1.CSS(),
+		s.Chart2.CSS(),
+		s.Chart3.CSS(),
+		s.Shadow.CSS(),
 	)
 }
 
@@ -180,8 +186,8 @@ func (s pixeldrainStyleSheet) Background(tpl *template.Template) template.URL {
 	} else if month == time.December && (day == 25 || day == 26 || day == 27) {
 		file = "checker_christmas"
 	} else {
-		file = "checker_ukraine"
-		// file = fmt.Sprintf("checker%d", now.UnixNano()%18)
+		// file = "checker_ukraine"
+		file = fmt.Sprintf("checker%d", now.UnixNano()%18)
 	}
 
 	if s.Light {
@@ -239,6 +245,9 @@ func (orig hsl) RGB() string {
 	}
 
 	return fmt.Sprintf("%02x%02x%02x", int(r*255), int(g*255), int(b*255))
+}
+func (orig hsl) CSS() string {
+	return "#" + orig.RGB()
 }
 
 // Add returns a NEW HSL struct, it doesn't modify the current one
@@ -471,4 +480,20 @@ var snowstormPixeldrainStyle = pixeldrainStyleSheet{
 
 	Shadow: hsl{0, .0, .50},
 	Light:  true,
+}
+
+var sweetPixeldrainStyle = pixeldrainStyleSheet{
+	Text:          hsl{223, .13, .79}, // hsl(223, 13%, 79%)
+	Input:         hsl{214, .26, .20}, // hsl(214, 26%, 12%)
+	InputText:     hsl{223, .13, .79},
+	Highlight:     hsl{296, .88, .44},
+	HighlightText: hsl{0, 0, 0},
+	Danger:        hsl{356, 1, .64}, // hsl(356, 100%, 64%)
+
+	Layer1: hsl{225, .25, .06}, // hsl(225, 25%, 6%)
+	Layer2: hsl{228, .25, .12}, // hsl(228, 25%, 12%)
+	Layer3: hsl{229, .25, .14}, // hsl(229, 25%, 14%)
+	Layer4: hsl{229, .25, .18},
+
+	Shadow: hsl{0, 0, 0},
 }

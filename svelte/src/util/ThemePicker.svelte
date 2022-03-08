@@ -44,6 +44,9 @@ let set = s => {
 	<button class:button_highlight={theme==="skeuos"} on:click={() => {set("skeuos")}}>
 		Skeuos
 	</button>
+	<button class:button_highlight={theme==="sweet"} on:click={() => {set("sweet")}}>
+		Sweet
+	</button>
 </div>
 
 <style>

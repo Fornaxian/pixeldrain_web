@@ -18,7 +18,7 @@ onMount(() => {
 {#if visible}
 	<div in:fade out:fade class="notice highlight_yellow">
 		<div class="text">
-			🇺🇦 Russia has invaded Ukraine and is murdering its citizens! 🇺🇦<br/>
+			🇺🇦 Russia has invaded Ukraine and is attacking civilians! 🇺🇦<br/>
 			There are a number of ways you can help:
 			<a href="https://helpukrainewin.org/" rel="noreferrer" target="_blank">Click here for more information</a>.
 		</div>

@@ -11,7 +11,7 @@ import (
 func (wc *WebController) patreonLinkForm(td *TemplateData, r *http.Request) (f Form) {
 	f.Name = "link_patreon_subscription"
 	f.Title = "Link Patreon pledge to pixeldrain account"
-	f.SubmitLabel = "Submit"
+	f.SubmitLabel = "Activate subscription"
 
 	if r.FormValue("key") == "" {
 		f.Submitted = true
@@ -68,7 +68,7 @@ func (wc *WebController) patreonLinkForm(td *TemplateData, r *http.Request) (f F
 		Type:         FieldTypeDescription,
 	}, {
 		Name: "8",
-		Description: "When clicking submit your patreon pledge will be linked " +
+		Description: "When clicking 'Activate' your patreon pledge will be linked " +
 			"to your pixeldrain account and you will be able to use " +
 			"pixeldrain's premium features. If you would like to update or " +
 			"cancel your subscription later on you can do so through " +

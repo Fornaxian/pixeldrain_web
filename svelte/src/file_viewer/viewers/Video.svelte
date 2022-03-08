@@ -170,6 +170,10 @@ const fullscreen = () => {
 {/if}
 
 <style>
+h1 {
+	text-shadow: 1px 1px 3px var(--shadow_color);
+	line-break: anywhere;
+}
 .container {
 	display: flex;
 	flex-direction: column;

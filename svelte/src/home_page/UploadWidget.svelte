@@ -577,7 +577,7 @@ const keydown = (e) => {
 	line-height: 1em;
 	text-align: center;
 	display: inline-block;
-	background-color: var(--highlight_color);
+	background: var(--highlight_color);
 	color: var(--highlight_text_color);
 	border-radius: 30px;
 	padding: 0.15em;

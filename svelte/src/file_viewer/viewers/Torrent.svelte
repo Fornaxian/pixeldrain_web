@@ -132,6 +132,10 @@ const copy_magnet = () => {
 {/if}
 
 <style>
+h1 {
+	text-shadow: 1px 1px 3px var(--shadow_color);
+	line-break: anywhere;
+}
 .icon {
 	display: inline-block;
 	vertical-align: middle;

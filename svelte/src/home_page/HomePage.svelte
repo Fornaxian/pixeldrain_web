@@ -4,11 +4,8 @@ import OtherPlans from "./OtherPlans.svelte";
 import UploadWidget from "./UploadWidget.svelte";
 
 </script>
-<header style="padding-bottom: 80px; padding-top: 80px;">
-<picture>
-	<source media="(max-width: 700px)" srcset="/res/img/header_orbitron.webp">
-	<img class="header_image" src="/res/img/header_orbitron_wide.webp" alt="Header">
-</picture>
+<header>
+	<div class="header_image_container"></div>
 </header>
 
 <UploadWidget></UploadWidget>
@@ -83,7 +80,7 @@ import UploadWidget from "./UploadWidget.svelte";
 		option if your files are accessed often.
 	</p>
 	<div style="text-align: center;">
-		<img src="/res/img/coins.webp" alt="supported coins" style="width: 250px;"/>
+		<img src="/res/img/coins.webp" alt="supported coins" style="width: 250px; height: 96px;"/>
 	</div>
 	<p>
 		To use prepaid you need to register a pixeldrain account. After
@@ -93,9 +90,20 @@ import UploadWidget from "./UploadWidget.svelte";
 </section>
 
 <style>
-.header_image{
-	width: 100%;
-	max-width: 800px;
+.header_image_container {
 	margin: auto;
+	height: 300px;
+	width: 750px;
+	max-width: 100%;
+	background-image: url("/res/img/header_orbitron_wide.webp");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+@media (max-width: 700px) {
+	.header_image_container {
+		height: 250px;
+		background-image: url("/res/img/header_orbitron.webp");
+	}
 }
 </style>

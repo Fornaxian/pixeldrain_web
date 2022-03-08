@@ -325,23 +325,23 @@ const share = () => {
 			</div>
 
 			{#if state.base.type === "file"}
-			<button on:click={download} class="toolbar_button button_full_width">
+			<button on:click={download} class="toolbar_button">
 				<i class="icon">save</i> Download
 			</button>
 			{/if}
-			<button id="btn_download_list" class="toolbar_button button_full_width" style="display: none;">
+			<button id="btn_download_list" class="toolbar_button" style="display: none;">
 				<i class="icon">save</i> DL all files
 			</button>
-			<button id="btn_copy" class="toolbar_button button_full_width">
+			<button id="btn_copy" class="toolbar_button">
 				<i class="icon">content_copy</i> <u>C</u>opy Link
 			</button>
-			<button on:click={() => sharebar_visible = !sharebar_visible} class="toolbar_button button_full_width" class:button_highlight={sharebar_visible}>
+			<button on:click={() => sharebar_visible = !sharebar_visible} class="toolbar_button" class:button_highlight={sharebar_visible}>
 				<i class="icon">share</i> Share
 			</button>
-			<button on:click={details.toggle} class="toolbar_button button_full_width" class:button_highlight={details_visible}>
+			<button on:click={details.toggle} class="toolbar_button" class:button_highlight={details_visible}>
 				<i class="icon">help</i> Deta<u>i</u>ls
 			</button>
-			<button id="btn_edit" class="toolbar_button button_full_width" style="display: none;">
+			<button id="btn_edit" class="toolbar_button" style="display: none;">
 				<i class="icon">edit</i> <u>E</u>dit
 			</button>
 		</div></div></div>
@@ -549,8 +549,9 @@ const share = () => {
 	height: auto;
 	text-align: center;
 }
-.toolbar_button{
+.toolbar_button {
 	text-align: left;
+	width: calc(100% - 6px);
 }
 .toolbar_label {
 	text-align: left;

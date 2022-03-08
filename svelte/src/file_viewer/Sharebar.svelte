@@ -78,6 +78,9 @@ const share_tumblr = () => {
 	transition: left 0.5s;
 }
 .visible { left: 8em; }
+.button_full_width {
+	width: calc(100% - 6px);
+}
 .button_full_width > svg {
 	height: 3em;
 	width: 3em;

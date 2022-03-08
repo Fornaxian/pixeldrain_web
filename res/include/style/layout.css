@@ -63,7 +63,7 @@ header, footer, .checkers {
 	background-image: url("{{.BackgroundPattern}}");
 	background-color: var(--layer_1_color);
 	background-repeat: repeat;
-	/* background-blend-mode: luminosity; */
+	background-blend-mode: luminosity;
 }
 header, footer {
 	box-shadow: inset 1px 1px 8px 0 var(--shadow_color);
@@ -404,7 +404,7 @@ select {
 	margin: 3px;
 	background: linear-gradient(var(--input_color), var(--input_color_dark));
 	padding: 5px 5px 5px 5px;
-	box-shadow: 1px 1px 5px -3px var(--shadow_color);
+	box-shadow: 1px 1px 5px -2px var(--shadow_color);
 	overflow: hidden;
 	color: var(--input_text_color);
 	vertical-align: middle;
@@ -443,17 +443,28 @@ button:active,
 input[type="submit"]:active,
 input[type="button"]:active,
 input[type="color"]:active,
-select:active{
+select:active {
 	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 4px 4px 8px var(--shadow_color);
 	/* Exactly 4px offset compared to the inactive padding to give a depth effect */
 	padding: 9px 1px 1px 9px;
 }
-.button_full_width      {width: calc(100% - 6px);}
-.button_highlight       {background: linear-gradient(var(--highlight_color),      var(--highlight_color_dark)) !important; color: var(--highlight_text_color) !important;}
-.button_highlight:active{background: linear-gradient(var(--highlight_color_dark), var(--highlight_color)) !important;      color: var(--highlight_text_color) !important;}
-.button_red             {background: linear-gradient(var(--danger_color),         var(--danger_color_dark)) !important;    color: var(--highlight_text_color) !important;}
-.button_red:active      {background: linear-gradient(var(--danger_color_dark),    var(--danger_color)) !important;         color: var(--highlight_text_color) !important;}
+.button_highlight {
+	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark)) !important;
+	color: var(--highlight_text_color) !important;
+}
+.button_highlight:active {
+	background: linear-gradient(var(--highlight_color_dark), var(--highlight_color)) !important;
+	color: var(--highlight_text_color) !important;
+}
+.button_red {
+	background: linear-gradient(var(--danger_color), var(--danger_color_dark)) !important;
+	color: var(--highlight_text_color) !important;
+}
+.button_red:active {
+	background: linear-gradient(var(--danger_color_dark), var(--danger_color)) !important;
+	color: var(--highlight_text_color) !important;
+}
 
 button:disabled, button.disabled,
 .button:disabled, .button.disabled,
