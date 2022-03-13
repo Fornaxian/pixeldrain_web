@@ -328,8 +328,9 @@ onMount(() => {
 
 <style>
 :global(#page_body) {
-	height: 100%;
+	height: 100vh;
 	padding: 0;
+	background: none;
 }
 
 /* Override the menu button so it doesn't overlap the file manager when the menu
@@ -345,7 +346,6 @@ is collapsed */
 	height:           100%;
 	display:          flex;
 	flex-direction:   column;
-	background-color: var(--layer_1_color);
 }
 .nav_bar {
 	flex-shrink: 0;

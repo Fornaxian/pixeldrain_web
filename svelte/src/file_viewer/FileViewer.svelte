@@ -642,7 +642,7 @@ const keyboard_event = evt => {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-	background-color: var(--layer_2_color);
+	background: var(--body_background);
 }
 
 /* Headerbar (row 1) */
@@ -731,7 +731,6 @@ const keyboard_event = evt => {
 	padding: 0;
 	text-align: left;
 	transition: left 0.5s, right 0.5s;
-	background-color: var(--layer_2_color);
 	z-index: 1;
 }
 .toolbar.toolbar_visible { left: 0; }

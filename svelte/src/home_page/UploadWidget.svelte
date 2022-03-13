@@ -577,7 +577,7 @@ const keydown = (e) => {
 	line-height: 1em;
 	text-align: center;
 	display: inline-block;
-	background: var(--highlight_color);
+	background: var(--highlight_background);
 	color: var(--highlight_text_color);
 	border-radius: 30px;
 	padding: 0.15em;
@@ -609,7 +609,7 @@ const keydown = (e) => {
 	height: 3px;
 }
 .progress_bar_inner {
-	background-color: var(--highlight_color);
+	background: var(--highlight_background);
 	height: 100%;
 	width: 0;
 	transition: width 0.5s;

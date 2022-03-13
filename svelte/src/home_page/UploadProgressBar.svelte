@@ -293,7 +293,7 @@ export const start = () => {
 	height: 2px;
 }
 .progress_bar {
-	background-color: var(--highlight_color);
+	background: var(--highlight_background);
 	height: 100%;
 	width: 0;
 	transition: width 0.25s, opacity 3s;

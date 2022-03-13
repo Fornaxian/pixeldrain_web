@@ -49,7 +49,7 @@ type TemplateData struct {
 func (td *TemplateData) setStyle(style pixeldrainStyleSheet) {
 	td.Style = style
 	td.UserStyle = template.CSS(style.String())
-	td.BackgroundPattern = style.Background(td.tpm.tpl)
+	td.BackgroundPattern = style.BackgroundTiles(td.tpm.tpl)
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {
@@ -191,6 +191,8 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 			file = []byte("data:image/png;base64," + base64.StdEncoding.EncodeToString(file))
 		} else if strings.HasSuffix(path, ".gif") {
 			file = []byte("data:image/gif;base64," + base64.StdEncoding.EncodeToString(file))
+		} else if strings.HasSuffix(path, ".webp") {
+			file = []byte("data:image/webp;base64," + base64.StdEncoding.EncodeToString(file))
 		}
 
 		// Wrap the resources in a template definition

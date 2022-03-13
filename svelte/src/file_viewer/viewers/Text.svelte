@@ -103,7 +103,7 @@ const code = async file => {
 
 <style>
 .container {
-	background: var(--layer_3_color);
+	background: var(--body_background);
 	position: relative;
 	text-align: left;
 	height: 100%;

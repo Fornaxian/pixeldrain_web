@@ -56,14 +56,14 @@ body {
 	font-size: 17px;
 	line-height: 1.6em;
 	color: var(--text_color);
-	background-color: var(--layer_1_color);
+	background: var(--background);
+	min-height: 100vh;
 	padding: 0;
 }
 header, footer, .checkers {
 	background-image: url("{{.BackgroundPattern}}");
-	background-color: var(--layer_1_color);
+	background-color: var(--background_pattern_color);
 	background-repeat: repeat;
-	background-blend-mode: luminosity;
 }
 header, footer {
 	box-shadow: inset 1px 1px 8px 0 var(--shadow_color);
@@ -107,6 +107,7 @@ footer > .footer_content {
 .page_navigation {
 	position: fixed;
 	backface-visibility: hidden;
+	background: var(--navigation_background);
 	width: 17em;
 	height: 100%;
 	left: 0;
@@ -118,27 +119,28 @@ footer > .footer_content {
 	transition: left 0.5s;
 }
 .page_body {
-	position: absolute;
+	position: relative;
 	right: 0;
 	height: auto;
-	left: 17em;
+	left: 0;
+	margin-left: 17em;
 	min-width: 300px;
-	display: inline-block;
+	display: block;
 	text-align: center; /* Center the header and body */
 	overflow-y: auto;
 	overflow-x: hidden;
-	background-color: var(--layer_2_color);
+	background: var(--body_background);
 	border-top-left-radius: 12px;
 	border-bottom-left-radius: 12px;
 	padding: 8px;
-	transition: left 0.5s;
+	transition: margin-left 0.5s;
 }
-@media (max-width: 1200px) {
+@media (max-width: 1000px) {
 	.page_navigation {
 		left: -18em;
 	}
 	.page_body {
-		left: 0;
+		margin-left: 0;
 		width: 100%;
 		padding: 4px;
 	}
@@ -444,25 +446,16 @@ input[type="submit"]:active,
 input[type="button"]:active,
 input[type="color"]:active,
 select:active {
-	background: linear-gradient(var(--input_color_dark), var(--input_color));
 	box-shadow: inset 4px 4px 8px var(--shadow_color);
 	/* Exactly 4px offset compared to the inactive padding to give a depth effect */
 	padding: 9px 1px 1px 9px;
 }
 .button_highlight {
-	background: linear-gradient(var(--highlight_color), var(--highlight_color_dark)) !important;
-	color: var(--highlight_text_color) !important;
-}
-.button_highlight:active {
-	background: linear-gradient(var(--highlight_color_dark), var(--highlight_color)) !important;
+	background: var(--highlight_background) !important;
 	color: var(--highlight_text_color) !important;
 }
 .button_red {
 	background: linear-gradient(var(--danger_color), var(--danger_color_dark)) !important;
-	color: var(--highlight_text_color) !important;
-}
-.button_red:active {
-	background: linear-gradient(var(--danger_color_dark), var(--danger_color)) !important;
 	color: var(--highlight_text_color) !important;
 }
 

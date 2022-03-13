@@ -300,12 +300,12 @@ const node_click = (index) => {
 <svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
 
 <div id="directory_element">
+	<div bind:this={directorySorters} id="sorters" class="directory_sorters">
+		{#each tableColumns as col}
+			<div on:click={sortBy(col.field)} style="min-width: {col.width}">{col.name}</div>
+		{/each}
+	</div>
 	<div bind:this={directoryArea} on:scroll={onScroll} id="directory_area" class="directory_area">
-		<div bind:this={directorySorters} id="sorters" class="directory_sorters">
-			{#each tableColumns as col}
-				<div on:click={sortBy(col.field)} style="min-width: {col.width}">{col.name}</div>
-			{/each}
-		</div>
 		<div bind:this={nodeContainer} id="node_container" class="directory_node_container">
 			{#each allFiles as file, index}
 				{#if file.visible && !file.filtered}
@@ -345,17 +345,17 @@ const node_click = (index) => {
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
+	text-align: left;
 }
 
 #sorters {
+	flex: 0 0 auto;
 	display: flex;
 	flex-direction: row;
-	position: sticky;
 	overflow: hidden;
-	top: 0;
-	z-index: 1;
-	background-color: var(--layer_2_color);
+	background: var(--body_background);
 	min-width: 850px;
+	border-top-left-radius: 16px;
 }
 #sorters > div {
 	display: inline-block;
@@ -381,9 +381,8 @@ const node_click = (index) => {
 	margin: 0;
 	padding: 0;
 	overflow-x: auto;
-	text-align: left;
-	background-color: var(--layer_2_color);
-	border-radius: 16px;
+	background: var(--body_background);
+	border-bottom-left-radius: 16px;
 }
 #node_container {
 	display: block;
@@ -392,8 +391,6 @@ const node_click = (index) => {
 
 #footer {
 	flex-shrink: 0;
-	text-align: left;
-	background-color: var(--layer_1_color);
 	color: var(--layer_1_text_color);
 	padding: 4px;
 }
@@ -419,7 +416,7 @@ const node_click = (index) => {
 	text-decoration: none;
 }
 .node_selected {
-	background-color: var(--highlight_color_dark);
+	background: var(--highlight_background);
 	color: var(--highlight_text_color);
 }
 .node > div {

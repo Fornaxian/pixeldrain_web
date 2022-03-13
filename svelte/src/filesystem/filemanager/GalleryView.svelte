@@ -89,7 +89,8 @@ const node_icon = node => {
 	text-decoration: none;
 }
 .selected {
-	background-color: var(--highlight_color_dark);
+	background: var(--highlight_background);
+	color: var(--highlight_text_color);
 }
 .icon_container {
 	width: 100%;

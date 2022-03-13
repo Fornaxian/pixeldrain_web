@@ -34,16 +34,16 @@ function toggleMenu() {
 	if (nav.offsetLeft === 0) {
 		// Menu is visible, hide it
 		nav.style.left = -nav.offsetWidth + "px";
-		body.style.left = "0";
+		body.style.marginLeft = "0";
 	} else {
 		// Menu is hidden, show it
 		nav.style.left = "0";
-		body.style.left = nav.offsetWidth + "px";
+		body.style.marginLeft = nav.offsetWidth + "px";
 	}
 }
 function resetMenu() {
 	document.getElementById("page_navigation").style.left = "";
-	document.getElementById("page_body").style.left = "";
+	document.getElementById("page_body").style.marginLeft = "";
 }
 </script>
 {{end}}
