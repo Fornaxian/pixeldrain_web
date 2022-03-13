@@ -13,14 +13,7 @@ onMount(() => {
 		return
 	}
 
-	switch (Math.floor(Math.random()*2)) {
-		case 0:
-			set_ad_type("pixfuture")
-			break
-		case 1:
-			set_ad_type("nextmillennium")
-			break
-	}
+	set_ad_type("nextmillennium")
 })
 
 let set_ad_type = async t => {
