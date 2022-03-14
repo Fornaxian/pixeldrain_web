@@ -146,7 +146,7 @@ onMount(load_tranfer_used)
 				<div class="feat_normal">
 					<ul>
 						<li>Base price of €1 per month</li>
-						<li>€2 per TB per month for storage</li>
+						<li>€1 per TB per month for storage</li>
 						<li>€2 per TB for data transfer</li>
 						<li>Files expire 120 days after the last time they're viewed</li>
 					</ul>
@@ -167,7 +167,7 @@ onMount(load_tranfer_used)
 				<div class="feat_normal">
 					<ul>
 						<li>Base price of €1 per month</li>
-						<li>€1 per TB per month for storage</li>
+						<li>€0.50 per TB per month for storage</li>
 						<li>€2 per TB for data transfer</li>
 						<li>Files expire 60 days after the last time they're viewed</li>
 					</ul>

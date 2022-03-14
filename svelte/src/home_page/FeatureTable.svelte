@@ -105,7 +105,7 @@ onMount(() => {
 			500 gigabytes
 		</div>
 		<div class="feat_pro">
-			<span class="text_highlight">1 terabyte</span>
+			<span class="text_highlight">No storage limit</span>
 		</div>
 	</div>
 	<div>

@@ -15,7 +15,7 @@
 			<div><span class="text_highlight">20 GB</span> max file size</div>
 			<div><span class="text_highlight">180 days</span> file expiry</div>
 			<div><span class="text_highlight">2 TB</span> transfer limit</div>
-			<div><span class="text_highlight">2 TB</span> storage space</div>
+			<div><span class="text_highlight">No storage limit</span></div>
 		</div>
 	</div>
 	<div>
