@@ -2,9 +2,12 @@
 import { onMount, tick } from "svelte";
 import { formatDate, formatDuration } from "../util/Formatting.svelte";
 import Spinner from "../util/Spinner.svelte";
+import AbuseReporterTable from "./AbuseReporterTable.svelte";
 
 let loading = true
-let reporters = []
+let reporters_pending = []
+let reporters_trusted = []
+let reporters_rejected = []
 
 const get_reporters = async () => {
 	loading = true;
@@ -13,7 +16,26 @@ const get_reporters = async () => {
 		if(resp.status >= 400) {
 			throw new Error(await resp.text());
 		}
-		reporters = await resp.json();
+		let reporters = await resp.json();
+
+		reporters_pending = reporters.reduce((acc, val) => {
+			if (val.status === "pending") {
+				acc.push(val)
+			}
+			return acc
+		}, [])
+		reporters_trusted = reporters.reduce((acc, val) => {
+			if (val.status === "trusted") {
+				acc.push(val)
+			}
+			return acc
+		}, [])
+		reporters_rejected = reporters.reduce((acc, val) => {
+			if (val.status === "rejected") {
+				acc.push(val)
+			}
+			return acc
+		}, [])
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -75,14 +97,16 @@ const edit_reporter = async reporter => {
 	new_reporter_status = reporter.status
 }
 
-const delete_reporter = async (address, server) => {
-	if (!confirm("Delete this reporter address?\n\n"+address)) {
+const delete_reporter = async reporter => {
+	if (!confirm("Delete this reporter address?\n\n"+reporter.from_address)) {
 		return
 	}
 
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/admin/abuse_reporter/"+encodeURI(address)+"/"+encodeURI(server),
+			window.api_endpoint+"/admin/abuse_reporter/"+
+				encodeURI(reporter.from_address)+"/"+
+				encodeURI(reporter.mail_server),
 			{ method: "DELETE" }
 		);
 		if(resp.status >= 400) {
@@ -153,39 +177,27 @@ onMount(get_reporters);
 <br/>
 
 <div class="table_scroll">
-	<table style="text-align: left;">
-		<tr>
-			<td>Address</td>
-			<td>Server</td>
-			<td>Name</td>
-			<td>Status</td>
-			<td>Reports</td>
-			<td>Blocked</td>
-			<td>Last used</td>
-			<td>Created</td>
-			<td></td>
-		</tr>
-		{#each reporters as r (r.email)}
-			<tr>
-				<td>{r.from_address}</td>
-				<td>{r.mail_server}</td>
-				<td>{r.name}</td>
-				<td>{r.status}</td>
-				<td>{r.reports_sent}</td>
-				<td>{r.files_blocked}</td>
-				<td>{formatDate(r.last_used, true, true, false)}</td>
-				<td>{formatDate(r.created, false, false, false)}</td>
-				<td>
-					<button on:click|preventDefault={() => {edit_reporter(r)}} class="button round">
-						<i class="icon">edit</i>
-					</button>
-					<button on:click|preventDefault={() => {delete_reporter(r.from_address, r.mail_server)}} class="button button_red round">
-						<i class="icon">delete</i>
-					</button>
-				</td>
-			</tr>
-		{/each}
-	</table>
+	<h2>Pending reporters</h2>
+	<AbuseReporterTable
+		reporters={reporters_pending}
+		on:edit={e => edit_reporter(e.detail)}
+		on:delete={e => delete_reporter(e.detail)}>
+	</AbuseReporterTable>
+
+
+	<h2>Trusted reporters</h2>
+	<AbuseReporterTable
+		reporters={reporters_trusted}
+		on:edit={e => edit_reporter(e.detail)}
+		on:delete={e => delete_reporter(e.detail)}>
+	</AbuseReporterTable>
+
+	<h2>Rejected reporters</h2>
+	<AbuseReporterTable
+		reporters={reporters_rejected}
+		on:edit={e => edit_reporter(e.detail)}
+		on:delete={e => delete_reporter(e.detail)}>
+	</AbuseReporterTable>
 </div>
 
 <style>
@@ -204,4 +216,7 @@ onMount(get_reporters);
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }
+.table_scroll {
+	text-align: left;
+}
 </style>
