@@ -79,6 +79,7 @@ func userStyle(style string) (s pixeldrainStyleSheet) {
 	setDefaultColor(&s.ParallaxSlider, s.Layer1)
 	setDefaultColor(&s.Navigation, NoColor)
 	setDefaultColor(&s.Body, s.Layer2)
+	setDefaultColor(&s.Shaded, RGBA{0, 0, 0, 0.2})
 
 	return s
 }
@@ -101,6 +102,7 @@ type pixeldrainStyleSheet struct {
 	ParallaxSlider    Color
 	Navigation        Color
 	Body              Color
+	Shaded            Color
 	Layer1            hsl // Deepest and darkest layer
 	Layer1Text        hsl // Based on Text if undefined
 	Layer2            hsl
@@ -140,6 +142,7 @@ func (s pixeldrainStyleSheet) String() string {
 	--parallax_slider_color:    %s;
 	--navigation_background:    %s;
 	--body_background:          %s;
+	--shaded_background:        %s;
 	--layer_1_color:            %s;
 	--layer_1_color_border:     %s;
 	--layer_1_text_color:       %s;
@@ -176,6 +179,7 @@ func (s pixeldrainStyleSheet) String() string {
 		s.ParallaxSlider.CSS(),
 		s.Navigation.CSS(),
 		s.Body.CSS(),
+		s.Shaded.CSS(),
 		s.Layer1.CSS(),
 		s.Layer1.Add(0, 0, .05).CSS(),
 		s.Layer1Text.CSS(),
@@ -235,7 +239,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarForeground: hsl{266, .85, .40},
 	ScrollbarHover:      hsl{266, .85, .50},
 
-	Background:        NewGradient(120, hsl{225, .9, .12}, hsl{274, .85, .16}, hsl{274, .85, .16}, hsl{310, .8, .12}),
+	Background:        NewGradient(120, hsl{240, .9, .14}, hsl{274, .9, .14}, hsl{310, .8, .12}),
 	BackgroundPattern: NoColor,
 	ParallaxSlider:    hsl{275, .8, .1},
 	Navigation:        RGBA{0, 0, 0, 0.1},
@@ -422,6 +426,7 @@ var snowstormPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHover:      hsl{193, .43, .76},
 
 	ParallaxSlider:    hsl{220, .17, .20}, // Layer 1 but darker
+	Shaded:            RGBA{255, 255, 255, 0.3},
 	Layer1:            hsl{220, .17, .32}, // hsl(220, 17%, 32%)
 	Layer1Text:        hsl{219, .28, .88},
 	BackgroundPattern: hsl{219, .28, .88}, // hsl(219, 28%, 88%)

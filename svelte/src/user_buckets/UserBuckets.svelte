@@ -57,7 +57,7 @@ onMount(get_buckets);
 		</button>
 	</div>
 	{#if creating_bucket}
-		<div class="highlight_light">
+		<div class="highlight_shaded">
 			<form on:submit|preventDefault={create_bucket}>
 				<table class="form">
 					<tr>

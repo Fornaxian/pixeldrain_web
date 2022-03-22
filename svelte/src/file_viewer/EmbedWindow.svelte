@@ -158,6 +158,11 @@ const update_example = () => {
 		{:else}
 			<h3>Direct link</h3>
 			<p>
+				Hotlinking is only supported on <a href="/#pro">Pro</a>
+				accounts. If this file was not uploaded with a Pro account the
+				download will be blocked.
+			</p>
+			<p>
 				You can directly download the file from this link without using the
 				file viewer:
 				<br/>

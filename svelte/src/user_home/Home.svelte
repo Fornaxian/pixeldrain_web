@@ -251,7 +251,7 @@ onDestroy(() => {
 	</p>
 </section>
 
-<div class="highlight_light">
+<div class="highlight_shaded">
 	<button
 		on:click={() => { update_graphs(1440, 1, true) }}
 		class:button_highlight={graph_timespan == 1440}>

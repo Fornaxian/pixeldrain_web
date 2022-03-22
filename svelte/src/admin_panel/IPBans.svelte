@@ -100,7 +100,7 @@ onMount(get_bans);
 		</button>
 	</div>
 	{#if creating}
-		<div class="highlight_light">
+		<div class="highlight_shaded">
 			<form on:submit|preventDefault={create_ban}>
 				<table class="form">
 					<tr>

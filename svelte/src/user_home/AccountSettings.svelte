@@ -267,7 +267,7 @@ onMount(() => {
 		Remove
 	</button>
 	{#if header_image_id}
-		<div class="highlight_dark">
+		<div class="highlight_shaded">
 			<img class="banner_preview" src="/api/file/{header_image_id}" alt="Custom file viewer header"/>
 		</div>
 	{/if}
@@ -288,7 +288,7 @@ onMount(() => {
 		Remove
 	</button>
 	{#if background_image_id}
-		<div class="highlight_dark">
+		<div class="highlight_shaded">
 			<img class="background_preview" src="/api/file/{background_image_id}" alt="Custom file viewer background"/>
 		</div>
 	{/if}
@@ -307,7 +307,7 @@ onMount(() => {
 		Remove
 	</button>
 	{#if footer_image_id}
-		<div class="highlight_dark">
+		<div class="highlight_shaded">
 			<img class="banner_preview" src="/api/file/{footer_image_id}" alt="Custom file viewer footer"/>
 		</div>
 	{/if}

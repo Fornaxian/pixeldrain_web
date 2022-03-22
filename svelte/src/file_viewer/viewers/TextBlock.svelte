@@ -14,8 +14,7 @@ export let center = false
 	padding-left: 8px;
 	vertical-align: middle;
 
-	color: var(--layer_1_text_color);
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: var(--shaded_background);
 	border-radius: 8px;
 	padding: 8px;
 }

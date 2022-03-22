@@ -136,7 +136,7 @@ onMount(get_reporters);
 		</button>
 	</div>
 	{#if creating}
-		<div class="highlight_light">
+		<div class="highlight_shaded">
 			<form on:submit|preventDefault={create_reporter}>
 				<table class="form">
 					<tr>

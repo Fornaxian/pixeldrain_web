@@ -162,7 +162,7 @@ onDestroy(() => {
 <section>
 	<h3>Bandwidth usage and file views</h3>
 </section>
-<div class="highlight_dark" style="margin-bottom: 6px;">
+<div class="highlight_shaded" style="margin-bottom: 6px;">
 	<button on:click={() => { loadGraph(1440, 1, true) }}>Day</button>
 	<button on:click={() => { loadGraph(10080, 10, false) }}>Week</button>
 	<button on:click={() => { loadGraph(20160, 60, false) }}>Two Weeks</button>
@@ -174,7 +174,7 @@ onDestroy(() => {
 </div>
 <Chart bind:this={graphBandwidth} data_type="bytes" legend={false} />
 <Chart bind:this={graphViews} data_type="number" legend={false} />
-<div class="highlight_dark">
+<div class="highlight_shaded">
 	Total usage from {start_time} to {end_time}<br/>
 	{formatDataVolume(total_bandwidth, 3)} bandwidth,
 	{formatDataVolume(total_bandwidth_paid, 3)} paid bandwidth,

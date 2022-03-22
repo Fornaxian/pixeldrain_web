@@ -67,7 +67,7 @@ const keydown = e => {
 <svelte:window on:keydown={keydown}></svelte:window>
 
 <div id="text_editor" class="text_editor">
-	<div id="headerbar" class="highlight_2 headerbar">
+	<div id="headerbar" class="headerbar">
 		<a href="/" class="button round">
 			<i class="icon">arrow_back</i>
 		</a>
@@ -119,6 +119,9 @@ const keydown = e => {
 	flex: 0 0 auto;
 	display: flex;
 	flex-direction: row;
+	padding: 4px;
+	background-color: var(--layer_1_color);
+	color: var(--layer_1_text_color);
 }
 .headerbar > * {
 	flex: 0 0 auto;
@@ -133,9 +136,10 @@ const keydown = e => {
 }
 .textarea {
 	position: relative;
+	display: block;
 	height: 100%;
 	width: 100%;
-	background: var(--layer_1_color);
+	background: var(--body_background);
 	color: var(--text_color);
 	margin: 0;
 	border-radius: 0;

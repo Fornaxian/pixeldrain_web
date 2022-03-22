@@ -26,7 +26,7 @@ let create_dir = () => {
 onMount(() => { name_input.focus() })
 </script>
 
-<form class="create_dir highlight_dark" on:submit|preventDefault={create_dir}>
+<form class="create_dir highlight_shaded" on:submit|preventDefault={create_dir}>
 	<img src="/res/img/mime/folder.png" class="icon" alt="icon"/>
 	<input class="dirname" type="text" style="width: 100%;" bind:this={name_input} bind:value={create_dir_name} />
 	<input class="submit" type="submit" value="create"/>

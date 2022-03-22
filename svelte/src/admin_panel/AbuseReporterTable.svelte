@@ -16,7 +16,7 @@ export let reporters = []
 		<td>Created</td>
 		<td></td>
 	</tr>
-	{#each reporters as rep (rep.from_address, rep.mail_server)}
+	{#each reporters as rep}
 		<tr>
 			<td>
 				{rep.from_address}<br/>

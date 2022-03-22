@@ -184,17 +184,17 @@ onMount(get_coupons)
 		This adds credit to a user's account. You only need to enter one of
 		the user id, username or email.
 	</p>
-	<div class="highlight_dark">
+	<div class="highlight_shaded">
 		<Form config={credit_form}></Form>
 	</div>
 
 	<h2>Impersonate user</h2>
-	<div class="highlight_dark">
+	<div class="highlight_shaded">
 		<Form config={impersonate_form}></Form>
 	</div>
 
 	<h2>Create coupon codes</h2>
-	<div class="highlight_dark">
+	<div class="highlight_shaded">
 		<Form config={coupon_form}></Form>
 	</div>
 
