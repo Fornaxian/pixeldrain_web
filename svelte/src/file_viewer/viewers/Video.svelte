@@ -153,9 +153,9 @@ const fullscreen = () => {
 	<img src={file.icon_href} class="video_icon" alt="Video icon">
 	<TextBlock width="600px">
 		The online video player on pixeldrain is only available when the
-		uploader of the file you is a Patreon supporter, or if you are a
-		Patreon supporter. You can still download the video and watch it
-		locally on your computer.
+		uploader of the file is a Patreon supporter, or if you are a Patreon
+		supporter. You can still download the video and watch it locally on your
+		computer.
 		<br/>
 		<button on:click={download}>
 			<i class="icon">download</i> Download

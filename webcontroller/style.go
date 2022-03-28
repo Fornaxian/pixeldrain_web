@@ -426,7 +426,7 @@ var snowstormPixeldrainStyle = pixeldrainStyleSheet{
 	ScrollbarHover:      hsl{193, .43, .76},
 
 	ParallaxSlider:    hsl{220, .17, .20}, // Layer 1 but darker
-	Shaded:            RGBA{255, 255, 255, 0.3},
+	Shaded:            RGBA{255, 255, 255, 0.4},
 	Layer1:            hsl{220, .17, .32}, // hsl(220, 17%, 32%)
 	Layer1Text:        hsl{219, .28, .88},
 	BackgroundPattern: hsl{219, .28, .88}, // hsl(219, 28%, 88%)

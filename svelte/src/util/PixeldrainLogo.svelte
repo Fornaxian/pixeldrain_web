@@ -8,7 +8,7 @@ export let style;
 <style>
 svg {
 	fill: currentColor;
-	animation: rotation 12s infinite linear;
+	animation: rotation 20s infinite linear;
 }
 @keyframes rotation {
 	from {

@@ -44,8 +44,8 @@ onMount(async () => {
 	<p>
 		It's not that I want to withold this file from you, it's just that I
 		don't want pixeldrain to fall into bankruptcy like so many of the
-		websites that came before me. So if you really want these files you have
-		a few options:
+		websites that came before me. So if you really want this file you have a
+		few options:
 	</p>
 	<ul>
 		<li>Come back tomorrow when your free transfer limit resets</li>
@@ -77,6 +77,7 @@ onMount(async () => {
 		Also, I believe you have my stapler. Please give it back.
 	</p>
 </TextBlock>
+<br/>
 
 <style>
 .header_image {

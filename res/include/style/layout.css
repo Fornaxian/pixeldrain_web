@@ -54,7 +54,7 @@ body {
 	margin: 0;
 	font-family: system-ui, sans-serif;
 	font-size: 17px;
-	line-height: 1.6em;
+	line-height: 1.5em;
 	color: var(--text_color);
 	background: var(--background);
 	min-height: 100vh;
