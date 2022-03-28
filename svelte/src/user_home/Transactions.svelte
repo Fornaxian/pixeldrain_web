@@ -5,67 +5,73 @@ import Spinner from "../util/Spinner.svelte";
 import Euro from "../util/Euro.svelte"
 
 let loading = false
-let months = []
+
+let year = 0
+let month = 0
+let month_str = ""
+let transactions = {
+	rows: []
+}
 
 const load_transactions = async () => {
 	loading = true
+	month_str = year + "-" + ("00"+(month)).slice(-2)
 	try {
-		// We keep fetching history until we have fetched three months without
-		// any transactions
-		let empty_months = 0
-		let now = new Date()
-		while (empty_months < 3) {
-			const resp = await fetch(
-				window.api_endpoint+"/user/transactions/" +
-					now.getFullYear()+"-"+("00"+(now.getMonth()+1)).slice(-2),
-			)
-			if(resp.status >= 400) {
-				let json = await resp.json()
-				if (json.value === "authentication_failed") {
-					window.location = "/login"
-					return
-				} else {
-					throw new Error(json.message)
-				}
+		const resp = await fetch(window.api_endpoint+"/user/transactions/"+month_str)
+		if(resp.status >= 400) {
+			let json = await resp.json()
+			if (json.value === "authentication_failed") {
+				window.location = "/login"
+				return
+			} else {
+				throw new Error(json.message)
 			}
-
-			let month = {
-				rows: await resp.json(),
-				month: now.getFullYear()+"-"+("00"+(now.getMonth()+1)).slice(-2),
-				total_subscription_charge: 0,
-				total_storage_charge: 0,
-				total_bandwidth_charge: 0,
-				total_kickback_fee: 0,
-				total_deposited: 0,
-				total_deducted: 0,
-			}
-
-			if (month.rows.length === 0) {
-				empty_months++
-				continue
-			}
-
-			month.rows.forEach(row => {
-				row.time = new Date(row.time)
-				month.total_deposited += row.deposit_amount
-				month.total_subscription_charge += row.subscription_charge
-				month.total_storage_charge += row.storage_charge
-				month.total_bandwidth_charge += row.bandwidth_charge
-				month.total_kickback_fee += row.kickback_fee
-				month.total_deducted += row.subscription_charge + row.storage_charge + row.bandwidth_charge
-			})
-			months.push(month)
-			months = months
-
-			// Fetch the previous month
-			now.setMonth(now.getMonth()-1)
 		}
+
+		let month = {
+			rows: await resp.json(),
+			total_subscription_charge: 0,
+			total_storage_charge: 0,
+			total_bandwidth_charge: 0,
+			total_kickback_fee: 0,
+			total_deposited: 0,
+			total_deducted: 0,
+		}
+
+		month.rows.forEach(row => {
+			row.time = new Date(row.time)
+			month.total_deposited += row.deposit_amount
+			month.total_subscription_charge += row.subscription_charge
+			month.total_storage_charge += row.storage_charge
+			month.total_bandwidth_charge += row.bandwidth_charge
+			month.total_kickback_fee += row.kickback_fee
+			month.total_deducted += row.subscription_charge + row.storage_charge + row.bandwidth_charge
+		})
+		transactions = month
 	} catch (err) {
 		alert(err)
 	} finally {
 		loading = false
 	}
 };
+const last_month = () => {
+	month--
+	if (month === 0) {
+		month = 12
+		year--
+	}
+
+	load_transactions()
+}
+const next_month = () => {
+	month++
+	if (month === 13) {
+		month = 1
+		year++
+	}
+
+	load_transactions()
+}
 
 let credit_amount = 10
 
@@ -120,18 +126,21 @@ const load_invoices = async () => {
 };
 
 onMount(() => {
+	let now = new Date()
+	year = now.getFullYear()
+	month = now.getMonth()+1
+
 	load_transactions()
 	load_invoices()
 })
 </script>
 
-{#if loading}
-	<div class="spinner_container">
-		<Spinner />
-	</div>
-{/if}
-
 <section>
+	{#if loading}
+		<div class="spinner_container">
+			<Spinner />
+		</div>
+	{/if}
 	<h2>Deposit credits</h2>
 	<p>
 		You can deposit credit on your pixeldrain account with Bitcoin,
@@ -225,61 +234,70 @@ onMount(() => {
 		Here is a log of all transactions on your account balance.
 	</p>
 
-	{#each months as month}
-		<h3>{month.month}</h3>
-		<ul>
-			<li>Subscription charge: <Euro amount={month.total_subscription_charge}></Euro></li>
-			<li>Storage charge: <Euro amount={month.total_storage_charge}></Euro></li>
-			<li>Bandwidth charge: <Euro amount={month.total_bandwidth_charge}></Euro></li>
-			<li>Total charge: <Euro amount={month.total_deducted}></Euro></li>
-			<li>Earned: <Euro amount={month.total_kickback_fee}></Euro></li>
-			<li>Deposited: <Euro amount={month.total_deposited}></Euro></li>
-		</ul>
+	<h3>{month_str}</h3>
+	<div class="toolbar">
+		<button on:click={last_month}>
+			<i class="icon">chevron_left</i>
+			Previous month
+		</button>
+		<div class="toolbar_spacer"></div>
+		<button on:click={next_month}>
+			Next month
+			<i class="icon">chevron_right</i>
+		</button>
+	</div>
+	<ul>
+		<li>Subscription charge: <Euro amount={transactions.total_subscription_charge}></Euro></li>
+		<li>Storage charge: <Euro amount={transactions.total_storage_charge}></Euro></li>
+		<li>Bandwidth charge: <Euro amount={transactions.total_bandwidth_charge}></Euro></li>
+		<li>Total charge: <Euro amount={transactions.total_deducted}></Euro></li>
+		<li>Earned: <Euro amount={transactions.total_kickback_fee}></Euro></li>
+		<li>Deposited: <Euro amount={transactions.total_deposited}></Euro></li>
+	</ul>
 
-		<div class="table_scroll">
-			<table style="text-align: left;">
-				<thead>
+	<div class="table_scroll">
+		<table style="text-align: left;">
+			<thead>
+				<tr>
+					<td>Time</td>
+					<td>Balance</td>
+					<td>Subscription</td>
+					<td colspan="2">Storage</td>
+					<td colspan="2">Bandwidth</td>
+					<td colspan="2">Kickback</td>
+					<td>Deposit</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td>Charge</td>
+					<td>Charge</td>
+					<td>Usage</td>
+					<td>Charge</td>
+					<td>Usage</td>
+					<td>Fee</td>
+					<td>Amount</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				{#each transactions.rows as row}
 					<tr>
-						<td>Time</td>
-						<td>Balance</td>
-						<td>Subscription</td>
-						<td colspan="2">Storage</td>
-						<td colspan="2">Bandwidth</td>
-						<td colspan="2">Kickback</td>
-						<td>Deposit</td>
+						<td>{formatDate(row.time, true, true, false)}</td>
+						<td><Euro amount={row.new_balance}></Euro></td>
+						<td><Euro amount={row.subscription_charge} precision="4"></Euro></td>
+						<td><Euro amount={row.storage_charge} precision="4"></Euro></td>
+						<td>{formatDataVolume(row.storage_used, 3)}</td>
+						<td><Euro amount={row.bandwidth_charge} precision="4"></Euro></td>
+						<td>{formatDataVolume(row.bandwidth_used, 3)}</td>
+						<td><Euro amount={row.kickback_fee} precision="4"></Euro></td>
+						<td>{formatDataVolume(row.kickback_amount, 3)}</td>
+						<td><Euro amount={row.deposit_amount}></Euro></td>
 					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td>Charge</td>
-						<td>Charge</td>
-						<td>Usage</td>
-						<td>Charge</td>
-						<td>Usage</td>
-						<td>Fee</td>
-						<td>Amount</td>
-						<td></td>
-					</tr>
-				</thead>
-				<tbody>
-					{#each month.rows as row}
-						<tr>
-							<td>{formatDate(row.time, true, true, false)}</td>
-							<td><Euro amount={row.new_balance}></Euro></td>
-							<td><Euro amount={row.subscription_charge} precision="4"></Euro></td>
-							<td><Euro amount={row.storage_charge} precision="4"></Euro></td>
-							<td>{formatDataVolume(row.storage_used, 3)}</td>
-							<td><Euro amount={row.bandwidth_charge} precision="4"></Euro></td>
-							<td>{formatDataVolume(row.bandwidth_used, 3)}</td>
-							<td><Euro amount={row.kickback_fee} precision="4"></Euro></td>
-							<td>{formatDataVolume(row.kickback_amount, 3)}</td>
-							<td><Euro amount={row.deposit_amount}></Euro></td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	{/each}
+				{/each}
+			</tbody>
+		</table>
+	</div>
 </section>
 
 <style>
@@ -291,4 +309,11 @@ onMount(() => {
 	width: 100px;
 	z-index: 1000;
 }
+.toolbar {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+.toolbar > * { flex: 0 0 auto; }
+.toolbar_spacer { flex: 1 1 auto; }
 </style>
