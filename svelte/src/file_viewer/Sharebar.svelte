@@ -70,8 +70,7 @@ const share_tumblr = () => {
 	top: 0;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	box-shadow: inset 1px 1px 5px var(--shadow_color);
-	background-color: var(--layer_1_color);
+	background: var(--shaded_background);
 	border-radius: 16px;
 	text-align: center;
 	overflow: hidden;

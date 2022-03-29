@@ -566,8 +566,8 @@ const keydown = (e) => {
 	font-size: 1.8em;
 }
 .instruction {
-	border-top: 1px solid var(--layer_2_color_border);
-	border-bottom: 1px solid var(--layer_2_color_border);
+	border-top: 1px solid var(--separator);
+	border-bottom: 1px solid var(--separator);
 	margin: 1.5em 0;
 	padding: 5px;
 }

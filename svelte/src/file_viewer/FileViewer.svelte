@@ -709,7 +709,7 @@ const keyboard_event = evt => {
 	transition: left 0.5s, right 0.5s;
 	overflow: auto;
 	text-align: center;
-	box-shadow: inset 1px 1px 8px var(--shadow_color);
+	box-shadow: inset 1px 1px 4px -1px var(--shadow_color);
 	border-radius: 16px;
 }
 .file_preview.toolbar_visible { left: 8em; }
@@ -717,7 +717,6 @@ const keyboard_event = evt => {
 .file_preview.custom_background {
 	background-size: cover;
 	background-position: center;
-	background-color: var(--layer_1_color);
 }
 
 /* Toolbars */

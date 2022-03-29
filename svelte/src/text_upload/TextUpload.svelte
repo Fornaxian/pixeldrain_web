@@ -120,8 +120,8 @@ const keydown = e => {
 	display: flex;
 	flex-direction: row;
 	padding: 4px;
-	background-color: var(--layer_1_color);
-	color: var(--layer_1_text_color);
+	background: var(--background_color);
+	color: var(--background_text_color);
 }
 .headerbar > * {
 	flex: 0 0 auto;
@@ -140,7 +140,7 @@ const keydown = e => {
 	height: 100%;
 	width: 100%;
 	background: var(--body_background);
-	color: var(--text_color);
+	color: var(--body_text_color);
 	margin: 0;
 	border-radius: 0;
 	box-shadow: none;

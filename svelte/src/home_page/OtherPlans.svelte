@@ -199,8 +199,8 @@
 	hyphens: auto;
 }
 .feat_table > div > .feat_pro {
-	background-color: var(--layer_4_color);
-	box-shadow: 1px 1px 4px -1px var(--shadow_color);
+	background-color: var(--popout_color);
+	box-shadow: 1px 1px 2px -1px var(--shadow_color);
 }
 .text_highlight {
 	color: var(--link_color);

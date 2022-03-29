@@ -91,7 +91,7 @@ head.valueimpression_loaded.subscribe(v => {
 			{#if ad_type === "aads"}
 				<iframe
 					data-aa="1811738"
-					src="//ad.a-ads.com/1811738?size=160x600&background_color={window.style.layer2Color}&text_color={window.style.textColor}&title_color={window.style.highlightColor}&title_hover_color={window.style.highlightColor}&link_color={window.style.highlightColor}&link_hover_color={window.style.highlightColor}"
+					src="//ad.a-ads.com/1811738?size=160x600&background_color={window.style.bodyColor}&text_color={window.style.bodyTextColor}&title_color={window.style.highlightColor}&title_hover_color={window.style.highlightColor}&link_color={window.style.highlightColor}&link_hover_color={window.style.highlightColor}"
 					style="width:160px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;"
 					title="A-ads advertisement">
 				</iframe>

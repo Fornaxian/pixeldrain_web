@@ -221,7 +221,7 @@ onMount(get_bans);
 .stats {
 	flex: 0 0 auto;
 	padding: 0 4px;
-	border-left: 1px solid var(--layer_3_color_border);
+	border-left: 1px solid var(--separator);
 	text-align: center;
 }
 </style>

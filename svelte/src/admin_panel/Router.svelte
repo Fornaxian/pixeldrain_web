@@ -34,46 +34,46 @@ onMount(() => {
 			href="/admin"
 			class:button_highlight={page === "status"}
 			on:click|preventDefault={() => {navigate("status", "Status")}}>
-			<i class="icon">home</i>
+			<i class="icon">home</i><br/>
 			Status
 		</a>
 		<a class="button"
 			href="/admin/block_files"
 			class:button_highlight={page === "block_files"}
 			on:click|preventDefault={() => {navigate("block_files", "Block files")}}>
-			<i class="icon">block</i>
+			<i class="icon">block</i><br/>
 			Block files
 		</a>
 		<a class="button"
 			href="/admin/abuse_reports"
 			class:button_highlight={page === "abuse_reports"}
 			on:click|preventDefault={() => {navigate("abuse_reports", "Abuse reports")}}>
-			<i class="icon">flag</i>
+			<i class="icon">flag</i><br/>
 			User reports
 		</a>
 		<a class="button"
 			href="/admin/abuse_reporters"
 			class:button_highlight={page === "abuse_reporters"}
 			on:click|preventDefault={() => {navigate("abuse_reporters", "Abuse reporters")}}>
-			<i class="icon">email</i>
+			<i class="icon">email</i><br/>
 			E-mail reporters
 		</a>
 		<a class="button"
 			href="/admin/ip_bans"
 			class:button_highlight={page === "ip_bans"}
 			on:click|preventDefault={() => {navigate("ip_bans", "IP bans")}}>
-			<i class="icon">remove_circle</i>
+			<i class="icon">remove_circle</i><br/>
 			IP bans
 		</a>
 		<a class="button"
 			href="/admin/subscriptions"
 			class:button_highlight={page === "subscriptions"}
 			on:click|preventDefault={() => {navigate("subscriptions", "Subscriptions")}}>
-			<i class="icon">receipt_long</i>
+			<i class="icon">receipt_long</i><br/>
 			Subscriptions
 		</a>
 		<a class="button" href="/admin/globals">
-			<i class="icon">edit</i>
+			<i class="icon">edit</i><br/>
 			Global settings
 		</a>
 	</div>

@@ -42,42 +42,42 @@ onMount(() => {
 			href="/user"
 			class:button_highlight={page === "home"}
 			on:click|preventDefault={() => {navigate("home", "My home")}}>
-			<i class="icon">home</i>
+			<i class="icon">home</i><br/>
 			My home
 		</a>
 		<a class="button"
 			href="/user/settings"
 			class:button_highlight={page === "settings"}
 			on:click|preventDefault={() => {navigate("settings", "Settings")}}>
-			<i class="icon">settings</i>
+			<i class="icon">settings</i><br/>
 			Settings
 		</a>
 		<a class="button"
 			href="/user/connect_app"
 			class:button_highlight={page === "connect_app"}
 			on:click|preventDefault={() => {navigate("connect_app", "Apps")}}>
-			<i class="icon">app_registration</i>
+			<i class="icon">app_registration</i><br/>
 			Apps
 		</a>
 		<a class="button"
 			href="/user/api_keys"
 			class:button_highlight={page === "api_keys"}
 			on:click|preventDefault={() => {navigate("api_keys", "API keys")}}>
-			<i class="icon">vpn_key</i>
+			<i class="icon">vpn_key</i><br/>
 			Keys
 		</a>
 		<a class="button"
 			href="/user/activity"
 			class:button_highlight={page === "activity"}
 			on:click|preventDefault={() => {navigate("activity", "Activity log")}}>
-			<i class="icon">list</i>
+			<i class="icon">list</i><br/>
 			Activity log
 		</a>
 		<a class="button"
 			href="/user/subscription"
 			class:button_highlight={page === "subscription"}
 			on:click|preventDefault={() => {navigate("subscription", "Subscription")}}>
-			<i class="icon">shopping_cart</i>
+			<i class="icon">shopping_cart</i><br/>
 			Subscription
 		</a>
 		{#if window.user.subscription.type !== "patreon"}
@@ -85,7 +85,7 @@ onMount(() => {
 				href="/user/transactions"
 				class:button_highlight={page === "transactions"}
 				on:click|preventDefault={() => {navigate("transactions", "Transactions")}}>
-				<i class="icon">receipt_long</i>
+				<i class="icon">receipt_long</i><br/>
 				Transactions
 			</a>
 		{/if}

@@ -38,7 +38,7 @@ export const update = () => {
 	return chart_object.update()
 }
 
-Chart.defaults.color = "#"+window.style.textColor;
+Chart.defaults.color = "#"+window.style.bodyTextColor;
 Chart.defaults.font.size = 15;
 Chart.defaults.font.family = "system-ui, sans-serif";
 Chart.defaults.maintainAspectRatio = false;
@@ -91,7 +91,7 @@ onMount(() => {
 						grid: {
 							display: true,
 							drawBorder: false,
-							color: "#"+window.style.layer3Color,
+							color: "#"+window.style.separatorColor,
 						},
 					},
 					x: {

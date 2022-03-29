@@ -191,7 +191,7 @@ h1 {
 	flex: 0 0 auto;
 	display: flex;
 	flex-direction: row;
-	background-color: var(--layer_1_color);
+	background-color: var(--shaded_background);
 	box-shadow: 1px 1px 6px var(--shadow_color);
 	padding: 0 2px 2px 2px;
 	align-items: center;

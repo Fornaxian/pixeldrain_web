@@ -76,7 +76,7 @@ const node_icon = node => {
 	overflow: hidden;
 	margin: 8px auto 16px auto;
 	text-align: left;
-	background-color: var(--layer_2_color);
+	background: var(--body_color);
 	box-shadow: 1px 1px 6px var(--shadow_color);
 	border-collapse: collapse;
 	border-radius: 8px;
@@ -97,11 +97,11 @@ const node_icon = node => {
 	padding: 6px;
 }
 .node:not(:last-child) {
-	border-bottom: 1px solid var(--layer_2_color_border);
+	border-bottom: 1px solid var(--separator);
 }
 .node:hover:not(.node_selected) {
-	background-color: var(--input_color_dark);
-	color: var(--input_text_color);
+	background: var(--input_background);
+	color: var(--input_text);
 	text-decoration: none;
 }
 .node.node_selected {

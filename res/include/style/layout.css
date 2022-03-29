@@ -55,7 +55,7 @@ body {
 	font-family: system-ui, sans-serif;
 	font-size: 17px;
 	line-height: 1.5em;
-	color: var(--text_color);
+	color: var(--body_text_color);
 	background: var(--background);
 	min-height: 100vh;
 	padding: 0;
@@ -66,7 +66,7 @@ header, footer, .checkers {
 	background-repeat: repeat;
 }
 header, footer {
-	box-shadow: inset 1px 1px 8px 0 var(--shadow_color);
+	box-shadow: inset 1px 1px 4px -1px var(--shadow_color);
 	border-radius: 12px;
 	text-align: center;
 	overflow: hidden;
@@ -95,10 +95,9 @@ footer > .footer_content {
 	font-size: 2em;
 	margin: 0;
 	background: #3f3f3f;
-	background: var(--input_color);
+	background: var(--input_background);
 	border-radius: 0;
 	border-bottom-right-radius: 90%;
-	box-shadow: 0 0 6px -2px var(--shadow_color);
 }
 .button_toggle_navigation:active {
 	padding: 15px 15px 10px 15px;
@@ -161,7 +160,7 @@ section {
 .page_navigation a {
 	float: none;
 	display: block;
-	color: var(--layer_1_text_color);
+	color: var(--background_text_color);
 	text-align: center;
 	padding: 4px;
 	margin: 0.3em 15px 0.3em 15px;
@@ -175,8 +174,8 @@ section {
 	text-decoration: none;
 }
 .page_navigation a:hover {
-	background-color: var(--input_color);
-	color: var(--input_text_color);
+	background: var(--input_background);;
+	color: var(--input_text);
 	text-decoration: none;
 }
 
@@ -238,19 +237,19 @@ h1 {
 }
 h2 {
 	font-size: 2em;
-	border-bottom: 1px var(--layer_4_color_border) solid;
+	border-bottom: 1px var(--separator) solid;
 }
 h3 {
 	font-size: 1.75em;
-	border-bottom: 1px var(--layer_3_color_border) solid;
+	border-bottom: 1px var(--separator) solid;
 }
 h4 {
 	font-size: 1.50em;
-	border-bottom: 1px var(--layer_2_color_border) solid;
+	border-bottom: 1px var(--separator) solid;
 }
 h5 {
 	font-size: 1.25em;
-	border-bottom: 1px var(--layer_1_color_border) solid;
+	border-bottom: 1px var(--separator) solid;
 }
 h6 {
 	font-size: 1em;
@@ -262,7 +261,7 @@ h6 {
 hr {
 	height: 1px;
 	border: none;
-	background-color: var(--input_color);
+	background-color: var(--separator);
 	margin: 12px;
 }
 
@@ -295,7 +294,7 @@ table:not(.form) {
 	min-width: 100%;
 }
 
-tr:not(.form)    {border-bottom: 1px var(--layer_2_color_border) solid;}
+tr:not(.form)    {border-bottom: 1px var(--separator) solid;}
 tr > td, tr > th {padding: 0.2em 0.5em;}
 @media(max-width: 30em) {
 	/* Forms will be stacked on small screens */
@@ -308,7 +307,7 @@ tr > td, tr > th {padding: 0.2em 0.5em;}
 
 pre {
 	padding: 10px;
-	border-bottom: 1px var(--layer_2_color_border) solid;
+	border-bottom: 1px var(--separator) solid;
 	overflow-x: auto;
 }
 
@@ -321,10 +320,9 @@ pre {
 	padding: 0;
 	overflow: hidden;
 	border-radius: 6px;
-	box-shadow: 2px 2px 8px -3px var(--shadow_color);
-	background-color: var(--layer_3_color);
+	background: var(--input_background);
 	color: #bfbfbf; /* Fallback */
-	color: var(--text_color);
+	color: var(--body_text_color);
 	word-break: break-all;
 	text-align: left;
 	line-height: 1.2em;
@@ -338,7 +336,7 @@ pre {
 }
 .file_button:hover,
 .file_button_selected {
-	box-shadow: 0 0 2px 2px var(--highlight_color), inset 0 0 1px 1px var(--highlight_color);
+	box-shadow: 0 0 3px 2px var(--highlight_color);
 	text-decoration: none;
 }
 .file_button > img{
@@ -391,11 +389,11 @@ select {
 	display: inline-block;
 	border-radius: 6px;
 	margin: 3px;
-	background: linear-gradient(var(--input_color), var(--input_color_dark));
+	background: none;
+	background: var(--input_background);
 	padding: 5px 5px 5px 5px;
-	box-shadow: 1px 1px 5px -2px var(--shadow_color);
 	overflow: hidden;
-	color: var(--input_text_color);
+	color: var(--input_text);
 	vertical-align: middle;
 	align-items: center;
 	cursor: pointer;
@@ -423,9 +421,10 @@ input[type="button"]:focus,
 input[type="color"]:focus,
 select:focus {
 	color: #bfbfbf; /* Fallback */
-	color: var(--input_text_color);
+	color: var(--input_text);
 	text-decoration: none;
-	box-shadow: var(--highlight_border), 2px 2px 6px -3px var(--shadow_color);
+	box-shadow: inset 0 0 3px 0 var(--highlight_color);
+
 }
 button:active,
 .button:active,
@@ -452,8 +451,7 @@ input[type="submit"]:disabled, input[type="submit"].disabled,
 input[type="button"]:disabled, input[type="button"].disabled,
 input[type="color"]:disabled, input[type="color"].disabled,
 select:disabled , select.disabled {
-	background: var(--input_disabled_color);
-	color: var(--input_color);
+	color: var(--input_disabled_text);
 	box-shadow: none;
 	transition: none;
 	padding: 4px 5px 4px 5px;
@@ -478,13 +476,14 @@ button > svg,
 	white-space: nowrap;
 	text-align: center;
 	background-color: var(--shaded_background);
-	box-shadow: inset 0 -10px 8px -12px var(--shadow_color);
+	box-shadow: inset 0 -10px 6px -12px var(--shadow_color);
 }
 .tab_bar > button,
 .tab_bar > .button {
 	margin: 10px 0 0 10px;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
+	min-width: 5em;
 }
 .tab_bar > *:last-child {
 	margin-right: 10px;
@@ -492,9 +491,9 @@ button > svg,
 
 /* Dropdown list of the select tag */
 option{
-	background-color: var(--input_color_dark);
+	background: var(--input_background);
 	color: #bfbfbf; /* Fallback */
-	color: var(--text_color);
+	color: var(--body_text_color);
 }
 
 /* TEXT FIELDS */
@@ -509,10 +508,10 @@ input[type="date"]{
 	margin: 3px; /* Same as button, to make them align nicely */
 	border: none;
 	border-radius: 6px;
-	background: linear-gradient(var(--input_color_dark), var(--input_color));
-	box-shadow: inset 1px 1px 4px -2px var(--shadow_color);
+	background: var(--input_background);
+	box-shadow: inset 1px 1px 2px -1px var(--shadow_color);
 	padding: 3px 5px;
-	color: var(--input_text_color);
+	color: var(--input_text);
 	font-size: 1em;
 	outline: 0;
 	transition: box-shadow 0.3s;
@@ -529,7 +528,7 @@ input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus,
 input[type="date"]:focus{
-	box-shadow: var(--highlight_border), inset 3px 3px 6px -3px var(--shadow_color);
+	box-shadow: inset 0 0 3px 0 var(--highlight_color);
 }
 textarea:disabled,
 input[type="text"]:disabled,
@@ -537,8 +536,7 @@ input[type="password"]:disabled,
 input[type="email"]:disabled,
 input[type="number"]:disabled,
 input[type="date"]:disabled{
-	background: var(--input_disabled_color);
-	color: var(--input_color);
+	color: var(--input_disabled_text);
 	box-shadow: none;
 	transition: none;
 	cursor: not-allowed;

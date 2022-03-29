@@ -56,7 +56,7 @@ onMount(() => {
 	max-width: 80%;
 	height: auto;
 	padding: 8px;
-	background-color: var(--layer_4_color);
+	background-color: var(--popout_color);
 	box-shadow: 2px 2px 16px var(--shadow_color);
 	border-radius: 20px;
 	z-index: 50;
@@ -68,7 +68,7 @@ onMount(() => {
 	position: absolute;
 	left: 30px;
 	top: -15px;
-	border-bottom: 15px solid var(--layer_4_color);
+	border-bottom: 15px solid var(--popout_color);
 	border-left: 15px solid transparent;
 	border-right: 15px solid transparent;
 }

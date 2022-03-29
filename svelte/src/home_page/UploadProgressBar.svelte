@@ -53,7 +53,6 @@ const on_success = (resp) => {
 	href = "/u/"+resp.id
 	target = "_blank"
 
-	file_button.style.background = 'var(--layer_3_color)'
 	progress_bar.style.width = "100%"
 	progress_bar.style.opacity = "0"
 }
@@ -222,9 +221,8 @@ export const start = () => {
 	padding: 0;
 	overflow: hidden;
 	border-radius: 6px;
-	box-shadow: 2px 2px 8px -3px var(--shadow_color);
-	background-color: var(--layer_3_color);
-	color: var(--text_color);
+	background: var(--input_background);
+	color: var(--body_text_color);
 	word-break: break-all;
 	text-align: left;
 	line-height: 1.2em;
@@ -277,7 +275,7 @@ export const start = () => {
 	display: flex;
 	flex-direction: row;
 	height: 1.4em;
-	border-top: 1px solid var(--layer_3_color_border);
+	border-top: 1px solid var(--separator);
 	text-align: center;
 	font-family: sans-serif, monospace;
 	font-size: 0.9em;

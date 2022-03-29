@@ -160,7 +160,7 @@ let submit = async e => {
 }
 label {
 	display: block;
-	border-bottom: 1px var(--layer_2_color_border) solid;
+	border-bottom: 1px var(--separator) solid;
 	padding: 0.5em;
 }
 .spinner_container {

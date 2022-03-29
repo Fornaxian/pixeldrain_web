@@ -361,7 +361,7 @@ const node_click = (index) => {
 	display: inline-block;
 	margin: 4px 10px;
 	padding: 4px;
-	border-bottom: 1px solid var(--input_color);
+	border-bottom: 1px solid var(--separator);
 	cursor: pointer;
 }
 
@@ -391,7 +391,7 @@ const node_click = (index) => {
 
 #footer {
 	flex-shrink: 0;
-	color: var(--layer_1_text_color);
+	color: var(--background_text_color);
 	padding: 4px;
 }
 
@@ -407,12 +407,12 @@ const node_click = (index) => {
 	control over the size.
 	Check out https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing*/
 	margin: 0;
-	color: var(--text_color);
+	color: var(--body_text_color);
 	text-decoration: none;
 }
 .node:hover:not(.node_selected) {
-	background-color: var(--input_color_dark);
-	color: var(--input_text_color);
+	background: var(--input_background);
+	color: var(--input_text);
 	text-decoration: none;
 }
 .node_selected {

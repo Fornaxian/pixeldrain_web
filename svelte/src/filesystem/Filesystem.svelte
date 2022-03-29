@@ -289,12 +289,12 @@ const share = () => {
 			{#each state.parents as parent}
 				<a
 					href={state.path_root+parent.path}
-					class="breadcrumb breadcrumb_button"
+					class="breadcrumb button"
 					on:click|preventDefault={() => {navigate(parent.path, true)}}>
 					{parent.name}
 				</a> /
 			{/each}
-			<div class="breadcrumb breadcrumb_last">{state.base.name}</div>
+			<div class="breadcrumb button button_highlight">{state.base.name}</div>
 		</div>
 	</div>
 	<div class="list_navigator"></div>
@@ -397,7 +397,7 @@ const share = () => {
 	bottom: 0;
 	left: 0;
 	overflow: hidden;
-	background-color: var(--layer_2_color);
+	background: var(--body_background);
 }
 
 /* Headerbar (row 1) */
@@ -437,25 +437,9 @@ const share = () => {
 	border-radius: 1em;
 	min-width: 1em;
 	text-align: center;
-	line-height: 1.2em;
-	padding: 3px 8px;
+	padding: 4px 8px;
 	margin: 2px 6px;
 	word-break: break-all;
-}
-.breadcrumb_button {
-	cursor: pointer;
-	text-decoration: none;
-	color: var(--text_color);
-	background-color: var(--layer_3_color);
-	transition: 0.2s background-color, 0.2s color;
-}
-.breadcrumb_button:hover, .breadcrumb_button:focus, .breadcrumb_button:active {
-	color: var(--input_text_color);
-	background-color: var(--input_color);
-}
-.breadcrumb_last {
-	color: var(--highlight_text_color);
-	background-color: var(--highlight_color);
 }
 
 .button_home::after {
@@ -526,7 +510,6 @@ const share = () => {
 	padding: 0;
 	text-align: left;
 	transition: left 0.5s;
-	background-color: var(--layer_2_color);
 }
 .toolbar.toolbar_visible { left: 0; }
 .file_viewer > .file_viewer_window > .file_viewer_file_preview.toolbar_visible { left: 8em; }

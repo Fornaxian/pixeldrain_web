@@ -5,7 +5,7 @@ export let precision = 2
 
 <span>
 	€
-	<span class:red={amount < 0} class:green={amount > 0} class:zero={amount === 0}>
+	<span class:red={amount < 0} class:green={amount > 0}>
 		{(amount / 1000000).toFixed(precision)}
 	</span>
 </span>
@@ -16,8 +16,5 @@ export let precision = 2
 }
 .green {
 	color: var(--highlight_color);
-}
-.zero {
-	color: var(--layer_4_color);
 }
 </style>

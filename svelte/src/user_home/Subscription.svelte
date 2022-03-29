@@ -122,7 +122,7 @@ onMount(load_tranfer_used)
 						</button>
 					{/if}
 				</div>
-				<div class="feat_normal round_tr">
+				<div class="feat_normal round_tr" class:feat_highlight={subscription === "prepaid"}>
 					<ul>
 						<li>Base price of €1 per month</li>
 						<li>€4 per TB per month for storage</li>
@@ -269,15 +269,11 @@ onMount(load_tranfer_used)
 .feat_table > div > .feat_label {
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
-	background-color: var(--layer_1_color);
+	background: var(--shaded_background);
 	font-size: 1.1em;
-	color: #ffffff;
-	text-shadow: 0 0 3px #000000;
 }
 .feat_table > div > .feat_normal {
-	background-color: var(--layer_3_color);
-	box-shadow: 1px 1px 3px -1px var(--shadow_color);
-	text-shadow: 1px 1px 3px var(--shadow_color);
+	background: var(--popout_color);
 }
 .feat_table > div > .feat_highlight {
 	border: 1px solid var(--highlight_color)

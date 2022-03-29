@@ -177,8 +177,8 @@ const drop = (e, index) => {
 	padding: 0;
 	overflow: hidden;
 	border-radius: 8px;
-	box-shadow: 2px 2px 8px 0 var(--shadow_color);
-	background-color: var(--layer_3_color);
+	box-shadow: 1px 1px 4px -1px var(--shadow_color);
+	background-color: var(--input_background);
 	word-break: break-all;
 	text-align: center;
 	line-height: 1.2em;
@@ -186,7 +186,7 @@ const drop = (e, index) => {
 	text-overflow: ellipsis;
 	text-decoration: none;
 	vertical-align: top;
-	color: var(--text_color);
+	color: var(--body_text_color);
 }
 .file:hover, .highlight {
 	box-shadow: 0 0 2px 2px var(--highlight_color);
@@ -201,9 +201,12 @@ const drop = (e, index) => {
 	text-align: left;
 }
 .icon_container.editing {
-	box-shadow: inset 0 60px 40px -40px var(--shadow_color);
+	box-shadow: inset 0 60px 40px -20px var(--body_color);
 }
-.icon_container > i:hover {
+.icon_container > .icon {
+	color: var(--body_text_color);
+}
+.icon_container > .icon:hover {
 	color: var(--highlight_color);
 	cursor: pointer;
 }

@@ -79,7 +79,7 @@ const keydown = e => {
 	z-index: inherit;
 	display: flex;
 	flex-direction: column;
-	background-color: var(--layer_2_color);
+	background: var(--body_color);
 	max-height: 100%;
 	max-width: 100%;
 	margin: 0 auto;
@@ -97,8 +97,8 @@ const keydown = e => {
 	display: flex;
 	flex-direction: row;
 	padding: 1px;
-	background-color: var(--layer_1_color);
-	color: var(--layer_1_text_color);
+	background: var(--background_color);
+	color: var(--background_text_color);
 }
 .title {
 	flex-grow: 1;

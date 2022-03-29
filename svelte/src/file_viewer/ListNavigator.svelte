@@ -96,7 +96,7 @@ export const set_item = idx => {
 	display: flex;
 	position: relative;
 	width: 100%;
-	border-top: 1px solid var(--layer_2_color_border);
+	border-top: 1px solid var(--separator);
 	text-align: center;
 	line-height: 1em;
 

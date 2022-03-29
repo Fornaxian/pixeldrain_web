@@ -38,9 +38,6 @@ let set = s => {
 	<button class:button_highlight={theme==="snowstorm"} on:click={() => {set("snowstorm")}}>
 		Snowstorm
 	</button>
-	<button class:button_highlight={theme==="deepsea"} on:click={() => {set("deepsea")}}>
-		Deep sea
-	</button>
 	<button class:button_highlight={theme==="skeuos"} on:click={() => {set("skeuos")}}>
 		Skeuos
 	</button>

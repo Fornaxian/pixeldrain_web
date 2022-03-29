@@ -11,7 +11,7 @@ export let border_top = false;
 
 <style>
 .border_top {
-	border-top: solid 1px var(--layer_2_color_border);
+	border-top: solid 1px var(--separator);
 }
 .image {
 	display: block;

@@ -188,6 +188,8 @@ const toggle_select = () => {
 	margin: 16px 0 0 0;
 	padding: 0;
 	justify-content: center;
+	background: var(--shaded_background);
+	border-radius: 6px;
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }

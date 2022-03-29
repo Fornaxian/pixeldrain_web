@@ -75,14 +75,14 @@ const node_icon = node => {
 	overflow: hidden;
 	border-radius: 8px;
 	box-shadow: 1px 1px 6px 0 var(--shadow_color);
-	background-color: var(--layer_3_color);
+	background: var(--input_background);
 	text-align: center;
 	line-height: 1.2em;
 	display: inline-block;
 	text-overflow: ellipsis;
 	text-decoration: none;
 	vertical-align: top;
-	color: var(--text_color);
+	color: var(--body_text_color);
 }
 .file:hover {
 	box-shadow: 0 0 2px 2px var(--highlight_color);

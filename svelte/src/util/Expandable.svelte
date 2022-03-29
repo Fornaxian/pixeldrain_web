@@ -41,7 +41,7 @@ export let highlight = false
 <style>
 .expandable {
 	text-decoration: none;
-	background-color: var(--layer_3_color);
+	background-color: var(--popout_color);
 	margin: 0.6em 0;
 	border-radius: 6px;
 	overflow: hidden;
@@ -49,11 +49,11 @@ export let highlight = false
 .header {
 	display: flex;
 	flex-direction: row;
-	color: var(--text_color);
+	color: var(--body_text_color);
 }
 .click_expand:hover, .highlight:hover {
-	background-color: var(--input_color_dark);
-	color: var(--input_text_color);
+	background: var(--input_background);
+	color: var(--input_text);
 }
 .click_expand {
 	cursor: pointer;
@@ -72,8 +72,7 @@ export let highlight = false
 	padding: 0.4em;
 	flex-direction: column;
 	text-decoration: none;
-	border-top: 1px solid var(--layer_3_color_border);
-	color: var(--text_color);
+	border-top: 1px solid var(--separator);
 }
 .hidden {
 	display: none;
