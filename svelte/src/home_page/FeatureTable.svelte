@@ -59,12 +59,12 @@ onMount(() => {
 			Download speed
 		</div>
 		<div class="feat_normal">
-			Up to 4 MiB/s, may be slower during busy periods
+			Bandwidth is fairly distributed across free users, may be slow
+			during busy periods
 		</div>
 		<div class="feat_pro">
 			<span class="text_highlight">High priority</span>
-			bandwidth for files you download and files on your
-			account
+			bandwidth for files you download and files on your account
 		</div>
 	</div>
 	<div>

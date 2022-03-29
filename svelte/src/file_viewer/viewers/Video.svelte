@@ -1,6 +1,6 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
-import LargeFileMessage from "./LargeFileMessage.svelte";
+import BandwidthUsage from "./BandwidthUsage.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
@@ -166,7 +166,9 @@ const fullscreen = () => {
 	</TextBlock>
 
 	<br/><br/>
-	<LargeFileMessage file={file}></LargeFileMessage>
+	{#if file.show_ads}
+		<BandwidthUsage/>
+	{/if}
 {/if}
 
 <style>

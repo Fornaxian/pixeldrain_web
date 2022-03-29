@@ -270,6 +270,10 @@ a {
 	color: var(--link_color);
 }
 
+p {
+	margin: 1em 0;
+}
+
 .form{
 	margin-left: auto;
 	margin-right: auto;

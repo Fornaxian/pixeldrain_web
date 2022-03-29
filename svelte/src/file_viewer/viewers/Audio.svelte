@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher, tick } from "svelte";
-import LargeFileMessage from "./LargeFileMessage.svelte";
+import BandwidthUsage from "./BandwidthUsage.svelte";
 let dispatch = createEventDispatcher()
 
 export let file = {
@@ -8,6 +8,7 @@ export let file = {
 	name: "",
 	mime_type: "",
 	get_href: "",
+	show_ads: false,
 }
 
 $: loop = file.name.includes(".loop.")
@@ -88,7 +89,9 @@ const toggle_play = () => playing ? player.pause() : player.play()
 	{/if}
 
 	<br/><br/>
-	<LargeFileMessage file={file}></LargeFileMessage>
+	{#if file.show_ads}
+		<BandwidthUsage/>
+	{/if}
 </div>
 
 <style>
