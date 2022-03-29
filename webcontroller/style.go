@@ -84,6 +84,7 @@ func userStyle(style string) (s pixeldrainStyleSheet) {
 type pixeldrainStyleSheet struct {
 	Link                hsl // Based on Highlight if undefined
 	Input               Color
+	InputHover          Color
 	InputText           Color
 	InputDisabledText   Color
 	HighlightBackground Color
@@ -121,6 +122,7 @@ func (s pixeldrainStyleSheet) String() string {
 		`:root {
 	--link_color:                 %s;
 	--input_background:           %s;
+	--input_hover_background:     %s;
 	--input_text:                 %s;
 	--input_disabled_text:        %s;
 	--highlight_background:       %s;
@@ -153,6 +155,7 @@ func (s pixeldrainStyleSheet) String() string {
 }`,
 		s.Link.CSS(),
 		s.Input.CSS(),
+		s.InputHover.CSS(),
 		s.InputText.CSS(),
 		s.InputDisabledText.CSS(),
 		s.HighlightBackground.CSS(),
@@ -216,6 +219,7 @@ func (s pixeldrainStyleSheet) BackgroundTiles(tpl *template.Template) template.U
 
 var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	Input:               hsl{266, .85, .24},
+	InputHover:          hsl{266, .85, .28},
 	InputText:           hsl{0, 0, .9},
 	InputDisabledText:   hsl{266, .85, .4},
 	HighlightBackground: NewGradient(150, hsl{150, .84, .39}, hsl{85, .85, .35}),
@@ -241,6 +245,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 
 var pixeldrainClassicStyle = pixeldrainStyleSheet{
 	Input:               hsl{0, 0, .16},
+	InputHover:          hsl{0, 0, .20},
 	InputText:           hsl{0, 0, .9},
 	InputDisabledText:   hsl{0, 0, .4},
 	Highlight:           hsl{89, .60, .45},
@@ -259,6 +264,7 @@ var pixeldrainClassicStyle = pixeldrainStyleSheet{
 
 var solarizedDarkStyle = pixeldrainStyleSheet{
 	Input:               hsl{192, .95, .25},
+	InputHover:          hsl{192, .95, .29},
 	InputText:           hsl{0, 0, 1},
 	InputDisabledText:   hsl{0, 0, .5},
 	Highlight:           hsl{145, .63, .42},
@@ -277,6 +283,7 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 
 var maroonStyle = pixeldrainStyleSheet{
 	Input:               hsl{0, .8, .20}, // hsl(0, 87%, 40%)
+	InputHover:          hsl{0, .8, .24},
 	InputText:           hsl{0, 0, 1},
 	InputDisabledText:   hsl{0, 0, .5},
 	Highlight:           hsl{137, 1, .37}, //hsl(137, 100%, 37%)
@@ -294,7 +301,8 @@ var maroonStyle = pixeldrainStyleSheet{
 }
 
 var hackerStyle = pixeldrainStyleSheet{
-	Input:               hsl{0, 0, .1}, // hsl(120, 50%, 10%)
+	Input:               hsl{0, 0, .1},
+	InputHover:          hsl{0, 0, .14},
 	InputText:           hsl{0, 0, 1},
 	InputDisabledText:   hsl{0, 0, .5},
 	Highlight:           hsl{120, .8, .5},
@@ -313,6 +321,7 @@ var hackerStyle = pixeldrainStyleSheet{
 
 var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	Input:               hsl{167, .06, .30}, // hsl(167, 6%, 30%)
+	InputHover:          hsl{167, .06, .34}, // hsl(167, 6%, 30%)
 	InputText:           hsl{0, 0, 1},
 	InputDisabledText:   hsl{0, 0, .5},
 	Highlight:           hsl{165, 1, .40}, // hsl(165, 100%, 40%)
@@ -331,6 +340,7 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 
 var skeuosPixeldrainStyle = pixeldrainStyleSheet{
 	Input:               hsl{226, .15, .23}, //hsl(226, 15%, 23%)
+	InputHover:          hsl{226, .15, .27},
 	InputText:           hsl{60, .06, .93},
 	InputDisabledText:   hsl{0, 0, .5},
 	Highlight:           hsl{282, .65, .54}, // hsl(282, 65%, 54%)
@@ -349,6 +359,7 @@ var skeuosPixeldrainStyle = pixeldrainStyleSheet{
 
 var nordPixeldrainStyle = pixeldrainStyleSheet{
 	Input:               hsl{193, .43, .67},
+	InputHover:          hsl{193, .43, .71},
 	InputText:           hsl{180, .19, .23},
 	InputDisabledText:   hsl{0, 0, .5},
 	Highlight:           hsl{145, .63, .42},
@@ -368,6 +379,7 @@ var nordPixeldrainStyle = pixeldrainStyleSheet{
 var snowstormPixeldrainStyle = pixeldrainStyleSheet{
 	Link:                hsl{92, .40, .40},
 	Input:               hsl{219, .28, .88}, // hsl(219, 28%, 88%)
+	InputHover:          hsl{219, .28, .84}, // hsl(219, 28%, 88%)
 	InputText:           hsl{180, .19, .23},
 	InputDisabledText:   hsl{180, .05, .63},
 	Highlight:           hsl{179, .25, .65}, // hsl(92, 28%, 65%)
@@ -391,6 +403,7 @@ var snowstormPixeldrainStyle = pixeldrainStyleSheet{
 
 var sweetPixeldrainStyle = pixeldrainStyleSheet{
 	Input:             hsl{229, .25, .18}, // hsl(229, 25%, 14%)
+	InputHover:        hsl{229, .25, .22}, // hsl(229, 25%, 14%)
 	InputText:         hsl{223, .13, .79},
 	InputDisabledText: hsl{0, 0, .5},
 	Highlight:         hsl{296, .88, .44},

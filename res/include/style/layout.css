@@ -327,14 +327,17 @@ pre {
 	text-align: left;
 	line-height: 1.2em;
 	display: inline-block;
-	transition: box-shadow 0.3s, opacity 2s;
+	transition: box-shadow 0.3s, opacity 2s, background 0.2s;
 	white-space: normal;
 	text-overflow: ellipsis;
 	text-decoration: none;
 	vertical-align: top;
 	cursor: pointer;
 }
-.file_button:hover,
+.file_button:hover {
+	text-decoration: none;
+	background: var(--input_hover_background);
+}
 .file_button_selected {
 	box-shadow: 0 0 3px 2px var(--highlight_color);
 	text-decoration: none;
@@ -397,7 +400,7 @@ select {
 	vertical-align: middle;
 	align-items: center;
 	cursor: pointer;
-	transition: padding 0.2s, box-shadow 0.2s;
+	transition: padding 0.2s, box-shadow 0.2s, background 0.2s;
 
 	/* Remove default styles set by the user-agent */
 	outline: 0;
@@ -423,7 +426,8 @@ select:focus {
 	color: #bfbfbf; /* Fallback */
 	color: var(--input_text);
 	text-decoration: none;
-	box-shadow: inset 0 0 3px 0 var(--highlight_color);
+	/* box-shadow: inset 0 0 3px 0 var(--highlight_color); */
+	background: var(--input_hover_background);
 
 }
 button:active,
@@ -456,6 +460,7 @@ select:disabled , select.disabled {
 	transition: none;
 	padding: 4px 5px 4px 5px;
 	cursor: not-allowed;
+	background: var(--input_background);
 }
 button > i,
 .button > i,

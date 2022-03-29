@@ -409,6 +409,7 @@ const node_click = (index) => {
 	margin: 0;
 	color: var(--body_text_color);
 	text-decoration: none;
+	transition: background 0.2s;
 }
 .node:hover:not(.node_selected) {
 	background: var(--input_background);
