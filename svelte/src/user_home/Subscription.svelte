@@ -7,8 +7,6 @@ import { formatDataVolume } from "../util/Formatting.svelte";
 
 let loading = false
 let subscription = window.user.subscription.id
-let hotlinking = window.user.hotlinking_enabled
-let transfer_cap = window.user.monthly_transfer_cap / 1e9
 
 let result = ""
 let result_success = false
@@ -41,15 +39,16 @@ const update = async (update_field) => {
 
 		result_success = true
 		result = "Subscription updated"
-
-		setTimeout(() => {location.reload()}, 1000)
 	} catch (err) {
 		result_success = false
 		result = "Failed to update subscription: "+err
+	} finally {
 		loading = false
 	}
 }
 
+let hotlinking = window.user.hotlinking_enabled
+let transfer_cap = window.user.monthly_transfer_cap / 1e9
 let transfer_used = 0
 let load_tranfer_used = () => {
 	let today = new Date()
@@ -79,7 +78,6 @@ onMount(load_tranfer_used)
 		<Spinner />
 	</div>
 {/if}
-
 <section>
 	<h2>Manage subscription</h2>
 	{#if window.user.subscription.type !== "patreon"}
@@ -143,7 +141,7 @@ onMount(load_tranfer_used)
 						</button>
 					{/if}
 				</div>
-				<div class="feat_normal">
+				<div class="feat_normal" class:feat_highlight={subscription === "prepaid_temp_storage_120d"}>
 					<ul>
 						<li>Base price of €1 per month</li>
 						<li>€1 per TB per month for storage</li>
@@ -164,7 +162,7 @@ onMount(load_tranfer_used)
 						</button>
 					{/if}
 				</div>
-				<div class="feat_normal">
+				<div class="feat_normal" class:feat_highlight={subscription === "prepaid_temp_storage_60d"}>
 					<ul>
 						<li>Base price of €1 per month</li>
 						<li>€0.50 per TB per month for storage</li>
@@ -185,7 +183,7 @@ onMount(load_tranfer_used)
 						</button>
 					{/if}
 				</div>
-				<div class="feat_normal round_br">
+				<div class="feat_normal round_br" class:feat_highlight={subscription === ""}>
 					<ul>
 						<li>Standard free plan, files expire after 30 days.</li>
 					</ul>
@@ -247,6 +245,27 @@ onMount(load_tranfer_used)
 	width: 100px;
 	z-index: 1000;
 }
+
+.green {
+	color: var(--highlight_color);
+}
+.red {
+	color: var(--danger_color);
+}
+.billshock_container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.spinner_container {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	height: 100px;
+	width: 100px;
+	z-index: 1000;
+}
 .feat_table {
 	display: flex;
 	flex-direction: column;
@@ -281,17 +300,4 @@ onMount(load_tranfer_used)
 
 .feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
 .feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
-
-.green {
-	color: var(--highlight_color);
-}
-.red {
-	color: var(--danger_color);
-}
-.billshock_container {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
 </style>

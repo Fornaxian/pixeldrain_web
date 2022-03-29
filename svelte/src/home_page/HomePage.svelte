@@ -1,5 +1,6 @@
 <script>
 import FeatureTable from "./FeatureTable.svelte";
+import ForCreators from "./ForCreators.svelte";
 import OtherPlans from "./OtherPlans.svelte";
 import UploadWidget from "./UploadWidget.svelte";
 
@@ -42,18 +43,11 @@ import UploadWidget from "./UploadWidget.svelte";
 </header>
 <section>
 	<p>
-		By purchasing a subscription you support pixeldrain on its
-		mission to make content sharing easier, safer and faster for
-		everyone. The standard subscription plans use Patreon for
-		payment processing. Check out our <a href="#prepaid">prepaid
-		plans</a> if you would like to pay using cryptocurrencies.
-	</p>
-	<p>
-		Pixeldrain uses
-		<a href="https://en.wikipedia.org/wiki/Byte#Multiple-byte_units"
-		target="_blank">SI standard units</a> for measuring file sizes.
-		If you are using Microsoft Windows your files may appear smaller
-		than they actually are.
+		By purchasing a subscription you support pixeldrain on its mission to
+		make content sharing easier, safer and faster for everyone. The standard
+		subscription plans use Patreon for payment processing. Check out our <a
+		href="#prepaid">prepaid plans</a> if you are interested in more
+		professional services.
 	</p>
 	<br/>
 	<FeatureTable></FeatureTable>
@@ -63,31 +57,12 @@ import UploadWidget from "./UploadWidget.svelte";
 	</div>
 	<br/>
 	<OtherPlans></OtherPlans>
-
-	<h2 id="prepaid">Prepaid plans</h2>
-	<p>
-		You you need more bandwidth or storage space there's also
-		prepaid plans. For prepaid we charge a base rate of €1 per
-		month, the rest of the charges are usage based. We charge €4 per
-		TB per month for storage space and €2 per TB for bandwidth
-		usage. We accept Bitcoin, Lightning Network and Dogecoin
-		payments.
-	</p>
-	<p>
-		If €4 per TB of storage is too much we also have plans with
-		cheaper storage and file expiry enabled. Your files will not
-		expire as long as they generate traffic, so this can be a viable
-		option if your files are accessed often.
-	</p>
-	<div style="text-align: center;">
-		<img src="/res/img/coins.webp" alt="supported coins" style="width: 250px; height: 96px;"/>
-	</div>
-	<p>
-		To use prepaid you need to register a pixeldrain account. After
-		logging in head to the <a href="/user/transactions">transactions
-		page</a> to deposit your coins.
-	</p>
+	<br/>
 </section>
+
+<ForCreators/>
+<br/>
+<br/>
 
 <style>
 .header_image_container {
