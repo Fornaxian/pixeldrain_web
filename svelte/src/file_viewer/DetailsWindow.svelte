@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import { formatDataVolume, formatDate, formatThousands } from "../util/Formatting.svelte"
-import { domain_url } from "../util/Util.svelte";
+import { color_by_name, domain_url } from "../util/Util.svelte";
 import Chart from "../util/Chart.svelte";
 
 export let file = {
@@ -75,15 +75,15 @@ onMount(() => {
 			label: "Views",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.highlightColor,
-			backgroundColor: "#"+window.style.highlightColor,
+			borderColor: color_by_name("highlight_color"),
+			backgroundColor: color_by_name("highlight_color"),
 		},
 		{
 			label: "Downloads",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.dangerColor,
-			backgroundColor: "#"+window.style.dangerColor,
+			borderColor: color_by_name("danger_color"),
+			backgroundColor: color_by_name("danger_color"),
 		},
 	];
 })

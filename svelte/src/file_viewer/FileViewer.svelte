@@ -410,7 +410,9 @@ const keyboard_event = evt => {
 			bind:this={list_navigator}
 			files={list.files}
 			shuffle={list_shuffle}
-			on:set_file={e => { open_file_index(e.detail) }}>
+			on:set_file={e => open_file_index(e.detail)}
+			on:toggle_gallery={toggle_gallery}
+		>
 		</ListNavigator>
 	{/if}
 
@@ -421,17 +423,6 @@ const keyboard_event = evt => {
 			{#if view === "file"}
 				<FileStats file={file}></FileStats>
 				<hr/>
-			{/if}
-
-			{#if is_list}
-				<button
-					on:click={toggle_gallery}
-					class="toolbar_button"
-					class:button_highlight={view === "gallery"}
-					title="Opens a gallery view of the album">
-					<i class="icon">photo_library</i>
-					Gallery
-				</button>
 			{/if}
 
 			{#if file.abuse_type === "" && view === "file"}

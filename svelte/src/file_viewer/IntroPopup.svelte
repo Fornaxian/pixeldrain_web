@@ -57,7 +57,7 @@ onMount(() => {
 	height: auto;
 	padding: 8px;
 	background-color: var(--popout_color);
-	box-shadow: 2px 2px 16px var(--shadow_color);
+	box-shadow: 1px 1px 10px -2px var(--shadow_color);
 	border-radius: 20px;
 	z-index: 50;
 	transition: opacity .4s, left .5s, top .5s;

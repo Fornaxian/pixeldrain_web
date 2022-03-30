@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func userStyleFromRequest(r *http.Request) (s pixeldrainStyleSheet) {
+func userStyleFromRequest(r *http.Request) (s template.CSS) {
 	// Get the chosen style from the URL
 	var style = r.URL.Query().Get("style")
 
@@ -23,65 +23,36 @@ func userStyleFromRequest(r *http.Request) (s pixeldrainStyleSheet) {
 	return userStyle(style)
 }
 
-func userStyle(style string) (s pixeldrainStyleSheet) {
+func userStyle(style string) template.CSS {
 	switch style {
 	case "classic":
-		s = pixeldrainClassicStyle
+		return template.CSS(pixeldrainClassicStyle.String())
 	case "solarized_dark":
-		s = solarizedDarkStyle
+		return template.CSS(solarizedDarkStyle.String())
 	case "maroon":
-		s = maroonStyle
+		return template.CSS(maroonStyle.String())
 	case "hacker":
-		s = hackerStyle
+		return template.CSS(hackerStyle.String())
 	case "canta":
-		s = cantaPixeldrainStyle
+		return template.CSS(cantaPixeldrainStyle.String())
 	case "skeuos":
-		s = skeuosPixeldrainStyle
+		return template.CSS(skeuosPixeldrainStyle.String())
 	case "nord":
-		s = nordPixeldrainStyle
-	case "snowstorm":
-		s = snowstormPixeldrainStyle
+		return template.CSS(nordPixeldrainStyle.withLight(snowstormPixeldrainStyle))
+	case "nord_dark":
+		return template.CSS(nordPixeldrainStyle.String())
+	case "nord_light", "snowstorm":
+		return template.CSS(snowstormPixeldrainStyle.String())
 	case "sweet":
-		s = sweetPixeldrainStyle
+		return template.CSS(sweetPixeldrainStyle.String())
 	case "default":
 		fallthrough // use default case
 	default:
-		s = defaultPixeldrainStyle
+		return template.CSS(defaultPixeldrainStyle.String())
 	}
-
-	// Set default colors
-	var noColor = hsl{0, 0, 0}
-	var setDefaultHSL = func(color *hsl, def hsl) {
-		if *color == noColor {
-			*color = def
-		}
-	}
-	var setDefaultColor = func(color *Color, def Color) {
-		if *color == nil {
-			*color = def
-		}
-	}
-	setDefaultHSL(&s.Link, s.Highlight.Add(0, 0, -.05))
-	setDefaultColor(&s.ScrollbarBackground, s.BodyColor)
-	setDefaultColor(&s.ScrollbarForeground, s.Input)
-	setDefaultColor(&s.ScrollbarHover, s.Highlight)
-	setDefaultHSL(&s.Chart1, s.Highlight)
-	setDefaultHSL(&s.Chart2, s.Chart1.Add(120, 0, 0))
-	setDefaultHSL(&s.Chart3, s.Chart2.Add(120, 0, 0))
-	setDefaultColor(&s.HighlightBackground, Gradient{180, []Color{s.Highlight, s.Highlight.Add(0, 0, -0.03)}})
-	setDefaultColor(&s.Background, s.BackgroundColor)
-	setDefaultColor(&s.BackgroundPattern, s.BackgroundColor)
-	setDefaultColor(&s.ParallaxSlider, s.BackgroundColor)
-	setDefaultColor(&s.Navigation, NoColor)
-	setDefaultColor(&s.BodyBackground, s.BodyColor)
-	setDefaultHSL(&s.BackgroundText, s.BodyText)
-	setDefaultColor(&s.Separator, s.BodyColor.Add(0, 0, .05))
-	setDefaultColor(&s.Shaded, RGBA{0, 0, 0, 0.2})
-
-	return s
 }
 
-type pixeldrainStyleSheet struct {
+type styleSheet struct {
 	Link                hsl // Based on Highlight if undefined
 	Input               Color
 	InputHover          Color
@@ -91,7 +62,6 @@ type pixeldrainStyleSheet struct {
 	Highlight           hsl // Links, highlighted buttons, list navigation
 	HighlightText       hsl // Text on buttons
 	Danger              hsl
-	ScrollbarBackground Color
 	ScrollbarForeground Color // Based on Highlight if undefined
 	ScrollbarHover      Color // Based on ScrollbarForeground if undefined
 
@@ -117,7 +87,41 @@ type pixeldrainStyleSheet struct {
 	Light  bool // If this is a light theme
 }
 
-func (s pixeldrainStyleSheet) String() string {
+func (s styleSheet) withDefaults() styleSheet {
+	// Set default colors
+	var noColor = hsl{0, 0, 0}
+	var defaultHSL = func(color *hsl, def hsl) {
+		if *color == noColor {
+			*color = def
+		}
+	}
+	var defaultColor = func(color *Color, def Color) {
+		if *color == nil {
+			*color = def
+		}
+	}
+	defaultHSL(&s.Link, s.Highlight.Add(0, 0, -.05))
+	defaultColor(&s.ScrollbarForeground, s.Input)
+	defaultColor(&s.ScrollbarHover, s.Highlight)
+	defaultHSL(&s.Chart1, s.Highlight)
+	defaultHSL(&s.Chart2, s.Chart1.Add(120, 0, 0))
+	defaultHSL(&s.Chart3, s.Chart2.Add(120, 0, 0))
+	defaultColor(&s.HighlightBackground, s.Highlight)
+	defaultColor(&s.Background, s.BackgroundColor)
+	defaultColor(&s.BackgroundPattern, s.BackgroundColor)
+	defaultColor(&s.ParallaxSlider, s.BackgroundColor)
+	defaultColor(&s.Navigation, NoColor)
+	defaultColor(&s.BodyBackground, s.BodyColor)
+	defaultHSL(&s.BackgroundText, s.BodyText)
+	defaultColor(&s.Separator, s.BodyColor.Add(0, 0, .05))
+	defaultColor(&s.Shaded, RGBA{0, 0, 0, 0.2})
+
+	return s
+}
+
+func (s styleSheet) String() string {
+	s = s.withDefaults()
+
 	return fmt.Sprintf(
 		`:root {
 	--link_color:                 %s;
@@ -130,7 +134,6 @@ func (s pixeldrainStyleSheet) String() string {
 	--highlight_text_color:       %s;
 	--danger_color:               %s;
 	--danger_color_dark:          %s;
-	--scrollbar_background_color: %s;
 	--scrollbar_foreground_color: %s;
 	--scrollbar_hover_color:      %s;
 
@@ -163,7 +166,6 @@ func (s pixeldrainStyleSheet) String() string {
 		s.HighlightText.CSS(),
 		s.Danger.CSS(),
 		s.Danger.Add(0, 0, -.02).CSS(),
-		s.ScrollbarBackground.CSS(),
 		s.ScrollbarForeground.CSS(),
 		s.ScrollbarHover.CSS(),
 		s.BackgroundColor.CSS(),
@@ -185,7 +187,19 @@ func (s pixeldrainStyleSheet) String() string {
 	)
 }
 
-func (s pixeldrainStyleSheet) BackgroundTiles(tpl *template.Template) template.URL {
+func (dark styleSheet) withLight(light styleSheet) string {
+	return fmt.Sprintf(
+		`%s
+
+@media (prefers-color-scheme: light) {
+	%s
+}`,
+		dark.String(),
+		light.String(),
+	)
+}
+
+func BackgroundTiles(tpl *template.Template) template.URL {
 	var (
 		now   = time.Now()
 		month = now.Month()
@@ -217,7 +231,7 @@ func (s pixeldrainStyleSheet) BackgroundTiles(tpl *template.Template) template.U
 
 // Following are all the available styles
 
-var defaultPixeldrainStyle = pixeldrainStyleSheet{
+var defaultPixeldrainStyle = styleSheet{
 	Input:               hsl{266, .85, .24},
 	InputHover:          hsl{266, .85, .28},
 	InputText:           hsl{0, 0, .9},
@@ -226,7 +240,6 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	Highlight:           hsl{117, .63, .46},
 	HighlightText:       hsl{0, 0, 0},
 	Danger:              hsl{357, .63, .46},
-	ScrollbarBackground: hsl{274, .9, .14},
 	ScrollbarForeground: hsl{266, .85, .40},
 	ScrollbarHover:      hsl{266, .85, .50},
 
@@ -243,7 +256,7 @@ var defaultPixeldrainStyle = pixeldrainStyleSheet{
 	Shadow: hsl{0, 0, 0},
 }
 
-var pixeldrainClassicStyle = pixeldrainStyleSheet{
+var pixeldrainClassicStyle = styleSheet{
 	Input:               hsl{0, 0, .16},
 	InputHover:          hsl{0, 0, .20},
 	InputText:           hsl{0, 0, .9},
@@ -262,7 +275,7 @@ var pixeldrainClassicStyle = pixeldrainStyleSheet{
 	Shadow: hsl{0, 0, 0},
 }
 
-var solarizedDarkStyle = pixeldrainStyleSheet{
+var solarizedDarkStyle = styleSheet{
 	Input:               hsl{192, .95, .25},
 	InputHover:          hsl{192, .95, .29},
 	InputText:           hsl{0, 0, 1},
@@ -281,7 +294,7 @@ var solarizedDarkStyle = pixeldrainStyleSheet{
 	Shadow: hsl{0, 0, 0},
 }
 
-var maroonStyle = pixeldrainStyleSheet{
+var maroonStyle = styleSheet{
 	Input:               hsl{0, .8, .20}, // hsl(0, 87%, 40%)
 	InputHover:          hsl{0, .8, .24},
 	InputText:           hsl{0, 0, 1},
@@ -300,7 +313,7 @@ var maroonStyle = pixeldrainStyleSheet{
 	Shadow: hsl{0, 0, 0},
 }
 
-var hackerStyle = pixeldrainStyleSheet{
+var hackerStyle = styleSheet{
 	Input:               hsl{0, 0, .1},
 	InputHover:          hsl{0, 0, .14},
 	InputText:           hsl{0, 0, 1},
@@ -319,7 +332,7 @@ var hackerStyle = pixeldrainStyleSheet{
 	Shadow: hsl{0, 0, 0},
 }
 
-var cantaPixeldrainStyle = pixeldrainStyleSheet{
+var cantaPixeldrainStyle = styleSheet{
 	Input:               hsl{167, .06, .30}, // hsl(167, 6%, 30%)
 	InputHover:          hsl{167, .06, .34}, // hsl(167, 6%, 30%)
 	InputText:           hsl{0, 0, 1},
@@ -338,7 +351,7 @@ var cantaPixeldrainStyle = pixeldrainStyleSheet{
 	Shadow: hsl{0, 0, 0},
 }
 
-var skeuosPixeldrainStyle = pixeldrainStyleSheet{
+var skeuosPixeldrainStyle = styleSheet{
 	Input:               hsl{226, .15, .23}, //hsl(226, 15%, 23%)
 	InputHover:          hsl{226, .15, .27},
 	InputText:           hsl{60, .06, .93},
@@ -357,51 +370,51 @@ var skeuosPixeldrainStyle = pixeldrainStyleSheet{
 	Shadow: hsl{0, 0, 0},
 }
 
-var nordPixeldrainStyle = pixeldrainStyleSheet{
-	Input:               hsl{193, .43, .67},
-	InputHover:          hsl{193, .43, .71},
-	InputText:           hsl{180, .19, .23},
-	InputDisabledText:   hsl{0, 0, .5},
-	Highlight:           hsl{145, .63, .42},
-	HighlightText:       hsl{0, 0, 0},
-	Danger:              hsl{354, .42, .56},
-	ScrollbarForeground: hsl{193, .43, .67},
-	ScrollbarHover:      hsl{193, .43, .76},
+var nordPixeldrainStyle = styleSheet{
+	Input:               hsl{220, .16, .36}, // nord3
+	InputHover:          hsl{220, .16, .40},
+	InputText:           hsl{218, .27, .92}, // nord5 hsl(218, 27%, 92%)
+	InputDisabledText:   hsl{220, .16, .22}, // nord0 hsl(220, 16%, 22%)
+	Highlight:           hsl{92, .28, .65},  // nord14 hsl(92, 28%, 65%)
+	HighlightText:       hsl{220, .16, .22}, // nord0
+	Danger:              hsl{354, .42, .56}, // nord11 hsl(354, 42%, 56%)
+	ScrollbarForeground: hsl{179, .25, .65}, // nord7 hsl(179, 25%, 65%)
+	ScrollbarHover:      hsl{193, .43, .67}, // nord8 hsl(193, 43%, 67%)
 
-	BackgroundColor: hsl{220, .16, .22},
-	BodyColor:       hsl{222, .16, .28},
-	BodyText:        hsl{210, .34, .63},
-	PopoutColor:     hsl{220, .17, .32},
+	BackgroundColor: hsl{220, .16, .22}, // nord0
+	BodyColor:       hsl{222, .16, .28}, // nord1
+	BodyText:        hsl{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
+	PopoutColor:     hsl{220, .17, .32}, // nord2
 
 	Shadow: hsl{0, 0, 0},
 }
 
-var snowstormPixeldrainStyle = pixeldrainStyleSheet{
+var snowstormPixeldrainStyle = styleSheet{
 	Link:                hsl{92, .40, .40},
-	Input:               hsl{219, .28, .88}, // hsl(219, 28%, 88%)
-	InputHover:          hsl{219, .28, .84}, // hsl(219, 28%, 88%)
-	InputText:           hsl{180, .19, .23},
-	InputDisabledText:   hsl{180, .05, .63},
-	Highlight:           hsl{179, .25, .65}, // hsl(92, 28%, 65%)
-	HighlightText:       hsl{0, 0, 0},
-	Danger:              hsl{354, .42, .56},
-	ScrollbarForeground: hsl{193, .43, .67},
-	ScrollbarHover:      hsl{193, .43, .76},
+	Input:               hsl{218, .27, .94}, // nord6 hsl(218, 27%, 94%)
+	InputHover:          hsl{218, .27, .98},
+	InputText:           hsl{222, .16, .28}, // nord1 hsl(222, 16%, 28%)
+	InputDisabledText:   hsl{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
+	Highlight:           hsl{92, .28, .65},  // nord14 hsl(92, 28%, 65%)
+	HighlightText:       hsl{220, .16, .22}, // nord0
+	Danger:              hsl{354, .42, .56}, // nord11 hsl(354, 42%, 56%)
+	ScrollbarForeground: hsl{179, .25, .65}, // nord7 hsl(179, 25%, 65%)
+	ScrollbarHover:      hsl{193, .43, .67}, // nord8 hsl(193, 43%, 67%)
 
-	BackgroundColor:   hsl{220, .16, .36}, // hsl(220, 16%, 36%)
-	BackgroundText:    hsl{219, .28, .88},
-	ParallaxSlider:    hsl{220, .17, .20}, // Layer 1 but darker
-	BodyColor:         hsl{218, .27, .94},
-	BodyText:          hsl{220, .16, .36}, // hsl(220, 16%, 36%)
+	BackgroundColor:   hsl{220, .16, .36}, // nord3 hsl(220, 16%, 36%)
+	BackgroundText:    hsl{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
+	ParallaxSlider:    hsl{220, .16, .22}, // nord0 hsl(220, 16%, 22%)
+	BodyColor:         hsl{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
+	BodyText:          hsl{220, .17, .32}, // nord2 hsl(220, 17%, 32%)
 	Shaded:            RGBA{255, 255, 255, 0.4},
 	BackgroundPattern: hsl{219, .28, .88}, // hsl(219, 28%, 88%)
-	PopoutColor:       hsl{218, .27, .92}, // hsl(218, 27%, 92%)
+	PopoutColor:       hsl{218, .27, .92}, // nord5 hsl(218, 27%, 92%)
 
 	Shadow: hsl{220, .16, .36},
 	Light:  true,
 }
 
-var sweetPixeldrainStyle = pixeldrainStyleSheet{
+var sweetPixeldrainStyle = styleSheet{
 	Input:             hsl{229, .25, .18}, // hsl(229, 25%, 14%)
 	InputHover:        hsl{229, .25, .22}, // hsl(229, 25%, 14%)
 	InputText:         hsl{223, .13, .79},

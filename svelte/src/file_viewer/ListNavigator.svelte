@@ -18,6 +18,9 @@ export const next = () => {
 export const prev = () => {
 	dispatch("set_file", selected_file_index-1)
 }
+export const toggle_gallery = () => {
+	dispatch("toggle_gallery")
+}
 
 let history = []
 export const rand_item = () => {
@@ -69,8 +72,9 @@ export const set_item = idx => {
 </script>
 
 <div class="nav_container">
-	<button class="nav_button" style="margin-right: 0;" on:click={prev} title="Open the previous file">
-		<i class="icon">chevron_left</i>
+	<button class="nav_button" on:click={toggle_gallery} title="Opens a gallery view of the album">
+		<i class="icon">photo_library</i><br/>
+		Gallery
 	</button>
 	<div bind:this={file_list_div} class="list_navigator">
 		{#each files as file, index (file)}
@@ -84,9 +88,6 @@ export const set_item = idx => {
 			</a>
 		{/each}
 	</div>
-	<button class="nav_button" style="margin-left: 0;" on:click={next} title="Open the next file">
-		<i class="icon">chevron_right</i>
-	</button>
 </div>
 
 <style>
@@ -104,7 +105,6 @@ export const set_item = idx => {
 .nav_button{
 	flex-grow: 0;
 	flex-shrink: 0;
-	height: 2.6em;
 	margin-top: 8px;
 }
 

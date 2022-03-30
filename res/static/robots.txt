@@ -1,4 +1,3 @@
 User-Agent: *
-Disallow: /res/
 Disallow: /u/
 Disallow: /l/

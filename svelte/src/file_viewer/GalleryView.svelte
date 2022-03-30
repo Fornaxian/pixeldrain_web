@@ -178,7 +178,7 @@ const drop = (e, index) => {
 	overflow: hidden;
 	border-radius: 8px;
 	box-shadow: 1px 1px 4px -1px var(--shadow_color);
-	background-color: var(--input_background);
+	background: var(--input_background);
 	word-break: break-all;
 	text-align: center;
 	line-height: 1.2em;
@@ -187,8 +187,12 @@ const drop = (e, index) => {
 	text-decoration: none;
 	vertical-align: top;
 	color: var(--body_text_color);
+	transition: background 0.2s;
 }
-.file:hover, .highlight {
+.file:hover {
+	background: var(--input_hover_background);
+}
+.highlight {
 	box-shadow: 0 0 2px 2px var(--highlight_color);
 	text-decoration: none;
 }

@@ -5,6 +5,7 @@ import Chart from "../util/Chart.svelte";
 import StorageProgressBar from "./StorageProgressBar.svelte";
 import HotlinkProgressBar from "./HotlinkProgressBar.svelte";
 import Euro from "../util/Euro.svelte"
+import { color_by_name } from "../util/Util.svelte";
 
 let graph_views_downloads = null
 let graph_bandwidth = null
@@ -140,15 +141,15 @@ onMount(() => {
 			label: "Views",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.highlightColor,
-			backgroundColor: "#"+window.style.highlightColor,
+			borderColor: color_by_name("highlight_color"),
+			backgroundColor: color_by_name("highlight_color"),
 		},
 		{
 			label: "Downloads",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.dangerColor,
-			backgroundColor: "#"+window.style.dangerColor,
+			borderColor: color_by_name("danger_color"),
+			backgroundColor: color_by_name("danger_color"),
 		},
 	];
 	graph_bandwidth.data().datasets = [
@@ -156,22 +157,22 @@ onMount(() => {
 			label: "Total bandwidth",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.chart1Color,
-			backgroundColor: "#"+window.style.chart1Color,
+			borderColor: color_by_name("chart_1_color"),
+			backgroundColor: color_by_name("chart_1_color"),
 		},
 		{
 			label: "Premium bandwidth",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.chart2Color,
-			backgroundColor: "#"+window.style.chart2Color,
+			borderColor: color_by_name("chart_2_color"),
+			backgroundColor: color_by_name("chart_2_color"),
 		},
 		{
 			label: "Kickback bandwidth",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.chart3Color,
-			backgroundColor: "#"+window.style.chart3Color,
+			borderColor: color_by_name("chart_3_color"),
+			backgroundColor: color_by_name("chart_3_color"),
 		},
 	];
 

@@ -33,10 +33,13 @@ let set = s => {
 		Canta
 	</button>
 	<button class:button_highlight={theme==="nord"} on:click={() => {set("nord")}}>
-		Nord
+		Nord (dynamic)
 	</button>
-	<button class:button_highlight={theme==="snowstorm"} on:click={() => {set("snowstorm")}}>
-		Snowstorm
+	<button class:button_highlight={theme==="nord_dark"} on:click={() => {set("nord_dark")}}>
+		Nord (dark)
+	</button>
+	<button class:button_highlight={theme==="nord_light"} on:click={() => {set("nord_light")}}>
+		Nord (light)
 	</button>
 	<button class:button_highlight={theme==="skeuos"} on:click={() => {set("skeuos")}}>
 		Skeuos

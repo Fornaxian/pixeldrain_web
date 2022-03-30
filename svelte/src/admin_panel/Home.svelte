@@ -2,6 +2,7 @@
 import { onDestroy, onMount } from "svelte";
 import { formatDataVolume, formatThousands, formatDate, formatNumber, formatDuration } from "../util/Formatting.svelte";
 import Chart from "../util/Chart.svelte";
+import { color_by_name } from "../util/Util.svelte";
 
 let graphViews
 let graphBandwidth
@@ -115,15 +116,15 @@ onMount(() => {
 			label: "Bandwidth (free)",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.highlightColor,
-			backgroundColor: "#"+window.style.highlightColor,
+			borderColor: color_by_name("highlight_color"),
+			backgroundColor: color_by_name("highlight_color"),
 		},
 		{
 			label: "Bandwidth (premium)",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.dangerColor,
-			backgroundColor: "#"+window.style.dangerColor,
+			borderColor: color_by_name("danger_color"),
+			backgroundColor: color_by_name("danger_color"),
 		},
 	];
 	graphViews.data().datasets = [
@@ -131,15 +132,15 @@ onMount(() => {
 			label: "Views",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.highlightColor,
-			backgroundColor: "#"+window.style.highlightColor,
+			borderColor: color_by_name("highlight_color"),
+			backgroundColor: color_by_name("highlight_color"),
 		},
 		{
 			label: "Downloads",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: "#"+window.style.dangerColor,
-			backgroundColor: "#"+window.style.dangerColor,
+			borderColor: color_by_name("danger_color"),
+			backgroundColor: color_by_name("danger_color"),
 		},
 	];
 

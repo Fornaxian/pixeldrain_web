@@ -1,5 +1,6 @@
 <script>
 import { onMount } from "svelte"
+import { color_by_name_no_prefix } from "../util/Util.svelte";
 import * as head from "./AdHead.svelte"
 
 let container
@@ -114,7 +115,7 @@ head.valueimpression_loaded.subscribe(v => {
 	{:else if ad_type === "aads"}
 		<iframe bind:this={banner} class="banner"
 			data-aa="73974"
-			src="//ad.a-ads.com/73974?size=728x90&background_color={window.style.bodyColor}&text_color={window.style.bodyTextColor}&title_color={window.style.highlightColor}&title_hover_color={window.style.highlightColor}&link_color={window.style.highlightColor}&link_hover_color={window.style.highlightColor}"
+			src="//ad.a-ads.com/73974?size=728x90&background_color={color_by_name_no_prefix('body_color')}&text_color={color_by_name_no_prefix('body_text_color')}&title_color={color_by_name_no_prefix('highlight_color')}&title_hover_color={color_by_name_no_prefix('highlight_color')}&link_color={color_by_name_no_prefix('highlight_color')}&link_hover_color={color_by_name_no_prefix('highlight_color')}"
 			style="width:728px; height:90px; border:0px; padding:0; overflow:hidden; background-color: transparent;"
 			title="A-ads advertisement">
 		</iframe>

@@ -59,4 +59,11 @@ export const add_upload_history = id => {
 	// Save the new ID
 	localStorage.setItem("uploaded_files", id + "," + uploads);
 }
+
+export const color_by_name = name => {
+	return getComputedStyle(document.documentElement).getPropertyValue("--"+name);
+}
+export const color_by_name_no_prefix = name => {
+	return color_by_name(name).replace(/^#/, "");
+}
 </script>

@@ -25,7 +25,6 @@ type TemplateData struct {
 	Authenticated     bool
 	User              pixelapi.UserInfo
 	UserAgent         string
-	Style             pixeldrainStyleSheet
 	UserStyle         template.CSS
 	BackgroundPattern template.URL
 	APIEndpoint       template.URL
@@ -46,10 +45,9 @@ type TemplateData struct {
 	Form Form
 }
 
-func (td *TemplateData) setStyle(style pixeldrainStyleSheet) {
-	td.Style = style
-	td.UserStyle = template.CSS(style.String())
-	td.BackgroundPattern = style.BackgroundTiles(td.tpm.tpl)
+func (td *TemplateData) setStyle(style template.CSS) {
+	td.UserStyle = style
+	td.BackgroundPattern = BackgroundTiles(td.tpm.tpl)
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {

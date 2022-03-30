@@ -76,7 +76,6 @@ header {
 }
 .keyword {
 	font-size: 1.1em;
-	text-shadow: 1px 1px 3px var(--shadow_color);
 }
 h2 {
 	border-bottom: none;

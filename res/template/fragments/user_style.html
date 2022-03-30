@@ -4,18 +4,3 @@
 {{template "layout.css" .}}
 </style>
 {{end}}
-
-{{ define "user_style_js" }}
-<script>
-	window.style = {
-		bodyTextColor: "{{.Style.BodyText.RGB}}",
-		highlightColor: "{{.Style.Highlight.RGB}}",
-		dangerColor: "{{.Style.Danger.RGB}}",
-		bodyColor: "{{.Style.BodyColor.RGB}}",
-		separatorColor: "{{.Style.Separator.RGB}}",
-		chart1Color: "{{.Style.Chart1.RGB}}",
-		chart2Color: "{{.Style.Chart2.RGB}}",
-		chart3Color: "{{.Style.Chart3.RGB}}",
-	}
-</script>
-{{ end }}
