@@ -133,7 +133,7 @@
 	hyphens: auto;
 }
 .feat_table > div > .feat_pro {
-	background-color: var(--popout_color);
+	background-color: var(--card_color);
 	box-shadow: 1px 1px 2px -1px var(--shadow_color);
 }
 .text_highlight {

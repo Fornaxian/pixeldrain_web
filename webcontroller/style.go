@@ -25,10 +25,22 @@ func userStyleFromRequest(r *http.Request) (s template.CSS) {
 
 func userStyle(style string) template.CSS {
 	switch style {
-	case "classic":
-		return template.CSS(pixeldrainClassicStyle.String())
+	case "nord":
+		return template.CSS(nordDarkStyle.withLight(nordLightStyle))
+	case "nord_dark":
+		return template.CSS(nordDarkStyle.String())
+	case "nord_light", "snowstorm":
+		return template.CSS(nordLightStyle.String())
+	case "solarized":
+		return template.CSS(solarizedDarkStyle.withLight(solarizedLightStyle))
 	case "solarized_dark":
 		return template.CSS(solarizedDarkStyle.String())
+	case "solarized_light":
+		return template.CSS(solarizedLightStyle.String())
+	case "classic":
+		return template.CSS(classicStyle.String())
+	case "purple_drain":
+		return template.CSS(defaultPixeldrainStyle.String())
 	case "maroon":
 		return template.CSS(maroonStyle.String())
 	case "hacker":
@@ -37,18 +49,12 @@ func userStyle(style string) template.CSS {
 		return template.CSS(cantaPixeldrainStyle.String())
 	case "skeuos":
 		return template.CSS(skeuosPixeldrainStyle.String())
-	case "nord":
-		return template.CSS(nordPixeldrainStyle.withLight(snowstormPixeldrainStyle))
-	case "nord_dark":
-		return template.CSS(nordPixeldrainStyle.String())
-	case "nord_light", "snowstorm":
-		return template.CSS(snowstormPixeldrainStyle.String())
 	case "sweet":
 		return template.CSS(sweetPixeldrainStyle.String())
-	case "default":
-		fallthrough // use default case
+	case "adwaita":
+		return template.CSS(adwaitaDarkStyle.withLight(adwaitaLightStyle))
 	default:
-		return template.CSS(defaultPixeldrainStyle.String())
+		return template.CSS(nordDarkStyle.withLight(nordLightStyle))
 	}
 }
 
@@ -76,7 +82,8 @@ type styleSheet struct {
 	BodyText          hsl
 	Separator         Color
 	Shaded            Color
-	PopoutColor       hsl
+	CardColor         hsl
+	CardText          hsl
 
 	// Colors to use in graphs
 	Chart1 hsl
@@ -84,7 +91,6 @@ type styleSheet struct {
 	Chart3 hsl
 
 	Shadow hsl
-	Light  bool // If this is a light theme
 }
 
 func (s styleSheet) withDefaults() styleSheet {
@@ -148,7 +154,7 @@ func (s styleSheet) String() string {
 	--body_text_color:          %s;
 	--separator:                %s;
 	--shaded_background:        %s;
-	--popout_color:             %s;
+	--card_color:               %s;
 
 	--chart_1_color: %s;
 	--chart_2_color: %s;
@@ -179,7 +185,7 @@ func (s styleSheet) String() string {
 		s.BodyText.CSS(),
 		s.Separator.CSS(),
 		s.Shaded.CSS(),
-		s.PopoutColor.CSS(),
+		s.CardColor.CSS(),
 		s.Chart1.CSS(),
 		s.Chart2.CSS(),
 		s.Chart3.CSS(),
@@ -251,14 +257,14 @@ var defaultPixeldrainStyle = styleSheet{
 	BodyColor:         hsl{274, .9, .14},
 	BodyBackground:    NoColor,
 	BodyText:          hsl{0, 0, .8},
-	PopoutColor:       hsl{275, .8, .18},
+	CardColor:         hsl{275, .8, .18},
 
 	Shadow: hsl{0, 0, 0},
 }
 
-var pixeldrainClassicStyle = styleSheet{
-	Input:               hsl{0, 0, .16},
-	InputHover:          hsl{0, 0, .20},
+var classicStyle = styleSheet{
+	Input:               hsl{0, 0, .18},
+	InputHover:          hsl{0, 0, .22},
 	InputText:           hsl{0, 0, .9},
 	InputDisabledText:   hsl{0, 0, .4},
 	Highlight:           hsl{89, .60, .45},
@@ -268,28 +274,9 @@ var pixeldrainClassicStyle = styleSheet{
 	ScrollbarHover:      hsl{0, 0, .50},
 
 	BackgroundColor: hsl{0, 0, .08},
-	BodyColor:       hsl{0, 0, .11},
+	BodyColor:       hsl{0, 0, .12},
 	BodyText:        hsl{0, 0, .8},
-	PopoutColor:     hsl{0, 0, .18},
-
-	Shadow: hsl{0, 0, 0},
-}
-
-var solarizedDarkStyle = styleSheet{
-	Input:               hsl{192, .95, .25},
-	InputHover:          hsl{192, .95, .29},
-	InputText:           hsl{0, 0, 1},
-	InputDisabledText:   hsl{0, 0, .5},
-	Highlight:           hsl{145, .63, .42},
-	HighlightText:       hsl{0, 0, 0},
-	Danger:              hsl{343, .63, .42},
-	ScrollbarForeground: hsl{192, .95, .30},
-	ScrollbarHover:      hsl{192, .95, .40},
-
-	BackgroundColor: hsl{192, .87, .09},
-	BodyColor:       hsl{192, .81, .14},
-	BodyText:        hsl{0, 0, .75},
-	PopoutColor:     hsl{192, .95, .17},
+	CardColor:       hsl{0, 0, .16},
 
 	Shadow: hsl{0, 0, 0},
 }
@@ -308,7 +295,7 @@ var maroonStyle = styleSheet{
 	BackgroundColor: hsl{0, .7, .05},
 	BodyColor:       hsl{0, .8, .08}, // hsl{0, .8, .15},
 	BodyText:        hsl{0, 0, .8},
-	PopoutColor:     hsl{0, .9, .14},
+	CardColor:       hsl{0, .9, .14},
 
 	Shadow: hsl{0, 0, 0},
 }
@@ -327,7 +314,7 @@ var hackerStyle = styleSheet{
 	BackgroundColor: hsl{0, 0, 0},
 	BodyColor:       hsl{0, 0, .03},
 	BodyText:        hsl{0, 0, .8},
-	PopoutColor:     hsl{120, .4, .05},
+	CardColor:       hsl{120, .4, .05},
 
 	Shadow: hsl{0, 0, 0},
 }
@@ -346,7 +333,7 @@ var cantaPixeldrainStyle = styleSheet{
 	BackgroundColor: hsl{180, .04, .16},
 	BodyColor:       hsl{168, .05, .21},
 	BodyText:        hsl{0, 0, .8},
-	PopoutColor:     hsl{170, .05, .26},
+	CardColor:       hsl{170, .05, .26},
 
 	Shadow: hsl{0, 0, 0},
 }
@@ -365,12 +352,12 @@ var skeuosPixeldrainStyle = styleSheet{
 	BackgroundColor: hsl{232, .14, .11}, //hsl(232, 14%, 11%)
 	BodyColor:       hsl{229, .14, .16}, // hsl(229, 14%, 16%)
 	BodyText:        hsl{60, .06, .93},  // hsl(60, 6%, 93%)
-	PopoutColor:     hsl{225, .14, .17}, // hsl(225, 14%, 17%)
+	CardColor:       hsl{225, .14, .17}, // hsl(225, 14%, 17%)
 
 	Shadow: hsl{0, 0, 0},
 }
 
-var nordPixeldrainStyle = styleSheet{
+var nordDarkStyle = styleSheet{
 	Input:               hsl{220, .16, .36}, // nord3
 	InputHover:          hsl{220, .16, .40},
 	InputText:           hsl{218, .27, .92}, // nord5 hsl(218, 27%, 92%)
@@ -384,13 +371,13 @@ var nordPixeldrainStyle = styleSheet{
 	BackgroundColor: hsl{220, .16, .22}, // nord0
 	BodyColor:       hsl{222, .16, .28}, // nord1
 	BodyText:        hsl{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
-	PopoutColor:     hsl{220, .17, .32}, // nord2
+	CardColor:       hsl{220, .17, .32}, // nord2
 
 	Shadow: hsl{0, 0, 0},
 }
 
-var snowstormPixeldrainStyle = styleSheet{
-	Link:                hsl{92, .40, .40},
+var nordLightStyle = styleSheet{
+	Link:                hsl{92, .40, .32},
 	Input:               hsl{218, .27, .94}, // nord6 hsl(218, 27%, 94%)
 	InputHover:          hsl{218, .27, .98},
 	InputText:           hsl{222, .16, .28}, // nord1 hsl(222, 16%, 28%)
@@ -408,10 +395,9 @@ var snowstormPixeldrainStyle = styleSheet{
 	BodyText:          hsl{220, .17, .32}, // nord2 hsl(220, 17%, 32%)
 	Shaded:            RGBA{255, 255, 255, 0.4},
 	BackgroundPattern: hsl{219, .28, .88}, // hsl(219, 28%, 88%)
-	PopoutColor:       hsl{218, .27, .92}, // nord5 hsl(218, 27%, 92%)
+	CardColor:         hsl{218, .27, .92}, // nord5 hsl(218, 27%, 92%)
 
 	Shadow: hsl{220, .16, .36},
-	Light:  true,
 }
 
 var sweetPixeldrainStyle = styleSheet{
@@ -426,7 +412,81 @@ var sweetPixeldrainStyle = styleSheet{
 	BackgroundColor: hsl{225, .25, .06}, // hsl(225, 25%, 6%)
 	BodyColor:       hsl{228, .25, .12}, // hsl(228, 25%, 12%)
 	BodyText:        hsl{223, .13, .79}, // hsl(223, 13%, 79%)
-	PopoutColor:     hsl{229, .25, .14}, // hsl(229, 25%, 14%)
+	Separator:       RGBA{255, 255, 255, 0.05},
+	CardColor:       hsl{229, .25, .14}, // hsl(229, 25%, 14%)
 
 	Shadow: hsl{0, 0, 0},
+}
+
+var adwaitaDarkStyle = styleSheet{
+	Input:             RGBA{255, 255, 255, .06},
+	InputHover:        RGBA{255, 255, 255, .1},
+	InputText:         hsl{0, 0, 1},
+	InputDisabledText: hsl{0, 0, .5},
+	Highlight:         hsl{152, .62, .39}, // hsl(152, 62%, 39%)
+	HighlightText:     hsl{0, 0, 0},
+	Danger:            hsl{9, 1, .69}, // hsl(9, 100%, 69%)
+
+	BackgroundColor: hsl{0, 0, .19},
+	BodyColor:       hsl{0, 0, .14},
+	BodyText:        hsl{0, 0, 1},
+	Separator:       RGBA{255, 255, 255, 0.04},
+	CardColor:       hsl{0, 0, .08},
+
+	Shadow: hsl{0, 0, 0},
+}
+
+var adwaitaLightStyle = styleSheet{
+	Input:             RGBA{0, 0, 0, .06},
+	InputHover:        RGBA{0, 0, 0, .1},
+	InputText:         hsl{0, 0, .2},
+	InputDisabledText: hsl{0, 0, .7},
+	Highlight:         hsl{152, .62, .47}, // hsl(152, 62%, 47%)
+	HighlightText:     hsl{0, 0, 1},
+	Danger:            hsl{356, .75, .43}, // hsl(356, 75%, 43%)
+
+	BackgroundColor: hsl{0, 0, .92},
+	BodyColor:       hsl{0, 0, .98},
+	BodyText:        hsl{0, 0, .2},
+	Shaded:          RGBA{0, 0, 0, 0.04},
+	CardColor:       hsl{0, 0, 1},
+
+	Shadow: hsl{0, 0, 0.36},
+}
+
+var solarizedDarkStyle = styleSheet{
+	Input:             hsl{192, .81, .18}, // hsl(194, 14%, 40%)
+	InputHover:        hsl{192, .81, .22}, // hsl(196, 13%, 45%)
+	InputText:         hsl{180, .07, .80}, // hsl(44, 87%, 94%)
+	InputDisabledText: hsl{194, .14, .30}, // hsl(194, 14%, 40%)
+	Highlight:         hsl{68, 1, .30},    // hsl(68, 100%, 30%)
+	HighlightText:     hsl{192, 1, .11},   // hsl(192, 100%, 11%)
+	Danger:            hsl{1, .71, .52},   // hsl(1, 71%, 52%)
+
+	BackgroundColor: hsl{192, 1, .11},   //hsl(192, 100%, 11%)
+	BodyColor:       hsl{192, .81, .14}, // hsl(192, 81%, 14%)
+	BodyText:        hsl{180, .07, .60}, // hsl(180, 7%, 60%)
+	Separator:       RGBA{255, 255, 255, 0.05},
+	CardColor:       hsl{192, .81, .16},
+
+	Shadow: hsl{0, 0, 0},
+}
+
+var solarizedLightStyle = styleSheet{
+	Input:             hsl{46, .42, .84}, //hsl(180, 7%, 60%)
+	InputHover:        hsl{46, .42, .88},
+	InputText:         hsl{194, .14, .20}, // hsl(192, 81%, 14%)
+	InputDisabledText: hsl{194, .14, .80},
+	Highlight:         hsl{68, 1, .30},  // hsl(68, 100%, 30%)
+	HighlightText:     hsl{192, 1, .11}, // hsl(192, 100%, 11%)
+	Danger:            hsl{1, .71, .52}, // hsl(1, 71%, 52%)
+
+	BackgroundColor: hsl{46, .42, .88},  // hsl(46, 42%, 88%)
+	BodyColor:       hsl{44, .87, .94},  // hsl(44, 87%, 94%)
+	BodyText:        hsl{194, .14, .40}, // hsl(194, 14%, 40%)
+	Separator:       RGBA{0, 0, 0, 0.05},
+	Shaded:          RGBA{255, 255, 255, 0.2},
+	CardColor:       hsl{44, .87, .96},
+
+	Shadow: hsl{0, 0, 0.36},
 }

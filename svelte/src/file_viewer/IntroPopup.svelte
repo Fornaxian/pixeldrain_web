@@ -56,7 +56,7 @@ onMount(() => {
 	max-width: 80%;
 	height: auto;
 	padding: 8px;
-	background-color: var(--popout_color);
+	background-color: var(--card_color);
 	box-shadow: 1px 1px 10px -2px var(--shadow_color);
 	border-radius: 20px;
 	z-index: 50;
@@ -68,7 +68,7 @@ onMount(() => {
 	position: absolute;
 	left: 30px;
 	top: -15px;
-	border-bottom: 15px solid var(--popout_color);
+	border-bottom: 15px solid var(--card_color);
 	border-left: 15px solid transparent;
 	border-right: 15px solid transparent;
 }

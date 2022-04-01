@@ -282,10 +282,10 @@ onMount(() => {
 	background: var(--shaded_background);
 }
 .feat_table > div > .feat_normal {
-	background-color: var(--popout_color);
+	background-color: var(--card_color);
 }
 .feat_table > div > .feat_pro {
-	background-color: var(--popout_color);
+	background-color: var(--card_color);
 	box-shadow: 1px 1px 2px -1px var(--shadow_color);
 }
 .feat_table > div > .feat_highlight {

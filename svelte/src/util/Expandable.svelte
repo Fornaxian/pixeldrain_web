@@ -41,7 +41,7 @@ export let highlight = false
 <style>
 .expandable {
 	text-decoration: none;
-	background-color: var(--popout_color);
+	background-color: var(--card_color);
 	margin: 0.6em 0;
 	border-radius: 6px;
 	overflow: hidden;

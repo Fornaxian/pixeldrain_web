@@ -292,7 +292,7 @@ onMount(load_tranfer_used)
 	font-size: 1.1em;
 }
 .feat_table > div > .feat_normal {
-	background: var(--popout_color);
+	background: var(--card_color);
 }
 .feat_table > div > .feat_highlight {
 	border: 1px solid var(--highlight_color)
