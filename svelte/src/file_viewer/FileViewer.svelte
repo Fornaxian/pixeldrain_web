@@ -609,9 +609,10 @@ const keyboard_event = evt => {
 		<ReportWindow file={file} list={list}></ReportWindow>
 	</Modal>
 
-	{#if ads_enabled}
+	<!-- Disabled to reduce clutter while the Ukraine banner is live -->
+	<!-- {#if ads_enabled}
 		<IntroPopup target={button_home}></IntroPopup>
-	{/if}
+	{/if} -->
 
 	<Downloader bind:this={downloader} file={file} list={list}></Downloader>
 </div>

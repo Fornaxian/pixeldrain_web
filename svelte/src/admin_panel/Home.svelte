@@ -144,11 +144,11 @@ onMount(() => {
 		},
 	];
 
-	loadGraph(10080, 10, false);
+	loadGraph(43200, 60, true);
 	getStats("calls")
 	statsInterval = setInterval(() => {
 		getStats(lastOrder)
-	}, 10000)
+	}, 20000)
 })
 onDestroy(() => {
 	if (graphTimeout !== null) {
@@ -164,14 +164,14 @@ onDestroy(() => {
 	<h3>Bandwidth usage and file views</h3>
 </section>
 <div class="highlight_shaded" style="margin-bottom: 6px;">
-	<button on:click={() => { loadGraph(1440, 1, true) }}>Day</button>
-	<button on:click={() => { loadGraph(10080, 10, false) }}>Week</button>
-	<button on:click={() => { loadGraph(20160, 60, false) }}>Two Weeks</button>
-	<button on:click={() => { loadGraph(43200, 60, false) }}>Month</button>
-	<button on:click={() => { loadGraph(131400, 1440, false) }}>Quarter</button>
-	<button on:click={() => { loadGraph(262800, 1440, false) }}>Half-year</button>
-	<button on:click={() => { loadGraph(525600, 1440, false) }}>Year</button>
-	<button on:click={() => { loadGraph(1051200, 1440, false) }}>Two Years</button>
+	<button on:click={() => loadGraph(1440, 1, true)}>Day 1m</button>
+	<button on:click={() => loadGraph(10080, 10, true)}>Week 10m</button>
+	<button on:click={() => loadGraph(10080, 60, true)}>Week 1h</button>
+	<button on:click={() => loadGraph(43200, 60, true)}>Month 1h</button>
+	<button on:click={() => loadGraph(131400, 1440, false)}>Quarter 1d</button>
+	<button on:click={() => loadGraph(262800, 1440, false)}>Half-year 1d</button>
+	<button on:click={() => loadGraph(525600, 1440, false)}>Year 1d</button>
+	<button on:click={() => loadGraph(1051200, 1440, false)}>Two Years 1d</button>
 </div>
 <Chart bind:this={graphBandwidth} data_type="bytes" legend={false} />
 <Chart bind:this={graphViews} data_type="number" legend={false} />

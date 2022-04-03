@@ -85,44 +85,38 @@ onMount(() => {
 		</button>
 	</div>
 
-	<div class="table_scroll">
-		<table style="text-align: left;">
-			<thead>
+	<table style="text-align: left;">
+		<thead>
+			<tr>
+				<td>Time</td>
+				<td>File name</td>
+				<td>Event</td>
+			</tr>
+		</thead>
+		<tbody>
+			{#each data as row}
 				<tr>
-					<td>Time</td>
-					<td>Event</td>
-					<td>File name</td>
-					<td>File removal reason</td>
+					<td>
+						{formatDate(row.time, true, true, false)}
+					</td>
+					<td>
+						{#if row.event === "file_instance_blocked"}
+							<a href="/u/{row.file_id}">{row.file_name}</a>
+						{:else}
+							{row.file_name}
+						{/if}
+					</td>
+					<td>
+						{#if row.event === "file_instance_blocked"}
+							Blocked for abuse
+						{:else if row.event === "file_instance_expired"}
+							Expired
+						{/if}
+					</td>
 				</tr>
-			</thead>
-			<tbody>
-				{#each data as row}
-					<tr>
-						<td>
-							{formatDate(row.time, true, true, false)}
-						</td>
-						<td>
-							{#if row.event === "file_instance_blocked"}
-								File blocked for abuse
-							{:else if row.event === "file_instance_expired"}
-								File expired
-							{/if}
-						</td>
-						<td>
-							{#if row.event === "file_instance_blocked"}
-								<a href="/u/{row.file_id}">{row.file_name}</a>
-							{:else}
-								{row.file_name}
-							{/if}
-						</td>
-						<td>
-							{row.file_removal_reason}
-						</td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
+			{/each}
+		</tbody>
+	</table>
 
 	{#if data.length > 100}
 		<div class="toolbar">

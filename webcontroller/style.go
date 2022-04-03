@@ -249,7 +249,7 @@ var defaultPixeldrainStyle = styleSheet{
 	ScrollbarForeground: hsl{266, .85, .40},
 	ScrollbarHover:      hsl{266, .85, .50},
 
-	BackgroundColor:   hsl{275, .8, .10},
+	BackgroundColor:   hsl{273, .93, .12},
 	Background:        NewGradient(120, hsl{250, .9, .14}, hsl{300, .9, .10}),
 	BackgroundPattern: NoColor,
 	ParallaxSlider:    hsl{275, .8, .1},
@@ -383,7 +383,7 @@ var nordLightStyle = styleSheet{
 	InputText:           hsl{222, .16, .28}, // nord1 hsl(222, 16%, 28%)
 	InputDisabledText:   hsl{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
 	Highlight:           hsl{92, .28, .65},  // nord14 hsl(92, 28%, 65%)
-	HighlightText:       hsl{220, .16, .22}, // nord0
+	HighlightText:       hsl{222, .16, .28}, // nord3 hsl(220, 16%, 36%)
 	Danger:              hsl{354, .42, .56}, // nord11 hsl(354, 42%, 56%)
 	ScrollbarForeground: hsl{179, .25, .65}, // nord7 hsl(179, 25%, 65%)
 	ScrollbarHover:      hsl{193, .43, .67}, // nord8 hsl(193, 43%, 67%)
@@ -460,7 +460,7 @@ var solarizedDarkStyle = styleSheet{
 	InputText:         hsl{180, .07, .80}, // hsl(44, 87%, 94%)
 	InputDisabledText: hsl{194, .14, .30}, // hsl(194, 14%, 40%)
 	Highlight:         hsl{68, 1, .30},    // hsl(68, 100%, 30%)
-	HighlightText:     hsl{192, 1, .11},   // hsl(192, 100%, 11%)
+	HighlightText:     hsl{192, .81, .14}, // hsl(192, 100%, 11%)
 	Danger:            hsl{1, .71, .52},   // hsl(1, 71%, 52%)
 
 	BackgroundColor: hsl{192, 1, .11},   //hsl(192, 100%, 11%)
@@ -477,8 +477,8 @@ var solarizedLightStyle = styleSheet{
 	InputHover:        hsl{46, .42, .88},
 	InputText:         hsl{194, .14, .20}, // hsl(192, 81%, 14%)
 	InputDisabledText: hsl{194, .14, .80},
-	Highlight:         hsl{68, 1, .30},  // hsl(68, 100%, 30%)
-	HighlightText:     hsl{192, 1, .11}, // hsl(192, 100%, 11%)
+	Highlight:         hsl{68, 1, .30}, // hsl(68, 100%, 30%)
+	HighlightText:     hsl{44, .87, .94},
 	Danger:            hsl{1, .71, .52}, // hsl(1, 71%, 52%)
 
 	BackgroundColor: hsl{46, .42, .88},  // hsl(46, 42%, 88%)

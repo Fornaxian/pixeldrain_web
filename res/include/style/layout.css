@@ -221,7 +221,8 @@ section {
 }
 
 .highlight_shaded {
-	background: var(--shaded_background);
+	background: var(--background_color);
+	color: var(--background_text_color);
 }
 
 .highlight_green {

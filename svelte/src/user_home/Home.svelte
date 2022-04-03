@@ -11,10 +11,6 @@ let graph_views_downloads = null
 let graph_bandwidth = null
 let time_start = ""
 let time_end = ""
-let total_views = 0
-let total_downloads = 0
-let total_bandwidth = 0
-let total_transfer_paid = 0
 
 let load_graphs = async (minutes, interval) => {
 	let end = new Date()
@@ -52,6 +48,12 @@ let load_graphs = async (minutes, interval) => {
 	}
 }
 
+let total_views = 0
+let total_downloads = 0
+let total_bandwidth = 0
+let total_transfer_paid = 0
+let total_transfer_kickback = 0
+
 let get_graph_data = async (stat, start, end, interval) => {
 	let resp = await fetch(
 		window.api_endpoint + "/user/time_series/" + stat +
@@ -64,7 +66,8 @@ let get_graph_data = async (stat, start, end, interval) => {
 	// Convert the timestamps to a human-friendly format
 	resp.timestamps.forEach((val, idx) => {
 		let date = new Date(val);
-		let str = ("00" + (date.getMonth() + 1)).slice(-2);
+		let str = date.getFullYear();
+		str += "-" + ("00" + (date.getMonth() + 1)).slice(-2);
 		str += "-" + ("00" + date.getDate()).slice(-2);
 		str += " " + ("00" + date.getHours()).slice(-2);
 		str += ":" + ("00" + date.getMinutes()).slice(-2);
@@ -83,6 +86,8 @@ let get_graph_data = async (stat, start, end, interval) => {
 		total_bandwidth = total;
 	} else if (stat == "transfer_paid") {
 		total_transfer_paid = total;
+	} else if (stat == "transfer_kickback") {
+		total_transfer_kickback = total;
 	}
 
 	return resp
@@ -176,7 +181,7 @@ onMount(() => {
 		},
 	];
 
-	update_graphs(1440, 1, true);
+	update_graphs(10080, 60, true);
 })
 onDestroy(() => {
 	if (graph_timeout !== null) {
@@ -244,58 +249,49 @@ onDestroy(() => {
 
 	<h2>Statistics</h2>
 	<p>
-		Here you can see how often your files are viewed, downloaded
-		and how much bandwidth they consume. The buttons at the top
-		can be pressed to adjust the timeframe. If you choose 'Day'
-		the statistics will be updated periodically. No need to
-		refresh the page.
+		Here you can see how often your files are viewed, downloaded and how
+		much bandwidth they consume. The buttons below can be pressed to adjust
+		the timeframe.
 	</p>
-</section>
 
-<div class="highlight_shaded">
-	<button
-		on:click={() => { update_graphs(1440, 1, true) }}
-		class:button_highlight={graph_timespan == 1440}>
-		Day (1m)
-	</button>
-	<button
-		on:click={() => { update_graphs(10080, 10, false) }}
-		class:button_highlight={graph_timespan == 10080}>
-		Week (10m)
-	</button>
-	<button
-		on:click={() => { update_graphs(20160, 60, false) }}
-		class:button_highlight={graph_timespan == 20160}>
-		Two Weeks (1h)
-	</button>
-	<button
-		on:click={() => { update_graphs(43200, 1440, false) }}
-		class:button_highlight={graph_timespan == 43200}>
-		Month (1d)
-	</button>
-	<button
-		on:click={() => { update_graphs(131400, 1440, false) }}
-		class:button_highlight={graph_timespan == 131400}>
-		Quarter (1d)
-	</button>
-	<button
-		on:click={() => { update_graphs(525600, 1440, false) }}
-		class:button_highlight={graph_timespan == 525600}>
-		Year (1d)
-	</button>
-	<button
-		on:click={() => { update_graphs(1051200, 1440, false) }}
-		class:button_highlight={graph_timespan == 1051200}>
-		Two Years (1d)
-	</button>
-	<br/>
-	Total usage from {time_start} to {time_end}<br/>
-	{formatThousands(total_views)} views,
-	{formatThousands(total_downloads)} downloads,
-	{formatDataVolume(total_bandwidth, 3)} bandwidth and
-	{formatDataVolume(total_transfer_paid, 3)} paid transfers
-</div>
-<section>
+	<div class="highlight_shaded">
+		<button
+			on:click={() => update_graphs(1440, 1, true)}
+			class:button_highlight={graph_timespan == 1440}>
+			Day (1m)
+		</button>
+		<button
+			on:click={() => update_graphs(10080, 60, true)}
+			class:button_highlight={graph_timespan == 10080}>
+			Week (1h)
+		</button>
+		<button
+			on:click={() => update_graphs(20160, 60, true)}
+			class:button_highlight={graph_timespan == 20160}>
+			Two Weeks (1h)
+		</button>
+		<button
+			on:click={() => update_graphs(43200, 1440, false)}
+			class:button_highlight={graph_timespan == 43200}>
+			Month (1d)
+		</button>
+		<button
+			on:click={() => update_graphs(131400, 1440, false)}
+			class:button_highlight={graph_timespan == 131400}>
+			Quarter (1d)
+		</button>
+		<button
+			on:click={() => update_graphs(525600, 1440, false)}
+			class:button_highlight={graph_timespan == 525600}>
+			Year (1d)
+		</button>
+		<button
+			on:click={() => update_graphs(1051200, 1440, false)}
+			class:button_highlight={graph_timespan == 1051200}>
+			Two Years (1d)
+		</button>
+	</div>
+
 	<h3>Premium transfers and total bandwidth usage</h3>
 	<p>
 		Total bandwidth usage is the combined bandwidth usage of all the files
@@ -316,9 +312,17 @@ onDestroy(() => {
 		<a href="/user/transactions">transactions page</a>.
 	</p>
 </section>
+
 <Chart bind:this={graph_bandwidth} data_type="bytes"/>
 
 <section>
+	<div class="highlight_shaded">
+		Total usage from {time_start} to {time_end}<br/>
+		{formatDataVolume(total_bandwidth, 3)} bandwidth,
+		{formatDataVolume(total_transfer_paid, 3)} paid transfers
+		{formatDataVolume(total_transfer_kickback, 3)} kickback transfers
+	</div>
+
 	<h3>Views and downloads</h3>
 	<p>
 		A view is counted when someone visits the download page of one of
@@ -330,4 +334,13 @@ onDestroy(() => {
 		or not, only the start of the download is counted.
 	</p>
 </section>
+
 <Chart bind:this={graph_views_downloads} data_type="number"/>
+
+<section>
+	<div class="highlight_shaded">
+		Total usage from {time_start} to {time_end}<br/>
+		{formatThousands(total_views)} views and
+		{formatThousands(total_downloads)} downloads
+	</div>
+</section>
