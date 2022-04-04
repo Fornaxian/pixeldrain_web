@@ -228,7 +228,7 @@ export const start = () => {
 	line-height: 1.2em;
 	display: inline-flex;
 	flex-direction: column;
-	transition: box-shadow 0.3s, opacity 2s;
+	transition: background 0.2s, opacity 2s;
 	white-space: normal;
 	text-overflow: ellipsis;
 	text-decoration: none;
@@ -242,7 +242,7 @@ export const start = () => {
 	overflow: hidden;
 }
 .upload_task:hover {
-	box-shadow: 0 0 2px 2px var(--highlight_color), inset 0 0 1px 1px var(--highlight_color);
+	background: var(--input_hover_background);
 	text-decoration: none;
 }
 

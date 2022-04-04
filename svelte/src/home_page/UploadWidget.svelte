@@ -148,7 +148,7 @@ const stats_update = () => {
 	last_total_loaded = total_loaded
 
 	progress_bar_inner.style.width = (total_progress * 100) + "%"
-	document.title = (total_progress*100).toFixed(0)+"% ~ " +
+	document.title = (total_progress*100).toFixed(0) + "% ~ " +
 		formatDuration(remaining_time, 0) +
 		" ~ uploading to pixeldrain"
 }
