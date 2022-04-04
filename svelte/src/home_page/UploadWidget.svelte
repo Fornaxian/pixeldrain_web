@@ -148,6 +148,9 @@ const stats_update = () => {
 	last_total_loaded = total_loaded
 
 	progress_bar_inner.style.width = (total_progress * 100) + "%"
+	document.title = (total_progress*100).toFixed(0)+"% ~ " +
+		formatDuration(remaining_time, 0) +
+		" ~ uploading to pixeldrain"
 }
 const stats_finished = () => {
 	start_time = 0
@@ -155,6 +158,8 @@ const stats_finished = () => {
 	total_progress = 1
 	progress_bar_inner.style.width = "100%"
 	total_rate = 0
+
+	document.title = "Finished! ~ pixeldrain"
 }
 
 const leave_confirmation = e => {
