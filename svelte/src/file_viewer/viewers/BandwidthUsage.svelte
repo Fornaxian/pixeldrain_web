@@ -4,6 +4,9 @@ import { formatDataVolume } from "../../util/Formatting.svelte";
 import TextBlock from "./TextBlock.svelte";
 import ProgressBar from "../../util/ProgressBar.svelte";
 
+export let file = {
+	download_speed_limit: 0,
+}
 let limits = {
 	download_limit: 0,
 	download_limit_used: 0,
@@ -30,18 +33,19 @@ onMount(async () => {
 </script>
 
 {#if limits.transfer_limit_used > 0}
-	<TextBlock width="700px" center={true}>
+	<TextBlock width="800px" center={true}>
 		<p>
 			You have used {formatDataVolume(limits.transfer_limit_used, 3)} of
-			your daily {formatDataVolume(limits.transfer_limit, 3)} download
-			limit. When the limit is exceeded your download speed will be
-			reduced.
+			your daily {formatDataVolume(limits.transfer_limit, 3)} transfer
+			limit. Your download speed is currently limited to
+			{file.download_speed_limit/(1<<20)} MiB/s. When the transfer limit
+			is exceeded your download speed will be reduced.
 		</p>
 		<p>
 			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12">
 				Support Pixeldrain on Patreon
 			</a>
-			to disable the download limit.
+			to disable the transfer and speed limits
 		</p>
 
 		<ProgressBar total={limits.transfer_limit} used={limits.transfer_limit_used}></ProgressBar>

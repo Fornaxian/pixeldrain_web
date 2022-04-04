@@ -81,7 +81,6 @@ type styleSheet struct {
 	BodyBackground    Color
 	BodyText          hsl
 	Separator         Color
-	Shaded            Color
 	CardColor         hsl
 	CardText          hsl
 
@@ -120,7 +119,6 @@ func (s styleSheet) withDefaults() styleSheet {
 	defaultColor(&s.BodyBackground, s.BodyColor)
 	defaultHSL(&s.BackgroundText, s.BodyText)
 	defaultColor(&s.Separator, s.BodyColor.Add(0, 0, .05))
-	defaultColor(&s.Shaded, RGBA{0, 0, 0, 0.2})
 
 	return s
 }
@@ -184,7 +182,7 @@ func (s styleSheet) String() string {
 		s.BodyBackground.CSS(),
 		s.BodyText.CSS(),
 		s.Separator.CSS(),
-		s.Shaded.CSS(),
+		s.BodyColor.WithAlpha(0.5).CSS(), // shaded_background
 		s.CardColor.CSS(),
 		s.Chart1.CSS(),
 		s.Chart2.CSS(),
@@ -393,7 +391,6 @@ var nordLightStyle = styleSheet{
 	ParallaxSlider:    hsl{220, .16, .22}, // nord0 hsl(220, 16%, 22%)
 	BodyColor:         hsl{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
 	BodyText:          hsl{220, .17, .32}, // nord2 hsl(220, 17%, 32%)
-	Shaded:            RGBA{255, 255, 255, 0.4},
 	BackgroundPattern: hsl{219, .28, .88}, // hsl(219, 28%, 88%)
 	CardColor:         hsl{218, .27, .92}, // nord5 hsl(218, 27%, 92%)
 
@@ -448,7 +445,6 @@ var adwaitaLightStyle = styleSheet{
 	BackgroundColor: hsl{0, 0, .92},
 	BodyColor:       hsl{0, 0, .98},
 	BodyText:        hsl{0, 0, .2},
-	Shaded:          RGBA{0, 0, 0, 0.04},
 	CardColor:       hsl{0, 0, 1},
 
 	Shadow: hsl{0, 0, 0.36},
@@ -485,7 +481,6 @@ var solarizedLightStyle = styleSheet{
 	BodyColor:       hsl{44, .87, .94},  // hsl(44, 87%, 94%)
 	BodyText:        hsl{194, .14, .40}, // hsl(194, 14%, 40%)
 	Separator:       RGBA{0, 0, 0, 0.05},
-	Shaded:          RGBA{255, 255, 255, 0.2},
 	CardColor:       hsl{44, .87, .96},
 
 	Shadow: hsl{0, 0, 0.36},

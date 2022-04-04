@@ -94,6 +94,22 @@ func (h hsl) Add(hue int, saturation float64, lightness float64) hsl {
 	return new
 }
 
+func (h hsl) WithAlpha(alpha float64) HSLA {
+	return HSLA{h, alpha}
+}
+
+type HSLA struct {
+	hsl
+	Alpha float64
+}
+
+func (hsla HSLA) CSS() string {
+	return fmt.Sprintf(
+		"hsla(%d, %.2f%%, %.2f%%, %.2f)",
+		hsla.Hue, hsla.Saturation*100, hsla.Lightness*100, hsla.Alpha,
+	)
+}
+
 type RGB struct {
 	R uint8
 	G uint8

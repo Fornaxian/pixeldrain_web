@@ -279,7 +279,7 @@ onMount(() => {
 .feat_table > div > .feat_label {
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
-	background: var(--shaded_background);
+	border: 2px solid var(--separator);
 }
 .feat_table > div > .feat_normal {
 	background-color: var(--card_color);

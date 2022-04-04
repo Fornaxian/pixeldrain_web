@@ -15,7 +15,7 @@ onMount(() => {
 		return
 	}
 
-	if (document.body.clientWidth < 700) {
+	if (document.body.clientWidth < 700 || document.body.clientHeight < 700) {
 		visible = false
 		dispatch("visibility", false)
 		return

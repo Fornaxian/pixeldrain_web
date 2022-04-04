@@ -644,7 +644,6 @@ const keyboard_event = evt => {
 	display: flex;
 	flex-direction: row;
 	text-align: left;
-	box-shadow: none;
 	padding: 4px;
 }
 .headerbar.embedded {

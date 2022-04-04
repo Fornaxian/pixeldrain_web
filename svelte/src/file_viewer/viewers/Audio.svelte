@@ -9,6 +9,7 @@ export let file = {
 	mime_type: "",
 	get_href: "",
 	show_ads: false,
+	download_speed_limit: 0,
 }
 
 $: loop = file.name.includes(".loop.")
@@ -90,7 +91,7 @@ const toggle_play = () => playing ? player.pause() : player.play()
 
 	<br/><br/>
 	{#if file.show_ads}
-		<BandwidthUsage/>
+		<BandwidthUsage file={file}/>
 	{/if}
 </div>
 

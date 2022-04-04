@@ -288,14 +288,14 @@ onMount(load_tranfer_used)
 .feat_table > div > .feat_label {
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
-	background: var(--shaded_background);
+	border: 2px solid var(--separator);
 	font-size: 1.1em;
 }
 .feat_table > div > .feat_normal {
 	background: var(--card_color);
 }
 .feat_table > div > .feat_highlight {
-	border: 1px solid var(--highlight_color)
+	border: 2px solid var(--highlight_color)
 }
 
 .feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }

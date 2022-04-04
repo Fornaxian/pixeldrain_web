@@ -12,6 +12,7 @@ let file = {
 	mime_type: "",
 	icon_href: "",
 	show_ads: false,
+	download_speed_limit: 0,
 }
 </script>
 
@@ -29,7 +30,7 @@ let file = {
 
 <br/><br/>
 {#if file.show_ads}
-	<BandwidthUsage/>
+	<BandwidthUsage file={file}/>
 {/if}
 
 <style>

@@ -74,7 +74,7 @@ const node_icon = node => {
 	padding: 0;
 	overflow: hidden;
 	border-radius: 8px;
-	box-shadow: 1px 1px 6px 0 var(--shadow_color);
+	box-shadow: 1px 1px 4px -1px var(--shadow_color);
 	background: var(--input_background);
 	text-align: center;
 	line-height: 1.2em;
