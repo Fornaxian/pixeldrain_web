@@ -37,7 +37,7 @@ onMount(() => {
 {#if visible}
 	<div bind:this={popup} in:fade out:fade class="intro_popup">
 		<span class="light">Upload your own files here</span>
-		<p>
+		<p style="margin: 0.4em 0;">
 			With pixeldrain you can share your files anywhere on the web. The
 			sky is the limit!
 		</p>
@@ -52,7 +52,7 @@ onMount(() => {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 360px;
+	width: 380px;
 	max-width: 80%;
 	height: auto;
 	padding: 8px;

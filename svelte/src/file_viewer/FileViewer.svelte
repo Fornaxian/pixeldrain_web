@@ -20,7 +20,7 @@ import GalleryView from "./GalleryView.svelte";
 import Spinner from "../util/Spinner.svelte";
 import Downloader from "./Downloader.svelte";
 import CustomBanner from "./CustomBanner.svelte";
-import UkrainePopup from "./UkrainePopup.svelte";
+import UkraineModal from "./UkraineModal.svelte";
 
 let loading = true
 let embedded = false
@@ -232,15 +232,18 @@ let custom_header = ""
 let custom_background = ""
 let custom_footer = ""
 const apply_customizations = file => {
-	if (file.custom_header) {
-		custom_header = window.api_endpoint+"/file/"+file.custom_header
+	if (!file.branding) {
+		return
 	}
-	if (file.custom_footer) {
-		custom_footer = window.api_endpoint+"/file/"+file.custom_footer
+	if (file.branding.header_image) {
+		custom_header = window.api_endpoint+"/file/"+file.branding.header_image
+	}
+	if (file.branding.footer_image) {
+		custom_footer = window.api_endpoint+"/file/"+file.branding.footer_image
 	}
 
-	if (file.custom_background) {
-		custom_background = window.api_endpoint+"/file/"+file.custom_background
+	if (file.branding.background_image) {
+		custom_background = window.api_endpoint+"/file/"+file.branding.background_image
 		file_preview_background.style.backgroundImage = "url('"+custom_background+"')"
 	} else {
 		file_preview_background.style.backgroundImage = ""
@@ -401,9 +404,9 @@ const keyboard_event = evt => {
 		{/if}
 	</div>
 
-	{#if ads_enabled}
+	<!-- {#if ads_enabled}
 		<UkrainePopup></UkrainePopup>
-	{/if}
+	{/if} -->
 
 	{#if is_list && view === "file"}
 		<ListNavigator
@@ -609,10 +612,10 @@ const keyboard_event = evt => {
 		<ReportWindow file={file} list={list}></ReportWindow>
 	</Modal>
 
-	<!-- Disabled to reduce clutter while the Ukraine banner is live -->
-	<!-- {#if ads_enabled}
+	{#if ads_enabled}
 		<IntroPopup target={button_home}></IntroPopup>
-	{/if} -->
+		<UkraineModal></UkraineModal>
+	{/if}
 
 	<Downloader bind:this={downloader} file={file} list={list}></Downloader>
 </div>

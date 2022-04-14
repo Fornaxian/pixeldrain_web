@@ -184,8 +184,8 @@ func fileStyleOverride(td *TemplateData, files []pixelapi.ListFile) {
 		return
 	}
 
-	if files[0].CustomTheme != "" {
-		td.setStyle(userStyle(files[0].CustomTheme))
+	if files[0].Branding != nil && files[0].Branding["theme"] != "" {
+		td.setStyle(userStyle(files[0].Branding["theme"]))
 	}
 }
 

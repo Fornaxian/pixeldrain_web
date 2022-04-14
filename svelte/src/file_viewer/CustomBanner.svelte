@@ -16,7 +16,12 @@ export let border_top = false;
 .image {
 	display: block;
 	margin: auto;
-	max-height: 100px;
+	max-height: 90px;
 	max-width: 100%;
+}
+@media(max-height: 600px) {
+	.image {
+		max-height: 60px;
+	}
 }
 </style>

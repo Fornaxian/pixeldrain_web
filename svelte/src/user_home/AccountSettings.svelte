@@ -144,11 +144,13 @@ let success_message
 let changes_made = false
 
 let file_picker
-let theme = ""
 let currently_selecting = "" // header, background or footer
-let header_image_id = ""
-let background_image_id = ""
-let footer_image_id = ""
+
+let theme = ""
+let header_image = ""
+let background_image = ""
+let footer_image = ""
+
 let select_file = t => {
 	currently_selecting = t
 	file_picker.open()
@@ -165,21 +167,21 @@ let add_file = files => {
 	}
 
 	if (currently_selecting === "header") {
-		header_image_id = files[0].id
+		header_image = files[0].id
 	} else if (currently_selecting === "background") {
-		background_image_id = files[0].id
+		background_image = files[0].id
 	} else if (currently_selecting === "footer") {
-		footer_image_id = files[0].id
+		footer_image = files[0].id
 	}
 
 	changes_made = true
 }
 let save = async () => {
 	const form = new FormData()
-	form.append("file_theme", theme)
-	form.append("file_header", header_image_id)
-	form.append("file_background", background_image_id)
-	form.append("file_footer", footer_image_id)
+	form.append("theme", theme)
+	form.append("header_image", header_image)
+	form.append("background_image", background_image)
+	form.append("footer_image", footer_image)
 
 	const resp = await fetch(
 		window.api_endpoint+"/user/file_customization",
@@ -197,10 +199,13 @@ let save = async () => {
 }
 
 onMount(() => {
-	theme = window.user.custom_file_theme
-	header_image_id = window.user.custom_file_header
-	background_image_id = window.user.custom_file_background
-	footer_image_id = window.user.custom_file_footer
+	if (window.user.file_viewer_branding) {
+		let b = window.user.file_viewer_branding
+		theme = b.theme ? b.theme : ""
+		header_image = b.header_image ? b.header_image : ""
+		background_image = b.background_image ? b.background_image : ""
+		footer_image = b.footer_image ? b.footer_image : ""
+	}
 })
 
 </script>
@@ -251,24 +256,27 @@ onMount(() => {
 		theme preference of the person viewing the file. Set to 'None' to let
 		the viewer choose their own theme.
 	</p>
-	<ThemePicker theme={theme} on:theme_change={e => {theme = e.detail; changes_made = true}}></ThemePicker>
+	<ThemePicker
+		theme={theme}
+		on:theme_change={e => {theme = e.detail; changes_made = true}}>
+	</ThemePicker>
 
 	<h3>Header image</h3>
 	<p>
-		Will be shown above the file. Maximum height is 100px. Will be shrunk if
+		Will be shown above the file. Maximum height is 90px. Will be shrunk if
 		larger.
 	</p>
 	<button on:click={() => {select_file("header")}}>
 		<i class="icon">add_photo_alternate</i>
 		Select header image
 	</button>
-	<button on:click={() => {header_image_id = ""}}>
+	<button on:click={() => {header_image = ""}}>
 		<i class="icon">close</i>
 		Remove
 	</button>
-	{#if header_image_id}
+	{#if header_image}
 		<div class="highlight_shaded">
-			<img class="banner_preview" src="/api/file/{header_image_id}" alt="Custom file viewer header"/>
+			<img class="banner_preview" src="/api/file/{header_image}" alt="Custom file viewer header"/>
 		</div>
 	{/if}
 
@@ -283,37 +291,36 @@ onMount(() => {
 		<i class="icon">add_photo_alternate</i>
 		Select background image
 	</button>
-	<button on:click={() => {background_image_id = ""}}>
+	<button on:click={() => {background_image = ""}}>
 		<i class="icon">close</i>
 		Remove
 	</button>
-	{#if background_image_id}
+	{#if background_image}
 		<div class="highlight_shaded">
-			<img class="background_preview" src="/api/file/{background_image_id}" alt="Custom file viewer background"/>
+			<img class="background_preview" src="/api/file/{background_image}" alt="Custom file viewer background"/>
 		</div>
 	{/if}
 
 	<h3>Footer image</h3>
 	<p>
-		Will be shown below the file. Maximum height is 100px. Will be shrunk if
+		Will be shown below the file. Maximum height is 90px. Will be shrunk if
 		larger.
 	</p>
 	<button on:click={() => {select_file("footer")}}>
 		<i class="icon">add_photo_alternate</i>
 		Select footer image
 	</button>
-	<button on:click={() => {footer_image_id = ""}}>
+	<button on:click={() => {footer_image = ""}}>
 		<i class="icon">close</i>
 		Remove
 	</button>
-	{#if footer_image_id}
+	{#if footer_image}
 		<div class="highlight_shaded">
-			<img class="banner_preview" src="/api/file/{footer_image_id}" alt="Custom file viewer footer"/>
+			<img class="banner_preview" src="/api/file/{footer_image}" alt="Custom file viewer footer"/>
 		</div>
 	{/if}
 
 	<hr/>
-
 
 	<button on:click={save} class:button_highlight={changes_made}>
 		<i class="icon">save</i> Save
@@ -326,7 +333,7 @@ onMount(() => {
 
 <style>
 .banner_preview {
-	max-height: 100px;
+	max-height: 90px;
 	max-width: 100%;
 	display: block;
 	margin: auto;
