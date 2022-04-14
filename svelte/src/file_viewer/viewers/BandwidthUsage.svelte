@@ -4,9 +4,7 @@ import { formatDataVolume } from "../../util/Formatting.svelte";
 import TextBlock from "./TextBlock.svelte";
 import ProgressBar from "../../util/ProgressBar.svelte";
 
-export let file = {
-	download_speed_limit: 0,
-}
+let loaded = false
 let limits = {
 	download_limit: 0,
 	download_limit_used: 0,
@@ -20,6 +18,7 @@ const update = async () => {
 			throw new Error(await resp.text())
 		}
 		limits = await resp.json()
+		loaded = true
 	} catch (err) {
 		console.error("Failed to get rate limits: "+err)
 	}
@@ -32,20 +31,27 @@ onMount(async () => {
 })
 </script>
 
-{#if limits.transfer_limit_used > 0}
-	<TextBlock width="800px" center={true}>
+{#if loaded}
+	<TextBlock width="700px" center={true}>
+		<p>
+			<strong>
+				Until the end of April the transfer limit is raised from 5 GB to
+				50 GB, enjoy!
+			</strong>
+		</p>
 		<p>
 			You have used {formatDataVolume(limits.transfer_limit_used, 3)} of
 			your daily {formatDataVolume(limits.transfer_limit, 3)} transfer
-			limit. Your download speed is currently limited to
-			{file.download_speed_limit/(1<<20)} MiB/s. When the transfer limit
-			is exceeded your download speed will be reduced.
+			limit. When the transfer limit is exceeded your download speed will
+			be reduced.
 		</p>
 		<p>
-			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12">
-				Support Pixeldrain on Patreon
-			</a>
-			to disable the transfer and speed limits
+			<strong>
+				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12">
+					<i class="icon">bolt</i> Support Pixeldrain on Patreon
+				</a>
+				to disable the transfer limit
+			</strong>
 		</p>
 
 		<ProgressBar total={limits.transfer_limit} used={limits.transfer_limit_used}></ProgressBar>
