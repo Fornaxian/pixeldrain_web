@@ -219,7 +219,7 @@ h1 {
 	vertical-align: middle;
 	border-radius: 8px;
 }
-@media(max-height: 600px) {
+@media(max-height: 500px) {
 	.container {
 		flex-direction: row;
 	}

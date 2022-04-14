@@ -372,7 +372,7 @@ const keyboard_event = evt => {
 		</div>
 	{/if}
 
-	<div id="headerbar" class="headerbar" class:embedded>
+	<div id="headerbar" class="headerbar">
 		<button
 			on:click={toolbar_toggle}
 			class="button_toggle_toolbar round"
@@ -404,10 +404,6 @@ const keyboard_event = evt => {
 		{/if}
 	</div>
 
-	<!-- {#if ads_enabled}
-		<UkrainePopup></UkrainePopup>
-	{/if} -->
-
 	{#if is_list && view === "file"}
 		<ListNavigator
 			bind:this={list_navigator}
@@ -422,7 +418,7 @@ const keyboard_event = evt => {
 	<CustomBanner src={custom_header} border_top={true}></CustomBanner>
 
 	<div class="file_preview_row">
-		<div id="toolbar" class="toolbar" class:toolbar_visible><div><div>
+		<div id="toolbar" class="toolbar" class:toolbar_visible>
 			{#if view === "file"}
 				<FileStats file={file}></FileStats>
 				<hr/>
@@ -553,7 +549,7 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 			<br/>
-		</div></div></div>
+		</div>
 
 		<div bind:this={file_preview_background}
 			class="file_preview"
@@ -649,8 +645,10 @@ const keyboard_event = evt => {
 	text-align: left;
 	padding: 4px;
 }
-.headerbar.embedded {
-	padding: 2px;
+@media(max-height: 600px) {
+	.headerbar {
+		padding: 1px;
+	}
 }
 
 /* Headerbar components */
@@ -717,7 +715,9 @@ const keyboard_event = evt => {
 .toolbar {
 	position: absolute;
 	width: 8em;
-	overflow: hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: none;
 	left: -8em;
 	bottom: 0;
 	top: 0;
@@ -726,27 +726,12 @@ const keyboard_event = evt => {
 	transition: left 0.5s, right 0.5s;
 	z-index: 1;
 }
+.toolbar::-webkit-scrollbar {
+	display: none;
+}
 .toolbar.toolbar_visible { left: 0; }
 
-/* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
-.toolbar > div {
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	right: -30px;
-	overflow-y: scroll;
-	overflow-x: hidden;
-}
-.toolbar > div > div {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 8em;
-	height: auto;
-	text-align: center;
-}
-.toolbar_button{
+.toolbar_button {
 	text-align: left;
 	width: calc(100% - 6px);
 }
