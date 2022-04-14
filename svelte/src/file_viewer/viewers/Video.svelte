@@ -131,8 +131,7 @@ const fullscreen = () => {
 				<button on:click={() => dispatch("next") }>
 					<i class="icon">skip_next</i>
 				</button>
-				<div style="width: 16px;"></div>
-				<!-- <input bind:this={video_seeker} on:input={seek} class="seeker" type="range" min="0" max="1000" value="0"> -->
+				<div style="width: 16px; height: 8px;"></div>
 				<button on:click={mute} class:button_red={player && player.muted}>
 					{#if player && player.muted}
 						<i class="icon">volume_off</i>
@@ -140,7 +139,6 @@ const fullscreen = () => {
 						<i class="icon">volume_up</i>
 					{/if}
 				</button>
-				<!-- <input bind:this={volume_seeker} on:input={volume_seek} class="volume_control" type="range" min="0" max="100" value="100"> -->
 				<button on:click={fullscreen}>
 					<i class="icon">fullscreen</i>
 				</button>
@@ -206,12 +204,6 @@ h1 {
 .controls > .spacer {
 	flex: 1 1 auto;
 }
-/* .controls > .seeker {
-	flex: 1 1 80%;
-}
-.controls > .volume_control {
-	flex: 1 1 20%;
-} */
 .video {
 	position: relative;
 	display: block;
@@ -226,5 +218,13 @@ h1 {
 	display: inline-block;
 	vertical-align: middle;
 	border-radius: 8px;
+}
+@media(max-height: 600px) {
+	.container {
+		flex-direction: row;
+	}
+	.controls {
+		flex-direction: column;
+	}
 }
 </style>
