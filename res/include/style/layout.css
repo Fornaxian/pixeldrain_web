@@ -92,8 +92,8 @@ footer {
 
 header>h1 {
 	text-shadow: 1px 1px 4px var(--shadow_color);
-	margin-top: 69px;
-	margin-bottom: 69px;
+	margin-top: 80px;
+	margin-bottom: 80px;
 }
 
 footer>.footer_content {

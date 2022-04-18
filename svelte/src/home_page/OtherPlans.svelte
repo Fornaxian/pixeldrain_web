@@ -34,7 +34,7 @@
 		</div>
 		<div class="feat_pro features_cell">
 			<div><span class="text_highlight">20 GB</span> max file size</div>
-			<div><span class="text_highlight">360 days</span> file expiry</div>
+			<div><span class="text_highlight">Files never expire</span></div>
 			<div><span class="text_highlight">4 TB</span> transfer limit</div>
 			<div><span class="text_highlight">4 TB</span> storage space</div>
 			<div>

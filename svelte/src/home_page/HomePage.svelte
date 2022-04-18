@@ -29,13 +29,14 @@ import UploadWidget from "./UploadWidget.svelte";
 		button, or by dragging them onto this page from your file
 		manager.
 	</p>
+	<h2>Accounts</h2>
 	<p>
-		If you uploaded multiple files at once you can also create a
-		list, which is a collection of files with one single link. Like
-		a photo album, a music record or a video compilation. Click the
-		'Create list with uploaded files' button after your uploads are
-		complete. The files will be saved in the order you uploaded
-		them.
+		An account is not required to use pixeldrain, but it enables some useful
+		features. With a pixeldrain account you can access your files and albums
+		on all your devices. You can also rename and delete files you have
+		uploaded. And create and reorder albums you have created. Sign up for a
+		pixeldrain account on <a href="/register">the registration page</a>.
+		More about pixeldrain's features below.
 	</p>
 </section>
 <header>

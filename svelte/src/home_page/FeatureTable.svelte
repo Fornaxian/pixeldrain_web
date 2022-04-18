@@ -42,6 +42,14 @@ onMount(() => {
 	</div>
 	<div>
 		<div class="feat_label">
+			Storage space
+		</div>
+		<div class="feat_pro">
+			<span class="text_highlight">No storage limit</span>
+		</div>
+	</div>
+	<div>
+		<div class="feat_label">
 			Data transfer limit
 		</div>
 		<div class="feat_normal">
@@ -64,7 +72,8 @@ onMount(() => {
 		</div>
 		<div class="feat_pro">
 			<span class="text_highlight">High priority</span>
-			bandwidth for files you download and files on your account
+			bandwidth for files you download and files you share from your
+			account
 		</div>
 	</div>
 	<div>
@@ -108,17 +117,6 @@ onMount(() => {
 			<span class="text_highlight">Completely
 			private</span>. No third party scripts and no
 			logging
-		</div>
-	</div>
-	<div>
-		<div class="feat_label">
-			Storage space
-		</div>
-		<div class="feat_normal">
-			500 gigabytes
-		</div>
-		<div class="feat_pro">
-			<span class="text_highlight">No storage limit</span>
 		</div>
 	</div>
 	<div>

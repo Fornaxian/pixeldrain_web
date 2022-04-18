@@ -30,7 +30,7 @@ let set_status = async (action, report_type) => {
 }
 </script>
 
-<Expandable expanded={report.status === "pending" && report.reports.length > 2} click_expand>
+<Expandable expanded={report.status === "pending"} click_expand>
 	<div slot="header" class="header">
 		<div class="icon_cell">
 			<img class="file_icon" src={"/api/file/"+report.file.id+"/thumbnail"} alt="File thumbnail"/>
