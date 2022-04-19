@@ -11,17 +11,16 @@ $: frac = used / total
 <ProgressBar total={total} used={used}></ProgressBar>
 
 {#if frac > 0.99}
-	<div class="highlight_red">
+	<div class="highlight_yellow">
 		You have used all of your data cap. People can still download your
-		files, but not directly from the API anymore. The file viewer shows
-		ads on your files and download speeds are limited.
+		files, but advertisements are shown and hotlinking is disabled.
 		<br/>
 		<a class="button button_highlight" href="https://www.patreon.com/join/pixeldrain">
 			Upgrade options
 		</a>
 	</div>
 {:else if frac > 0.8}
-	<div class="highlight_yellow">
+	<div class="highlight_blue">
 		You have used {(frac*100).toFixed(0)}% of your data cap. If your
 		data runs out people won't be able to download your files directly
 		from the API anymore, ads will be shown on the file viewer and

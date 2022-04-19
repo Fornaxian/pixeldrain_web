@@ -63,11 +63,11 @@ let embed_hotlink = () => {
 
 	let t = file_type(file)
 	if (t === "video") {
-		embed_html = `<video controls playsinline autoplay style="max-width: 100%; max-height: 100%;">`+
+		embed_html = `<video controls playsinline style="max-width: 100%; max-height: 100%;">`+
 			`<source src="${domain_url()}${file.get_href}" type="${file.mime_type}" />`+
 			`</video>`
 	} else if (t === "audio") {
-		embed_html = `<audio controls autoplay style="width: 100%;">`+
+		embed_html = `<audio controls style="width: 100%;">`+
 			`<source src="${domain_url()}${file.get_href}" type="${file.mime_type}" />`+
 			`</audio>`
 	} else if (t === "image") {
