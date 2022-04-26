@@ -564,7 +564,8 @@ const keyboard_event = evt => {
 					on:download={downloader.download_file}
 					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
 					on:next={() => { if (list_navigator) { list_navigator.next() }}}
-					on:loading={e => {loading = e.detail}}>
+					on:loading={e => {loading = e.detail}}
+					on:reload={reload}>
 				</FilePreview>
 			{:else if view === "gallery"}
 				<GalleryView
@@ -701,7 +702,7 @@ const keyboard_event = evt => {
 	transition: left 0.5s, right 0.5s;
 	overflow: auto;
 	text-align: center;
-	box-shadow: inset 1px 1px 4px -1px var(--shadow_color);
+	box-shadow: inset 0 0 3px -1px var(--shadow_color);
 	border-radius: 16px;
 }
 .file_preview.toolbar_visible { left: 8em; }

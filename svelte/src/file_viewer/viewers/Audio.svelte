@@ -91,7 +91,7 @@ const toggle_play = () => playing ? player.pause() : player.play()
 
 	<br/><br/>
 	{#if file.show_ads}
-		<BandwidthUsage file={file}/>
+		<BandwidthUsage file={file} on:reload/>
 	{/if}
 </div>
 

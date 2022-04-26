@@ -78,6 +78,7 @@ onMount(async () => {
 	</p>
 </TextBlock>
 <br/>
+<br/>
 
 <style>
 .header_image {

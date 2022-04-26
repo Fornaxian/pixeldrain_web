@@ -494,7 +494,7 @@ const share = () => {
 	vertical-align: middle;
 	transition: left 0.5s;
 	overflow: hidden;
-	box-shadow: inset 1px 1px 4px -1px var(--shadow_color);
+	box-shadow: inset 0 0 3px -1px var(--shadow_color);
 }
 
 /* Toolbar */

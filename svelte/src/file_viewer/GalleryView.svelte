@@ -177,7 +177,7 @@ const drop = (e, index) => {
 	padding: 0;
 	overflow: hidden;
 	border-radius: 8px;
-	box-shadow: 1px 1px 4px -1px var(--shadow_color);
+	box-shadow: 0 0 3px -1px var(--shadow_color);
 	background: var(--input_background);
 	word-break: break-all;
 	text-align: center;

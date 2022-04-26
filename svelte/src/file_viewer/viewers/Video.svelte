@@ -169,7 +169,7 @@ const fullscreen = () => {
 
 	<br/><br/>
 	{#if file.show_ads}
-		<BandwidthUsage file={file}/>
+		<BandwidthUsage file={file} on:reload/>
 	{/if}
 {/if}
 

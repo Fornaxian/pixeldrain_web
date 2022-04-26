@@ -1,5 +1,5 @@
 <script>
-import { createEventDispatcher, tick } from "svelte";
+import { tick } from "svelte";
 import Spinner from "../../util/Spinner.svelte";
 import Video from "./Video.svelte";
 import Audio from "./Audio.svelte";
@@ -39,13 +39,6 @@ export const set_file = async file => {
 	await tick()
 	viewer.set_file(file)
 }
-
-let dispatch = createEventDispatcher()
-const download = () => { dispatch("download") }
-const next = () => { dispatch("next") }
-const prev = () => { dispatch("prev") }
-const loading = e => {dispatch("loading", e.detail)}
-
 </script>
 
 {#if viewer_type === "loading"}
@@ -55,23 +48,23 @@ const loading = e => {dispatch("loading", e.detail)}
 {:else if viewer_type === "abuse"}
 	<Abuse bind:this={viewer}></Abuse>
 {:else if viewer_type === "rate_limit"}
-	<RateLimit bind:this={viewer} on:download={download}></RateLimit>
+	<RateLimit bind:this={viewer} on:download></RateLimit>
 {:else if viewer_type === "speed_limit"}
-	<SpeedLimit bind:this={viewer} on:download={download}></SpeedLimit>
+	<SpeedLimit bind:this={viewer} on:download></SpeedLimit>
 {:else if viewer_type === "image"}
-	<Image bind:this={viewer} on:loading={loading}></Image>
+	<Image bind:this={viewer} on:loading></Image>
 {:else if viewer_type === "video"}
-	<Video bind:this={viewer} on:loading={loading} on:download={download} on:prev={prev} on:next={next}></Video>
+	<Video bind:this={viewer} on:loading on:download on:prev on:next on:reload></Video>
 {:else if viewer_type === "audio"}
-	<Audio bind:this={viewer} on:loading={loading} on:prev={prev} on:next={next}></Audio>
+	<Audio bind:this={viewer} on:loading on:prev on:next on:reload></Audio>
 {:else if viewer_type === "pdf"}
 	<PDF bind:this={viewer}></PDF>
 {:else if viewer_type === "text"}
 	<Text bind:this={viewer}></Text>
 {:else if viewer_type === "torrent"}
-	<Torrent bind:this={viewer} on:loading={loading} on:download={download}></Torrent>
+	<Torrent bind:this={viewer} on:loading on:download></Torrent>
 {:else if viewer_type === "file"}
-	<File bind:this={viewer} on:download={download}></File>
+	<File bind:this={viewer} on:download on:reload></File>
 {/if}
 
 <style>
