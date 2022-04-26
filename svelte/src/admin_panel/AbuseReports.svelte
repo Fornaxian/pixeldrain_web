@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import Spinner from "../util/Spinner.svelte";
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import AbuseReport from "./AbuseReport.svelte";
 
 let loading = true
@@ -91,11 +91,7 @@ onMount(() => {
 });
 </script>
 
-{#if loading}
-	<div class="spinner_container">
-		<Spinner />
-	</div>
-{/if}
+<LoadingIndicator loading={loading}/>
 
 <section>
 	<div class="toolbar" style="text-align: left;">
@@ -123,14 +119,6 @@ onMount(() => {
 </section>
 
 <style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 1000;
-}
 .toolbar {
 	display: flex;
 	flex-direction: row;

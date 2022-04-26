@@ -3,7 +3,6 @@ import { onMount } from 'svelte';
 import { formatDate, formatDataVolume, formatThousands } from '../util/Formatting.svelte'
 import { fs_get_file_url, fs_get_node } from './FilesystemAPI.svelte'
 import Sharebar from './Sharebar.svelte'
-import Spinner from '../util/Spinner.svelte'
 import Modal from '../util/Modal.svelte'
 import FileManager from './filemanager/FileManager.svelte';
 import Audio from './viewers/Audio.svelte';
@@ -11,6 +10,7 @@ import Image from './viewers/Image.svelte';
 import Video from './viewers/Video.svelte';
 import PDF from './viewers/PDF.svelte';
 import PixeldrainLogo from '../util/PixeldrainLogo.svelte';
+import LoadingIndicator from '../util/LoadingIndicator.svelte';
 
 // Elements
 let file_viewer
@@ -271,13 +271,9 @@ const share = () => {
 
 <svelte:window on:keydown={keydown} />
 
-<div bind:this={file_viewer} class="file_viewer">
-	{#if state.loading}
-	<div style="position: absolute; right: 0; top: 0; height: 48px; width: 48px; z-index: 100;">
-		<Spinner></Spinner>
-	</div>
-	{/if}
+<LoadingIndicator loading={state.loading}/>
 
+<div bind:this={file_viewer} class="file_viewer">
 	<div bind:this={header_bar} class="file_viewer_headerbar">
 		<button on:click={toolbar_toggle} class="button_toggle_toolbar round" class:button_highlight={toolbar_visible}>
 			<i class="icon">menu</i>

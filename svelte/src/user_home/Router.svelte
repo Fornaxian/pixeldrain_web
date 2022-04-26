@@ -7,6 +7,7 @@ import Transactions from "./Transactions.svelte";
 import Subscription from "./Subscription.svelte";
 import ConnectApp from "./ConnectApp.svelte";
 import ActivityLog from "./ActivityLog.svelte";
+import SharingSettings from "./SharingSettings.svelte";
 
 let page = ""
 
@@ -53,6 +54,13 @@ onMount(() => {
 			Settings
 		</a>
 		<a class="button"
+			href="/user/sharing"
+			class:button_highlight={page === "sharing"}
+			on:click|preventDefault={() => {navigate("sharing", "Sharing")}}>
+			<i class="icon">share</i><br/>
+			Sharing
+		</a>
+		<a class="button"
 			href="/user/connect_app"
 			class:button_highlight={page === "connect_app"}
 			on:click|preventDefault={() => {navigate("connect_app", "Apps")}}>
@@ -97,6 +105,8 @@ onMount(() => {
 	<Home/>
 {:else if page === "settings"}
 	<AccountSettings/>
+{:else if page === "sharing"}
+	<SharingSettings/>
 {:else if page === "api_keys"}
 	<APIKeys/>
 {:else if page === "activity"}

@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
 import { formatDataVolume, formatDate } from "../util/Formatting.svelte";
-import Spinner from "../util/Spinner.svelte";
 import Euro from "../util/Euro.svelte"
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = false
 
@@ -135,12 +135,9 @@ onMount(() => {
 })
 </script>
 
+<LoadingIndicator loading={loading}/>
+
 <section>
-	{#if loading}
-		<div class="spinner_container">
-			<Spinner />
-		</div>
-	{/if}
 	<h2>Deposit credits</h2>
 	<p>
 		You can deposit credit on your pixeldrain account with Bitcoin,
@@ -301,14 +298,6 @@ onMount(() => {
 </section>
 
 <style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 1000;
-}
 .toolbar {
 	display: flex;
 	flex-direction: row;

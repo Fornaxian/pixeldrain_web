@@ -2,7 +2,7 @@
 import { onMount } from "svelte";
 import Euro from "../util/Euro.svelte";
 import Form from "./../util/Form.svelte";
-import Spinner from "../util/Spinner.svelte";
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = true
 
@@ -173,12 +173,9 @@ onMount(get_coupons)
 
 </script>
 
+<LoadingIndicator loading={loading}/>
+
 <section>
-	{#if loading}
-		<div class="spinner_container">
-			<Spinner />
-		</div>
-	{/if}
 	<h2>Give user credit</h2>
 	<p>
 		This adds credit to a user's account. You only need to enter one of
@@ -222,14 +219,3 @@ onMount(get_coupons)
 		</table>
 	</div>
 </section>
-
-<style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 1000;
-}
-</style>

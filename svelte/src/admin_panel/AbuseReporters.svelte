@@ -1,7 +1,6 @@
 <script>
 import { onMount, tick } from "svelte";
-import { formatDate, formatDuration } from "../util/Formatting.svelte";
-import Spinner from "../util/Spinner.svelte";
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import AbuseReporterTable from "./AbuseReporterTable.svelte";
 
 let loading = true
@@ -122,11 +121,7 @@ const delete_reporter = async reporter => {
 onMount(get_reporters);
 </script>
 
-{#if loading}
-	<div class="spinner_container">
-		<Spinner />
-	</div>
-{/if}
+<LoadingIndicator loading={loading}/>
 
 <section>
 	<div class="toolbar" style="text-align: left;">
@@ -201,14 +196,6 @@ onMount(get_reporters);
 </div>
 
 <style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 1000;
-}
 .toolbar {
 	display: flex;
 	flex-direction: row;

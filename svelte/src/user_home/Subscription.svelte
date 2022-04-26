@@ -1,9 +1,9 @@
 <script>
-import Spinner from "../util/Spinner.svelte";
 import Euro from "../util/Euro.svelte"
 import ProgressBar from "../util/ProgressBar.svelte";
 import { onMount } from "svelte";
 import { formatDataVolume } from "../util/Formatting.svelte";
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = false
 let subscription = window.user.subscription.id
@@ -73,11 +73,8 @@ onMount(load_tranfer_used)
 
 </script>
 
-{#if loading}
-	<div class="spinner_container">
-		<Spinner />
-	</div>
-{/if}
+<LoadingIndicator loading={loading}/>
+
 <section>
 	<h2>Manage subscription</h2>
 	{#if window.user.subscription.type !== "patreon"}
@@ -237,15 +234,6 @@ onMount(load_tranfer_used)
 </section>
 
 <style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 1000;
-}
-
 .green {
 	color: var(--highlight_color);
 }
@@ -256,15 +244,6 @@ onMount(load_tranfer_used)
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-}
-
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 1000;
 }
 .feat_table {
 	display: flex;

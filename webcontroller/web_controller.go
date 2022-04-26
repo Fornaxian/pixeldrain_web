@@ -181,6 +181,7 @@ func New(
 		{GET, "user" /*                       */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/home" /*                  */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/settings" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
+		{GET, "user/sharing" /*               */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/api_keys" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/activity" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},
 		{GET, "user/connect_app" /*           */, wc.serveTemplate("user_home", handlerOpts{Auth: true})},

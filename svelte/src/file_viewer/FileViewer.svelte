@@ -17,10 +17,10 @@ import AdLeaderboard from "./AdLeaderboard.svelte";
 import AdSkyscraper from "./AdSkyscraper.svelte";
 import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
-import Spinner from "../util/Spinner.svelte";
 import Downloader from "./Downloader.svelte";
 import CustomBanner from "./CustomBanner.svelte";
 import UkraineModal from "./UkraineModal.svelte";
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = true
 let embedded = false
@@ -366,11 +366,7 @@ const keyboard_event = evt => {
 	<!-- Head elements for the ads -->
 	<AdHead></AdHead>
 
-	{#if loading}
-		<div class="spinner_container">
-			<Spinner></Spinner>
-		</div>
-	{/if}
+	<LoadingIndicator loading={loading}/>
 
 	<div id="headerbar" class="headerbar">
 		<button
@@ -618,15 +614,6 @@ const keyboard_event = evt => {
 </div>
 
 <style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 10000;
-}
-
 .file_viewer {
 	position: absolute;
 	display: flex;

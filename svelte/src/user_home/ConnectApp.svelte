@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import Spinner from "../util/Spinner.svelte";
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import { copy_text } from "../util/Util.svelte";
 
 let loading = false
@@ -55,11 +55,7 @@ onMount(() => {
 })
 </script>
 
-{#if loading}
-	<div class="spinner_container">
-		<Spinner />
-	</div>
-{/if}
+<LoadingIndicator loading={loading}/>
 
 <section>
 	<!-- Show a back button if an app is selected -->
@@ -200,15 +196,6 @@ onMount(() => {
 </section>
 
 <style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 1000;
-}
-
 .app_icon {
 	height: 1.6em;
 	vertical-align: middle;

@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
 import { formatDate } from "../util/Formatting.svelte";
-import Spinner from "../util/Spinner.svelte";
 import Expandable from "../util/Expandable.svelte";
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = true
 let rows = []
@@ -79,11 +79,7 @@ const delete_ban = async (addr) => {
 onMount(get_bans);
 </script>
 
-{#if loading}
-	<div class="spinner_container">
-		<Spinner />
-	</div>
-{/if}
+<LoadingIndicator loading={loading}/>
 
 <section>
 	<div class="toolbar">
@@ -188,14 +184,6 @@ onMount(get_bans);
 </section>
 
 <style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-	z-index: 1000;
-}
 .toolbar {
 	display: flex;
 	flex-direction: row;

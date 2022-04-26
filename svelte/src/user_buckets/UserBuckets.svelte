@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
 import UserBucket from "./UserBucket.svelte";
-import Spinner from "../util/Spinner.svelte";
 import { fs_get_buckets, fs_create_bucket } from "../filesystem/FilesystemAPI.svelte";
+import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = true
 let buckets = []
@@ -41,11 +41,7 @@ const create_bucket = async () => {
 onMount(get_buckets);
 </script>
 
-{#if loading}
-	<div class="spinner_container">
-		<Spinner />
-	</div>
-{/if}
+<LoadingIndicator loading={loading}/>
 
 <section>
 	<div class="toolbar" style="text-align: right;">
@@ -84,13 +80,3 @@ onMount(get_buckets);
 		<UserBucket bucket={bucket} on:refresh={get_buckets}></UserBucket>
 	{/each}
 </section>
-
-<style>
-.spinner_container {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	height: 100px;
-	width: 100px;
-}
-</style>
