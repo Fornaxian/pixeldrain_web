@@ -69,7 +69,10 @@ let load_tranfer_used = () => {
 		console.error("Error requesting time series: " + e);
 	})
 }
-onMount(load_tranfer_used)
+
+onMount(() => {
+	load_tranfer_used()
+})
 
 </script>
 

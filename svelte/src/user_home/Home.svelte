@@ -132,7 +132,14 @@ let load_direct_bw = () => {
 	})
 }
 
+let patreon_response = ""
+
 onMount(() => {
+	if (window.location.hash.startsWith("#patreon_")) {
+		patreon_response = window.location.hash.replace("#patreon_", "")
+		window.location.hash = ""
+	}
+
 	if (window.user.monthly_transfer_cap > 0) {
 		transfer_cap = window.user.monthly_transfer_cap
 	} else if (window.user.subscription.monthly_transfer_cap > 0) {
@@ -191,6 +198,36 @@ onDestroy(() => {
 </script>
 
 <section>
+	{#if patreon_response !== ""}
+		{#if patreon_response === "error"}
+			<div class="highlight_red">
+				An error occurred while linking Patreon subscription. Please try
+				again later.
+			</div>
+		{:else if patreon_response === "pledge_not_found"}
+			<div class="highlight_yellow">
+				<p>
+					We were not able to find your payment on Patreon. Please
+					wait until the payment is confirmed and try again. You can
+					see the status of your payment <a
+					href="https://www.patreon.com/pledges?ty=h"
+					target="_blank">on Patreon itself</a>.
+				</p>
+				<p>
+					If your payment is complete and your account is still not
+					upgraded please contact me at support@pixeldrain.com, or
+					send me a message on Patreon.
+				<p/>
+			</div>
+		{:else if patreon_response === "success"}
+			<div class="highlight_green">
+				Success! Your Patreon pledge has been linked to your pixeldrain
+				account. You are now able to use Pro features.
+			</div>
+		{/if}
+		<br/>
+	{/if}
+
 	<h2>Account information</h2>
 	<ul>
 		<li>Username: {window.user.username}</li>
@@ -199,6 +236,8 @@ onDestroy(() => {
 			Supporter level: {window.user.subscription.name}
 			{#if window.user.subscription.type === "patreon"}
 				(<a href="https://www.patreon.com/join/pixeldrain/checkout?edit=1">Manage subscription</a>)
+			{:else if window.user.subscription.id === ""}
+				(<a href="/api/patreon_auth/start" class="button">Link Patreon subscription</a>)
 			{/if}
 			<ul>
 				<li>
