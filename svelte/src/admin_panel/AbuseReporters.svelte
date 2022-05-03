@@ -97,10 +97,6 @@ const edit_reporter = async reporter => {
 }
 
 const delete_reporter = async reporter => {
-	if (!confirm("Delete this reporter address?\n\n"+reporter.from_address)) {
-		return
-	}
-
 	try {
 		const resp = await fetch(
 			window.api_endpoint+"/admin/abuse_reporter/"+

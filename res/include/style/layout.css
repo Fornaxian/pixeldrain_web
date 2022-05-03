@@ -152,8 +152,8 @@ footer>.footer_content {
 	overflow-y: auto;
 	overflow-x: hidden;
 	background: var(--body_background);
-	border-top-left-radius: 12px;
-	border-bottom-left-radius: 12px;
+	border-top-left-radius: 16px;
+	border-bottom-left-radius: 16px;
 	padding: 8px;
 	transition: margin-left 0.5s;
 }

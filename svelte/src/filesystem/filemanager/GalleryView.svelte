@@ -67,15 +67,16 @@ const node_icon = node => {
 }
 .file{
 	position: relative;
-	width: 180px;
+	width: 200px;
 	max-width: 45%;
-	height: 180px;
+	height: 200px;
 	margin: 8px;
 	padding: 0;
 	overflow: hidden;
 	border-radius: 8px;
-	box-shadow: 1px 1px 4px -1px var(--shadow_color);
+	box-shadow: 1px 1px 3px -1px var(--shadow_color);
 	background: var(--input_background);
+	word-break: break-all;
 	text-align: center;
 	line-height: 1.2em;
 	display: inline-block;
@@ -83,14 +84,14 @@ const node_icon = node => {
 	text-decoration: none;
 	vertical-align: top;
 	color: var(--body_text_color);
+	transition: background 0.2s;
 }
 .file:hover {
-	box-shadow: 0 0 2px 2px var(--highlight_color);
-	text-decoration: none;
+	background: var(--input_hover_background);
 }
 .selected {
-	background: var(--highlight_background);
-	color: var(--highlight_text_color);
+	box-shadow: 0 0 2px 2px var(--highlight_color);
+	text-decoration: none;
 }
 .icon_container {
 	width: 100%;

@@ -166,7 +166,6 @@ onDestroy(() => {
 <div class="highlight_shaded" style="margin-bottom: 6px;">
 	<button on:click={() => loadGraph(1440, 1, true)}>Day 1m</button>
 	<button on:click={() => loadGraph(10080, 10, true)}>Week 10m</button>
-	<button on:click={() => loadGraph(10080, 60, true)}>Week 1h</button>
 	<button on:click={() => loadGraph(43200, 60, true)}>Month 1h</button>
 	<button on:click={() => loadGraph(131400, 1440, false)}>Quarter 1d</button>
 	<button on:click={() => loadGraph(262800, 1440, false)}>Half-year 1d</button>
@@ -217,7 +216,7 @@ onDestroy(() => {
 			</thead>
 			<tbody>
 				{#each status.peers as peer}
-				<tr style="text-align: left"
+				<tr style="text-align: left; border: none;"
 					class:highlight_red={peer.free_space < peer.min_free_space / 2 || !peer.reachable}
 					class:highlight_yellow={peer.free_space < peer.min_free_space}
 					class:highlight_green={peer.reachable}

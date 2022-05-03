@@ -19,7 +19,6 @@ import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
 import Downloader from "./Downloader.svelte";
 import CustomBanner from "./CustomBanner.svelte";
-import UkraineModal from "./UkraineModal.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = true
@@ -607,7 +606,6 @@ const keyboard_event = evt => {
 
 	{#if ads_enabled}
 		<IntroPopup target={button_home}></IntroPopup>
-		<UkraineModal></UkraineModal>
 	{/if}
 
 	<Downloader bind:this={downloader} file={file} list={list}></Downloader>

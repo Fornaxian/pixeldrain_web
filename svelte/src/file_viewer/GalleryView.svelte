@@ -2,6 +2,7 @@
 import { createEventDispatcher } from "svelte"
 import { flip } from "svelte/animate"
 import FilePicker from "./FilePicker.svelte"
+import { file_type } from "./FileUtilities.svelte";
 let dispatch = createEventDispatcher()
 
 export let list = {
@@ -135,6 +136,7 @@ const drop = (e, index) => {
 			<div
 				class="icon_container"
 				class:editing={list.can_edit}
+				class:wide={file_type(file) === "image" || file_type(file) === "video"}
 				style="background-image: url('{file.icon_href}?width=256&height=256');">
 				{#if list.can_edit}
 					<i class="icon" on:click|stopPropagation|preventDefault style="cursor: grab;">drag_indicator</i>
@@ -177,7 +179,7 @@ const drop = (e, index) => {
 	padding: 0;
 	overflow: hidden;
 	border-radius: 8px;
-	box-shadow: 0 0 3px -1px var(--shadow_color);
+	box-shadow: 1px 1px 3px -1px var(--shadow_color);
 	background: var(--input_background);
 	word-break: break-all;
 	text-align: center;
@@ -200,7 +202,8 @@ const drop = (e, index) => {
 	width: 100%;
 	height: 136px;
 	background-position: center;
-	background-size: cover;
+	background-size: contain;
+	background-repeat: no-repeat;
 	font-size: 22px;
 	text-align: left;
 }
@@ -213,5 +216,8 @@ const drop = (e, index) => {
 .icon_container > .icon:hover {
 	color: var(--highlight_color);
 	cursor: pointer;
+}
+.icon_container.wide {
+	background-size: cover;
 }
 </style>

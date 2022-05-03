@@ -182,38 +182,6 @@ const paste = (e) => {
 };
 </script>
 
-<style>
-	.hidden {
-		display: none;
-	}
-
-	.file_input {
-		display: block;
-		visibility: hidden;
-		width: 0;
-		height: 0;
-	}
-
-	.file_upload {
-		display: block;
-		text-align: left;
-		width: 100%;
-		margin: 6px 0 0 0;
-		padding: 0;
-		background: var(--body_color);
-		box-shadow: 1px 1px 5px var(--shadow_color);
-	}
-
-	.upload_progress_bar {
-		width: 100%;
-		height: 2px;
-	}
-	.upload_progress {
-		background-color: var(--highlight_color);
-		height: 100%;
-	}
-</style>
-
 <svelte:body
 	on:dragover|preventDefault|stopPropagation={dragover}
 	on:dragleave|preventDefault|stopPropagation={dragleave}
@@ -242,3 +210,35 @@ const paste = (e) => {
 		</div>
 	{/each}
 </div>
+
+<style>
+.hidden {
+	display: none;
+}
+
+.file_input {
+	display: block;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+.file_upload {
+	display: block;
+	text-align: left;
+	width: 100%;
+	margin: 6px 0 0 0;
+	padding: 0;
+	background: var(--body_color);
+	box-shadow: 1px 1px 4px -1px var(--shadow_color);
+}
+
+.upload_progress_bar {
+	width: 100%;
+	height: 2px;
+}
+.upload_progress {
+	background-color: var(--highlight_color);
+	height: 100%;
+}
+</style>
