@@ -13,8 +13,10 @@ let currently_selecting = "" // header, background or footer
 
 let theme = ""
 let header_image = ""
+let header_link = ""
 let background_image = ""
 let footer_image = ""
+let footer_link = ""
 
 let select_file = t => {
 	currently_selecting = t
@@ -47,31 +49,42 @@ let save = async () => {
 	const form = new FormData()
 	form.append("theme", theme)
 	form.append("header_image", header_image)
+	form.append("header_link", header_link)
 	form.append("background_image", background_image)
 	form.append("footer_image", footer_image)
+	form.append("footer_link", footer_link)
 
-	const resp = await fetch(
-		window.api_endpoint+"/user/file_customization",
-		{ method: "PUT", body: form }
-	);
-	if(resp.status >= 400) {
-		let json = await resp.json()
-		console.debug(json)
-		success_message.set(false, json.message)
-		return
+	try {
+		const resp = await fetch(
+			window.api_endpoint+"/user/file_customization",
+			{ method: "PUT", body: form }
+		);
+		if(resp.status >= 400) {
+			let json = await resp.json()
+			console.debug(json)
+			throw json.message
+		}
+
+		success_message.set(true, "Changes saved")
+	} catch(err) {
+		success_message.set(false, err)
+	} finally {
+		loading = false
 	}
 
-	success_message.set(true, "Changes saved")
-	loading = false
 }
 
 onMount(() => {
+	// The fields are undefined when they're empty. So we need to check if each
+	// field is defined before converting to a string
 	if (window.user.file_viewer_branding) {
 		let b = window.user.file_viewer_branding
 		theme = b.theme ? b.theme : ""
 		header_image = b.header_image ? b.header_image : ""
+		header_link = b.header_link ? b.header_link : ""
 		background_image = b.background_image ? b.background_image : ""
 		footer_image = b.footer_image ? b.footer_image : ""
+		footer_link = b.footer_link ? b.footer_link : ""
 	}
 })
 
@@ -80,20 +93,19 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h2>File viewer branding</h2>
 	{#if !window.user.subscription.file_viewer_branding}
 		<div class="highlight_red">
-			File viewer branding is not available for your account. Subscribe to
-			the Persistence plan or higher to enable this feature.
+			Sharing settings are not available for your account. Subscribe to
+			the Persistence plan or higher to enable these features.
 		</div>
 	{:else if !window.user.hotlinking_enabled}
 		<div class="highlight_red">
-			To use the branding feature bandwidth sharing needs to be enabled.
-			Without this the custom images will not be able to load. Enable
-			bandwidth sharing on the
+			To use the sharing settings bandwidth sharing needs to be enabled.
+			Enable bandwidth sharing on the
 			<a href="/user/subscription">subscription page</a>.
 		</div>
 	{/if}
+	<h2>File viewer branding</h2>
 	<SuccessMessage bind:this={success_message}></SuccessMessage>
 	<p>
 		You can change the appearance of your file viewer pages. The images you
@@ -120,7 +132,8 @@ onMount(() => {
 	<h3>Header image</h3>
 	<p>
 		Will be shown above the file. Maximum height is 90px. Will be shrunk if
-		larger.
+		larger. You can also add a link to open when the visitor clicks the
+		image. The link need to start with 'https://'.
 	</p>
 	<button on:click={() => {select_file("header")}}>
 		<i class="icon">add_photo_alternate</i>
@@ -130,9 +143,22 @@ onMount(() => {
 		<i class="icon">close</i>
 		Remove
 	</button>
+	<br/>
+	<form on:submit|preventDefault={save}>
+		Header image link:
+		<input bind:value={header_link} type="text" placeholder="https://"/>
+		<button action="submit"><i class="icon">save</i> Save</button>
+	</form>
+
 	{#if header_image}
 		<div class="highlight_shaded">
-			<img class="banner_preview" src="/api/file/{header_image}" alt="Custom file viewer header"/>
+			{#if header_link}
+				<a href={header_link} target="_blank">
+					<img class="banner_preview" src="/api/file/{header_image}" alt="Custom file viewer header"/>
+				</a>
+			{:else}
+				<img class="banner_preview" src="/api/file/{header_image}" alt="Custom file viewer header"/>
+			{/if}
 		</div>
 	{/if}
 
@@ -170,9 +196,21 @@ onMount(() => {
 		<i class="icon">close</i>
 		Remove
 	</button>
+	<br/>
+	<form on:submit|preventDefault={save}>
+		Footer image link:
+		<input bind:value={footer_link} type="text" placeholder="https://"/>
+		<button action="submit"><i class="icon">save</i> Save</button>
+	</form>
 	{#if footer_image}
 		<div class="highlight_shaded">
-			<img class="banner_preview" src="/api/file/{footer_image}" alt="Custom file viewer footer"/>
+			{#if footer_link}
+				<a href={footer_link} target="_blank">
+					<img class="banner_preview" src="/api/file/{footer_image}" alt="Custom file viewer footer"/>
+				</a>
+			{:else}
+				<img class="banner_preview" src="/api/file/{footer_image}" alt="Custom file viewer footer"/>
+			{/if}
 		</div>
 	{/if}
 	<br/>

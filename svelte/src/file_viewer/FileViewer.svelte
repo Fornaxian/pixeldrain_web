@@ -228,8 +228,10 @@ const toggle_gallery = () => {
 // any change
 let file_preview_background
 let custom_header = ""
+let custom_header_link = ""
 let custom_background = ""
 let custom_footer = ""
+let custom_footer_link = ""
 const apply_customizations = file => {
 	if (!file.branding) {
 		return
@@ -237,8 +239,14 @@ const apply_customizations = file => {
 	if (file.branding.header_image) {
 		custom_header = window.api_endpoint+"/file/"+file.branding.header_image
 	}
+	if (file.branding.header_link) {
+		custom_header_link = file.branding.header_link
+	}
 	if (file.branding.footer_image) {
 		custom_footer = window.api_endpoint+"/file/"+file.branding.footer_image
+	}
+	if (file.branding.footer_link) {
+		custom_footer_link = file.branding.footer_link
 	}
 
 	if (file.branding.background_image) {
@@ -410,7 +418,7 @@ const keyboard_event = evt => {
 		</ListNavigator>
 	{/if}
 
-	<CustomBanner src={custom_header} border_top={true}></CustomBanner>
+	<CustomBanner src={custom_header} link={custom_header_link} border_top={true}></CustomBanner>
 
 	<div class="file_preview_row">
 		<div id="toolbar" class="toolbar" class:toolbar_visible>
@@ -581,7 +589,7 @@ const keyboard_event = evt => {
 	{#if ads_enabled}
 		<AdLeaderboard></AdLeaderboard>
 	{:else if custom_footer}
-		<CustomBanner src={custom_footer}></CustomBanner>
+		<CustomBanner src={custom_footer} link={custom_footer_link}></CustomBanner>
 	{/if}
 
 	<Modal bind:this={details_window} on:is_visible={e => {details_visible = e.detail}} title="File details" width="1200px">

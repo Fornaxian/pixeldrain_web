@@ -1,11 +1,18 @@
 <script>
 export let src = ""
+export let link = ""
 export let border_top = false;
 </script>
 
 {#if src}
 	<div class:border_top>
-		<img class="image" src="{src}" alt="User-provided banner"/>
+		{#if link}
+			<a href={link} target="_blank">
+				<img class="image" src="{src}" alt="User-provided banner"/>
+			</a>
+		{:else}
+			<img class="image" src="{src}" alt="User-provided banner"/>
+		{/if}
 	</div>
 {/if}
 
