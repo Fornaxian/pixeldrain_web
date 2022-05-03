@@ -71,7 +71,33 @@ let save = async () => {
 	} finally {
 		loading = false
 	}
+}
 
+// Embedding settings
+let embed_domains = ""
+
+const save_embed = async () => {
+	loading = true
+	const form = new FormData()
+	form.append("domains", embed_domains)
+
+	try {
+		const resp = await fetch(
+			window.api_endpoint+"/user/file_embed",
+			{ method: "PUT", body: form }
+		);
+		if(resp.status >= 400) {
+			let json = await resp.json()
+			console.debug(json)
+			throw json.message
+		}
+
+		success_message.set(true, "Changes saved")
+	} catch(err) {
+		success_message.set(false, err)
+	} finally {
+		loading = false
+	}
 }
 
 onMount(() => {
@@ -86,6 +112,8 @@ onMount(() => {
 		footer_image = b.footer_image ? b.footer_image : ""
 		footer_link = b.footer_link ? b.footer_link : ""
 	}
+
+	embed_domains = window.user.file_embed_domains
 })
 
 </script>
@@ -93,6 +121,7 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <section>
+	<h2>Sharing settings</h2>
 	{#if !window.user.subscription.file_viewer_branding}
 		<div class="highlight_red">
 			Sharing settings are not available for your account. Subscribe to
@@ -105,7 +134,7 @@ onMount(() => {
 			<a href="/user/subscription">subscription page</a>.
 		</div>
 	{/if}
-	<h2>File viewer branding</h2>
+	<h3>File viewer branding</h3>
 	<SuccessMessage bind:this={success_message}></SuccessMessage>
 	<p>
 		You can change the appearance of your file viewer pages. The images you
@@ -118,7 +147,7 @@ onMount(() => {
 		should use APNG or WebP. Avoid using animated GIFs as they are very slow
 		to load.
 	</p>
-	<h3>Theme</h3>
+	<h4>Theme</h4>
 	<p>
 		Choose a theme for your download pages. This theme will override the
 		theme preference of the person viewing the file. Set to 'None' to let
@@ -129,7 +158,7 @@ onMount(() => {
 		on:theme_change={e => {theme = e.detail; save()}}>
 	</ThemePicker>
 
-	<h3>Header image</h3>
+	<h4>Header image</h4>
 	<p>
 		Will be shown above the file. Maximum height is 90px. Will be shrunk if
 		larger. You can also add a link to open when the visitor clicks the
@@ -144,10 +173,10 @@ onMount(() => {
 		Remove
 	</button>
 	<br/>
-	<form on:submit|preventDefault={save}>
-		Header image link:
-		<input bind:value={header_link} type="text" placeholder="https://"/>
-		<button action="submit"><i class="icon">save</i> Save</button>
+	<form class="form_row" on:submit|preventDefault={save}>
+		<div class="shrink">Header image link:</div>
+		<input class="grow" bind:value={header_link} type="text" placeholder="https://"/>
+		<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
 	</form>
 
 	{#if header_image}
@@ -162,7 +191,7 @@ onMount(() => {
 		</div>
 	{/if}
 
-	<h3>Background image</h3>
+	<h4>Background image</h4>
 	<p>
 		This image will be shown behind the file which is being viewed. I
 		recommend choosing something dark and not too distracting. Try to keep
@@ -183,7 +212,7 @@ onMount(() => {
 		</div>
 	{/if}
 
-	<h3>Footer image</h3>
+	<h4>Footer image</h4>
 	<p>
 		Will be shown below the file. Maximum height is 90px. Will be shrunk if
 		larger.
@@ -197,10 +226,10 @@ onMount(() => {
 		Remove
 	</button>
 	<br/>
-	<form on:submit|preventDefault={save}>
-		Footer image link:
-		<input bind:value={footer_link} type="text" placeholder="https://"/>
-		<button action="submit"><i class="icon">save</i> Save</button>
+	<form class="form_row" on:submit|preventDefault={save}>
+		<div class="shrink">Footer image link:</div>
+		<input class="grow" bind:value={footer_link} type="text" placeholder="https://"/>
+		<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
 	</form>
 	{#if footer_image}
 		<div class="highlight_shaded">
@@ -214,10 +243,29 @@ onMount(() => {
 		</div>
 	{/if}
 	<br/>
-	<br/>
+	<h3>Embedding controls</h3>
+	<p>
+		Here you can control which websites are allowed to embed your files in
+		their web pages. If a website that is not on this list tries to embed
+		one of your files the request will be blocked.
+	</p>
+	<p>
+		The list should be formatted as a list of domain names separated by a
+		space. Like this: 'pixeldrain.com google.com twitter.com'
+	</p>
+	<form class="form_row" on:submit|preventDefault={save_embed}>
+		<div class="shrink">Domain names:</div>
+		<input class="grow" bind:value={embed_domains} type="text"/>
+		<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
+	</form>
 </section>
 
-<FilePicker bind:this={file_picker} on:files={e => {add_file(e.detail)}} multi_select={false} title="Select image file"></FilePicker>
+<FilePicker
+	bind:this={file_picker}
+	on:files={e => {add_file(e.detail)}}
+	multi_select={false}
+	title="Select image file"
+/>
 
 <style>
 .banner_preview {
@@ -231,5 +279,17 @@ onMount(() => {
 	max-width: 100%;
 	display: block;
 	margin: auto;
+}
+.form_row {
+	display: inline-flex;
+	flex-direction: row;
+	width: 100%;
+	align-items: center;
+}
+.grow {
+	flex: 1 1 auto;
+}
+.shrink {
+	flex: 0 0 auto;
 }
 </style>
