@@ -4,7 +4,6 @@ import { color_by_name_no_prefix } from "../util/Util.svelte";
 import * as head from "./AdHead.svelte"
 
 let dispatch = createEventDispatcher()
-let container
 let ad_type = ""
 let visible = false
 
@@ -15,20 +14,9 @@ onMount(() => {
 		return
 	}
 
-	if (document.body.clientWidth < 700 || document.body.clientHeight < 700) {
-		visible = false
-		dispatch("visibility", false)
-		return
-	}
-
-	// If the ad popup was dismissed less than 24 hours ago we don't show it
-	let dismissal = +localStorage.getItem("viewer_skyscraper_ad_dismissed")
-	let now = new Date().getTime()
-
-	if (dismissal > 0 && now - dismissal < 1000 * 60 * 60 * 24) {
-		console.log("Skyscraper dismissed")
-		visible = false
-		dispatch("visibility", false)
+	// If the screen is too small to display the full skyscraper ad, we don't
+	// show it
+	if (document.body.clientWidth < 800 || document.body.clientHeight < 700) {
 		return
 	}
 
@@ -40,21 +28,10 @@ let set_ad_type = async t => {
 	head.load_ad(t)
 
 	visible = true
-	await tick()
+	await tick() // Wait for skyscraper div to render
 	dispatch("visibility", true)
-	container.style.right = "0"
 
 	console.log("skyscraper ad is " + t)
-}
-
-const close = () => {
-	container.style.right = -container.offsetWidth + "px"
-	dispatch("visibility", false)
-
-	localStorage.setItem("viewer_skyscraper_ad_dismissed", new Date().getTime())
-
-	// Remove the ad from the DOM to save memory
-	setTimeout(() => { visible = false }, 1000)
 }
 
 head.adsplus_loaded.subscribe(v => {
@@ -77,10 +54,7 @@ head.valueimpression_loaded.subscribe(v => {
 </script>
 
 {#if visible}
-	<div class="skyscraper" bind:this={container}>
-		<button on:click={close} class="round">
-			<i class="icon">close</i> Close ad
-		</button>
+	<div class="skyscraper">
 		<div class="ad_space">
 			{#if ad_type === "aads"}
 				<iframe
@@ -114,12 +88,11 @@ head.valueimpression_loaded.subscribe(v => {
 	width: 160px;
 	z-index: 49;
 	overflow: hidden;
-	right: -160px;
+	right: 0;
 	bottom: 0;
 	top: 0;
 	padding: 0;
 	text-align: center;
-	transition: right 0.5s;
 }
 .ad_space {
 	width: 100%;
