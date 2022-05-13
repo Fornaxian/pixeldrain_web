@@ -1,6 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import FilePicker from "../file_viewer/FilePicker.svelte";
+import CustomBanner from "../file_viewer/CustomBanner.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import SuccessMessage from "../util/SuccessMessage.svelte";
 import ThemePicker from "../util/ThemePicker.svelte";
@@ -181,13 +182,7 @@ onMount(() => {
 
 	{#if header_image}
 		<div class="highlight_shaded">
-			{#if header_link}
-				<a href={header_link} target="_blank">
-					<img class="banner_preview" src="/api/file/{header_image}" alt="Custom file viewer header"/>
-				</a>
-			{:else}
-				<img class="banner_preview" src="/api/file/{header_image}" alt="Custom file viewer header"/>
-			{/if}
+			<CustomBanner src={"/api/file/"+header_image} link={header_link}></CustomBanner>
 		</div>
 	{/if}
 
@@ -233,13 +228,7 @@ onMount(() => {
 	</form>
 	{#if footer_image}
 		<div class="highlight_shaded">
-			{#if footer_link}
-				<a href={footer_link} target="_blank">
-					<img class="banner_preview" src="/api/file/{footer_image}" alt="Custom file viewer footer"/>
-				</a>
-			{:else}
-				<img class="banner_preview" src="/api/file/{footer_image}" alt="Custom file viewer footer"/>
-			{/if}
+			<CustomBanner src={"/api/file/"+footer_image} link={footer_link}></CustomBanner>
 		</div>
 	{/if}
 	<br/>
@@ -268,12 +257,6 @@ onMount(() => {
 />
 
 <style>
-.banner_preview {
-	max-height: 90px;
-	max-width: 100%;
-	display: block;
-	margin: auto;
-}
 .background_preview {
 	max-height: 200px;
 	max-width: 100%;

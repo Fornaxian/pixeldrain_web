@@ -394,11 +394,6 @@ pre {
 	background: var(--input_hover_background);
 }
 
-.file_button_selected {
-	box-shadow: 0 0 2px 2px var(--highlight_color);
-	text-decoration: none;
-}
-
 .file_button>img {
 	max-height: 100%;
 	max-width: 25%;

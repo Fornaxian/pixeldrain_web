@@ -288,7 +288,7 @@ export const start = () => {
 }
 .progress {
 	flex: 0 0 auto;
-	height: 2px;
+	height: 3px;
 }
 .progress_bar {
 	background: var(--highlight_background);

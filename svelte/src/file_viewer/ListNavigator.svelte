@@ -82,7 +82,7 @@ export const set_item = idx => {
 				href="#item={index}"
 				title="Open {file.name}"
 				class="list_item file_button"
-				class:file_button_selected={file.selected}>
+				class:file_selected={file.selected}>
 				<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" loading="lazy"/>
 				{file.name}
 			</a>
@@ -118,5 +118,10 @@ export const set_item = idx => {
 	overflow-x: auto;
 	overflow-y: hidden;
 	white-space: nowrap;
+}
+
+.file_selected {
+	box-shadow: 0 0 2px 2px var(--highlight_color);
+	text-decoration: none;
 }
 </style>

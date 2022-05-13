@@ -9,6 +9,7 @@ import Tumblr from "../icons/Tumblr.svelte"
 import { formatDataVolume, formatDuration } from "../util/Formatting.svelte";
 import StorageProgressBar from "../user_home/StorageProgressBar.svelte"
 import Konami from "../util/Konami.svelte"
+import ProgressBar from "../util/ProgressBar.svelte"
 
 // === UPLOAD LOGIC ===
 
@@ -113,7 +114,6 @@ const finish_upload = (file) => {
 
 let stats_interval = null
 let stats_interval_ms = 500
-let progress_bar_inner
 let start_time = 0
 let total_progress = 0
 let total_size = 0
@@ -147,7 +147,6 @@ const stats_update = () => {
 	)
 	last_total_loaded = total_loaded
 
-	progress_bar_inner.style.width = (total_progress * 100) + "%"
 	document.title = (total_progress*100).toFixed(0) + "% ~ " +
 		formatDuration(remaining_time, 0) +
 		" ~ uploading to pixeldrain"
@@ -156,7 +155,6 @@ const stats_finished = () => {
 	start_time = 0
 	total_loaded = total_size
 	total_progress = 1
-	progress_bar_inner.style.width = "100%"
 	total_rate = 0
 
 	document.title = "Finished! ~ pixeldrain"
@@ -435,10 +433,9 @@ const keydown = (e) => {
 			<div>ETA {formatDuration(remaining_time, 0)}</div>
 			<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
 		</div>
+
+		<ProgressBar total={total_size} used={total_loaded} animation="linear" speed={stats_interval_ms}/>
 	</section>
-	<div class="progress_bar_outer">
-		<div bind:this={progress_bar_inner} class="progress_bar_inner"></div>
-	</div>
 
 	<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
 		Gimme gimme gimme!<br/>
@@ -572,7 +569,6 @@ const keydown = (e) => {
 }
 .instruction {
 	border-top: 1px solid var(--separator);
-	border-bottom: 1px solid var(--separator);
 	margin: 1.5em 0;
 	padding: 5px;
 }
@@ -608,17 +604,6 @@ const keydown = (e) => {
 	.stats_box {
 		grid-template-columns: 50% 50%;
 	}
-}
-.progress_bar_outer {
-	width: 100%;
-	height: 3px;
-}
-.progress_bar_inner {
-	background: var(--highlight_background);
-	height: 100%;
-	width: 0;
-	transition: width 0.5s;
-	transition-timing-function: linear;
 }
 
 .album_name_form {
