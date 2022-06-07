@@ -2,6 +2,7 @@ package webcontroller
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"strings"
 	"time"
@@ -24,12 +25,35 @@ func browserCompat(ua string) bool {
 }
 
 type fileViewerData struct {
-	Type           string      `json:"type"` // file or list
-	APIResponse    interface{} `json:"api_response"`
-	CaptchaKey     string      `json:"captcha_key"`
-	ViewToken      string      `json:"view_token"`
-	Embedded       bool        `json:"embedded"`
-	UserAdsEnabled bool        `json:"user_ads_enabled"`
+	Type           string       `json:"type"` // file or list
+	APIResponse    interface{}  `json:"api_response"`
+	CaptchaKey     string       `json:"captcha_key"`
+	ViewToken      string       `json:"view_token"`
+	Embedded       bool         `json:"embedded"`
+	UserAdsEnabled bool         `json:"user_ads_enabled"`
+	ThemeURI       template.URL `json:"theme_uri"`
+}
+
+func (vd *fileViewerData) themeOverride(r *http.Request, files []pixelapi.ListFile) {
+	vd.ThemeURI = "/theme.css"
+	var theme = r.URL.Query().Get("style")
+	var hue = r.URL.Query().Get("hue")
+
+	if files[0].Branding != nil {
+		if theme == "" {
+			theme = files[0].Branding["theme"]
+		}
+		if hue == "" {
+			hue = files[0].Branding["hue"]
+		}
+	}
+
+	if theme != "" {
+		vd.ThemeURI += template.URL("?style=" + theme)
+		if hue != "" {
+			vd.ThemeURI += template.URL("&hue=" + hue)
+		}
+	}
 }
 
 // ServeFileViewer controller for GET /u/:id
@@ -95,9 +119,8 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		vd.Embedded = true
 	}
 
+	vd.themeOverride(r, files)
 	templateData.Other = vd
-
-	fileStyleOverride(templateData, files)
 
 	for _, file := range files {
 		if file.AbuseType != "" {
@@ -157,9 +180,9 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	if _, ok := r.URL.Query()["embed"]; ok {
 		vd.Embedded = true
 	}
-	templateData.Other = vd
 
-	fileStyleOverride(templateData, list.Files)
+	vd.themeOverride(r, list.Files)
+	templateData.Other = vd
 
 	for _, file := range list.Files {
 		if file.AbuseType != "" {
@@ -176,16 +199,6 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
 		log.Error("Error executing template file_viewer: %s", err)
-	}
-}
-
-func fileStyleOverride(td *TemplateData, files []pixelapi.ListFile) {
-	if len(files) == 0 {
-		return
-	}
-
-	if files[0].Branding != nil && files[0].Branding["theme"] != "" {
-		td.setStyle(userStyle(files[0].Branding["theme"]))
 	}
 }
 

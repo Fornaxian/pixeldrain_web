@@ -264,9 +264,9 @@ onDestroy(() => {
 	{/if}
 
 	{#if transfer_cap === -1}
-		Paid transfers in the last 30 days: {formatDataVolume(transfer_used, 3)}<br/>
+		Premium transfers in the last 30 days: {formatDataVolume(transfer_used, 3)}<br/>
 	{:else}
-		Paid transfers:
+		Premium transfers:
 		{formatDataVolume(transfer_used, 3)}
 		out of
 		{formatDataVolume(transfer_cap, 3)}

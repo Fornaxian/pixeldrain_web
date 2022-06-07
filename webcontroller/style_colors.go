@@ -2,29 +2,38 @@ package webcontroller
 
 import (
 	"fmt"
+	"math"
 )
 
 type Color interface {
+	CSS
+	HSL() HSL
+	RGB() RGB
+}
+
+type CSS interface {
 	CSS() string
 }
 
 // Raw CSS
-type CSS string
+type RawCSS string
 
-func (c CSS) CSS() string { return string(c) }
-
-const NoColor = CSS("none")
+func (c RawCSS) CSS() string { return string(c) }
 
 // HSL color
-type hsl struct {
+type HSL struct {
 	Hue        int
 	Saturation float64
 	Lightness  float64
 }
 
-func (orig hsl) RGB() string {
+var _ Color = HSL{} // Confirm interface compliance
+
+func (hsl HSL) CSS() string { return hsl.RGB().CSS() }
+func (hsl HSL) HSL() HSL    { return hsl }
+func (hsl HSL) RGB() RGB {
 	var r, g, b, q, p float64
-	var h, s, l = float64(orig.Hue) / 360, orig.Saturation, orig.Lightness
+	var h, s, l = float64(hsl.Hue) / 360, hsl.Saturation, hsl.Lightness
 
 	if s == 0 {
 		r, g, b = l, l, l
@@ -58,19 +67,15 @@ func (orig hsl) RGB() string {
 		g = hue2rgb(p, q, h)
 		b = hue2rgb(p, q, h-1.0/3.0)
 	}
-
-	return fmt.Sprintf("%02x%02x%02x", int(r*255), int(g*255), int(b*255))
-}
-func (orig hsl) CSS() string {
-	return "#" + orig.RGB()
+	return RGB{R: uint8(r * 255), G: uint8(g * 255), B: uint8(b * 255)}
 }
 
 // Add returns a NEW HSL struct, it doesn't modify the current one
-func (h hsl) Add(hue int, saturation float64, lightness float64) hsl {
-	var new = hsl{
-		h.Hue + hue,
-		h.Saturation + saturation,
-		h.Lightness + lightness,
+func (hsl HSL) Add(hue int, saturation float64, lightness float64) HSL {
+	var new = HSL{
+		hsl.Hue + hue,
+		hsl.Saturation + saturation,
+		hsl.Lightness + lightness,
 	}
 	// Hue bounds correction
 	if new.Hue < 0 {
@@ -94,14 +99,18 @@ func (h hsl) Add(hue int, saturation float64, lightness float64) hsl {
 	return new
 }
 
-func (h hsl) WithAlpha(alpha float64) HSLA {
-	return HSLA{h, alpha}
+func (hsl HSL) WithAlpha(alpha float64) HSLA {
+	return HSLA{hsl.Hue, hsl.Saturation, hsl.Lightness, alpha}
 }
 
 type HSLA struct {
-	hsl
-	Alpha float64
+	Hue        int
+	Saturation float64
+	Lightness  float64
+	Alpha      float64
 }
+
+var _ Color = HSLA{}
 
 func (hsla HSLA) CSS() string {
 	return fmt.Sprintf(
@@ -109,6 +118,8 @@ func (hsla HSLA) CSS() string {
 		hsla.Hue, hsla.Saturation*100, hsla.Lightness*100, hsla.Alpha,
 	)
 }
+func (hsla HSLA) HSL() HSL { return HSL{hsla.Hue, hsla.Saturation, hsla.Lightness} }
+func (hsla HSLA) RGB() RGB { return hsla.HSL().RGB() }
 
 type RGB struct {
 	R uint8
@@ -116,9 +127,55 @@ type RGB struct {
 	B uint8
 }
 
-func (rgb RGB) CSS() string {
-	return fmt.Sprintf("#%02x%02x%02x", rgb.R, rgb.G, rgb.B)
+var _ Color = RGB{}
+
+func (rgb RGB) CSS() string { return fmt.Sprintf("#%02x%02x%02x", rgb.R, rgb.G, rgb.B) }
+func (rgb RGB) HSL() HSL {
+	var r, g, b = float64(rgb.R), float64(rgb.G), float64(rgb.B)
+	var h, s, l float64
+
+	max := math.Max(math.Max(r, g), b)
+	min := math.Min(math.Min(r, g), b)
+
+	// Luminosity is the average of the max and min rgb color intensities.
+	l = (max + min) / 2
+
+	// saturation
+	delta := max - min
+	if delta == 0 {
+		// it's gray
+		return HSL{0, 0, l}
+	}
+
+	// it's not gray
+	if l < 0.5 {
+		s = delta / (max + min)
+	} else {
+		s = delta / (2 - max - min)
+	}
+
+	// hue
+	r2 := (((max - r) / 6) + (delta / 2)) / delta
+	g2 := (((max - g) / 6) + (delta / 2)) / delta
+	b2 := (((max - b) / 6) + (delta / 2)) / delta
+	switch {
+	case r == max:
+		h = b2 - g2
+	case g == max:
+		h = (1.0 / 3.0) + r2 - b2
+	case b == max:
+		h = (2.0 / 3.0) + g2 - r2
+	}
+
+	if h < 0 {
+		h += 1
+	} else if h > 1 {
+		h -= 1
+	}
+
+	return HSL{int(h), s, l}
 }
+func (rgb RGB) RGB() RGB { return rgb }
 
 type RGBA struct {
 	R uint8
@@ -127,14 +184,21 @@ type RGBA struct {
 	A float64
 }
 
+var _ Color = RGBA{}
+
 func (rgba RGBA) CSS() string {
 	return fmt.Sprintf("rgba(%d, %d, %d, %f)", rgba.R, rgba.G, rgba.B, rgba.A)
 }
+
+func (rgba RGBA) HSL() HSL { return rgba.RGB().HSL() }
+func (rgba RGBA) RGB() RGB { return RGB{rgba.R, rgba.G, rgba.B} }
 
 type Gradient struct {
 	Angle  int
 	Colors []Color
 }
+
+var _ CSS = Gradient{}
 
 func NewGradient(angle int, colors ...Color) Gradient {
 	return Gradient{angle, colors}

@@ -72,12 +72,13 @@ body {
 	background: var(--background);
 	min-height: 100vh;
 	padding: 0;
+	transition: opacity 0.2s;
 }
 
 header,
 footer,
 .checkers {
-	background-image: url("{{.BackgroundPattern}}");
+	background-image: var(--background_pattern);
 	background-color: var(--background_pattern_color);
 	background-repeat: repeat;
 }

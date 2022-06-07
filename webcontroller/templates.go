@@ -21,15 +21,13 @@ import (
 // TemplateData is a struct that every template expects when being rendered. In
 // the field Other you can pass your own template-specific variables.
 type TemplateData struct {
-	tpm               *TemplateManager
-	Authenticated     bool
-	User              pixelapi.UserInfo
-	UserAgent         string
-	UserStyle         template.CSS
-	BackgroundPattern template.URL
-	APIEndpoint       template.URL
-	PixelAPI          pixelapi.PixelAPI
-	Hostname          template.HTML
+	tpm           *TemplateManager
+	Authenticated bool
+	User          pixelapi.UserInfo
+	UserAgent     string
+	APIEndpoint   template.URL
+	PixelAPI      pixelapi.PixelAPI
+	Hostname      template.HTML
 
 	// Only used on file viewer page
 	Title  string
@@ -43,11 +41,6 @@ type TemplateData struct {
 
 	// Only used for pages containing forms
 	Form Form
-}
-
-func (td *TemplateData) setStyle(style template.CSS) {
-	td.UserStyle = style
-	td.BackgroundPattern = BackgroundTiles(td.tpm.tpl)
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {
@@ -64,8 +57,6 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		Hostname: template.HTML(wc.hostname),
 		URLQuery: r.URL.Query(),
 	}
-
-	t.setStyle(userStyleFromRequest(r))
 
 	// If the user is authenticated we'll indentify him and put the user info
 	// into the templatedata. This is used for putting the username in the menu
@@ -245,7 +236,7 @@ func (tm *TemplateManager) mul(a, b interface{}) float64 { return toFloat(a) * t
 func (tm *TemplateManager) div(a, b interface{}) float64 { return toFloat(a) / toFloat(b) }
 
 func (tm *TemplateManager) formatData(i interface{}) string {
-	return util.FormatData(int64(detectInt(i)))
+	return util.FormatData(detectInt(i))
 }
 func (tm *TemplateManager) formatSC(amt float64) string {
 	var fmtSize = func(n float64, u string) string {

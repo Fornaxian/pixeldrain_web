@@ -89,7 +89,7 @@ onMount(async () => {
 		<button on:click={() => {dispatch("download")}}>
 			<i class="icon">download</i> Download
 		</button>
-		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" target="_blank" class="button button_highlight">
+		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight">
 			<i class="icon">bolt</i> Support Pixeldrain on Patreon
 		</a>
 	</div>

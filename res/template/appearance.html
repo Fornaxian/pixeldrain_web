@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		{{template "meta_tags" "Appearance settings"}}
-		{{template "user_style" .}}
+		<link id="stylesheet_theme_2" rel="stylesheet" type="text/css" href="/theme.css"/>
 	</head>
 
 	<body>
@@ -24,6 +24,8 @@
 				<input type="radio" id="style_nord_dark" name="style"><label for="style_nord_dark">Nord dark</label>
 				<br/>
 				<input type="radio" id="style_nord_light" name="style"><label for="style_nord_light">Nord light</label>
+				<!-- <br/>
+				Hue: <input id="hue" type="number" min="0" max="360" placeholder="0"/><br/> -->
 				<br/>
 				<br/>
 				<input type="radio" id="style_solarized" name="style"><label for="style_solarized">Solarized</label>
@@ -50,30 +52,56 @@
 				<br/>
 				Other (experimental) themes
 				<br/>
-				<input type="radio" id="style_maroon"         name="style"><label for="style_maroon">Maroon Style</label>
+				<input type="radio" id="style_maroon" name="style"><label for="style_maroon">Maroon Style</label>
 				<br/>
-				<input type="radio" id="style_hacker"         name="style"><label for="style_hacker">Hacker Style</label>
+				<input type="radio" id="style_hacker" name="style"><label for="style_hacker">Hacker Style</label>
 				<br/>
-				<input type="radio" id="style_canta"          name="style"><label for="style_canta">Canta Style</label>
+				<input type="radio" id="style_canta" name="style"><label for="style_canta">Canta Style</label>
 				(Inspired by <a href="https://github.com/vinceliuice/Canta-theme" target="_blank">Canta GTK</a>)
 				<br/>
-				<input type="radio" id="style_skeuos"         name="style"><label for="style_skeuos">Skeuos Style</label>
+				<input type="radio" id="style_skeuos" name="style"><label for="style_skeuos">Skeuos Style</label>
 				(Inspired by <a href="https://www.gnome-look.org/p/1441725/" target="_blank">Skeuos GTK</a>)
 				<br/>
-				<input type="radio" id="style_sweet"          name="style"><label for="style_sweet">Sweet</label>
+				<input type="radio" id="style_sweet" name="style"><label for="style_sweet">Sweet</label>
 			</div>
 		</section>
 
 		<script>
+		let style = "nord"
+		let hue = -1
+
 		// Style selector
 		document.getElementsByName("style").forEach(function(elem) {
-			elem.addEventListener("change", function(evt){
-				var date = new Date();
-				date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60 * 1000));
-				document.cookie = "style=" + evt.target.id.substring(6) + "; expires=" + date.toUTCString() + "; path=/";
-				location.reload();
+			elem.addEventListener("change", e => {
+				style = e.target.id.substring(6)
+				setStyle()
 			})
 		});
+		document.getElementById("hue").addEventListener("change", e => {
+			hue = e.target.value
+			setStyle()
+		})
+
+		function setStyle() {
+			var date = new Date();
+			date.setTime(date.getTime() + (10 * 365 * 24 * 60 * 60 * 1000));
+
+			document.cookie = "style="+style+"; expires=" + date.toUTCString() + "; path=/"
+
+			if (hue >= 0 && hue <= 360) {
+				document.cookie = "hue="+hue+"; expires=" + date.toUTCString() + "; path=/"
+			}
+
+			let stylesheet1 = document.getElementById("stylesheet_theme")
+			let stylesheet2 = document.getElementById("stylesheet_theme_2")
+
+			// First load the sheet in the secondary tag, wait for it to load,
+			// and replace the original sheet when it has finished loading
+			stylesheet2.href= "/theme.css?style="+style+"&hue="+hue
+			stylesheet2.onload = e => {
+				stylesheet1.href= "/theme.css?style="+style+"&hue="+hue
+			}
+		}
 		</script>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}

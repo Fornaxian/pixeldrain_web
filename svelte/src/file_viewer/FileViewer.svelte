@@ -311,7 +311,12 @@ const keyboard_event = evt => {
 	if (evt.ctrlKey || evt.altKey || evt.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
 	}
-	if (document.activeElement.type && document.activeElement.type === "text") {
+	if (
+		document.activeElement.type && (
+			document.activeElement.type === "text" ||
+			document.activeElement.type === "textarea"
+		)
+	) {
 		return // Prevent shortcuts from interfering with input fields
 	}
 
@@ -685,8 +690,8 @@ const keyboard_event = evt => {
 }
 .file_preview {
 	position: absolute;
-	left: 0;
-	right: 0;
+	left: 4px;
+	right: 4px;
 	top: 0;
 	bottom: 0;
 	display: block;

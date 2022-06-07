@@ -55,7 +55,7 @@ onMount(async () => {
 			{formatDuration((file.size/file.download_speed_limit)*1000)}
 		</li>
 		<li>
-			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" target="_blank" class="button button_highlight">
+			<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight">
 				<i class="icon">bolt</i> Support Pixeldrain on Patreon
 			</a>
 			and earn my eternal gratitude

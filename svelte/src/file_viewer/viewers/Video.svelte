@@ -156,14 +156,14 @@ const fullscreen = () => {
 		still download the video and watch it locally on your computer without
 		an account.
 		<br/>
-		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" target="_blank" class="button button_highlight">
-			<i class="icon">bolt</i> Get Pixeldrain Pro
-		</a>
 		<button on:click={download}>
 			<i class="icon">download</i> Download
 		</button>
 		<a href="/register" class="button">
 			<i class="icon">how_to_reg</i> Sign up
+		</a>
+		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight">
+			<i class="icon">bolt</i> Get Pixeldrain Pro
 		</a>
 	</TextBlock>
 

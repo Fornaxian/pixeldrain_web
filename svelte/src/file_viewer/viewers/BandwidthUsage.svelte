@@ -65,7 +65,7 @@ onMount(() => {
 
 		<p>
 			<strong>
-				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12">
+				<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight">
 					<i class="icon">bolt</i> Support Pixeldrain on Patreon
 				</a>
 				to disable the transfer limit

@@ -133,7 +133,7 @@ func New(
 	r.NotFound = http.HandlerFunc(wc.serveNotFound)
 
 	// Request method shorthands. These help keep the array of handlers aligned
-	const PST, GET, PUT, DEL = "POST", "GET", "PUT", "DELETE"
+	const PST, GET = "POST", "GET"
 
 	// Loop over the handlers and register all of them in the router
 	for _, h := range []struct {
@@ -217,6 +217,7 @@ func New(
 
 		// Misc
 		{GET, "misc/sharex/pixeldrain.com.sxcu", wc.serveShareXConfig},
+		{GET, "theme.css", wc.themeHandler},
 	} {
 		r.Handle(h.method, prefix+"/"+h.path, h.handler)
 	}

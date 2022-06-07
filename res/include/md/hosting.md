@@ -122,5 +122,7 @@ this.
 So enable IPv6. If you don't have IPv6, call your ISP and ask them why not.
 
 <div style="margin-top: 100px; height: 128px; text-align: center;">
-<a href="https://sia.tech/">{{ template "built-with-Sia-mono.svg" . }}</a>
+<a href="https://sia.tech/">
+	<img style="height: 100%;" src="/res/img/misc/built-with-Sia-mono.svg" alt="Built with Sia"/>
+</a>
 </div>
