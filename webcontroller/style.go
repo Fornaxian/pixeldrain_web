@@ -306,12 +306,6 @@ func BackgroundTiles() template.URL {
 	}
 
 	return template.URL("/res/img/background_patterns/" + file + "_transparent.png")
-
-	// var buf = bytes.Buffer{}
-	// if err := tpl.ExecuteTemplate(&buf, file+"_transparent.png", nil); err != nil {
-	// 	panic(err)
-	// }
-	// return template.URL(buf.String())
 }
 
 // Following are all the available styles
