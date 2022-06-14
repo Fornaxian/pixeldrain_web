@@ -51,6 +51,8 @@ const toggle_play = () => playing ? player.pause() : player.play()
 </script>
 
 <div class="container">
+	<h1>{file.name}</h1>
+
 	<button on:click={() => dispatch("prev") }>
 		<i class="icon">skip_previous</i>
 	</button>
@@ -98,7 +100,7 @@ const toggle_play = () => playing ? player.pause() : player.play()
 <style>
 .container {
 	width: 100%;
-	margin: 50px 0 0 0;
+	margin: 30px 0 0 0;
 	padding: 0;
 	text-align: center;
 }
