@@ -81,9 +81,9 @@ export const set_item = idx => {
 			<a
 				href="#item={index}"
 				title="Open {file.name}"
-				class="list_item file_button"
+				class="file_button"
 				class:file_selected={file.selected}>
-				<img src={file.icon_href+"?width=48&height=48"} alt={file.name} class="list_item_thumbnail" loading="lazy"/>
+				<img src={file.icon_href+"?width=64&height=64"} alt={file.name} class="list_item_thumbnail" loading="lazy"/>
 				{file.name}
 			</a>
 		{/each}
@@ -97,7 +97,7 @@ export const set_item = idx => {
 	display: flex;
 	position: relative;
 	width: 100%;
-	border-top: 1px solid var(--separator);
+	border-top: 2px solid var(--separator);
 	text-align: center;
 	line-height: 1em;
 
@@ -105,13 +105,9 @@ export const set_item = idx => {
 .nav_button{
 	flex-grow: 0;
 	flex-shrink: 0;
-	margin-top: 8px;
+	margin: 6px;
 }
 
-.list_item {
-	height: 2.6em !important;
-	width: 220px !important;
-}
 .list_navigator {
 	flex-grow: 1;
 	flex-shrink: 1;
@@ -120,8 +116,43 @@ export const set_item = idx => {
 	white-space: nowrap;
 }
 
-.file_selected {
-	box-shadow: 0 0 2px 2px var(--highlight_color);
+.file_button {
+	position: relative;
+	height: 50px;
+	width: 220px;
+	margin: 6px;
+	padding: 0;
+	overflow: hidden;
+	border-radius: 6px;
+	background: var(--input_background);
+	color: var(--body_text_color);
+	word-break: break-all;
+	text-align: left;
+	line-height: 1.2em;
+	display: inline-block;
+	transition: background 0.2s;
+	white-space: normal;
 	text-decoration: none;
+	vertical-align: top;
+	cursor: pointer;
+	border-width: 2px;
+	border-style: solid;
+	border-color: var(--input_background);
+}
+
+.file_button:hover {
+	text-decoration: none;
+	background: var(--input_hover_background);
+}
+
+.file_button>img {
+	height: 100%;
+	margin-right: 5px;
+	float: left;
+	display: block;
+}
+.file_selected {
+	text-decoration: none;
+	border-color: var(--highlight_color);
 }
 </style>

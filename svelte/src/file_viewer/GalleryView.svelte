@@ -162,7 +162,6 @@ const drop = (e, index) => {
 
 <style>
 .gallery{
-	padding: 16px;
 	width: 100%;
 	max-height: 100%;
 	overflow: auto;
@@ -171,15 +170,12 @@ const drop = (e, index) => {
 	justify-content: center;
 }
 .file{
-	position: relative;
 	width: 200px;
-	max-width: 45%;
+	max-width: 42%;
 	height: 200px;
 	margin: 8px;
-	padding: 0;
 	overflow: hidden;
 	border-radius: 8px;
-	box-shadow: 1px 1px 3px -1px var(--shadow_color);
 	background: var(--input_background);
 	word-break: break-all;
 	text-align: center;
@@ -194,13 +190,15 @@ const drop = (e, index) => {
 .file:hover {
 	background: var(--input_hover_background);
 }
+
 .highlight {
 	box-shadow: 0 0 2px 2px var(--highlight_color);
 	text-decoration: none;
 }
 .icon_container {
-	width: 100%;
-	height: 136px;
+	margin: 3px;
+	height: 154px;
+	border-radius: 6px;
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;

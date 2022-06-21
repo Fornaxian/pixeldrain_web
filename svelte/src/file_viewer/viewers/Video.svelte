@@ -194,7 +194,6 @@ h1 {
 	display: flex;
 	flex-direction: row;
 	background-color: var(--shaded_background);
-	box-shadow: 1px 1px 6px var(--shadow_color);
 	padding: 0 2px 2px 2px;
 	align-items: center;
 }
@@ -212,7 +211,7 @@ h1 {
 	max-height: 100%;
 	top: 50%;
 	transform: translateY(-50%);
-	box-shadow: 1px 1px 6px var(--shadow_color);
+	box-shadow: 0 0 4px var(--shadow_color);
 }
 .video_icon {
 	display: inline-block;

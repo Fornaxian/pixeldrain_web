@@ -390,173 +390,171 @@ const keydown = (e) => {
 
 <Konami></Konami>
 
-<div>
-	<!-- If the user is logged in and has used more than 50% of their storage space we will show a progress bar -->
-	{#if window.user.username !== "" && window.user.storage_space_used/window.user.subscription.storage_space > 0.5}
-		<section>
-			<StorageProgressBar used={window.user.storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
-		</section>
-	{/if}
-
-	<section class="instruction" style="margin-top: 0; border-top: none;">
-		<span class="big_number">1</span>
-		<span class="instruction_text">Select files to upload</span>
-		<br/>
-		You can also drop files on this page from your file manager or
-		paste an image from your clipboard
+<!-- If the user is logged in and has used more than 50% of their storage space we will show a progress bar -->
+{#if window.user.username !== "" && window.user.storage_space_used/window.user.subscription.storage_space > 0.5}
+	<section>
+		<StorageProgressBar used={window.user.storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
 	</section>
+{/if}
+
+<section class="instruction" style="border-top: none;">
+	<span class="big_number">1</span>
+	<span class="instruction_text">Select files to upload</span>
 	<br/>
+	You can also drop files on this page from your file manager or
+	paste an image from your clipboard
+</section>
+<br/>
 
-	<input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple"/>
-	<button on:click={() => { file_input_field.click() }} class="big_button button_highlight">
-		<i class="icon small">cloud_upload</i>
-		<u>U</u>pload Files
-	</button>
+<input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple"/>
+<button on:click={() => { file_input_field.click() }} class="big_button button_highlight">
+	<i class="icon small">cloud_upload</i>
+	<u>U</u>pload Files
+</button>
 
-	<a bind:this={btn_upload_text} href="/t" id="upload_text_button" class="button big_button button_highlight">
-		<i class="icon small">text_fields</i>
-		Upload <u>T</u>ext
-	</a>
+<a bind:this={btn_upload_text} href="/t" id="upload_text_button" class="button big_button button_highlight">
+	<i class="icon small">text_fields</i>
+	Upload <u>T</u>ext
+</a>
+<br/>
+<p>
+	By uploading files to pixeldrain you acknowledge and accept our
+	<a href="/about#content-policy">content policy</a>.
+<p>
+
+<section class="instruction" style="margin-bottom: 0;">
+	<span class="big_number">2</span>
+	<span class="instruction_text">Wait for the files to finish uploading</span>
 	<br/>
-	<p>
-		By uploading files to pixeldrain you acknowledge and accept our
-		<a href="/about#content-policy">content policy</a>.
-	<p>
-
-	<section class="instruction" style="margin-bottom: 0;">
-		<span class="big_number">2</span>
-		<span class="instruction_text">Wait for the files to finish uploading</span>
-		<br/>
-		<div class="stats_box">
-			<div>Size {formatDataVolume(total_size, 3)}</div>
-			<div>Progress {(total_progress*100).toPrecision(3)}%</div>
-			<div>ETA {formatDuration(remaining_time, 0)}</div>
-			<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
-		</div>
-
-		<ProgressBar total={total_size} used={total_loaded} animation="linear" speed={stats_interval_ms}/>
-	</section>
-
-	<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
-		Gimme gimme gimme!<br/>
-		Drop your files to upload them
+	<div class="stats_box">
+		<div>Size {formatDataVolume(total_size, 3)}</div>
+		<div>Progress {(total_progress*100).toPrecision(3)}%</div>
+		<div>ETA {formatDuration(remaining_time, 0)}</div>
+		<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
 	</div>
-	<br/>
 
-	{#each upload_queue as file}
-		<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>
-	{/each}
+	<ProgressBar total={total_size} used={total_loaded} animation="linear" speed={stats_interval_ms}/>
+</section>
 
-	<br/>
-	<section class="instruction">
-		<span class="big_number">3</span>
-		<span class="instruction_text">Share the files</span>
-	</section>
-	<br/>
-
-	{#if upload_queue.length > 1}
-		You can create an album to group your files together into one link<br/>
-		Name:
-		<form class="album_name_form" on:submit|preventDefault={create_album}>
-			<input bind:value={input_album_name} type="text" disabled={state !== "finished"} placeholder="My album"/>
-			<button type="submit" disabled={state !== "finished"}>
-				<i class="icon">create_new_folder</i> Create
-			</button>
-		</form>
-		<br/><br/>
-		Other sharing methods:
-		<br/>
-	{/if}
-
-	<div class="social_buttons" class:hide={!navigator_share}>
-		<button id="btn_social_share" on:click={share_navigator} class="social_buttons" disabled={state !== "finished"}>
-			<i class="icon">share</i><br/>
-			Share
-		</button>
-	</div>
-	<button bind:this={btn_copy_link} on:click={copy_link} class="social_buttons" disabled={state !== "finished"}>
-		<i class="icon">content_copy</i><br/>
-		<span><u>C</u>opy link</span>
-	</button>
-	<button bind:this={btn_open_link} on:click={open_link} class="social_buttons" disabled={state !== "finished"}>
-		<i class="icon">open_in_new</i><br/>
-		<span><u>O</u>pen link</span>
-	</button>
-	<button bind:this={btn_show_qr} on:click={show_qr_code} class="social_buttons" disabled={state !== "finished"} class:button_highlight={qr_visible}>
-		<i class="icon">qr_code</i><br/>
-		<span><u>Q</u>R code</span>
-	</button>
-	<div class="social_buttons" class:hide={navigator_share}>
-		<button bind:this={btn_share_email} on:click={share_mail} class="social_buttons" disabled={state !== "finished"}>
-			<i class="icon">email</i><br/>
-			<u>E</u>-Mail
-		</button>
-		<button bind:this={btn_share_twitter} on:click={share_twitter} class="social_buttons" disabled={state !== "finished"}>
-			<Twitter style="width: 40px; height: 40px; margin: 5px 15px;"></Twitter><br/>
-			T<u>w</u>itter
-		</button>
-		<button bind:this={btn_share_facebook} on:click={share_facebook} class="social_buttons" disabled={state !== "finished"}>
-			<Facebook style="width: 40px; height: 40px; margin: 5px 15px;"></Facebook><br/>
-			<u>F</u>acebook
-		</button>
-		<button bind:this={btn_share_reddit} on:click={share_reddit} class="social_buttons" disabled={state !== "finished"}>
-			<Reddit style="width: 40px; height: 40px; margin: 5px 15px;"></Reddit><br/>
-			<u>R</u>eddit
-		</button>
-		<button bind:this={btn_share_tumblr} on:click={share_tumblr} class="social_buttons" disabled={state !== "finished"}>
-			<Tumblr style="width: 40px; height: 40px; margin: 5px 15px;"></Tumblr><br/>
-			Tu<u>m</u>blr
-		</button>
-	</div>
-	<br/>
-	{#if qr_visible}
-		<img src="/api/misc/qr?text={encodeURIComponent(share_link)}" alt="QR code" style="width: 300px; max-width: 100%;">
-		<br/>
-	{/if}
-	<button bind:this={btn_copy_links} on:click={copy_links} disabled={state !== "finished"}>
-		<i class="icon">content_copy</i> Copy <u>a</u>ll links to clipboard
-	</button>
-	<button bind:this={btn_copy_markdown} on:click={copy_markdown} disabled={state !== "finished"}>
-		<i class="icon">content_copy</i> Copy mark<u>d</u>own to clipboard
-	</button>
-	<button bind:this={btn_copy_bbcode} on:click={copy_bbcode} disabled={state !== "finished"}>
-		<i class="icon">content_copy</i> Copy <u>B</u>BCode to clipboard
-	</button>
-	<br/>
-
-	{#if window.user.subscription.name === ""}
-		<section>
-			<div class="instruction">
-				<span class="big_number">4</span>
-				<span class="instruction_text">Support me on Patreon!</span>
-			</div>
-			<p>
-				Pixeldrain is struggling to get by financially. Because anyone
-				can upload anything it's hard to find reputable advertisers who
-				want to advertise on pixeldrain. Every month the ad revenue just
-				barely covers the bandwidth costs. If this continues I will have
-				to reduce the file size and bandwidth limits even more. That's
-				not something I would like to do.
-			</p>
-			<p>
-				Pro costs only <b>€20 per year</b> or €2 per month. You will get
-				some nice benefits and more features are on the way. You can
-				help with making pixeldrain the easiest and fastest way to share
-				files online!
-			</p>
-			<br/>
-			<div style="text-align: center;">
-				<a href="#pro" class="button big_button" style="min-width: 350px;">
-					<i class="icon">arrow_downward</i>
-					Check out Pro
-					<i class="icon">arrow_downward</i>
-				</a>
-			</div>
-		</section>
-	{/if}
-
-	<br/>
+<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
+	Gimme gimme gimme!<br/>
+	Drop your files to upload them
 </div>
+<br/>
+
+{#each upload_queue as file}
+	<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>
+{/each}
+
+<br/>
+<section class="instruction">
+	<span class="big_number">3</span>
+	<span class="instruction_text">Share the files</span>
+</section>
+<br/>
+
+{#if upload_queue.length > 1}
+	You can create an album to group your files together into one link<br/>
+	Name:
+	<form class="album_name_form" on:submit|preventDefault={create_album}>
+		<input bind:value={input_album_name} type="text" disabled={state !== "finished"} placeholder="My album"/>
+		<button type="submit" disabled={state !== "finished"}>
+			<i class="icon">create_new_folder</i> Create
+		</button>
+	</form>
+	<br/><br/>
+	Other sharing methods:
+	<br/>
+{/if}
+
+<div class="social_buttons" class:hide={!navigator_share}>
+	<button id="btn_social_share" on:click={share_navigator} class="social_buttons" disabled={state !== "finished"}>
+		<i class="icon">share</i><br/>
+		Share
+	</button>
+</div>
+<button bind:this={btn_copy_link} on:click={copy_link} class="social_buttons" disabled={state !== "finished"}>
+	<i class="icon">content_copy</i><br/>
+	<span><u>C</u>opy link</span>
+</button>
+<button bind:this={btn_open_link} on:click={open_link} class="social_buttons" disabled={state !== "finished"}>
+	<i class="icon">open_in_new</i><br/>
+	<span><u>O</u>pen link</span>
+</button>
+<button bind:this={btn_show_qr} on:click={show_qr_code} class="social_buttons" disabled={state !== "finished"} class:button_highlight={qr_visible}>
+	<i class="icon">qr_code</i><br/>
+	<span><u>Q</u>R code</span>
+</button>
+<div class="social_buttons" class:hide={navigator_share}>
+	<button bind:this={btn_share_email} on:click={share_mail} class="social_buttons" disabled={state !== "finished"}>
+		<i class="icon">email</i><br/>
+		<u>E</u>-Mail
+	</button>
+	<button bind:this={btn_share_twitter} on:click={share_twitter} class="social_buttons" disabled={state !== "finished"}>
+		<Twitter style="width: 40px; height: 40px; margin: 5px 15px;"></Twitter><br/>
+		T<u>w</u>itter
+	</button>
+	<button bind:this={btn_share_facebook} on:click={share_facebook} class="social_buttons" disabled={state !== "finished"}>
+		<Facebook style="width: 40px; height: 40px; margin: 5px 15px;"></Facebook><br/>
+		<u>F</u>acebook
+	</button>
+	<button bind:this={btn_share_reddit} on:click={share_reddit} class="social_buttons" disabled={state !== "finished"}>
+		<Reddit style="width: 40px; height: 40px; margin: 5px 15px;"></Reddit><br/>
+		<u>R</u>eddit
+	</button>
+	<button bind:this={btn_share_tumblr} on:click={share_tumblr} class="social_buttons" disabled={state !== "finished"}>
+		<Tumblr style="width: 40px; height: 40px; margin: 5px 15px;"></Tumblr><br/>
+		Tu<u>m</u>blr
+	</button>
+</div>
+<br/>
+{#if qr_visible}
+	<img src="/api/misc/qr?text={encodeURIComponent(share_link)}" alt="QR code" style="width: 300px; max-width: 100%;">
+	<br/>
+{/if}
+<button bind:this={btn_copy_links} on:click={copy_links} disabled={state !== "finished"}>
+	<i class="icon">content_copy</i> Copy <u>a</u>ll links to clipboard
+</button>
+<button bind:this={btn_copy_markdown} on:click={copy_markdown} disabled={state !== "finished"}>
+	<i class="icon">content_copy</i> Copy mark<u>d</u>own to clipboard
+</button>
+<button bind:this={btn_copy_bbcode} on:click={copy_bbcode} disabled={state !== "finished"}>
+	<i class="icon">content_copy</i> Copy <u>B</u>BCode to clipboard
+</button>
+<br/>
+
+{#if window.user.subscription.name === ""}
+	<section>
+		<div class="instruction">
+			<span class="big_number">4</span>
+			<span class="instruction_text">Support me on Patreon!</span>
+		</div>
+		<p>
+			Pixeldrain is struggling to get by financially. Because anyone
+			can upload anything it's hard to find reputable advertisers who
+			want to advertise on pixeldrain. Every month the ad revenue just
+			barely covers the bandwidth costs. If this continues I will have
+			to reduce the file size and bandwidth limits even more. That's
+			not something I would like to do.
+		</p>
+		<p>
+			Pro costs only <b>€20 per year</b> or €2 per month. You will get
+			some nice benefits and more features are on the way. You can
+			help with making pixeldrain the easiest and fastest way to share
+			files online!
+		</p>
+		<br/>
+		<div style="text-align: center;">
+			<a href="#pro" class="button big_button" style="min-width: 350px;">
+				<i class="icon">arrow_downward</i>
+				Check out Pro
+				<i class="icon">arrow_downward</i>
+			</a>
+		</div>
+	</section>
+{/if}
+
+<br/>
 
 <style>
 .big_button{
@@ -569,7 +567,7 @@ const keydown = (e) => {
 }
 .instruction {
 	border-top: 1px solid var(--separator);
-	margin: 1.5em 0;
+	margin: 1em auto;
 	padding: 5px;
 }
 .big_number {

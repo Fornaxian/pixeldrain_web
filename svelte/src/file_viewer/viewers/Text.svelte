@@ -104,13 +104,9 @@ const code = async file => {
 <style>
 .container {
 	background: var(--body_color);
-	border: 2px solid var(--separator);
-	border-radius: 16px;
-	position: relative;
 	text-align: left;
 	height: 100%;
 	width: 100%;
-	font-size: 0.9em;
 	line-height: 1.5em;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -121,10 +117,12 @@ const code = async file => {
 	white-space: pre-wrap;
 	overflow: hidden;
 	border: none;
+	font-size: 0.9em;
 }
 .container > .md {
 	display: block;
 	padding: 10px;
 	margin: auto;
+	text-align: justify;
 }
 </style>

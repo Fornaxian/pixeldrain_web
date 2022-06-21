@@ -14,6 +14,11 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	var td = wc.newTemplateData(w, r)
 	var path = strings.TrimPrefix(p.ByName("path"), "/")
 
+	if path == "" {
+		wc.templates.Get().ExecuteTemplate(w, "404", td)
+		return
+	}
+
 	node, err := td.PixelAPI.GetFilesystemPath(path)
 	if err != nil {
 		if err.Error() == "not_found" || err.Error() == "path_not_found" {

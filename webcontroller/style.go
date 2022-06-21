@@ -123,7 +123,7 @@ type styleSheet struct {
 	BodyColor         HSL
 	BodyBackground    CSS
 	BodyText          HSL
-	Separator         CSS
+	Separator         HSL
 	CardColor         HSL
 	CardText          HSL
 
@@ -161,7 +161,7 @@ func (s styleSheet) withDefaults() styleSheet {
 	defaultCSS(&s.Navigation, RawCSS("none"))
 	defaultCSS(&s.BodyBackground, s.BodyColor)
 	defaultHSL(&s.BackgroundText, s.BodyText)
-	defaultCSS(&s.Separator, s.BodyColor.Add(0, 0, .05))
+	defaultHSL(&s.Separator, s.BodyColor.Add(0, 0, .03))
 
 	return s
 }
@@ -193,7 +193,7 @@ func (s styleSheet) withHue(hue int) styleSheet {
 	s.BodyColor.Hue = hue
 	s.BodyBackground = setHue(s.BodyBackground)
 	s.BodyText.Hue = hue
-	s.Separator = setHue(s.Separator)
+	s.Separator.Hue = hue
 	s.CardColor.Hue = hue
 	s.CardText.Hue = hue
 	s.Shadow.Hue = hue
@@ -484,7 +484,6 @@ var sweetPixeldrainStyle = styleSheet{
 	BackgroundColor: HSL{225, .25, .06}, // hsl(225, 25%, 6%)
 	BodyColor:       HSL{228, .25, .12}, // hsl(228, 25%, 12%)
 	BodyText:        HSL{223, .13, .79}, // hsl(223, 13%, 79%)
-	Separator:       RGBA{255, 255, 255, 0.05},
 	CardColor:       HSL{229, .25, .14}, // hsl(229, 25%, 14%)
 
 	Shadow: HSL{0, 0, 0},
@@ -502,7 +501,6 @@ var adwaitaDarkStyle = styleSheet{
 	BackgroundColor: HSL{0, 0, .19},
 	BodyColor:       HSL{0, 0, .14},
 	BodyText:        HSL{0, 0, 1},
-	Separator:       RGBA{255, 255, 255, 0.04},
 	CardColor:       HSL{0, 0, .08},
 
 	Shadow: HSL{0, 0, 0},
@@ -537,7 +535,6 @@ var solarizedDarkStyle = styleSheet{
 	BackgroundColor: HSL{192, 1, .11},   //hsl(192, 100%, 11%)
 	BodyColor:       HSL{192, .81, .14}, // hsl(192, 81%, 14%)
 	BodyText:        HSL{180, .07, .60}, // hsl(180, 7%, 60%)
-	Separator:       RGBA{255, 255, 255, 0.05},
 	CardColor:       HSL{192, .81, .16},
 
 	Shadow: HSL{0, 0, 0},
@@ -555,7 +552,6 @@ var solarizedLightStyle = styleSheet{
 	BackgroundColor: HSL{46, .42, .88},  // hsl(46, 42%, 88%)
 	BodyColor:       HSL{44, .87, .94},  // hsl(44, 87%, 94%)
 	BodyText:        HSL{194, .14, .40}, // hsl(194, 14%, 40%)
-	Separator:       RGBA{0, 0, 0, 0.05},
 	CardColor:       HSL{44, .87, .96},
 
 	Shadow: HSL{0, 0, 0.36},

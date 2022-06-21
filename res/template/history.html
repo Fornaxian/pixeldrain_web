@@ -2,6 +2,48 @@
 <html lang="en">
 	<head>
 		{{template "meta_tags" "Upload History"}}
+
+		<style>
+			.file_button {
+				position: relative;
+				width: 400px;
+				max-width: 90%;
+				height: 3.6em;
+				margin: 8px;
+				padding: 0;
+				overflow: hidden;
+				border-radius: 6px;
+				background: var(--input_background);
+				color: var(--body_text_color);
+				word-break: break-all;
+				text-align: left;
+				line-height: 1.2em;
+				display: inline-block;
+				transition: box-shadow 0.3s, opacity 2s, background 0.2s;
+				white-space: normal;
+				text-overflow: ellipsis;
+				text-decoration: none;
+				vertical-align: top;
+				cursor: pointer;
+			}
+
+			.file_button:hover {
+				text-decoration: none;
+				background: var(--input_hover_background);
+			}
+
+			.file_button>img {
+				max-height: 100%;
+				max-width: 25%;
+				margin-right: 5px;
+				float: left;
+				display: block;
+			}
+
+			.file_button>.file_button_title {
+				color: var(--link_color);
+			}
+		</style>
 	</head>
 	<body>
 		{{template "page_top" .}}

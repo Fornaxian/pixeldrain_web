@@ -429,7 +429,7 @@ const keyboard_event = evt => {
 		<div id="toolbar" class="toolbar" class:toolbar_visible>
 			{#if view === "file"}
 				<FileStats file={file}></FileStats>
-				<hr/>
+				<div class="separator"></div>
 			{/if}
 
 			{#if file.abuse_type === "" && view === "file"}
@@ -514,7 +514,7 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			<hr/>
+			<div class="separator"></div>
 
 			{#if file.can_edit || list.can_edit}
 				<button
@@ -690,8 +690,8 @@ const keyboard_event = evt => {
 }
 .file_preview {
 	position: absolute;
-	left: 4px;
-	right: 4px;
+	left: 0;
+	right: 0;
 	top: 0;
 	bottom: 0;
 	display: block;
@@ -700,8 +700,8 @@ const keyboard_event = evt => {
 	transition: left 0.5s;
 	overflow: auto;
 	text-align: center;
-	box-shadow: inset 0 0 3px -1px var(--shadow_color);
-	border-radius: 16px;
+	border-radius: 12px;
+	border: 2px solid var(--separator);
 }
 .file_preview.toolbar_visible { left: 8em; }
 .file_preview.skyscraper_visible { right: 160px; }
@@ -736,5 +736,11 @@ const keyboard_event = evt => {
 }
 .toolbar_button > span {
 	vertical-align: middle;
+}
+.toolbar > .separator {
+	height: 2px;
+	width: 100%;
+	margin: 10px 0;
+	background-color: var(--separator);
 }
 </style>
