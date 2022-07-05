@@ -89,6 +89,7 @@ footer {
 	border-radius: 12px;
 	text-align: center;
 	overflow: hidden;
+	clear: both;
 }
 
 header>h1 {

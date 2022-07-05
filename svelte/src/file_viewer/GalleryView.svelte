@@ -197,7 +197,7 @@ const drop = (e, index) => {
 }
 .icon_container {
 	margin: 3px;
-	height: 154px;
+	height: 148px;
 	border-radius: 6px;
 	background-position: center;
 	background-size: contain;

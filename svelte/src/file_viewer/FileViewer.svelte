@@ -703,7 +703,7 @@ const keyboard_event = evt => {
 	border-radius: 12px;
 	border: 2px solid var(--separator);
 }
-.file_preview.toolbar_visible { left: 8em; }
+.file_preview.toolbar_visible { left: 8.2em; }
 .file_preview.skyscraper_visible { right: 160px; }
 .file_preview.custom_background {
 	background-size: cover;
@@ -713,11 +713,11 @@ const keyboard_event = evt => {
 /* Toolbars */
 .toolbar {
 	position: absolute;
-	width: 8em;
+	width: 8.2em;
 	overflow-y: auto;
 	overflow-x: hidden;
 	scrollbar-width: none;
-	left: -8em;
+	left: -8.2em;
 	bottom: 0;
 	top: 0;
 	padding: 0;
@@ -732,7 +732,8 @@ const keyboard_event = evt => {
 
 .toolbar_button {
 	text-align: left;
-	width: calc(100% - 6px);
+	margin: 4px;
+	width: calc(100% - 8px);
 }
 .toolbar_button > span {
 	vertical-align: middle;
@@ -740,7 +741,7 @@ const keyboard_event = evt => {
 .toolbar > .separator {
 	height: 2px;
 	width: 100%;
-	margin: 10px 0;
+	margin: 4px 0;
 	background-color: var(--separator);
 }
 </style>
