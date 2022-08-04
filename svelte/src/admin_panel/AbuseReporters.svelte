@@ -129,37 +129,25 @@ onMount(get_reporters);
 	{#if creating}
 		<div class="highlight_shaded">
 			<form on:submit|preventDefault={create_reporter}>
-				<table class="form">
-					<tr>
-						<td>E-mail address</td>
-						<td><input type="text" bind:this={new_reporter_from_address}/></td>
-					</tr>
-					<tr>
-						<td>Mail server</td>
-						<td><input type="text" bind:this={new_reporter_mail_server}/></td>
-					</tr>
-					<tr>
-						<td>Name</td>
-						<td><input type="text" bind:this={new_reporter_name} value="Anonymous tip"/></td>
-					</tr>
-					<tr>
-						<td>Status</td>
-						<td>
-							<input id="reporter_status_1" name="reporter_status" type="radio" bind:group={new_reporter_status} value="trusted" />
-							<label for="reporter_status_1">Trusted</label>
-							<br/>
-							<input id="reporter_status_2" name="reporter_status" type="radio" bind:group={new_reporter_status} value="rejected" />
-							<label for="reporter_status_2">Rejected</label>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<button class="button_highlight" type="submit" style="float: right;">
-								<i class="icon">save</i> Save
-							</button>
-						</td>
-					</tr>
-				</table>
+				<div class="form">
+					<label for="field_from_address">E-mail address</label>
+					<input id="field_from_address" type="text" bind:this={new_reporter_from_address}/>
+					<label for="field_mailserver">Mail server</label>
+					<input id="field_mailserver" type="text" bind:this={new_reporter_mail_server}/>
+					<label for="field_name">Name</label>
+					<input id="field_name" type="text" bind:this={new_reporter_name} value="Anonymous tip"/>
+					<label for="reporter_status">Status</label>
+					<div>
+						<input id="reporter_status_1" name="reporter_status" type="radio" bind:group={new_reporter_status} value="trusted" />
+						<label for="reporter_status_1">Trusted</label>
+						<br/>
+						<input id="reporter_status_2" name="reporter_status" type="radio" bind:group={new_reporter_status} value="rejected" />
+						<label for="reporter_status_2">Rejected</label>
+					</div>
+					<button class="button_highlight" type="submit">
+						<i class="icon">save</i> Save
+					</button>
+				</div>
 			</form>
 		</div>
 	{/if}

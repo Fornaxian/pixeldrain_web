@@ -51,7 +51,7 @@ let email_change = {
 	fields: [
 		{
 			name: "new_email",
-			label: "New e-mail address",
+			label: "E-mail address",
 			type: "email",
 			default_value: window.user.email,
 			description: `we will send an e-mail to the new address to
@@ -83,7 +83,7 @@ let name_change = {
 	fields: [
 		{
 			name: "new_username",
-			label: "New name",
+			label: "Name",
 			type: "username",
 			default_value: window.user.username,
 			description: `changing your username also changes the name used to
@@ -143,15 +143,27 @@ let delete_account = {
 
 <section>
 	<h2>Account settings</h2>
-	<h3>Change password</h3>
-	<Form config={password_change}></Form>
+	<div class="highlight_shaded">
+		<h3>Change password</h3>
+		<Form config={password_change}></Form>
+	</div>
+	<br/>
 
-	<h3>Change e-mail address</h3>
-	<Form config={email_change}></Form>
+	<div class="highlight_shaded">
+		<h3>Change e-mail address</h3>
+		<Form config={email_change}></Form>
+	</div>
+	<br/>
 
-	<h3>Change name</h3>
-	<Form config={name_change}></Form>
+	<div class="highlight_shaded">
+		<h3>Change name</h3>
+		<Form config={name_change}></Form>
+	</div>
+	<br/>
 
-	<h3>Delete account</h3>
-	<Form config={delete_account}></Form>
+	<div class="highlight_shaded">
+		<h3>Delete account</h3>
+		<Form config={delete_account}></Form>
+	</div>
+	<br/>
 </section>

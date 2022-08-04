@@ -21,80 +21,59 @@
 			<!-- The invisible username field is so browsers know which user the form was for -->
 			<input type="text" autocomplete="username" value="{{.Username}}" style="display: none;" readonly="readonly"/>
 		{{end}}
-		<table class="form">
+		<div class="form">
 			{{range $field := .Fields}}
-				<tr class="form">
-					{{if eq $field.Type "textarea"}}
-						<td colspan="2">
-							{{$field.Label}}<br/>
-							<textarea id="input_{{$field.Name}}" name="{{$field.Name}}" class="form_input" style="width: 100%; height: 10em; resize: vertical;">{{$field.DefaultValue}}</textarea>
-						</td>
-					{{else}}
-						<td>{{$field.Label}}</td>
-						<td>
-							{{if eq $field.Type "text"}}
-								<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="text" class="form_input"/>
-							{{else if eq $field.Type "number"}}
-								<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="number" class="form_input"/>
-							{{else if eq $field.Type "username"}}
-								<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="text" autocomplete="username" class="form_input"/>
-							{{else if eq $field.Type "email"}}
-								<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="email" autocomplete="email" class="form_input"/>
-							{{else if eq $field.Type "current-password"}}
-								<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="password" autocomplete="current-password" class="form_input"/>
-							{{else if eq $field.Type "new-password"}}
-								<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="password" autocomplete="new-password" class="form_input"/>
-							{{else if eq $field.Type "captcha"}}
-								<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-								<div class="g-recaptcha" data-theme="dark" data-sitekey="{{$field.CaptchaSiteKey}}"></div>
-							{{else if eq $field.Type "radio"}}
-								{{ range $val := $field.RadioValues}}
-								<input
-									id="input_{{$field.Name}}_choice_{{$val}}"
-									name="{{$field.Name}}"
-									value="{{$val}}"
-									type="radio"
-									{{if eq $val $field.DefaultValue}}checked="checked"{{end}}/>
-								<label for="input_{{$field.Name}}_choice_{{$val}}">{{$val}}</label><br/>
-								{{ end }}
-							{{else if eq $field.Type "description"}}
-								{{$field.DefaultValue}}
-							{{end}}
-						</td>
-					{{end}}
-				</tr>
-				{{if or (ne $field.Description "") (eq $field.Separator true)}}
-					<tr class="form">
-						<td colspan="2">
-							{{$field.Description}}
-							{{if eq $field.Separator true}}
-								<hr/>
-							{{end}}
-						</td>
-					</tr>
+				<label for="input_{{$field.Name}}">
+					{{$field.Label}}
+				</label>
+				{{if eq $field.Type "text"}}
+					<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="text" class="form_input"/>
+				{{else if eq $field.Type "number"}}
+					<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="number" class="form_input"/>
+				{{else if eq $field.Type "username"}}
+					<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="text" autocomplete="username" class="form_input"/>
+				{{else if eq $field.Type "email"}}
+					<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="email" autocomplete="email" class="form_input"/>
+				{{else if eq $field.Type "current-password"}}
+					<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="password" autocomplete="current-password" class="form_input"/>
+				{{else if eq $field.Type "new-password"}}
+					<input id="input_{{$field.Name}}" name="{{$field.Name}}" value="{{$field.DefaultValue}}" type="password" autocomplete="new-password" class="form_input"/>
+				{{else if eq $field.Type "textarea"}}
+					<textarea id="input_{{$field.Name}}" name="{{$field.Name}}" class="form_input" style="width: 100%; height: 10em; resize: vertical;">{{$field.DefaultValue}}</textarea>
+				{{else if eq $field.Type "captcha"}}
+					<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+					<div class="g-recaptcha" data-theme="dark" data-sitekey="{{$field.CaptchaSiteKey}}"></div>
+				{{else if eq $field.Type "radio"}}
+					{{ range $val := $field.RadioValues}}
+					<input
+						id="input_{{$field.Name}}_choice_{{$val}}"
+						name="{{$field.Name}}"
+						value="{{$val}}"
+						type="radio"
+						{{if eq $val $field.DefaultValue}}checked="checked"{{end}}/>
+					<label for="input_{{$field.Name}}_choice_{{$val}}">{{$val}}</label><br/>
+					{{ end }}
+				{{else if eq $field.Type "description"}}
+					{{$field.DefaultValue}}
+				{{end}}
+				{{if ne $field.Description ""}}
+					<div>
+						{{$field.Description}}
+					</div>
 				{{end}}
 			{{end}}
-			<tr class="form">
-				{{if eq .BackLink ""}}
-					<td colspan="2" style="text-align: right;">
-						{{if eq .SubmitRed true}}
-							<input type="submit" value="{{.SubmitLabel}}" class="button_red" style="float: right;"/>
-						{{else}}
-							<input type="submit" value="{{.SubmitLabel}}" class="button_highlight" style="float: right;"/>
-						{{end}}
-					</td>
-				{{else}}
-					<td colspan="2" style="text-align: left;">
-						<a href="{{.BackLink}}" class="button button_red" style="float: left;"/>Back</a>
-						{{if eq .SubmitRed true}}
-							<input type="submit" value="{{.SubmitLabel}}" class="button_red" style="float: right;"/>
-						{{else}}
-							<input type="submit" value="{{.SubmitLabel}}" class="button_highlight" style="float: right"/>
-						{{end}}
-					</td>
-				{{end}}
-			</tr>
-		</table>
+			{{if eq .SubmitRed true}}
+				<button type="submit" class="button_red">
+					<i class="icon">send</i>
+					{{.SubmitLabel}}
+				</button>
+			{{else}}
+				<button type="submit" class="button_highlight">
+					<i class="icon">send</i>
+					{{.SubmitLabel}}
+				</button>
+			{{end}}
+		</div>
 	</form>
 	{{.PostFormHTML}}
 {{end}}

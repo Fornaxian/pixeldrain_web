@@ -18,7 +18,6 @@ func (wc *WebController) adminGlobalsForm(td *TemplateData, r *http.Request) (f 
 		Name:        "admin_globals",
 		Title:       "Pixeldrain global configuration",
 		PreFormHTML: template.HTML("<p>Careful! The slightest typing error could bring the whole website down</p>"),
-		BackLink:    "/admin",
 		SubmitLabel: "Submit",
 	}
 

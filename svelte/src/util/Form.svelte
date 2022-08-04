@@ -131,121 +131,107 @@ let handle_errors = (response) => {
 	{/if}
 
 
-	<table class="form">
+	<div class="form">
 		{#each config.fields as field}
-			<tr class="form">
-				{#if field.type === "text_area"}
-					<td colspan="2">
-						{field.label}
-						<br/>
-						<textarea bind:this={field.binding}
-							id="input_{field.name}"
-							name="{field.name}"
-							class="form_input"
-							style="width: 100%; height: 10em; resize: vertical;"
-						>{field.default_value}</textarea>
-					</td>
-				{:else if field.type !== "description"}
-					<td>{field.label}</td>
-					<td>
-						{#if field.type === "text"}
-							<input bind:this={field.binding}
-								id="input_{field.name}"
+			{#if field.type !== "description"}
+				<label for="input_{field.name}">
+					{field.label}
+				</label>
+				{#if field.type === "text"}
+					<input bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						value="{field.default_value}"
+						type="text"
+						class="form_input"/>
+				{:else if field.type === "text_area"}
+					<textarea bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						class="form_input"
+						style="width: 100%; height: 10em; resize: vertical;"
+					>{field.default_value}</textarea>
+				{:else if field.type === "number"}
+					<input bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						value="{field.default_value}"
+						type="number"
+						class="form_input"/>
+				{:else if field.type === "decimal"}
+					<input bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						value="{field.default_value}"
+						type="number"
+						step="0.1"
+						class="form_input"/>
+				{:else if field.type === "username"}
+					<input bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						value="{field.default_value}"
+						type="text"
+						autocomplete="username"
+						class="form_input"/>
+				{:else if field.type === "email"}
+					<input bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						value="{field.default_value}"
+						type="email"
+						autocomplete="email"
+						class="form_input"/>
+				{:else if field.type === "current_password"}
+					<input bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						value="{field.default_value}"
+						type="password"
+						autocomplete="current-password"
+						class="form_input"/>
+				{:else if field.type === "new_password"}
+					<input bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						value="{field.default_value}"
+						type="password"
+						autocomplete="new-password"
+						class="form_input"/>
+				{:else if field.type === "captcha"}
+					<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+					<div class="g-recaptcha" data-theme="dark" data-sitekey="{field.captcha_site_key}"></div>
+				{:else if field.type === "radio"}
+					<div>
+						{#each field.radio_values as val}
+							<input bind:group={field.binding}
+								id="input_{field.name}_choice_{val}"
 								name="{field.name}"
-								value="{field.default_value}"
-								type="text"
-								class="form_input"/>
-						{:else if field.type === "number"}
-							<input bind:this={field.binding}
-								id="input_{field.name}"
-								name="{field.name}"
-								value="{field.default_value}"
-								type="number"
-								class="form_input"/>
-						{:else if field.type === "decimal"}
-							<input bind:this={field.binding}
-								id="input_{field.name}"
-								name="{field.name}"
-								value="{field.default_value}"
-								type="number"
-								step="0.1"
-								class="form_input"/>
-						{:else if field.type === "username"}
-							<input bind:this={field.binding}
-								id="input_{field.name}"
-								name="{field.name}"
-								value="{field.default_value}"
-								type="text"
-								autocomplete="username"
-								class="form_input"/>
-						{:else if field.type === "email"}
-							<input bind:this={field.binding}
-								id="input_{field.name}"
-								name="{field.name}"
-								value="{field.default_value}"
-								type="email"
-								autocomplete="email"
-								class="form_input"/>
-						{:else if field.type === "current_password"}
-							<input bind:this={field.binding}
-								id="input_{field.name}"
-								name="{field.name}"
-								value="{field.default_value}"
-								type="password"
-								autocomplete="current-password"
-								class="form_input"/>
-						{:else if field.type === "new_password"}
-							<input bind:this={field.binding}
-								id="input_{field.name}"
-								name="{field.name}"
-								value="{field.default_value}"
-								type="password"
-								autocomplete="new-password"
-								class="form_input"/>
-						{:else if field.type === "captcha"}
-							<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-							<div class="g-recaptcha" data-theme="dark" data-sitekey="{field.captcha_site_key}"></div>
-						{:else if field.type === "radio"}
-							{#each field.radio_values as val}
-								<input bind:group={field.binding}
-									id="input_{field.name}_choice_{val}"
-									name="{field.name}"
-									value={val}
-									type="radio"
-									checked={val === field.default_value}/>
-								<label for="input_{field.name}_choice_{val}">{val}</label><br/>
-							{/each}
-						{/if}
-					</td>
+								value={val}
+								type="radio"
+								checked={val === field.default_value}/>
+							<label for="input_{field.name}_choice_{val}">{val}</label><br/>
+						{/each}
+					</div>
 				{/if}
-			</tr>
+			{/if}
 			{#if field.description}
-				<tr class="form">
-					<td colspan="2">
-						{@html field.description}
-					</td>
-				</tr>
+				<div>
+					{@html field.description}
+				</div>
 			{/if}
 			{#if field.separator}
-				<tr class="form">
-					<td colspan="2">
-						<hr/>
-					</td>
-				</tr>
+				<hr/>
 			{/if}
 		{/each}
 
 		<!-- Submit button -->
-		<tr class="form">
-			<td colspan="2" style="text-align: right;">
-				{#if config.submit_red}
-					<button type="submit" class="button_red" style="float: right;">{@html config.submit_label}</button>
-				{:else}
-					<button type="submit" class="button_highlight" style="float: right;">{@html config.submit_label}</button>
-				{/if}
-			</td>
-		</tr>
-	</table>
+		{#if config.submit_red}
+			<button type="submit" class="button_red">{@html config.submit_label}</button>
+		{:else}
+			<button type="submit" class="button_highlight">{@html config.submit_label}</button>
+		{/if}
+	</div>
 </form>
 
 <style>

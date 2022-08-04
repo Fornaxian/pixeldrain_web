@@ -99,7 +99,6 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 				Name:        "username",
 				Label:       "Username",
 				Description: "used for logging into your account",
-				Separator:   true,
 				Type:        FieldTypeUsername,
 			}, {
 				Name:  "email",
@@ -107,8 +106,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 				Description: `not required. your e-mail address will only be
 					used for password resets and important account
 					notifications`,
-				Separator: true,
-				Type:      FieldTypeEmail,
+				Type: FieldTypeEmail,
 			}, {
 				Name:  "password",
 				Label: "Password",
@@ -119,8 +117,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 				Description: "you need to enter your password twice so we " +
 					"can verify that no typing errors were made, which would " +
 					"prevent you from logging into your new account",
-				Separator: true,
-				Type:      FieldTypeNewPassword,
+				Type: FieldTypeNewPassword,
 			}, {
 				Name:  "recaptcha_response",
 				Label: "reCaptcha",
@@ -128,12 +125,10 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 					"are not an evil robot that is trying to flood the " +
 					"website with fake accounts. Please click the white box " +
 					"to prove that you're not a robot",
-				Separator:      true,
 				Type:           FieldTypeCaptcha,
 				CaptchaSiteKey: wc.captchaKey(),
 			},
 		},
-		BackLink:     "/",
 		SubmitLabel:  "Register",
 		PostFormHTML: template.HTML("<p>Welcome to the club!</p>"),
 	}
@@ -181,7 +176,6 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 				Type:  FieldTypeCurrentPassword,
 			},
 		},
-		BackLink:    "/",
 		SubmitLabel: "Login",
 		PostFormHTML: template.HTML(
 			`<p>If you don't have a pixeldrain account yet, you can ` +
@@ -240,19 +234,16 @@ func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f
 				Label: "E-mail address",
 				Description: `we will send a password reset link to this e-mail
 					address`,
-				Separator: true,
-				Type:      FieldTypeEmail,
+				Type: FieldTypeEmail,
 			}, {
 				Name:  "recaptcha_response",
 				Label: "Turing test (click the white box)",
 				Description: "the reCaptcha turing test verifies that you " +
 					"are not an evil robot that is trying hijack accounts",
-				Separator:      true,
 				Type:           FieldTypeCaptcha,
 				CaptchaSiteKey: wc.captchaKey(),
 			},
 		},
-		BackLink:    "/login",
 		SubmitLabel: "Submit",
 	}
 
@@ -287,8 +278,7 @@ func (wc *WebController) passwordResetConfirmForm(td *TemplateData, r *http.Requ
 				Description: "you need to enter your password twice so we " +
 					"can verify that no typing errors were made, which would " +
 					"prevent you from logging into your new account",
-				Separator: true,
-				Type:      FieldTypeNewPassword,
+				Type: FieldTypeNewPassword,
 			},
 		},
 		SubmitLabel: "Submit",

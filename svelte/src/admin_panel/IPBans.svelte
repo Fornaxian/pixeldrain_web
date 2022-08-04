@@ -98,41 +98,33 @@ onMount(get_bans);
 	{#if creating}
 		<div class="highlight_shaded">
 			<form on:submit|preventDefault={create_ban}>
-				<table class="form">
-					<tr>
-						<td>IP address</td>
-						<td><input type="text" bind:this={new_ban_address}/></td>
-					</tr>
-					<tr>
-						<td>Reason</td>
-						<td>
-							<input id="reason_unknown" name="reporter_type" type="radio" bind:group={new_ban_reason} value="unknown" />
-							<label for="reason_unknown">unknown</label>
-							<br/>
-							<input id="reason_copyright" name="reporter_type" type="radio" bind:group={new_ban_reason} value="copyright" />
-							<label for="reason_copyright">copyright</label>
-							<br/>
-							<input id="reason_child_abuse" name="reporter_type" type="radio" bind:group={new_ban_reason} value="child_abuse" />
-							<label for="reason_child_abuse">child_abuse</label>
-							<br/>
-							<input id="reason_terrorism" name="reporter_type" type="radio" bind:group={new_ban_reason} value="terorrism" />
-							<label for="reason_terrorism">terrorism</label>
-							<br/>
-							<input id="reason_gore" name="reporter_type" type="radio" bind:group={new_ban_reason} value="gore" />
-							<label for="reason_gore">gore</label>
-							<br/>
-							<input id="reason_malware" name="reporter_type" type="radio" bind:group={new_ban_reason} value="malware" />
-							<label for="reason_malware">malware</label>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<button class="button_highlight" type="submit" style="float: right;">
-								<i class="icon">save</i> Save
-							</button>
-						</td>
-					</tr>
-				</table>
+				<div class="form">
+					<label for="field_address">IP address</label>
+					<input id="field_address" type="text" bind:this={new_ban_address}/>
+					<label for="field_reason">Reason</label>
+					<div id="field_reason">
+						<input id="reason_unknown" name="reporter_type" type="radio" bind:group={new_ban_reason} value="unknown" />
+						<label for="reason_unknown">unknown</label>
+						<br/>
+						<input id="reason_copyright" name="reporter_type" type="radio" bind:group={new_ban_reason} value="copyright" />
+						<label for="reason_copyright">copyright</label>
+						<br/>
+						<input id="reason_child_abuse" name="reporter_type" type="radio" bind:group={new_ban_reason} value="child_abuse" />
+						<label for="reason_child_abuse">child_abuse</label>
+						<br/>
+						<input id="reason_terrorism" name="reporter_type" type="radio" bind:group={new_ban_reason} value="terorrism" />
+						<label for="reason_terrorism">terrorism</label>
+						<br/>
+						<input id="reason_gore" name="reporter_type" type="radio" bind:group={new_ban_reason} value="gore" />
+						<label for="reason_gore">gore</label>
+						<br/>
+						<input id="reason_malware" name="reporter_type" type="radio" bind:group={new_ban_reason} value="malware" />
+						<label for="reason_malware">malware</label>
+					</div>
+					<button class="button_highlight" type="submit" style="float: right;">
+						<i class="icon">save</i> Save
+					</button>
+				</div>
 			</form>
 		</div>
 	{/if}

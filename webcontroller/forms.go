@@ -17,7 +17,6 @@ type Form struct {
 
 	Fields []Field
 
-	BackLink    string // Empty for no back link
 	SubmitLabel string // Label for the submit button
 	SubmitRed   bool   // If the submit button should be red or green
 
@@ -52,9 +51,6 @@ type Field struct {
 
 	// Text below the input field
 	Description template.HTML
-
-	// Separates fields with a horizontal rule
-	Separator bool
 
 	Type FieldType
 

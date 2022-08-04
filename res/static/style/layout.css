@@ -320,13 +320,35 @@ p {
 	margin: 1em 0;
 }
 
+/* Forms*/
+
 .form {
+	display: flex;
+	flex-direction: column;
 	margin-left: auto;
 	margin-right: auto;
-	text-align: left;
-	max-width: 30em;
+	text-align: initial;
+	max-width: 500px;
 	width: 100%;
 }
+
+.form>* {
+	display: block;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.form>label {
+	margin-top: 1em;
+}
+
+.form>input[type="submit"],
+.form>button[type="submit"] {
+	align-self: end;
+	margin-top: 1em;
+}
+
+/* Tables */
 
 table:not(.form) {
 	border-collapse: collapse;
@@ -344,23 +366,13 @@ table:not(.form) {
 	min-width: 100%;
 }
 
-tr:not(.form) {
+tr {
 	border-bottom: 1px var(--separator) solid;
 }
 
 tr>td,
 tr>th {
 	padding: 0.2em 0.5em;
-}
-
-@media(max-width: 30em) {
-
-	/* Forms will be stacked on small screens */
-	tr.form>td {
-		float: left;
-		width: 100%;
-		padding: 0.5em;
-	}
 }
 
 pre {
@@ -414,12 +426,6 @@ details.request_put {
 details.request_patch {
 	border-color: #6000B0;
 	background-color: rgba(128, 0, 255, 0.1);
-}
-
-/* Form fields */
-
-.form_input {
-	width: 100%;
 }
 
 /* BUTTONS */
@@ -583,7 +589,7 @@ input[type="date"] {
 	border: none;
 	border-radius: 6px;
 	background: var(--input_background);
-	box-shadow: inset 1px 1px 2px -1px var(--shadow_color);
+	/* box-shadow: inset 1px 1px 2px -1px var(--shadow_color); */
 	padding: 3px 5px;
 	color: var(--input_text);
 	font-size: 1em;
