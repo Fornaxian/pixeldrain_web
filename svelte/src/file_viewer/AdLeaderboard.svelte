@@ -14,7 +14,11 @@ onMount(() => {
 		return
 	}
 
-	set_ad_type("nextmillennium")
+	if (Math.random() < 0.1) {
+		set_ad_type("pixeldrain_social")
+	} else {
+		set_ad_type("nextmillennium")
+	}
 })
 
 let set_ad_type = async t => {
@@ -147,6 +151,12 @@ head.valueimpression_loaded.subscribe(v => {
 		</div>
 	{:else if ad_type === "nextmillennium"}
 		<div bind:this={banner} class="banner" style="width: 728px; height: 90px;"></div>
+	{:else if ad_type === "pixeldrain_social"}
+		<map name="socials_map">
+			<area target="_blank" alt="Pixeldrain on Reddit" title="Pixeldrain on Reddit" href="https://reddit.com/r/pixeldrain" coords="0,38,364,90" shape="rect">
+			<area target="_blank" alt="Pixeldrain on Twitter" title="Pixeldrain on Twitter" href="https://twitter.com/Fornax96" coords="364,38,728,90" shape="rect">
+		</map>
+		<img bind:this={banner} usemap="#socials_map" class="banner" src="/res/img/advertising/pixeldrain_socials.webp" style="display: inline-block; width: 728px; height: 90px;" alt="Pixeldrain social media"/>
 	{/if}
 </div>
 
