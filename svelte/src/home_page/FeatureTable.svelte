@@ -171,7 +171,7 @@ onMount(() => {
 		check when the file was last viewed. Files which are regularly viewed
 		could still bring new users to the platform, it would be rude to show
 		these people a File Not Found page. So if the file was viewed in the
-		last 30 days we will simply postpone the next check a month. If the file
+		last 60 days we will simply postpone the next check a month. If the file
 		was not viewed however it will immediately be removed.
 	</p>
 	<p>
