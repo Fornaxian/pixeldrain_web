@@ -1,6 +1,7 @@
 <script>
 import { add_upload_history, domain_url } from "../util/Util.svelte"
 import { formatDataVolume, formatDuration} from "../util/Formatting.svelte"
+    import Spinner from "../util/Spinner.svelte";
 
 export let job = {}
 let file_button
@@ -33,6 +34,13 @@ const on_progress = () => {
 	last_loaded_size = job.loaded_size
 
 	progress_bar.style.width = (progress * 100) + "%"
+
+	if (progress >= 1) {
+		job.status = "processing"
+		progress_bar.style.opacity = "0"
+	} else {
+		progress_bar.style.opacity = "1"
+	}
 }
 
 let href = null
@@ -79,9 +87,9 @@ const on_failure = (status, message) => {
 export const start = () => {
 	job.status = "uploading"
 
-	// Check the file size limit. For free accounts it's 10 GB
+	// Check the file size limit. For free accounts it's 20 GB
 	if (window.user.subscription.file_size_limit === 0) {
-		window.user.subscription.file_size_limit = 10e9
+		window.user.subscription.file_size_limit = 20e9
 	}
 	if (job.total_size > window.user.subscription.file_size_limit) {
 		on_failure(
@@ -168,6 +176,8 @@ export const start = () => {
 				<i class="icon">cloud_queue</i>
 			{:else if job.status === "uploading"}
 				<i class="icon">cloud_upload</i>
+			{:else if job.status === "processing"}
+				<Spinner></Spinner>
 			{:else if job.status === "finished"}
 				<img src="/api/file/{job.id}/thumbnail" alt="file thumbnail" />
 			{:else if job.status === "error"}
@@ -195,6 +205,8 @@ export const start = () => {
 					<div class="stat">
 						{formatDataVolume(transfer_rate, 3)}/s
 					</div>
+				{:else if job.status === "processing"}
+					Calculating parity data...
 				{:else if job.status === "finished"}
 					<span class="file_link">
 						{domain_url() + "/u/" + job.id}

@@ -58,7 +58,7 @@ onMount(() => {
 
 		<p>
 			You have used {formatDataVolume(limits.transfer_limit_used, 3)} of
-			your daily {formatDataVolume(limits.transfer_limit, 3)} transfer
+			your weekly {formatDataVolume(limits.transfer_limit, 3)} transfer
 			limit. When the transfer limit is exceeded your download speed will
 			be reduced.
 		</p>
