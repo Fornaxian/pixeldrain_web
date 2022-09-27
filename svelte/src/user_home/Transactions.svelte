@@ -33,7 +33,6 @@ const load_transactions = async () => {
 			total_subscription_charge: 0,
 			total_storage_charge: 0,
 			total_bandwidth_charge: 0,
-			total_kickback_fee: 0,
 			total_deposited: 0,
 			total_deducted: 0,
 		}
@@ -44,7 +43,6 @@ const load_transactions = async () => {
 			month.total_subscription_charge += row.subscription_charge
 			month.total_storage_charge += row.storage_charge
 			month.total_bandwidth_charge += row.bandwidth_charge
-			month.total_kickback_fee += row.kickback_fee
 			month.total_deducted += row.subscription_charge + row.storage_charge + row.bandwidth_charge
 		})
 		transactions = month
@@ -248,7 +246,6 @@ onMount(() => {
 		<li>Storage charge: <Euro amount={transactions.total_storage_charge}></Euro></li>
 		<li>Bandwidth charge: <Euro amount={transactions.total_bandwidth_charge}></Euro></li>
 		<li>Total charge: <Euro amount={transactions.total_deducted}></Euro></li>
-		<li>Earned: <Euro amount={transactions.total_kickback_fee}></Euro></li>
 		<li>Deposited: <Euro amount={transactions.total_deposited}></Euro></li>
 	</ul>
 
@@ -261,7 +258,6 @@ onMount(() => {
 					<td>Subscription</td>
 					<td colspan="2">Storage</td>
 					<td colspan="2">Bandwidth</td>
-					<td colspan="2">Kickback</td>
 					<td>Deposit</td>
 				</tr>
 				<tr>
@@ -272,8 +268,6 @@ onMount(() => {
 					<td>Usage</td>
 					<td>Charge</td>
 					<td>Usage</td>
-					<td>Fee</td>
-					<td>Amount</td>
 					<td></td>
 				</tr>
 			</thead>
@@ -287,8 +281,6 @@ onMount(() => {
 						<td>{formatDataVolume(row.storage_used, 3)}</td>
 						<td><Euro amount={row.bandwidth_charge} precision="4"></Euro></td>
 						<td>{formatDataVolume(row.bandwidth_used, 3)}</td>
-						<td><Euro amount={row.kickback_fee} precision="4"></Euro></td>
-						<td>{formatDataVolume(row.kickback_amount, 3)}</td>
 						<td><Euro amount={row.deposit_amount}></Euro></td>
 					</tr>
 				{/each}

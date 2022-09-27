@@ -22,12 +22,10 @@ let load_graphs = async (minutes, interval) => {
 		let downloads = get_graph_data("downloads", start, end, interval);
 		let bandwidth = get_graph_data("bandwidth", start, end, interval);
 		let transfer_paid = get_graph_data("transfer_paid", start, end, interval);
-		let transfer_kickback = get_graph_data("transfer_kickback", start, end, interval);
 		views = await views
 		downloads = await downloads
 		bandwidth = await bandwidth
 		transfer_paid = await transfer_paid
-		transfer_kickback = await transfer_kickback
 
 		graph_views_downloads.data().labels = views.timestamps;
 		graph_views_downloads.data().datasets[0].data = views.amounts
@@ -35,7 +33,6 @@ let load_graphs = async (minutes, interval) => {
 		graph_bandwidth.data().labels = bandwidth.timestamps;
 		graph_bandwidth.data().datasets[0].data = bandwidth.amounts
 		graph_bandwidth.data().datasets[1].data = transfer_paid.amounts
-		graph_bandwidth.data().datasets[2].data = transfer_kickback.amounts
 
 		graph_views_downloads.update()
 		graph_bandwidth.update()
@@ -52,7 +49,6 @@ let total_views = 0
 let total_downloads = 0
 let total_bandwidth = 0
 let total_transfer_paid = 0
-let total_transfer_kickback = 0
 
 let get_graph_data = async (stat, start, end, interval) => {
 	let resp = await fetch(
@@ -86,8 +82,6 @@ let get_graph_data = async (stat, start, end, interval) => {
 		total_bandwidth = total;
 	} else if (stat == "transfer_paid") {
 		total_transfer_paid = total;
-	} else if (stat == "transfer_kickback") {
-		total_transfer_kickback = total;
 	}
 
 	return resp
@@ -169,23 +163,16 @@ onMount(() => {
 			label: "Total bandwidth",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: color_by_name("chart_1_color"),
-			backgroundColor: color_by_name("chart_1_color"),
+			borderColor: color_by_name("highlight_color"),
+			backgroundColor: color_by_name("highlight_color"),
 		},
 		{
 			label: "Premium bandwidth",
 			borderWidth: 2,
 			pointRadius: 0,
-			borderColor: color_by_name("chart_2_color"),
-			backgroundColor: color_by_name("chart_2_color"),
-		},
-		{
-			label: "Kickback bandwidth",
-			borderWidth: 2,
-			pointRadius: 0,
-			borderColor: color_by_name("chart_3_color"),
-			backgroundColor: color_by_name("chart_3_color"),
-		},
+			borderColor: color_by_name("danger_color"),
+			backgroundColor: color_by_name("danger_color"),
+		}
 	];
 
 	update_graphs(10080, 60, true);
@@ -343,13 +330,6 @@ onDestroy(() => {
 		sharing enabled. Bandwidth sharing can be changed on
 		<a href="/user/subscription">the subscription page</a>.
 	</p>
-	<p>
-		Kickback bandwidth is counted when a paying pixeldrain user downloads
-		one of your files using their data cap. If you are on a prepaid plan
-		this usage will be compensated at a rate of €1 per TB. When this happens
-		a positive transaction will be logged on the
-		<a href="/user/transactions">transactions page</a>.
-	</p>
 </section>
 
 <Chart bind:this={graph_bandwidth} data_type="bytes"/>
@@ -359,7 +339,6 @@ onDestroy(() => {
 		Total usage from {time_start} to {time_end}<br/>
 		{formatDataVolume(total_bandwidth, 3)} bandwidth,
 		{formatDataVolume(total_transfer_paid, 3)} paid transfers
-		{formatDataVolume(total_transfer_kickback, 3)} kickback transfers
 	</div>
 
 	<h3>Views and downloads</h3>

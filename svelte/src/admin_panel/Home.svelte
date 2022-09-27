@@ -203,7 +203,7 @@ onDestroy(() => {
 			<thead>
 				<tr>
 					<td>Address</td>
-					<td>Pos</td>
+					<td>Role</td>
 					<td>Alive</td>
 					<td>Err</td>
 					<td>1m</td>
@@ -222,7 +222,7 @@ onDestroy(() => {
 					class:highlight_green={peer.reachable}
 				>
 					<td>{peer.address}</td>
-					<td>{peer.position}</td>
+					<td>{peer.role}</td>
 					<td>{peer.reachable}</td>
 					<td>{peer.unreachable_count}</td>
 					<td>{peer.load_1_min.toFixed(1)}</td>

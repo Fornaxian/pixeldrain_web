@@ -107,6 +107,8 @@ onMount(() => {
 							Blocked for abuse
 						{:else if row.event === "file_instance_expired"}
 							Expired
+						{:else if row.event === "file_instance_lost"}
+							File has been lost
 						{/if}
 					</td>
 				</tr>

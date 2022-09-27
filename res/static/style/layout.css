@@ -554,7 +554,6 @@ button>svg,
 	white-space: nowrap;
 	text-align: center;
 	box-shadow: inset 0 -10px 8px -12px var(--shadow_color);
-	/* border-bottom: 2px solid var(--input_background); */
 }
 
 .tab_bar>button,

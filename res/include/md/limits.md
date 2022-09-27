@@ -15,5 +15,4 @@ place on pixeldrain.
 | Premium data transfer | No           | 10 GB / month   | 1 TB / month  | Unlimited (€2 / TB) |
 | Video streaming       | No           | Within data cap | Yes           | Yes                 |
 | Ad-free file viewing  | No           | No              | Yes           | Yes                 |
-| Kickback fees         | No           | No              | No            | Yes                 |
 | File viewer branding  | No           | No              | From €8/month | Yes                 |
