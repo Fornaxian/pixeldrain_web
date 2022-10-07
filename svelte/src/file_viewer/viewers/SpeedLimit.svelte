@@ -36,7 +36,7 @@ onMount(async () => {
 	<p>
 		Pixeldrain's free tier is supported by advertisements. There's only so
 		much that you can do with the budget those ads provide (spoiler: it's
-		not a lot). {formatDataVolume(limits.transfer_limit, 3)} per day is
+		not a lot). {formatDataVolume(limits.transfer_limit, 3)} per week is
 		about the most I can give away for free, and according to our records
 		you have already downloaded
 		{formatDataVolume(limits.transfer_limit_used, 3)}.
@@ -48,7 +48,9 @@ onMount(async () => {
 		few options:
 	</p>
 	<ul>
-		<li>Come back tomorrow when your free transfer limit resets</li>
+		<li>
+			Come back next week when your free transfer limit resets
+		</li>
 		<li>
 			Download the file at a rate of {file.download_speed_limit/(1<<10)}
 			kiB/s. This will take at least
