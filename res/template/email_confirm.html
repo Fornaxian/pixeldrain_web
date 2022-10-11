@@ -10,32 +10,38 @@
 			<header>
 				<h1>Success!</h1>
 			</header>
-			<section>
-				<p>
-					Your account's e-mail address has been updated.
-				</p>
-			</section>
+			<div id="page_content" class="page_content">
+				<section>
+					<p>
+						Your account's e-mail address has been updated.
+					</p>
+				</section>
+			</div>
 		{{else if eq .Other "not_found"}}
 			<header>
 				<h1>E-mail change failed</h1>
 			</header>
-			<section>
-				<p>
-					This e-mail change request does not exist or has expired.
-					Please try again if you still want to change your e-mail
-					address.
-				</p>
-			</section>
+			<div id="page_content" class="page_content">
+				<section>
+					<p>
+						This e-mail change request does not exist or has expired.
+						Please try again if you still want to change your e-mail
+						address.
+					</p>
+				</section>
+			</div>
 		{{else}}
 			<header>
 				<h1>Error</h1>
 			</header>
-			<section>
-				<p>
-					Something went wrong while processing this request. Please
-					try again later.
-				</p>
-			</section>
+			<div id="page_content" class="page_content">
+				<section>
+					<p>
+						Something went wrong while processing this request. Please
+						try again later.
+					</p>
+				</section>
+			</div>
 		{{end}}
 
 		{{template "page_bottom" .}}

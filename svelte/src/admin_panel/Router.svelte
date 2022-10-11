@@ -6,6 +6,7 @@ import Home from "./Home.svelte"
 import { onMount } from "svelte";
 import BlockFiles from "./BlockFiles.svelte";
 import Subscriptions from "./Subscriptions.svelte";
+import Footer from "../layout/Footer.svelte";
 
 let page = ""
 
@@ -79,16 +80,19 @@ onMount(() => {
 	</div>
 </header>
 
-{#if page === "status"}
-	<Home></Home>
-{:else if page === "block_files"}
-	<BlockFiles></BlockFiles>
-{:else if page === "abuse_reports"}
-	<AbuseReports></AbuseReports>
-{:else if page === "abuse_reporters"}
-	<AbuseReporters></AbuseReporters>
-{:else if page === "ip_bans"}
-	<IpBans></IpBans>
-{:else if page === "subscriptions"}
-	<Subscriptions></Subscriptions>
-{/if}
+<div id="page_content" class="page_content">
+	{#if page === "status"}
+		<Home></Home>
+	{:else if page === "block_files"}
+		<BlockFiles></BlockFiles>
+	{:else if page === "abuse_reports"}
+		<AbuseReports></AbuseReports>
+	{:else if page === "abuse_reporters"}
+		<AbuseReporters></AbuseReporters>
+	{:else if page === "ip_bans"}
+		<IpBans></IpBans>
+	{:else if page === "subscriptions"}
+		<Subscriptions></Subscriptions>
+	{/if}
+</div>
+<Footer/>

@@ -118,7 +118,6 @@ type styleSheet struct {
 	Background        CSS
 	BackgroundText    HSL
 	BackgroundPattern CSS
-	ParallaxSlider    CSS
 	Navigation        CSS
 	BodyColor         HSL
 	BodyBackground    CSS
@@ -157,7 +156,6 @@ func (s styleSheet) withDefaults() styleSheet {
 	defaultCSS(&s.HighlightBackground, s.Highlight)
 	defaultCSS(&s.Background, s.BackgroundColor)
 	defaultCSS(&s.BackgroundPattern, s.BackgroundColor)
-	defaultCSS(&s.ParallaxSlider, s.BackgroundColor)
 	defaultCSS(&s.Navigation, RawCSS("none"))
 	defaultCSS(&s.BodyBackground, s.BodyColor)
 	defaultHSL(&s.BackgroundText, s.BodyText)
@@ -188,7 +186,6 @@ func (s styleSheet) withHue(hue int) styleSheet {
 	s.Background = setHue(s.Background)
 	s.BackgroundText.Hue = hue
 	s.BackgroundPattern = setHue(s.BackgroundPattern)
-	s.ParallaxSlider = setHue(s.ParallaxSlider)
 	s.Navigation = setHue(s.Navigation)
 	s.BodyColor.Hue = hue
 	s.BodyBackground = setHue(s.BodyBackground)
@@ -223,7 +220,6 @@ func (s styleSheet) String() string {
 	--background_text_color:    %s;
 	--background_pattern:       url("%s");
 	--background_pattern_color: %s;
-	--parallax_slider_color:    %s;
 	--navigation_background:    %s;
 	--body_color:               %s;
 	--body_background:          %s;
@@ -255,7 +251,6 @@ func (s styleSheet) String() string {
 		s.BackgroundText.CSS(),
 		BackgroundTiles(),
 		s.BackgroundPattern.CSS(),
-		s.ParallaxSlider.CSS(),
 		s.Navigation.CSS(),
 		s.BodyColor.CSS(),
 		s.BodyBackground.CSS(),
@@ -301,7 +296,6 @@ func BackgroundTiles() template.URL {
 	} else if month == time.December && (day == 25 || day == 26 || day == 27) {
 		file = "checker_christmas"
 	} else {
-		// file = "checker_ukraine"
 		file = fmt.Sprintf("checker%d", now.UnixNano()%18)
 	}
 
@@ -311,8 +305,8 @@ func BackgroundTiles() template.URL {
 // Following are all the available styles
 
 var purpleDrainStyle = styleSheet{
-	Input:               HSL{266, .85, .24},
-	InputHover:          HSL{266, .85, .28},
+	Input:               HSL{266, .85, .26},
+	InputHover:          HSL{266, .85, .30},
 	InputText:           HSL{0, 0, .9},
 	InputDisabledText:   HSL{266, .85, .4},
 	HighlightBackground: NewGradient(150, HSL{150, .84, .39}, HSL{85, .85, .35}),
@@ -322,13 +316,12 @@ var purpleDrainStyle = styleSheet{
 	ScrollbarForeground: HSL{266, .85, .40},
 	ScrollbarHover:      HSL{266, .85, .50},
 
-	BackgroundColor:   HSL{273, .93, .12},
-	Background:        NewGradient(120, HSL{250, .9, .14}, HSL{300, .9, .10}),
+	BackgroundColor:   HSL{260, .90, .12},
+	Background:        NewGradient(120, HSL{250, .84, .18}, HSL{300, .9, .16}),
 	BackgroundPattern: RawCSS("none"),
-	ParallaxSlider:    HSL{275, .8, .1},
-	Navigation:        RGBA{0, 0, 0, 0.1},
+	Navigation:        RawCSS("none"),
 	BodyColor:         HSL{274, .9, .14},
-	BodyBackground:    RawCSS("none"),
+	BodyBackground:    RGBA{255, 255, 255, 0.02},
 	BodyText:          HSL{0, 0, .8},
 	CardColor:         HSL{275, .8, .18},
 
@@ -430,44 +423,58 @@ var skeuosPixeldrainStyle = styleSheet{
 	Shadow: HSL{0, 0, 0},
 }
 
-var nordDarkStyle = styleSheet{
-	Input:               HSL{220, .16, .36}, // nord3
-	InputHover:          HSL{220, .16, .40},
-	InputText:           HSL{218, .27, .92}, // nord5 hsl(218, 27%, 92%)
-	InputDisabledText:   HSL{220, .16, .22}, // nord0 hsl(220, 16%, 22%)
-	Highlight:           HSL{92, .28, .65},  // nord14 hsl(92, 28%, 65%)
-	HighlightText:       HSL{220, .16, .22}, // nord0
-	Danger:              HSL{354, .42, .56}, // nord11 hsl(354, 42%, 56%)
-	ScrollbarForeground: HSL{179, .25, .65}, // nord7 hsl(179, 25%, 65%)
-	ScrollbarHover:      HSL{193, .43, .67}, // nord8 hsl(193, 43%, 67%)
+var (
+	nord0  = HSL{220, .16, .22} // Dark
+	nord1  = HSL{222, .16, .28} // Dark
+	nord2  = HSL{220, .17, .32} // Dark
+	nord3  = HSL{220, .16, .36} // Light
+	nord4  = HSL{219, .28, .88} // Light
+	nord5  = HSL{218, .27, .92} // Light
+	nord6  = HSL{218, .27, .94} // Light
+	nord7  = HSL{179, .25, .65} // Teal
+	nord8  = HSL{193, .43, .67} // Light blue
+	nord11 = HSL{354, .42, .56} // Red
+	nord14 = HSL{92, .28, .65}  // Green
+)
 
-	BackgroundColor: HSL{220, .16, .22}, // nord0
-	BodyColor:       HSL{222, .16, .28}, // nord1
-	BodyText:        HSL{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
-	CardColor:       HSL{220, .17, .32}, // nord2
+var nordDarkStyle = styleSheet{
+	Input:               nord3.Add(0, 0, 0.01),
+	InputHover:          nord3.Add(0, 0, 0.03),
+	InputText:           nord5,
+	InputDisabledText:   nord0,
+	Highlight:           nord14,
+	HighlightText:       nord0,
+	Danger:              nord11,
+	ScrollbarForeground: nord7,
+	ScrollbarHover:      nord8,
+
+	BackgroundColor: nord0,
+	BodyColor:       nord1,
+	BodyText:        nord4,
+	CardColor:       nord2,
 
 	Shadow: HSL{0, 0, 0},
 }
 
 var nordLightStyle = styleSheet{
 	Link:                HSL{92, .40, .32},
-	Input:               HSL{218, .27, .94}, // nord6 hsl(218, 27%, 94%)
-	InputHover:          HSL{218, .27, .98},
-	InputText:           HSL{222, .16, .28}, // nord1 hsl(222, 16%, 28%)
-	InputDisabledText:   HSL{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
-	Highlight:           HSL{92, .28, .65},  // nord14 hsl(92, 28%, 65%)
-	HighlightText:       HSL{222, .16, .28}, // nord3 hsl(220, 16%, 36%)
-	Danger:              HSL{354, .42, .56}, // nord11 hsl(354, 42%, 56%)
-	ScrollbarForeground: HSL{179, .25, .65}, // nord7 hsl(179, 25%, 65%)
-	ScrollbarHover:      HSL{193, .43, .67}, // nord8 hsl(193, 43%, 67%)
+	Input:               nord4.Add(0, 0, -0.04),
+	InputHover:          nord4.Add(0, 0, -0.06),
+	InputText:           nord0,
+	InputDisabledText:   nord6,
+	Highlight:           nord14,
+	HighlightText:       nord1,
+	Danger:              nord11,
+	ScrollbarForeground: nord7,
+	ScrollbarHover:      nord8,
 
-	BackgroundColor:   HSL{220, .16, .36}, // nord3 hsl(220, 16%, 36%)
-	BackgroundText:    HSL{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
-	ParallaxSlider:    HSL{220, .16, .22}, // nord0 hsl(220, 16%, 22%)
-	BodyColor:         HSL{219, .28, .88}, // nord4 hsl(219, 28%, 88%)
-	BodyText:          HSL{220, .17, .32}, // nord2 hsl(220, 17%, 32%)
-	BackgroundPattern: HSL{219, .28, .88}, // hsl(219, 28%, 88%)
-	CardColor:         HSL{218, .27, .92}, // nord5 hsl(218, 27%, 92%)
+	BackgroundColor:   nord4,
+	BackgroundText:    nord0,
+	BodyColor:         nord6,
+	BodyText:          nord2,
+	Separator:         nord4,
+	BackgroundPattern: nord4,
+	CardColor:         nord5,
 
 	Shadow: HSL{220, .16, .36},
 }
@@ -541,18 +548,20 @@ var solarizedDarkStyle = styleSheet{
 }
 
 var solarizedLightStyle = styleSheet{
-	Input:             HSL{46, .42, .84}, //hsl(180, 7%, 60%)
-	InputHover:        HSL{46, .42, .88},
+	Input:             HSL{46, .42, .84},
+	InputHover:        HSL{46, .42, .82},
 	InputText:         HSL{194, .14, .20}, // hsl(192, 81%, 14%)
-	InputDisabledText: HSL{194, .14, .80},
+	InputDisabledText: HSL{44, .87, .94},
 	Highlight:         HSL{68, 1, .30}, // hsl(68, 100%, 30%)
 	HighlightText:     HSL{44, .87, .94},
 	Danger:            HSL{1, .71, .52}, // hsl(1, 71%, 52%)
 
-	BackgroundColor: HSL{46, .42, .88},  // hsl(46, 42%, 88%)
+	BackgroundColor: HSL{46, .42, .88}, // hsl(46, 42%, 88%)
+	BackgroundText:  HSL{192, .81, .14},
 	BodyColor:       HSL{44, .87, .94},  // hsl(44, 87%, 94%)
 	BodyText:        HSL{194, .14, .40}, // hsl(194, 14%, 40%)
-	CardColor:       HSL{44, .87, .96},
+	Separator:       HSL{46, .42, .88},
+	CardColor:       HSL{44, .87, .92},
 
 	Shadow: HSL{0, 0, 0.36},
 }

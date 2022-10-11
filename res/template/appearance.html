@@ -10,70 +10,72 @@
 		<header>
 			<h1>Change website appearance</h1>
 		</header>
-		<section>
-			<p>
-				You can change how pixeldrain looks! Your theme choice will
-				be saved in a cookie.
-			</p>
-			<h2>Theme</h2>
-			<input type="radio" id="style_nord" name="style"><label for="style_nord">Nord</label>
-			(Inspired by <a href="https://www.nordtheme.com/" target="_blank">Nord</a>)
-			<br/>
-			Dynamic theme, changes based on operating system settings. Here you can choose a specific variant:
-			<br/>
-			<input type="radio" id="style_nord_dark" name="style"><label for="style_nord_dark">Nord dark</label>
-			<br/>
-			<input type="radio" id="style_nord_light" name="style"><label for="style_nord_light">Nord light</label>
-			<br/>
-			<br/>
-			<input type="radio" id="style_solarized" name="style"><label for="style_solarized">Solarized</label>
-			(Inspired by <a href="https://ethanschoonover.com/solarized/" target="_blank">Solarized</a>)
-			<br/>
-			Dynamic theme, changes based on operating system settings. Here you can choose a specific variant:
-			<br/>
-			<input type="radio" id="style_solarized_dark" name="style"><label for="style_solarized_dark">Solarized dark</label>
-			<br/>
-			<input type="radio" id="style_solarized_light" name="style"><label for="style_solarized_light">Solarized light</label>
-			<br/>
-			<!-- <br/> -->
-			<!-- <input type="radio" id="style_adwaita" name="style"><label for="style_adwaita">Adwaita</label><br/> -->
-			<br/>
-			<input type="radio" id="style_purple_drain" name="style"><label for="style_purple_drain">Purple drain</label>
-			<br/>
-			Classic 2022 style, with purple gradients
-			<br/>
-			<br/>
-			<input type="radio" id="style_classic" name="style"><label for="style_classic">Pixeldrain classic (gray)</label>
-			<br/>
-			Classic pre-2020 pixeldrain style, dark gray
-			<br/>
-			<br/>
-			Other (experimental) themes
-			<br/>
-			<input type="radio" id="style_maroon" name="style"><label for="style_maroon">Maroon Style</label>
-			<br/>
-			<input type="radio" id="style_hacker" name="style"><label for="style_hacker">Hacker Style</label>
-			<br/>
-			<input type="radio" id="style_canta" name="style"><label for="style_canta">Canta Style</label>
-			(Inspired by <a href="https://github.com/vinceliuice/Canta-theme" target="_blank">Canta GTK</a>)
-			<br/>
-			<input type="radio" id="style_skeuos" name="style"><label for="style_skeuos">Skeuos Style</label>
-			(Inspired by <a href="https://www.gnome-look.org/p/1441725/" target="_blank">Skeuos GTK</a>)
-			<br/>
-			<input type="radio" id="style_sweet" name="style"><label for="style_sweet">Sweet</label>
+		<div id="page_content" class="page_content">
+			<section>
+				<p>
+					You can change how pixeldrain looks! Your theme choice will
+					be saved in a cookie.
+				</p>
+				<h2>Theme</h2>
+				<input type="radio" id="style_nord" name="style"><label for="style_nord">Nord</label>
+				(Inspired by <a href="https://www.nordtheme.com/" target="_blank">Nord</a>)
+				<br/>
+				Dynamic theme, changes based on operating system settings. Here you can choose a specific variant:
+				<br/>
+				<input type="radio" id="style_nord_dark" name="style"><label for="style_nord_dark">Nord dark</label>
+				<br/>
+				<input type="radio" id="style_nord_light" name="style"><label for="style_nord_light">Nord light</label>
+				<br/>
+				<br/>
+				<input type="radio" id="style_solarized" name="style"><label for="style_solarized">Solarized</label>
+				(Inspired by <a href="https://ethanschoonover.com/solarized/" target="_blank">Solarized</a>)
+				<br/>
+				Dynamic theme, changes based on operating system settings. Here you can choose a specific variant:
+				<br/>
+				<input type="radio" id="style_solarized_dark" name="style"><label for="style_solarized_dark">Solarized dark</label>
+				<br/>
+				<input type="radio" id="style_solarized_light" name="style"><label for="style_solarized_light">Solarized light</label>
+				<br/>
+				<!-- <br/> -->
+				<!-- <input type="radio" id="style_adwaita" name="style"><label for="style_adwaita">Adwaita</label><br/> -->
+				<br/>
+				<input type="radio" id="style_purple_drain" name="style"><label for="style_purple_drain">Purple drain</label>
+				<br/>
+				Classic 2022 style, with purple gradients
+				<br/>
+				<br/>
+				<input type="radio" id="style_classic" name="style"><label for="style_classic">Pixeldrain classic (gray)</label>
+				<br/>
+				Classic pre-2020 pixeldrain style, dark gray
+				<br/>
+				<br/>
+				Other (experimental) themes
+				<br/>
+				<input type="radio" id="style_maroon" name="style"><label for="style_maroon">Maroon Style</label>
+				<br/>
+				<input type="radio" id="style_hacker" name="style"><label for="style_hacker">Hacker Style</label>
+				<br/>
+				<input type="radio" id="style_canta" name="style"><label for="style_canta">Canta Style</label>
+				(Inspired by <a href="https://github.com/vinceliuice/Canta-theme" target="_blank">Canta GTK</a>)
+				<br/>
+				<input type="radio" id="style_skeuos" name="style"><label for="style_skeuos">Skeuos Style</label>
+				(Inspired by <a href="https://www.gnome-look.org/p/1441725/" target="_blank">Skeuos GTK</a>)
+				<br/>
+				<input type="radio" id="style_sweet" name="style"><label for="style_sweet">Sweet</label>
 
-			<h2>Hue</h2>
-			<p>
-				Many themes support custom hues. The hue does not change the
-				contrast of the theme, only the color itself.
-			</p>
-			<input type="radio" id="hue_default" name="hue"><label for="hue_default">Default</label><br/>
-			<input type="radio" id="hue_354" name="hue"><label for="hue_354">Red</label><br/>
-			<input type="radio" id="hue_14" name="hue"><label for="hue_14">Orange</label><br/>
-			<input type="radio" id="hue_40" name="hue"><label for="hue_40">Yellow</label><br/>
-			<input type="radio" id="hue_92" name="hue"><label for="hue_92">Green</label><br/>
-			<input type="radio" id="hue_311" name="hue"><label for="hue_311">Purple</label><br/>
-		</section>
+				<h2>Hue</h2>
+				<p>
+					Many themes support custom hues. The hue does not change the
+					contrast of the theme, only the color itself.
+				</p>
+				<input type="radio" id="hue_default" name="hue"><label for="hue_default">Default</label><br/>
+				<input type="radio" id="hue_354" name="hue"><label for="hue_354">Red</label><br/>
+				<input type="radio" id="hue_14" name="hue"><label for="hue_14">Orange</label><br/>
+				<input type="radio" id="hue_40" name="hue"><label for="hue_40">Yellow</label><br/>
+				<input type="radio" id="hue_92" name="hue"><label for="hue_92">Green</label><br/>
+				<input type="radio" id="hue_311" name="hue"><label for="hue_311">Purple</label><br/>
+			</section>
+		</div>
 
 		<script>
 		function get_cookie(cname) {

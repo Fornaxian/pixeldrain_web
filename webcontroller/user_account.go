@@ -129,8 +129,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 				CaptchaSiteKey: wc.captchaKey(),
 			},
 		},
-		SubmitLabel:  "Register",
-		PostFormHTML: template.HTML("<p>Welcome to the club!</p>"),
+		SubmitLabel: "Register",
 	}
 
 	if f.ReadInput(r) {

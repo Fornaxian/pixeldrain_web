@@ -16,117 +16,119 @@
 		<header>
 			<h1>Apps</h1>
 		</header>
-		<section>
-			<h2>ShareX</h2>
-			<div class="specs">
-				Platform: Windows 7, 8.1 and 10 |
-				License: GPL-3.0 |
-				<a href="https://getsharex.com" target="_blank">Website</a> |
-				<a href="https://github.com/ShareX/ShareX" target="_blank">GitHub</a>
-			</div>
-			<p>
-				<img src="/res/img/sharex.png" style="float: right; height: 6em; margin: 0.5em;" />
-			</p>
-			<p>
-				ShareX is a Screen capture, file sharing and productivity tool.
-				Pixeldrain is supported as a custom uploader. You can <a
-				href="https://getsharex.com/" target="_blank">get ShareX
-				here</a>.
-			</p>
-			<p>
-				Here you can download our custom ShareX uploader which uses
-				pixeldrain to upload your files.
-			</p>
+		<div id="page_content" class="page_content">
+			<section>
+				<h2>ShareX</h2>
+				<div class="specs">
+					Platform: Windows 7, 8.1 and 10 |
+					License: GPL-3.0 |
+					<a href="https://getsharex.com" target="_blank">Website</a> |
+					<a href="https://github.com/ShareX/ShareX" target="_blank">GitHub</a>
+				</div>
+				<p>
+					<img src="/res/img/sharex.png" style="float: right; height: 6em; margin: 0.5em;" />
+				</p>
+				<p>
+					ShareX is a Screen capture, file sharing and productivity tool.
+					Pixeldrain is supported as a custom uploader. You can <a
+					href="https://getsharex.com/" target="_blank">get ShareX
+					here</a>.
+				</p>
+				<p>
+					Here you can download our custom ShareX uploader which uses
+					pixeldrain to upload your files.
+				</p>
 
-			<div class="highlight_shaded" style="clear: right;">
-				<a href="/misc/sharex/pixeldrain.com.sxcu" class="button button_highlight">
-					<i class="icon small">save</i>
-					Download ShareX Uploader
-				</a><br/>
+				<div class="highlight_shaded" style="clear: right;">
+					<a href="/misc/sharex/pixeldrain.com.sxcu" class="button button_highlight">
+						<i class="icon small">save</i>
+						Download ShareX Uploader
+					</a><br/>
 
-				{{if .Authenticated}}
-				This uploader is configured to upload files to your personal
-				pixeldrain account. Do not share the configuration file with
-				anyone, it contains your account credentials.
-				{{else}}
-				<a href="/login">Log in</a> to use ShareX with your own
-				pixeldrain account. {{end}}
-			</div>
+					{{if .Authenticated}}
+					This uploader is configured to upload files to your personal
+					pixeldrain account. Do not share the configuration file with
+					anyone, it contains your account credentials.
+					{{else}}
+					<a href="/login">Log in</a> to use ShareX with your own
+					pixeldrain account. {{end}}
+				</div>
 
-			<h3>Setting pixeldrain as default uploader</h3>
-			<p>
-				Download the uploader config and choose 'Open file'<br/>
-				<img src="/res/img/sharex_download.png" style="max-width: 100%;" /><br/>
-				Set pixeldrain.com as active uploader. Choose Yes<br/>
-				<img src="/res/img/sharex_default.png" style="max-width: 100%;" /><br/>
-			</p>
+				<h3>Setting pixeldrain as default uploader</h3>
+				<p>
+					Download the uploader config and choose 'Open file'<br/>
+					<img src="/res/img/sharex_download.png" style="max-width: 100%;" /><br/>
+					Set pixeldrain.com as active uploader. Choose Yes<br/>
+					<img src="/res/img/sharex_default.png" style="max-width: 100%;" /><br/>
+				</p>
 
-			<h2>Pixeldrain Android</h2>
-			<div class="specs">
-				Platform: Android |
-				License: None |
-				<a href="https://github.com/wimvdputten/Pixeldrain_android" target="_blank">GitHub</a>
-			</div>
-			<p>
-				An Android app for uploading and sharing files on pixeldrain.
-				You can get a compiled APK package from the <a
-				href="https://github.com/wimvdputten/Pixeldrain_android/releases"
-				target="_blank">GitHub releases page</a>.
-			</p>
+				<h2>Pixeldrain Android</h2>
+				<div class="specs">
+					Platform: Android |
+					License: None |
+					<a href="https://github.com/wimvdputten/Pixeldrain_android" target="_blank">GitHub</a>
+				</div>
+				<p>
+					An Android app for uploading and sharing files on pixeldrain.
+					You can get a compiled APK package from the <a
+					href="https://github.com/wimvdputten/Pixeldrain_android/releases"
+					target="_blank">GitHub releases page</a>.
+				</p>
 
-			<h2>go-pd</h2>
-			<div class="specs">
-				Platform: Linux, Mac OS, Windows (CLI) |
-				License: MIT |
-				<a href="https://github.com/ManuelReschke/go-pd" target="_blank">GitHub</a>
-			</div>
-			<p>
-				go-pd is a command line interface and client library for
-				pixeldrain created by Manuel Reschke. The CLI supports uploading
-				files anonymously, and uploading to user accounts. The client
-				library supports uploading, downloading and deleting files,
-				creating and viewing lists and user accounts. Compiled binaries
-				are available on the <a
-				href="https://github.com/ManuelReschke/go-pd/releases"
-				target="_blank">GitHub releases page</a>.
-			</p>
+				<h2>go-pd</h2>
+				<div class="specs">
+					Platform: Linux, Mac OS, Windows (CLI) |
+					License: MIT |
+					<a href="https://github.com/ManuelReschke/go-pd" target="_blank">GitHub</a>
+				</div>
+				<p>
+					go-pd is a command line interface and client library for
+					pixeldrain created by Manuel Reschke. The CLI supports uploading
+					files anonymously, and uploading to user accounts. The client
+					library supports uploading, downloading and deleting files,
+					creating and viewing lists and user accounts. Compiled binaries
+					are available on the <a
+					href="https://github.com/ManuelReschke/go-pd/releases"
+					target="_blank">GitHub releases page</a>.
+				</p>
 
-			<h2>go-pixeldrain</h2>
-			<div class="specs">
-				Platform: Linux, Mac OS, Windows (CLI) |
-				License: MIT |
-				<a href="https://jkawamoto.github.io/go-pixeldrain/" target="_blank">Website</a> |
-				<a href="https://github.com/jkawamoto/go-pixeldrain" target="_blank">GitHub</a>
-			</div>
-			<p>
-				go-pixeldrain is a command line interface for pixeldrain created
-				by Junpei Kawamoto. You can use it to upload and download files
-				and directories from your terminal. Compiled binaries are
-				available on the <a
-				href="https://github.com/jkawamoto/go-pixeldrain/releases"
-				target="_blank">GitHub releases page</a>.
-			</p>
+				<h2>go-pixeldrain</h2>
+				<div class="specs">
+					Platform: Linux, Mac OS, Windows (CLI) |
+					License: MIT |
+					<a href="https://jkawamoto.github.io/go-pixeldrain/" target="_blank">Website</a> |
+					<a href="https://github.com/jkawamoto/go-pixeldrain" target="_blank">GitHub</a>
+				</div>
+				<p>
+					go-pixeldrain is a command line interface for pixeldrain created
+					by Junpei Kawamoto. You can use it to upload and download files
+					and directories from your terminal. Compiled binaries are
+					available on the <a
+					href="https://github.com/jkawamoto/go-pixeldrain/releases"
+					target="_blank">GitHub releases page</a>.
+				</p>
 
-			<h2>pdup</h2>
-			<div class="specs">
-				Platform: Linux, BSD, Mac OS (CLI) |
-				License: None |
-				<a href="https://github.com/Fornax96/pdup" target="_blank">GitHub</a>
-			</div>
-			<p>
-				pdup is a little bash script for uploading files to pixeldrain
-				from the terminal. It's available <a
-				href="https://github.com/Fornax96/pdup" target="_blank">from
-				GitHub</a>.
-			</p>
+				<h2>pdup</h2>
+				<div class="specs">
+					Platform: Linux, BSD, Mac OS (CLI) |
+					License: None |
+					<a href="https://github.com/Fornax96/pdup" target="_blank">GitHub</a>
+				</div>
+				<p>
+					pdup is a little bash script for uploading files to pixeldrain
+					from the terminal. It's available <a
+					href="https://github.com/Fornax96/pdup" target="_blank">from
+					GitHub</a>.
+				</p>
 
-			<h2>More apps</h2>
-			<p>
-				If you know more open source apps which work with pixeldrain
-				please send them to
-				<a href="mailto:support@pixeldrain.com">support@pixeldrain.com</a>.
-			</p>
-		</section>
+				<h2>More apps</h2>
+				<p>
+					If you know more open source apps which work with pixeldrain
+					please send them to
+					<a href="mailto:support@pixeldrain.com">support@pixeldrain.com</a>.
+				</p>
+			</section>
+		</div>
 		{{template "page_bottom" .}}
 		{{template "analytics"}}
 	</body>

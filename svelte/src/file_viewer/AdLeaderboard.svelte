@@ -14,10 +14,17 @@ onMount(() => {
 		return
 	}
 
-	if (Math.random() < 0.1) {
+	// 10% pixeldrain socials
+	// 45% nextmillennium
+	// 45% pixfuture
+
+	let rand = Math.random()
+	if (rand < 0.1) {
 		set_ad_type("pixeldrain_social")
-	} else {
+	} else if (rand < 0.55) {
 		set_ad_type("nextmillennium")
+	} else {
+		set_ad_type("pixfuture")
 	}
 })
 

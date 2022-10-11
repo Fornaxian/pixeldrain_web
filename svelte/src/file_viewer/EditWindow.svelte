@@ -152,10 +152,10 @@ let delete_list = async e => {
 
 	{#if list.can_edit}
 		<h3>Edit album</h3>
-		<h4>Rename</h4>
+		Name:<br/>
 		<form on:submit={rename_list} style="display: flex;">
 			<input bind:value={list_name} type="text" style="flex: 1 1 auto"/>
-			<button type="submit" style="flex: 0 0 auto">
+			<button type="submit" style="flex: 0 0 auto" class="button_highlight">
 				<i class="icon">save</i> Save
 			</button>
 		</form>
@@ -171,10 +171,10 @@ let delete_list = async e => {
 
 	{#if file.can_edit}
 		<h3>Edit file</h3>
-		<h4>Rename</h4>
+		Name:<br/>
 		<form on:submit={rename_file} style="display: flex;">
 			<input bind:value={file_name} type="text" style="flex: 1 1 auto"/>
-			<button type="submit" style="flex: 0 0 auto">
+			<button type="submit" style="flex: 0 0 auto" class="button_highlight">
 				<i class="icon">save</i> Save
 			</button>
 		</form>

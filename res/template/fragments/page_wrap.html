@@ -1,4 +1,4 @@
-{{define "page_menu"}}
+{{define "menu"}}
 <button id="button_toggle_navigation" class="button_toggle_navigation" onclick="toggleMenu();">☰</button>
 <nav id="page_navigation" class="page_navigation">
 	<a href="/#">Home</a>
@@ -29,14 +29,19 @@
 function toggleMenu() {
 	var nav  = document.getElementById("page_navigation");
 	var body = document.getElementById("page_body");
+	var content = document.getElementById("page_content");
 	if (nav.offsetLeft === 0) {
 		// Menu is visible, hide it
 		nav.style.left = -nav.offsetWidth + "px";
 		body.style.marginLeft = "0";
+		content.style.borderTopLeftRadius = "0"
+		content.style.borderBottomLeftRadius = "0"
 	} else {
 		// Menu is hidden, show it
 		nav.style.left = "0";
 		body.style.marginLeft = nav.offsetWidth + "px";
+		content.style.borderTopLeftRadius = "12px"
+		content.style.borderBottomLeftRadius = "12px"
 	}
 }
 function resetMenu() {
@@ -46,31 +51,35 @@ function resetMenu() {
 </script>
 {{end}}
 
+{{define "footer"}}
+<footer>
+	<div class="footer_content">
+		<div style="display: inline-block; margin: 0 8px 0 8px;">
+			Pixeldrain is a product by <a href="//fornaxian.tech" target="_blank">Fornaxian Technologies</a>
+		</div>
+		<div style="display: inline-block; margin: 0 8px 0 8px;">
+			(
+			<a href="https://www.patreon.com/pixeldrain" target="_blank">{{template `patreon.svg` .}} Patreon</a> |
+			<a href="https://twitter.com/Fornax96" target="_blank">{{template `twitter.svg` .}} Twitter</a> |
+			<a href="https://reddit.com/r/pixeldrain" target="_blank">{{template `reddit.svg` .}} Reddit</a> |
+			<a href="https://github.com/Fornaxian" target="_blank">{{template `github.svg` .}} GitHub</a> |
+			<a href="https://mastodon.social/web/@fornax" target="_blank">{{template `mastodon.svg` .}} Mastodon</a>
+			)
+		</div>
+		<br/>
+		<span class="small_footer_text" style="font-size: .75em; line-height: .75em;">
+			page rendered by {{.Hostname}}
+		</span>
+	</div>
+</footer>
+{{end}}
+
 {{define "page_top"}}
-{{template "page_menu" .}}
+{{template "menu" .}}
 <div id="page_body" class="page_body">
 {{end}}
 
 {{define "page_bottom"}}
-	<footer>
-		<div class="footer_content">
-			<div style="display: inline-block; margin: 0 8px 0 8px;">
-				Pixeldrain is a product by <a href="//fornaxian.tech" target="_blank">Fornaxian Technologies</a>
-			</div>
-			<div style="display: inline-block; margin: 0 8px 0 8px;">
-				(
-				<a href="https://www.patreon.com/pixeldrain" target="_blank">{{template `patreon.svg` .}} Patreon</a> |
-				<a href="https://twitter.com/Fornax96" target="_blank">{{template `twitter.svg` .}} Twitter</a> |
-				<a href="https://reddit.com/r/pixeldrain" target="_blank">{{template `reddit.svg` .}} Reddit</a> |
-				<a href="https://github.com/Fornaxian" target="_blank">{{template `github.svg` .}} GitHub</a> |
-				<a href="https://mastodon.social/web/@fornax" target="_blank">{{template `mastodon.svg` .}} Mastodon</a>
-				)
-			</div>
-			<br/>
-			<span class="small_footer_text" style="font-size: .75em; line-height: .75em;">
-				page rendered by {{.Hostname}}
-			</span>
-		</div>
-	</footer>
-</div><!-- end page_body -->
+{{template "footer" .}}
+</div>
 {{end}}

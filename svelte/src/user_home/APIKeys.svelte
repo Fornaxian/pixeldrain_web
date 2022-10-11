@@ -157,6 +157,7 @@ const logout = async (key) => {
 			</tr>
 		{/each}
 	</table>
+	<br/>
 </div>
 
 <style>

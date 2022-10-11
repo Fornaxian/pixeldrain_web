@@ -7,32 +7,29 @@
 		<style>
 		/* Override the default background with something spectacular */
 		header, footer, .checkers {
-			background-image: url("/res/img/horsehead.webp");
-			background-color: var(--parallax_slider_color);
-			background-repeat: no-repeat;
+			background-image: url("/res/img/nebula.webp");
+			background-color: var(--background_color);
 			background-blend-mode: luminosity;
-			background-attachment: fixed;
-			background-position: center top;
-			background-size: cover;
 			color: #ffffff;
 			box-shadow: inset 0 0 2px 0 var(--shadow_color);
 			border: none;
+		}
+		header>h1 {
+			color: #ffffff;
 		}
 		</style>
 
 		<script>
 			window.api_endpoint = '{{.APIEndpoint}}';
 			window.user = {{.User}};
+			window.server_hostname = "{{.Hostname}}";
 		</script>
 		<link rel='stylesheet' href='/res/svelte/home_page.css?v{{.CacheID}}'>
 		<script defer src='/res/svelte/home_page.js?v{{.CacheID}}'></script>
 	</head>
 	<body>
-		{{template "page_top" .}}
-
-		<div id="page_content" class="page_content"></div>
-
-		{{template "page_bottom" .}}
+		{{template "menu" .}}
+		<div id="page_body" class="page_body"></div>
 		{{template "analytics"}}
 	</body>
 </html>

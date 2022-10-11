@@ -204,4 +204,7 @@ const update_example = () => {
 	width: 100%;
 	overflow: hidden;
 }
+.tab_bar {
+	border-bottom: 2px solid var(--separator);
+}
 </style>

@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import UserBucket from "./UserBucket.svelte";
 import { fs_get_buckets, fs_create_bucket } from "../filesystem/FilesystemAPI.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
+import Footer from "../layout/Footer.svelte";
 
 let loading = true
 let buckets = []
@@ -43,40 +44,46 @@ onMount(get_buckets);
 
 <LoadingIndicator loading={loading}/>
 
-<section>
-	<div class="toolbar" style="text-align: right;">
-		<button
-			class:button_highlight={creating_bucket}
-			on:click={() => {creating_bucket = !creating_bucket}}
-		>
-			<i class="icon">create_new_folder</i> New bucket
-		</button>
-	</div>
-	{#if creating_bucket}
-		<div class="highlight_shaded">
-			<form on:submit|preventDefault={create_bucket}>
-				<table class="form">
-					<tr>
-						<td>
-							Name
-						</td>
-						<td>
-							<input type="text" bind:this={new_bucket_name}/>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<button class="button_highlight" type="submit" style="float: right;">
-								<i class="icon">save</i> Save
-							</button>
-						</td>
-					</tr>
-				</table>
-			</form>
+<header>
+	<h1>My Buckets</h1>
+</header>
+<div id="page_content" class="page_content">
+	<section>
+		<div class="toolbar" style="text-align: right;">
+			<button
+				class:button_highlight={creating_bucket}
+				on:click={() => {creating_bucket = !creating_bucket}}
+			>
+				<i class="icon">create_new_folder</i> New bucket
+			</button>
 		</div>
-	{/if}
+		{#if creating_bucket}
+			<div class="highlight_shaded">
+				<form on:submit|preventDefault={create_bucket}>
+					<table class="form">
+						<tr>
+							<td>
+								Name
+							</td>
+							<td>
+								<input type="text" bind:this={new_bucket_name}/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button class="button_highlight" type="submit" style="float: right;">
+									<i class="icon">save</i> Save
+								</button>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		{/if}
 
-	{#each buckets as bucket (bucket.id)}
-		<UserBucket bucket={bucket} on:refresh={get_buckets}></UserBucket>
-	{/each}
-</section>
+		{#each buckets as bucket (bucket.id)}
+			<UserBucket bucket={bucket} on:refresh={get_buckets}></UserBucket>
+		{/each}
+	</section>
+</div>
+<Footer/>

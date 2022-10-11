@@ -280,7 +280,7 @@ onDestroy(() => {
 		the timeframe.
 	</p>
 
-	<div class="highlight_shaded">
+	<div class="highlight_border">
 		<button
 			on:click={() => update_graphs(1440, 1, true)}
 			class:button_highlight={graph_timespan == 1440}>
@@ -335,7 +335,7 @@ onDestroy(() => {
 <Chart bind:this={graph_bandwidth} data_type="bytes"/>
 
 <section>
-	<div class="highlight_shaded">
+	<div class="highlight_border">
 		Total usage from {time_start} to {time_end}<br/>
 		{formatDataVolume(total_bandwidth, 3)} bandwidth,
 		{formatDataVolume(total_transfer_paid, 3)} paid transfers
@@ -356,7 +356,7 @@ onDestroy(() => {
 <Chart bind:this={graph_views_downloads} data_type="number"/>
 
 <section>
-	<div class="highlight_shaded">
+	<div class="highlight_border">
 		Total usage from {time_start} to {time_end}<br/>
 		{formatThousands(total_views)} views and
 		{formatThousands(total_downloads)} downloads

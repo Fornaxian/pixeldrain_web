@@ -52,7 +52,7 @@ const keydown = e => {
 		<div class="header">
 			<slot name="title">
 				<div class="title">{title}</div>
-				<button class="button button_red round" on:click={hide}>
+				<button class="button round" on:click={hide}>
 					<i class="icon">close</i>
 				</button>
 			</slot>

@@ -1,6 +1,6 @@
 {{define "form"}}
 	{{.PreFormHTML}}
-	<form class="highlight_shaded" method="POST">
+	<form class="highlight_border" method="POST">
 		{{if eq .Submitted true}}
 			{{if eq .SubmitSuccess true}}
 				<div id="submit_result" class="highlight_green">
@@ -91,11 +91,14 @@
 			<header>
 				<h1>{{.Form.Title}}</h1>
 			</header>
-			<br/>
-			<section>
-				{{template "form" .Form}}
+
+			<div id="page_content" class="page_content">
 				<br/>
-			</section>
+				<section>
+					{{template "form" .Form}}
+					<br/>
+				</section>
+			</div>
 			{{template "page_bottom" .}}
 		</div>
 

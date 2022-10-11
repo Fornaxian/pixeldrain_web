@@ -75,8 +75,6 @@ body {
 	transition: opacity 0.2s;
 }
 
-header,
-footer,
 .checkers {
 	background-image: var(--background_pattern);
 	background-color: var(--background_pattern_color);
@@ -85,24 +83,23 @@ footer,
 
 header,
 footer {
-	border: 2px solid var(--separator);
-	border-radius: 12px;
 	text-align: center;
 	overflow: hidden;
 	clear: both;
 }
 
 header>h1 {
-	text-shadow: 1px 1px 4px var(--shadow_color);
-	margin-top: 80px;
-	margin-bottom: 80px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	color: var(--background_text_color);
 }
 
 footer>.footer_content {
-	background-color: var(--shaded_background);
+	background-color: var(--body_background);
+	color: var(--body_text_color);
 	display: inline-block;
 	border-radius: 8px;
-	margin: 200px 0 60px 0;
+	margin: 120px 0 60px 0;
 }
 
 /* Page layout elements */
@@ -153,14 +150,17 @@ footer>.footer_content {
 	/* Center the header and body */
 	overflow-y: auto;
 	overflow-x: hidden;
-	background: var(--body_background);
-	border-top-left-radius: 16px;
-	border-bottom-left-radius: 16px;
-	padding: 8px;
 	transition: margin-left 0.5s;
 }
 
-@media (max-width: 1000px) {
+.page_content {
+	background: var(--body_background);
+	border-top-left-radius: 12px;
+	border-bottom-left-radius: 12px;
+	transition: border-top-left-radius 1s, border-bottom-left-radius 1s;
+}
+
+@media (max-width: 1100px) {
 	.page_navigation {
 		left: -18em;
 	}
@@ -168,17 +168,27 @@ footer>.footer_content {
 	.page_body {
 		margin-left: 0;
 		width: 100%;
-		padding: 4px;
+	}
+
+	.page_content {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+
+	header>h1 {
+		/* We want the header text to appear below the menu button, so the top
+		margin needs to be fairly large when the screen is small */
+		margin-top: 60px;
 	}
 }
 
 section {
 	position: relative;
 	display: block;
+	padding: 8px;
 	max-width: 1000px;
 	width: 100%;
 	height: auto;
-	padding: 0;
 	margin: auto;
 	text-align: initial;
 	clear: both;
@@ -192,9 +202,9 @@ section {
 	color: var(--background_text_color);
 	text-align: center;
 	padding: 4px;
-	margin: 0.3em 15px 0.3em 15px;
+	margin: 0.2em 15px 0.2em 15px;
 	font-family: 'Open Sans Light', sans-serif;
-	font-weight: lighter;
+	font-weight: light;
 	font-size: 1.5em;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -210,6 +220,7 @@ section {
 }
 
 .highlight_shaded,
+.highlight_border,
 .highlight_green,
 .highlight_blue,
 .highlight_yellow,
@@ -223,9 +234,12 @@ section {
 	border-radius: 8px;
 }
 
+.highlight_border {
+	border: 2px solid var(--separator);
+}
+
 .highlight_shaded {
-	background: var(--background_color);
-	color: var(--background_text_color);
+	background: var(--card_color);
 }
 
 .highlight_green {
@@ -328,7 +342,7 @@ p {
 	margin-left: auto;
 	margin-right: auto;
 	text-align: initial;
-	max-width: 500px;
+	max-width: 600px;
 	width: 100%;
 }
 
@@ -553,7 +567,6 @@ button>svg,
 	overflow-y: hidden;
 	white-space: nowrap;
 	text-align: center;
-	box-shadow: inset 0 -10px 8px -12px var(--shadow_color);
 }
 
 .tab_bar>button,

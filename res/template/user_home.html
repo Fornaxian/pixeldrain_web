@@ -6,17 +6,15 @@
 		<script>
 		window.api_endpoint = '{{.APIEndpoint}}';
 		window.user = {{.User}};
+		window.server_hostname = "{{.Hostname}}";
 		</script>
 		<link rel='stylesheet' href='/res/svelte/user_home.css?v{{.CacheID}}'>
 		<script defer src='/res/svelte/user_home.js?v{{.CacheID}}'></script>
 	</head>
 
 	<body>
-		{{template "page_top" .}}
-
-		<div id="page_content" class="page_content"></div>
-
-		{{template "page_bottom" .}}
+		{{template "menu" .}}
+		<div id="page_body" class="page_body"></div>
 		{{template "analytics"}}
 	</body>
 </html>

@@ -8,6 +8,7 @@ import Subscription from "./Subscription.svelte";
 import ConnectApp from "./ConnectApp.svelte";
 import ActivityLog from "./ActivityLog.svelte";
 import SharingSettings from "./SharingSettings.svelte";
+import Footer from "../layout/Footer.svelte";
 
 let page = ""
 
@@ -99,22 +100,23 @@ onMount(() => {
 		{/if}
 	</div>
 </header>
-<br/>
-
-{#if page === "home"}
-	<Home/>
-{:else if page === "settings"}
-	<AccountSettings/>
-{:else if page === "sharing"}
-	<SharingSettings/>
-{:else if page === "api_keys"}
-	<APIKeys/>
-{:else if page === "activity"}
-	<ActivityLog/>
-{:else if page === "connect_app"}
-	<ConnectApp/>
-{:else if page === "transactions"}
-	<Transactions/>
-{:else if page === "subscription"}
-	<Subscription/>
-{/if}
+<div id="page_content" class="page_content">
+	{#if page === "home"}
+		<Home/>
+	{:else if page === "settings"}
+		<AccountSettings/>
+	{:else if page === "sharing"}
+		<SharingSettings/>
+	{:else if page === "api_keys"}
+		<APIKeys/>
+	{:else if page === "activity"}
+		<ActivityLog/>
+	{:else if page === "connect_app"}
+		<ConnectApp/>
+	{:else if page === "transactions"}
+		<Transactions/>
+	{:else if page === "subscription"}
+		<Subscription/>
+	{/if}
+</div>
+<Footer/>

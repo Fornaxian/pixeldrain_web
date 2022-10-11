@@ -229,7 +229,7 @@ export const start = () => {
 	width: 440px;
 	max-width: 95%;
 	height: 4em;
-	margin: 10px;
+	margin: 6px;
 	padding: 0;
 	overflow: hidden;
 	border-radius: 6px;

@@ -404,7 +404,6 @@ const keydown = (e) => {
 	You can also drop files on this page from your file manager or
 	paste an image from your clipboard
 </section>
-<br/>
 
 <input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple"/>
 <button on:click={() => { file_input_field.click() }} class="big_button button_highlight">
@@ -421,7 +420,7 @@ const keydown = (e) => {
 	By uploading files to pixeldrain you acknowledge and accept our
 	<a href="/about#content-policy">content policy</a>.
 <p>
-
+<br/>
 <section class="instruction" style="margin-bottom: 0;">
 	<span class="big_number">2</span>
 	<span class="instruction_text">Wait for the files to finish uploading</span>
@@ -434,13 +433,12 @@ const keydown = (e) => {
 	</div>
 
 	<ProgressBar total={total_size} used={total_loaded} animation="linear" speed={stats_interval_ms}/>
-</section>
 
-<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
-	Gimme gimme gimme!<br/>
-	Drop your files to upload them
-</div>
-<br/>
+	<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
+		Gimme gimme gimme!<br/>
+		Drop your files to upload them
+	</div>
+</section>
 
 {#each upload_queue as file}
 	<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>
@@ -559,7 +557,7 @@ const keydown = (e) => {
 <style>
 .big_button{
 	width: 40%;
-	min-width: 250px;
+	min-width: 300px;
 	max-width: 400px;
 	margin: 10px !important;
 	border-radius: 32px;
