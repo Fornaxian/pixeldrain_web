@@ -87,6 +87,10 @@ func userStyle(style string, hue int) template.CSS {
 		def = adwaitaDarkStyle
 		light = adwaitaLightStyle
 		hasLight = true
+	case "adwaita_dark":
+		def = adwaitaDarkStyle
+	case "adwaita_light":
+		def = adwaitaLightStyle
 	}
 
 	if hue >= 0 && hue <= 360 {
@@ -505,10 +509,10 @@ var adwaitaDarkStyle = styleSheet{
 	HighlightText:     HSL{0, 0, 0},
 	Danger:            HSL{9, 1, .69}, // hsl(9, 100%, 69%)
 
-	BackgroundColor: HSL{0, 0, .19},
+	BackgroundColor: HSL{0, 0, .12},
 	BodyColor:       HSL{0, 0, .14},
 	BodyText:        HSL{0, 0, 1},
-	CardColor:       HSL{0, 0, .08},
+	CardColor:       HSL{0, 0, .21},
 
 	Shadow: HSL{0, 0, 0},
 }
@@ -525,6 +529,7 @@ var adwaitaLightStyle = styleSheet{
 	BackgroundColor: HSL{0, 0, .92},
 	BodyColor:       HSL{0, 0, .98},
 	BodyText:        HSL{0, 0, .2},
+	Separator:       HSL{0, 0, .86},
 	CardColor:       HSL{0, 0, 1},
 
 	Shadow: HSL{0, 0, 0.36},

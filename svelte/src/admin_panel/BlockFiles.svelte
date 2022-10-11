@@ -72,7 +72,7 @@ onMount(() => {
 	<p>
 		Paste any pixeldrain file links in here to remove them
 	</p>
-	<div class="highlight_shaded">
+	<div class="highlight_border">
 		<Form config={block_form}></Form>
 	</div>
 </section>
