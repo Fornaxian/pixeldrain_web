@@ -9,8 +9,8 @@
 			window.api_endpoint = '{{.APIEndpoint}}';
 			window.server_hostname = "{{.Hostname}}";
 			</script>
-			<link rel='stylesheet' href='/res/svelte/admin_panel.css?v{{.CacheID}}'>
-			<script defer src='/res/svelte/admin_panel.js?v{{.CacheID}}'></script>
+			<link rel='stylesheet' href='/res/svelte/admin_panel.css?v{{cacheID}}'>
+			<script defer src='/res/svelte/admin_panel.js?v{{cacheID}}'></script>
 		</head>
 		<body>
 			{{template "menu" .}}

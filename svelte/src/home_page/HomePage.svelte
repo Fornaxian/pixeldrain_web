@@ -85,4 +85,8 @@ import UploadWidget from "./UploadWidget.svelte";
 		background-image: url("/res/img/header_orbitron.webp");
 	}
 }
+header>h1{
+	color: #ffffff;
+	margin: 40px 10px 40px 10px;
+}
 </style>

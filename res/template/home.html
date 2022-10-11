@@ -14,9 +14,6 @@
 			box-shadow: inset 0 0 2px 0 var(--shadow_color);
 			border: none;
 		}
-		header>h1 {
-			color: #ffffff;
-		}
 		</style>
 
 		<script>
@@ -24,8 +21,8 @@
 			window.user = {{.User}};
 			window.server_hostname = "{{.Hostname}}";
 		</script>
-		<link rel='stylesheet' href='/res/svelte/home_page.css?v{{.CacheID}}'>
-		<script defer src='/res/svelte/home_page.js?v{{.CacheID}}'></script>
+		<link rel='stylesheet' href='/res/svelte/home_page.css?v{{cacheID}}'>
+		<script defer src='/res/svelte/home_page.js?v{{cacheID}}'></script>
 	</head>
 	<body>
 		{{template "menu" .}}

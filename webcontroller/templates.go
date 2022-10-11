@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -33,9 +32,6 @@ type TemplateData struct {
 	Title  string
 	OGData ogData
 
-	// The cache ID is used to invalidate caches when the webserver is restarted
-	CacheID int64
-
 	Other    interface{}
 	URLQuery url.Values
 
@@ -53,7 +49,6 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		// Use the user's IP address for making requests
 		PixelAPI: wc.api.RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent()),
 
-		CacheID:  wc.cacheID,
 		Hostname: template.HTML(wc.hostname),
 		URLQuery: r.URL.Query(),
 	}
@@ -129,6 +124,7 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 
 	// Import template functions
 	tpl.Funcs(template.FuncMap{
+		"cacheID":    tm.cacheID,
 		"isBrave":    tm.isBrave,
 		"debugMode":  tm.debugMode,
 		"apiUrl":     tm.apiURL,
@@ -172,7 +168,7 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 			return nil
 		}
 
-		if file, err = ioutil.ReadFile(path); err != nil {
+		if file, err = os.ReadFile(path); err != nil {
 			return err
 		}
 
@@ -213,6 +209,15 @@ func (tm *TemplateManager) Get() *template.Template {
 
 // Template functions. These can be called from within the template to execute
 // more specialized actions
+
+// The cache ID is used to invalidate caches when the webserver is restarted.
+// It's rounded to a full hour to prevent cached from being emptied too often if
+// the server is regularly restarted
+var cacheID = time.Now().Unix() / 3600
+
+func (tm *TemplateManager) cacheID() int64 {
+	return cacheID
+}
 
 func (tm *TemplateManager) isBrave(useragent string) bool {
 	return strings.Contains(useragent, "Brave")

@@ -2,7 +2,6 @@ package webcontroller
 
 import (
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -44,7 +43,7 @@ func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request
 		}
 		defer body.Close()
 
-		bodyBytes, err := ioutil.ReadAll(body)
+		bodyBytes, err := io.ReadAll(body)
 		if err != nil {
 			log.Error("Can't read text file for preview: %s", err)
 			w.Write([]byte("An error occurred while reading this file."))

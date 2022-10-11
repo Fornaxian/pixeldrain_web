@@ -36,9 +36,6 @@ type WebController struct {
 	// page-specific variables
 	captchaSiteKey string
 
-	// The cache ID is used to invalidate caches when the webserver is restarted
-	cacheID int64
-
 	httpClient *http.Client
 
 	// API client to use for all requests. If the user is authenticated you
@@ -69,7 +66,6 @@ func New(
 		websiteAddress:      websiteAddress,
 		sessionCookieDomain: sessionCookieDomain,
 		proxyAPIRequests:    proxyAPIRequests,
-		cacheID:             time.Now().Unix() / 3600,
 		httpClient:          &http.Client{Timeout: time.Minute * 10},
 		api:                 pixelapi.New(apiURLInternal),
 	}
