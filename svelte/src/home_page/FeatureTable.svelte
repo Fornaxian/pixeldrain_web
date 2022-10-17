@@ -64,20 +64,6 @@ onMount(() => {
 	</div>
 	<div>
 		<div class="feat_label">
-			Download speed
-		</div>
-		<div class="feat_normal">
-			Bandwidth is fairly distributed across free users, may be slow
-			during busy periods
-		</div>
-		<div class="feat_pro">
-			<span class="text_highlight">High priority</span>
-			bandwidth for files you download and files you share from your
-			account
-		</div>
-	</div>
-	<div>
-		<div class="feat_label">
 			Hotlinking / embedding files
 		</div>
 		<div class="feat_normal">

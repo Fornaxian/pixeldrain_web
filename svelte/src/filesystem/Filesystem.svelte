@@ -295,7 +295,7 @@ const share = () => {
 	</div>
 	<div class="list_navigator"></div>
 	<div class="file_viewer_window">
-		<div class="toolbar" class:toolbar_visible><div><div>
+		<div class="toolbar" class:toolbar_visible>
 			{#if state.base.type === "file"}
 			<div class="toolbar_label">Size</div>
 			<div class="toolbar_statistic">{formatDataVolume(state.base.file_size, 3)}</div>
@@ -307,6 +307,8 @@ const share = () => {
 			<div class="toolbar_label">Total size</div>
 			<div class="toolbar_statistic">{formatDataVolume(total_file_size, 3)}</div>
 			{/if}
+
+			<div class="separator"></div>
 
 			<div class="button_row">
 				<button on:click={() => {open_sibling(-1)}}>
@@ -340,7 +342,7 @@ const share = () => {
 			<button id="btn_edit" class="toolbar_button" style="display: none;">
 				<i class="icon">edit</i> <u>E</u>dit
 			</button>
-		</div></div></div>
+		</div>
 		<Sharebar bind:this={sharebar}></Sharebar>
 
 		<div class="file_viewer_file_preview checkers" class:toolbar_visible>
@@ -482,7 +484,6 @@ const share = () => {
 	right: 0;
 	top: 0;
 	bottom: 0;
-	border-radius: 16px;
 	display: inline-block;
 	min-height: 100px;
 	min-width: 100px;
@@ -490,7 +491,8 @@ const share = () => {
 	vertical-align: middle;
 	transition: left 0.5s;
 	overflow: hidden;
-	box-shadow: inset 0 0 3px -1px var(--shadow_color);
+	border-radius: 12px;
+	border: 2px solid var(--separator);
 }
 
 /* Toolbar */
@@ -510,23 +512,11 @@ const share = () => {
 .toolbar.toolbar_visible { left: 0; }
 .file_viewer > .file_viewer_window > .file_viewer_file_preview.toolbar_visible { left: 8em; }
 
-/* Workaround to hide the scrollbar in non webkit browsers, it's really ugly' */
-.toolbar > div {
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	right: -30px;
-	overflow-y: scroll;
-	overflow-x: hidden;
-}
-.toolbar > div > div {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 8em;
-	height: auto;
-	text-align: center;
+.toolbar > .separator {
+	height: 2px;
+	width: 100%;
+	margin: 4px 0;
+	background-color: var(--separator);
 }
 .toolbar_button {
 	text-align: left;

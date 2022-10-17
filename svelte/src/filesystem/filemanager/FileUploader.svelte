@@ -230,7 +230,8 @@ const paste = (e) => {
 	margin: 6px 0 0 0;
 	padding: 0;
 	background: var(--body_color);
-	box-shadow: 1px 1px 4px -1px var(--shadow_color);
+	border-radius: 4px;
+	overflow: hidden;
 }
 
 .upload_progress_bar {

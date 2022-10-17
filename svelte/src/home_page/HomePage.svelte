@@ -20,25 +20,24 @@ import UploadWidget from "./UploadWidget.svelte";
 	<section>
 		<p>
 			Pixeldrain is a file sharing website built for speed and ease of
-			use. You can upload files you want to share online to our
-			servers and we will hold on to them for at least a month. During
-			this time anyone with the link will be able to download your
-			files. Pixeldrain is built to be as fast as possible, so you
-			don't have to do any unnecessary waiting when downloading files.
+			use. You can upload files you want to share online to our servers
+			and we will hold on to them for at least two months. During this
+			time anyone with the link will be able to download your files.
+			Pixeldrain is built to be as fast as possible, so you don't have to
+			do any unnecessary waiting when downloading files.
 		</p>
 		<p>
-			Files can be uploaded by clicking the big green upload
-			button, or by dragging them onto this page from your file
-			manager.
+			Files can be uploaded by clicking the big green upload button, or by
+			dragging them onto this page from your file manager.
 		</p>
 		<h2>Accounts</h2>
 		<p>
-			An account is not required to use pixeldrain, but it enables some useful
-			features. With a pixeldrain account you can access your files and albums
-			on all your devices. You can also rename and delete files you have
-			uploaded. And create and reorder albums you have created. Sign up for a
-			pixeldrain account on <a href="/register">the registration page</a>.
-			More about pixeldrain's features below.
+			An account is not required to use pixeldrain, but it enables some
+			useful features. With a pixeldrain account you can access your files
+			and albums on all your devices. You can also rename and delete files
+			you have uploaded. And create and reorder albums you have created.
+			Sign up for a pixeldrain account on <a href="/register">the
+			registration page</a>. More about pixeldrain's features below.
 		</p>
 	</section>
 	<header>
@@ -46,11 +45,11 @@ import UploadWidget from "./UploadWidget.svelte";
 	</header>
 	<section>
 		<p>
-			By purchasing a subscription you support pixeldrain on its mission to
-			make content sharing easier, safer and faster for everyone. The standard
-			subscription plans use Patreon for payment processing. Check out our <a
-			href="#prepaid">prepaid plans</a> if you are interested in more
-			professional services.
+			By purchasing a subscription you support pixeldrain on its mission
+			to make content sharing easier, safer and faster for everyone. The
+			standard subscription plans use Patreon for payment processing.
+			Check out our <a href="#prepaid">prepaid plans</a> if you are
+			interested in more professional services.
 		</p>
 		<br/>
 		<FeatureTable></FeatureTable>

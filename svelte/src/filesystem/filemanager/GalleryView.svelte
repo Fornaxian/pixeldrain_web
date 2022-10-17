@@ -66,15 +66,12 @@ const node_icon = node => {
 	justify-content: center;
 }
 .file{
-	position: relative;
 	width: 200px;
-	max-width: 45%;
+	max-width: 42%;
 	height: 200px;
 	margin: 8px;
-	padding: 0;
 	overflow: hidden;
 	border-radius: 8px;
-	box-shadow: 1px 1px 3px -1px var(--shadow_color);
 	background: var(--input_background);
 	word-break: break-all;
 	text-align: center;
@@ -94,8 +91,9 @@ const node_icon = node => {
 	text-decoration: none;
 }
 .icon_container {
-	width: 100%;
-	height: 116px;
+	margin: 3px;
+	height: 148px;
+	border-radius: 6px;
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;

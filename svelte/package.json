@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "behave-js": "^1.5.0",
-    "chart.js": "^3.7.0"
+    "chart.js": "^3.9.1"
   }
 }

@@ -302,7 +302,11 @@ const node_click = (index) => {
 <div id="directory_element">
 	<div bind:this={directorySorters} id="sorters" class="directory_sorters">
 		{#each tableColumns as col}
-			<div on:click={sortBy(col.field)} style="min-width: {col.width}">{col.name}</div>
+			<!-- <div style="min-width: {col.width}"> -->
+				<button style="min-width: {col.width}" on:click={sortBy(col.field)} class="sorter_button">
+					{col.name}
+				</button>
+			<!-- </div> -->
 		{/each}
 	</div>
 	<div bind:this={directoryArea} on:scroll={onScroll} id="directory_area" class="directory_area">
@@ -356,13 +360,16 @@ const node_click = (index) => {
 	background: var(--body_background);
 	min-width: 850px;
 	border-top-left-radius: 16px;
+	border-bottom: 1px solid var(--separator);
 }
-#sorters > div {
+.sorter_button {
 	display: inline-block;
 	margin: 4px 10px;
-	padding: 4px;
-	border-bottom: 1px solid var(--separator);
-	cursor: pointer;
+	text-align: initial;
+	background: none;
+}
+.sorter_button:hover {
+	background: var(--input_hover_background);
 }
 
 #sorters > :first-child,
@@ -405,7 +412,7 @@ const node_click = (index) => {
 
 	/* I use padding instead of margin here because it goves me more precise
 	control over the size.
-	Check out https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing*/
+	Check out https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing */
 	margin: 0;
 	color: var(--body_text_color);
 	text-decoration: none;

@@ -139,10 +139,21 @@ const drop = (e, index) => {
 				class:wide={file_type(file) === "image" || file_type(file) === "video"}
 				style="background-image: url('{file.icon_href}?width=256&height=256');">
 				{#if list.can_edit}
-					<i class="icon" on:click|stopPropagation|preventDefault style="cursor: grab;">drag_indicator</i>
-					<i class="icon" on:click|stopPropagation|preventDefault={() => {move_left(index)}}>chevron_left</i>
-					<i class="icon" on:click|stopPropagation|preventDefault={() => {move_right(index)}}>chevron_right</i>
-					<i class="icon" on:click|stopPropagation|preventDefault={() => {delete_file(index)}}>delete</i>
+					<div class="button_row">
+						<i class="icon" style="cursor: grab;">
+							drag_indicator
+						</i>
+						<div class="separator"></div>
+						<button class="icon" on:click|stopPropagation|preventDefault={() => {move_left(index)}}>
+							chevron_left
+						</button>
+						<button class="icon" on:click|stopPropagation|preventDefault={() => {move_right(index)}}>
+							chevron_right
+						</button>
+						<button class="icon" on:click|stopPropagation|preventDefault={() => {delete_file(index)}}>
+							delete
+						</button>
+					</div>
 				{/if}
 			</div>
 			{file.name}
@@ -150,15 +161,20 @@ const drop = (e, index) => {
 	{/each}
 
 	{#if list.can_edit}
-		<div class="file" on:click={file_picker.open} style="font-size: 1.5em; padding-top: 2.5em; cursor: pointer;">
+		<button class="file" on:click={file_picker.open} style="font-size: 1.5em; cursor: pointer;">
 			<i class="icon">add</i>
 			<br/>
 			Add files
-		</div>
+		</button>
 	{/if}
 </div>
 
-<FilePicker bind:this={file_picker} on:files={e => {add_files(e.detail)}} multi_select={true} title="Select files to add to album"></FilePicker>
+<FilePicker
+	bind:this={file_picker}
+	on:files={e => {add_files(e.detail)}}
+	multi_select={true}
+	title="Select files to add to album">
+</FilePicker>
 
 <style>
 .gallery{
@@ -185,14 +201,14 @@ const drop = (e, index) => {
 	text-decoration: none;
 	vertical-align: top;
 	color: var(--body_text_color);
-	transition: background 0.2s;
+	transition: background 0.2s, padding 0.2s, box-shadow 0.2s;
 }
 .file:hover {
 	background: var(--input_hover_background);
 }
 
 .highlight {
-	box-shadow: 0 0 2px 2px var(--highlight_color);
+	box-shadow: 0 0 0px 2px var(--highlight_color);
 	text-decoration: none;
 }
 .icon_container {
@@ -208,14 +224,22 @@ const drop = (e, index) => {
 .icon_container.editing {
 	box-shadow: inset 0 60px 40px -20px var(--body_color);
 }
-.icon_container > .icon {
-	color: var(--body_text_color);
-}
-.icon_container > .icon:hover {
-	color: var(--highlight_color);
-	cursor: pointer;
-}
 .icon_container.wide {
 	background-size: cover;
+}
+.button_row {
+	display: flex;
+	flex-direction: row;
+}
+.button_row > .icon {
+	flex: 0 0 auto;
+	color: var(--body_text_color);
+}
+.button_row > button {
+	flex: 0 0 auto;
+	padding: 0;
+}
+.button_row>.separator {
+	flex: 1 1 auto;
 }
 </style>

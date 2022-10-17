@@ -3,6 +3,7 @@ import { onDestroy, onMount } from "svelte";
 import { formatDataVolume, formatThousands, formatDate, formatNumber, formatDuration } from "../util/Formatting.svelte";
 import Chart from "../util/Chart.svelte";
 import { color_by_name } from "../util/Util.svelte";
+import ServerDiagnostics from "./ServerDiagnostics.svelte";
 
 let graphViews
 let graphBandwidth
@@ -63,23 +64,24 @@ const loadGraph = (minutes, interval, live) => {
 
 let lastOrder;
 let status = {
-  db_latency: 0,
-  db_time: "",
-  local_read_size: 0,
-  local_read_size_per_sec: 0,
-  local_reads: 0,
-  local_reads_per_sec: 0,
-  peers: [],
-  query_statistics: [],
-  remote_read_size: 0,
-  remote_read_size_per_sec: 0,
-  remote_reads: 0,
-  remote_reads_per_sec: 0,
-  running_since: "",
-  stats_watcher_listeners: 0,
-  stats_watcher_threads: 0,
-  download_clients: 0,
-  download_connections: 0,
+	cpu_profile_running_since: "",
+	db_latency: 0,
+	db_time: "",
+	local_read_size: 0,
+	local_read_size_per_sec: 0,
+	local_reads: 0,
+	local_reads_per_sec: 0,
+	peers: [],
+	query_statistics: [],
+	remote_read_size: 0,
+	remote_read_size_per_sec: 0,
+	remote_reads: 0,
+	remote_reads_per_sec: 0,
+	running_since: "",
+	stats_watcher_listeners: 0,
+	stats_watcher_threads: 0,
+	download_clients: 0,
+	download_connections: 0,
 }
 
 function getStats(order) {
@@ -148,7 +150,7 @@ onMount(() => {
 	getStats("calls")
 	statsInterval = setInterval(() => {
 		getStats(lastOrder)
-	}, 20000)
+	}, 10000)
 })
 onDestroy(() => {
 	if (graphTimeout !== null) {
@@ -183,9 +185,7 @@ onDestroy(() => {
 </div>
 
 <br/>
-<a class="button" href="/api/admin/call_stack">Call stack</a>
-<a class="button" href="/api/admin/heap_profile">Heap profile</a>
-<a class="button" href="/api/admin/cpu_profile">CPU profile (wait 1 min)</a>
+<ServerDiagnostics running_since={status.cpu_profile_running_since} on:refresh={() => getStats(lastOrder)}/>
 <br/>
 
 <section>
@@ -291,10 +291,18 @@ onDestroy(() => {
 		<table>
 			<thead>
 				<tr>
-					<td style="cursor: pointer;" on:click={() => { getStats('query_name') }}>Query</td>
-					<td style="cursor: pointer;" on:click={() => { getStats('calls') }}>Calls</td>
-					<td style="cursor: pointer;" on:click={() => { getStats('average_duration') }}>Avg dur</td>
-					<td style="cursor: pointer;" on:click={() => { getStats('total_duration') }}>Total dur</td>
+					<td>
+						<button on:click={() => { getStats('query_name') }}>Query</button>
+					</td>
+					<td>
+						<button style="cursor: pointer;" on:click={() => { getStats('calls') }}>Calls</button>
+					</td>
+					<td>
+						<button style="cursor: pointer;" on:click={() => { getStats('average_duration') }}>Avg dur</button>
+					</td>
+					<td>
+						<button style="cursor: pointer;" on:click={() => { getStats('total_duration') }}>Total dur</button>
+					</td>
 					<td>Callers</td>
 				</tr>
 			</thead>

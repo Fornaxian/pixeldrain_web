@@ -77,7 +77,6 @@ const node_icon = node => {
 	margin: 8px auto 16px auto;
 	text-align: left;
 	background: var(--body_color);
-	box-shadow: 1px 1px 6px var(--shadow_color);
 	border-collapse: collapse;
 	border-radius: 8px;
 
