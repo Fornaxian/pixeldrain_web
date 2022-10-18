@@ -31,7 +31,6 @@ const checkout = async (network) => {
 	}
 }
 
-let show_expired = false
 let invoices = []
 const load_invoices = async () => {
 	loading = true
@@ -94,7 +93,10 @@ onMount(() => {
 		</button>
 	</div>
 
-	<h3>Open invoices</h3>
+	<h2>Past invoices</h2>
+	<p>
+		Invoices are deleted after one year of inactivity.
+	</p>
 	<div class="table_scroll">
 		<table style="text-align: left;">
 			<thead>
@@ -107,48 +109,32 @@ onMount(() => {
 			</thead>
 			<tbody>
 				{#each invoices as row (row.id)}
-					{#if row.status === "New" ||
-						row.status === "InvoiceCreated" ||
-						row.status === "InvoiceProcessing" ||
-						show_expired
-					}
-						<tr>
-							<td>{formatDate(row.time, true, true, false)}</td>
-							<td><Euro amount={row.amount}></Euro></td>
-							<td>
-								{#if row.status === "InvoiceCreated"}
-									New (waiting for payment)
-								{:else if row.status === "InvoiceProcessing"}
-									Payment received, waiting for confirmations
-								{:else if row.status === "InvoiceSettled"}
-									Paid
-								{:else if row.status === "InvoiceExpired"}
-									Expired
-								{:else}
-									{row.status}
-								{/if}
-							</td>
-							<td>
-								{#if row.status === "New" || row.status === "InvoiceCreated"}
-									<a href={row.checkout_url} class="button button_highlight">
-										<i class="icon">paid</i> Pay
-									</a>
-								{/if}
-							</td>
-						</tr>
-					{/if}
+					<tr>
+						<td>{formatDate(row.time, true, true, false)}</td>
+						<td><Euro amount={row.amount}></Euro></td>
+						<td>
+							{#if row.status === "InvoiceCreated"}
+								New (waiting for payment)
+							{:else if row.status === "InvoiceProcessing"}
+								Payment received, waiting for confirmations
+							{:else if row.status === "InvoiceSettled"}
+								Paid
+							{:else if row.status === "InvoiceExpired"}
+								Expired
+							{:else}
+								{row.status}
+							{/if}
+						</td>
+						<td>
+							{#if row.status === "New" || row.status === "InvoiceCreated"}
+								<a href={row.checkout_url} class="button button_highlight">
+									<i class="icon">paid</i> Pay
+								</a>
+							{/if}
+						</td>
+					</tr>
 				{/each}
 			</tbody>
 		</table>
-		<div style="text-align: center;">
-			<button on:click={() => {show_expired = !show_expired}}>
-				{#if show_expired}
-					Hide
-				{:else}
-					Show
-				{/if}
-				expired and settled invoices
-			</button>
-		</div>
 	</div>
 </section>

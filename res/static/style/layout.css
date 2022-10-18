@@ -601,8 +601,9 @@ input[type="date"] {
 	border: none;
 	border-radius: 6px;
 	background: var(--input_background);
-	/* box-shadow: inset 1px 1px 2px -1px var(--shadow_color); */
 	padding: 3px 5px;
+	/* override user-agent style */
+	min-width: 100px;
 	color: var(--input_text);
 	font-size: 1em;
 	outline: 0;
