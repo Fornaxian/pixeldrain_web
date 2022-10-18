@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import Euro from "../util/Euro.svelte";
-import Form from "./../util/Form.svelte";
+import Form from "../util/Form.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = true
@@ -176,6 +176,11 @@ onMount(get_coupons)
 <LoadingIndicator loading={loading}/>
 
 <section>
+	<h2>Impersonate user</h2>
+	<div class="highlight_shaded">
+		<Form config={impersonate_form}></Form>
+	</div>
+
 	<h2>Give user credit</h2>
 	<p>
 		This adds credit to a user's account. You only need to enter one of
@@ -183,11 +188,6 @@ onMount(get_coupons)
 	</p>
 	<div class="highlight_shaded">
 		<Form config={credit_form}></Form>
-	</div>
-
-	<h2>Impersonate user</h2>
-	<div class="highlight_shaded">
-		<Form config={impersonate_form}></Form>
 	</div>
 
 	<h2>Create coupon codes</h2>

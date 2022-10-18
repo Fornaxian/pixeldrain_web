@@ -178,6 +178,7 @@ onMount(get_reporters);
 		on:delete={e => delete_reporter(e.detail)}>
 	</AbuseReporterTable>
 </div>
+<br/>
 
 <style>
 .toolbar {

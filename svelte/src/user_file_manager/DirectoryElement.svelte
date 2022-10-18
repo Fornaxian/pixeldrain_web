@@ -302,11 +302,9 @@ const node_click = (index) => {
 <div id="directory_element">
 	<div bind:this={directorySorters} id="sorters" class="directory_sorters">
 		{#each tableColumns as col}
-			<!-- <div style="min-width: {col.width}"> -->
-				<button style="min-width: {col.width}" on:click={sortBy(col.field)} class="sorter_button">
-					{col.name}
-				</button>
-			<!-- </div> -->
+			<button style="min-width: {col.width}" on:click={sortBy(col.field)} class="sorter_button">
+				{col.name}
+			</button>
 		{/each}
 	</div>
 	<div bind:this={directoryArea} on:scroll={onScroll} id="directory_area" class="directory_area">

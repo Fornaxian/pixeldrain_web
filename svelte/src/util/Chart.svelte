@@ -50,7 +50,6 @@ Chart.defaults.animation.duration = 500;
 Chart.defaults.animation.easing = "linear";
 
 onMount(() => {
-	console.log(legend)
 	chart_object = new Chart(
 		chart_element.getContext("2d"),
 		{

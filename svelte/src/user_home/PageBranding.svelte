@@ -1,10 +1,10 @@
 <script>
-import { onMount } from "svelte";
 import FilePicker from "../file_viewer/FilePicker.svelte";
 import CustomBanner from "../file_viewer/CustomBanner.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import SuccessMessage from "../util/SuccessMessage.svelte";
 import ThemePicker from "../util/ThemePicker.svelte";
+import { onMount } from "svelte";
 
 let loading = false
 let success_message
@@ -74,33 +74,6 @@ let save = async () => {
 	}
 }
 
-// Embedding settings
-let embed_domains = ""
-
-const save_embed = async () => {
-	loading = true
-	const form = new FormData()
-	form.append("domains", embed_domains)
-
-	try {
-		const resp = await fetch(
-			window.api_endpoint+"/user/file_embed",
-			{ method: "PUT", body: form }
-		);
-		if(resp.status >= 400) {
-			let json = await resp.json()
-			console.debug(json)
-			throw json.message
-		}
-
-		success_message.set(true, "Changes saved")
-	} catch(err) {
-		success_message.set(false, err)
-	} finally {
-		loading = false
-	}
-}
-
 onMount(() => {
 	// The fields are undefined when they're empty. So we need to check if each
 	// field is defined before converting to a string
@@ -113,16 +86,13 @@ onMount(() => {
 		footer_image = b.footer_image ? b.footer_image : ""
 		footer_link = b.footer_link ? b.footer_link : ""
 	}
-
-	embed_domains = window.user.file_embed_domains
 })
-
 </script>
 
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h2>Sharing settings</h2>
+	<h2>File viewer branding</h2>
 	{#if !window.user.subscription.file_viewer_branding}
 		<div class="highlight_red">
 			Sharing settings are not available for your account. Subscribe to
@@ -130,13 +100,13 @@ onMount(() => {
 		</div>
 	{:else if !window.user.hotlinking_enabled}
 		<div class="highlight_red">
-			To use the sharing settings bandwidth sharing needs to be enabled.
-			Enable bandwidth sharing on the
-			<a href="/user/subscription">subscription page</a>.
+			To use custom file viewer branding bandwidth sharing needs to be
+			enabled. Enable bandwidth sharing on the
+			<a href="/user/sharing/bandwidth">bandwidth sharing page</a>.
 		</div>
 	{/if}
-	<h3>File viewer branding</h3>
 	<SuccessMessage bind:this={success_message}></SuccessMessage>
+
 	<p>
 		You can change the appearance of your file viewer pages. The images you
 		choose here will be loaded each time someone visits one of your files.
@@ -148,7 +118,7 @@ onMount(() => {
 		should use APNG or WebP. Avoid using animated GIFs as they are very slow
 		to load.
 	</p>
-	<h4>Theme</h4>
+	<h3>Theme</h3>
 	<p>
 		Choose a theme for your download pages. This theme will override the
 		theme preference of the person viewing the file. Set to 'None' to let
@@ -159,7 +129,7 @@ onMount(() => {
 		on:theme_change={e => {theme = e.detail; save()}}>
 	</ThemePicker>
 
-	<h4>Header image</h4>
+	<h3>Header image</h3>
 	<p>
 		Will be shown above the file. Maximum height is 90px. Will be shrunk if
 		larger. You can also add a link to open when the visitor clicks the
@@ -174,8 +144,8 @@ onMount(() => {
 		Remove
 	</button>
 	<br/>
+	Header image link:<br/>
 	<form class="form_row" on:submit|preventDefault={save}>
-		<div class="shrink">Header image link:</div>
 		<input class="grow" bind:value={header_link} type="text" placeholder="https://"/>
 		<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
 	</form>
@@ -186,7 +156,7 @@ onMount(() => {
 		</div>
 	{/if}
 
-	<h4>Background image</h4>
+	<h3>Background image</h3>
 	<p>
 		This image will be shown behind the file which is being viewed. I
 		recommend choosing something dark and not too distracting. Try to keep
@@ -207,7 +177,7 @@ onMount(() => {
 		</div>
 	{/if}
 
-	<h4>Footer image</h4>
+	<h3>Footer image</h3>
 	<p>
 		Will be shown below the file. Maximum height is 90px. Will be shrunk if
 		larger.
@@ -221,8 +191,8 @@ onMount(() => {
 		Remove
 	</button>
 	<br/>
+	Footer image link:<br/>
 	<form class="form_row" on:submit|preventDefault={save}>
-		<div class="shrink">Footer image link:</div>
 		<input class="grow" bind:value={footer_link} type="text" placeholder="https://"/>
 		<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
 	</form>
@@ -231,22 +201,6 @@ onMount(() => {
 			<CustomBanner src={"/api/file/"+footer_image} link={footer_link}></CustomBanner>
 		</div>
 	{/if}
-	<br/>
-	<h3>Embedding controls</h3>
-	<p>
-		Here you can control which websites are allowed to embed your files in
-		their web pages. If a website that is not on this list tries to embed
-		one of your files the request will be blocked.
-	</p>
-	<p>
-		The list should be formatted as a list of domain names separated by a
-		space. Like this: 'pixeldrain.com google.com twitter.com'
-	</p>
-	<form class="form_row" on:submit|preventDefault={save_embed}>
-		<div class="shrink">Domain names:</div>
-		<input class="grow" bind:value={embed_domains} type="text"/>
-		<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
-	</form>
 </section>
 
 <FilePicker

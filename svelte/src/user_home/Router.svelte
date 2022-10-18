@@ -1,5 +1,4 @@
 <script>
-import { onMount } from "svelte";
 import Home from "./Home.svelte";
 import AccountSettings from "./AccountSettings.svelte";
 import APIKeys from "./APIKeys.svelte";
@@ -7,116 +6,85 @@ import Transactions from "./Transactions.svelte";
 import Subscription from "./Subscription.svelte";
 import ConnectApp from "./ConnectApp.svelte";
 import ActivityLog from "./ActivityLog.svelte";
-import SharingSettings from "./SharingSettings.svelte";
-import Footer from "../layout/Footer.svelte";
+import DepositCredit from "./DepositCredit.svelte";
+import TabMenu from "../util/TabMenu.svelte";
+import BandwidthSharing from "./BandwidthSharing.svelte";
+import EmbeddingControls from "./EmbeddingControls.svelte";
+import PageBranding from "./PageBranding.svelte";
 
-let page = ""
-
-let navigate = (path, title) => {
-	page = path
-	window.document.title = title+" ~ pixeldrain"
-	window.history.pushState(
-		{}, window.document.title, "/user/"+path
-	)
-}
-
-let get_page = () => {
-	let newpage = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1)
-	if (newpage === "user") {
-		newpage = "home"
-	}
-
-	page = newpage
-}
-
-onMount(() => {
-	get_page()
-})
+let pages = [
+	{
+		path: "/user/home",
+		title: "My Home",
+		icon: "home",
+		component: Home,
+	}, {
+		path: "/user/settings",
+		title: "Settings",
+		icon: "settings",
+		component: AccountSettings,
+	}, {
+		path: "/user/sharing",
+		title: "Sharing",
+		icon: "share",
+		subpages: [
+			{
+				path: "/user/sharing/bandwidth",
+				title: "Bandwidth Sharing",
+				icon: "share",
+				component: BandwidthSharing,
+			}, {
+				path: "/user/sharing/branding",
+				title: "Page Branding",
+				icon: "palette",
+				component: PageBranding,
+			}, {
+				path: "/user/sharing/embedding",
+				title: "Embedding Controls",
+				icon: "code",
+				component: EmbeddingControls,
+			},
+		],
+	}, {
+		path: "/user/connect_app",
+		title: "Apps",
+		icon: "app_registration",
+		component: ConnectApp,
+	}, {
+		path: "/user/api_keys",
+		title: "API Keys",
+		icon: "vpn_key",
+		component: APIKeys,
+	}, {
+		path: "/user/activity",
+		title: "Activity Log",
+		icon: "list",
+		component: ActivityLog,
+	}, {
+		path: "/user/prepaid",
+		title: "Prepaid",
+		icon: "receipt_long",
+		hidden: window.user.subscription.type === "patreon",
+		subpages: [
+			{
+				path: "/user/prepaid/deposit",
+				title: "Deposit credit",
+				icon: "account_balance_wallet",
+				component: DepositCredit,
+			}, {
+				path: "/user/prepaid/subscriptions",
+				title: "Subscriptions",
+				icon: "shopping_cart",
+				component: Subscription,
+			}, {
+				path: "/user/prepaid/transactions",
+				title: "Transactions",
+				icon: "receipt",
+				component: Transactions,
+			},
+		],
+	},
+]
 </script>
 
-<svelte:window on:popstate={get_page} />
-
-<header>
-	<h1>Welcome home, {window.user.username}!</h1>
-
-	<div class="tab_bar">
-		<a class="button"
-			href="/user"
-			class:button_highlight={page === "home"}
-			on:click|preventDefault={() => {navigate("home", "My home")}}>
-			<i class="icon">home</i><br/>
-			My home
-		</a>
-		<a class="button"
-			href="/user/settings"
-			class:button_highlight={page === "settings"}
-			on:click|preventDefault={() => {navigate("settings", "Settings")}}>
-			<i class="icon">settings</i><br/>
-			Settings
-		</a>
-		<a class="button"
-			href="/user/sharing"
-			class:button_highlight={page === "sharing"}
-			on:click|preventDefault={() => {navigate("sharing", "Sharing")}}>
-			<i class="icon">share</i><br/>
-			Sharing
-		</a>
-		<a class="button"
-			href="/user/connect_app"
-			class:button_highlight={page === "connect_app"}
-			on:click|preventDefault={() => {navigate("connect_app", "Apps")}}>
-			<i class="icon">app_registration</i><br/>
-			Apps
-		</a>
-		<a class="button"
-			href="/user/api_keys"
-			class:button_highlight={page === "api_keys"}
-			on:click|preventDefault={() => {navigate("api_keys", "API keys")}}>
-			<i class="icon">vpn_key</i><br/>
-			Keys
-		</a>
-		<a class="button"
-			href="/user/activity"
-			class:button_highlight={page === "activity"}
-			on:click|preventDefault={() => {navigate("activity", "Activity log")}}>
-			<i class="icon">list</i><br/>
-			Activity log
-		</a>
-		<a class="button"
-			href="/user/subscription"
-			class:button_highlight={page === "subscription"}
-			on:click|preventDefault={() => {navigate("subscription", "Subscription")}}>
-			<i class="icon">shopping_cart</i><br/>
-			Subscription
-		</a>
-		{#if window.user.subscription.type !== "patreon"}
-			<a class="button"
-				href="/user/transactions"
-				class:button_highlight={page === "transactions"}
-				on:click|preventDefault={() => {navigate("transactions", "Transactions")}}>
-				<i class="icon">receipt_long</i><br/>
-				Transactions
-			</a>
-		{/if}
-	</div>
-</header>
-<div id="page_content" class="page_content">
-	{#if page === "home"}
-		<Home/>
-	{:else if page === "settings"}
-		<AccountSettings/>
-	{:else if page === "sharing"}
-		<SharingSettings/>
-	{:else if page === "api_keys"}
-		<APIKeys/>
-	{:else if page === "activity"}
-		<ActivityLog/>
-	{:else if page === "connect_app"}
-		<ConnectApp/>
-	{:else if page === "transactions"}
-		<Transactions/>
-	{:else if page === "subscription"}
-		<Subscription/>
-	{/if}
-</div>
-<Footer/>
+<TabMenu pages={pages} title="Welcome home, {window.user.username}!"/>
