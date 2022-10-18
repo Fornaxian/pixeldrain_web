@@ -66,22 +66,37 @@ onMount(() => {
 <section>
 	<h2>Deposit credits</h2>
 	<p>
-		You can deposit credit on your pixeldrain account with Bitcoin,
-		Lightning network (<a
+		To deposit funds on your pixeldrain account please contact
+		<a href="mailto:sales@pixeldrain.com">sales@pixeldrain.com</a>. We will
+		prepare an invoice for you. We accept wire transfers and PayPal. As we
+		are located in the Netherlands SEPA payments should be free and instant.
+	</p>
+	<p>
+		Pixeldrain credits can be used for our prepaid plans, which are
+		different from the Patreon plans. Because preparing invoices requires
+		some manual labour we only accept deposits of €100 or more. The prepaid
+		plans are meant for people who require a lot of bandwidth or storage.
+		Paying only for what you use means you can save money compared to a
+		fixed monthly price.
+	</p>
+	<h3>Crypto payments</h3>
+	<p>
+		Alternatively you can use Bitcoin, Lightning network (<a
 		href="https://btcpay.pixeldrain.com/embed/uS2mbWjXUuaAqMh8XLjkjwi8oehFuxeBZxekMxv68LN/BTC/ln"
-		target="_blank">node info</a>) and Dogecoin. You must pay the full
-		amount as stated on the invoice, else your payment will fail.
+		target="_blank">node info</a>) and Dogecoin to deposit credits on your
+		pixeldrain account. You must pay the full amount as stated on the
+		invoice, else your payment will fail.
 	</p>
 	<p>
 		Do note that it is not possible to withdraw coins from your
 		pixeldrain account. It's not a wallet. Any amount of money you
 		deposit has to be used up.
 	</p>
-	<div style="text-align: center;">
+	<div class="highlight_border">
 		Deposit amount €
 		<input type="number" bind:value={credit_amount} min="1"/>
 		<br/>
-		Pay with:<br/>
+		Choose payment method:<br/>
 		<button on:click={() => {checkout("btc")}}>
 			<span class="icon_unicode">₿</span> Bitcoin
 		</button>
@@ -93,7 +108,7 @@ onMount(() => {
 		</button>
 	</div>
 
-	<h2>Past invoices</h2>
+	<h3>Past invoices</h3>
 	<p>
 		Invoices are deleted after one year of inactivity.
 	</p>
