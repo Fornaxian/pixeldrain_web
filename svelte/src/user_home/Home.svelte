@@ -257,7 +257,7 @@ onDestroy(() => {
 		{formatDataVolume(transfer_used, 3)}
 		out of
 		{formatDataVolume(transfer_cap, 3)}
-		(<a href="/user/subscription">Set your transfer limit on the subscription page</a>)
+		(<a href="/user/sharing/bandwidth">Set your transfer limit on the sharing page</a>)
 		<HotlinkProgressBar used={transfer_used} total={transfer_cap}></HotlinkProgressBar>
 	{/if}
 
@@ -328,7 +328,7 @@ onDestroy(() => {
 		your subscription plan. These can be files you downloaded from other
 		people, or other people downloading your files if you have bandwidth
 		sharing enabled. Bandwidth sharing can be changed on
-		<a href="/user/subscription">the subscription page</a>.
+		<a href="/user/sharing/bandwidth">the sharing page</a>.
 	</p>
 </section>
 

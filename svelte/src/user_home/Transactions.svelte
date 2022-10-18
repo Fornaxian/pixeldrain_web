@@ -50,7 +50,8 @@ const load_transactions = async () => {
 			month.total_deducted += row.subscription_charge + row.storage_charge + row.bandwidth_charge
 		})
 
-		month.total_storage_used /= month.rows.length
+		// Divide the total storage usage by the number of days in a month
+		month.total_storage_used /= 30.4375
 
 		transactions = month
 	} catch (err) {

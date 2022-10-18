@@ -65,8 +65,8 @@ onMount(() => {
 		The list should be formatted as a list of domain names separated by a
 		space. Like this: 'pixeldrain.com google.com twitter.com'
 	</p>
+	Domain names:<br/>
 	<form class="form_row" on:submit|preventDefault={save_embed}>
-		<div class="shrink">Domain names:</div>
 		<input class="grow" bind:value={embed_domains} type="text"/>
 		<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
 	</form>
