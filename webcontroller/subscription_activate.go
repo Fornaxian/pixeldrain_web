@@ -205,7 +205,7 @@ func (wc *WebController) couponForm(td *TemplateData, r *http.Request) (f Form) 
 		DefaultValue: "",
 		Description: `When redeeming this coupon code the value will be ` +
 			`added to your pixeldrain account. Go to the ` +
-			`<a href="/user/subscription" target="_blank">subscription page</a> ` +
+			`<a href="/user/prepaid/subscriptions" target="_blank">subscription page</a> ` +
 			`afterwards to activate your subscription.`,
 		Type: FieldTypeDescription,
 	}, {
@@ -243,7 +243,7 @@ func (wc *WebController) couponForm(td *TemplateData, r *http.Request) (f Form) 
 			f.SubmitSuccess = true
 			f.SubmitMessages = []template.HTML{template.HTML(
 				`Success! Your account credit has been increased. Visit the ` +
-					`<a href="/user/subscription">subscription page</a> to ` +
+					`<a href="/user/prepaid/subscriptions">subscription page</a> to ` +
 					`activate your subscription`,
 			)}
 		}

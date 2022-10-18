@@ -129,8 +129,8 @@ const update_example = () => {
 			Pro account. You can use this to directly embed a video player,
 			audio player, photo element or a download button in your site. Make
 			sure you have bandwidth sharing enabled on your
-			<a href="/user/subscription">subscription page</a> or the embed will
-			not work.
+			<a href="/user/sharing/bandwidth">sharing settings page</a> or the
+			embed will not work.
 		</p>
 	</div>
 	<div class="tab_bar">
