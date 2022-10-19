@@ -597,7 +597,7 @@ const keyboard_event = evt => {
 		<CustomBanner src={custom_footer} link={custom_footer_link}></CustomBanner>
 	{/if}
 
-	<Modal bind:this={details_window} on:is_visible={e => {details_visible = e.detail}} title="File details" width="1200px">
+	<Modal bind:this={details_window} on:is_visible={e => {details_visible = e.detail}} title="File details" width="1000px">
 		<DetailsWindow file={file}></DetailsWindow>
 	</Modal>
 
@@ -609,7 +609,7 @@ const keyboard_event = evt => {
 		<EditWindow file={file} list={list} on:reload={reload}></EditWindow>
 	</Modal>
 
-	<Modal bind:this={embed_window} on:is_visible={e => {embed_visible = e.detail}} title="Embed file" width="850px">
+	<Modal bind:this={embed_window} on:is_visible={e => {embed_visible = e.detail}} title="Embed file" width="820px">
 		<EmbedWindow file={file} list={list}></EmbedWindow>
 	</Modal>
 

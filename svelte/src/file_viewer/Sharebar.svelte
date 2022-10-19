@@ -71,14 +71,15 @@ const share_tumblr = () => {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	background: var(--shaded_background);
-	border-radius: 16px;
+	border-top-left-radius: 16px;
+	border-bottom-left-radius: 16px;
 	text-align: center;
 	overflow: hidden;
 	opacity: 0;
 	transition: left 0.4s, opacity 0.4s;
 }
 .visible {
-	left: 8em;
+	left: calc(8em + 2px);
 	opacity: 1;
 }
 .button_full_width {

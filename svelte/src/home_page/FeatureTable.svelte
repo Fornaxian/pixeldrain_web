@@ -15,7 +15,7 @@ onMount(() => {
 	<div>
 		<div></div>
 		<div class="feat_normal round_tl">Free</div>
-		<div class="feat_pro feat_highlight round_tr">Pro</div>
+		<div class="feat_pro round_tr">Pro</div>
 	</div>
 	<div>
 		<div class="feat_label">Size limit per file</div>
@@ -122,7 +122,7 @@ onMount(() => {
 	<div>
 		<div></div>
 		<div class="feat_normal round_bl">Free</div>
-		<div class="feat_pro feat_highlight round_br">
+		<div class="feat_pro round_br">
 			{#if window.user.subscription.id === "patreon_1"}
 				You have this plan<br/>
 				Thank you for supporting pixeldrain!
@@ -254,7 +254,7 @@ onMount(() => {
 }
 .feat_table > div > div {
 	flex: 1 1 0;
-	margin: 0.25em;
+	margin: 0.2em;
 	padding: 0.5em;
 	text-align: center;
 	word-wrap: break-word;
@@ -263,21 +263,17 @@ onMount(() => {
 .feat_table > div > .feat_label {
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
-	border: 2px solid var(--separator);
+	border: 1px solid var(--separator);
 }
 .feat_table > div > .feat_normal {
 	background-color: var(--card_color);
+	border: 1px solid var(--separator);
 }
 .feat_table > div > .feat_pro {
 	background-color: var(--card_color);
-	box-shadow: 1px 1px 2px -1px var(--shadow_color);
-}
-.feat_table > div > .feat_highlight {
-	border: 1px solid var(--link_color)
+	border: 1px solid var(--highlight_color);
 }
 .text_highlight {
-	color: var(--link_color);
-	font-size: 1.1em;
 	font-weight: bold;
 }
 

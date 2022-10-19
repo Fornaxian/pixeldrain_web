@@ -133,7 +133,7 @@ onMount(() => {
 	<p>
 		Will be shown above the file. Maximum height is 90px. Will be shrunk if
 		larger. You can also add a link to open when the visitor clicks the
-		image. The link need to start with 'https://'.
+		image. The link needs to start with 'https://'.
 	</p>
 	<button on:click={() => {select_file("header")}}>
 		<i class="icon">add_photo_alternate</i>

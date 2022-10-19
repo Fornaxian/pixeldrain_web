@@ -48,6 +48,7 @@ const keydown = e => {
 
 {#if visible}
 <div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}}>
+	<div class="top_padding"></div>
 	<div class="window" use:load_modal on:click|stopPropagation role="dialog" aria-modal="true">
 		<div class="header">
 			<slot name="title">
@@ -61,31 +62,37 @@ const keydown = e => {
 			<slot></slot>
 		</div>
 	</div>
+	<div class="bottom_padding"></div>
 </div>
 {/if}
 
 <style>
 .background {
 	position: fixed;
-	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
 	background-color: rgba(0, 0, 0, 0.6);
 }
+/* The modal looks weird when it's in the dead center of the page, so we use
+these padding divs to move it 25% up */
+.top_padding { flex: 1 1 25%; }
+.bottom_padding { flex: 1 1 75%; }
+
 .window {
-	position: absolute;
+	position: relative;
 	z-index: inherit;
+	flex: 0 0 auto;
 	display: flex;
 	flex-direction: column;
 	background: var(--body_color);
 	max-height: 100%;
 	max-width: 100%;
-	margin: 0 auto;
-	top: 20%;
-	left: 50%;
-	transform: translate(-50%, -20%);
 	padding: 0;
 	border-radius: 20px 20px 12px 12px;
 	overflow: hidden;

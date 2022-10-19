@@ -126,7 +126,7 @@
 }
 .feat_table > div > div {
 	flex: 1 1 0;
-	margin: 0.25em;
+	margin: 0.2em;
 	padding: 0.5em;
 	text-align: center;
 	word-wrap: break-word;
@@ -134,11 +134,9 @@
 }
 .feat_table > div > .feat_pro {
 	background-color: var(--card_color);
-	box-shadow: 1px 1px 2px -1px var(--shadow_color);
+	border: 1px solid var(--highlight_color);
 }
 .text_highlight {
-	color: var(--link_color);
-	font-size: 1.1em;
 	font-weight: bold;
 }
 .feat_table > div > .cell_background {
@@ -151,7 +149,7 @@
 	text-align: left;
 	font-size: 1.2em;
 	color: #ffffff;
-	text-shadow: 1px 1px 3px #000000;
+	text-shadow: 1px 1px 2px #000000;
 }
 
 .feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }

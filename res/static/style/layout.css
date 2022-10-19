@@ -571,14 +571,10 @@ button>svg,
 
 .tab_bar>button,
 .tab_bar>.button {
-	margin: 10px 0 0 10px;
+	margin: .5em .4em 0 .4em;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 	min-width: 5em;
-}
-
-.tab_bar>*:last-child {
-	margin-right: 10px;
 }
 
 /* Dropdown list of the select tag */
