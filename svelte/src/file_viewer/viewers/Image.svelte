@@ -75,6 +75,7 @@ const mouseup = (e) => {
 }
 .container.zoom {
 	overflow: auto;
+	justify-content: unset;
 }
 .image {
 	position: relative;

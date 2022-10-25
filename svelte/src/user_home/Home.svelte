@@ -175,7 +175,7 @@ onMount(() => {
 		}
 	];
 
-	update_graphs(10080, 60, true);
+	update_graphs(43200, 1440, true);
 })
 onDestroy(() => {
 	if (graph_timeout !== null) {

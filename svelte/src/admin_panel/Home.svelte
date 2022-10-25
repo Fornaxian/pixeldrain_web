@@ -36,11 +36,12 @@ const loadGraph = (minutes, interval, live) => {
 	}).then(resp => {
 		resp.views.timestamps.forEach((val, idx) => {
 			let date = new Date(val);
-			let dateStr = ("00" + (date.getMonth() + 1)).slice(-2);
+			let dateStr = date.getFullYear();
+			dateStr += "-" + ("00" + (date.getMonth() + 1)).slice(-2);
 			dateStr += "-" + ("00" + date.getDate()).slice(-2);
 			dateStr += " " + ("00" + date.getHours()).slice(-2);
 			dateStr += ":" + ("00" + date.getMinutes()).slice(-2);
-			resp.views.timestamps[idx] = "   " + dateStr + "   "; // Poor man's padding
+			resp.views.timestamps[idx] = " " + dateStr + " "; // Poor man's padding
 		});
 		graphViews.data().labels = resp.views.timestamps;
 		graphViews.data().datasets[0].data = resp.views.amounts;
@@ -146,7 +147,7 @@ onMount(() => {
 		},
 	];
 
-	loadGraph(43200, 60, true);
+	loadGraph(10080, 10, true);
 	getStats("calls")
 	statsInterval = setInterval(() => {
 		getStats(lastOrder)
@@ -173,9 +174,10 @@ onDestroy(() => {
 	<button on:click={() => loadGraph(262800, 1440, false)}>Half-year 1d</button>
 	<button on:click={() => loadGraph(525600, 1440, false)}>Year 1d</button>
 	<button on:click={() => loadGraph(1051200, 1440, false)}>Two Years 1d</button>
+	<button on:click={() => loadGraph(2628000, 1440, false)}>Five Years 1d</button>
 </div>
-<Chart bind:this={graphBandwidth} data_type="bytes" legend={false} />
-<Chart bind:this={graphViews} data_type="number" legend={false} />
+<Chart bind:this={graphBandwidth} data_type="bytes" />
+<Chart bind:this={graphViews} data_type="number" />
 <div class="highlight_border">
 	Total usage from {start_time} to {end_time}<br/>
 	{formatDataVolume(total_bandwidth, 3)} bandwidth,

@@ -8,7 +8,7 @@ export let file = {
 	id: "",
 	name: "",
 	mime_type: "",
-	date_created: "",
+	date_upload: "",
 	size: 0,
 	downloads: 0,
 	bandwidth_used: 0,
@@ -18,22 +18,46 @@ export let file = {
 	timeseries_href: "",
 }
 
-let chart
-let chart_timespan = 43200
-let chart_interval = 60
-
 $: update_file(file.id)
 let update_file = id => {
 	if (id) {
-		update_chart(chart_timespan, chart_interval)
+		update_chart(0, 0)
 	}
 }
 
+let chart
+let chart_timespan = 0
+let chart_interval = 0
+let chart_timespans = [
+	{label: "Day (1m)", span: 1440, interval: 1},
+	{label: "Week (1h)", span: 10080, interval: 60},
+	{label: "Month (1h)", span: 43200, interval: 60},
+	{label: "Quarter (1d)", span: 131400, interval: 1440},
+	{label: "Year (1d)", span: 525600, interval: 1440},
+	{label: "Two Years (1d)", span: 1051200, interval: 1440},
+	{label: "Five Years (1d)", span: 2628000, interval: 1440},
+]
+
 let update_chart = (timespan, interval) => {
+		// If the timespan is 0 we calculate the maximum timespan based on the age
+	// of the file
+	if (timespan === 0) {
+		let minutes_since_upload = (new Date().getTime() - Date.parse(file.date_upload)) / 1000 / 60
+
+		for (let i = 0; i < chart_timespans.length; i++) {
+			timespan = chart_timespans[i].span
+			interval = chart_timespans[i].interval
+
+			if (chart_timespans[i].span > minutes_since_upload) {
+				break;
+			}
+		}
+	}
+
 	chart_timespan = timespan
 	chart_interval = interval
 
-	console.log("updating graph")
+	console.log("updating graph", chart_timespan, chart_interval)
 
 	let start = new Date()
 	start.setMinutes(start.getMinutes() - timespan)
@@ -160,36 +184,13 @@ onMount(() => {
 	<h2>Views and downloads</h2>
 
 	<div class="button_bar">
-		<button
-			on:click={() => { update_chart(1440, 1) }}
-			class:button_highlight={chart_timespan == 1440}>
-			Day (1m)
-		</button>
-		<button
-			on:click={() => { update_chart(10080, 60) }}
-			class:button_highlight={chart_timespan == 10080}>
-			Week (1h)
-		</button>
-		<button
-			on:click={() => { update_chart(43200, 60) }}
-			class:button_highlight={chart_timespan == 43200}>
-			Month (1h)
-		</button>
-		<button
-			on:click={() => { update_chart(131400, 1440) }}
-			class:button_highlight={chart_timespan == 131400}>
-			Quarter (1d)
-		</button>
-		<button
-			on:click={() => { update_chart(525600, 1440) }}
-			class:button_highlight={chart_timespan == 525600}>
-			Year (1d)
-		</button>
-		<button
-			on:click={() => { update_chart(1051200, 1440) }}
-			class:button_highlight={chart_timespan == 1051200}>
-			Two Years (1d)
-		</button>
+		{#each chart_timespans as ts}
+			<button
+				on:click={() => { update_chart(ts.span, ts.interval) }}
+				class:button_highlight={chart_timespan == ts.span}>
+				{ts.label}
+			</button>
+		{/each}
 	</div>
 
 	<Chart bind:this={chart} />

@@ -122,6 +122,6 @@ onMount(() => {
 .chart-container {
 	position: relative;
 	width: 100%;
-	height: 250px;
+	height: 300px;
 }
 </style>
