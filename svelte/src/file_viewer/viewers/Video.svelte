@@ -4,6 +4,7 @@ import BandwidthUsage from "./BandwidthUsage.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
+export let is_list = false
 let file = {
 	id: "",
 	size: 0,
@@ -112,9 +113,11 @@ const fullscreen = () => {
 
 			<div class="controls">
 				<div class="spacer"></div>
-				<button on:click={() => dispatch("prev") }>
-					<i class="icon">skip_previous</i>
-				</button>
+				{#if is_list}
+					<button on:click={() => dispatch("prev") }>
+						<i class="icon">skip_previous</i>
+					</button>
+				{/if}
 				<button on:click={() => seek_relative(-10)}>
 					<i class="icon">replay_10</i>
 				</button>
@@ -128,9 +131,11 @@ const fullscreen = () => {
 				<button on:click={() => seek_relative(10)}>
 					<i class="icon">forward_10</i>
 				</button>
-				<button on:click={() => dispatch("next") }>
-					<i class="icon">skip_next</i>
-				</button>
+				{#if is_list}
+					<button on:click={() => dispatch("next") }>
+						<i class="icon">skip_next</i>
+					</button>
+				{/if}
 				<div style="width: 16px; height: 8px;"></div>
 				<button on:click={mute} class:button_red={player && player.muted}>
 					{#if player && player.muted}
@@ -186,6 +191,8 @@ h1 {
 }
 .player {
 	flex: 1 1 auto;
+	display: flex;
+	justify-content: center;
 	text-align: center;
 	overflow: hidden;
 }
@@ -209,9 +216,6 @@ h1 {
 	margin: auto;
 	max-width: 100%;
 	max-height: 100%;
-	top: 50%;
-	transform: translateY(-50%);
-	box-shadow: 0 0 4px var(--shadow_color);
 }
 .video_icon {
 	display: inline-block;

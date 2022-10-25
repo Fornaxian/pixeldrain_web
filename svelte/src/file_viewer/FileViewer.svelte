@@ -569,6 +569,7 @@ const keyboard_event = evt => {
 			{#if view === "file"}
 				<FilePreview
 					bind:this={file_preview}
+					is_list={is_list}
 					on:download={downloader.download_file}
 					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
 					on:next={() => { if (list_navigator) { list_navigator.next() }}}

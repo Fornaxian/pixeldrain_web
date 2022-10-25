@@ -67,10 +67,10 @@ const mouseup = (e) => {
 
 <style>
 .container {
-	display: block;
+	display: flex;
+	justify-content: center;
 	height: 100%;
 	width: 100%;
-	text-align: center;
 	overflow: hidden;
 }
 .container.zoom {
@@ -82,16 +82,11 @@ const mouseup = (e) => {
 	margin: auto;
 	max-width: 100%;
 	max-height: 100%;
-	top: 50%;
 	cursor: pointer;
-	transform: translateY(-50%);
-	box-shadow: 0 0 4px var(--shadow_color);
 }
 .image.zoom {
 	max-width: none;
 	max-height: none;
-	top: 0;
 	cursor: move;
-	transform: none;
 }
 </style>

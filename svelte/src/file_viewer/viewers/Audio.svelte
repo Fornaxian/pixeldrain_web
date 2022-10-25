@@ -3,7 +3,8 @@ import { createEventDispatcher, tick } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
 let dispatch = createEventDispatcher()
 
-export let file = {
+export let is_list = false
+let file = {
 	id: "",
 	name: "",
 	mime_type: "",
@@ -53,9 +54,11 @@ const toggle_play = () => playing ? player.pause() : player.play()
 <div class="container">
 	<h1>{file.name}</h1>
 
-	<button on:click={() => dispatch("prev") }>
-		<i class="icon">skip_previous</i>
-	</button>
+	{#if is_list}
+		<button on:click={() => dispatch("prev") }>
+			<i class="icon">skip_previous</i>
+		</button>
+	{/if}
 	<button on:click={() => player.currentTime -= 10 }>
 		<i class="icon">replay_10</i>
 	</button>
@@ -69,9 +72,11 @@ const toggle_play = () => playing ? player.pause() : player.play()
 	<button on:click={() => player.currentTime += 10 }>
 		<i class="icon">forward_10</i>
 	</button>
-	<button on:click={() => dispatch("next") }>
-		<i class="icon">skip_next</i>
-	</button>
+	{#if is_list}
+		<button on:click={() => dispatch("next") }>
+			<i class="icon">skip_next</i>
+		</button>
+	{/if}
 	<br/><br/>
 
 	{#if file.id && !audio_reload}

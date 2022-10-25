@@ -15,6 +15,7 @@ import SpeedLimit from "./SpeedLimit.svelte";
 
 let viewer
 let viewer_type = "loading"
+export let is_list = false
 
 export const set_file = async file => {
 	if (file.id === "") {
@@ -54,9 +55,9 @@ export const set_file = async file => {
 {:else if viewer_type === "image"}
 	<Image bind:this={viewer} on:loading></Image>
 {:else if viewer_type === "video"}
-	<Video bind:this={viewer} on:loading on:download on:prev on:next on:reload></Video>
+	<Video bind:this={viewer} is_list={is_list} on:loading on:download on:prev on:next on:reload></Video>
 {:else if viewer_type === "audio"}
-	<Audio bind:this={viewer} on:loading on:prev on:next on:reload></Audio>
+	<Audio bind:this={viewer} is_list={is_list} on:loading on:prev on:next on:reload></Audio>
 {:else if viewer_type === "pdf"}
 	<PDF bind:this={viewer}></PDF>
 {:else if viewer_type === "text"}
