@@ -97,12 +97,12 @@ onMount(() => {
 		of months in a day (30.4375).
 	</p>
 	<p>
-		Example: If you have 2 TB stored on your pixeldrain account at €3 per TB
+		Example: If you have 2 TB stored on your pixeldrain account at €4 per TB
 		then the daily charge will be:<br/>
 
-		2 TB * € 3 = € 6<br/>
+		2 TB * € 4 = € 8<br/>
 
-		€ 6 / 30.4375 = € 0.197125 per day<br/>
+		€ 8 / 30.4375 = € 0.2628 per day<br/>
 
 		Similarly the subscription charge of €1 per month is also charged at € 1
 		/ 30.4375 = € 0.032854 per day.

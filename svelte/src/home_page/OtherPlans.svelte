@@ -1,25 +1,5 @@
 <div class="feat_table">
 	<div>
-		<div class="cell_background" style="background-image: url('/res/img/benefit_5.webp');">
-			Resolve<br/>
-			{#if window.user.subscription.id === "patreon_5"}
-			You have this plan<br/>
-			Thank you for supporting pixeldrain!
-			{:else}
-			<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701" class="button button_highlight round">
-				€ 4
-			</a>
-			/ month
-			{/if}
-		</div>
-		<div class="feat_pro features_cell round_tr">
-			<div><span class="text_highlight">20 GB</span> max file size</div>
-			<div><span class="text_highlight">240 days</span> file expiry</div>
-			<div><span class="text_highlight">2 TB</span> transfer limit</div>
-			<div><span class="text_highlight">No storage limit</span></div>
-		</div>
-	</div>
-	<div>
 		<div class="cell_background" style="background-image: url('/res/img/benefit_2.webp');">
 			Persistence<br/>
 			{#if window.user.subscription.id === "patreon_2"}
@@ -32,7 +12,7 @@
 			/ month
 			{/if}
 		</div>
-		<div class="feat_pro features_cell">
+		<div class="feat_pro features_cell round_tr">
 			<div><span class="text_highlight">20 GB</span> max file size</div>
 			<div><span class="text_highlight">Files never expire</span></div>
 			<div><span class="text_highlight">4 TB</span> transfer limit</div>

@@ -32,7 +32,7 @@ onMount(() => {
 			60 days after the last time it is viewed
 		</div>
 		<div class="feat_pro">
-			<span class="text_highlight">120 days</span> after the last time it is viewed
+			<span class="text_highlight">240 days</span> after the last time it is viewed
 			<br/>
 			<button class="round" on:click={file_expiry.toggle}>
 				<i class="icon">info</i>
@@ -57,7 +57,7 @@ onMount(() => {
 			your download speed will be reduced
 		</div>
 		<div class="feat_pro">
-			Transfer limit of <span class="text_highlight">1 terabyte</span> per
+			Transfer limit of <span class="text_highlight">2 terabyte</span> per
 			month. If the transfer limit is exceeded the restrictions of the
 			free plan will apply
 		</div>
@@ -128,12 +128,12 @@ onMount(() => {
 				Thank you for supporting pixeldrain!
 			{:else}
 				Only
-				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427" class="button button_highlight round">
-					€ 2 per month
+				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701&cadence=1" class="button button_highlight round">
+					€ 4 per month
 				</a>
 				or
-				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" class="button button_highlight round">
-					€ 20 per year!
+				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701&cadence=12" class="button button_highlight round">
+					€ 40 per year!
 				</a>
 				<br/>
 				(Excluding tax)

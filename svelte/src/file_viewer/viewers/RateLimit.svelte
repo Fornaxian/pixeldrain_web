@@ -66,7 +66,7 @@ onMount(async () => {
 	{/if}
 	<p>
 		This warning disappears when the you are a
-		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5291427&cadence=12" target="_blank">Patreon supporter</a>,
+		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701&cadence=12" target="_blank">Patreon supporter</a>,
 		or when the uploader of the file enables
 		<a href="/user/subscription">bandwidth sharing</a> on their Pro account
 		(and their data cap has not been used up). Using a download manager with

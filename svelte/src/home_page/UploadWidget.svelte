@@ -536,7 +536,7 @@ const keydown = (e) => {
 			not something I would like to do.
 		</p>
 		<p>
-			Pro costs only <b>€20 per year</b> or €2 per month. You will get
+			Pro costs only <b>€40 per year</b> or €4 per month. You will get
 			some nice benefits and more features are on the way. You can
 			help with making pixeldrain the easiest and fastest way to share
 			files online!

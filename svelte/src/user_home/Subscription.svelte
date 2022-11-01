@@ -67,7 +67,7 @@ const update = async () => {
 			<div class="feat_normal round_tr" class:feat_highlight={subscription === "prepaid"}>
 				<ul>
 					<li>Base price of €1 per month</li>
-					<li>€3 per TB per month for storage</li>
+					<li>€4 per TB per month for storage</li>
 					<li>€2 per TB for data transfer</li>
 					<li>Files never expire as long as subscription is active</li>
 				</ul>
