@@ -86,6 +86,47 @@ const create_reporter = async () => {
 	get_reporters();
 }
 
+const approve_reporter = async reporter => {
+	try {
+		const form = new FormData()
+		form.append("from_address", reporter.from_address)
+		form.append("mail_server", reporter.mail_server)
+		form.append("name", reporter.name)
+		form.append("status", "trusted")
+
+		const resp = await fetch(
+			window.api_endpoint+"/admin/abuse_reporter",
+			{ method: "POST", body: form }
+		);
+		if(resp.status >= 400) {
+			throw new Error(await resp.text());
+		}
+	} catch (err) {
+		alert("Failed to add abuse reporter! "+err)
+	}
+	get_reporters();
+}
+const spam_reporter = async reporter => {
+	try {
+		const form = new FormData()
+		form.append("from_address", reporter.from_address)
+		form.append("mail_server", reporter.mail_server)
+		form.append("name", reporter.name)
+		form.append("status", "rejected")
+
+		const resp = await fetch(
+			window.api_endpoint+"/admin/abuse_reporter",
+			{ method: "POST", body: form }
+		);
+		if(resp.status >= 400) {
+			throw new Error(await resp.text());
+		}
+	} catch (err) {
+		alert("Failed to add abuse reporter! "+err)
+	}
+	get_reporters();
+}
+
 const edit_reporter = async reporter => {
 	edit_button.scrollIntoView()
 	creating = true
@@ -160,6 +201,8 @@ onMount(get_reporters);
 	<AbuseReporterTable
 		reporters={reporters_pending}
 		on:edit={e => edit_reporter(e.detail)}
+		on:approve={e => approve_reporter(e.detail)}
+		on:spam={e => spam_reporter(e.detail)}
 		on:delete={e => delete_reporter(e.detail)}>
 	</AbuseReporterTable>
 
@@ -168,6 +211,8 @@ onMount(get_reporters);
 	<AbuseReporterTable
 		reporters={reporters_trusted}
 		on:edit={e => edit_reporter(e.detail)}
+		on:approve={e => approve_reporter(e.detail)}
+		on:spam={e => spam_reporter(e.detail)}
 		on:delete={e => delete_reporter(e.detail)}>
 	</AbuseReporterTable>
 
@@ -175,6 +220,8 @@ onMount(get_reporters);
 	<AbuseReporterTable
 		reporters={reporters_rejected}
 		on:edit={e => edit_reporter(e.detail)}
+		on:approve={e => approve_reporter(e.detail)}
+		on:spam={e => spam_reporter(e.detail)}
 		on:delete={e => delete_reporter(e.detail)}>
 	</AbuseReporterTable>
 </div>

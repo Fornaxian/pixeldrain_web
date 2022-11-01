@@ -31,6 +31,16 @@ export let reporters = []
 				<button on:click|preventDefault={() => {dispatch("edit", rep)}} class="button round">
 					<i class="icon">edit</i>
 				</button>
+				{#if rep.status !== "trusted"}
+					<button on:click|preventDefault={() => {dispatch("approve", rep)}} class="button button_highlight round">
+						<i class="icon">check</i>
+					</button>
+				{/if}
+				{#if rep.status !== "rejected"}
+					<button on:click|preventDefault={() => {dispatch("spam", rep)}} class="button button_red round">
+						<i class="icon">block</i>
+					</button>
+				{/if}
 				<button on:click|preventDefault={() => {dispatch("delete", rep)}} class="button button_red round">
 					<i class="icon">delete</i>
 				</button>

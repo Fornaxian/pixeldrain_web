@@ -12,11 +12,11 @@ let embed_domains = ""
 const save_embed = async () => {
 	loading = true
 	const form = new FormData()
-	form.append("domains", embed_domains)
+	form.append("embed_domains", embed_domains)
 
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/user/file_embed",
+			window.api_endpoint+"/user",
 			{ method: "PUT", body: form }
 		);
 		if(resp.status >= 400) {

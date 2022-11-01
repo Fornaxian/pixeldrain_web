@@ -11,12 +11,11 @@ const update = async () => {
 	loading = true
 
 	const form = new FormData()
-	form.append("update", "subscription")
 	form.append("subscription", subscription)
 
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/user/subscription",
+			window.api_endpoint+"/user",
 			{ method: "PUT", body: form },
 		)
 		if(resp.status >= 400) {

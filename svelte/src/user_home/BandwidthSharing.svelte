@@ -7,18 +7,21 @@ import SuccessMessage from "../util/SuccessMessage.svelte";
 
 let loading = false
 let success_message
+let hotlinking = window.user.hotlinking_enabled
+let transfer_cap = window.user.monthly_transfer_cap / 1e9
+let skip_viewer = window.user.skip_file_viewer
 
 const update = async () => {
 	loading = true
 
 	const form = new FormData()
-	form.append("update", "limits")
 	form.append("hotlinking_enabled", hotlinking)
 	form.append("transfer_cap", transfer_cap*1e9)
+	form.append("skip_file_viewer", skip_viewer)
 
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/user/subscription",
+			window.api_endpoint+"/user",
 			{ method: "PUT", body: form },
 		)
 		if(resp.status >= 400) {
@@ -37,13 +40,11 @@ const update = async () => {
 	}
 }
 
-let hotlinking = window.user.hotlinking_enabled
 let toggle_hotlinking = () => {
 	hotlinking = !hotlinking
 	update()
 }
 
-let transfer_cap = window.user.monthly_transfer_cap / 1e9
 let transfer_used = 0
 let load_transfer_used = () => {
 	let today = new Date()
@@ -63,6 +64,11 @@ let load_transfer_used = () => {
 	}).catch(e => {
 		console.error("Error requesting time series: " + e);
 	})
+}
+
+let toggle_skip_viewer = () => {
+	skip_viewer = !skip_viewer
+	update()
 }
 
 onMount(() => {
@@ -118,6 +124,26 @@ onMount(() => {
 		mostly useful for prepaid plans, but it works for patreon plans too.
 		Set to 0 to disable the limit.
 	</p>
+
+	<h2>Skip download page</h2>
+	<p>
+		This setting only applies to your account, others will still see the
+		download page when visiting your files. When this is enabled you will be
+		redirected to the file download API when clicking a pixeldrain link.
+		This means that images, videos and PDF files will be opened directly in
+		your browser, and other files are immediately downloaded to your device.
+		This only works for single file links, not albums.
+	</p>
+	<p>
+		You will need a Pro subscription to use this feature.
+	</p>
+	<button on:click={toggle_skip_viewer}>
+		{#if skip_viewer}
+			<i class="icon green">check</i> ON (click to turn off)
+		{:else}
+			<i class="icon red">close</i> OFF (click to turn on)
+		{/if}
+	</button>
 </section>
 
 <style>

@@ -15,7 +15,7 @@ onMount(() => {
 	<div>
 		<div></div>
 		<div class="feat_normal round_tl">Free</div>
-		<div class="feat_pro round_tr">Pro</div>
+		<div class="feat_pro round_tr pro_header">Pro</div>
 	</div>
 	<div>
 		<div class="feat_label">Size limit per file</div>
@@ -275,6 +275,13 @@ onMount(() => {
 }
 .text_highlight {
 	font-weight: bold;
+}
+.feat_table > div > .pro_header {
+	background-image: url("/res/img/benefit_1.webp");
+	background-size: cover;
+	font-size: 1.2em;
+	text-shadow: 1px 1px 2px #000000;
+	color: #ffffff;
 }
 
 .feat_table > div > div.round_tl { border-top-left-radius:     0.5em; }

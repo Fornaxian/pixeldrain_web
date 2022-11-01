@@ -93,6 +93,11 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
+	if files[0].SkipFileViewer {
+		http.Redirect(w, r, "/api/file/"+p.ByName("id"), http.StatusSeeOther)
+		return
+	}
+
 	templateData.OGData = wc.metadataFromFile(files[0].FileInfo)
 
 	var vd = fileViewerData{
