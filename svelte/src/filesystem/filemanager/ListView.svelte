@@ -80,7 +80,7 @@ const node_icon = node => {
 	border-collapse: collapse;
 	border-radius: 8px;
 
-	max-width: 95%;
+	max-width: 100%;
 	width: 1000px;
 }
 .directory > * {

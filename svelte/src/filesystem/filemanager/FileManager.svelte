@@ -96,28 +96,36 @@ const toggle_select = () => {
 <div class="container">
 	<div class="width_container">
 		<div class="toolbar">
-			<button on:click={navigate_up} disabled={state.parents.length === 0}><i class="icon">arrow_back</i></button>
-			<button on:click={reload}><i class="icon">refresh</i></button>
+			<button on:click={navigate_up} disabled={state.parents.length === 0} title="Back">
+				<i class="icon">arrow_back</i>
+			</button>
+			<button on:click={reload} title="Refresh directory listing">
+				<i class="icon">refresh</i>
+			</button>
 			{#if directory_view === "list"}
-				<button on:click={() => {directory_view = "gallery"}} alt="Switch to gallery view">
+				<button on:click={() => {directory_view = "gallery"}} title="Switch to gallery view">
 					<i class="icon">collections</i>
 				</button>
 			{:else if directory_view === "gallery"}
-				<button on:click={() => {directory_view = "list"}} alt="Switch to list view">
+				<button on:click={() => {directory_view = "list"}} title="Switch to list view">
 					<i class="icon">list</i>
 				</button>
 			{/if}
 
 			<div class="toolbar_spacer"></div>
 			{#if state.bucket.permissions.update}
-				<button on:click={uploader.picker}><i class="icon">cloud_upload</i></button>
-				<button on:click={() => {creating_dir = !creating_dir}} class:button_highlight={creating_dir}>
+				<button on:click={uploader.picker} title="Upload files to this directory">
+					<i class="icon">cloud_upload</i>
+				</button>
+				<button on:click={() => {creating_dir = !creating_dir}} class:button_highlight={creating_dir} title="Make folder">
 					<i class="icon">create_new_folder</i>
 				</button>
 
 				<button
 					on:click={toggle_select}
-					class:button_highlight={mode === "selecting"}>
+					class:button_highlight={mode === "selecting"}
+					title="Select and delete files"
+				>
 					<i class="icon">edit</i>
 				</button>
 			{/if}
@@ -175,21 +183,20 @@ const toggle_select = () => {
 .width_container {
 	position: relative;
 	display: block;
-	max-width: 95%;
-	width: 1000px;
+	width: 100%;
 	margin: auto;
 	padding: 0;
+	background: var(--shaded_background);
 }
 .toolbar {
 	position: relative;
 	display: inline-flex;
 	flex-direction: row;
 	width: 100%;
-	margin: 16px 0 0 0;
+	max-width: 1000px;
+	margin: 0;
 	padding: 0;
 	justify-content: center;
-	background: var(--shaded_background);
-	border-radius: 6px;
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }

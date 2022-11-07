@@ -34,8 +34,10 @@ onMount(() => { name_input.focus() })
 
 <style>
 .create_dir {
-	display: flex;
+	display: inline-flex;
 	flex-direction: row;
+	width: 100%;
+	max-width: 1000px;
 }
 .create_dir > img {
 	height: 32px;
