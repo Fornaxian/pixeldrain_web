@@ -94,12 +94,12 @@ onMount(() => {
 <section>
 	<h2>File viewer branding</h2>
 	{#if !window.user.subscription.file_viewer_branding}
-		<div class="highlight_red">
+		<div class="highlight_yellow">
 			Sharing settings are not available for your account. Subscribe to
 			the Persistence plan or higher to enable these features.
 		</div>
 	{:else if !window.user.hotlinking_enabled}
-		<div class="highlight_red">
+		<div class="highlight_yellow">
 			To use custom file viewer branding bandwidth sharing needs to be
 			enabled. Enable bandwidth sharing on the
 			<a href="/user/sharing/bandwidth">bandwidth sharing page</a>.

@@ -45,12 +45,12 @@ onMount(() => {
 	<h2>Embedding controls</h2>
 	<SuccessMessage bind:this={success_message}></SuccessMessage>
 	{#if !window.user.subscription.file_viewer_branding}
-		<div class="highlight_red">
+		<div class="highlight_yellow">
 			Sharing settings are not available for your account. Subscribe to
 			the Persistence plan or higher to enable these features.
 		</div>
 	{:else if !window.user.hotlinking_enabled}
-		<div class="highlight_red">
+		<div class="highlight_yellow">
 			To use embedding restrictions bandwidth sharing needs to be enabled.
 			Enable bandwidth sharing on the
 			<a href="/user/sharing/bandwidth">bandwidth sharing page</a>.
