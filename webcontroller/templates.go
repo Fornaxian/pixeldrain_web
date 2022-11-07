@@ -44,7 +44,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		tpm:           wc.templates,
 		Authenticated: false,
 		UserAgent:     r.UserAgent(),
-		APIEndpoint:   template.URL(wc.apiURLExternal),
+		APIEndpoint:   template.URL(wc.config.APIURLExternal),
 
 		// Use the user's IP address for making requests
 		PixelAPI: wc.api.RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent()),
@@ -74,7 +74,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 					Value:   "",
 					Path:    "/",
 					Expires: time.Unix(0, 0),
-					Domain:  wc.sessionCookieDomain,
+					Domain:  wc.config.SessionCookieDomain,
 				})
 				http.SetCookie(w, &http.Cookie{
 					Name:    "pd_auth_key",

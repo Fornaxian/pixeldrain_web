@@ -205,7 +205,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 				Value:   session.AuthKey.String(),
 				Path:    "/",
 				Expires: time.Now().AddDate(50, 0, 0),
-				Domain:  wc.sessionCookieDomain,
+				Domain:  wc.config.SessionCookieDomain,
 
 				// Strict means the Cookie will only be sent when the user
 				// reaches a page by a link from the same domain. Lax means any

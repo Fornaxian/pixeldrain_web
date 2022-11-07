@@ -11,18 +11,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-// PixelWebConfig contains the Pixeldrain Web UI configuration
-type PixelWebConfig struct {
-	APIURLExternal      string `toml:"api_url_external"`
-	APIURLInternal      string `toml:"api_url_internal"`
-	WebsiteAddress      string `toml:"website_address"`
-	SessionCookieDomain string `toml:"session_cookie_domain"`
-	ResourceDir         string `toml:"resource_dir"`
-	DebugMode           bool   `toml:"debug_mode"`
-	ProxyAPIRequests    bool   `toml:"proxy_api_requests"`
-	MaintenanceMode     bool   `toml:"maintenance_mode"`
-}
-
 // DefaultConfig is the default configuration for Pixeldrain Web
 const DefaultConfig = `## Pixeldrain Web UI server configuration
 
@@ -32,6 +20,11 @@ api_url_external      = "/api"
 
 # Address used to make internal API requests to the backend
 api_url_internal      = "https://pixeldrain.com/api"
+
+# When connecting to the API over a Unix domain socket you should enter the
+# socket path here. api_url_internal needs to be correct too, as the API path
+# prefix will be derived from there
+api_socket_path       = ""
 
 website_address       = "https://pixeldrain.com"
 session_cookie_domain = ""
@@ -56,12 +49,12 @@ func Init(r *httprouter.Router, prefix string, setLogLevel bool) {
 	// Seed the RNG
 	rand.Seed(time.Now().UnixNano())
 
-	var webconf = &PixelWebConfig{}
+	var conf webcontroller.Config
 	var _, err = config.New(
 		DefaultConfig,
 		"",
 		"pdwebconf.toml",
-		webconf,
+		&conf,
 		true,
 	)
 	if err != nil {
@@ -69,20 +62,9 @@ func Init(r *httprouter.Router, prefix string, setLogLevel bool) {
 		os.Exit(1)
 	}
 
-	if !webconf.DebugMode && setLogLevel {
+	if !conf.DebugMode && setLogLevel {
 		log.SetLogLevel(log.LevelInfo)
 	}
 
-	webcontroller.New(
-		r,
-		prefix,
-		webconf.ResourceDir,
-		webconf.APIURLInternal,
-		webconf.APIURLExternal,
-		webconf.WebsiteAddress,
-		webconf.SessionCookieDomain,
-		webconf.MaintenanceMode,
-		webconf.DebugMode,
-		webconf.ProxyAPIRequests,
-	)
+	webcontroller.New(r, prefix, conf)
 }

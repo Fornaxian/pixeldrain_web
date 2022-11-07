@@ -18,20 +18,26 @@ import (
 	blackfriday "github.com/russross/blackfriday/v2"
 )
 
+type Config struct {
+	APIURLExternal      string `toml:"api_url_external"`
+	APIURLInternal      string `toml:"api_url_internal"`
+	APISocketPath       string `toml:"api_socket_path"`
+	WebsiteAddress      string `toml:"website_address"`
+	SessionCookieDomain string `toml:"session_cookie_domain"`
+	ResourceDir         string `toml:"resource_dir"`
+	DebugMode           bool   `toml:"debug_mode"`
+	ProxyAPIRequests    bool   `toml:"proxy_api_requests"`
+	MaintenanceMode     bool   `toml:"maintenance_mode"`
+}
+
 // WebController controls how requests are handled and makes sure they have
 // proper context when running
 type WebController struct {
 	templates *TemplateManager
+	config    Config
 
-	resourceDir string
-
+	// Server hostname, displayed in the footer of every web page
 	hostname string
-
-	apiURLInternal      string
-	apiURLExternal      string
-	websiteAddress      string
-	sessionCookieDomain string
-	proxyAPIRequests    bool
 
 	// page-specific variables
 	captchaSiteKey string
@@ -46,30 +52,19 @@ type WebController struct {
 
 // New initializes a new WebController by registering all the request handlers
 // and parsing all templates in the resource directory
-func New(
-	r *httprouter.Router,
-	prefix string,
-	resourceDir string,
-	apiURLInternal string,
-	apiURLExternal string,
-	websiteAddress string,
-	sessionCookieDomain string,
-	maintenanceMode bool,
-	debugMode bool,
-	proxyAPIRequests bool,
-) (wc *WebController) {
+func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 	var err error
 	wc = &WebController{
-		resourceDir:         resourceDir,
-		apiURLInternal:      apiURLInternal,
-		apiURLExternal:      apiURLExternal,
-		websiteAddress:      websiteAddress,
-		sessionCookieDomain: sessionCookieDomain,
-		proxyAPIRequests:    proxyAPIRequests,
-		httpClient:          &http.Client{Timeout: time.Minute * 10},
-		api:                 pixelapi.New(apiURLInternal),
+		config:     conf,
+		httpClient: &http.Client{Timeout: time.Minute * 10},
+		api:        pixelapi.New(conf.APIURLInternal),
 	}
-	wc.templates = NewTemplateManager(resourceDir, apiURLExternal, debugMode)
+
+	if conf.APISocketPath != "" {
+		wc.api = wc.api.UnixSocketPath(conf.APISocketPath)
+	}
+
+	wc.templates = NewTemplateManager(conf.ResourceDir, conf.APIURLExternal, conf.DebugMode)
 	wc.templates.ParseTemplates(false)
 
 	if wc.hostname, err = os.Hostname(); err != nil {
@@ -77,7 +72,7 @@ func New(
 	}
 
 	// Serve static files
-	var fs = http.FileServer(http.Dir(resourceDir + "/static"))
+	var fs = http.FileServer(http.Dir(conf.ResourceDir + "/static"))
 	var resourceHandler = func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		// Cache resources for a year
 		w.Header().Set("Cache-Control", "public, max-age=31536000")
@@ -93,7 +88,7 @@ func New(
 	r.GET(prefix+"/robots.txt" /*   */, wc.serveFile("/robots.txt"))
 	r.GET(prefix+"/ads.txt" /*      */, wc.serveFile("/ads.txt"))
 
-	if maintenanceMode {
+	if conf.MaintenanceMode {
 		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusServiceUnavailable)
 			wc.templates.Get().ExecuteTemplate(w, "maintenance", wc.newTemplateData(w, r))
@@ -101,10 +96,10 @@ func New(
 		return wc
 	}
 
-	if proxyAPIRequests {
-		remoteURL, err := url.Parse(strings.TrimSuffix(apiURLInternal, "/api"))
+	if conf.ProxyAPIRequests {
+		remoteURL, err := url.Parse(strings.TrimSuffix(conf.APIURLInternal, "/api"))
 		if err != nil {
-			panic(fmt.Errorf("failed to parse reverse proxy URL '%s': %w", apiURLInternal, err))
+			panic(fmt.Errorf("failed to parse reverse proxy URL '%s': %w", conf.APIURLInternal, err))
 		}
 
 		log.Info("Starting API proxy to %s", remoteURL)
@@ -315,7 +310,7 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 		r *http.Request,
 		p httprouter.Params,
 	) {
-		http.ServeFile(w, r, wc.resourceDir+"/static"+path)
+		http.ServeFile(w, r, wc.config.ResourceDir+"/static"+path)
 	}
 }
 
