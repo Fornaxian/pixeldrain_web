@@ -243,7 +243,7 @@ const keydown = e => {
 			hide();
 			break;
 		case "i":
-			details_window.toggle()
+			details.toggle()
 			break;
 		case "s":
 			download()
@@ -363,7 +363,7 @@ const share = () => {
 	<!-- This frame will load the download URL when a download button is pressed -->
 	<iframe bind:this={download_frame} title="Frame for downloading files" style="display: none; width: 1px; height: 1px;"></iframe>
 
-	<Modal bind:this={details} title="Details" width="600px" role="prompt">
+	<Modal bind:this={details} title="Details" width="800px" role="prompt">
 		<table style="min-width: 100%;">
 			<tr><td colspan="2"><h3>Node details</h3></td></tr>
 			<tr><td>Name</td><td>{state.base.name}</td></tr>
@@ -374,6 +374,7 @@ const share = () => {
 			{#if state.base.type === "file"}
 			<tr><td>File type</td><td>{state.base.file_type}</td></tr>
 			<tr><td>File size</td><td>{formatDataVolume(state.base.file_size)}</td></tr>
+			<tr><td>SHA256 sum</td><td>{state.base.sha256_sum}</td></tr>
 			{/if}
 			<tr><td colspan="2"><h3>Bucket details</h3></td></tr>
 			<tr><td>ID</td><td>{state.bucket.id}</td></tr>

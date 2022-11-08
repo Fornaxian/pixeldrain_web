@@ -8,7 +8,7 @@ import GalleryView from './GalleryView.svelte'
 let dispatch = createEventDispatcher()
 
 export let state
-export let directory_view = "gallery"
+export let directory_view = "list"
 let uploader
 let mode = "viewing"
 let creating_dir = false

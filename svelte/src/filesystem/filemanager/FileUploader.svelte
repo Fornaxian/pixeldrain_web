@@ -224,9 +224,10 @@ const paste = (e) => {
 }
 
 .file_upload {
-	display: block;
+	display: inline-block;
 	text-align: left;
 	width: 100%;
+	max-width: 1000px;
 	margin: 6px 0 0 0;
 	padding: 0;
 	background: var(--body_color);
