@@ -257,20 +257,6 @@ const apply_customizations = file => {
 	}
 }
 
-let supports_fullscreen = !!document.documentElement.requestFullscreen
-let fullscreen = false
-const toggle_fullscreen = () => {
-	if (!fullscreen) {
-		document.documentElement.requestFullscreen()
-		document.getElementById("btn_fullscreen_icon").innerText = "fullscreen_exit"
-		fullscreen = true
-	} else {
-		document.exitFullscreen()
-		document.getElementById("btn_fullscreen_icon").innerText = "fullscreen"
-		fullscreen = false
-	}
-}
-
 let copy_url_status = "" // empty, copied, or error
 const copy_url = () => {
 	if (copy_text(window.location.href)) {
@@ -374,13 +360,13 @@ const keyboard_event = evt => {
 
 <svelte:window on:keydown={keyboard_event} on:hashchange={hash_change}/>
 
-<div id="file_viewer" class="file_viewer">
+<div class="file_viewer">
 	<!-- Head elements for the ads -->
 	<AdHead></AdHead>
 
 	<LoadingIndicator loading={loading}/>
 
-	<div id="headerbar" class="headerbar">
+	<div class="headerbar">
 		<button
 			on:click={toolbar_toggle}
 			class="button_toggle_toolbar round"
@@ -398,17 +384,14 @@ const keyboard_event = evt => {
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 4px 0 0;"></PixeldrainLogo>
 		</a>
 
-		<div id="file_viewer_headerbar_title" class="file_viewer_headerbar_title">
+		<div class="file_viewer_headerbar_title">
 			{#if list.title !== ""}{list.title}<br/>{/if}
 			{#if file.name !== ""}{file.name}{/if}
 		</div>
-		{#if embedded && supports_fullscreen}
-			<button
-				class="round"
-				on:click={toggle_fullscreen}
-				title="Open this page in full-screen mode">
-				<i class="icon" id="btn_fullscreen_icon">fullscreen</i>
-			</button>
+		{#if embedded}
+			<a href={window.location.pathname} target="_blank" class="button round" title="Open this page in a new tab">
+				<i class="icon" id="btn_fullscreen_icon">open_in_new</i>
+			</a>
 		{/if}
 	</div>
 
@@ -426,7 +409,7 @@ const keyboard_event = evt => {
 	<CustomBanner src={custom_header} link={custom_header_link} border_top={true}></CustomBanner>
 
 	<div class="file_preview_row">
-		<div id="toolbar" class="toolbar" class:toolbar_visible>
+		<div class="toolbar" class:toolbar_visible>
 			{#if view === "file"}
 				<FileStats file={file}></FileStats>
 				<div class="separator"></div>

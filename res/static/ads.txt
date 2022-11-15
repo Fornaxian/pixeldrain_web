@@ -1,11 +1,14 @@
-#pixfuture START updated Oct-17-2022
-
+#pixfuture START updated Nov-3-2022
+#4605 has to be changed to a dedicated site ID
 pixfuture.com, 4605, DIRECT
-google.com, pub-1575911585432548, DIRECT, f08c47fec0942fa0
 yahoo.com, 57758, RESELLER, e1a5b5b6e3255540
 pubmatic.com, 156078, RESELLER, 5d62403b186f2ace
 appnexus.com, 11664, RESELLER, f5ab79cb980f11d1
 openx.com, 544096208, RESELLER, 6a698e2ec38604c6
+media.net, 8CUIUMTP7, DIRECT
+google.com, pub-7439041255533808, RESELLER, f08c47fec0942fa0
+google.com, pub-1575911585432548, DIRECT, f08c47fec0942fa0
+google.com, pub-4377140038207096, DIRECT, f08c47fec0942fa0
 indexexchange.com, 183875, RESELLER, 50b1c356f2c5c8fc
 sovrn.com, 378732, RESELLER, fafdf38b16bf6b2b
 emxdgt.com, 273, RESELLER, 1e1d41537f7cad7f
@@ -132,4 +135,5 @@ appnexus.com, 13099, RESELLER, f5ab79cb980f11d1
 yahoo.com, 58905, RESELLER, e1a5b5b6e3255540
 pubmatic.com, 161593, RESELLER, 5d62403b186f2ace
 opera.com, pub7733135167424, DIRECT, 55a0c5fd61378de3
-#pixfuture END updated Oct-17-2022
+google.com, pub-2205121062140812, RESELLER, f08c47fec0942fa0
+#pixfuture END updated Nov-3-2022
