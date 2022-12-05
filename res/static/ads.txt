@@ -1,6 +1,5 @@
-#pixfuture START updated Nov-3-2022
+#pixfuture START updated Nov-27-2022
 #4605 has to be changed to a dedicated site ID
-pixfuture.com, 4605, DIRECT
 yahoo.com, 57758, RESELLER, e1a5b5b6e3255540
 pubmatic.com, 156078, RESELLER, 5d62403b186f2ace
 appnexus.com, 11664, RESELLER, f5ab79cb980f11d1
@@ -136,4 +135,15 @@ yahoo.com, 58905, RESELLER, e1a5b5b6e3255540
 pubmatic.com, 161593, RESELLER, 5d62403b186f2ace
 opera.com, pub7733135167424, DIRECT, 55a0c5fd61378de3
 google.com, pub-2205121062140812, RESELLER, f08c47fec0942fa0
-#pixfuture END updated Nov-3-2022
+pixfuture.com, 4605, DIRECT
+admanmedia.com, 980, DIRECT
+adform.com, 2671, RESELLER
+contextweb.com, 561913, RESELLER, 89ff185a4c4e857c
+triplelift.com, 12456, RESELLER, 6c33edb13117fd86
+freewheel.tv, 1235183, RESELLER
+freewheel.tv, 1235279, RESELLER
+axonix.com, 57869, RESELLER
+zeta.com, 757, RESELLER
+disqus.com, 757, RESELLER
+vidoomy.com, 5630014, RESELLER
+#pixfuture END updated Nov-27-2022
