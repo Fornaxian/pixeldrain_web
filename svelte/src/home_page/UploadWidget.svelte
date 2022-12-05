@@ -6,10 +6,9 @@ import Facebook from "../icons/Facebook.svelte"
 import Reddit from "../icons/Reddit.svelte"
 import Twitter from "../icons/Twitter.svelte"
 import Tumblr from "../icons/Tumblr.svelte"
-import { formatDataVolume, formatDuration } from "../util/Formatting.svelte";
 import StorageProgressBar from "../user_home/StorageProgressBar.svelte"
 import Konami from "../util/Konami.svelte"
-import ProgressBar from "../util/ProgressBar.svelte"
+import UploadStats from "./UploadStats.svelte";
 
 // === UPLOAD LOGIC ===
 
@@ -41,6 +40,7 @@ const paste = (e) => {
 let active_uploads = 0
 let upload_queue = []
 let state = "idle" // idle, uploading, finished
+let upload_stats
 
 const upload_files = async (files) => {
 	if (files.length === 0) {
@@ -90,74 +90,17 @@ const start_upload = () => {
 
 	if (active_uploads === 0 && finished_count != 0) {
 		state = "finished"
-
-		if (stats_interval !== null) {
-			clearInterval(stats_interval)
-			stats_interval = null
-			stats_finished()
-		}
-
+		upload_stats.finish()
 		uploads_finished()
 	} else {
 		state = "uploading"
-
-		if (stats_interval === null) {
-			stats_interval = setInterval(stats_update, stats_interval_ms)
-		}
+		upload_stats.start()
 	}
 }
 
 const finish_upload = (file) => {
 	active_uploads--
 	start_upload()
-}
-
-let stats_interval = null
-let stats_interval_ms = 500
-let start_time = 0
-let total_progress = 0
-let total_size = 0
-let total_loaded = 0
-let last_total_loaded = 0
-let total_rate = 0
-let remaining_time = 0
-const stats_update = () => {
-	if (start_time === 0) {
-		start_time = new Date().getTime()
-	}
-
-	// Get total size of upload queue and size of finished uploads
-	total_size = 0
-	total_loaded = 0
-	for (let i = 0; i < upload_queue.length; i++) {
-		total_size += upload_queue[i].total_size
-		total_loaded += upload_queue[i].loaded_size
-	}
-
-	total_progress = total_loaded / total_size
-
-	// Calculate ETA by estimating the total time and subtracting the elapsed time
-	let elapsed_time = new Date().getTime() - start_time
-	remaining_time = (elapsed_time/total_progress) - elapsed_time
-
-	// Calculate the rate by comparing the current progress with the last iteration
-	total_rate = Math.floor(
-		(total_rate * 0.8) +
-		(((1000 / stats_interval_ms) * (total_loaded - last_total_loaded)) * 0.2)
-	)
-	last_total_loaded = total_loaded
-
-	document.title = (total_progress*100).toFixed(0) + "% ~ " +
-		formatDuration(remaining_time, 0) +
-		" ~ uploading to pixeldrain"
-}
-const stats_finished = () => {
-	start_time = 0
-	total_loaded = total_size
-	total_progress = 1
-	total_rate = 0
-
-	document.title = "Finished! ~ pixeldrain"
 }
 
 const leave_confirmation = e => {
@@ -425,14 +368,8 @@ const keydown = (e) => {
 	<span class="big_number">2</span>
 	<span class="instruction_text">Wait for the files to finish uploading</span>
 	<br/>
-	<div class="stats_box">
-		<div>Size {formatDataVolume(total_size, 3)}</div>
-		<div>Progress {(total_progress*100).toPrecision(3)}%</div>
-		<div>ETA {formatDuration(remaining_time, 0)}</div>
-		<div>Rate {formatDataVolume(total_rate, 3)}/s</div>
-	</div>
 
-	<ProgressBar total={total_size} used={total_loaded} animation="linear" speed={stats_interval_ms}/>
+	<UploadStats bind:this={upload_stats} upload_queue={upload_queue}/>
 
 	<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
 		Gimme gimme gimme!<br/>
@@ -588,18 +525,6 @@ const keydown = (e) => {
 	font-size: 1.5em;
 	display: inline;
 	vertical-align: middle;
-}
-.stats_box {
-	display: inline-grid;
-	grid-template-columns: 25% 25% 25% 25%;
-	width: 100%;
-	text-align: center;
-	font-family: sans-serif, monospace;
-}
-@media (max-width: 1000px) {
-	.stats_box {
-		grid-template-columns: 50% 50%;
-	}
 }
 
 .album_name_form {

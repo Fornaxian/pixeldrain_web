@@ -1,7 +1,7 @@
 <script>
 import { add_upload_history, domain_url } from "../util/Util.svelte"
-import { formatDataVolume, formatDuration} from "../util/Formatting.svelte"
-    import Spinner from "../util/Spinner.svelte";
+import { formatDataVolume, formatDuration } from "../util/Formatting.svelte"
+import Spinner from "../util/Spinner.svelte";
 
 export let job = {}
 let file_button
@@ -10,29 +10,29 @@ let tries = 0
 let start_time = 0
 let remaining_time = 0
 
-let stats_interval = null
-let stats_interval_ms = 250
+let last_update_time = 0
 let progress = 0
-let last_loaded_size = 0
 let transfer_rate = 0
-const on_progress = () => {
-	if (job.loaded_size === 0 || job.total_size === 0) {
+const on_progress = (loaded, total) => {
+	job.loaded_size = loaded
+	job.total_size = total
+
+	if (last_update_time === 0) {
+		last_update_time = new Date().getTime()
 		return
 	}
 
-	progress = job.loaded_size / job.total_size
-	let elapsed_time = new Date().getTime() - start_time
+	let current_time = new Date().getTime()
+	last_update_time = current_time
+
+	let elapsed_time = current_time - start_time
 	remaining_time = (elapsed_time/progress) - elapsed_time
 
-	// Calculate transfer rate, apply smoothing by mixing it with the previous
-	// rate ten to one
-	transfer_rate = Math.floor(
-		(transfer_rate * 0.9) +
-		(((1000 / stats_interval_ms) * (job.loaded_size - last_loaded_size)) * 0.1)
-	)
+	progress = job.loaded_size / job.total_size
 
-	last_loaded_size = job.loaded_size
-
+	// Calculate transfer rate by dividing the total uploaded size by the total
+	// running time
+	transfer_rate = Math.floor(job.loaded_size / ((current_time - start_time) / 1000))
 	progress_bar.style.width = (progress * 100) + "%"
 
 	if (progress >= 1) {
@@ -46,8 +46,6 @@ const on_progress = () => {
 let href = null
 let target = null
 const on_success = (resp) => {
-	clearInterval(stats_interval)
-	stats_interval = null
 	transfer_rate = 0
 	job.loaded_size = job.total_size
 	job.file = null // Delete reference to file to free memory
@@ -68,8 +66,6 @@ const on_success = (resp) => {
 let error_id = ""
 let error_reason = ""
 const on_failure = (status, message) => {
-	clearInterval(stats_interval)
-	stats_interval = null
 	transfer_rate = 0
 	job.loaded_size = job.total_size
 	job.file = null // Delete reference to file to free memory
@@ -100,9 +96,6 @@ export const start = () => {
 	}
 
 	start_time = new Date().getTime()
-	if (stats_interval === null) {
-		stats_interval = setInterval(on_progress, stats_interval_ms)
-	}
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("PUT", window.api_endpoint+"/file/"+encodeURIComponent(job.name), true);
@@ -110,8 +103,7 @@ export const start = () => {
 
 	xhr.upload.addEventListener("progress", evt => {
 		if (evt.lengthComputable) {
-			job.loaded_size = evt.loaded
-			job.total_size = evt.total
+			on_progress(evt.loaded, evt.total)
 		}
 	});
 
