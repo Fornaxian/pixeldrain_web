@@ -34,14 +34,18 @@ function toggleMenu() {
 		// Menu is visible, hide it
 		nav.style.left = -nav.offsetWidth + "px";
 		body.style.marginLeft = "0";
-		content.style.borderTopLeftRadius = "0"
-		content.style.borderBottomLeftRadius = "0"
+		if (content) {
+			content.style.borderTopLeftRadius = "0"
+			content.style.borderBottomLeftRadius = "0"
+		}
 	} else {
 		// Menu is hidden, show it
 		nav.style.left = "0";
 		body.style.marginLeft = nav.offsetWidth + "px";
-		content.style.borderTopLeftRadius = "12px"
-		content.style.borderBottomLeftRadius = "12px"
+		if (content) {
+			content.style.borderTopLeftRadius = "8px"
+			content.style.borderBottomLeftRadius = "8px"
+		}
 	}
 }
 function resetMenu() {
@@ -54,17 +58,15 @@ function resetMenu() {
 {{define "footer"}}
 <footer>
 	<div class="footer_content">
-		<div style="display: inline-block; margin: 0 8px 0 8px;">
+		<div style="display: inline-block; margin: 0 8px;">
 			Pixeldrain is a product by <a href="//fornaxian.tech" target="_blank">Fornaxian Technologies</a>
 		</div>
-		<div style="display: inline-block; margin: 0 8px 0 8px;">
-			(
+		<div style="display: inline-block; margin: 0 8px;">
 			<a href="https://www.patreon.com/pixeldrain" target="_blank">{{template `patreon.svg` .}} Patreon</a> |
 			<a href="https://twitter.com/Fornax96" target="_blank">{{template `twitter.svg` .}} Twitter</a> |
 			<a href="https://reddit.com/r/pixeldrain" target="_blank">{{template `reddit.svg` .}} Reddit</a> |
 			<a href="https://github.com/Fornaxian" target="_blank">{{template `github.svg` .}} GitHub</a> |
 			<a href="https://mastodon.social/web/@fornax" target="_blank">{{template `mastodon.svg` .}} Mastodon</a>
-			)
 		</div>
 		<br/>
 		<span class="small_footer_text" style="font-size: .75em; line-height: .75em;">

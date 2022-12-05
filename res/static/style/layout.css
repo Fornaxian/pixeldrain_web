@@ -98,6 +98,10 @@ footer>.footer_content {
 	background-color: var(--body_background);
 	color: var(--body_text_color);
 	display: inline-block;
+	width: 1000px;
+	max-width: 100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	border-radius: 8px;
 	margin: 120px 0 60px 0;
 }
@@ -155,8 +159,8 @@ footer>.footer_content {
 
 .page_content {
 	background: var(--body_background);
-	border-top-left-radius: 12px;
-	border-bottom-left-radius: 12px;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
 	transition: border-top-left-radius 1s, border-bottom-left-radius 1s;
 }
 
@@ -643,9 +647,9 @@ input[type=file] {
 /* Webkit Scrollbars */
 
 ::-webkit-scrollbar {
-	width: 18px;
+	width: 16px;
 	/* for vertical scrollbars */
-	height: 18px;
+	height: 16px;
 	/* for horizontal scrollbars */
 }
 
@@ -656,7 +660,7 @@ input[type=file] {
 ::-webkit-scrollbar-thumb {
 	background-color: var(--scrollbar_foreground_color);
 	border-radius: 10px;
-	border: 5px solid var(--body_color);
+	border: 4px solid var(--body_color);
 	height: 40px;
 	width: 40px;
 }

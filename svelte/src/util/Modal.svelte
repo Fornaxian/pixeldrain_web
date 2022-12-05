@@ -94,7 +94,7 @@ these padding divs to move it 25% up */
 	max-height: 100%;
 	max-width: 100%;
 	padding: 0;
-	border-radius: 20px 20px 12px 12px;
+	border-radius: 20px 20px 8px 8px;
 	overflow: hidden;
 	text-align: left;
 }

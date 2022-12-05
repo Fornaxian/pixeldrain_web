@@ -116,7 +116,7 @@ const keydown = (e) => {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	font-size: 1.2em;
+	font-size: 1em;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -125,12 +125,14 @@ const keydown = (e) => {
 	flex-grow: 1;
 	flex-shrink: 1;
 	text-align: center;
+	font-size: 1.2em;
 }
 .search {
 	min-width: 100px;
 	max-width: 300px;
 	flex-grow: 1;
 	flex-shrink: 1;
+	align-self: stretch;
 }
 @media(max-width: 700px) {
 	.title {

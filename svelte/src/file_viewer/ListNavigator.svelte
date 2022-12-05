@@ -105,7 +105,7 @@ export const set_item = idx => {
 .nav_button{
 	flex-grow: 0;
 	flex-shrink: 0;
-	margin: 6px;
+	margin: 4px;
 }
 
 .list_navigator {
@@ -118,9 +118,9 @@ export const set_item = idx => {
 
 .file_button {
 	position: relative;
-	height: 50px;
+	height: 48px;
 	width: 220px;
-	margin: 6px;
+	margin: 4px 3px;
 	padding: 0;
 	overflow: hidden;
 	border-radius: 6px;

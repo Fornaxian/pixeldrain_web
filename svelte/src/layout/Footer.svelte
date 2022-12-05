@@ -8,11 +8,10 @@ import Twitter from "../icons/Twitter.svelte";
 
 <footer>
 	<div class="footer_content">
-		<div style="display: inline-block; margin: 0 8px 0 8px;">
+		<div style="display: inline-block; margin: 0 8px;">
 			Pixeldrain is a product by <a href="//fornaxian.tech" target="_blank">Fornaxian Technologies</a>
 		</div>
-		<div style="display: inline-block; margin: 0 8px 0 8px;">
-			(
+		<div style="display: inline-block; margin: 0 8px;">
 			<a href="https://www.patreon.com/pixeldrain" target="_blank">
 				<Patreon style="color: var(--body_text_color);"/> Patreon
 			</a> |
@@ -28,7 +27,6 @@ import Twitter from "../icons/Twitter.svelte";
 			<a href="https://mastodon.social/web/@fornax" target="_blank">
 				<Mastodon style="color: var(--body_text_color);"/> Mastodon
 			</a>
-			)
 		</div>
 		<br/>
 		<span class="small_footer_text" style="font-size: .75em; line-height: .75em;">

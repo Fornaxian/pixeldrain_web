@@ -684,7 +684,7 @@ const keyboard_event = evt => {
 	transition: left 0.5s;
 	overflow: auto;
 	text-align: center;
-	border-radius: 12px;
+	border-radius: 8px;
 	border: 2px solid var(--separator);
 }
 .file_preview.toolbar_visible { left: 8.2em; }

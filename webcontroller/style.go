@@ -115,7 +115,7 @@ type styleSheet struct {
 	Highlight           HSL // Links, highlighted buttons, list navigation
 	HighlightText       HSL // Text on buttons
 	Danger              HSL
-	ScrollbarForeground CSS // Based on Highlight if undefined
+	ScrollbarForeground CSS // Based on Input if undefined
 	ScrollbarHover      CSS // Based on ScrollbarForeground if undefined
 
 	BackgroundColor   HSL
@@ -153,7 +153,7 @@ func (s styleSheet) withDefaults() styleSheet {
 	}
 	defaultHSL(&s.Link, s.Highlight.Add(0, 0, -.05))
 	defaultCSS(&s.ScrollbarForeground, s.Input)
-	defaultCSS(&s.ScrollbarHover, s.Highlight)
+	defaultCSS(&s.ScrollbarHover, s.InputHover)
 	defaultHSL(&s.Chart1, s.Highlight)
 	defaultHSL(&s.Chart2, s.Chart1.Add(120, 0, 0))
 	defaultHSL(&s.Chart3, s.Chart2.Add(120, 0, 0))
@@ -333,15 +333,13 @@ var purpleDrainStyle = styleSheet{
 }
 
 var classicStyle = styleSheet{
-	Input:               HSL{0, 0, .18},
-	InputHover:          HSL{0, 0, .22},
-	InputText:           HSL{0, 0, .9},
-	InputDisabledText:   HSL{0, 0, .4},
-	Highlight:           HSL{89, .60, .45},
-	HighlightText:       HSL{0, 0, 0},
-	Danger:              HSL{339, .65, .31},
-	ScrollbarForeground: HSL{0, 0, .40},
-	ScrollbarHover:      HSL{0, 0, .50},
+	Input:             HSL{0, 0, .18},
+	InputHover:        HSL{0, 0, .22},
+	InputText:         HSL{0, 0, .9},
+	InputDisabledText: HSL{0, 0, .4},
+	Highlight:         HSL{89, .60, .45},
+	HighlightText:     HSL{0, 0, 0},
+	Danger:            HSL{339, .65, .31},
 
 	BackgroundColor: HSL{0, 0, .08},
 	BodyColor:       HSL{0, 0, .12},
@@ -352,15 +350,13 @@ var classicStyle = styleSheet{
 }
 
 var maroonStyle = styleSheet{
-	Input:               HSL{0, .8, .20}, // hsl(0, 87%, 40%)
-	InputHover:          HSL{0, .8, .24},
-	InputText:           HSL{0, 0, 1},
-	InputDisabledText:   HSL{0, 0, .5},
-	Highlight:           HSL{137, 1, .37}, //hsl(137, 100%, 37%)
-	HighlightText:       HSL{0, 0, 0},
-	Danger:              HSL{9, .96, .42}, //hsl(9, 96%, 42%)
-	ScrollbarForeground: HSL{0, .75, .3},
-	ScrollbarHover:      HSL{0, .75, .4},
+	Input:             HSL{0, .8, .20}, // hsl(0, 87%, 40%)
+	InputHover:        HSL{0, .8, .25},
+	InputText:         HSL{0, 0, 1},
+	InputDisabledText: HSL{0, 0, .5},
+	Highlight:         HSL{137, 1, .37}, //hsl(137, 100%, 37%)
+	HighlightText:     HSL{0, 0, 0},
+	Danger:            HSL{9, .96, .42}, //hsl(9, 96%, 42%)
 
 	BackgroundColor: HSL{0, .7, .05},
 	BodyColor:       HSL{0, .8, .08}, // HSL{0, .8, .15},
@@ -371,15 +367,13 @@ var maroonStyle = styleSheet{
 }
 
 var hackerStyle = styleSheet{
-	Input:               HSL{0, 0, .1},
-	InputHover:          HSL{0, 0, .14},
-	InputText:           HSL{0, 0, 1},
-	InputDisabledText:   HSL{0, 0, .5},
-	Highlight:           HSL{120, .8, .5},
-	HighlightText:       HSL{0, 0, 0},
-	Danger:              HSL{0, 1, .4},
-	ScrollbarForeground: HSL{120, .5, .25},
-	ScrollbarHover:      HSL{120, .5, .35},
+	Input:             HSL{0, 0, .1},
+	InputHover:        HSL{0, 0, .15},
+	InputText:         HSL{0, 0, 1},
+	InputDisabledText: HSL{0, 0, .5},
+	Highlight:         HSL{120, .8, .5},
+	HighlightText:     HSL{0, 0, 0},
+	Danger:            HSL{0, 1, .4},
 
 	BackgroundColor: HSL{0, 0, 0},
 	BodyColor:       HSL{0, 0, .03},
@@ -390,15 +384,13 @@ var hackerStyle = styleSheet{
 }
 
 var cantaPixeldrainStyle = styleSheet{
-	Input:               HSL{167, .06, .30}, // hsl(167, 6%, 30%)
-	InputHover:          HSL{167, .06, .34}, // hsl(167, 6%, 30%)
-	InputText:           HSL{0, 0, 1},
-	InputDisabledText:   HSL{0, 0, .5},
-	Highlight:           HSL{165, 1, .40}, // hsl(165, 100%, 40%)
-	HighlightText:       HSL{0, 0, 0},
-	Danger:              HSL{40, 1, .5},     // hsl(40, 100%, 50%)
-	ScrollbarForeground: HSL{204, .05, .78}, // hsl(204, 5%, 78%)
-	ScrollbarHover:      HSL{204, .05, .88},
+	Input:             HSL{167, .06, .30}, // hsl(167, 6%, 30%)
+	InputHover:        HSL{167, .06, .35}, // hsl(167, 6%, 30%)
+	InputText:         HSL{0, 0, 1},
+	InputDisabledText: HSL{0, 0, .5},
+	Highlight:         HSL{165, 1, .40}, // hsl(165, 100%, 40%)
+	HighlightText:     HSL{0, 0, 0},
+	Danger:            HSL{40, 1, .5}, // hsl(40, 100%, 50%)
 
 	BackgroundColor: HSL{180, .04, .16},
 	BodyColor:       HSL{168, .05, .21},
@@ -409,15 +401,13 @@ var cantaPixeldrainStyle = styleSheet{
 }
 
 var skeuosPixeldrainStyle = styleSheet{
-	Input:               HSL{226, .15, .23}, //hsl(226, 15%, 23%)
-	InputHover:          HSL{226, .15, .27},
-	InputText:           HSL{60, .06, .93},
-	InputDisabledText:   HSL{0, 0, .5},
-	Highlight:           HSL{282, .65, .54}, // hsl(282, 65%, 54%)
-	HighlightText:       HSL{0, 0, 1},
-	Danger:              HSL{0, .79, .43},   // hsl(0, 79%, 43%)
-	ScrollbarForeground: HSL{220, .02, .62}, // hsl(220, 2%, 62%)
-	ScrollbarHover:      HSL{220, .02, .80},
+	Input:             HSL{226, .15, .23}, //hsl(226, 15%, 23%)
+	InputHover:        HSL{226, .15, .28},
+	InputText:         HSL{60, .06, .93},
+	InputDisabledText: HSL{0, 0, .5},
+	Highlight:         HSL{282, .65, .54}, // hsl(282, 65%, 54%)
+	HighlightText:     HSL{0, 0, 1},
+	Danger:            HSL{0, .79, .43}, // hsl(0, 79%, 43%)
 
 	BackgroundColor: HSL{232, .14, .11}, //hsl(232, 14%, 11%)
 	BodyColor:       HSL{229, .14, .16}, // hsl(229, 14%, 16%)
@@ -485,7 +475,7 @@ var nordLightStyle = styleSheet{
 
 var sweetPixeldrainStyle = styleSheet{
 	Input:             HSL{229, .25, .18}, // hsl(229, 25%, 14%)
-	InputHover:        HSL{229, .25, .22}, // hsl(229, 25%, 14%)
+	InputHover:        HSL{229, .25, .23}, // hsl(229, 25%, 14%)
 	InputText:         HSL{223, .13, .79},
 	InputDisabledText: HSL{0, 0, .5},
 	Highlight:         HSL{296, .88, .44},
@@ -502,7 +492,7 @@ var sweetPixeldrainStyle = styleSheet{
 
 var adwaitaDarkStyle = styleSheet{
 	Input:             RGBA{255, 255, 255, .06},
-	InputHover:        RGBA{255, 255, 255, .1},
+	InputHover:        RGBA{255, 255, 255, .11},
 	InputText:         HSL{0, 0, 1},
 	InputDisabledText: HSL{0, 0, .5},
 	Highlight:         HSL{152, .62, .39}, // hsl(152, 62%, 39%)
@@ -519,7 +509,7 @@ var adwaitaDarkStyle = styleSheet{
 
 var adwaitaLightStyle = styleSheet{
 	Input:             RGBA{0, 0, 0, .06},
-	InputHover:        RGBA{0, 0, 0, .1},
+	InputHover:        RGBA{0, 0, 0, .11},
 	InputText:         HSL{0, 0, .2},
 	InputDisabledText: HSL{0, 0, .7},
 	Highlight:         HSL{152, .62, .47}, // hsl(152, 62%, 47%)
@@ -537,7 +527,7 @@ var adwaitaLightStyle = styleSheet{
 
 var solarizedDarkStyle = styleSheet{
 	Input:             HSL{192, .81, .18}, // hsl(194, 14%, 40%)
-	InputHover:        HSL{192, .81, .22}, // hsl(196, 13%, 45%)
+	InputHover:        HSL{192, .81, .23}, // hsl(196, 13%, 45%)
 	InputText:         HSL{180, .07, .80}, // hsl(44, 87%, 94%)
 	InputDisabledText: HSL{194, .14, .30}, // hsl(194, 14%, 40%)
 	Highlight:         HSL{68, 1, .30},    // hsl(68, 100%, 30%)
@@ -554,7 +544,7 @@ var solarizedDarkStyle = styleSheet{
 
 var solarizedLightStyle = styleSheet{
 	Input:             HSL{46, .42, .84},
-	InputHover:        HSL{46, .42, .82},
+	InputHover:        HSL{46, .42, .80},
 	InputText:         HSL{194, .14, .20}, // hsl(192, 81%, 14%)
 	InputDisabledText: HSL{44, .87, .94},
 	Highlight:         HSL{68, 1, .30}, // hsl(68, 100%, 30%)
