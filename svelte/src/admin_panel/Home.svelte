@@ -68,10 +68,15 @@ let status = {
 	cpu_profile_running_since: "",
 	db_latency: 0,
 	db_time: "",
+	cache_threshold: 0,
 	local_read_size: 0,
 	local_read_size_per_sec: 0,
 	local_reads: 0,
 	local_reads_per_sec: 0,
+	neighbour_read_size: 0,
+	neighbour_read_size_per_sec: 0,
+	neighbour_reads: 0,
+	neighbour_reads_per_sec: 0,
 	peers: [],
 	query_statistics: [],
 	remote_read_size: 0,
@@ -234,7 +239,7 @@ onDestroy(() => {
 					<td>{peer.load_1_min.toFixed(1)}</td>
 					<td>{peer.load_5_min.toFixed(1)}</td>
 					<td>{peer.load_15_min.toFixed(1)}</td>
-					<td>{formatDuration(peer.latency, 3)}</td>
+					<td>{(peer.latency/1000).toPrecision(3)} ms</td>
 					<td>{formatDataVolume(peer.free_space, 4)}</td>
 					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
 				</tr>
@@ -246,27 +251,41 @@ onDestroy(() => {
 	<table>
 		<thead>
 			<tr>
-				<td>Local reads</td>
-				<td>Local read size</td>
-				<td>Remote reads</td>
-				<td>Remote read size</td>
+				<td>Source</td>
+				<td>Reads</td>
+				<td>Reads / s</td>
+				<td>Total size</td>
+				<td>Size / s</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
+				<td>Local cache</td>
 				<td>{status.local_reads}</td>
+				<td>{status.local_reads_per_sec.toPrecision(4)} / s</td>
 				<td>{formatDataVolume(status.local_read_size, 4)}</td>
-				<td>{status.remote_reads}</td>
-				<td>{formatDataVolume(status.remote_read_size, 4)}</td>
+				<td>{formatDataVolume(status.local_read_size_per_sec, 4)} / s</td>
 			</tr>
 			<tr>
-				<td>{status.local_reads_per_sec.toPrecision(4)} / s</td>
-				<td>{formatDataVolume(status.local_read_size_per_sec, 4)} / s</td>
+				<td>Neighbour</td>
+				<td>{status.neighbour_reads}</td>
+				<td>{status.neighbour_reads_per_sec.toPrecision(4)} / s</td>
+				<td>{formatDataVolume(status.neighbour_read_size, 4)}</td>
+				<td>{formatDataVolume(status.neighbour_read_size_per_sec, 4)} / s</td>
+			</tr>
+			<tr>
+				<td>Reed-solomon</td>
+				<td>{status.remote_reads}</td>
 				<td>{status.remote_reads_per_sec.toPrecision(4)} / s</td>
+				<td>{formatDataVolume(status.remote_read_size, 4)}</td>
 				<td>{formatDataVolume(status.remote_read_size_per_sec, 4)} /s</td>
 			</tr>
 		</tbody>
 	</table>
+	<p>
+		Cache threshold: {status.cache_threshold.toFixed(2)}
+	</p>
+
 	<h3>Socket statistics</h3>
 	<table>
 		<thead>
