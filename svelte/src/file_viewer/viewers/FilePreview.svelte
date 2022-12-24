@@ -12,10 +12,12 @@ import { file_type } from "../FileUtilities.svelte";
 import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
 import SpeedLimit from "./SpeedLimit.svelte";
+import { download_limits } from "../DownloadLimitStore";
 
 let viewer
 let viewer_type = "loading"
 export let is_list = false
+let current_file
 
 export const set_file = async file => {
 	if (file.id === "") {
@@ -35,14 +37,19 @@ export const set_file = async file => {
 	}
 
 	console.log("opening file", file)
+	current_file = file
 
 	// Render the viewer component and set the file type
 	await tick()
-	viewer.set_file(file)
+	if (viewer) {
+		viewer.set_file(file)
+	}
 }
 </script>
 
-{#if viewer_type === "loading"}
+{#if $download_limits.transfer_limit_used > $download_limits.transfer_limit}
+	<SpeedLimit file={current_file} on:download></SpeedLimit>
+{:else if viewer_type === "loading"}
 	<div class="center">
 		<Spinner></Spinner>
 	</div>
@@ -50,8 +57,6 @@ export const set_file = async file => {
 	<Abuse bind:this={viewer}></Abuse>
 {:else if viewer_type === "rate_limit"}
 	<RateLimit bind:this={viewer} on:download></RateLimit>
-{:else if viewer_type === "speed_limit"}
-	<SpeedLimit bind:this={viewer} on:download></SpeedLimit>
 {:else if viewer_type === "image"}
 	<Image bind:this={viewer} on:loading></Image>
 {:else if viewer_type === "video"}

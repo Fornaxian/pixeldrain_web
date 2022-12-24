@@ -20,7 +20,10 @@ $: {
 </script>
 
 <div class="progress_bar_outer">
-	<div class="progress_bar_inner" style="width: {percent}%; transition-timing-function: {animation}; transition-duration: {speed}ms;"></div>
+	<div
+		class="progress_bar_inner"
+		style="width: {percent}%; transition-timing-function: {animation}; transition-duration: {speed}ms;">
+	</div>
 </div>
 
 <style>

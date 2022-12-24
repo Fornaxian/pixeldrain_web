@@ -1,33 +1,17 @@
 <script>
 import { createEventDispatcher, onMount } from "svelte";
 import { formatDataVolume, formatDuration } from "../../util/Formatting.svelte";
+import { download_limits } from "../DownloadLimitStore";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
-export const set_file = f => file = f
-let file = {
+export let file = {
 	name: "",
 	mime_type: "",
 	availability: "",
+	size: 0,
+	download_speed_limit: 0,
 }
-
-let limits = {
-	download_limit: 1000,
-	download_limit_used: 0,
-	transfer_limit: 10e9,
-	transfer_limit_used: 0,
-}
-onMount(async () => {
-	try {
-		let resp = await fetch(window.api_endpoint+"/misc/rate_limits")
-		if(resp.status >= 400) {
-			throw new Error(await resp.text())
-		}
-		limits = await resp.json()
-	} catch (err) {
-		alert("Failed to get rate limits: "+err)
-	}
-})
 </script>
 
 <br/>
@@ -36,10 +20,10 @@ onMount(async () => {
 	<p>
 		Pixeldrain's free tier is supported by advertisements. There's only so
 		much that you can do with the budget those ads provide (spoiler: it's
-		not a lot). {formatDataVolume(limits.transfer_limit, 3)} per week is
+		not a lot). {formatDataVolume($download_limits.transfer_limit, 3)} per week is
 		about the most I can give away for free, and according to our records
 		you have already downloaded
-		{formatDataVolume(limits.transfer_limit_used, 3)}.
+		{formatDataVolume($download_limits.transfer_limit_used, 3)}.
 	</p>
 	<p>
 		It's not that I want to withold this file from you, it's just that I
@@ -57,7 +41,7 @@ onMount(async () => {
 			{formatDuration((file.size/file.download_speed_limit)*1000)}
 		</li>
 		<li>
-			<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight">
+			<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
 				<i class="icon">bolt</i> Support Pixeldrain on Patreon
 			</a>
 			and earn my eternal gratitude

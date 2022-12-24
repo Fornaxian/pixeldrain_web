@@ -70,7 +70,7 @@ const add_files = async files => {
 }
 
 const delete_file = async index => {
-	const list_files = list.files
+	let list_files = list.files
 	list_files.splice(index, 1)
 	await update_list(list_files)
 	list.files = list_files
@@ -80,7 +80,7 @@ const move_left = async index => {
 	if (index === 0) {
 		return;
 	}
-	const f = list.files;
+	let f = list.files;
 	[f[index], f[index-1]] = [f[index-1], f[index]];
 	await update_list(f)
 	list.files = f
@@ -89,7 +89,7 @@ const move_right = async index => {
 	if (index >= list.files.length-1) {
 		return;
 	}
-	const f = list.files;
+	let f = list.files;
 	[f[index], f[index+1]] = [f[index+1], f[index]];
 	await update_list(f)
 	list.files = f

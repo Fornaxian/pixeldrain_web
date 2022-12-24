@@ -155,7 +155,7 @@ const fullscreen = () => {
 {:else}
 	<h1>{file.name}</h1>
 	<img src={file.icon_href} class="video_icon" alt="Video icon">
-	<TextBlock width="650px">
+	<TextBlock width="600px">
 		The online video player on pixeldrain is only available for registered
 		users, or when the uploader of the video has a Pro account. You can
 		still download the video and watch it locally on your computer without
@@ -167,7 +167,7 @@ const fullscreen = () => {
 		<a href="/register" class="button">
 			<i class="icon">how_to_reg</i> Sign up
 		</a>
-		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight">
+		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
 			<i class="icon">bolt</i> Get Pixeldrain Pro
 		</a>
 	</TextBlock>

@@ -1,6 +1,7 @@
 <script>
 import { createEventDispatcher, onMount } from "svelte";
 import { formatDataVolume } from "../../util/Formatting.svelte";
+import { download_limits } from "../DownloadLimitStore";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
@@ -10,24 +11,6 @@ let file = {
 	mime_type: "",
 	availability: "",
 }
-
-let limits = {
-	download_limit: 1000,
-	download_limit_used: 0,
-	transfer_limit: 50e9,
-	transfer_limit_used: 0,
-}
-onMount(async () => {
-	try {
-		let resp = await fetch(window.api_endpoint+"/misc/rate_limits")
-		if(resp.status >= 400) {
-			throw new Error(await resp.text())
-		}
-		limits = await resp.json()
-	} catch (err) {
-		alert("Failed to get rate limits: "+err)
-	}
-})
 </script>
 
 <br/>
@@ -53,15 +36,15 @@ onMount(async () => {
 		</h1>
 		<p>
 			You have reached your download limit for today. Without a pixeldrain
-			account you are limited to downloading {limits.download_limit} files
-			or {formatDataVolume(limits.transfer_limit, 3)} per 48 hours. This limit
+			account you are limited to downloading {$download_limits.download_limit} files
+			or {formatDataVolume($download_limits.transfer_limit, 3)} per 48 hours. This limit
 			is counted per IP address, so if you're on a shared network it's
 			possible that others have also contributed to this limit.
 		</p>
 		<p>
 			In the last 24 hours you have downloaded
-			{limits.download_limit_used} files and used
-			{formatDataVolume(limits.transfer_limit_used, 3)} bandwidth.
+			{$download_limits.download_limit_used} files and used
+			{formatDataVolume($download_limits.transfer_limit_used, 3)} bandwidth.
 		</p>
 	{/if}
 	<p>
@@ -89,7 +72,7 @@ onMount(async () => {
 		<button on:click={() => {dispatch("download")}}>
 			<i class="icon">download</i> Download
 		</button>
-		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight">
+		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
 			<i class="icon">bolt</i> Support Pixeldrain on Patreon
 		</a>
 	</div>

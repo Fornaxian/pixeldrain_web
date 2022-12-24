@@ -20,6 +20,7 @@ import GalleryView from "./GalleryView.svelte";
 import Downloader from "./Downloader.svelte";
 import CustomBanner from "./CustomBanner.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
+import TransferLimit from "./TransferLimit.svelte";
 
 let loading = true
 let embedded = false
@@ -389,7 +390,7 @@ const keyboard_event = evt => {
 			{#if file.name !== ""}{file.name}{/if}
 		</div>
 		{#if embedded}
-			<a href={window.location.pathname} target="_blank" class="button round" title="Open this page in a new tab">
+			<a href={window.location.pathname} target="_blank" class="button round" title="Open this page in a new tab" rel="noreferrer">
 				<i class="icon" id="btn_fullscreen_icon">open_in_new</i>
 			</a>
 		{/if}
@@ -580,6 +581,8 @@ const keyboard_event = evt => {
 	{:else if custom_footer}
 		<CustomBanner src={custom_footer} link={custom_footer_link}></CustomBanner>
 	{/if}
+
+	<TransferLimit/>
 
 	<Modal bind:this={details_window} on:is_visible={e => {details_visible = e.detail}} title="File details" width="1000px">
 		<DetailsWindow file={file}></DetailsWindow>

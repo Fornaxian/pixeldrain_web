@@ -18,7 +18,7 @@ let file = {
 
 <h1>{file.name}</h1>
 <img src={file.icon_href} alt="File icon" class="icon">
-<TextBlock>
+<TextBlock width="600px">
 	Type: {file.mime_type}<br/>
 	No preview is available for this file type. Download to view it locally.
 	<br/>

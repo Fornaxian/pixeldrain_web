@@ -47,9 +47,9 @@ const keydown = e => {
 <svelte:window on:keydown={keydown}/>
 
 {#if visible}
-<div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}}>
+<div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}} on:keydown={keydown}>
 	<div class="top_padding"></div>
-	<div class="window" use:load_modal on:click|stopPropagation role="dialog" aria-modal="true">
+	<div class="window" use:load_modal on:click|stopPropagation role="dialog" aria-modal="true" on:keydown={keydown}>
 		<div class="header">
 			<slot name="title">
 				<div class="title">{title}</div>
