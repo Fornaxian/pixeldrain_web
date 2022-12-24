@@ -162,7 +162,7 @@ onMount(get_bans);
 							<td>{formatDate(offence.expire_time, true, true, false)}</td>
 							<td>
 								{#if offence.file_public_id}
-									<a href="/u/{offence.file_public_id}" target="_blank">
+									<a href="/u/{offence.file_public_id}" target="_blank" rel="noreferrer">
 										{offence.file_name}
 									</a>
 								{/if}

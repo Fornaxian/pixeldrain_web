@@ -1,5 +1,6 @@
 <script>
 import Footer from "../layout/Footer.svelte";
+import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
 import ForCreators from "./ForCreators.svelte";
 import OtherPlans from "./OtherPlans.svelte";
@@ -10,6 +11,8 @@ import UploadWidget from "./UploadWidget.svelte";
 	<header>
 		<div class="header_image_container"></div>
 	</header>
+
+	<AddressReputation/>
 
 	<UploadWidget></UploadWidget>
 
