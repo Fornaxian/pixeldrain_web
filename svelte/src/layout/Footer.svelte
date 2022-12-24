@@ -9,22 +9,23 @@ import Twitter from "../icons/Twitter.svelte";
 <footer>
 	<div class="footer_content">
 		<div style="display: inline-block; margin: 0 8px;">
-			Pixeldrain is a product by <a href="//fornaxian.tech" target="_blank">Fornaxian Technologies</a>
+			Pixeldrain is a product by
+			<a href="//fornaxian.tech" target="_blank" rel="noreferrer">Fornaxian Technologies</a>
 		</div>
 		<div style="display: inline-block; margin: 0 8px;">
-			<a href="https://www.patreon.com/pixeldrain" target="_blank">
+			<a href="https://www.patreon.com/pixeldrain" target="_blank" rel="noreferrer">
 				<Patreon style="color: var(--body_text_color);"/> Patreon
 			</a> |
-			<a href="https://twitter.com/Fornax96" target="_blank">
+			<a href="https://twitter.com/Fornax96" target="_blank" rel="noreferrer">
 				<Twitter style="color: var(--body_text_color);"/> Twitter
 			</a> |
-			<a href="https://reddit.com/r/pixeldrain" target="_blank">
+			<a href="https://reddit.com/r/pixeldrain" target="_blank" rel="noreferrer">
 				<Reddit style="color: var(--body_text_color);"/> Reddit
 			</a> |
-			<a href="https://github.com/Fornaxian" target="_blank">
+			<a href="https://github.com/Fornaxian" target="_blank" rel="noreferrer">
 				<Github style="color: var(--body_text_color);"/> GitHub
 			</a> |
-			<a href="https://mastodon.social/web/@fornax" target="_blank">
+			<a href="https://mastodon.social/web/@fornax" target="_blank" rel="noreferrer">
 				<Mastodon style="color: var(--body_text_color);"/> Mastodon
 			</a>
 		</div>

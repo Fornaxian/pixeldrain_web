@@ -314,6 +314,7 @@ const node_click = (index) => {
 					<a class="node"
 						href={file.href}
 						target="_blank"
+						rel="noreferrer"
 						title="{file.name}"
 						class:node_selected={file.selected}
 						on:click|preventDefault={() => {node_click(index)}}

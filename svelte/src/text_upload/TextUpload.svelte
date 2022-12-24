@@ -100,7 +100,7 @@ const keydown = e => {
 	</p>
 	<p>
 		The text editor has been enhanced by Jacob Kelley's
-		<a href="https://jakiestfu.github.io/Behave.js/" target="_blank">Behave.js</a>.
+		<a href="https://jakiestfu.github.io/Behave.js/" target="_blank" rel="noreferrer">Behave.js</a>.
 
 		Many thanks to him for developing this plugin and putting it
 		under the MIT license.

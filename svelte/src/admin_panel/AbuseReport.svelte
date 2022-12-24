@@ -50,7 +50,7 @@ let set_status = async (action, report_type) => {
 	<div class="details">
 		<div class="toolbar">
 			<div style="flex: 1 1 auto">
-				<a class="button" target="_blank" href={"/u/"+report.file.id}>
+				<a class="button" target="_blank" href={"/u/"+report.file.id} rel="noreferrer">
 					<i class="icon">open_in_new</i> Open file
 				</a>
 				<button class:button_highlight={preview} on:click={() => {preview = !preview}}>

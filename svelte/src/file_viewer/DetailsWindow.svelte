@@ -209,7 +209,7 @@ onMount(() => {
 	<Chart bind:this={chart} />
 
 	<p style="text-align: center">
-		Charts rendered by the amazing <a href="https://www.chartjs.org/" target="_blank">Chart.js</a>.
+		Charts rendered by the amazing <a href="https://www.chartjs.org/" target="_blank" rel="noreferrer">Chart.js</a>.
 	</p>
 
 	<h3>Keyboard Controls</h3>

@@ -196,8 +196,8 @@ onMount(() => {
 	</p>
 	<p>
 		More information about <a
-		href="https://en.wikipedia.org/wiki/Inline_linking"
-		target="_blank">Hotlinking on Wikipedia</a>.
+		href="https://en.wikipedia.org/wiki/Inline_linking" target="_blank"
+		rel="noreferrer">Hotlinking on Wikipedia</a>.
 	</p>
 	<h3>Hotlinking with a Pro subscription</h3>
 	<p>

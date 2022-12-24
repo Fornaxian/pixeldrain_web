@@ -83,9 +83,9 @@ onMount(() => {
 	<p>
 		Alternatively you can use Bitcoin, Lightning network (<a
 		href="https://btcpay.pixeldrain.com/embed/uS2mbWjXUuaAqMh8XLjkjwi8oehFuxeBZxekMxv68LN/BTC/ln"
-		target="_blank">node info</a>) and Dogecoin to deposit credits on your
-		pixeldrain account. You must pay the full amount as stated on the
-		invoice, else your payment will fail.
+		target="_blank" rel="noreferrer">node info</a>) and Dogecoin to deposit
+		credits on your pixeldrain account. You must pay the full amount as
+		stated on the invoice, else your payment will fail.
 	</p>
 	<p>
 		Do note that it is not possible to withdraw coins from your

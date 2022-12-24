@@ -198,7 +198,7 @@ onDestroy(() => {
 					wait until the payment is confirmed and try again. You can
 					see the status of your payment <a
 					href="https://www.patreon.com/pledges?ty=h"
-					target="_blank">on Patreon itself</a>.
+					target="_blank" rel="noreferrer">on Patreon itself</a>.
 				</p>
 				<p>
 					If your payment is complete and your account is still not

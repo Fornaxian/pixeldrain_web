@@ -81,8 +81,8 @@ onMount(() => {
 		<h3>Step 1: Install JDownloader</h3>
 		<p>
 			Download JDownloader from its website:
-			<a href="https://jdownloader.org/download/index"
-			target="_blank">jdownloader.org</a>. Open JDownloader from your
+			<a href="https://jdownloader.org/download/index" target="_blank"
+			rel="noreferrer">jdownloader.org</a>. Open JDownloader from your
 			start menu after the installation is complete.
 		</p>
 		<h3>Step 2: Open the account manager</h3>
@@ -149,8 +149,8 @@ onMount(() => {
 		<p>
 			ShareX is a Screen capture, file sharing and productivity tool.
 			Pixeldrain is supported as a custom uploader. You can <a
-			href="https://getsharex.com/" target="_blank">get ShareX
-			here</a>.
+			href="https://getsharex.com/" target="_blank" rel="noreferrer">get
+			ShareX here</a>.
 		</p>
 		<p>
 			Here you can download our custom ShareX uploader which uses
