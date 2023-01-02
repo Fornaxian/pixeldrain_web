@@ -578,11 +578,10 @@ const keyboard_event = evt => {
 
 	{#if ads_enabled}
 		<AdLeaderboard></AdLeaderboard>
+		<TransferLimit/>
 	{:else if custom_footer}
 		<CustomBanner src={custom_footer} link={custom_footer_link}></CustomBanner>
 	{/if}
-
-	<TransferLimit/>
 
 	<Modal bind:this={details_window} on:is_visible={e => {details_visible = e.detail}} title="File details" width="1000px">
 		<DetailsWindow file={file}></DetailsWindow>

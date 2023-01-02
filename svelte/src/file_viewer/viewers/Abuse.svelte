@@ -11,12 +11,24 @@ let file = {
 </script>
 
 <br/>
-<TextBlock center={true}>
+<TextBlock width="750px">
 	<h1>Unavailable for legal reasons</h1>
 	<p>
-		This file has received an abuse report and was taken down.
+		This file has been removed for violating pixeldrain's
+		<a href="/about#content-policy">content policy</a>. Type of abuse:
+		{file.abuse_type}.
 	</p>
 	<p>
-		Type of abuse: {file.abuse_type}. Reporter: {file.abuse_reporter_name}.
+		{#if file.abuse_reporter_name === "User submitted reports"}
+
+			The file was reported by users of pixeldrain with the report button
+			in the toolbar.
+
+		{/if}
+	</p>
+	<p>
+		Pixeldrain has zero tolerance towards abuse. The IP address this file
+		originated from has been banned and is no longer able to upload files to
+		pixeldrain.
 	</p>
 </TextBlock>

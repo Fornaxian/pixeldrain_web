@@ -28,7 +28,7 @@ let block_form = {
 			name: "reporter",
 			label: "Reporter",
 			type: "text",
-			default_value: "Anonymous tip",
+			default_value: "Anonymous",
 		},
 	],
 	submit_label: `<i class="icon">send</i> Submit`,

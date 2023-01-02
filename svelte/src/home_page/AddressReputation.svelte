@@ -51,18 +51,13 @@ onMount(async () => {
 			<div class="table_scroll">
 				<table>
 					<tr>
+						<td>File</td>
 						<td>Reason</td>
-						<td>Reporter</td>
 						<td>Ban date</td>
 						<td>Expiry date</td>
-						<td>File</td>
 					</tr>
 					{#each result.offences as offence (offence.ban_time)}
 						<tr>
-							<td>{offence.reason}</td>
-							<td>{offence.reporter}</td>
-							<td>{formatDate(offence.ban_time, false, false, false)}</td>
-							<td>{formatDate(offence.expire_time, false, false, false)}</td>
 							<td>
 								{#if offence.file_public_id}
 									<a href="/u/{offence.file_public_id}" target="_blank" rel="noreferrer">
@@ -70,6 +65,9 @@ onMount(async () => {
 									</a>
 								{/if}
 							</td>
+							<td>{offence.reason}</td>
+							<td>{formatDate(offence.ban_time, false, false, false)}</td>
+							<td>{formatDate(offence.expire_time, false, false, false)}</td>
 						</tr>
 					{/each}
 				</table>
