@@ -10,7 +10,9 @@ export const set_file = file => {
 
 	if (file.name.endsWith(".md") || file.name.endsWith(".markdown") || file.mime_type === "text/demo") {
 		markdown(file)
-	} else if (file.name.endsWith(".txt")) {
+	} else if (file.name.endsWith(".txt") || file.size > 524288) {
+		// If the file is larger than 512KiB we do not enable code highlighting
+		// because it's too slow
 		text(file)
 	} else {
 		code(file)
