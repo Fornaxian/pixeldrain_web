@@ -13,7 +13,7 @@ $: {
 		percent = ($download_limits.transfer_limit_used / $download_limits.transfer_limit) * 100
 	}
 
-	title = "Transfer limit used: " +
+	title = "Download limit used: " +
 		formatDataVolume($download_limits.transfer_limit_used, 3) +
 		" of " +
 		formatDataVolume($download_limits.transfer_limit, 3);
@@ -22,24 +22,56 @@ $: {
 
 {#if $download_limits.loaded}
 	<div class="progress_bar_outer" title="{title}">
+		<div class="progress_bar_text">
+			{title}
+		</div>
 		<div class="progress_bar_inner" style="width: {percent}%;">
+			{title}
 		</div>
 	</div>
 {/if}
 
 <style>
 .progress_bar_outer {
+	position: relative;
 	display: block;
 	width: 100%;
-	height: 6px;
+	/* the font-size is two pixels smaller than the progress bar, this leaves
+	one px margin top and bottom */
+	height: 16px;
+	font-size: 14px;
+	line-height: 15px;
 	overflow: hidden;
 }
 .progress_bar_inner {
+	position: absolute;
+	display: block;
 	background: var(--highlight_background);
 	height: 100%;
 	width: 0;
-	border-top-right-radius: 6px;
-	border-bottom-right-radius: 6px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
 	transition: width 5s linear;
+
+	/* Welcome to Hacktown! What's happening here is that the text in the
+	progress bar and the text behind the progress bar are perfectly aligned. The
+	text in the background is dark and the text on the foreground is light, this
+	makes it look like the text changes colour as the progress bar progresses.
+	The text-align: right makes the text move along with the tip of the progress
+	bar once the width of the text has been exceeded. */
+	text-align: right;
+	overflow: hidden;
+	white-space: nowrap;
+	color: var(--highlight_text_color);
+	padding-right: 4px;
+	padding-left: 4px;
+	z-index: 2;
+}
+.progress_bar_text {
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 4px;
+	z-index: 1;
 }
 </style>

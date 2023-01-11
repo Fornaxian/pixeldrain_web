@@ -571,9 +571,9 @@ const keyboard_event = evt => {
 
 		<Sharebar bind:this={sharebar}></Sharebar>
 
-		{#if ads_enabled}
+		<!-- {#if ads_enabled}
 			<AdSkyscraper on:visibility={e => {skyscraper_visible = e.detail}}></AdSkyscraper>
-		{/if}
+		{/if} -->
 	</div>
 
 	{#if ads_enabled}

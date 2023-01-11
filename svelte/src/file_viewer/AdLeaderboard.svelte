@@ -15,13 +15,13 @@ onMount(() => {
 	}
 
 	// 10% pixeldrain socials
-	// 90% pixfuture
+	// 90% patreon
 
 	let rand = Math.random()
 	if (rand < 0.1) {
 		set_ad_type("pixeldrain_social")
 	} else {
-		set_ad_type("pixfuture")
+		set_ad_type("pixeldrain_patreon")
 	}
 })
 
@@ -96,31 +96,7 @@ head.valueimpression_loaded.subscribe(v => {
 </svelte:head>
 
 <div bind:this={container}>
-	{#if ad_type === "publisherrest_1"}
-		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
-			<a href="https://pixeldrain.com/vouchercodes/" class="button button_highlight" style="margin: 8px;">
-				<i class="icon">shopping_cart</i>
-				Click here for online shopping discounts!
-				<i class="icon">shopping_cart</i>
-			</a>
-		</div>
-	{:else if ad_type === "publisherrest_2"}
-		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
-			<a href="https://pixeldrain.com/vouchercodes/" class="button button_highlight" style="margin: 8px;">
-				<i class="icon">shopping_cart</i>
-				Check our online shopping discounts!
-				<i class="icon">shopping_cart</i>
-			</a>
-		</div>
-	{:else if ad_type === "publisherrest_3"}
-		<div style="text-align: center; line-height: 1.4em; font-size: 22px;">
-			<a href="https://pixeldrain.com/vouchercodes/" class="button button_highlight" style="margin: 8px;">
-				<i class="icon">shopping_cart</i>
-				Free coupon codes for online shopping!
-				<i class="icon">shopping_cart</i>
-			</a>
-		</div>
-	{:else if ad_type === "aads"}
+	{#if ad_type === "aads"}
 		<iframe bind:this={banner} class="banner"
 			data-aa="73974"
 			src="//ad.a-ads.com/73974?size=728x90&background_color={color_by_name_no_prefix('body_color')}&text_color={color_by_name_no_prefix('body_text_color')}&title_color={color_by_name_no_prefix('highlight_color')}&title_hover_color={color_by_name_no_prefix('highlight_color')}&link_color={color_by_name_no_prefix('highlight_color')}&link_hover_color={color_by_name_no_prefix('highlight_color')}"
@@ -154,13 +130,27 @@ head.valueimpression_loaded.subscribe(v => {
 			<div class="adsbyvli" data-ad-slot="vi_1994884987" style="width: 728px; height: 90px"></div>
 		</div>
 	{:else if ad_type === "nextmillennium"}
+
 		<div bind:this={banner} class="banner" style="width: 728px; height: 90px;"></div>
+
 	{:else if ad_type === "pixeldrain_social"}
+
 		<map name="socials_map">
 			<area target="_blank" alt="Pixeldrain on Reddit" title="Pixeldrain on Reddit" href="https://reddit.com/r/pixeldrain" coords="0,38,364,90" shape="rect">
 			<area target="_blank" alt="Pixeldrain on Twitter" title="Pixeldrain on Twitter" href="https://twitter.com/Fornax96" coords="364,38,728,90" shape="rect">
 		</map>
 		<img bind:this={banner} usemap="#socials_map" class="banner" src="/res/img/advertising/pixeldrain_socials.webp" style="display: inline-block; width: 728px; height: 90px;" alt="Pixeldrain social media"/>
+
+	{:else if ad_type === "pixeldrain_patreon"}
+		<div class="banner highlight_green" style="font-size: 1.1em; border-radius: 0;">
+			<span style="display: block; margin-bottom: 2px;">
+				No ads today. Pixeldrain is currently funded by our subscribers!
+			</span>
+			<a href="https://www.patreon.com/join/pixeldrain" rel="noreferrer" class="button button_highlight" target="_blank">
+				<i class="icon">bolt</i>
+				Support Pixeldrain to help keep the project going
+			</a>
+		</div>
 	{/if}
 </div>
 

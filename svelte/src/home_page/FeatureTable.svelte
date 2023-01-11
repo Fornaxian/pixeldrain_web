@@ -53,12 +53,13 @@ onMount(() => {
 			Data transfer limit
 		</div>
 		<div class="feat_normal">
-			20 GB data transfer per week (168 hours). When this threshold is reached
-			your download speed will be reduced
+			<span class="text_highlight">20 GB</span> data transfer per week
+			(168 hours). When this threshold is reached your download speed will
+			be reduced
 		</div>
 		<div class="feat_pro">
-			Transfer limit of <span class="text_highlight">2 terabyte</span> per
-			month. If the transfer limit is exceeded the restrictions of the
+			Transfer limit of <span class="text_highlight">2 terabytes</span>
+			per month. If the transfer limit is exceeded the restrictions of the
 			free plan will apply
 		</div>
 	</div>
@@ -84,9 +85,9 @@ onMount(() => {
 		<div class="feat_label">
 			Adver&shy;tise&shy;ments
 		</div>
-		<div class="feat_normal">
+		<!-- <div class="feat_normal">
 			Banner advertisements on the file viewer page
-		</div>
+		</div> -->
 		<div class="feat_pro">
 			<span class="text_highlight">No ads</span> on files
 			you share. No ads when viewing files uploaded by
@@ -95,14 +96,13 @@ onMount(() => {
 	</div>
 	<div>
 		<div class="feat_label">Privacy</div>
-		<div class="feat_normal">
+		<!-- <div class="feat_normal">
 			No trackers, but advertisers can see your IP address
 			and browser fingerprint
-		</div>
+		</div> -->
 		<div class="feat_pro">
-			<span class="text_highlight">Completely
-			private</span>. No third party scripts and no
-			logging
+			<span class="text_highlight">Completely private</span>. No third
+			party tracking scripts and no logging
 		</div>
 	</div>
 	<div>

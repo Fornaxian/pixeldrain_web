@@ -94,6 +94,15 @@ const fullscreen = () => {
 {#if file.allow_video_player}
 	{#if !video_reload}
 		<div class="container">
+
+			{#if file.mime_type === "video/x-matroska" || file.mime_type === "video/quicktime"}
+				<div class="compatibility_warning">
+					This video file type is not compatible with every web
+					browser. If the video fails to play you can try downloading
+					the video and watching it locally.
+				</div>
+			{/if}
+
 			<div class="player">
 				<!-- svelte-ignore a11y-media-has-caption -->
 				<video
@@ -167,7 +176,7 @@ const fullscreen = () => {
 		<a href="/register" class="button">
 			<i class="icon">how_to_reg</i> Sign up
 		</a>
-		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
+		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button" rel="noreferrer">
 			<i class="icon">bolt</i> Get Pixeldrain Pro
 		</a>
 	</TextBlock>
@@ -229,5 +238,10 @@ h1 {
 	.controls {
 		flex-direction: column;
 	}
+}
+.compatibility_warning {
+	background-color: var(--shaded_background);
+	border-bottom: 2px solid #6666FF;
+	padding: 4px;
 }
 </style>

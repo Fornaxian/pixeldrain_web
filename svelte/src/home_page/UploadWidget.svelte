@@ -465,16 +465,15 @@ const keydown = (e) => {
 			<span class="instruction_text">Support me on Patreon!</span>
 		</div>
 		<p>
-			Pixeldrain is struggling to get by financially. Because anyone
-			can upload anything it's hard to find reputable advertisers who
-			want to advertise on pixeldrain. Every month the ad revenue just
-			barely covers the bandwidth costs. If this continues I will have
-			to reduce the file size and bandwidth limits even more. That's
-			not something I would like to do.
+			Pixeldrain costs a lot of money to maintain. Currently the site
+			makes just barely enough money to pay for hosting. I have never been
+			able to compensate myself for the hours I have put in developing
+			this project. Please consider getting getting a subscription so I
+			can continue working on pixeldrain and make it even better.
 		</p>
 		<p>
-			Pro costs only <b>€40 per year</b> or €4 per month. You will get
-			some nice benefits and more features are on the way. You can
+			Pro costs only <b>€40 per year</b> or <b>€4 per month</b>. You will
+			get some nice benefits and more features are on the way. You can
 			help with making pixeldrain the easiest and fastest way to share
 			files online!
 		</p>

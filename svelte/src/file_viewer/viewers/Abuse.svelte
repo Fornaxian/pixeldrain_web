@@ -24,6 +24,10 @@ let file = {
 			The file was reported by users of pixeldrain with the report button
 			in the toolbar.
 
+		{:else}
+
+			The file was reported through pixeldrain's abuse e-mail address.
+
 		{/if}
 	</p>
 	<p>
