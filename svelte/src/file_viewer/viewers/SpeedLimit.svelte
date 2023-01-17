@@ -1,7 +1,8 @@
 <script>
-import { createEventDispatcher, onMount } from "svelte";
+import { createEventDispatcher } from "svelte";
 import { formatDataVolume, formatDuration } from "../../util/Formatting.svelte";
 import { download_limits } from "../DownloadLimitStore";
+import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
@@ -17,11 +18,11 @@ export let file = {
 <TextBlock>
 	<img src="/res/img/slow_down.webp" class="header_image" alt="Yea, I'm gonna need you to slow down a bit"/>
 	<p>
-		Pixeldrain's free tier is supported by advertisements. There's only so
-		much that you can do with the budget those ads provide (spoiler: it's
-		not a lot). {formatDataVolume($download_limits.transfer_limit, 3)} per week is
-		about the most I can give away for free, and according to our records
-		you have already downloaded
+		Pixeldrain's free tier is supported by my Patrons (be grateful). There's
+		only so much that you can do with the budget they provide.
+		{formatDataVolume($download_limits.transfer_limit, 3)} per week is about
+		the most I can give away for free while keeping it fair for everyone,
+		and according to our records you have already downloaded
 		{formatDataVolume($download_limits.transfer_limit_used, 3)}.
 	</p>
 	<p>
@@ -50,35 +51,23 @@ export let file = {
 			{/if}
 		</li>
 	</ul>
-	<img src={file.icon_href} alt="File icon" class="file_thumbnail">
-	<div class="file_description">
-		Name: {file.name}<br/>
-		Type: {file.mime_type}<br/>
-		<button on:click={() => {dispatch("download")}}>
-			<i class="icon">download</i> Download
-		</button>
-	</div>
-	<p>
-		Also, I believe you have my stapler. Please give it back.
-	</p>
+</TextBlock>
+
+<IconBlock icon_href={file.icon_href}>
+	Name: {file.name}<br/>
+	Type: {file.mime_type}<br/>
+	<button on:click={() => {dispatch("download")}}>
+		<i class="icon">download</i> Download
+	</button>
+</IconBlock>
+
+<TextBlock>
+	Also, I believe you have my stapler. Please give it back.
 </TextBlock>
 
 <style>
 .header_image {
 	width: 100%;
 	border-radius: 8px;
-}
-.file_thumbnail {
-	display: inline-block;
-	vertical-align: middle;
-	height: 6em;
-	border-radius: 8px;
-}
-.file_description {
-	display: inline-block;
-	text-align: left;
-	padding-left: 8px;
-	vertical-align: middle;
-	max-width: 600px;
 }
 </style>
