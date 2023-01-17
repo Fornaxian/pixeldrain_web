@@ -3,6 +3,7 @@ import { createEventDispatcher } from "svelte";
 import Magnet from "../../icons/Magnet.svelte";
 import { formatDate } from "../../util/Formatting.svelte"
 import { copy_text } from "../../util/Util.svelte";
+import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 import TorrentItem from "./TorrentItem.svelte"
 
@@ -79,8 +80,7 @@ const copy_magnet = () => {
 </script>
 
 <h1>{file.name}</h1>
-<img src={file.icon_href} alt="File icon" class="icon">
-<TextBlock width="650px">
+<IconBlock icon_href={file.icon_href}>
 	{#if status === "finished"}
 		Created by: {torrent.created_by}<br/>
 		Comment: {torrent.comment}<br/>
@@ -120,12 +120,10 @@ const copy_magnet = () => {
 		<i class="icon">download</i>
 		<span>Download torrent file</span>
 	</button>
-</TextBlock>
-
+</IconBlock>
+<br/>
 {#if status === "finished"}
-	<br/>
-	<br/>
-	<TextBlock width="1000px">
+	<TextBlock>
 		<h2>Files in this torrent</h2>
 		<TorrentItem item={torrent.files} />
 	</TextBlock>

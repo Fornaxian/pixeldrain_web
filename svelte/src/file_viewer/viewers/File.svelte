@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
-import TextBlock from "./TextBlock.svelte";
+import IconBlock from "./IconBlock.svelte";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f
@@ -17,8 +17,7 @@ let file = {
 </script>
 
 <h1>{file.name}</h1>
-<img src={file.icon_href} alt="File icon" class="icon">
-<TextBlock width="600px">
+<IconBlock icon_href={file.icon_href}>
 	Type: {file.mime_type}<br/>
 	No preview is available for this file type. Download to view it locally.
 	<br/>
@@ -26,9 +25,8 @@ let file = {
 		<i class="icon">download</i>
 		<span>Download</span>
 	</button>
-</TextBlock>
-
-<br/><br/>
+</IconBlock>
+<br/>
 {#if file.show_ads}
 	<BandwidthUsage file={file} on:reload/>
 {/if}

@@ -1,9 +1,9 @@
 <script>
-export let width = "800px"
+export let width = "750px"
 export let center = false
 </script>
 
-<div class="block" class:center style="max-width: {width};">
+<div class="block" class:center style="width: {width};">
 	<slot></slot>
 </div>
 
@@ -13,6 +13,7 @@ export let center = false
 	text-align: initial;
 	padding-left: 8px;
 	vertical-align: middle;
+	max-width: 100%;
 
 	background-color: var(--shaded_background);
 	border-radius: 8px;

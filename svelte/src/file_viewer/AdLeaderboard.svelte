@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte"
-    import Mastodon from "../icons/Mastodon.svelte";
-    import Reddit from "../icons/Reddit.svelte";
-    import Twitter from "../icons/Twitter.svelte";
+import Mastodon from "../icons/Mastodon.svelte";
+import Reddit from "../icons/Reddit.svelte";
+import Twitter from "../icons/Twitter.svelte";
 import { color_by_name_no_prefix } from "../util/Util.svelte";
 import * as head from "./AdHead.svelte"
 
@@ -149,7 +149,7 @@ head.valueimpression_loaded.subscribe(v => {
 		<img bind:this={banner} usemap="#socials_map" class="banner" src="/res/img/advertising/pixeldrain_socials.webp" style="display: inline-block; width: 728px; height: 90px;" alt="Pixeldrain social media"/>
 
 	{:else if ad_type === "patreon_support"}
-		<div class="banner highlight_green" style="font-size: 1.1em; border-radius: 0;">
+		<div class="banner support_banner">
 			<span style="display: block; margin-bottom: 2px;">
 				No ads today. Pixeldrain is currently funded by our subscribers!
 			</span>
@@ -192,5 +192,10 @@ head.valueimpression_loaded.subscribe(v => {
 	display: block;
 	margin: auto;
 	transform-origin: 0 0;
+}
+.support_banner {
+	font-size: 1.2em;
+	text-align: center;
+	padding: 2px;
 }
 </style>

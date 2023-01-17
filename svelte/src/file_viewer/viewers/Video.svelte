@@ -1,7 +1,7 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
-import TextBlock from "./TextBlock.svelte";
+import IconBlock from "./IconBlock.svelte";
 let dispatch = createEventDispatcher()
 
 export let is_list = false
@@ -163,8 +163,7 @@ const fullscreen = () => {
 	{/if}
 {:else}
 	<h1>{file.name}</h1>
-	<img src={file.icon_href} class="video_icon" alt="Video icon">
-	<TextBlock width="600px">
+	<IconBlock icon_href={file.icon_href}>
 		The online video player on pixeldrain is only available for registered
 		users, or when the uploader of the video has a Pro account. You can
 		still download the video and watch it locally on your computer without
@@ -179,9 +178,8 @@ const fullscreen = () => {
 		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button" rel="noreferrer">
 			<i class="icon">bolt</i> Get Pixeldrain Pro
 		</a>
-	</TextBlock>
-
-	<br/><br/>
+	</IconBlock>
+	<br/>
 	{#if file.show_ads}
 		<BandwidthUsage file={file} on:reload/>
 	{/if}
@@ -225,11 +223,6 @@ h1 {
 	margin: auto;
 	max-width: 100%;
 	max-height: 100%;
-}
-.video_icon {
-	display: inline-block;
-	vertical-align: middle;
-	border-radius: 8px;
 }
 @media(max-height: 500px) {
 	.container {

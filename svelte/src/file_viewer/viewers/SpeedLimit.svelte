@@ -15,7 +15,7 @@ export let file = {
 </script>
 
 <br/>
-<TextBlock width="800px">
+<TextBlock>
 	<img src="/res/img/slow_down.webp" class="header_image" alt="Yea, I'm gonna need you to slow down a bit"/>
 	<p>
 		Pixeldrain's free tier is supported by advertisements. There's only so

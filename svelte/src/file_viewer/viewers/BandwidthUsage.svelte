@@ -12,7 +12,7 @@ $: transfer_left = download_limits.transfer_limit = download_limits.transfer_lim
 </script>
 
 {#if $download_limits.loaded}
-	<TextBlock width="700px" center={true}>
+	<TextBlock center={true}>
 		{#if file.size > transfer_left}
 			<div class="highlight_yellow">
 				This file is too large to download completely with your current

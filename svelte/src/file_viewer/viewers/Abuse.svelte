@@ -10,9 +10,9 @@ let file = {
 }
 </script>
 
-<br/>
-<TextBlock width="750px">
-	<h1>Unavailable for legal reasons</h1>
+<h1>{file.name}</h1>
+<TextBlock>
+	<h2>Unavailable for legal reasons</h2>
 	<p>
 		This file has been removed for violating pixeldrain's
 		<a href="/about#content-policy">content policy</a>. Type of abuse:
