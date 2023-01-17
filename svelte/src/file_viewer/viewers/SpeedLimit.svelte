@@ -14,7 +14,6 @@ export let file = {
 }
 </script>
 
-<br/>
 <TextBlock>
 	<img src="/res/img/slow_down.webp" class="header_image" alt="Yea, I'm gonna need you to slow down a bit"/>
 	<p>
@@ -63,8 +62,6 @@ export let file = {
 		Also, I believe you have my stapler. Please give it back.
 	</p>
 </TextBlock>
-<br/>
-<br/>
 
 <style>
 .header_image {

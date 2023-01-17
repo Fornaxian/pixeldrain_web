@@ -77,7 +77,7 @@ const recursive_size = (file) => {
 		<span>Download</span>
 	</button>
 </IconBlock>
-<br/>
+
 {#if status === "finished"}
 	<TextBlock>
 		<h2>Files in this zip archive</h2>

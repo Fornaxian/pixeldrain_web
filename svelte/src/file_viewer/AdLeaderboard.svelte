@@ -160,7 +160,7 @@ head.valueimpression_loaded.subscribe(v => {
 		</div>
 	{:else if ad_type === "twitter"}
 
-		<div class="banner" style="font-size: 1.4em; text-align: center; padding: 4px;">
+		<div class="banner social_button">
 			<a href="https://twitter.com/Fornax96" rel="noreferrer" class="button" target="_blank" style="background-color: #1a8cd8; color: #ffffff;">
 				<Twitter style="color: #ffffff;"/>
 				Follow Pixeldrain on Twitter: @Fornax96
@@ -169,7 +169,7 @@ head.valueimpression_loaded.subscribe(v => {
 
 	{:else if ad_type === "mastodon"}
 
-		<div class="banner" style="font-size: 1.4em; text-align: center; padding: 4px;">
+		<div class="banner social_button">
 			<a href="https://mastodon.social/@fornax" rel="noreferrer" class="button" target="_blank" style="background-color: #595aff; color: #ffffff;">
 				<Mastodon style="color: #ffffff;"/>
 				Follow Pixeldrain on Mastodon: fornax@mastodon.social
@@ -178,12 +178,13 @@ head.valueimpression_loaded.subscribe(v => {
 
 	{:else if ad_type === "reddit"}
 
-		<div class="banner" style="font-size: 1.4em; text-align: center; padding: 4px;">
+		<div class="banner social_button">
 			<a href="https://www.reddit.com/r/PixelDrain" rel="noreferrer" class="button" target="_blank" style="background-color: #ff4500; color: #ffffff;">
 				<Reddit style="color: #ffffff;"/>
 				Follow Pixeldrain on Reddit: /r/pixeldrain
 			</a>
 		</div>
+
 	{/if}
 </div>
 
@@ -197,5 +198,20 @@ head.valueimpression_loaded.subscribe(v => {
 	font-size: 1.2em;
 	text-align: center;
 	padding: 2px;
+}
+.social_button {
+	font-size: 1.4em;
+	text-align: center;
+	padding: 4px;
+}
+
+/* Vertical estate is sparse on some devices*/
+@media(max-height: 600px) {
+	.support_banner {
+		font-size: 1em;
+	}
+	.social_button {
+		font-size: 1.2em;
+	}
 }
 </style>

@@ -9,11 +9,11 @@ export let center = false
 
 <style>
 .block {
-	display: inline-block;
+	display: block;
 	text-align: initial;
-	padding-left: 8px;
-	vertical-align: middle;
 	max-width: 100%;
+	overflow-wrap: anywhere;
+	margin: 8px auto;
 
 	background-color: var(--shaded_background);
 	border-radius: 8px;

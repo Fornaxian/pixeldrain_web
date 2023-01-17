@@ -163,6 +163,7 @@ const fullscreen = () => {
 	{/if}
 {:else}
 	<h1>{file.name}</h1>
+
 	<IconBlock icon_href={file.icon_href}>
 		The online video player on pixeldrain is only available for registered
 		users, or when the uploader of the video has a Pro account. You can
@@ -175,11 +176,8 @@ const fullscreen = () => {
 		<a href="/register" class="button">
 			<i class="icon">how_to_reg</i> Sign up
 		</a>
-		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button" rel="noreferrer">
-			<i class="icon">bolt</i> Get Pixeldrain Pro
-		</a>
 	</IconBlock>
-	<br/>
+
 	{#if file.show_ads}
 		<BandwidthUsage file={file} on:reload/>
 	{/if}

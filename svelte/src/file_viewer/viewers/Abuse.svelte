@@ -11,6 +11,7 @@ let file = {
 </script>
 
 <h1>{file.name}</h1>
+
 <TextBlock>
 	<h2>Unavailable for legal reasons</h2>
 	<p>

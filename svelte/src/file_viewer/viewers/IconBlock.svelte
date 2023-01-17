@@ -12,15 +12,22 @@ export let width = "750px"
 
 <style>
 .block {
-	display: inline-flex;
+	display: flex;
 	flex-direction: row;
+	margin: 8px auto;
 }
+@media(max-width: 500px) {
+	.block {
+		flex-direction: column;
+	}
+}
+
 .icon {
 	flex: 0 0 auto;
 	margin-right: 8px;
 	border-radius: 8px;
 	/* Prevent icon from being stretched if text content is too large */
-	object-fit: contain;
+	align-self: center;
 }
 .description {
 	flex: 1 1 auto;
@@ -28,7 +35,7 @@ export let width = "750px"
 	text-align: initial;
 	padding-left: 8px;
 	vertical-align: middle;
-
+	overflow-wrap: anywhere;
 	background-color: var(--shaded_background);
 	border-radius: 8px;
 	padding: 8px;

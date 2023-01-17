@@ -80,6 +80,7 @@ const copy_magnet = () => {
 </script>
 
 <h1>{file.name}</h1>
+
 <IconBlock icon_href={file.icon_href}>
 	{#if status === "finished"}
 		Created by: {torrent.created_by}<br/>
@@ -121,7 +122,7 @@ const copy_magnet = () => {
 		<span>Download torrent file</span>
 	</button>
 </IconBlock>
-<br/>
+
 {#if status === "finished"}
 	<TextBlock>
 		<h2>Files in this torrent</h2>

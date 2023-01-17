@@ -17,6 +17,7 @@ let file = {
 </script>
 
 <h1>{file.name}</h1>
+
 <IconBlock icon_href={file.icon_href}>
 	Type: {file.mime_type}<br/>
 	No preview is available for this file type. Download to view it locally.
@@ -26,7 +27,7 @@ let file = {
 		<span>Download</span>
 	</button>
 </IconBlock>
-<br/>
+
 {#if file.show_ads}
 	<BandwidthUsage file={file} on:reload/>
 {/if}

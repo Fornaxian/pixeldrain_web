@@ -13,8 +13,7 @@ let file = {
 }
 </script>
 
-<br/>
-<TextBlock width="800px">
+<TextBlock>
 	{#if file.availability === "file_rate_limited_captcha_required"}
 		<h1>
 			<i class="icon">file_download_off</i>
