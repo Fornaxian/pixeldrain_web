@@ -1,6 +1,6 @@
 ## File Methods
 
-<details class="request_post">
+<details class="api_doc_details request_post">
 <summary><span class="method">POST</span>/file</summary>
 <div>
 
@@ -75,7 +75,7 @@ HTTP 413: Payload Too Large
 </div>
 </details>
 
-<details class="request_put">
+<details class="api_doc_details request_put">
 <summary><span class="method">PUT</span>/file/{name}</summary>
 <div>
 

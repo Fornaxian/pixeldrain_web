@@ -13,6 +13,7 @@ import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
 import SpeedLimit from "./SpeedLimit.svelte";
 import { download_limits } from "../DownloadLimitStore";
+import Zip from "./Zip.svelte";
 
 let viewer
 let viewer_type = "loading"
@@ -68,7 +69,9 @@ export const set_file = async file => {
 {:else if viewer_type === "text"}
 	<Text bind:this={viewer}></Text>
 {:else if viewer_type === "torrent"}
-	<Torrent bind:this={viewer} on:loading on:download></Torrent>
+	<Torrent bind:this={viewer} on:loading on:download />
+{:else if viewer_type === "zip"}
+	<Zip bind:this={viewer} on:loading on:download />
 {:else if viewer_type === "file"}
 	<File bind:this={viewer} on:download on:reload></File>
 {/if}

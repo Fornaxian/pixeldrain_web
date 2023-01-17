@@ -1,6 +1,6 @@
 ## File Methods
 
-<details class="request_post">
+<details class="api_doc_details request_post">
 <summary><span class="method">POST</span>/file</summary>
 <div>
 

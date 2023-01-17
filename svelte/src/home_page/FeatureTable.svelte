@@ -53,7 +53,7 @@ onMount(() => {
 			Data transfer limit
 		</div>
 		<div class="feat_normal">
-			<span class="text_highlight">20 GB</span> data transfer per week
+			Download limit of <span class="text_highlight">20 GB</span> per week
 			(168 hours). When this threshold is reached your download speed will
 			be reduced
 		</div>
@@ -153,7 +153,7 @@ onMount(() => {
 	<p>
 		Unlike most other sharing sites pixeldrain uses a postponing system for
 		expiring files. When a file is freshly uploaded it gets 60 days by
-		default (120 days if you have the pro plan). After these 60 days we will
+		default (240 days if you have the pro plan). After these 60 days we will
 		check when the file was last viewed. Files which are regularly viewed
 		could still bring new users to the platform, it would be rude to show
 		these people a File Not Found page. So if the file was viewed in the
