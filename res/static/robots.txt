@@ -1,3 +1,1 @@
-User-Agent: *
-Disallow: /u/
-Disallow: /l/
+# Go ahead robots, do your worst
