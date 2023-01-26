@@ -5,6 +5,7 @@ import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import SuccessMessage from "../util/SuccessMessage.svelte";
 import ThemePicker from "../util/ThemePicker.svelte";
 import { onMount } from "svelte";
+import Persistence from "../icons/Persistence.svelte";
 
 let loading = false
 let success_message
@@ -92,7 +93,7 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h2>File viewer branding</h2>
+	<h2><Persistence/>File viewer branding</h2>
 	{#if !window.user.subscription.file_viewer_branding}
 		<div class="highlight_yellow">
 			Sharing settings are not available for your account. Subscribe to

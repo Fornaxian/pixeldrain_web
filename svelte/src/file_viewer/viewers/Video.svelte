@@ -95,7 +95,11 @@ const fullscreen = () => {
 	{#if !video_reload}
 		<div class="container">
 
-			{#if file.mime_type === "video/x-matroska" || file.mime_type === "video/quicktime"}
+			{#if
+				file.mime_type === "video/x-matroska" ||
+				file.mime_type === "video/quicktime" ||
+				file.mime_type === "video/x-ms-asf"
+			}
 				<div class="compatibility_warning">
 					This video file type is not compatible with every web
 					browser. If the video fails to play you can try downloading

@@ -1,5 +1,6 @@
 <script>
 import { onMount } from "svelte";
+import Pro from "../icons/Pro.svelte";
 import { formatDataVolume } from "../util/Formatting.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import ProgressBar from "../util/ProgressBar.svelte";
@@ -80,7 +81,7 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h2>Bandwidth sharing</h2>
+	<h2><Pro/>Bandwidth sharing (hotlinking)</h2>
 	<SuccessMessage bind:this={success_message}></SuccessMessage>
 
 	<button on:click={toggle_hotlinking}>
@@ -100,7 +101,7 @@ onMount(() => {
 		page.
 	</p>
 
-	<h2>Bill shock limit</h2>
+	<h2><Pro/>Bill shock limit</h2>
 	<p>
 		Billshock limit in gigabytes per month (1 TB = 1000 GB). Set to 0 to disable.
 	</p>
@@ -125,18 +126,7 @@ onMount(() => {
 		Set to 0 to disable the limit.
 	</p>
 
-	<h2>Skip download page</h2>
-	<p>
-		This setting only applies to your account, others will still see the
-		download page when visiting your files. When this is enabled you will be
-		redirected to the file download API when clicking a pixeldrain link.
-		This means that images, videos and PDF files will be opened directly in
-		your browser, and other files are immediately downloaded to your device.
-		This only works for single file links, not albums.
-	</p>
-	<p>
-		You will need a Pro subscription to use this feature.
-	</p>
+	<h2><Pro/>Skip download page</h2>
 	<button on:click={toggle_skip_viewer}>
 		{#if skip_viewer}
 			<i class="icon green">check</i> ON (click to turn off)
@@ -144,6 +134,15 @@ onMount(() => {
 			<i class="icon red">close</i> OFF (click to turn on)
 		{/if}
 	</button>
+	<p>
+		This setting only applies to your account, others will still see the
+		download page when visiting your files. When this is enabled you will be
+		redirected to the file download API when clicking a pixeldrain link.
+		This means that images, videos and PDF files will be opened directly in
+		your browser, and other files are immediately downloaded to your device.
+		This only works for single file links, not albums. You will need a Pro
+		subscription to use this feature.
+	</p>
 </section>
 
 <style>

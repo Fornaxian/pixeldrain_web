@@ -30,7 +30,10 @@ let submit = async e => {
 
 	if (single_or_all === "all") {
 		list.files.forEach(file => {
-			files.push(file.id)
+			// Only report files which have not been blocked yet
+			if (file.abuse_type !== "") {
+				files.push(file.id)
+			}
 		})
 	} else {
 		files.push(file.id)

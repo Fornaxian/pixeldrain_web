@@ -1,5 +1,6 @@
 <script>
 import { onMount } from "svelte";
+import Persistence from "../icons/Persistence.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import SuccessMessage from "../util/SuccessMessage.svelte";
 
@@ -42,7 +43,7 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h2>Embedding controls</h2>
+	<h2><Persistence/>Embedding controls</h2>
 	<SuccessMessage bind:this={success_message}></SuccessMessage>
 	{#if !window.user.subscription.file_viewer_branding}
 		<div class="highlight_yellow">
