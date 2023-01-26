@@ -128,6 +128,17 @@ When uploading a file pixeldrain will save a list of file links on your
 browser's local storage. This data is **only** used for viewing your upload
 history on the [history page](/history).
 
+## Is there a clean pixeldrain logo I can use?
+
+Yes, here's a high resolution pixeldrain logo with text. The font is called
+Orbitron, it was designed by Matt McInerney and uses the Open Font License.
+
+<img src="/res/img/header_no_shadow.png" style="max-width: 100%; height: 80px;" /><br/>
+
+And here's a vector version of just the icon:
+
+<img src="/res/img/pixeldrain.svg" style="max-width: 100%; height: 80px;" /><br/>
+
 ## Support
 
 For other questions you can reach me at
