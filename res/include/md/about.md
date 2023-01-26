@@ -133,7 +133,7 @@ history on the [history page](/history).
 Yes, here's a high resolution pixeldrain logo with text. The font is called
 Orbitron, it was designed by Matt McInerney and uses the Open Font License.
 
-<img src="/res/img/header_no_shadow.png" style="max-width: 100%; height: 80px;" /><br/>
+<img src="/res/img/pixeldrain_high_res.png" style="max-width: 100%; height: 80px;" /><br/>
 
 And here's a vector version of just the icon:
 
