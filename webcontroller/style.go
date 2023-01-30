@@ -309,23 +309,23 @@ func BackgroundTiles() template.URL {
 // Following are all the available styles
 
 var purpleDrainStyle = styleSheet{
-	Input:               HSL{266, .85, .26},
-	InputHover:          HSL{266, .85, .30},
+	Input:               RGBA{77, 19, 236, .3},
+	InputHover:          RGBA{77, 19, 236, .4},
 	InputText:           HSL{0, 0, .9},
 	InputDisabledText:   HSL{266, .85, .4},
-	HighlightBackground: NewGradient(150, HSL{150, .84, .39}, HSL{85, .85, .35}),
+	HighlightBackground: NewGradient(160, HSL{150, .84, .39}, HSL{85, .85, .35}),
 	Highlight:           HSL{117, .63, .46},
 	HighlightText:       HSL{0, 0, 0},
 	Danger:              HSL{357, .63, .46},
 	ScrollbarForeground: HSL{266, .85, .40},
 	ScrollbarHover:      HSL{266, .85, .50},
 
-	BackgroundColor:   HSL{260, .90, .12},
-	Background:        NewGradient(120, HSL{250, .84, .18}, HSL{300, .9, .16}),
+	BackgroundColor:   HSL{270, .84, .12},
+	Background:        NewGradient(120, HSL{255, .84, .16}, HSL{300, .85, .14}),
 	BackgroundPattern: RawCSS("none"),
 	Navigation:        RawCSS("none"),
 	BodyColor:         HSL{274, .9, .14},
-	BodyBackground:    RGBA{255, 255, 255, 0.02},
+	BodyBackground:    NewGradient(120, HSL{255, .84, .18}, HSL{300, .85, .16}),
 	BodyText:          HSL{0, 0, .8},
 	CardColor:         HSL{275, .8, .18},
 
