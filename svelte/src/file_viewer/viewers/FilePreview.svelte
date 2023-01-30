@@ -19,6 +19,7 @@ let viewer
 let viewer_type = "loading"
 export let is_list = false
 let current_file
+let premium_download = false
 
 export const set_file = async file => {
 	if (file.id === "") {
@@ -31,14 +32,13 @@ export const set_file = async file => {
 		file.availability === "ip_download_limited_captcha_required"
 	) {
 		viewer_type = "rate_limit"
-	} else if (file.download_speed_limit > 0 && file.download_speed_limit <= 1<<20) {
-		viewer_type = "speed_limit"
 	} else {
 		viewer_type = file_type(file)
 	}
 
 	console.log("opening file", file)
 	current_file = file
+	premium_download = !file.show_ads
 
 	// Render the viewer component and set the file type
 	await tick()
@@ -48,7 +48,7 @@ export const set_file = async file => {
 }
 </script>
 
-{#if $download_limits.transfer_limit_used > $download_limits.transfer_limit}
+{#if !premium_download && $download_limits.transfer_limit_used > $download_limits.transfer_limit}
 	<SpeedLimit file={current_file} on:download></SpeedLimit>
 {:else if viewer_type === "loading"}
 	<div class="center">

@@ -94,7 +94,7 @@ onMount(() => {
 	<p>
 		Here is a log of all transactions on your account balance. Usage is
 		calculated per day. The storage charge is divided by the average number
-		of months in a day (30.4375).
+		of days in a month (30.4375).
 	</p>
 	<p>
 		Example: If you have 2 TB stored on your pixeldrain account at €4 per TB

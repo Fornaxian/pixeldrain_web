@@ -42,8 +42,11 @@ const loop = async () => {
 
 	// If the usage has not changed we increase the timeout with one second. If
 	// it did change we halve the timeout
-	if (new_limits.transfer_limit_used === limits.transfer_limit_used) {
-		timeout_ms += 1000
+	if (
+		new_limits.transfer_limit_used === limits.transfer_limit_used &&
+		new_limits.transfer_limit === limits.transfer_limit
+	) {
+		timeout_ms += 2000
 		if (timeout_ms > 60000) {
 			timeout_ms = 60000
 		}
