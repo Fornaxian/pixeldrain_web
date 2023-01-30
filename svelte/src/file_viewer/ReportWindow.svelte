@@ -77,11 +77,10 @@ let submit = async e => {
 <div class="container">
 	<p>
 		If you think this file violates pixeldrain's
-		<a href="/about#content-policy">content policy</a> you can
-		report it for moderation with this form. You cannot report
-		copyright abuse with this form, send a formal DMCA notification
-		to the
-		<a href="/about#content-policy">abuse e-mail address</a>
+		<a href="/abuse">content policy</a> you can report it for moderation
+		with this form. You cannot report copyright abuse with this form, send a
+		formal DMCA notification to the
+		<a href="/abuse#copyright-infringement">abuse e-mail address</a>
 		instead.
 	</p>
 	<form on:submit={submit} style="width: 100%">

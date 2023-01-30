@@ -16,8 +16,7 @@ let file = {
 	<h2>Unavailable for legal reasons</h2>
 	<p>
 		This file has been removed for violating pixeldrain's
-		<a href="/about#content-policy">content policy</a>. Type of abuse:
-		{file.abuse_type}.
+		<a href="/abuse">content policy</a>. Type of abuse: {file.abuse_type}.
 	</p>
 	<p>
 		{#if file.abuse_reporter_name === "User submitted reports"}

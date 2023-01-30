@@ -151,6 +151,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", handlerOpts{})},
 		{GET, "business" /*        */, wc.serveMarkdown("business.md", handlerOpts{})},
 		{GET, "limits" /*          */, wc.serveMarkdown("limits.md", handlerOpts{})},
+		{GET, "abuse" /*           */, wc.serveMarkdown("abuse.md", handlerOpts{})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
 		{GET, "directory_upload" /**/, wc.serveTemplate("directory_upload", handlerOpts{})},
 

@@ -34,8 +34,8 @@ onMount(async () => {
 				<p>
 					Your IP address ({result.address}) has been banned from
 					uploading to pixeldrain due to violation of the
-					<a href="/about#content-policy">content policy</a>. Below is a
-					list of files originating from your IP address which have been
+					<a href="/abuse">content policy</a>. Below is a list of
+					files originating from your IP address which have been
 					blocked:
 				</p>
 			{:else}
