@@ -68,7 +68,11 @@ const toggle_play = () => playing ? player.pause() : player.play()
 // }
 
 const seek_relative = delta => {
-	player.fastSeek(player.currentTime + delta)
+	if (player.fastSeek) {
+		player.fastSeek(player.currentTime + delta)
+	} else {
+		player.currentTime = player.currentTime + delta
+	}
 }
 
 // let volume_seeker
