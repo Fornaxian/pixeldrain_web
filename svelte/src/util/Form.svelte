@@ -166,6 +166,13 @@ let handle_errors = (response) => {
 						type="number"
 						step="0.1"
 						class="form_input"/>
+				{:else if field.type === "datetime-local"}
+					<input bind:this={field.binding}
+						id="input_{field.name}"
+						name="{field.name}"
+						value="{field.default_value}"
+						type="datetime-local"
+						class="form_input"/>
 				{:else if field.type === "username"}
 					<input bind:this={field.binding}
 						id="input_{field.name}"
