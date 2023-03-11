@@ -156,7 +156,7 @@ onMount(() => {
 		<tr>
 			<td>
 				Unique downloads
-				<button class="button round"
+				<button class="button small_button round"
 					class:button_highlight={download_info}
 					style="margin: 0;"
 					on:click={() => download_info = !download_info}

@@ -535,6 +535,15 @@ select.disabled {
 	background: var(--input_background);
 }
 
+.small_button {
+	padding: 1px 1px 1px 1px;
+}
+
+.small_button:active {
+	box-shadow: inset 2px 2px 4px var(--shadow_color);
+	padding: 2px 0px 0px 2px;
+}
+
 .group_first {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;

@@ -27,6 +27,8 @@ onMount(() => {
 		set_ad_type("mastodon")
 	} else if (rand < 0.3) {
 		set_ad_type("reddit")
+	} else if (rand < 0.4) {
+		set_ad_type("reviews")
 	} else {
 		set_ad_type("patreon_support")
 	}
@@ -179,9 +181,31 @@ head.valueimpression_loaded.subscribe(v => {
 	{:else if ad_type === "reddit"}
 
 		<div class="banner social_button">
-			<a href="https://www.reddit.com/r/PixelDrain" rel="noreferrer" class="button" target="_blank" style="background-color: #ff4500; color: #ffffff;">
+			<a href="https://www.reddit.com/r/PixelDrain"
+				rel="noreferrer" class="button" target="_blank" style="background-color: #ff4500; color: #ffffff;"
+			>
 				<Reddit style="color: #ffffff;"/>
 				Follow Pixeldrain on Reddit: /r/pixeldrain
+			</a>
+		</div>
+
+	{:else if ad_type === "reviews"}
+
+		<div class="banner support_banner">
+			<span style="display: block; margin-bottom: 2px;">
+				Are you liking pixeldrain? Write a review! It really helps
+			</span>
+			<a href="https://alternativeto.net/software/pixeldrain/about/"
+				rel="noreferrer" class="button" target="_blank" style="background-color: #0C9EF0; color: #FFFFFF; font-weight: bold;"
+			>
+				<i class="icon">rate_review</i>
+				AlternativeTo
+			</a>
+			<a href="https://www.trustpilot.com/review/pixeldrain.com"
+				rel="noreferrer" class="button" target="_blank" style="background-color: #00B67A; color: #FFFFFF; font-weight: bold;"
+			>
+				<i class="icon">rate_review</i>
+				Trustpilot
 			</a>
 		</div>
 
