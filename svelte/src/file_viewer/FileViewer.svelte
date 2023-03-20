@@ -14,13 +14,13 @@ import ReportWindow from "./ReportWindow.svelte";
 import IntroPopup from "./IntroPopup.svelte";
 import AdHead from "./AdHead.svelte";
 import AdLeaderboard from "./AdLeaderboard.svelte";
-import AdSkyscraper from "./AdSkyscraper.svelte";
 import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
 import Downloader from "./Downloader.svelte";
 import CustomBanner from "./CustomBanner.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import TransferLimit from "./TransferLimit.svelte";
+import ListStats from "./ListStats.svelte";
 
 let loading = true
 let embedded = false
@@ -412,9 +412,12 @@ const keyboard_event = evt => {
 	<div class="file_preview_row">
 		<div class="toolbar" class:toolbar_visible>
 			{#if view === "file"}
-				<FileStats file={file}></FileStats>
-				<div class="separator"></div>
+				<FileStats file={file}/>
+			{:else if view === "gallery"}
+				<ListStats list={list}/>
 			{/if}
+
+			<div class="separator"></div>
 
 			{#if file.abuse_type === "" && view === "file"}
 				<button
