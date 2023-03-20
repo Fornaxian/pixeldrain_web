@@ -10,17 +10,20 @@
 
 ## Programming libraries
 
- * [scylladb/gocql](https://github.com/scylladb/gocql)
- * [scylladb/gocqlx](https://github.com/scylladb/gocqlx)
- * [BurntSushi/toml](https://github.com/BurntSushi/toml)
- * [julienschmidt/httprouter](https://github.com/julienschmidt/httprouter)
- * [gabriel-vasile/mimetype](https://github.com/gabriel-vasile/mimetype)
- * [disintegration/imaging](https://github.com/disintegration/imaging)
- * [gorilla/websocket](https://github.com/gorilla/websocket)
- * [shopspring/decimal](https://github.com/shopspring/decimal)
- * [jhillyerd/enmime](https://github.com/jhillyerd/enmime)
- * [russross/blackfriday](https://github.com/russross/blackfriday)
- * [microcosm-cc/bluemonday](https://github.com/microcosm-cc/bluemonday)
+ * [scylladb/gocql](https://github.com/scylladb/gocql) (database communication)
+ * [scylladb/gocqlx](https://github.com/scylladb/gocqlx) (database communication)
+ * [BurntSushi/toml](https://github.com/BurntSushi/toml) (server configuration)
+ * [klauspost/reedsolomon](https://github.com/klauspost/reedsolomon) (reed-solomon erasure coding)
+ * [julienschmidt/httprouter](https://github.com/julienschmidt/httprouter) (request routing)
+ * [gabriel-vasile/mimetype](https://github.com/gabriel-vasile/mimetype) (MIME type detection)
+ * [disintegration/imaging](https://github.com/disintegration/imaging) (image thumbnail generation)
+ * [ffmpeg](https://ffmpeg.org/) (video thumbnail generation)
+ * [gorilla/websocket](https://github.com/gorilla/websocket) (websocket support on file viewer)
+ * [shopspring/decimal](https://github.com/shopspring/decimal) (currency handling)
+ * [jhillyerd/enmime](https://github.com/jhillyerd/enmime) (e-mail parser)
+ * [russross/blackfriday](https://github.com/russross/blackfriday) (markdown renderer)
+ * [microcosm-cc/bluemonday](https://github.com/microcosm-cc/bluemonday) (HTML sanitizer)
+ * [j-muller/go-torrent-parser](https://github.com/j-muller/go-torrent-parser) (torrent file parser)
 
 ### Web framework
 
