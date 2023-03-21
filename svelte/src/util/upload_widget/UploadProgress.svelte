@@ -1,5 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
+    import { fade } from "svelte/transition";
 import ProgressBar from "../ProgressBar.svelte";
 import { upload_file } from "./UploadFunc";
 
@@ -43,7 +44,7 @@ export const start = () => {
 
 </script>
 
-<div class="upload_progress" class:error={job.status === "error"}>
+<div class="upload_progress" transition:fade={{duration: 200}} class:error={job.status === "error"}>
 	{job.name}<br/>
 	{#if error_code !== ""}
 		{error_message}<br/>

@@ -21,6 +21,7 @@ import CustomBanner from "./CustomBanner.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import TransferLimit from "./TransferLimit.svelte";
 import ListStats from "./ListStats.svelte";
+import ListUpdater from "./ListUpdater.svelte";
 
 let loading = true
 let embedded = false
@@ -73,6 +74,7 @@ let toolbar_toggle = () => {
 }
 
 let downloader
+let list_updater
 let details_window
 let details_visible = false
 let qr_window
@@ -354,6 +356,10 @@ const keyboard_event = evt => {
 		case "q": // Q to close the window
 			window.close()
 			break
+		case "u": // U to upload new files
+			if (list_updater) {
+				list_updater.pick_files()
+			}
 	}
 }
 
@@ -561,22 +567,20 @@ const keyboard_event = evt => {
 					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
 					on:next={() => { if (list_navigator) { list_navigator.next() }}}
 					on:loading={e => {loading = e.detail}}
-					on:reload={reload}>
-				</FilePreview>
+					on:reload={reload}
+				/>
 			{:else if view === "gallery"}
 				<GalleryView
 					list={list}
 					on:reload={reload}
-					on:loading={e => {loading = e.detail}}>
-				</GalleryView>
+					on:update_list={e => list_updater.update(e.detail)}
+					on:pick_files={() => list_updater.pick_files()}
+					on:upload_files={e => list_updater.upload_files(e.detail)}
+				/>
 			{/if}
 		</div>
 
 		<Sharebar bind:this={sharebar}></Sharebar>
-
-		<!-- {#if ads_enabled}
-			<AdSkyscraper on:visibility={e => {skyscraper_visible = e.detail}}></AdSkyscraper>
-		{/if} -->
 	</div>
 
 	{#if ads_enabled}
@@ -611,6 +615,15 @@ const keyboard_event = evt => {
 	{/if}
 
 	<Downloader bind:this={downloader} file={file} list={list}></Downloader>
+
+	{#if is_list && list.can_edit}
+		<ListUpdater
+			bind:this={list_updater}
+			list={list}
+			on:reload={reload}
+			on:loading={e => {loading = e.detail}}
+		/>
+	{/if}
 </div>
 
 <style>

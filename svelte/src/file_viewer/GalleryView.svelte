@@ -6,74 +6,28 @@ import { file_type } from "./FileUtilities.svelte";
 let dispatch = createEventDispatcher()
 
 export let list = {
-	id: "",
-	title: "",
 	files: [],
-	download_href: "",
-	info_href: "",
 	can_edit: false,
 }
 
 let file_picker;
-
-const update_list = async new_files => {
-	dispatch("loading", true)
-
-	// If the list is empty we simply delete it
-	if (list.files.length === 0) {
-		try {
-			let resp = await fetch(list.info_href, {method: "DELETE"})
-			if (resp.status >= 400) {
-				throw (await resp.json()).message
-			}
-			window.close()
-		} catch (err) {
-			alert("Failed to delete album: "+err)
-		} finally {
-			dispatch("loading", false)
-		}
-		return
-	}
-
-	let listjson = {
-		title: list.title,
-		files: [],
-	}
-	list.files.forEach(f => {
-		listjson.files.push({
-			id: f.id,
-		})
-	})
-
-	try {
-		const resp = await fetch(
-			list.info_href,
-			{ method: "PUT", body: JSON.stringify(listjson) },
-			);
-		if (resp.status >= 400) {
-			throw (await resp.json()).message
-		}
-	} catch (err) {
-		alert("Failed to update album: "+err)
-	} finally {
-		dispatch("loading", false)
-	}
-}
 
 const add_files = async files => {
 	let list_files = list.files;
 	files.forEach(f => {
 		list_files.push(f)
 	})
-	await update_list(list_files)
-	dispatch("reload")
+
+	list.files = list_files // Update the view (and play animation)
+	dispatch("update_list", list_files)
 }
 
 const delete_file = async index => {
 	let list_files = list.files
 	list_files.splice(index, 1)
-	await update_list(list_files)
-	list.files = list_files
+
+	list.files = list_files // Update the view (and play animation)
+	dispatch("update_list", list_files)
 }
 
 const move_left = async index => {
@@ -82,8 +36,9 @@ const move_left = async index => {
 	}
 	let f = list.files;
 	[f[index], f[index-1]] = [f[index-1], f[index]];
-	await update_list(f)
-	list.files = f
+
+	list.files = f // Update the view (and play animation)
+	dispatch("update_list", f)
 }
 const move_right = async index => {
 	if (index >= list.files.length-1) {
@@ -91,17 +46,33 @@ const move_right = async index => {
 	}
 	let f = list.files;
 	[f[index], f[index+1]] = [f[index+1], f[index]];
-	await update_list(f)
-	list.files = f
+
+	list.files = f // Update the view (and play animation)
+	dispatch("update_list", f)
 }
 
+// Index of the file which is being hovered over. -1 is nothing and -2 is the
+// Add files button
 let hovering = -1
+let dragging = false
 const drag = (e, index) => {
+	dragging = true
 	e.dataTransfer.effectAllowed = 'move';
 	e.dataTransfer.dropEffect = 'move';
 	e.dataTransfer.setData('text/plain', index);
 }
 const drop = (e, index) => {
+	hovering = -1
+	dragging = false
+
+	if (e.dataTransfer.files.length !== 0) {
+		// This is not a rearrangement, this is a file upload
+		dispatch("upload_files", e.dataTransfer.files)
+		return
+	} else if (index === -2) {
+		return
+	}
+
 	e.dataTransfer.dropEffect = 'move';
 	let start = parseInt(e.dataTransfer.getData("text/plain"));
 	let list_files = list.files
@@ -116,11 +87,32 @@ const drop = (e, index) => {
 		return; // Nothing changed
 	}
 
-	update_list(list_files)
+	dispatch("update_list", list_files)
 }
 </script>
 
 <div class="gallery">
+	{#if list.can_edit}
+		<div class="add_button"
+			on:drop|preventDefault={e => drop(e, -2)}
+			on:dragover|preventDefault|stopPropagation
+			on:dragenter={() => hovering = -2}
+			on:dragend={() => {hovering = -1}}
+			class:highlight={!dragging && hovering === -2}
+		>
+			<button on:click={e => dispatch("pick_files")} style="font-size: 1.5em; cursor: pointer;">
+				<i class="icon">cloud_upload</i>
+				<br/>
+				Upload files
+			</button>
+			<button on:click={file_picker.open} style="font-size: 1.5em; cursor: pointer;">
+				<i class="icon">add</i>
+				<br/>
+				Add files
+			</button>
+		</div>
+	{/if}
+
 	{#each list.files as file, index (file)}
 		<a
 			href="#item={index}"
@@ -129,10 +121,10 @@ const drop = (e, index) => {
 			on:dragstart={e => drag(e, index)}
 			on:drop|preventDefault={e => drop(e, index)}
 			on:dragover|preventDefault|stopPropagation
-			on:dragenter={() => {hovering = index}}
-			on:dragend={() => {hovering = -1}}
-			class:highlight={hovering === index}
-			animate:flip={{duration: 500}}>
+			on:dragenter={() => hovering = index}
+			on:dragend={() => {hovering = -1; dragging = false}}
+			class:highlight={dragging && hovering === index}
+			animate:flip={{duration: 400}}>
 			<div
 				class="icon_container"
 				class:editing={list.can_edit}
@@ -159,14 +151,6 @@ const drop = (e, index) => {
 			{file.name}
 		</a>
 	{/each}
-
-	{#if list.can_edit}
-		<button class="file" on:click={file_picker.open} style="font-size: 1.5em; cursor: pointer;">
-			<i class="icon">add</i>
-			<br/>
-			Add files
-		</button>
-	{/if}
 </div>
 
 <FilePicker
@@ -240,6 +224,25 @@ const drop = (e, index) => {
 	padding: 0;
 }
 .button_row>.separator {
+	flex: 1 1 auto;
+}
+.add_button{
+	width: 200px;
+	max-width: 42%;
+	height: 200px;
+	margin: 8px;
+	border-radius: 8px;
+	background: var(--body_color);
+	text-align: center;
+	line-height: 1.2em;
+	display: inline-block;
+	vertical-align: top;
+	color: var(--body_text_color);
+
+	display: flex;
+	flex-direction: column;
+}
+.add_button > * {
 	flex: 1 1 auto;
 }
 </style>

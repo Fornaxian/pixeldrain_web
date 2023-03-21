@@ -14,10 +14,10 @@ const drop = (e) => {
 	}
 }
 const paste = (e) => {
-	if (e.clipboardData.files[0]) {
+	if (e.clipboardData.files.length !== 0) {
 		e.preventDefault();
 		e.stopPropagation();
-		dispatch("upload", e.dataTransfer.files)
+		dispatch("upload", e.clipboardData.files)
 	}
 }
 </script>
@@ -39,8 +39,6 @@ const paste = (e) => {
 <style>
 .drag_target {
 	position: fixed;
-	height: auto;
-	margin: auto;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);

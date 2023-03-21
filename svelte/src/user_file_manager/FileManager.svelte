@@ -257,8 +257,6 @@ onMount(() => {
 
 <svelte:window on:keydown={keydown} on:hashchange={hashChange} />
 
-<UploadWidget bind:this={upload_widget} drop_upload on:uploads_finished={hashChange}/>
-
 <div id="file_manager" class="file_manager">
 	<div id="nav_bar" class="nav_bar">
 		<button id="btn_menu" onclick="toggleMenu()"><i class="icon">menu</i></button>
@@ -339,6 +337,8 @@ onMount(() => {
 	<!-- This frame will load the download URL when a download button is pressed -->
 	<iframe bind:this={downloadFrame} title="File download frame" style="display: none; width: 1px; height: 1px;"></iframe>
 </div>
+
+<UploadWidget bind:this={upload_widget} drop_upload on:uploads_finished={hashChange}/>
 
 <style>
 :global(#page_body) {

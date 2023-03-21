@@ -1,5 +1,6 @@
 <script>
 import { createEventDispatcher, tick } from "svelte";
+import { fade } from "svelte/transition";
 import DropUpload from "./DropUpload.svelte";
 import UploadProgress from "./UploadProgress.svelte";
 let dispatch = createEventDispatcher()
@@ -103,12 +104,8 @@ const finish_upload = (e) => {
 	class="upload_input" type="file" name="file" multiple="multiple"
 />
 
-{#if drop_upload}
-	<DropUpload on:upload={e => upload_files(e.detail)}/>
-{/if}
-
 {#if visible}
-	<div class="upload_widget">
+	<div class="upload_widget" transition:fade={{duration: 200}}>
 		<div class="header">
 			{#if state === "idle"}
 				Waiting for files
@@ -128,10 +125,14 @@ const finish_upload = (e) => {
 	</div>
 {/if}
 
+{#if drop_upload}
+	<DropUpload on:upload={e => upload_files(e.detail)}/>
+{/if}
+
 <style>
 .upload_input {
 	visibility: hidden;
-	position: static;
+	position: fixed;
 	width: 0;
 	height: 0;
 }
@@ -139,16 +140,15 @@ const finish_upload = (e) => {
 	position: fixed;
 	display: flex;
 	flex-direction: column;
-	width: 400px;
-	max-width: 90%;
+	width: 500px;
+	max-width: 80%;
 	height: auto;
-	max-height: 500px;
+	max-height: 50%;
 	right: 20px;
 	bottom: 20px;
 	border-radius: 20px 20px 8px 8px;
-	overflow-x: hidden;
-	overflow-y: auto;
-	box-shadow: 1px 1px 10px -2px var(--shadow_color);
+	overflow: hidden;
+	box-shadow: 1px 1px 8px var(--shadow_color);
 }
 
 .header {
@@ -166,5 +166,7 @@ const finish_upload = (e) => {
 	flex: 1 1 auto;
 	background: var(--body_color);
 	color: var(--body_text_color);
+	overflow-y: auto;
+	text-align: left;
 }
 </style>
