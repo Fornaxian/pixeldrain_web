@@ -331,7 +331,7 @@ const keydown = (e) => {
 	on:keydown={keydown}
 	on:beforeunload={leave_confirmation} />
 
-<Konami></Konami>
+<Konami/>
 
 <!-- If the user is logged in and has used more than 50% of their storage space we will show a progress bar -->
 {#if window.user.username !== "" && window.user.storage_space_used/window.user.subscription.storage_space > 0.5}

@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import { formatDataVolume } from "../util/Formatting.svelte";
 import Modal from "../util/Modal.svelte";
 import Spinner from "../util/Spinner.svelte";
+import UploadWidget from "../util/upload_widget/UploadWidget.svelte";
 import DirectoryElement from "./DirectoryElement.svelte"
 
 let loading = true
@@ -12,6 +13,7 @@ let directoryElement
 let downloadFrame
 let help_modal
 let help_modal_visible = false
+let upload_widget
 
 let getUserFiles = () => {
 	loading = true
@@ -251,10 +253,11 @@ onMount(() => {
 	initialized = true
 	hashChange()
 })
-
 </script>
 
 <svelte:window on:keydown={keydown} on:hashchange={hashChange} />
+
+<UploadWidget bind:this={upload_widget} drop_upload on:uploads_finished={hashChange}/>
 
 <div id="file_manager" class="file_manager">
 	<div id="nav_bar" class="nav_bar">
@@ -262,17 +265,28 @@ onMount(() => {
 		<button on:click={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
 			<i class="icon">select_all</i> Select
 		</button>
-		<input bind:this={inputSearch} on:keyup={searchHandler} id="input_search" class="input_search" type="text" placeholder="press / to search"/>
-		<button on:click={() => help_modal.toggle()} class:button_highlight={help_modal_visible}>
-			<i class="icon">info</i>
-		</button>
-		<button on:click={hashChange} id="btn_reload">
+		<input
+			bind:this={inputSearch}
+			on:keyup={searchHandler}
+			id="input_search"
+			class="input_search"
+			type="text"
+			placeholder="press / to search"
+		/>
+		{#if contentType === "files"}
+			<button on:click={upload_widget.pick_files} id="btn_upload" title="Upload files">
+				<i class="icon">cloud_upload</i>
+			</button>
+		{/if}
+		<button on:click={hashChange} id="btn_reload" title="Refresh file list">
 			<i class="icon">refresh</i>
+		</button>
+		<button on:click={() => help_modal.toggle()} class:button_highlight={help_modal_visible} title="Help">
+			<i class="icon">info</i>
 		</button>
 	</div>
 	{#if selecting}
 		<div class="nav_bar">
-			<!-- Buttons to make a list and bulk delete files will show up here soon. Stay tuned ;-) -->
 			{#if contentType === "files"}
 				<button on:click={createList}><i class="icon">list</i> Make list</button>
 				<button on:click={downloadFiles}><i class="icon">download</i> Download</button>
