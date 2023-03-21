@@ -18,7 +18,6 @@ const add_files = async files => {
 		list_files.push(f)
 	})
 
-	list.files = list_files // Update the view (and play animation)
 	dispatch("update_list", list_files)
 }
 
