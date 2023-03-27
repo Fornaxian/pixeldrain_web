@@ -96,7 +96,18 @@ const finish_upload = (e) => {
 	start_upload()
 }
 
+const leave_confirmation = e => {
+	if (state === "uploading") {
+		e.preventDefault()
+		e.returnValue = "If you close this page your files will stop uploading. Do you want to continue?"
+		return e.returnValue
+	} else {
+		return null
+	}
+}
 </script>
+
+<svelte:window on:beforeunload={leave_confirmation} />
 
 <input
 	bind:this={file_input_field}
