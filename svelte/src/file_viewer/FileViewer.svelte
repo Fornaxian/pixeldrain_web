@@ -32,6 +32,7 @@ let view = "" // file or gallery
 let file = file_struct
 let list = list_struct
 let is_list = false
+let list_downloadable = false
 let file_preview
 
 let button_home
@@ -139,8 +140,13 @@ const reload = async () => {
 const open_list = l => {
 	l.download_href = window.api_endpoint+"/list/"+l.id+"/zip"
 	l.info_href = window.api_endpoint+"/list/"+l.id
+	list_downloadable = true
 	l.files.forEach(f => {
 		file_set_href(f)
+
+		if (!f.can_download) {
+			list_downloadable = false
+		}
 	})
 
 	list = l
@@ -435,7 +441,7 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			{#if is_list && file.can_download}
+			{#if is_list && list_downloadable}
 				<button
 					on:click={downloader.download_list}
 					class="toolbar_button"
