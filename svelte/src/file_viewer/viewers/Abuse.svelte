@@ -1,5 +1,9 @@
 <script>
+import { createEventDispatcher } from "svelte";
+import IconBlock from "./IconBlock.svelte"
 import TextBlock from "./TextBlock.svelte"
+
+let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f
 let file = {
@@ -7,6 +11,8 @@ let file = {
 	name: "",
 	abuse_type: "",
 	abuse_reporter_name: "",
+	can_download: false,
+	icon_href: "",
 }
 </script>
 
@@ -36,3 +42,16 @@ let file = {
 		pixeldrain.
 	</p>
 </TextBlock>
+
+{#if file.can_download}
+	<IconBlock icon_href={file.icon_href}>
+
+		This file cannot be shared, but since you are the uploader of the file
+		you can still download it.
+		<br/>
+		<button class="button_highlight" on:click={() => {dispatch("download")}}>
+			<i class="icon">download</i>
+			<span>Download</span>
+		</button>
+	</IconBlock>
+{/if}

@@ -29,6 +29,10 @@ export const download_file = () => {
 		download_frame.src = file.download_href
 		return
 	}
+	if (!file.availability.endsWith("_captcha_required")) {
+		console.debug("File is unavailable, ignoring download request")
+		return
+	}
 
 	console.debug("File is not readily available, showing captcha dialog")
 

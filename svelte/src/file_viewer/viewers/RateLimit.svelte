@@ -2,6 +2,7 @@
 import { createEventDispatcher, onMount } from "svelte";
 import { formatDataVolume } from "../../util/Formatting.svelte";
 import { download_limits } from "../DownloadLimitStore";
+import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
@@ -47,7 +48,7 @@ let file = {
 		</p>
 	{/if}
 	<p>
-		This warning disappears when the you are a
+		This warning disappears when you are a
 		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701&cadence=12" target="_blank" rel="noreferrer">Patreon supporter</a>,
 		or when the uploader of the file enables
 		<a href="/user/subscription">bandwidth sharing</a> on their Pro account
@@ -63,32 +64,15 @@ let file = {
 		You will have to complete a CAPTCHA test to prove that you're not a
 		robot.
 	</p>
-
-	<img src={file.icon_href} alt="File icon" class="file_thumbnail">
-	<div class="file_description">
-		Name: {file.name}<br/>
-		Type: {file.mime_type}<br/>
-		<button on:click={() => {dispatch("download")}}>
-			<i class="icon">download</i> Download
-		</button>
-		<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
-			<i class="icon">bolt</i> Support Pixeldrain on Patreon
-		</a>
-	</div>
 </TextBlock>
 
-<style>
-.file_thumbnail {
-	display: inline-block;
-	vertical-align: middle;
-	height: 6em;
-	border-radius: 8px;
-}
-.file_description {
-	display: inline-block;
-	text-align: left;
-	padding-left: 8px;
-	vertical-align: middle;
-	max-width: 600px;
-}
-</style>
+<IconBlock icon_href={file.icon_href}>
+	Name: {file.name}<br/>
+	Type: {file.mime_type}<br/>
+	<button on:click={() => {dispatch("download")}}>
+		<i class="icon">download</i> Download
+	</button>
+	<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
+		<i class="icon">bolt</i> Support Pixeldrain on Patreon
+	</a>
+</IconBlock>

@@ -55,7 +55,7 @@ export const set_file = async file => {
 		<Spinner></Spinner>
 	</div>
 {:else if viewer_type === "abuse"}
-	<Abuse bind:this={viewer}></Abuse>
+	<Abuse bind:this={viewer} on:download></Abuse>
 {:else if viewer_type === "rate_limit"}
 	<RateLimit bind:this={viewer} on:download></RateLimit>
 {:else if viewer_type === "image"}

@@ -425,7 +425,7 @@ const keyboard_event = evt => {
 
 			<div class="separator"></div>
 
-			{#if file.abuse_type === "" && view === "file"}
+			{#if view === "file" && file.can_download}
 				<button
 					on:click={downloader.download_file}
 					class="toolbar_button"
@@ -435,7 +435,7 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			{#if file.abuse_type === "" && is_list}
+			{#if is_list && file.can_download}
 				<button
 					on:click={downloader.download_list}
 					class="toolbar_button"

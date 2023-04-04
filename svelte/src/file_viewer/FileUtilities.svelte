@@ -13,6 +13,7 @@ export const file_struct = {
 	hash_sha256: "",
 	show_ads: false,
 	can_edit: false,
+	can_download: false,
 	get_href: "",
 	info_href: "",
 	download_href: "",

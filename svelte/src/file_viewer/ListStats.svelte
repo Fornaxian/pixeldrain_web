@@ -24,12 +24,12 @@ $: downloads = list.files.reduce(
 <div>
 	<div class="label">Files</div>
 	<div class="stat">{list.files.length}</div>
-	<div class="label">Size</div>
-	<div class="stat">{formatDataVolume(size, 3)}</div>
 	<div class="label">Views</div>
 	<div class="stat">{formatThousands(views)}</div>
 	<div class="label">Downloads</div>
 	<div class="stat">{formatThousands(downloads)}</div>
+	<div class="label">Size</div>
+	<div class="stat">{formatDataVolume(size, 3)}</div>
 </div>
 
 <style>
