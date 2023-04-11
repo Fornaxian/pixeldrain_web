@@ -34,8 +34,8 @@ const navigate_up = () => {
 	creating_dir = false
 
 	// Go to the path of the last parent
-	if (state.parents.length !== 0) {
-		dispatch("navigate", state.parents[state.parents.length-1].path)
+	if (state.path.length > 1) {
+		dispatch("navigate", state.path[state.path.length-2].path)
 	}
 }
 const reload = () => { dispatch("navigate", state.base.path) }
@@ -66,7 +66,7 @@ const delete_selected = () => {
 	let promises = []
 	state.children.forEach(child => {
 		if (!child.fm_selected) { return }
-		promises.push(fs_delete_node(state.bucket.id, child.path))
+		promises.push(fs_delete_node(state.root.id, child.path))
 	})
 
 	// Wait for all the promises to finish
@@ -96,7 +96,7 @@ const toggle_select = () => {
 <div class="container">
 	<div class="width_container">
 		<div class="toolbar">
-			<button on:click={navigate_up} disabled={state.parents.length === 0} title="Back">
+			<button on:click={navigate_up} disabled={state.path.length <= 1} title="Back">
 				<i class="icon">arrow_back</i>
 			</button>
 			<button on:click={reload} title="Refresh directory listing">
@@ -113,7 +113,7 @@ const toggle_select = () => {
 			{/if}
 
 			<div class="toolbar_spacer"></div>
-			{#if state.bucket.permissions.update}
+			{#if state.permissions.update}
 				<button on:click={uploader.picker} title="Upload files to this directory">
 					<i class="icon">cloud_upload</i>
 				</button>
@@ -157,7 +157,7 @@ const toggle_select = () => {
 
 		<FileUploader
 			bind:this={uploader}
-			bucket_id={state.bucket.id}
+			bucket_id={state.root.id}
 			target_dir={state.base.path}
 			on:reload={reload}
 			write_password={state.write_password}

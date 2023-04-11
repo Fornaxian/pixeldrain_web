@@ -5,7 +5,7 @@ export let state
 
 <iframe
 	class="container"
-	src={"/res/misc/pdf-viewer/web/viewer.html?file="+encodeURIComponent(fs_get_file_url(state.bucket.id, state.base.path))}
+	src={"/res/misc/pdf-viewer/web/viewer.html?file="+encodeURIComponent(fs_get_file_url(state.root.id, state.base.path))}
 	title="PDF viewer">
 </iframe>
 

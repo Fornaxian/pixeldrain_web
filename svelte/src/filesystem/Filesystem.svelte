@@ -12,10 +12,6 @@ import PDF from './viewers/PDF.svelte';
 import PixeldrainLogo from '../util/PixeldrainLogo.svelte';
 import LoadingIndicator from '../util/LoadingIndicator.svelte';
 
-// Elements
-let file_viewer
-let header_bar
-
 let toolbar_visible = (window.innerWidth > 600)
 let toolbar_toggle = () => {
 	toolbar_visible = !toolbar_visible
@@ -38,10 +34,17 @@ let download_frame
 
 // State
 let state = {
-	bucket: window.initial_node.bucket,
-	parents: window.initial_node.parents,
-	base: window.initial_node.base,
+	path: window.initial_node.path,
+	base: window.initial_node.path[window.initial_node.base_index],
+	base_index: window.initial_node.base_index,
+	root: window.initial_node.path[0],
 	children: window.initial_node.children,
+	permissions: {
+		create: window.initial_node.permissions.create,
+		read: window.initial_node.permissions.read,
+		update: window.initial_node.permissions.update,
+		delete: window.initial_node.permissions.delete,
+	},
 
 	// Passwords for accessing this bucket. Passwords are not always required
 	// but sometimes they are
@@ -59,7 +62,7 @@ let state = {
 
 	// Root path of the bucket. Used for navigation by prepending it to a file
 	// path
-	path_root: "/d/"+window.initial_node.bucket.id,
+	path_root: "/d/"+window.initial_node.path[0].id,
 	loading: true,
 	viewer_type: "",
 	shuffle: false,
@@ -83,11 +86,13 @@ const sort_children = children => {
 const navigate = (path, pushHist) => {
 	state.loading = true
 
-	fs_get_node(state.bucket.id, path).then(resp => {
-		window.document.title = resp.base.name+" ~ pixeldrain"
+	fs_get_node(state.root.id, path).then(resp => {
+		window.document.title = resp.path[resp.base_index].name+" ~ pixeldrain"
 		if (pushHist) {
 			window.history.pushState(
-				{}, window.document.title, "/d/"+resp.bucket.id+resp.base.path,
+				{},
+				window.document.title,
+				"/d/"+resp.path[0].id+resp.path[resp.base_index].path,
 			)
 		}
 
@@ -103,10 +108,10 @@ const navigate = (path, pushHist) => {
 const open_node = (node) => {
 	// If the new node is a child of the previous node we save the parent's
 	// children array
-	if (node.parents.length > 0 && node.parents[node.parents.length-1].path === state.base.path) {
+	if (node.path.length > 0 && node.path[node.path.length-1].path === state.base.path) {
 		console.debug("Current parent path and new node path match. Saving siblings")
 
-		state.siblings_path = node.parents[node.parents.length-1].path
+		state.siblings_path = node.path[node.path.length-1].path
 		state.siblings = state.children
 	}
 
@@ -114,10 +119,12 @@ const open_node = (node) => {
 	sort_children(node.children)
 
 	// Update shared state
-	state.bucket = node.bucket
-	state.parents = node.parents
-	state.base = node.base
+	state.path = node.path
+	state.base = node.path[node.base_index]
+	state.base_index = node.base_index
+	state.root = node.path[0]
 	state.children = node.children
+	state.permissions = node.permissions
 
 	// Update the viewer area with the right viewer type
 	if (state.base.type === "bucket" || state.base.type === "dir") {
@@ -154,26 +161,26 @@ onMount(() => open_node(window.initial_node))
 // file which is currently open. Give a positive number to move forward and a
 // negative number to move backward
 const open_sibling = async offset => {
-	if (state.parents.length == 0) {
+	if (state.path.length <= 1) {
 		return
 	}
 
 	state.loading = true
 
 	// Check if we already have siblings cached
-	if (state.siblings != null && state.siblings_path == state.parents[state.parents.length - 1].path) {
+	if (state.siblings != null && state.siblings_path == state.path[state.path.length - 2].path) {
 		console.debug("Using cached siblings")
 	} else {
 		console.debug("Cached siblings not available. Fetching new")
 		try {
-			let resp = await fs_get_node(state.bucket.id, state.parents[state.parents.length - 1].path)
+			let resp = await fs_get_node(state.root.id, state.path[state.path.length - 2].path)
 
 			// Sort directory children to make sure the order is consistent
-			sort_children(resp.base.children)
+			sort_children(resp.children)
 
 			// Save new siblings in global state
-			state.siblings_path = state.parents[state.parents.length - 1].path
-			state.siblings = resp.base.children
+			state.siblings_path = state.path[state.path.length - 2].path
+			state.siblings = resp.children
 		} catch (err) {
 			console.error(err)
 			alert(err)
@@ -225,7 +232,7 @@ const open_sibling = async offset => {
 window.onpopstate = (e) => {
     if(e.state){
 		// Get the part of the URL after the bucket ID and navigate to it
-		let locsplit = document.location.pathname.split(state.bucket.id+"/", 2)
+		let locsplit = document.location.pathname.split(state.root.id+"/", 2)
 		navigate(decodeURIComponent(locsplit[1]))
     }
 };
@@ -261,7 +268,7 @@ const keydown = e => {
 };
 
 const download = () => {
-	download_frame.src = fs_get_file_url(state.bucket.id, state.base.path) + "?attach"
+	download_frame.src = fs_get_file_url(state.root.id, state.base.path) + "?attach"
 }
 const share = () => {
 
@@ -273,8 +280,8 @@ const share = () => {
 
 <LoadingIndicator loading={state.loading}/>
 
-<div bind:this={file_viewer} class="file_viewer">
-	<div bind:this={header_bar} class="file_viewer_headerbar">
+<div class="file_viewer">
+	<div class="file_viewer_headerbar">
 		<button on:click={toolbar_toggle} class="button_toggle_toolbar round" class:button_highlight={toolbar_visible}>
 			<i class="icon">menu</i>
 		</button>
@@ -282,15 +289,18 @@ const share = () => {
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 0.2em 0 0; color: currentColor;"></PixeldrainLogo>
 		</a>
 		<div class="file_viewer_headerbar_title">
-			{#each state.parents as parent}
+			{#each state.path as node, i}
 				<a
-					href={state.path_root+parent.path}
+					href={state.path_root+node.path}
 					class="breadcrumb button"
-					on:click|preventDefault={() => {navigate(parent.path, true)}}>
-					{parent.name}
-				</a> /
+					class:button_highlight={state.base_index === i}
+					on:click|preventDefault={() => {navigate(node.path, true)}}>
+					{node.name}
+				</a>
+				{#if i < state.base_index}
+					/
+				{/if}
 			{/each}
-			<div class="breadcrumb button button_highlight">{state.base.name}</div>
 		</div>
 	</div>
 	<div class="list_navigator"></div>
@@ -377,10 +387,10 @@ const share = () => {
 			<tr><td>SHA256 sum</td><td>{state.base.sha256_sum}</td></tr>
 			{/if}
 			<tr><td colspan="2"><h3>Bucket details</h3></td></tr>
-			<tr><td>ID</td><td>{state.bucket.id}</td></tr>
-			<tr><td>Name</td><td>{state.bucket.name}</td></tr>
-			<tr><td>Date created</td><td>{formatDate(state.bucket.date_created, true, true, true)}</td></tr>
-			<tr><td>Date modified</td><td>{formatDate(state.bucket.date_modified, true, true, true)}</td></tr>
+			<tr><td>ID</td><td>{state.root.id}</td></tr>
+			<tr><td>Name</td><td>{state.root.name}</td></tr>
+			<tr><td>Date created</td><td>{formatDate(state.root.date_created, true, true, true)}</td></tr>
+			<tr><td>Date modified</td><td>{formatDate(state.root.date_modified, true, true, true)}</td></tr>
 		</table>
 	</Modal>
 </div>

@@ -51,7 +51,7 @@ const mouseup = (e) => {
 		on:doubletap={() => {zoom = !zoom}}
 		on:mousedown={mousedown}
 		class="image" class:zoom
-		src={fs_get_file_url(state.bucket.id, state.base.path)}
+		src={fs_get_file_url(state.root.id, state.base.path)}
 		alt="no description available" />
 </div>
 

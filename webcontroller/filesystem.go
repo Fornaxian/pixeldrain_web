@@ -30,7 +30,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 		return
 	}
 
-	td.Title = fmt.Sprintf("%s ~ pixeldrain", node.Base.Name)
+	td.Title = fmt.Sprintf("%s ~ pixeldrain", node.Path[node.BaseIndex].Name)
 	td.Other = node
 	err = wc.templates.Get().ExecuteTemplate(w, "filesystem", td)
 	if err != nil && !strings.Contains(err.Error(), "broken pipe") {

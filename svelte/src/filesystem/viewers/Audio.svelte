@@ -53,7 +53,7 @@ onMount(() => {
 	<audio
 		bind:this={player}
 		class="player"
-		src={fs_get_file_url(state.bucket.id, state.base.path)}
+		src={fs_get_file_url(state.root.id, state.base.path)}
 		autoplay="autoplay"
 		controls="controls"
 		on:pause={() => playing = false }

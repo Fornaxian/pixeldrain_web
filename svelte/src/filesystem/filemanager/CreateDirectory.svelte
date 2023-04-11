@@ -13,7 +13,7 @@ let create_dir = () => {
 	form.append("type", "dir")
 
 	fs_create_directory(
-		state.bucket.id, state.base.path, create_dir_name,
+		state.root.id, state.base.path, create_dir_name,
 	).then(resp => {
 		create_dir_name = "" // Clear input field
 	}).catch(err => {
