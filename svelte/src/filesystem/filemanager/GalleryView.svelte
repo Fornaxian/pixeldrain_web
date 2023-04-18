@@ -7,7 +7,12 @@ export let state
 
 const node_icon = node => {
 	if (node.type === "dir") {
-		return "/res/img/mime/folder.png"
+		// Folders with an ID are publically shared, use the shared folder icon
+		if (node.id) {
+			return "/res/img/mime/folder-remote.png"
+		} else {
+			return "/res/img/mime/folder.png"
+		}
 	}
 
 	switch (node.file_type) {
