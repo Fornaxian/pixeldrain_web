@@ -3,7 +3,7 @@ import { createEventDispatcher } from "svelte"
 let dispatch = createEventDispatcher()
 
 export let state
-
+export let show_hidden = false
 
 const node_icon = node => {
 	if (node.type === "dir") {
@@ -51,6 +51,7 @@ const node_icon = node => {
 			href={state.path_root+child.path}
 			on:click|preventDefault={() => {dispatch("node_click", index)}}
 			class:selected={child.fm_selected}
+			class:hidden={child.name.startsWith(".") && !show_hidden}
 			title={child.name}
 		>
 			<div
@@ -104,5 +105,8 @@ const node_icon = node => {
 	background-repeat: no-repeat;
 	font-size: 22px;
 	text-align: left;
+}
+.hidden {
+	display: none;
 }
 </style>

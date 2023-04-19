@@ -12,6 +12,7 @@ export let directory_view = "list"
 let uploader
 let mode = "viewing"
 let creating_dir = false
+let show_hidden = false
 
 export const upload = files => {
 	return uploader.upload(files)
@@ -112,6 +113,14 @@ const toggle_select = () => {
 				</button>
 			{/if}
 
+			<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
+				{#if show_hidden}
+					<i class="icon">visibility_off</i>
+				{:else}
+					<i class="icon">visibility</i>
+				{/if}
+			</button>
+
 			<div class="toolbar_spacer"></div>
 			{#if state.permissions.update}
 				<button on:click={uploader.picker} title="Upload files to this directory">
@@ -166,9 +175,9 @@ const toggle_select = () => {
 	</div>
 
 	{#if directory_view === "list"}
-		<ListView state={state} on:node_click={node_click}></ListView>
+		<ListView state={state} show_hidden={show_hidden} on:node_click={node_click}></ListView>
 	{:else if directory_view === "gallery"}
-		<GalleryView state={state} on:node_click={node_click}></GalleryView>
+		<GalleryView state={state} show_hidden={show_hidden} on:node_click={node_click}></GalleryView>
 	{/if}
 </div>
 

@@ -5,6 +5,7 @@ import { formatDataVolume } from "../../util/Formatting.svelte";
 let dispatch = createEventDispatcher()
 
 export let state
+export let show_hidden = false
 
 const node_icon = node => {
 	if (node.type === "dir") {
@@ -45,7 +46,6 @@ const node_icon = node => {
 
 </script>
 
-
 <div class="directory">
 	<tr>
 		<td></td>
@@ -57,7 +57,9 @@ const node_icon = node => {
 			href={state.path_root+child.path}
 			on:click|preventDefault={() => {dispatch("node_click", index)}}
 			class="node"
-			class:node_selected={child.fm_selected}>
+			class:node_selected={child.fm_selected}
+			class:hidden={child.name.startsWith(".") && !show_hidden}
+		>
 			<td>
 				<img src={node_icon(child)} class="node_icon" alt="icon"/>
 			</td>
@@ -130,5 +132,8 @@ td {
 .node_size {
 	min-width: 50px;
 	white-space: nowrap;
+}
+.hidden {
+	display: none;
 }
 </style>
