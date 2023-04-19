@@ -48,7 +48,7 @@ const node_icon = node => {
 <div class="gallery">
 	{#each state.children as child, index (child.path)}
 		<a class="file"
-			href={state.path_root+child.path}
+			href={state.path_root+child.path_uri}
 			on:click|preventDefault={() => {dispatch("node_click", index)}}
 			class:selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}

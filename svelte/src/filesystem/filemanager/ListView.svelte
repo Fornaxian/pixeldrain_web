@@ -54,7 +54,7 @@ const node_icon = node => {
 	</tr>
 	{#each state.children as child, index (child.path)}
 		<a
-			href={state.path_root+child.path}
+			href={state.path_root+child.path_uri}
 			on:click|preventDefault={() => {dispatch("node_click", index)}}
 			class="node"
 			class:node_selected={child.fm_selected}

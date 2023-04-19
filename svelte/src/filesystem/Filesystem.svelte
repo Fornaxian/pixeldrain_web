@@ -83,20 +83,11 @@ const sort_children = children => {
 	})
 }
 
-const navigate = (path, pushHist) => {
+const navigate = (path, push_history) => {
 	state.loading = true
 
 	fs_get_node(state.root.id, path).then(resp => {
-		window.document.title = resp.path[resp.base_index].name+" ~ pixeldrain"
-		if (pushHist) {
-			window.history.pushState(
-				{},
-				window.document.title,
-				"/d/"+resp.path[0].id+resp.path[resp.base_index].path,
-			)
-		}
-
-		open_node(resp)
+		open_node(resp, push_history)
 	}).catch(err => {
 		console.error(err)
 		alert(err)
@@ -105,7 +96,23 @@ const navigate = (path, pushHist) => {
 	})
 }
 
-const open_node = (node) => {
+const open_node = (node, push_history) => {
+	// We need to properly URL encode the file paths so they don't cause
+	// issues.. but we also want the slashes to stay clean. So here we encode
+	// the whole path, then decode the slashes
+	let cleanup_func = p => p.path_uri = encodeURIComponent(p.path).replaceAll("%2F", "/")
+	node.path.forEach(cleanup_func)
+	node.children.forEach(cleanup_func)
+
+	// Update window title and navigation history
+	window.document.title = node.path[node.base_index].name+" ~ pixeldrain"
+	if (push_history) {
+		window.history.pushState(
+			{}, window.document.title,
+			"/d/"+node.path[0].id+node.path[node.base_index].path,
+		)
+	}
+
 	// If the new node is a child of the previous node we save the parent's
 	// children array
 	if (node.path.length > 0 && node.path[node.path.length-1].path === state.base.path) {
@@ -152,10 +159,13 @@ const open_node = (node) => {
 		state.viewer_type = ""
 	}
 
+	console.debug("Opened node", node)
+
 	// Remove spinner
 	state.loading = false
 }
-onMount(() => open_node(window.initial_node))
+
+onMount(() => open_node(window.initial_node, false))
 
 // Opens a sibling of the currently open file. The offset is relative to the
 // file which is currently open. Give a positive number to move forward and a
@@ -221,7 +231,7 @@ const open_sibling = async offset => {
 	// If we found a sibling we open it
 	if (next_sibling !== null) {
 		console.debug("Opening sibling", next_sibling)
-		navigate(next_sibling.path,true)
+		navigate(next_sibling.path, true)
 	} else {
 		console.debug("No siblings found")
 		state.loading = false
@@ -230,11 +240,9 @@ const open_sibling = async offset => {
 
 // Capture browser back and forward navigation buttons
 window.onpopstate = (e) => {
-    if(e.state){
-		// Get the part of the URL after the bucket ID and navigate to it
-		let locsplit = document.location.pathname.split(state.root.id+"/", 2)
-		navigate(decodeURIComponent(locsplit[1]))
-    }
+	// Get the part of the URL after the bucket ID and navigate to it
+	let locsplit = document.location.pathname.split(state.root.id+"/", 2)
+	navigate(decodeURIComponent(locsplit[1]), false)
 };
 
 const keydown = e => {
@@ -297,9 +305,6 @@ const share = () => {
 					on:click|preventDefault={() => {navigate(node.path, true)}}>
 					{node.name}
 				</a>
-				{#if i < state.base_index}
-					/
-				{/if}
 			{/each}
 		</div>
 	</div>
@@ -443,11 +448,10 @@ const share = () => {
 	flex-direction: row;
 }
 .breadcrumb {
-	border-radius: 1em;
 	min-width: 1em;
 	text-align: center;
-	padding: 4px 8px;
-	margin: 2px 6px;
+	padding: 6px 8px;
+	margin: 4px;
 	word-break: break-all;
 }
 
