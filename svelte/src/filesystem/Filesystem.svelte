@@ -241,8 +241,8 @@ const open_sibling = async offset => {
 // Capture browser back and forward navigation buttons
 window.onpopstate = (e) => {
 	// Get the part of the URL after the bucket ID and navigate to it
-	let locsplit = document.location.pathname.split(state.root.id, 2)
-	navigate(decodeURIComponent(locsplit[1]), false)
+	let path = document.location.pathname.replace("/d/"+state.root.id, "")
+	navigate(decodeURIComponent(path), false)
 };
 
 const keydown = e => {
