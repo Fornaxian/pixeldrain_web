@@ -19,9 +19,24 @@ onMount(() => {
 	</div>
 	<div>
 		<div class="feat_label">Size limit per file</div>
-		<div class="feat_normal">20 GB per file (18.63 GiB)</div>
+		<div class="feat_normal">10 GB per file (9.31 GiB)</div>
 		<div class="feat_pro">
 			<span class="text_highlight">50 GB</span> per file (46.57 GiB)
+		</div>
+	</div>
+	<div>
+		<div class="feat_label">
+			Data transfer limit
+		</div>
+		<div class="feat_normal">
+			Download limit of <span class="text_highlight">10 GB</span> per day
+			(24 hours). When this threshold is reached your download speed will
+			be reduced to 1 MiB/s
+		</div>
+		<div class="feat_pro">
+			Transfer limit of <span class="text_highlight">2 terabytes</span>
+			per month. If the transfer limit is exceeded the restrictions of the
+			free plan will apply
 		</div>
 	</div>
 	<div>
@@ -46,21 +61,6 @@ onMount(() => {
 		</div>
 		<div class="feat_pro">
 			<span class="text_highlight">No storage limit</span>
-		</div>
-	</div>
-	<div>
-		<div class="feat_label">
-			Data transfer limit
-		</div>
-		<div class="feat_normal">
-			Download limit of <span class="text_highlight">20 GB</span> per week
-			(168 hours). When this threshold is reached your download speed will
-			be reduced
-		</div>
-		<div class="feat_pro">
-			Transfer limit of <span class="text_highlight">2 terabytes</span>
-			per month. If the transfer limit is exceeded the restrictions of the
-			free plan will apply
 		</div>
 	</div>
 	<div>

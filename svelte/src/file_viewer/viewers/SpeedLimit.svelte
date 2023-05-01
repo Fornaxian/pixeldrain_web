@@ -20,7 +20,7 @@ export let file = {
 	<p>
 		Pixeldrain's free tier is supported by my Patrons (be grateful). There's
 		only so much that you can do with the budget they provide.
-		{formatDataVolume($download_limits.transfer_limit, 3)} per week is about
+		{formatDataVolume($download_limits.transfer_limit, 3)} per day is about
 		the most I can give away for free while keeping it fair for everyone,
 		and according to our records you have already downloaded
 		{formatDataVolume($download_limits.transfer_limit_used, 3)}.
