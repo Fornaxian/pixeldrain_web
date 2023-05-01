@@ -195,15 +195,16 @@ onDestroy(() => {
 			<div class="highlight_yellow">
 				<p>
 					We were not able to find your payment on Patreon. Please
-					wait until the payment is confirmed and try again. You can
-					see the status of your payment <a
-					href="https://www.patreon.com/pledges?ty=h"
-					target="_blank" rel="noreferrer">on Patreon itself</a>.
+					wait until the payment is confirmed and try again. Even if
+					the payment says confirmed on Patreon itself it takes a
+					while before it's communicated to pixeldrain. Please wait at
+					least 10 minutes and try again.
 				</p>
 				<p>
-					If your payment is complete and your account is still not
-					upgraded please contact me at support@pixeldrain.com, or
-					send me a message on Patreon.
+					If it has been more than 30 minutes, your payment is
+					complete and your account is still not upgraded please
+					contact me at support@pixeldrain.com, or send me a message
+					on Patreon.
 				<p/>
 			</div>
 		{:else if patreon_response === "success"}
