@@ -4,6 +4,7 @@ import { formatDataVolume, formatDate } from "../../util/Formatting.svelte"
 import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 import ZipItem from "./ZipItem.svelte";
+    import BandwidthUsage from "./BandwidthUsage.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -77,6 +78,10 @@ const recursive_size = (file) => {
 		<span>Download</span>
 	</button>
 </IconBlock>
+
+{#if file.show_ads}
+	<BandwidthUsage file={file} on:reload/>
+{/if}
 
 {#if status === "finished"}
 	<TextBlock>

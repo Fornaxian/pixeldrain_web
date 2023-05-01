@@ -8,7 +8,7 @@ export let file = {
 	size: 0,
 }
 
-$: transfer_left = download_limits.transfer_limit = download_limits.transfer_limit_used
+$: transfer_left = $download_limits.transfer_limit - $download_limits.transfer_limit_used
 </script>
 
 {#if $download_limits.loaded}
@@ -25,7 +25,7 @@ $: transfer_left = download_limits.transfer_limit = download_limits.transfer_lim
 
 		<p>
 			You have used {formatDataVolume($download_limits.transfer_limit_used, 3)} of
-			your weekly {formatDataVolume($download_limits.transfer_limit, 3)} transfer
+			your daily {formatDataVolume($download_limits.transfer_limit, 3)} transfer
 			limit. When the transfer limit is exceeded your download speed will
 			be reduced.
 		</p>
