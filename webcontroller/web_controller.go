@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -214,10 +215,18 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "misc/sharex/pixeldrain.com.sxcu", wc.serveShareXConfig},
 		{GET, "theme.css", wc.themeHandler},
 	} {
-		r.Handle(h.method, prefix+"/"+h.path, h.handler)
+		r.Handle(h.method, prefix+"/"+h.path, middleware(h.handler))
 	}
 
 	return wc
+}
+
+func middleware(handle httprouter.Handle) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		w.Header().Set("Strict-Transport-Security", "max-age=31536000")
+		w.Header().Set("X-Clacks-Overhead", "GNU Terry Pratchett")
+		handle(w, r, p)
+	}
 }
 
 type handlerOpts struct {
@@ -237,7 +246,7 @@ func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.
 			return
 		}
 		err := wc.templates.Get().ExecuteTemplate(w, tpl, td)
-		if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+		if err != nil && !isNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
 	}
@@ -258,7 +267,8 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 
 		// Execute the raw markdown template and save the result in a buffer
 		var tplBuf bytes.Buffer
-		if err = wc.templates.Get().ExecuteTemplate(&tplBuf, tpl, tpld); err != nil {
+		err = wc.templates.Get().ExecuteTemplate(&tplBuf, tpl, tpld)
+		if err != nil && !isNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 			return
 		}
@@ -299,7 +309,7 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 
 		// Execute the wrapper template
 		err = wc.templates.Get().ExecuteTemplate(w, "markdown_wrapper", tpld)
-		if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+		if err != nil && !isNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
 	}
@@ -374,7 +384,7 @@ func (wc *WebController) serveForm(
 		}
 
 		err := wc.templates.Get().ExecuteTemplate(w, "form_page", td)
-		if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+		if err != nil && !isNetError(err) {
 			log.Error("Error executing form page: %s", err)
 		}
 	}
@@ -411,4 +421,12 @@ func (wc *WebController) captchaKey() string {
 	}
 
 	return wc.captchaSiteKey
+}
+
+func isNetError(err error) bool {
+	if _, ok := err.(*net.OpError); ok {
+		return true
+	}
+	return strings.HasSuffix(err.Error(), "connection reset by peer") ||
+		strings.HasSuffix(err.Error(), "broken pipe")
 }

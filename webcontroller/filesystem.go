@@ -35,7 +35,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	td.Title = fmt.Sprintf("%s ~ pixeldrain", node.Path[node.BaseIndex].Name)
 	td.Other = node
 	err = wc.templates.Get().ExecuteTemplate(w, "filesystem", td)
-	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+	if err != nil && !isNetError(err) {
 		log.Error("Error executing template filesystem: %s", err)
 	}
 }

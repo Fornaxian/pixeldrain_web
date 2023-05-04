@@ -140,7 +140,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
-	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+	if err != nil && !isNetError(err) {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
 }
@@ -202,7 +202,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
-	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+	if err != nil && !isNetError(err) {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
 }
@@ -233,7 +233,7 @@ func (wc *WebController) serveViewerDemo(w http.ResponseWriter, r *http.Request)
 		},
 	}
 	err := wc.templates.Get().ExecuteTemplate(w, "file_viewer_svelte", templateData)
-	if err != nil && !strings.Contains(err.Error(), "broken pipe") {
+	if err != nil && !isNetError(err) {
 		log.Error("Error rendering demo file: %s", err)
 	}
 }
