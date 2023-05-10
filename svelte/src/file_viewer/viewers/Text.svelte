@@ -8,7 +8,7 @@ let text_type = ""
 export const set_file = file => {
 	console.log("loading text file", file.id)
 
-	if (file.name.endsWith(".md") || file.name.endsWith(".markdown") || file.mime_type === "text/demo") {
+	if (file.name.endsWith(".md") || file.name.endsWith(".markdown")) {
 		markdown(file)
 	} else if (file.name.endsWith(".txt") || file.size > 524288) {
 		// If the file is larger than 512KiB we do not enable code highlighting

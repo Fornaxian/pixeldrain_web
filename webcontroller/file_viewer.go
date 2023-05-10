@@ -9,6 +9,7 @@ import (
 
 	"fornaxian.tech/log"
 	"fornaxian.tech/pixeldrain_api_client/pixelapi"
+	"fornaxian.tech/util"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -58,11 +59,6 @@ func (vd *fileViewerData) themeOverride(r *http.Request, files []pixelapi.ListFi
 
 // ServeFileViewer controller for GET /u/:id
 func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	if p.ByName("id") == "demo" {
-		wc.serveViewerDemo(w, r) // Required for a-ads.com quality check
-		return
-	}
-
 	// If the user agent is Wget we redirect it to the API so that the file can
 	// be downloaded directly
 	if strings.HasPrefix(r.UserAgent(), "Wget/") {
@@ -140,7 +136,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
-	if err != nil && !isNetError(err) {
+	if err != nil && !util.IsNetError(err) {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
 }
@@ -202,38 +198,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
-	if err != nil && !isNetError(err) {
+	if err != nil && !util.IsNetError(err) {
 		log.Error("Error executing template file_viewer: %s", err)
-	}
-}
-
-// ServeFileViewerDemo is a dummy API response that responds with info about a
-// non-existent demo file. This is required by the a-ads ad network to allow for
-// automatic checking of the presence of the ad unit on this page.
-func (wc *WebController) serveViewerDemo(w http.ResponseWriter, r *http.Request) {
-	templateData := wc.newTemplateData(w, r)
-	templateData.Other = fileViewerData{
-		Type:           "file",
-		CaptchaKey:     wc.captchaSiteKey,
-		UserAdsEnabled: true,
-		APIResponse: map[string]interface{}{
-			"id":             "demo",
-			"name":           "Demo file",
-			"date_upload":    "2017-01-01 12:34:56",
-			"date_lastview":  "2017-01-01 12:34:56",
-			"size":           123456789,
-			"views":          1,
-			"bandwidth_used": 123456789,
-			"mime_type":      "text/demo",
-			"description":    "A file to demonstrate the viewer page",
-			"mime_image":     "/res/img/mime/text.png",
-			"thumbnail":      "/res/img/mime/text.png",
-			"abuse_type":     "",
-			"show_ads":       true,
-		},
-	}
-	err := wc.templates.Get().ExecuteTemplate(w, "file_viewer_svelte", templateData)
-	if err != nil && !isNetError(err) {
-		log.Error("Error rendering demo file: %s", err)
 	}
 }

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -15,6 +14,7 @@ import (
 
 	"fornaxian.tech/log"
 	"fornaxian.tech/pixeldrain_api_client/pixelapi"
+	"fornaxian.tech/util"
 	"github.com/julienschmidt/httprouter"
 	blackfriday "github.com/russross/blackfriday/v2"
 )
@@ -246,7 +246,7 @@ func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.
 			return
 		}
 		err := wc.templates.Get().ExecuteTemplate(w, tpl, td)
-		if err != nil && !isNetError(err) {
+		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
 	}
@@ -268,7 +268,7 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 		// Execute the raw markdown template and save the result in a buffer
 		var tplBuf bytes.Buffer
 		err = wc.templates.Get().ExecuteTemplate(&tplBuf, tpl, tpld)
-		if err != nil && !isNetError(err) {
+		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 			return
 		}
@@ -309,7 +309,7 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 
 		// Execute the wrapper template
 		err = wc.templates.Get().ExecuteTemplate(w, "markdown_wrapper", tpld)
-		if err != nil && !isNetError(err) {
+		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
 	}
@@ -384,7 +384,7 @@ func (wc *WebController) serveForm(
 		}
 
 		err := wc.templates.Get().ExecuteTemplate(w, "form_page", td)
-		if err != nil && !isNetError(err) {
+		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing form page: %s", err)
 		}
 	}
@@ -421,12 +421,4 @@ func (wc *WebController) captchaKey() string {
 	}
 
 	return wc.captchaSiteKey
-}
-
-func isNetError(err error) bool {
-	if _, ok := err.(*net.OpError); ok {
-		return true
-	}
-	return strings.HasSuffix(err.Error(), "connection reset by peer") ||
-		strings.HasSuffix(err.Error(), "broken pipe")
 }
