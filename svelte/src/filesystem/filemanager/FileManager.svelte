@@ -5,6 +5,7 @@ import CreateDirectory from './CreateDirectory.svelte'
 import FileUploader from './FileUploader.svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
+import EditWindow from './EditWindow.svelte';
 let dispatch = createEventDispatcher()
 
 export let state
@@ -30,6 +31,11 @@ const node_click = e => {
 	} else if (mode === "selecting") {
 		state.children[index].fm_selected = !state.children[index].fm_selected
 	}
+}
+
+let edit_window;
+const node_settings = e => {
+	edit_window.edit(state.children[e.detail])
 }
 const navigate_up = () => {
 	creating_dir = false
@@ -175,11 +181,13 @@ const toggle_select = () => {
 	</div>
 
 	{#if directory_view === "list"}
-		<ListView state={state} show_hidden={show_hidden} on:node_click={node_click}></ListView>
+		<ListView state={state} show_hidden={show_hidden} on:node_click={node_click} on:node_settings={node_settings}></ListView>
 	{:else if directory_view === "gallery"}
-		<GalleryView state={state} show_hidden={show_hidden} on:node_click={node_click}></GalleryView>
+		<GalleryView state={state} show_hidden={show_hidden} on:node_click={node_click} on:node_settings={node_settings}></GalleryView>
 	{/if}
 </div>
+
+<EditWindow bind:this={edit_window} bucket={state.root.id} on:reload={() => reload()}/>
 
 <style>
 .container {

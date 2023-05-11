@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 import { formatDate, formatDataVolume, formatThousands } from '../util/Formatting.svelte'
-import { fs_get_file_url, fs_get_node } from './FilesystemAPI.js'
+import { fs_get_file_url, fs_get_node, fs_split_path } from './FilesystemAPI.js'
 import Sharebar from './Sharebar.svelte'
 import Modal from '../util/Modal.svelte'
 import FileManager from './filemanager/FileManager.svelte';
@@ -11,6 +11,7 @@ import Video from './viewers/Video.svelte';
 import PDF from './viewers/PDF.svelte';
 import PixeldrainLogo from '../util/PixeldrainLogo.svelte';
 import LoadingIndicator from '../util/LoadingIndicator.svelte';
+import EditWindow from './filemanager/EditWindow.svelte';
 
 let toolbar_visible = (window.innerWidth > 600)
 let toolbar_toggle = () => {
@@ -30,6 +31,7 @@ $: {
 
 let details
 let details_visible = false
+let edit_window
 let download_frame
 
 // State
@@ -83,18 +85,30 @@ const sort_children = children => {
 	})
 }
 
-const navigate = (path, push_history) => {
+const navigate = async (path, push_history) => {
 	state.loading = true
+	console.debug("Navigating to path", path, push_history)
 
-	fs_get_node(state.root.id, path).then(resp => {
+	try {
+		let resp = await fs_get_node(state.root.id, path)
 		open_node(resp, push_history)
-	}).catch(err => {
-		console.error(err)
-		alert(err)
-	}).finally(() => {
+	} catch (err) {
+		let errj = JSON.parse(err)
+
+		if (errj.value === "path_not_found") {
+			if (path !== "/" && path !== "") {
+				console.debug("Path", path, "was not found, trying to navigate to parent")
+				navigate(fs_split_path(path).parent, push_history)
+			}
+		} else {
+			console.error(err)
+			alert("Error: "+err)
+		}
+	} finally {
 		state.loading = false
-	})
+	}
 }
+const reload = () => { navigate(state.base.path, false) }
 
 const open_node = (node, push_history) => {
 	// We need to properly URL encode the file paths so they don't cause
@@ -354,9 +368,11 @@ const share = () => {
 			<button on:click={details.toggle} class="toolbar_button" class:button_highlight={details_visible}>
 				<i class="icon">help</i> Deta<u>i</u>ls
 			</button>
-			<button id="btn_edit" class="toolbar_button" style="display: none;">
-				<i class="icon">edit</i> <u>E</u>dit
-			</button>
+			{#if state.base.path !== "/"}
+				<button on:click={() => edit_window.edit(state.base)} class="toolbar_button">
+					<i class="icon">edit</i> <u>E</u>dit
+				</button>
+			{/if}
 		</div>
 		<Sharebar bind:this={sharebar}></Sharebar>
 
@@ -386,11 +402,19 @@ const share = () => {
 			<tr><td>Type</td><td>{state.base.type}</td></tr>
 			<tr><td>Date created</td><td>{formatDate(state.base.date_created, true, true, true)}</td></tr>
 			<tr><td>Date modified</td><td>{formatDate(state.base.date_modified, true, true, true)}</td></tr>
+			<tr><td>Mode</td><td>{state.base.mode_string}</td></tr>
+			{#if state.base.id}
+				<tr>
+					<td>Public ID</td>
+					<td><a href="/d/{state.base.id}">{state.base.id}</a></td>
+				</tr>
+			{/if}
 			{#if state.base.type === "file"}
 			<tr><td>File type</td><td>{state.base.file_type}</td></tr>
 			<tr><td>File size</td><td>{formatDataVolume(state.base.file_size)}</td></tr>
 			<tr><td>SHA256 sum</td><td>{state.base.sha256_sum}</td></tr>
 			{/if}
+
 			<tr><td colspan="2"><h3>Bucket details</h3></td></tr>
 			<tr><td>ID</td><td>{state.root.id}</td></tr>
 			<tr><td>Name</td><td>{state.root.name}</td></tr>
@@ -398,6 +422,8 @@ const share = () => {
 			<tr><td>Date modified</td><td>{formatDate(state.root.date_modified, true, true, true)}</td></tr>
 		</table>
 	</Modal>
+
+	<EditWindow bind:this={edit_window} bucket={state.root.id} on:reload={() => reload()}/>
 </div>
 
 <style>

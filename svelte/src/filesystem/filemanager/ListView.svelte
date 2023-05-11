@@ -72,11 +72,16 @@ const node_icon = node => {
 					{formatDataVolume(child.file_size, 3)}
 				{/if}
 			</td>
-			<td>
+			<td class="node_icons">
 				{#if child.id}
-					<a href="/d/{child.id}" on:click|stopPropagation>
+					<a href="/d/{child.id}" on:click|stopPropagation class="button small_button">
 						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 					</a>
+				{/if}
+				{#if state.permissions.update}
+					<button class="small_button" on:click|preventDefault|stopPropagation={() => {dispatch("node_settings", index)}}>
+						<i class="icon">settings</i>
+					</button>
 				{/if}
 			</td>
 		</a>
@@ -140,6 +145,10 @@ td {
 .node_size {
 	min-width: 50px;
 	white-space: nowrap;
+}
+.node_icons {
+	white-space: nowrap;
+	text-align: right;
 }
 .hidden {
 	display: none;
