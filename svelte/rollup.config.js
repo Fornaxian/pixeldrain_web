@@ -33,11 +33,9 @@ export default [
 	"filesystem",
 	"modal",
 	"user_home",
-	"user_buckets",
 	"user_file_manager",
 	"admin_panel",
 	"home_page",
-	"directory_upload",
 	"text_upload",
 ].map((name, index) => ({
 	input: `src/${name}.js`,

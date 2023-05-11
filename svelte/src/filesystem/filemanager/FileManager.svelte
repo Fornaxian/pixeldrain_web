@@ -1,5 +1,5 @@
 <script>
-import { fs_delete_node } from './../FilesystemAPI.svelte'
+import { fs_delete } from './../FilesystemAPI.js'
 import { createEventDispatcher } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
 import FileUploader from './FileUploader.svelte'
@@ -67,7 +67,7 @@ const delete_selected = () => {
 	let promises = []
 	state.children.forEach(child => {
 		if (!child.fm_selected) { return }
-		promises.push(fs_delete_node(state.root.id, child.path))
+		promises.push(fs_delete(state.root.id, child.path))
 	})
 
 	// Wait for all the promises to finish

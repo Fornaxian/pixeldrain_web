@@ -1,21 +1,21 @@
 <script>
 import { onMount, createEventDispatcher } from "svelte";
-import { fs_create_directory } from "../FilesystemAPI.svelte";
+import { fs_mkdir } from "../FilesystemAPI.js";
 let dispatch = createEventDispatcher()
 
 export let state;
 let name_input;
-let create_dir_name = ""
+let new_dir_name = ""
 let create_dir = () => {
 	dispatch("loading", true)
 
 	let form = new FormData()
 	form.append("type", "dir")
 
-	fs_create_directory(
-		state.root.id, state.base.path, create_dir_name,
+	fs_mkdir(
+		state.root.id, state.base.path+"/"+new_dir_name,
 	).then(resp => {
-		create_dir_name = "" // Clear input field
+		new_dir_name = "" // Clear input field
 	}).catch(err => {
 		alert("Error: "+err)
 	}).finally(() => {
@@ -28,7 +28,7 @@ onMount(() => { name_input.focus() })
 
 <form class="create_dir highlight_shaded" on:submit|preventDefault={create_dir}>
 	<img src="/res/img/mime/folder.png" class="icon" alt="icon"/>
-	<input class="dirname" type="text" style="width: 100%;" bind:this={name_input} bind:value={create_dir_name} />
+	<input class="dirname" type="text" style="width: 100%;" bind:this={name_input} bind:value={new_dir_name} />
 	<input class="submit" type="submit" value="create"/>
 </form>
 

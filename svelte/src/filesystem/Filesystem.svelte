@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 import { formatDate, formatDataVolume, formatThousands } from '../util/Formatting.svelte'
-import { fs_get_file_url, fs_get_node } from './FilesystemAPI.svelte'
+import { fs_get_file_url, fs_get_node } from './FilesystemAPI.js'
 import Sharebar from './Sharebar.svelte'
 import Modal from '../util/Modal.svelte'
 import FileManager from './filemanager/FileManager.svelte';

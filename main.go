@@ -27,7 +27,7 @@ func main() {
 	// systemd's socket, else we'll create our own to serve on
 	if *sock {
 		// Socket activation enabled. Get the provided sockets and serve on them
-		if listener, err = util.SystemdSocketByName("pd-web.socket"); err != nil {
+		if listener, err = util.SystemdListenerByName("pd-web.socket"); err != nil {
 			panic("Socket pd-web.socket not found")
 		}
 	} else {

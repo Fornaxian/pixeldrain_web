@@ -49,8 +49,9 @@ const node_icon = node => {
 <div class="directory">
 	<tr>
 		<td></td>
-		<td>name</td>
-		<td>size</td>
+		<td>Name</td>
+		<td>Size</td>
+		<td></td>
 	</tr>
 	{#each state.children as child, index (child.path)}
 		<a
@@ -69,6 +70,13 @@ const node_icon = node => {
 			<td class="node_size">
 				{#if child.type === "file"}
 					{formatDataVolume(child.file_size, 3)}
+				{/if}
+			</td>
+			<td>
+				{#if child.id}
+					<a href="/d/{child.id}" on:click|stopPropagation>
+						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
+					</a>
 				{/if}
 			</td>
 		</a>

@@ -1,5 +1,5 @@
 <script>
-import { fs_get_file_url } from "../FilesystemAPI.svelte";
+import { fs_get_file_url } from "../FilesystemAPI.js";
 
 
 export let state

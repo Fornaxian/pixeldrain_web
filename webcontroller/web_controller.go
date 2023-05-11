@@ -154,7 +154,6 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "limits" /*          */, wc.serveMarkdown("limits.md", handlerOpts{})},
 		{GET, "abuse" /*           */, wc.serveMarkdown("abuse.md", handlerOpts{})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
-		{GET, "directory_upload" /**/, wc.serveTemplate("directory_upload", handlerOpts{})},
 
 		// User account pages
 		{GET, "register" /*         */, wc.serveForm(wc.registerForm, handlerOpts{NoEmbed: true})},
@@ -165,7 +164,6 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{PST, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
 		{GET, "logout" /*           */, wc.serveTemplate("logout", handlerOpts{Auth: true, NoEmbed: true})},
 		{PST, "logout" /*           */, wc.serveLogout},
-		{GET, "user/buckets" /*     */, wc.serveTemplate("user_buckets", handlerOpts{Auth: true})},
 		{GET, "user/filemanager" /* */, wc.serveTemplate("file_manager", handlerOpts{Auth: true})},
 		{GET, "user/export/files" /**/, wc.serveUserExportFiles},
 		{GET, "user/export/lists" /**/, wc.serveUserExportLists},

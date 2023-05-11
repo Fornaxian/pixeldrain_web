@@ -55,7 +55,7 @@ let embed_iframe = () => {
 
 	embed_html = `<iframe ` +
 		`src="${url}" ` +
-		`style="border: none; width: 800px; max-width: 100%; height: 600px; max-height: 100%; border-radius: 16px;"` +
+		`style="border: none; width: 800px; max-width: 100%; height: 600px; max-height: 100%; border-radius: 8px;"` +
 		`></iframe>`
 }
 let embed_hotlink = () => {

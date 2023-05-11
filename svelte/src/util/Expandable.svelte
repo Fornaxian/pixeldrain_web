@@ -15,12 +15,20 @@ const header_click = () => {
 	}
 }
 
+const keypress = e => {
+	if (e.code === "Space") {
+		if (click_expand) {
+			toggle()
+		}
+	}
+}
+
 // Highlight the title bar if the user moves their mouse over it
 export let highlight = false
 </script>
 
 <div class="expandable">
-	<div class="header" class:click_expand class:highlight on:click={header_click}>
+	<div class="header" class:click_expand class:highlight on:click={header_click} on:keypress={keypress}>
 		<div class="title">
 			<slot name="header"></slot>
 		</div>

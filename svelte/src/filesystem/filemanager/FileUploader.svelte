@@ -67,17 +67,13 @@ const upload_file = () => {
 
 	console.log(job);
 
-	let form = new FormData();
-	form.append("type", "file");
-	form.append("file", job.file);
-
 	let url = window.api_endpoint+"/filesystem/"+bucket_id+encodeURIComponent(job.target_dir + "/" + job.file.name)
 	if (write_password) {
 		url += "?write_password="+write_password
 	}
 
 	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
+	xhr.open("PUT", url, true);
 	xhr.timeout = 21600000; // 6 hours, to account for slow connections
 
 	// Report progress updates back to the caller
@@ -147,7 +143,8 @@ const upload_file = () => {
 
 		upload_jobs = upload_jobs;
 	};
-	xhr.send(form);
+
+	xhr.send(job.file);
 };
 
 // File input dialog handling
