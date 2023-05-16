@@ -80,7 +80,7 @@ const node_icon = node => {
 				{/if}
 				{#if state.permissions.update}
 					<button class="small_button" on:click|preventDefault|stopPropagation={() => {dispatch("node_settings", index)}}>
-						<i class="icon">settings</i>
+						<i class="icon">edit</i>
 					</button>
 				{/if}
 			</td>

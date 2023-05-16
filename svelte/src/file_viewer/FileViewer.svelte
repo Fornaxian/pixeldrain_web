@@ -241,6 +241,9 @@ let custom_header_link = ""
 let custom_background = ""
 let custom_footer = ""
 let custom_footer_link = ""
+let disable_download_button = false
+let disable_share_button = false
+let disable_menu = false
 const apply_customizations = file => {
 	if (!file.branding) {
 		return
@@ -256,6 +259,18 @@ const apply_customizations = file => {
 	}
 	if (file.branding.footer_link) {
 		custom_footer_link = file.branding.footer_link
+	}
+	if (file.branding.disable_download_button && !file.can_edit) {
+		disable_download_button = true
+	}
+	if (file.branding.disable_share_button && !file.can_edit) {
+		disable_share_button = true
+	}
+	if (file.branding.disable_menu && !file.can_edit) {
+		disable_menu = true
+		if (toolbar_visible) {
+			toolbar_toggle()
+		}
 	}
 
 	if (file.branding.background_image) {
@@ -380,13 +395,15 @@ const keyboard_event = evt => {
 	<LoadingIndicator loading={loading}/>
 
 	<div class="headerbar">
-		<button
-			on:click={toolbar_toggle}
-			class="button_toggle_toolbar round"
-			class:button_highlight={toolbar_visible}
-			title="Open or close the toolbar">
-			<i class="icon">menu</i>
-		</button>
+		{#if !disable_menu}
+			<button
+				on:click={toolbar_toggle}
+				class="button_toggle_toolbar round"
+				class:button_highlight={toolbar_visible}
+				title="Open or close the toolbar">
+				<i class="icon">menu</i>
+			</button>
+		{/if}
 
 		<a
 			href="/"
@@ -431,7 +448,7 @@ const keyboard_event = evt => {
 
 			<div class="separator"></div>
 
-			{#if view === "file" && file.can_download}
+			{#if view === "file" && file.can_download && !disable_download_button}
 				<button
 					on:click={downloader.download_file}
 					class="toolbar_button"
@@ -441,7 +458,7 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			{#if is_list && list_downloadable}
+			{#if is_list && list_downloadable && !disable_download_button}
 				<button
 					on:click={downloader.download_list}
 					class="toolbar_button"
@@ -469,14 +486,16 @@ const keyboard_event = evt => {
 				</span>
 			</button>
 
-			<button
-				on:click={toggle_sharebar}
-				class="toolbar_button"
-				class:button_highlight={sharebar_visible}
-				title="Share this file on social media">
-				<i class="icon">share</i>
-				<span>Share</span>
-			</button>
+			{#if !disable_share_button}
+				<button
+					on:click={toggle_sharebar}
+					class="toolbar_button"
+					class:button_highlight={sharebar_visible}
+					title="Share this file on social media">
+					<i class="icon">share</i>
+					<span>Share</span>
+				</button>
+			{/if}
 
 			<button
 				class="toolbar_button"
@@ -536,14 +555,16 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			<button
-				class="toolbar_button"
-				title="Include this file in your own webpages"
-				on:click={embed_window.toggle}
-				class:button_highlight={embed_visible}>
-				<i class="icon">code</i>
-				<span>E<u>m</u>bed</span>
-			</button>
+			{#if !disable_download_button}
+				<button
+					class="toolbar_button"
+					title="Include this file in your own webpages"
+					on:click={embed_window.toggle}
+					class:button_highlight={embed_visible}>
+					<i class="icon">code</i>
+					<span>E<u>m</u>bed</span>
+				</button>
+			{/if}
 
 			{#if view === "file"}
 				<button

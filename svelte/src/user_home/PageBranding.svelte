@@ -19,6 +19,9 @@ let header_link = ""
 let background_image = ""
 let footer_image = ""
 let footer_link = ""
+let disable_download_button = false
+let disable_share_button = false
+let disable_menu = false
 
 let select_file = t => {
 	currently_selecting = t
@@ -55,6 +58,9 @@ let save = async () => {
 	form.append("background_image", background_image)
 	form.append("footer_image", footer_image)
 	form.append("footer_link", footer_link)
+	form.append("disable_download_button", disable_download_button)
+	form.append("disable_share_button", disable_share_button)
+	form.append("disable_menu", disable_menu)
 
 	try {
 		const resp = await fetch(
@@ -86,6 +92,9 @@ onMount(() => {
 		background_image = b.background_image ? b.background_image : ""
 		footer_image = b.footer_image ? b.footer_image : ""
 		footer_link = b.footer_link ? b.footer_link : ""
+		disable_download_button = b.disable_download_button ? b.disable_download_button : false
+		disable_share_button = b.disable_share_button ? b.disable_share_button : false
+		disable_menu = b.disable_menu ? b.disable_menu : false
 	}
 })
 </script>
@@ -202,6 +211,50 @@ onMount(() => {
 			<CustomBanner src={"/api/file/"+footer_image} link={footer_link}></CustomBanner>
 		</div>
 	{/if}
+
+	<h3>Toolbar buttons</h3>
+	<p>
+		If you don't want to make it obvious that your files can be downloaded
+		or shared while still allowing people to view them through the site you
+		can use these options.
+	</p>
+	<p>
+		The buttons will be hidden, however your files can still be downloaded
+		and shared through the API. The changes are purely cosmetic.
+	</p>
+	<p>
+		For convenience these options only apply when other people view your
+		files. The buttons are still available to you. If you want to see the
+		effects you can open your file in an incognito window.
+	</p>
+	Disable download button:
+	<button on:click={() => {disable_download_button = !disable_download_button; save()}}>
+		{#if disable_download_button}
+			<i class="icon">check</i> ON (click to turn off)
+		{:else}
+			<i class="icon">close</i> OFF (click to turn on)
+		{/if}
+	</button>
+	<br/>
+	Disable share button:
+	<button on:click={() => {disable_share_button = !disable_share_button; save()}}>
+		{#if disable_share_button}
+			<i class="icon">check</i> ON (click to turn off)
+		{:else}
+			<i class="icon">close</i> OFF (click to turn on)
+		{/if}
+	</button>
+	<p>
+		You can also choose the hide the menu bar altogether
+	</p>
+	Disable menu:
+	<button on:click={() => {disable_menu = !disable_menu; save()}}>
+		{#if disable_menu}
+			<i class="icon">check</i> ON (click to turn off)
+		{:else}
+			<i class="icon">close</i> OFF (click to turn on)
+		{/if}
+	</button>
 </section>
 
 <FilePicker

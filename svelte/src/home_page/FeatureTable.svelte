@@ -29,7 +29,7 @@ onMount(() => {
 			Data transfer limit
 		</div>
 		<div class="feat_normal">
-			Download limit of <span class="text_highlight">20 GB</span> per day
+			Download limit of <span class="text_highlight">10 GB</span> per day
 			(24 hours). When this threshold is reached your download speed will
 			be reduced to 1 MiB/s
 		</div>
