@@ -1,6 +1,6 @@
 <script>
-import { fs_rename, fs_update } from "../FilesystemAPI";
-import Modal from "../../util/Modal.svelte";
+import { fs_rename, fs_update } from "./FilesystemAPI";
+import Modal from "../util/Modal.svelte";
 import { createEventDispatcher } from "svelte";
 
 let dispatch = createEventDispatcher()
@@ -13,7 +13,7 @@ let file = {
 	mode_octal: "",
 };
 
-let window;
+export let visible
 export const edit = (f) => {
 	console.log("Editing file", f)
 	file = f
@@ -23,7 +23,7 @@ export const edit = (f) => {
 	read_password = file.read_password ? file.read_password : ""
 	write_password = file.write_password ? file.write_password : ""
 	mode = file.mode_octal
-	window.show()
+	visible = true
 }
 
 let file_name = ""
@@ -50,6 +50,7 @@ const save = async () => {
 			console.log("Moving", file.path, "to", parent+file_name)
 
 			await fs_rename(bucket, file.path, parent+file_name)
+			file.path = parent+file_name
 		}
 	} catch (err) {
 		console.error(err)
@@ -57,14 +58,13 @@ const save = async () => {
 		return
 	}
 
-	dispatch("reload")
-	window.hide()
-}
+	dispatch("navigate", {path: file.path, push_history: false})
 
+	visible = false
+}
 </script>
 
-
-<Modal bind:this={window} title="Edit" width="700px">
+<Modal bind:visible={visible} title="Edit" width="700px">
 	<form on:submit|preventDefault={save} style="display: flex; padding: 8px;">
 		<div class="form">
 			<label for="file_name">Name:</label>

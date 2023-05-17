@@ -1,8 +1,5 @@
 <script>
-let sharebar
 export let visible = false
-export const setVisible = (v) => visible = v
-export const toggle = () => setVisible(!visible)
 
 const share_email = () => {
 	window.open(
@@ -23,7 +20,7 @@ const share_tumblr = () => {
 }
 </script>
 
-<div bind:this={sharebar} class="sharebar" class:visible>
+<div class="sharebar" class:visible>
 	Share on:<br/>
 	<button class="button_full_width" on:click={share_email}>
 		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -76,11 +73,15 @@ const share_tumblr = () => {
 	text-align: center;
 	z-index: 48;
 	overflow: hidden;
-	transition: left 0.5s;
+	opacity: 0;
+	transition: left 0.4s, opacity 0.5s;
 	border-top-left-radius: 16px;
 	border-bottom-left-radius: 16px;
 }
-.visible { left: 8em; }
+.visible {
+	left: 8em;
+	opacity: 1;
+}
 .button_full_width {
 	width: calc(100% - 6px);
 }

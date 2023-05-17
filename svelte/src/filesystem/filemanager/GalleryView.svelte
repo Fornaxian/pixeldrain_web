@@ -1,48 +1,10 @@
 <script>
 import { createEventDispatcher } from "svelte"
+import { fs_node_icon, fs_node_type } from "../FilesystemUtil";
 let dispatch = createEventDispatcher()
 
 export let state
 export let show_hidden = false
-
-const node_icon = node => {
-	if (node.type === "dir") {
-		// Folders with an ID are publically shared, use the shared folder icon
-		if (node.id) {
-			return "/res/img/mime/folder-remote.png"
-		} else {
-			return "/res/img/mime/folder.png"
-		}
-	}
-
-	switch (node.file_type) {
-		case "image/gif":
-			return "/res/img/mime/image-gif.png"
-		case "image/png", "image/apng":
-			return "/res/img/mime/image-png.png"
-		case "image/jpeg":
-			return "/res/img/mime/image-jpeg.png"
-		case "application/pdf":
-			return "/res/img/mime/pdf.png"
-		case "application/ogg":
-			return "/res/img/mime/audio.png"
-	}
-
-	if (node.file_type.startsWith("audio/")) {
-		return "/res/img/mime/audio.png"
-	} else if (node.file_type.startsWith("video/")) {
-		return "/res/img/mime/video.png"
-	} else if (node.file_type.startsWith("text/")) {
-		return "/res/img/mime/text.png"
-	} else if (node.file_type.startsWith("image/")) {
-		return "/res/img/mime/image-png.png"
-	} else if (node.file_type.startsWith("application/")) {
-		return "/res/img/mime/archive.png"
-	}
-	return "/res/img/mime/empty.png"
-}
-
-
 </script>
 
 <div class="gallery">
@@ -56,7 +18,8 @@ const node_icon = node => {
 		>
 			<div
 				class="icon_container"
-				style="background-image: url('{node_icon(child)}?width=256&height=256');">
+				class:cover={fs_node_type(child) === "image" || fs_node_type(child) === "video"}
+				style='background-image: url("{fs_node_icon(state.root.id, child)}");'>
 			</div>
 			{child.name}
 		</a>
@@ -105,6 +68,9 @@ const node_icon = node => {
 	background-repeat: no-repeat;
 	font-size: 22px;
 	text-align: left;
+}
+.icon_container.cover {
+	background-size: cover;
 }
 .hidden {
 	display: none;

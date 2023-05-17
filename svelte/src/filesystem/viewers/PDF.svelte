@@ -1,11 +1,11 @@
 <script>
-import { fs_get_file_url } from "../FilesystemAPI.js";
+import { fs_file_url } from "../FilesystemUtil.js";
 export let state
 </script>
 
 <iframe
 	class="container"
-	src={"/res/misc/pdf-viewer/web/viewer.html?file="+encodeURIComponent(fs_get_file_url(state.root.id, state.base.path))}
+	src={"/res/misc/pdf-viewer/web/viewer.html?file="+encodeURIComponent(fs_file_url(state.root.id, state.base.path))}
 	title="PDF viewer">
 </iframe>
 

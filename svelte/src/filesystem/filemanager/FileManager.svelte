@@ -1,15 +1,16 @@
 <script>
 import { fs_delete } from './../FilesystemAPI.js'
-import { createEventDispatcher } from 'svelte'
+import { createEventDispatcher, onMount } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
 import FileUploader from './FileUploader.svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
-import EditWindow from './EditWindow.svelte';
 let dispatch = createEventDispatcher()
 
+export let navigator
 export let state
-export let directory_view = "list"
+export let edit_window
+export let directory_view = ""
 let uploader
 let mode = "viewing"
 let creating_dir = false
@@ -27,13 +28,12 @@ const node_click = e => {
 	// We prefix our custom state properties with fm_ to not interfere with
 	// other modules
 	if (mode === "viewing") {
-		dispatch("navigate", state.children[index].path)
+		navigator.navigate(state.children[index].path, true)
 	} else if (mode === "selecting") {
 		state.children[index].fm_selected = !state.children[index].fm_selected
 	}
 }
 
-let edit_window;
 const node_settings = e => {
 	edit_window.edit(state.children[e.detail])
 }
@@ -42,10 +42,10 @@ const navigate_up = () => {
 
 	// Go to the path of the last parent
 	if (state.path.length > 1) {
-		dispatch("navigate", state.path[state.path.length-2].path)
+		navigator.navigate(state.path[state.path.length-2].path, true)
 	}
 }
-const reload = () => { dispatch("navigate", state.base.path) }
+const reload = () => { navigator.navigate(state.base.path) }
 
 const delete_selected = () => {
 	if (mode !== "selecting") {
@@ -98,6 +98,24 @@ const toggle_select = () => {
 	})
 	mode = "viewing"
 }
+
+const toggle_view = () => {
+	if (directory_view === "list") {
+		directory_view = "gallery"
+	} else {
+		directory_view = "list"
+	}
+
+	localStorage.setItem("directory_view", directory_view)
+}
+onMount(() => {
+	if(typeof Storage !== "undefined") {
+		directory_view = localStorage.getItem("directory_view")
+	}
+	if (directory_view === "" || directory_view === null) {
+		directory_view = "list"
+	}
+})
 </script>
 
 <div class="container">
@@ -109,15 +127,13 @@ const toggle_select = () => {
 			<button on:click={reload} title="Refresh directory listing">
 				<i class="icon">refresh</i>
 			</button>
-			{#if directory_view === "list"}
-				<button on:click={() => {directory_view = "gallery"}} title="Switch to gallery view">
-					<i class="icon">collections</i>
+				<button on:click={() => toggle_view()} title="Switch between gallery view and list view">
+					{#if directory_view === "list"}
+						<i class="icon">collections</i>
+					{:else if directory_view === "gallery"}
+						<i class="icon">list</i>
+					{/if}
 				</button>
-			{:else if directory_view === "gallery"}
-				<button on:click={() => {directory_view = "list"}} title="Switch to list view">
-					<i class="icon">list</i>
-				</button>
-			{/if}
 
 			<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
 				{#if show_hidden}
@@ -186,8 +202,6 @@ const toggle_select = () => {
 		<GalleryView state={state} show_hidden={show_hidden} on:node_click={node_click} on:node_settings={node_settings}></GalleryView>
 	{/if}
 </div>
-
-<EditWindow bind:this={edit_window} bucket={state.root.id} on:reload={() => reload()}/>
 
 <style>
 .container {

@@ -1,5 +1,5 @@
 <script>
-import { fs_get_file_url } from "../FilesystemAPI.js";
+import { fs_file_url } from "../FilesystemUtil.js";
 import { createEventDispatcher, onMount } from 'svelte'
 let dispatch = createEventDispatcher()
 
@@ -38,7 +38,7 @@ onMount(() => {
 	<video
 		bind:this={player}
 		class="player"
-		src={fs_get_file_url(state.root.id, state.base.path)}
+		src={fs_file_url(state.root.id, state.base.path)}
 		autoplay="autoplay"
 		controls="controls"
 		on:ended={() => { dispatch("open_sibling", 1) }}>

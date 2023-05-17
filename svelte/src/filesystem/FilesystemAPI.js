@@ -1,15 +1,4 @@
-const path_url = (bucket, path) => {
-	return window.api_endpoint + "/filesystem/" + bucket + encodeURIComponent(path)
-}
-
-export const fs_get_file_url = (bucket, path) => {
-	return path_url(bucket, path)
-}
-
-export const fs_split_path = (path) => {
-	let patharr = path.split("/")
-	return { base: patharr.pop(), parent: patharr.join("/") }
-}
+import { fs_path_url } from './FilesystemUtil.js'
 
 export const fs_mkdir = async (bucket, path, opts = null) => {
 	const form = new FormData()
@@ -19,14 +8,14 @@ export const fs_mkdir = async (bucket, path, opts = null) => {
 		form.append("mode", opts.mode)
 	}
 
-	const resp = await fetch(path_url(bucket, path), { method: "POST", body: form });
+	const resp = await fetch(fs_path_url(bucket, path), { method: "POST", body: form });
 	if (resp.status >= 400) {
 		throw new Error(await resp.text())
 	}
 }
 
 export const fs_get_node = async (bucket, path) => {
-	const resp = await fetch(path_url(bucket, path) + "?stat");
+	const resp = await fetch(fs_path_url(bucket, path) + "?stat");
 	if (resp.status >= 400) {
 		throw await resp.text()
 	}
@@ -63,7 +52,7 @@ export const fs_update = async (bucket, path, opts) => {
 		form.append("write_password", opts.write_password)
 	}
 
-	const resp = await fetch(path_url(bucket, path), { method: "POST", body: form })
+	const resp = await fetch(fs_path_url(bucket, path), { method: "POST", body: form })
 	if (resp.status >= 400) {
 		throw new Error(await resp.text())
 	}
@@ -75,20 +64,20 @@ export const fs_rename = async (bucket, old_path, new_path) => {
 	form.append("action", "rename")
 	form.append("target", new_path)
 
-	const resp = await fetch(path_url(bucket, old_path), { method: "POST", body: form })
+	const resp = await fetch(fs_path_url(bucket, old_path), { method: "POST", body: form })
 	if (resp.status >= 400) {
 		throw new Error(await resp.text())
 	}
 }
 
 export const fs_delete = async (bucket, path) => {
-	const resp = await fetch(path_url(bucket, path), { method: "DELETE" });
+	const resp = await fetch(fs_path_url(bucket, path), { method: "DELETE" });
 	if (resp.status >= 400) {
 		throw new Error(await resp.text())
 	}
 }
 export const fs_delete_all = async (bucket, path) => {
-	const resp = await fetch(path_url(bucket, path) + "?recursive", { method: "DELETE" });
+	const resp = await fetch(fs_path_url(bucket, path) + "?recursive", { method: "DELETE" });
 	if (resp.status >= 400) {
 		throw new Error(await resp.text())
 	}

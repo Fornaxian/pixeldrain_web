@@ -11,7 +11,7 @@ export let title = "";
 export let width = "800px";
 export let height = "auto";
 export let padding = false;
-let visible = false;
+export let visible = false;
 
 const load_bg = background => {
 	background.style.zIndex = global_index.valueOf();
@@ -36,9 +36,10 @@ const keydown = e => {
 	if (document.activeElement.type && document.activeElement.type === "text") {
 		return // Prevent shortcuts from interfering with input fields
 	}
-	if (e.key === 'Escape') {
+	if (e.key === 'Escape' && visible) {
 		set_visible(false);
 		e.preventDefault()
+		e.stopPropagation()
 		return;
 	}
 };
@@ -47,23 +48,23 @@ const keydown = e => {
 <svelte:window on:keydown={keydown}/>
 
 {#if visible}
-<div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}} on:keydown={keydown}>
-	<div class="top_padding"></div>
-	<div class="window" use:load_modal on:click|stopPropagation role="dialog" aria-modal="true" on:keydown={keydown}>
-		<div class="header">
-			<slot name="title">
-				<div class="title">{title}</div>
-				<button class="button round" on:click={hide}>
-					<i class="icon">close</i>
-				</button>
-			</slot>
+	<div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}} on:keydown={keydown}>
+		<div class="top_padding"></div>
+		<div class="window" use:load_modal on:click|stopPropagation role="dialog" aria-modal="true" on:keydown={keydown}>
+			<div class="header">
+				<slot name="title">
+					<div class="title">{title}</div>
+					<button class="button round" on:click={hide}>
+						<i class="icon">close</i>
+					</button>
+				</slot>
+			</div>
+			<div class="body" class:padding>
+				<slot></slot>
+			</div>
 		</div>
-		<div class="body" class:padding>
-			<slot></slot>
-		</div>
+		<div class="bottom_padding"></div>
 	</div>
-	<div class="bottom_padding"></div>
-</div>
 {/if}
 
 <style>
