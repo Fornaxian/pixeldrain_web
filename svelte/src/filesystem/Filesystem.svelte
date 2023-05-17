@@ -16,7 +16,7 @@ let details_visible = false
 let edit_window
 let edit_visible = false
 
-let navigator
+let fs_navigator
 let state = {
 	path: window.initial_node.path,
 	base_index: window.initial_node.base_index,
@@ -49,7 +49,7 @@ let state = {
 	shuffle: false,
 }
 
-onMount(() => navigator.open_node(window.initial_node, false))
+onMount(() => fs_navigator.open_node(window.initial_node, false))
 
 const keydown = e => {
 	if (e.ctrlKey || e.altKey || e.metaKey) {
@@ -78,11 +78,11 @@ const keydown = e => {
 			break;
 		case "a":
 		case "ArrowLeft":
-			navigator.open_sibling(-1)
+			fs_navigator.open_sibling(-1)
 			break;
 		case "d":
 		case "ArrowRight":
-			navigator.open_sibling(1)
+			fs_navigator.open_sibling(1)
 			break;
 	}
 };
@@ -96,7 +96,7 @@ const download = () => {
 
 <LoadingIndicator loading={state.loading}/>
 
-<Navigator bind:this={navigator} bind:state/>
+<Navigator bind:this={fs_navigator} bind:state/>
 
 <div class="file_viewer">
 	<div class="headerbar">
@@ -111,14 +111,14 @@ const download = () => {
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 0.2em 0 0; color: currentColor;"/>
 		</a>
 		<div class="breadcrumbs">
-			<Breadcrumbs state={state} navigator={navigator}/>
+			<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
 		</div>
 	</div>
 
 	<div class="file_preview">
 		<Toolbar
 			visible={toolbar_visible}
-			navigator={navigator}
+			fs_navigator={fs_navigator}
 			state={state}
 			bind:details_visible={details_visible}
 			edit_window={edit_window}
@@ -127,12 +127,12 @@ const download = () => {
 		/>
 
 		<FilePreview
-			navigator={navigator}
+			fs_navigator={fs_navigator}
 			state={state}
 			toolbar_visible={toolbar_visible}
 			edit_window={edit_window}
 			on:loading={e => {state.loading = e.detail}}
-			on:open_sibling={e => navigator.open_sibling(e.detail)}
+			on:open_sibling={e => fs_navigator.open_sibling(e.detail)}
 			on:download={download}
 		/>
 	</div>
@@ -153,7 +153,7 @@ const download = () => {
 		bind:this={edit_window}
 		bind:visible={edit_visible}
 		bucket={state.root.id}
-		navigator={navigator}
+		fs_navigator={fs_navigator}
 	/>
 </div>
 

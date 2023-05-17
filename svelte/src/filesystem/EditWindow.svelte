@@ -3,7 +3,7 @@ import { fs_delete_all, fs_rename, fs_update } from "./FilesystemAPI";
 import Modal from "../util/Modal.svelte";
 
 export let bucket = ""
-export let navigator
+export let fs_navigator
 let file = {
 	path: "",
 	name: "",
@@ -61,7 +61,7 @@ const save = async () => {
 		return
 	}
 
-	navigator.navigate(file.path, false)
+	fs_navigator.navigate(file.path, false)
 }
 const delete_file = async () => {
 	try {
@@ -72,7 +72,7 @@ const delete_file = async () => {
 		return
 	}
 
-	navigator.navigate(file.path, false)
+	fs_navigator.navigate(file.path, false)
 	visible = false
 }
 </script>

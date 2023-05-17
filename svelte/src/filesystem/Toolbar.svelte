@@ -6,7 +6,7 @@ import { copy_text } from "../util/Util.svelte";
 
 let dispatch = createEventDispatcher()
 
-export let navigator
+export let fs_navigator
 export let state = {
 	base: {
 		type: "",
@@ -45,19 +45,20 @@ const copy_link = () => {
 	link_copied = true
 	setTimeout(() => {link_copied = false}, 60000)
 }
-let share = () => {
+let share = async () => {
 	if (share_url === "") {
 		edit_window.edit(state.base, "share")
 		return
 	}
 
-	if (navigator.share) {
-		navigator.share({
+	try {
+		await navigator.share({
 			title: state.base.name,
 			text: "I would like to share '" + state.base.name + "' with you",
 			url: share_url
 		})
-	} else {
+	} catch (err) {
+		console.debug("Navigator does not support sharing:", err)
 		sharebar_visible = !sharebar_visible
 	}
 }
@@ -79,13 +80,13 @@ let share = () => {
 	<div class="separator"></div>
 
 	<div class="button_row">
-		<button on:click={() => {navigator.open_sibling(-1)}}>
+		<button on:click={() => {fs_navigator.open_sibling(-1)}}>
 			<i class="icon">skip_previous</i>
 		</button>
 		<button on:click={() => {state.shuffle = !state.shuffle}} class:button_highlight={state.shuffle}>
 			<i class="icon">shuffle</i>
 		</button>
-		<button on:click={() => {navigator.open_sibling(1)}}>
+		<button on:click={() => {fs_navigator.open_sibling(1)}}>
 			<i class="icon">skip_next</i>
 		</button>
 	</div>
@@ -100,7 +101,7 @@ let share = () => {
 		<i class="icon">save</i> DL all files
 	</button>
 
-	{#if state.base.path !== "/"}
+	{#if share_url !== ""}
 		<button id="btn_copy" class="toolbar_button" on:click={copy_link} class:button_highlight={link_copied}>
 			<i class="icon">content_copy</i> <u>C</u>opy Link
 		</button>
@@ -121,7 +122,7 @@ let share = () => {
 	{/if}
 </div>
 
-<Sharebar visible={sharebar_visible} state={state} navigator={navigator} share_url={share_url}/>
+<Sharebar visible={sharebar_visible} state={state} fs_navigator={fs_navigator} share_url={share_url}/>
 
 <style>
 .toolbar {

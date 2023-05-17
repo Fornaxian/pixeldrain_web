@@ -7,7 +7,7 @@ import Pdf from "./PDF.svelte";
 import Text from "./Text.svelte";
 import Video from "./Video.svelte";
 
-export let navigator
+export let fs_navigator
 export let state
 export let toolbar_visible
 export let edit_window
@@ -16,7 +16,7 @@ export let edit_window
 <div class="file_preview checkers" class:toolbar_visible>
 	{#if state.viewer_type === "dir"}
 		<FileManager
-			navigator={navigator}
+			fs_navigator={fs_navigator}
 			state={state}
 			edit_window={edit_window}
 			on:loading

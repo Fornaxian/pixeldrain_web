@@ -4,7 +4,7 @@ export const generate_share_url = path => {
 	let bucket_idx = -1
 
 	// Find the last node in the path that has a public ID
-	for (let i = path.length-1; i > 0; i--) {
+	for (let i = path.length-1; i >= 0; i--) {
 		if (path[i].id !== undefined && path[i].id !== "me") {
 			bucket_idx = i
 			break
@@ -46,11 +46,11 @@ const share = async () => {
 		return
 	}
 
-	navigator.navigate(state.base.path, false)
+	fs_navigator.navigate(state.base.path, false)
 }
 
 export let state
-export let navigator
+export let fs_navigator
 
 const share_email = () => {
 	window.open(

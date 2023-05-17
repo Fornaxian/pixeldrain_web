@@ -1,6 +1,6 @@
 <script>
 export let state = {}
-export let navigator
+export let fs_navigator
 </script>
 
 {#each state.path as node, i (node.path)}
@@ -9,7 +9,7 @@ export let navigator
 		href={state.path_root+node.path}
 		class="breadcrumb button"
 		class:button_highlight={state.base_index === i}
-		on:click|preventDefault={() => {navigator.navigate(node.path, true)}}
+		on:click|preventDefault={() => {fs_navigator.navigate(node.path, true)}}
 	>
 		{#if shared}
 			<i class="icon small">share</i>

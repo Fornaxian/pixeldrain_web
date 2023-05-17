@@ -7,7 +7,7 @@ import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
 let dispatch = createEventDispatcher()
 
-export let navigator
+export let fs_navigator
 export let state
 export let edit_window
 export let directory_view = ""
@@ -28,7 +28,7 @@ const node_click = e => {
 	// We prefix our custom state properties with fm_ to not interfere with
 	// other modules
 	if (mode === "viewing") {
-		navigator.navigate(state.children[index].path, true)
+		fs_navigator.navigate(state.children[index].path, true)
 	} else if (mode === "selecting") {
 		state.children[index].fm_selected = !state.children[index].fm_selected
 	}
@@ -42,10 +42,10 @@ const navigate_up = () => {
 
 	// Go to the path of the last parent
 	if (state.path.length > 1) {
-		navigator.navigate(state.path[state.path.length-2].path, true)
+		fs_navigator.navigate(state.path[state.path.length-2].path, true)
 	}
 }
-const reload = () => { navigator.navigate(state.base.path) }
+const reload = () => { fs_navigator.navigate(state.base.path) }
 
 const delete_selected = () => {
 	if (mode !== "selecting") {
