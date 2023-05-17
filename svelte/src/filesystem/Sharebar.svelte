@@ -3,8 +3,8 @@ export const generate_share_url = path => {
 	let share_url = ""
 	let bucket_idx = -1
 
-	// Find the first node in the path that has a public ID
-	for (let i = 0; i < path.length; i++) {
+	// Find the last node in the path that has a public ID
+	for (let i = path.length-1; i > 0; i--) {
 		if (path[i].id !== undefined && path[i].id !== "me") {
 			bucket_idx = i
 			break
@@ -17,7 +17,7 @@ export const generate_share_url = path => {
 
 		// Construct the path starting from the bucket
 		for (let i = bucket_idx+1; i < path.length; i++) {
-			share_url += "/" + encodeURI(path[i].name)
+			share_url += "/" + encodeURIComponent(path[i].name)
 		}
 	}
 
