@@ -133,7 +133,7 @@ const share_tumblr = () => {
 	z-index: 48;
 	overflow: hidden;
 	opacity: 0;
-	transition: left 0.4s, opacity 0.5s;
+	transition: left 0.3s, opacity 0.3s;
 	border-top-left-radius: 16px;
 	border-bottom-left-radius: 16px;
 }

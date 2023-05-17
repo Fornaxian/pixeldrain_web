@@ -48,7 +48,7 @@ export let edit_window
 	min-width: 100px;
 	text-align: center;
 	vertical-align: middle;
-	transition: left 0.5s;
+	transition: left 0.25s;
 	overflow: hidden;
 	border-radius: 12px;
 	border: 2px solid var(--separator);

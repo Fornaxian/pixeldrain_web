@@ -135,7 +135,7 @@ let share = () => {
 	top: 0;
 	padding: 0;
 	text-align: left;
-	transition: left 0.5s;
+	transition: left 0.25s;
 }
 .toolbar_visible { left: 0; }
 
