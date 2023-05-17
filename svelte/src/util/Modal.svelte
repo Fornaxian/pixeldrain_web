@@ -3,9 +3,14 @@
 // incremented every time a modal is shown
 let global_index = 10000;
 </script>
+
 <script>
 import { createEventDispatcher } from 'svelte';
 import { fade } from 'svelte/transition';
+
+// Form can be used to turn the modal into a save dialog. Enter the ID of a form
+// inside the modal and the modal will provide a submit button for that form
+export let form = ""
 
 export let title = "";
 export let width = "800px";
@@ -50,13 +55,36 @@ const keydown = e => {
 {#if visible}
 	<div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}} on:keydown={keydown}>
 		<div class="top_padding"></div>
-		<div class="window" use:load_modal on:click|stopPropagation role="dialog" aria-modal="true" on:keydown={keydown}>
+		<div
+			class="window"
+			class:small_radius={form !== ""}
+			use:load_modal
+			on:click|stopPropagation
+			role="dialog"
+			aria-modal="true"
+			on:keydown={keydown}
+		>
 			<div class="header">
 				<slot name="title">
-					<div class="title">{title}</div>
-					<button class="button round" on:click={hide}>
-						<i class="icon">close</i>
-					</button>
+					{#if form !== ""}
+						<button class="button" on:click={hide}>
+							<i class="icon">close</i> Cancel
+						</button>
+						<div class="title">{title}</div>
+						<button
+							class="button button_highlight"
+							type="submit"
+							form="{form}"
+							on:click={() => {dispatch("save"); hide()}}
+						>
+							<i class="icon">save</i> Save
+						</button>
+					{:else}
+						<div class="title">{title}</div>
+						<button class="button round" on:click={hide}>
+							<i class="icon">close</i>
+						</button>
+					{/if}
 				</slot>
 			</div>
 			<div class="body" class:padding>
@@ -69,7 +97,7 @@ const keydown = e => {
 
 <style>
 .background {
-	position: fixed;
+	position: absolute;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -95,9 +123,12 @@ these padding divs to move it 25% up */
 	max-height: 100%;
 	max-width: 100%;
 	padding: 0;
-	border-radius: 20px 20px 8px 8px;
+	border-radius: 16px 16px 8px 8px;
 	overflow: hidden;
 	text-align: left;
+}
+.small_radius {
+	border-radius: 8px;
 }
 .header {
 	flex-grow: 0;

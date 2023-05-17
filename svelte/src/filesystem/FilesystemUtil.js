@@ -16,7 +16,9 @@ export const fs_thumbnail_url = (bucket, path, width = 128, height = 128) => {
 }
 
 export const fs_node_type = node => {
-	if (node.file_type === "application/bittorrent" || node.file_type === "application/x-bittorrent") {
+	if (node.type === "dir") {
+		return "dir"
+	} else if (node.file_type === "application/bittorrent" || node.file_type === "application/x-bittorrent") {
 		return "torrent"
 	} else if (node.file_type === "application/zip") {
 		return "zip"

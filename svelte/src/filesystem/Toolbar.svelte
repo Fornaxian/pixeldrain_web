@@ -1,7 +1,8 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import Sharebar from "./Sharebar.svelte";
+import Sharebar, { generate_share_url } from "./Sharebar.svelte";
 import { formatDataVolume, formatThousands } from "../util/Formatting.svelte";
+import { copy_text } from "../util/Util.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -31,6 +32,35 @@ $: {
 $: total_directories = state.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
 $: total_files = state.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
 $: total_file_size = state.children.reduce((acc, cur) => acc + cur.file_size, 0)
+
+$: share_url = generate_share_url(state.path)
+let link_copied = false
+const copy_link = () => {
+	if (share_url === "") {
+		edit_window.edit(state.base, "share")
+		return
+	}
+
+	copy_text(share_url)
+	link_copied = true
+	setTimeout(() => {link_copied = false}, 60000)
+}
+let share = () => {
+	if (share_url === "") {
+		edit_window.edit(state.base, "share")
+		return
+	}
+
+	if (navigator.share) {
+		navigator.share({
+			title: state.base.name,
+			text: "I would like to share '" + state.base.name + "' with you",
+			url: share_url
+		})
+	} else {
+		sharebar_visible = !sharebar_visible
+	}
+}
 </script>
 
 <div class="toolbar" class:toolbar_visible={visible}>
@@ -65,18 +95,25 @@ $: total_file_size = state.children.reduce((acc, cur) => acc + cur.file_size, 0)
 			<i class="icon">save</i> Download
 		</button>
 	{/if}
+
 	<button id="btn_download_list" class="toolbar_button" style="display: none;">
 		<i class="icon">save</i> DL all files
 	</button>
-	<button id="btn_copy" class="toolbar_button">
-		<i class="icon">content_copy</i> <u>C</u>opy Link
-	</button>
-	<button on:click={() => sharebar_visible = !sharebar_visible} class="toolbar_button" class:button_highlight={sharebar_visible}>
-		<i class="icon">share</i> Share
-	</button>
+
+	{#if state.base.path !== "/"}
+		<button id="btn_copy" class="toolbar_button" on:click={copy_link} class:button_highlight={link_copied}>
+			<i class="icon">content_copy</i> <u>C</u>opy Link
+		</button>
+
+		<button on:click={share} class="toolbar_button" class:button_highlight={sharebar_visible}>
+			<i class="icon">share</i> Share
+		</button>
+	{/if}
+
 	<button on:click={() => details_visible = !details_visible} class="toolbar_button" class:button_highlight={details_visible}>
 		<i class="icon">help</i> Deta<u>i</u>ls
 	</button>
+
 	{#if state.base.path !== "/"}
 		<button on:click={() => edit_window.edit(state.base)} class="toolbar_button" class:button_highlight={edit_visible}>
 			<i class="icon">edit</i> <u>E</u>dit
@@ -84,7 +121,7 @@ $: total_file_size = state.children.reduce((acc, cur) => acc + cur.file_size, 0)
 	{/if}
 </div>
 
-<Sharebar visible={sharebar_visible}/>
+<Sharebar visible={sharebar_visible} state={state} navigator={navigator} share_url={share_url}/>
 
 <style>
 .toolbar {

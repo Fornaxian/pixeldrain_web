@@ -1,8 +1,10 @@
 <script>
 import FileManager from "../filemanager/FileManager.svelte";
 import Audio from "./Audio.svelte";
+import File from "./File.svelte";
 import Image from "./Image.svelte";
 import Pdf from "./PDF.svelte";
+import Text from "./Text.svelte";
 import Video from "./Video.svelte";
 
 export let navigator
@@ -20,13 +22,17 @@ export let edit_window
 			on:loading
 		/>
 	{:else if state.viewer_type === "audio"}
-		<Audio state={state} on:open_sibling={e => {navigator.open_sibling(e.detail)}}/>
+		<Audio state={state} on:open_sibling/>
 	{:else if state.viewer_type === "image"}
-		<Image state={state} on:open_sibling={e => {navigator.open_sibling(e.detail)}}/>
+		<Image state={state} on:open_sibling/>
 	{:else if state.viewer_type === "video"}
-		<Video state={state} on:open_sibling={e => {navigator.open_sibling(e.detail)}}/>
+		<Video state={state} on:open_sibling/>
 	{:else if state.viewer_type === "pdf"}
 		<Pdf state={state}/>
+	{:else if state.viewer_type === "text"}
+		<Text state={state}/>
+	{:else}
+		<File state={state}/>
 	{/if}
 </div>
 

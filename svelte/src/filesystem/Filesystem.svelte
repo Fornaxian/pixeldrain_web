@@ -132,6 +132,8 @@ const download = () => {
 			toolbar_visible={toolbar_visible}
 			edit_window={edit_window}
 			on:loading={e => {state.loading = e.detail}}
+			on:open_sibling={e => navigator.open_sibling(e.detail)}
+			on:download={download}
 		/>
 	</div>
 
@@ -151,7 +153,7 @@ const download = () => {
 		bind:this={edit_window}
 		bind:visible={edit_visible}
 		bucket={state.root.id}
-		on:navigate={e => navigator.navigate(e.path, e.push_history)}
+		navigator={navigator}
 	/>
 </div>
 

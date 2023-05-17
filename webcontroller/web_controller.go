@@ -137,7 +137,6 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "" /*                */, wc.serveTemplate("home", handlerOpts{})},
 		{GET, "api" /*             */, wc.serveMarkdown("api.md", handlerOpts{})},
 		{GET, "history" /*         */, wc.serveTemplate("history_cookies", handlerOpts{})},
-		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
 		{GET, "l/:id" /*           */, wc.serveListViewer},
 		{GET, "d/*path" /*         */, wc.serveDirectory},

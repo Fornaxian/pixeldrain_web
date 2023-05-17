@@ -1,6 +1,6 @@
 <script>
 import { fs_get_node } from "./FilesystemAPI";
-import { fs_split_path } from "./FilesystemUtil";
+import { fs_node_type, fs_split_path } from "./FilesystemUtil";
 
 export let state = {
 	// Parts of the raw API response
@@ -69,10 +69,17 @@ export const open_node = (node, push_history) => {
 	node.path.forEach(cleanup_func)
 	node.children.forEach(cleanup_func)
 
-	// Update window title and navigation history
+	// Update window title and navigation history. If push_history is false we
+	// still replace the URL with replaceState. This way the user is not greeted
+	// to a 404 page when refreshing after renaming a file
 	window.document.title = node.path[node.base_index].name+" ~ pixeldrain"
 	if (push_history) {
 		window.history.pushState(
+			{}, window.document.title,
+			"/d/"+node.path[0].id+node.path[node.base_index].path,
+		)
+	} else {
+		window.history.replaceState(
 			{}, window.document.title,
 			"/d/"+node.path[0].id+node.path[node.base_index].path,
 		)
@@ -99,30 +106,7 @@ export const open_node = (node, push_history) => {
 	state.permissions = node.permissions
 
 	// Update the viewer area with the right viewer type
-	if (state.base.type === "bucket" || state.base.type === "dir") {
-		state.viewer_type = "dir"
-	} else if (state.base.file_type.startsWith("image")) {
-		state.viewer_type = "image"
-	} else if (
-		state.base.file_type.startsWith("audio") ||
-		state.base.file_type === "application/ogg" ||
-		state.base.name.endsWith(".mp3")
-	) {
-		state.viewer_type = "audio"
-	} else if (
-		state.base.file_type.startsWith("video") ||
-		state.base.file_type === "application/matroska" ||
-		state.base.file_type === "application/x-matroska"
-	) {
-		state.viewer_type = "video"
-	} else if (
-		state.base.file_type === "application/pdf" ||
-		state.base.file_type === "application/x-pdf"
-	) {
-		state.viewer_type = "pdf"
-	} else {
-		state.viewer_type = ""
-	}
+	state.viewer_type = fs_node_type(state.base)
 
 	console.debug("Opened node", node)
 

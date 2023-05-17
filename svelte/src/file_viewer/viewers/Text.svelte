@@ -1,7 +1,6 @@
 <script>
 import { tick } from "svelte";
 
-
 let container
 let text_type = ""
 

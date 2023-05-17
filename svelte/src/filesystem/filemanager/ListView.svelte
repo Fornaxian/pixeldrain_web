@@ -98,6 +98,7 @@ td {
 	height: 32px;
 	width: 32px;
 	vertical-align: middle;
+	border-radius: 4px;
 }
 .node_name {
 	width: 100%;
