@@ -32,7 +32,7 @@ export let edit_window
 	{:else if state.viewer_type === "text"}
 		<Text state={state}/>
 	{:else}
-		<File state={state}/>
+		<File state={state} on:download/>
 	{/if}
 </div>
 
