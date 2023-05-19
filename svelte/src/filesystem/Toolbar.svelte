@@ -3,6 +3,7 @@ import { createEventDispatcher } from "svelte";
 import Sharebar, { generate_share_url } from "./Sharebar.svelte";
 import { formatDataVolume, formatThousands } from "../util/Formatting.svelte";
 import { copy_text } from "../util/Util.svelte";
+import FileStats from "./FileStats.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -66,6 +67,8 @@ let share = async () => {
 
 <div class="toolbar" class:toolbar_visible={visible}>
 	{#if state.base.type === "file"}
+		<FileStats state={state}/>
+
 		<div class="toolbar_label">Size</div>
 		<div class="toolbar_statistic">{formatDataVolume(state.base.file_size, 3)}</div>
 	{:else if state.base.type === "dir" || state.base.type === "bucket"}

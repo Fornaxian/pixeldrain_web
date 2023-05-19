@@ -7,6 +7,7 @@ export let file = {
 	size: 0,
 	downloads: 0,
 	bandwidth_used: 0,
+	bandwidth_used_paid: 0,
 }
 
 let views = 0

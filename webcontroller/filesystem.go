@@ -25,7 +25,11 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	node, err := td.PixelAPI.GetFilesystemPath(path)
 	if err != nil {
 		if err.Error() == "not_found" || err.Error() == "path_not_found" {
-			wc.templates.Get().ExecuteTemplate(w, "404", td)
+			wc.serveNotFound(w, r)
+			return
+		} else if err.Error() == "forbidden" {
+			wc.serveForbidden(w, r)
+			return
 		} else if err.Error() == "authentication_required" {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 		} else {

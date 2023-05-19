@@ -387,6 +387,12 @@ func (wc *WebController) serveForm(
 	}
 }
 
+func (wc *WebController) serveForbidden(w http.ResponseWriter, r *http.Request) {
+	log.Debug("Forbidden: %s", r.URL)
+	w.WriteHeader(http.StatusForbidden)
+	wc.templates.Get().ExecuteTemplate(w, "403", wc.newTemplateData(w, r))
+}
+
 func (wc *WebController) serveNotFound(w http.ResponseWriter, r *http.Request) {
 	log.Debug("Not Found: %s", r.URL)
 	w.WriteHeader(http.StatusNotFound)

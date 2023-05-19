@@ -22,7 +22,6 @@ export const edit = (f, t = "file") => {
 	shared = !(file.id === undefined || file.id === "")
 	read_password = file.read_password ? file.read_password : ""
 	write_password = file.write_password ? file.write_password : ""
-	mode = file.mode_octal
 	visible = true
 }
 
@@ -32,7 +31,6 @@ let file_name = ""
 let shared = false
 let read_password = ""
 let write_password = ""
-let mode = ""
 
 const save = async () => {
 	console.debug("Saving file", file.path)
@@ -41,7 +39,6 @@ const save = async () => {
 			bucket,
 			file.path,
 			{
-				mode: mode,
 				shared: shared,
 				read_password: read_password,
 				write_password: write_password,
@@ -95,8 +92,6 @@ const delete_file = async () => {
 				<span class="header">File settings</span>
 				<label for="file_name">Name:</label>
 				<input bind:value={file_name} id="file_name" type="text" class="form_input"/>
-				<label for="mode">Mode:</label>
-				<input bind:value={mode} id="mode" type="text" class="form_input"/>
 				<span class="header">Delete</span>
 				<p>
 					Delete this file or directory. If this is a directory then all
@@ -133,7 +128,7 @@ const delete_file = async () => {
 
 <style>
 .header {
-	margin: 0.5em 0;
+	margin-top: 1em;
 	font-size: 1.5em;
 	border-bottom: 1px var(--separator) solid;
 }
