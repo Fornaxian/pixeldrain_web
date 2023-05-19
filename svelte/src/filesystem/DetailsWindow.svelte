@@ -8,7 +8,7 @@ export let visible = false
 export const toggle = () => {visible = !visible}
 </script>
 
-<Modal bind:visible={visible} title="Details" width="800px" role="prompt">
+<Modal bind:visible={visible} title="Details" width="800px">
 	<table style="min-width: 100%;">
 		<tr><td colspan="2"><h3>Node details</h3></td></tr>
 		<tr><td>Name</td><td>{state.base.name}</td></tr>

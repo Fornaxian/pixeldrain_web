@@ -1,22 +1,17 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { formatDataVolume, formatDate } from "../../util/Formatting.svelte"
-import IconBlock from "./IconBlock.svelte";
-import TextBlock from "./TextBlock.svelte";
 import ZipItem from "./ZipItem.svelte";
-import BandwidthUsage from "./BandwidthUsage.svelte";
+import IconBlock from "../../file_viewer/viewers/IconBlock.svelte";
+import TextBlock from "../../file_viewer/viewers/TextBlock.svelte";
+import { fs_file_url, fs_node_icon } from "../FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
+export let state
+
 let status = "loading"
 
-let file = {
-	name: "",
-	mime_type: "",
-	size: 0,
-	date_upload: "",
-	icon_href: ""
-}
 let zip = {
 	size: 0,
 	children: null,
@@ -24,13 +19,11 @@ let zip = {
 let uncomp_size = 0
 let comp_ratio = 0
 
-export const set_file = async f => {
-	file = f
-
+export const update = async () => {
 	dispatch("loading", true)
 
 	try {
-		let resp = await fetch(f.info_href+"/zip")
+		let resp = await fetch(fs_file_url(state.root.id, state.base.path)+"?zip_info")
 
 		if (resp.status >= 400) {
 			status = "parse_failed"
@@ -40,7 +33,7 @@ export const set_file = async f => {
 		zip = await resp.json()
 
 		uncomp_size = recursive_size(zip)
-		comp_ratio = (uncomp_size / file.size)
+		comp_ratio = (uncomp_size / state.base.file_size)
 	} catch (err) {
 		console.error(err)
 	} finally {
@@ -66,22 +59,18 @@ const recursive_size = (file) => {
 }
 </script>
 
-<h1>{file.name}</h1>
+<h1>{state.base.name}</h1>
 
-<IconBlock icon_href={file.icon_href}>
-	Compressed size: {formatDataVolume(file.size, 3)}<br/>
+<IconBlock icon_href={fs_node_icon(state.root.id, state.base)}>
+	Compressed size: {formatDataVolume(state.base.file_size, 3)}<br/>
 	Uncompressed size: {formatDataVolume(uncomp_size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
-	Uploaded on: {formatDate(file.date_upload, true, true, true)}
+	Uploaded on: {formatDate(state.base.date_created, true, true, true)}
 	<br/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>
 		<i class="icon">download</i>
 		<span>Download</span>
 	</button>
 </IconBlock>
-
-{#if file.show_ads}
-	<BandwidthUsage file={file} on:reload/>
-{/if}
 
 {#if status === "finished"}
 	<TextBlock>

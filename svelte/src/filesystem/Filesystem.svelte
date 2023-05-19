@@ -10,7 +10,9 @@ import DetailsWindow from './DetailsWindow.svelte';
 import Navigator from './Navigator.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 
+let loading = true
 let toolbar_visible = (window.innerWidth > 600)
+let file_preview
 let download_frame
 let details_visible = false
 let edit_window
@@ -32,20 +34,9 @@ let state = {
 	read_password: "",
 	write_password: "",
 
-	// These are used to navigate forward and backward within a directory (using
-	// the previous and next buttons on the toolbar). The cached siblings will
-	// be used so that we don't need to make an extra request to the parent
-	// directory. The siblings_path variable is used to verify that the parent
-	// directory is still the same. If it's sifferent the siblings array is not
-	// used
-	siblings_path: "",
-	siblings: null,
-
 	// Root path of the bucket. Used for navigation by prepending it to a file
 	// path
 	path_root: "/d/"+window.initial_node.path[0].id,
-	loading: true,
-	viewer_type: "",
 	shuffle: false,
 }
 
@@ -94,9 +85,14 @@ const download = () => {
 
 <svelte:window on:keydown={keydown} />
 
-<LoadingIndicator loading={state.loading}/>
+<LoadingIndicator loading={loading}/>
 
-<Navigator bind:this={fs_navigator} bind:state/>
+<Navigator
+	bind:this={fs_navigator}
+	bind:state
+	on:navigation_complete={() => file_preview.state_update()}
+	on:loading={e => loading = e.detail}
+/>
 
 <div class="file_viewer">
 	<div class="headerbar">
@@ -127,11 +123,12 @@ const download = () => {
 		/>
 
 		<FilePreview
+			bind:this={file_preview}
 			fs_navigator={fs_navigator}
 			state={state}
 			toolbar_visible={toolbar_visible}
 			edit_window={edit_window}
-			on:loading={e => {state.loading = e.detail}}
+			on:loading={e => {loading = e.detail}}
 			on:open_sibling={e => fs_navigator.open_sibling(e.detail)}
 			on:download={download}
 		/>

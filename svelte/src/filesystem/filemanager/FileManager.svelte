@@ -79,6 +79,7 @@ const delete_selected = () => {
 	// Wait for all the promises to finish
 	Promise.all(promises).catch((err) => {
 		console.error(err)
+		alert("Delete failed: ", err)
 	}).finally(() => {
 		mode = "viewing"
 		reload()

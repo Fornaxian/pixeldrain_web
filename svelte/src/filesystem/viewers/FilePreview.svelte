@@ -1,4 +1,7 @@
 <script>
+import { tick } from "svelte";
+import Spinner from "../../util/Spinner.svelte";
+import { fs_node_type } from "../FilesystemUtil";
 import FileManager from "../filemanager/FileManager.svelte";
 import Audio from "./Audio.svelte";
 import File from "./File.svelte";
@@ -6,31 +9,57 @@ import Image from "./Image.svelte";
 import Pdf from "./PDF.svelte";
 import Text from "./Text.svelte";
 import Video from "./Video.svelte";
+import Torrent from "./Torrent.svelte";
+import Zip from "./Zip.svelte";
 
 export let fs_navigator
-export let state
 export let toolbar_visible
 export let edit_window
+
+export let state
+let viewer
+let viewer_type = ""
+
+export const state_update = async () => {
+	// Update the viewer area with the right viewer type
+	viewer_type = fs_node_type(state.base)
+
+	console.debug("Previewing file", state.base, "viewer type", viewer_type)
+
+	// Render the viewer component and set the file type
+	await tick()
+	if (viewer) {
+		viewer.update()
+	}
+}
 </script>
 
 <div class="file_preview checkers" class:toolbar_visible>
-	{#if state.viewer_type === "dir"}
+	{#if viewer_type === ""}
+		<div class="center">
+			<Spinner></Spinner>
+		</div>
+	{:else if viewer_type === "dir"}
 		<FileManager
 			fs_navigator={fs_navigator}
 			state={state}
 			edit_window={edit_window}
 			on:loading
 		/>
-	{:else if state.viewer_type === "audio"}
+	{:else if viewer_type === "audio"}
 		<Audio state={state} on:open_sibling/>
-	{:else if state.viewer_type === "image"}
+	{:else if viewer_type === "image"}
 		<Image state={state} on:open_sibling/>
-	{:else if state.viewer_type === "video"}
-		<Video state={state} on:open_sibling/>
-	{:else if state.viewer_type === "pdf"}
+	{:else if viewer_type === "video"}
+		<Video state={state} bind:this={viewer} on:open_sibling/>
+	{:else if viewer_type === "pdf"}
 		<Pdf state={state}/>
-	{:else if state.viewer_type === "text"}
+	{:else if viewer_type === "text"}
 		<Text state={state}/>
+	{:else if viewer_type === "torrent"}
+		<Torrent state={state} bind:this={viewer} on:loading on:download/>
+	{:else if viewer_type === "zip"}
+		<Zip state={state} bind:this={viewer} on:loading on:download />
 	{:else}
 		<File state={state} on:download/>
 	{/if}
@@ -43,18 +72,29 @@ export let edit_window
 	right: 0;
 	top: 0;
 	bottom: 0;
-	display: inline-block;
+	display: block;
 	min-height: 100px;
 	min-width: 100px;
-	text-align: center;
-	vertical-align: middle;
 	transition: left 0.25s;
-	overflow: hidden;
-	border-radius: 12px;
+	overflow: auto;
+	text-align: center;
+	border-radius: 8px;
 	border: 2px solid var(--separator);
 }
 
 .file_preview.toolbar_visible {
 	left: 8em;
+}
+
+.center{
+	position: relative;
+	display: block;
+	margin: auto;
+	width: 100px;
+	max-width: 100%;
+	height: 100px;
+	max-height: 100%;
+	top: 50%;
+	transform: translateY(-50%);
 }
 </style>

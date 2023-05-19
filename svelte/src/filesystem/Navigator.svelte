@@ -1,6 +1,9 @@
 <script>
+import { createEventDispatcher } from "svelte";
 import { fs_get_node } from "./FilesystemAPI";
-import { fs_node_type, fs_split_path } from "./FilesystemUtil";
+import { fs_split_path } from "./FilesystemUtil";
+
+let dispatch = createEventDispatcher()
 
 export let state = {
 	// Parts of the raw API response
@@ -20,25 +23,14 @@ export let state = {
 	read_password: "",
 	write_password: "",
 
-	// These are used to navigate forward and backward within a directory (using
-	// the previous and next buttons on the toolbar). The cached siblings will
-	// be used so that we don't need to make an extra request to the parent
-	// directory. The siblings_path variable is used to verify that the parent
-	// directory is still the same. If it's sifferent the siblings array is not
-	// used
-	siblings_path: "",
-	siblings: null,
-
 	// Root path of the bucket. Used for navigation by prepending it to a file
 	// path
 	path_root: "",
-	loading: false,
-	viewer_type: "",
 	shuffle: false,
 }
 
 export const navigate = async (path, push_history) => {
-	state.loading = true
+	dispatch("loading", true)
 	console.debug("Navigating to path", path, push_history)
 
 	try {
@@ -57,7 +49,7 @@ export const navigate = async (path, push_history) => {
 			alert("Error: "+err)
 		}
 	} finally {
-		state.loading = false
+		dispatch("loading", false)
 	}
 }
 
@@ -87,11 +79,11 @@ export const open_node = (node, push_history) => {
 
 	// If the new node is a child of the previous node we save the parent's
 	// children array
-	if (node.path.length > 0 && node.path[node.path.length-1].path === state.base.path) {
+	if (node.path.length > 1 && node.path[node.path.length-2].path === state.base.path) {
 		console.debug("Current parent path and new node path match. Saving siblings")
 
-		state.siblings_path = node.path[node.path.length-1].path
-		state.siblings = state.children
+		siblings_path = node.path[node.path.length-1].path
+		siblings = state.children
 	}
 
 	// Sort directory children
@@ -105,14 +97,26 @@ export const open_node = (node, push_history) => {
 	state.children = node.children
 	state.permissions = node.permissions
 
-	// Update the viewer area with the right viewer type
-	state.viewer_type = fs_node_type(state.base)
-
 	console.debug("Opened node", node)
 
+	// Signal to parent that navigation is complete. Normally relying on
+	// reactivity is enough, but sometimes that can trigger double updates. By
+	// manually triggering an update we can be sure that updates happen exactly
+	// when we mean to
+	dispatch("navigation_complete")
+
 	// Remove spinner
-	state.loading = false
+	dispatch("loading", false)
 }
+
+// These are used to navigate forward and backward within a directory (using
+// the previous and next buttons on the toolbar). The cached siblings will
+// be used so that we don't need to make an extra request to the parent
+// directory. The siblings_path variable is used to verify that the parent
+// directory is still the same. If it's sifferent the siblings array is not
+// used
+let siblings_path = ""
+let siblings = null
 
 // Opens a sibling of the currently open file. The offset is relative to the
 // file which is currently open. Give a positive number to move forward and a
@@ -122,11 +126,11 @@ export const open_sibling = async offset => {
 		return
 	}
 
-	state.loading = true
+	dispatch("loading", true)
 
 	// Check if we already have siblings cached
-	if (state.siblings != null && state.siblings_path == state.path[state.path.length - 2].path) {
-		console.debug("Using cached siblings")
+	if (siblings != null && siblings_path == state.path[state.path.length - 2].path) {
+		console.debug("Using cached siblings", siblings)
 	} else {
 		console.debug("Cached siblings not available. Fetching new")
 		try {
@@ -135,13 +139,13 @@ export const open_sibling = async offset => {
 			// Sort directory children to make sure the order is consistent
 			sort_children(resp.children)
 
-			// Save new siblings in global state
-			state.siblings_path = state.path[state.path.length - 2].path
-			state.siblings = resp.children
+			// Save new siblings in navigator state
+			siblings_path = state.path[state.path.length - 2].path
+			siblings = resp.children
 		} catch (err) {
 			console.error(err)
 			alert(err)
-			state.loading = false
+			dispatch("loading", false)
 			return
 		}
 	}
@@ -151,7 +155,7 @@ export const open_sibling = async offset => {
 	if (state.shuffle) {
 		// Shuffle is on, pick a random sibling
 		for (let i = 0; i < 10; i++) {
-			next_sibling = state.siblings[Math.floor(Math.random()*state.siblings.length)]
+			next_sibling = siblings[Math.floor(Math.random()*siblings.length)]
 
 			// If we selected the same sibling we already have open we try
 			// again. Else we break the loop
@@ -163,13 +167,13 @@ export const open_sibling = async offset => {
 		// Loop over the parent node's children to find the one which is
 		// currently open. Then, if possible, we save the one which comes before
 		// or after it
-		for (let i = 0; i < state.siblings.length; i++) {
+		for (let i = 0; i < siblings.length; i++) {
 			if (
-				state.siblings[i].name === state.base.name &&
+				siblings[i].name === state.base.name &&
 				i+offset >= 0 && // Prevent underflow
-				i+offset < state.siblings.length // Prevent overflow
+				i+offset < siblings.length // Prevent overflow
 			) {
-				next_sibling = state.siblings[i+offset]
+				next_sibling = siblings[i+offset]
 				break
 			}
 		}
@@ -177,11 +181,11 @@ export const open_sibling = async offset => {
 
 	// If we found a sibling we open it
 	if (next_sibling !== null) {
-		console.debug("Opening sibling", next_sibling)
+		console.debug("Opening sibling", next_sibling.path)
 		navigate(next_sibling.path, true)
 	} else {
 		console.debug("No siblings found")
-		state.loading = false
+		dispatch("loading", false)
 	}
 }
 
