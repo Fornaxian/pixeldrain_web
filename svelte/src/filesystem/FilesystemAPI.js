@@ -94,3 +94,17 @@ export const fs_search = async (bucket, path, term, limit = 10) => {
 	}
 	return resp.json()
 }
+
+export const fs_timeseries = async (bucket, path, start, end, interval = 60) => {
+	const resp = await fetch(
+		fs_path_url(bucket, path) +
+		"?timeseries" +
+		"&start=" + start.toISOString() +
+		"&end=" + end.toISOString() +
+		"&interval=" + interval
+	)
+	if (resp.status >= 400) {
+		throw await resp.text()
+	}
+	return resp.json()
+}

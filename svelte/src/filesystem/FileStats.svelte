@@ -50,7 +50,7 @@ const update_base = async base => {
 
 		window.setTimeout(() => {
 			if (socket === null) {
-				state_update()
+				update_base(base)
 			}
 		}, 3000)
 	}

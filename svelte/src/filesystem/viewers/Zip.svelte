@@ -64,7 +64,7 @@ const recursive_size = (file) => {
 <IconBlock icon_href={fs_node_icon(state.root.id, state.base, 256, 256)}>
 	Compressed size: {formatDataVolume(state.base.file_size, 3)}<br/>
 	Uncompressed size: {formatDataVolume(uncomp_size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
-	Uploaded on: {formatDate(state.base.date_created, true, true, true)}
+	Uploaded on: {formatDate(state.base.created, true, true, true)}
 	<br/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>
 		<i class="icon">download</i>

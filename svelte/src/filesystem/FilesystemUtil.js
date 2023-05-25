@@ -4,7 +4,12 @@ export const fs_split_path = (path) => {
 }
 
 export const fs_path_url = (bucket, path) => {
-	return window.api_endpoint + "/filesystem/" + bucket + encodeURIComponent(path)
+	// Encode all path elements separately to preserve forward slashes
+	let split = path.split("/")
+	for (let i = 0; i < split.length; i++) {
+		split[i] = encodeURIComponent(split[i])
+	}
+	return api_endpoint + "/filesystem/" + bucket + split.join("/")
 }
 
 export const fs_file_url = (bucket, path) => {

@@ -39,7 +39,7 @@ let chart_timespans = [
 ]
 
 let update_chart = (timespan, interval) => {
-		// If the timespan is 0 we calculate the maximum timespan based on the age
+	// If the timespan is 0 we calculate the maximum timespan based on the age
 	// of the file
 	if (timespan === 0) {
 		let minutes_since_upload = (new Date().getTime() - Date.parse(file.date_upload)) / 1000 / 60
