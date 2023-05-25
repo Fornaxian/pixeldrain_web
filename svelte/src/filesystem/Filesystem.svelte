@@ -102,6 +102,10 @@ const search = async () => {
 
 	view = "search"
 }
+
+const loading_evt = e => {
+	loading = e.detail
+}
 </script>
 
 <svelte:window on:keydown={keydown} />
@@ -111,7 +115,7 @@ const search = async () => {
 <Navigator
 	bind:this={fs_navigator}
 	bind:state
-	on:loading={e => loading = e.detail}
+	on:loading={loading_evt}
 	on:navigation_complete={() => {
 		// Reset the view to the file view if we were in search view
 		view = "file"
@@ -155,7 +159,7 @@ const search = async () => {
 					fs_navigator={fs_navigator}
 					state={state}
 					edit_window={edit_window}
-					on:loading={e => {loading = e.detail}}
+					on:loading={loading_evt}
 					on:open_sibling={e => fs_navigator.open_sibling(e.detail)}
 					on:download={download}
 				/>
@@ -163,7 +167,7 @@ const search = async () => {
 				<SearchView
 					state={state}
 					fs_navigator={fs_navigator}
-					on:loading={e => {loading = e.detail}}
+					on:loading={loading_evt}
 				/>
 			{/if}
 		</div>
@@ -186,6 +190,7 @@ const search = async () => {
 		bind:visible={edit_visible}
 		bucket={state.root.id}
 		fs_navigator={fs_navigator}
+		on:loading={loading_evt}
 	/>
 </div>
 

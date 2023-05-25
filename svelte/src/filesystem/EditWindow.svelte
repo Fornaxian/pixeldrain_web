@@ -1,6 +1,9 @@
 <script>
 import { fs_delete_all, fs_rename, fs_update } from "./FilesystemAPI";
 import Modal from "../util/Modal.svelte";
+import { createEventDispatcher } from "svelte";
+
+let dispatch = createEventDispatcher()
 
 export let bucket = ""
 export let fs_navigator
@@ -37,6 +40,7 @@ let write_password = ""
 const save = async () => {
 	console.debug("Saving file", file.path)
 	try {
+		dispatch("loading", true)
 		await fs_update(
 			bucket,
 			file.path,
@@ -58,6 +62,8 @@ const save = async () => {
 		console.error(err)
 		alert(err)
 		return
+	} finally {
+		dispatch("loading", false)
 	}
 
 	if (open_after_edit) {
@@ -68,11 +74,14 @@ const save = async () => {
 }
 const delete_file = async () => {
 	try {
+		dispatch("loading", true)
 		await fs_delete_all(bucket, file.path)
 	} catch (err) {
 		console.error(err)
 		alert(err)
 		return
+	} finally {
+		dispatch("loading", false)
 	}
 
 	if (open_after_edit) {
