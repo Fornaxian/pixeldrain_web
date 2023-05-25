@@ -1,5 +1,5 @@
 <script>
-import { onMount, tick } from "svelte";
+import { tick } from "svelte";
 import Spinner from "../../util/Spinner.svelte";
 import { fs_node_type } from "../FilesystemUtil";
 import FileManager from "../filemanager/FileManager.svelte";
@@ -19,11 +19,12 @@ export let state
 let viewer
 let viewer_type = ""
 
-export const state_update = async () => {
+$: state_update(state.base)
+const state_update = async (base) => {
 	// Update the viewer area with the right viewer type
-	viewer_type = fs_node_type(state.base)
+	viewer_type = fs_node_type(base)
 
-	console.debug("Previewing file", state.base, "viewer type", viewer_type)
+	console.debug("Previewing file", base, "viewer type", viewer_type)
 
 	// Render the viewer component and set the file type
 	await tick()
@@ -31,10 +32,6 @@ export const state_update = async () => {
 		viewer.update()
 	}
 }
-
-onMount(() => {
-	state_update()
-})
 </script>
 
 {#if viewer_type === ""}

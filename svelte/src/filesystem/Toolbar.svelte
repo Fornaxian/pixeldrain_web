@@ -64,13 +64,6 @@ let share = async () => {
 		sharebar_visible = !sharebar_visible
 	}
 }
-let toggle_search = () => {
-	if (view === "search") {
-		view = "file"
-	} else {
-		view = "search"
-	}
-}
 </script>
 
 <div class="toolbar" class:toolbar_visible={visible}>
@@ -102,8 +95,8 @@ let toggle_search = () => {
 		</button>
 	</div>
 
-	{#if state.root.id === "me" && state.base.type === "dir"}
-		<button on:click={toggle_search} class="toolbar_button" class:button_highlight={view === "search"}>
+	{#if state.root.id === "me"}
+		<button on:click={() => dispatch("search")} class="toolbar_button" class:button_highlight={view === "search"}>
 			<i class="icon">search</i> Search
 		</button>
 	{/if}
@@ -113,10 +106,6 @@ let toggle_search = () => {
 			<i class="icon">save</i> Download
 		</button>
 	{/if}
-
-	<button id="btn_download_list" class="toolbar_button" style="display: none;">
-		<i class="icon">save</i> DL all files
-	</button>
 
 	{#if share_url !== ""}
 		<button id="btn_copy" class="toolbar_button" on:click={copy_link} class:button_highlight={link_copied}>

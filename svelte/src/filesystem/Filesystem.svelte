@@ -71,7 +71,7 @@ const keydown = e => {
 			break;
 		case "/":
 		case "f":
-			view = "search"
+			search()
 			break
 		case "a":
 		case "ArrowLeft":
@@ -89,6 +89,19 @@ const keydown = e => {
 const download = () => {
 	download_frame.src = fs_file_url(state.root.id, state.base.path) + "?attach"
 }
+
+const search = async () => {
+	if (view === "search") {
+		view = "file"
+		return
+	}
+
+	if (state.base.type !== "dir") {
+		await fs_navigator.navigate(state.path[state.path.length-2].path)
+	}
+
+	view = "search"
+}
 </script>
 
 <svelte:window on:keydown={keydown} />
@@ -98,12 +111,11 @@ const download = () => {
 <Navigator
 	bind:this={fs_navigator}
 	bind:state
-	on:navigation_complete={async () => {
-		view = "file";
-		await tick();
-		file_preview.state_update();
-	}}
 	on:loading={e => loading = e.detail}
+	on:navigation_complete={() => {
+		// Reset the view to the file view if we were in search view
+		view = "file"
+	}}
 />
 
 <div class="file_viewer">
@@ -133,6 +145,7 @@ const download = () => {
 			bind:edit_visible={edit_visible}
 			bind:view={view}
 			on:download={download}
+			on:search={search}
 		/>
 
 		<div class="file_preview checkers" class:toolbar_visible>
