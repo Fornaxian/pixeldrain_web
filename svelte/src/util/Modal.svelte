@@ -22,10 +22,6 @@ const load_bg = background => {
 	background.style.zIndex = global_index.valueOf();
 	global_index++;
 }
-const load_modal = modal => {
-	modal.style.width = width;
-	modal.style.height = height;
-}
 
 const dispatch = createEventDispatcher();
 
@@ -58,10 +54,10 @@ const keydown = e => {
 		<div
 			class="window"
 			class:small_radius={form !== ""}
-			use:load_modal
 			on:click|stopPropagation
 			role="dialog"
 			aria-modal="true"
+			style="width: {width}; height: {height};"
 			on:keydown={keydown}
 		>
 			<div class="header">

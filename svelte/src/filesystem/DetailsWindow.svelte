@@ -55,8 +55,6 @@ let update_chart = async (base, timespan, interval) => {
 	if (timespan === 0) {
 		let minutes_since_upload = (new Date().getTime() - Date.parse(base.created)) / 1000 / 60
 
-		console.log("minutes", minutes_since_upload)
-
 		for (let i = 0; i < chart_timespans.length; i++) {
 			timespan = chart_timespans[i].span
 			interval = chart_timespans[i].interval
@@ -70,7 +68,7 @@ let update_chart = async (base, timespan, interval) => {
 	chart_timespan = timespan
 	chart_interval = interval
 
-	console.log("Updating graph", chart_timespan, chart_interval)
+	console.log("Updating graph timespan", chart_timespan, "interval", chart_interval)
 
 	let start = new Date()
 	start.setMinutes(start.getMinutes() - timespan)
@@ -134,7 +132,7 @@ let update_chart = async (base, timespan, interval) => {
 }
 </script>
 
-<Modal bind:visible={visible} title="Details" width="1000px">
+<Modal bind:visible={visible} title="Details" width={(state.base.type === "file" ? 1000 : 750) + "px"}>
 	<h3 class="indent">Node details</h3>
 	<table style="width: 100%;">
 		<tr><td>Name</td><td>{state.base.name}</td></tr>
