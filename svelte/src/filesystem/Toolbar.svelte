@@ -17,6 +17,7 @@ export let state = {
 	shuffle: false
 }
 
+export let view = "file"
 export let details_visible = false
 export let edit_window
 export let edit_visible = false
@@ -63,6 +64,13 @@ let share = async () => {
 		sharebar_visible = !sharebar_visible
 	}
 }
+let toggle_search = () => {
+	if (view === "search") {
+		view = "file"
+	} else {
+		view = "search"
+	}
+}
 </script>
 
 <div class="toolbar" class:toolbar_visible={visible}>
@@ -93,6 +101,12 @@ let share = async () => {
 			<i class="icon">skip_next</i>
 		</button>
 	</div>
+
+	{#if state.root.id === "me" && state.base.type === "dir"}
+		<button on:click={toggle_search} class="toolbar_button" class:button_highlight={view === "search"}>
+			<i class="icon">search</i> Search
+		</button>
+	{/if}
 
 	{#if state.base.type === "file"}
 		<button on:click={() => dispatch("download")} class="toolbar_button">

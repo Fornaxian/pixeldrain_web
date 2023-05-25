@@ -82,3 +82,15 @@ export const fs_delete_all = async (bucket, path) => {
 		throw new Error(await resp.text())
 	}
 }
+
+export const fs_search = async (bucket, path, term, limit = 10) => {
+	const resp = await fetch(
+		fs_path_url(bucket, path) +
+		"?search=" + encodeURIComponent(term) +
+		"&limit=" + limit
+	)
+	if (resp.status >= 400) {
+		throw await resp.text()
+	}
+	return resp.json()
+}

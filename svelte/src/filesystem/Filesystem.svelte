@@ -1,5 +1,5 @@
 <script>
-import { onMount } from 'svelte';
+import { onMount, tick } from 'svelte';
 import PixeldrainLogo from '../util/PixeldrainLogo.svelte';
 import LoadingIndicator from '../util/LoadingIndicator.svelte';
 import EditWindow from './EditWindow.svelte';
@@ -9,6 +9,7 @@ import Breadcrumbs from './Breadcrumbs.svelte';
 import DetailsWindow from './DetailsWindow.svelte';
 import Navigator from './Navigator.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
+import SearchView from './SearchView.svelte';
 
 let loading = true
 let toolbar_visible = (window.innerWidth > 600)
@@ -17,6 +18,7 @@ let download_frame
 let details_visible = false
 let edit_window
 let edit_visible = false
+let view = "file"
 
 let fs_navigator
 let state = {
@@ -67,6 +69,10 @@ const keydown = e => {
 		case "r":
 			state.shuffle = !state.shuffle
 			break;
+		case "/":
+		case "f":
+			view = "search"
+			break
 		case "a":
 		case "ArrowLeft":
 			fs_navigator.open_sibling(-1)
@@ -76,6 +82,8 @@ const keydown = e => {
 			fs_navigator.open_sibling(1)
 			break;
 	}
+
+	e.preventDefault()
 };
 
 const download = () => {
@@ -90,7 +98,11 @@ const download = () => {
 <Navigator
 	bind:this={fs_navigator}
 	bind:state
-	on:navigation_complete={() => file_preview.state_update()}
+	on:navigation_complete={async () => {
+		view = "file";
+		await tick();
+		file_preview.state_update();
+	}}
 	on:loading={e => loading = e.detail}
 />
 
@@ -111,7 +123,7 @@ const download = () => {
 		</div>
 	</div>
 
-	<div class="file_preview">
+	<div class="viewer_area">
 		<Toolbar
 			visible={toolbar_visible}
 			fs_navigator={fs_navigator}
@@ -119,19 +131,29 @@ const download = () => {
 			bind:details_visible={details_visible}
 			edit_window={edit_window}
 			bind:edit_visible={edit_visible}
+			bind:view={view}
 			on:download={download}
 		/>
 
-		<FilePreview
-			bind:this={file_preview}
-			fs_navigator={fs_navigator}
-			state={state}
-			toolbar_visible={toolbar_visible}
-			edit_window={edit_window}
-			on:loading={e => {loading = e.detail}}
-			on:open_sibling={e => fs_navigator.open_sibling(e.detail)}
-			on:download={download}
-		/>
+		<div class="file_preview checkers" class:toolbar_visible>
+			{#if view === "file"}
+				<FilePreview
+					bind:this={file_preview}
+					fs_navigator={fs_navigator}
+					state={state}
+					edit_window={edit_window}
+					on:loading={e => {loading = e.detail}}
+					on:open_sibling={e => fs_navigator.open_sibling(e.detail)}
+					on:download={download}
+				/>
+			{:else if view === "search"}
+				<SearchView
+					state={state}
+					fs_navigator={fs_navigator}
+					on:loading={e => {loading = e.detail}}
+				/>
+			{/if}
+		</div>
 	</div>
 
 	<!-- This frame will load the download URL when a download button is pressed -->
@@ -210,7 +232,7 @@ const download = () => {
 	}
 }
 /* File preview area (row 2) */
-.file_preview {
+.viewer_area {
 	flex-grow: 1;
 	flex-shrink: 1;
 	position: relative;
@@ -219,5 +241,25 @@ const download = () => {
 	height: auto;
 	margin: 0;
 	z-index: 9;
+}
+
+.file_preview {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	display: block;
+	min-height: 100px;
+	min-width: 100px;
+	transition: left 0.25s;
+	overflow: auto;
+	text-align: center;
+	border-radius: 8px;
+	border: 2px solid var(--separator);
+}
+
+.file_preview.toolbar_visible {
+	left: 8em;
 }
 </style>
