@@ -6,13 +6,14 @@ import { fs_timeseries } from "./FilesystemAPI";
 import { fs_path_url } from "./FilesystemUtil";
 import { generate_share_url } from "./Sharebar.svelte";
 import { color_by_name } from "../util/Util.svelte";
+import { tick } from "svelte";
 
 export let state
 export let visible = false
 export const toggle = () => visible = !visible
 
 $: visibility_change(visible)
-const visibility_change = (visible) => {
+const visibility_change = visible => {
 	if (visible) {
 		update_chart(state.base, 0, 0)
 	}
@@ -40,7 +41,12 @@ let total_bandwidth_paid = 0
 
 $: update_chart(state.base, chart_timespan, chart_interval)
 let update_chart = async (base, timespan, interval) => {
-	if (!visible) {
+	if (chart === undefined) {
+		// Wait for the chart element to render, if it's not rendered already
+		await tick()
+	}
+
+	if (!visible || base.type !== "file" || chart === undefined) {
 		return
 	}
 
@@ -170,19 +176,21 @@ let update_chart = async (base, timespan, interval) => {
 		{/if}
 	</table>
 
-	<h3 class="indent">Download statistics</h3>
+	{#if state.base.type === "file"}
+		<h3 class="indent">Download statistics</h3>
 
-	<div class="button_bar">
-		{#each chart_timespans as ts}
-			<button
-				on:click={() => { update_chart(state.base, ts.span, ts.interval) }}
-				class:button_highlight={chart_timespan == ts.span}>
-				{ts.label}
-			</button>
-		{/each}
-	</div>
+		<div class="button_bar">
+			{#each chart_timespans as ts}
+				<button
+					on:click={() => { update_chart(state.base, ts.span, ts.interval) }}
+					class:button_highlight={chart_timespan == ts.span}>
+					{ts.label}
+				</button>
+			{/each}
+		</div>
 
-	<Chart bind:this={chart} />
+		<Chart bind:this={chart} />
+	{/if}
 </Modal>
 
 <style>
