@@ -8,6 +8,7 @@ export let fs_navigator
 
 let dispatch = createEventDispatcher()
 
+let error = ""
 let search_term = ""
 let search_results = []
 let searching = false
@@ -29,6 +30,7 @@ const search = async (limit = 10) => {
 
 	console.debug("Searching for", search_term)
 
+	error = ""
 	last_searched_term = search_term
 	last_limit = limit
 	searching = true
@@ -37,8 +39,12 @@ const search = async (limit = 10) => {
 	try {
 		search_results = await fs_search(state.root.id, state.base.path, search_term, limit)
 	} catch (err) {
-		alert(err)
-		console.error(err)
+		try {
+			error = JSON.parse(err).value
+		} catch {
+			alert(err)
+			console.error(err)
+		}
 	}
 
 	searching = false
@@ -65,15 +71,27 @@ const node_click = index => {
 }
 </script>
 
+{#if error === "path_not_found" || error === "node_is_a_directory"}
+	<div class="highlight_yellow center">
+		Search index not found. The search index is a file called
+		'.search_index.gz' in your home directory. If you delete this file then
+		search will not work. The file is regenerated 10 minutes after modifying
+		a file in your filesystem.
+	</div>
+{:else if error !== ""}
+	<div class="highlight_red center">
+		An error ocurred while executing the search request: {error}
+	</div>
+{/if}
 
-<form class="search_bar highlight_shaded" on:submit|preventDefault={submit_search}>
+<form class="search_bar highlight_shaded center" on:submit|preventDefault={submit_search}>
 	<i class="icon">search</i>
 	<!-- svelte-ignore a11y-autofocus -->
 	<input class="term" type="text" style="width: 100%;" bind:value={search_term} on:keyup={() => search()} autofocus />
 	<input class="submit" type="submit" value="Search"/>
 </form>
 
-<div class="directory">
+<div class="directory center">
 	<tr>
 		<td></td>
 		<td>Name</td>
@@ -107,13 +125,17 @@ const node_click = index => {
 </div>
 
 <style>
+.center {
+	margin: auto;
+	width: 1000px;
+	max-width: 100%;
+}
+
 .search_bar {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	width: 100%;
-	max-width: 1000px;
-	margin: 10px auto;
+	margin-top: 10px;
 }
 .term {
 	flex: 1 1 auto;
@@ -131,9 +153,6 @@ const node_click = index => {
 	background: var(--body_color);
 	border-collapse: collapse;
 	border-radius: 8px;
-
-	max-width: 100%;
-	width: 1000px;
 }
 .directory > * {
 	display: table-row;
