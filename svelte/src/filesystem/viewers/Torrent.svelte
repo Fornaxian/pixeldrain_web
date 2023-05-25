@@ -75,7 +75,7 @@ const copy_magnet = () => {
 
 <h1>{state.base.name}</h1>
 
-<IconBlock icon_href={fs_node_icon(state.root.id, state.base)}>
+<IconBlock icon_href={fs_node_icon(state.root.id, state.base, 256, 256)}>
 	{#if status === "finished"}
 		Created by: {torrent.created_by}<br/>
 		Comment: {torrent.comment}<br/>

@@ -9,7 +9,7 @@ export let state
 
 <h1>{state.base.name}</h1>
 
-<IconBlock icon_href={fs_thumbnail_url(state.root.id, state.base.path)}>
+<IconBlock icon_href={fs_thumbnail_url(state.root.id, state.base.path, 256, 256)}>
 	Type: {state.base.file_type}<br/>
 	No preview is available for this file type. Download to view it locally.
 	<br/>

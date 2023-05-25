@@ -11,7 +11,7 @@ export const fs_file_url = (bucket, path) => {
 	return fs_path_url(bucket, path)
 }
 
-export const fs_thumbnail_url = (bucket, path, width = 128, height = 128) => {
+export const fs_thumbnail_url = (bucket, path, width = 64, height = 64) => {
 	return fs_path_url(bucket, path) + "?thumbnail&width=" + width + "&height=" + height
 }
 
@@ -50,7 +50,7 @@ export const fs_node_type = node => {
 	}
 }
 
-export const fs_node_icon = (bucket, node) => {
+export const fs_node_icon = (bucket, node, width = 64, height = 64) => {
 	if (node.type === "dir") {
 		// Folders with an ID are publically shared, use the shared folder icon
 		if (node.id) {
@@ -60,5 +60,5 @@ export const fs_node_icon = (bucket, node) => {
 		}
 	}
 
-	return fs_thumbnail_url(bucket, node.path)
+	return fs_thumbnail_url(bucket, node.path, width, height)
 }

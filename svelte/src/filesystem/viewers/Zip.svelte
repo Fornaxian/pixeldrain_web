@@ -61,7 +61,7 @@ const recursive_size = (file) => {
 
 <h1>{state.base.name}</h1>
 
-<IconBlock icon_href={fs_node_icon(state.root.id, state.base)}>
+<IconBlock icon_href={fs_node_icon(state.root.id, state.base, 256, 256)}>
 	Compressed size: {formatDataVolume(state.base.file_size, 3)}<br/>
 	Uncompressed size: {formatDataVolume(uncomp_size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
 	Uploaded on: {formatDate(state.base.date_created, true, true, true)}

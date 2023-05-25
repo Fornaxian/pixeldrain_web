@@ -19,7 +19,7 @@ export let show_hidden = false
 			<div
 				class="icon_container"
 				class:cover={fs_node_type(child) === "image" || fs_node_type(child) === "video"}
-				style='background-image: url("{fs_node_icon(state.root.id, child)}");'>
+				style='background-image: url("{fs_node_icon(state.root.id, child, 256, 256)}");'>
 			</div>
 			{child.name}
 		</a>

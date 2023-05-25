@@ -103,7 +103,7 @@ const node_click = index => {
 			class="node"
 		>
 			<td>
-				<img src={fs_thumbnail_url(state.root.id, result)} class="node_icon" alt="icon"/>
+				<img src={fs_thumbnail_url(state.root.id, result, 32, 32)} class="node_icon" alt="icon"/>
 			</td>
 			<td class="node_name">
 				{result}
