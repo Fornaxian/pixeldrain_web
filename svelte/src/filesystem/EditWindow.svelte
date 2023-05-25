@@ -12,11 +12,12 @@ let file = {
 };
 
 export let visible
-export const edit = (f, t = "file") => {
+export const edit = (f, oae = false, t = "file") => {
+	file = f
+	open_after_edit = oae
 	tab = t
 
-	console.log("Editing file", f)
-	file = f
+	console.log("Editing file", file)
 
 	file_name = file.name
 	shared = !(file.id === undefined || file.id === "")
@@ -26,6 +27,7 @@ export const edit = (f, t = "file") => {
 }
 
 let tab = "file"
+let open_after_edit = false
 
 let file_name = ""
 let shared = false
@@ -58,7 +60,11 @@ const save = async () => {
 		return
 	}
 
-	fs_navigator.navigate(file.path, false)
+	if (open_after_edit) {
+		fs_navigator.navigate(file.path, false)
+	} else {
+		fs_navigator.reload()
+	}
 }
 const delete_file = async () => {
 	try {
@@ -69,12 +75,16 @@ const delete_file = async () => {
 		return
 	}
 
-	fs_navigator.navigate(file.path, false)
+	if (open_after_edit) {
+		fs_navigator.navigate(file.path, false)
+	} else {
+		fs_navigator.reload()
+	}
 	visible = false
 }
 </script>
 
-<Modal bind:visible={visible} title="Edit {file.name}" width="600px" on:save={save} form="file_edit_form">
+<Modal bind:visible={visible} title="Edit {file.name}" width="600px" form="file_edit_form">
 	<div class="tab_bar">
 		<button class:button_highlight={tab === "file"} on:click={() => tab = "file"}>
 			<i class="icon">edit</i>

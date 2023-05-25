@@ -35,7 +35,7 @@ const node_click = e => {
 }
 
 const node_settings = e => {
-	edit_window.edit(state.children[e.detail])
+	edit_window.edit(state.children[e.detail], false)
 }
 const navigate_up = () => {
 	creating_dir = false
@@ -45,7 +45,6 @@ const navigate_up = () => {
 		fs_navigator.navigate(state.path[state.path.length-2].path, true)
 	}
 }
-const reload = () => { fs_navigator.navigate(state.base.path) }
 
 const delete_selected = () => {
 	if (mode !== "selecting") {
@@ -82,7 +81,7 @@ const delete_selected = () => {
 		alert("Delete failed: ", err)
 	}).finally(() => {
 		mode = "viewing"
-		reload()
+		fs_navigator.reload()
 	})
 }
 const toggle_select = () => {
@@ -125,7 +124,7 @@ onMount(() => {
 			<button on:click={navigate_up} disabled={state.path.length <= 1} title="Back">
 				<i class="icon">arrow_back</i>
 			</button>
-			<button on:click={reload} title="Refresh directory listing">
+			<button on:click={fs_navigator.reload()} title="Refresh directory listing">
 				<i class="icon">refresh</i>
 			</button>
 				<button on:click={() => toggle_view()} title="Switch between gallery view and list view">
@@ -184,14 +183,18 @@ onMount(() => {
 			<br/>
 		{/if}
 		{#if creating_dir}
-			<CreateDirectory state={state} on:done={() => {reload(); creating_dir = false;}} on:loading></CreateDirectory>
+			<CreateDirectory
+				state={state}
+				on:done={() => {fs_navigator.reload(); creating_dir = false;}}
+				on:loading
+			/>
 		{/if}
 
 		<FileUploader
 			bind:this={uploader}
 			bucket_id={state.root.id}
 			target_dir={state.base.path}
-			on:reload={reload}
+			on:reload={fs_navigator.reload}
 			write_password={state.write_password}
 		></FileUploader>
 

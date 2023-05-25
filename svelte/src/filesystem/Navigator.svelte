@@ -54,6 +54,10 @@ export const navigate = async (path, push_history) => {
 	}
 }
 
+export const reload = () => {
+	navigate(state.base.path, false)
+}
+
 export const open_node = (node, push_history) => {
 	// We need to properly URL encode the file paths so they don't cause
 	// issues.. but we also want the slashes to stay clean. So here we encode

@@ -58,7 +58,7 @@ const keydown = e => {
 			if (edit_visible) {
 				edit_visible = false
 			} else {
-				edit_window.edit(state.base)
+				edit_window.edit(state.base, true)
 			}
 			break;
 		case "s":

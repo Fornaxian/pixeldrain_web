@@ -75,7 +75,7 @@ const keydown = e => {
 							class="button button_highlight"
 							type="submit"
 							form="{form}"
-							on:click={() => {dispatch("save"); hide()}}
+							on:click={hide}
 						>
 							<i class="icon">save</i> Save
 						</button>

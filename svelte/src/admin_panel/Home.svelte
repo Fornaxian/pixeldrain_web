@@ -317,16 +317,24 @@ onDestroy(() => {
 			<thead>
 				<tr>
 					<td>
-						<button on:click={() => { getStats('query_name') }}>Query</button>
+						<button on:click={() => { getStats('query_name') }}>
+							Query
+						</button>
 					</td>
 					<td>
-						<button style="cursor: pointer;" on:click={() => { getStats('calls') }}>Calls</button>
+						<button style="cursor: pointer;" on:click={() => { getStats('calls') }}>
+							Calls
+						</button>
 					</td>
 					<td>
-						<button style="cursor: pointer;" on:click={() => { getStats('average_duration') }}>Avg dur</button>
+						<button style="cursor: pointer;" on:click={() => { getStats('average_duration') }}>
+							Avg
+						</button>
 					</td>
 					<td>
-						<button style="cursor: pointer;" on:click={() => { getStats('total_duration') }}>Total dur</button>
+						<button style="cursor: pointer;" on:click={() => { getStats('total_duration') }}>
+							Total
+						</button>
 					</td>
 					<td>Callers</td>
 				</tr>

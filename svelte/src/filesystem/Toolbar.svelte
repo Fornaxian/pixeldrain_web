@@ -38,7 +38,7 @@ $: share_url = generate_share_url(state.path)
 let link_copied = false
 const copy_link = () => {
 	if (share_url === "") {
-		edit_window.edit(state.base, "share")
+		edit_window.edit(state.base, "share", true)
 		return
 	}
 
@@ -48,18 +48,18 @@ const copy_link = () => {
 }
 let share = async () => {
 	if (share_url === "") {
-		edit_window.edit(state.base, "share")
+		edit_window.edit(state.base, "share", true)
 		return
 	}
 
-	try {
+	if (navigator.share) {
 		await navigator.share({
 			title: state.base.name,
 			text: "I would like to share '" + state.base.name + "' with you",
 			url: share_url
 		})
-	} catch (err) {
-		console.debug("Navigator does not support sharing:", err)
+	} else {
+		console.debug("Navigator does not support sharing")
 		sharebar_visible = !sharebar_visible
 	}
 }
@@ -119,7 +119,7 @@ let share = async () => {
 	</button>
 
 	{#if state.base.path !== "/"}
-		<button on:click={() => edit_window.edit(state.base)} class="toolbar_button" class:button_highlight={edit_visible}>
+		<button on:click={() => edit_window.edit(state.base, true)} class="toolbar_button" class:button_highlight={edit_visible}>
 			<i class="icon">edit</i> <u>E</u>dit
 		</button>
 	{/if}
