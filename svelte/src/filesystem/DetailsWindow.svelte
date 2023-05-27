@@ -148,7 +148,10 @@ let update_chart = async (base, timespan, interval) => {
 		{/if}
 		{#if state.base.type === "file"}
 			<tr><td>File type</td><td>{state.base.file_type}</td></tr>
-			<tr><td>File size</td><td>{formatDataVolume(state.base.file_size)}</td></tr>
+			<tr>
+				<td>File size</td>
+				<td>{formatDataVolume(state.base.file_size, 4)} ( {formatThousands(state.base.file_size)} B )</td>
+			</tr>
 			<tr><td>Unique downloads</td><td>{formatThousands(total_downloads)}</td></tr>
 			<tr>
 				<td>Free bandwidth used</td>
@@ -193,7 +196,6 @@ let update_chart = async (base, timespan, interval) => {
 
 <style>
 td:first-child {
-	white-space: nowrap;
 	word-break: keep-all;
 }
 td {

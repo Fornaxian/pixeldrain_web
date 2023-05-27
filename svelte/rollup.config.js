@@ -31,7 +31,6 @@ const builddir = "../res/static/svelte"
 export default [
 	"file_viewer",
 	"filesystem",
-	"modal",
 	"user_home",
 	"user_file_manager",
 	"admin_panel",

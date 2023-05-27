@@ -130,7 +130,6 @@ const share_tumblr = () => {
 	float: left;
 	background: var(--shaded_background);
 	text-align: center;
-	z-index: 48;
 	overflow: hidden;
 	opacity: 0;
 	transition: left 0.3s, opacity 0.3s;

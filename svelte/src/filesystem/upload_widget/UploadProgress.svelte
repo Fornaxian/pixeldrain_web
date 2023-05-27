@@ -1,8 +1,8 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { fade } from "svelte/transition";
-import ProgressBar from "../ProgressBar.svelte";
 import { upload_file } from "./UploadFunc";
+import ProgressBar from "../../util/ProgressBar.svelte";
 
 let dispatch = createEventDispatcher()
 export let job = {
@@ -19,15 +19,14 @@ let error_message = ""
 export const start = () => {
 	upload_file(
 		job.file,
-		job.name,
+		job.bucket,
+		job.path,
 		(prog_loaded, prog_total) => {
 			loaded = prog_loaded
 			total = prog_total
 		},
-		async (id) => {
-			console.log("finsished", id)
+		async () => {
 			job.status = "finished"
-			job.id = id
 			dispatch("finished")
 		},
 		(code, message) => {
@@ -35,7 +34,9 @@ export const start = () => {
 			error_code = code
 			error_message = message
 			job.status = "error"
-			dispatch("finished")
+
+			// Wait with reporting so the user can read the error message
+			setTimeout(() => dispatch("finished"), 60000)
 		},
 	)
 
@@ -45,7 +46,7 @@ export const start = () => {
 </script>
 
 <div class="upload_progress" transition:fade={{duration: 200}} class:error={job.status === "error"}>
-	{job.name}<br/>
+	{job.file.name}<br/>
 	{#if error_code !== ""}
 		{error_message}<br/>
 		{error_code}<br/>

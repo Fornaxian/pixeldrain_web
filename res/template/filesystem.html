@@ -24,6 +24,7 @@
 		{{ template "opengraph" .OGData }}
 		<script>
 			window.initial_node = {{.Other}};
+			window.user = {{.User}};
 			window.api_endpoint = '{{.APIEndpoint}}';
 		</script>
 

@@ -9,7 +9,7 @@ export const fs_path_url = (bucket, path) => {
 	for (let i = 0; i < split.length; i++) {
 		split[i] = encodeURIComponent(split[i])
 	}
-	return api_endpoint + "/filesystem/" + bucket + split.join("/")
+	return window.api_endpoint + "/filesystem/" + bucket + split.join("/")
 }
 
 export const fs_file_url = (bucket, path) => {

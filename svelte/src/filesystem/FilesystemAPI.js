@@ -1,5 +1,19 @@
 import { fs_path_url } from './FilesystemUtil.js'
 
+export const fs_check_response = async resp => {
+	let text = await resp.text()
+	if (resp.status >= 400) {
+		let error
+		try {
+			error = JSON.parse(text)
+		} catch (err) {
+			error = text
+		}
+		throw error
+	}
+	return JSON.parse(text)
+}
+
 export const fs_mkdir = async (bucket, path, opts = null) => {
 	const form = new FormData()
 	form.append("action", "mkdir")
@@ -8,18 +22,28 @@ export const fs_mkdir = async (bucket, path, opts = null) => {
 		form.append("mode", opts.mode)
 	}
 
-	const resp = await fetch(fs_path_url(bucket, path), { method: "POST", body: form });
-	if (resp.status >= 400) {
-		throw new Error(await resp.text())
+	return await fs_check_response(
+		await fetch(fs_path_url(bucket, path), { method: "POST", body: form })
+	)
+}
+
+export const fs_mkdirall = async (bucket, path, opts = null) => {
+	const form = new FormData()
+	form.append("action", "mkdirall")
+
+	if (opts && opts.mode) {
+		form.append("mode", opts.mode)
 	}
+
+	return await fs_check_response(
+		await fetch(fs_path_url(bucket, path), { method: "POST", body: form })
+	)
 }
 
 export const fs_get_node = async (bucket, path) => {
-	const resp = await fetch(fs_path_url(bucket, path) + "?stat");
-	if (resp.status >= 400) {
-		throw await resp.text()
-	}
-	return resp.json()
+	return await fs_check_response(
+		await fetch(fs_path_url(bucket, path) + "?stat")
+	)
 }
 
 // Updates a node's parameters. Available options are:
@@ -52,11 +76,9 @@ export const fs_update = async (bucket, path, opts) => {
 		form.append("write_password", opts.write_password)
 	}
 
-	const resp = await fetch(fs_path_url(bucket, path), { method: "POST", body: form })
-	if (resp.status >= 400) {
-		throw new Error(await resp.text())
-	}
-	return resp.json()
+	return await fs_check_response(
+		await fetch(fs_path_url(bucket, path), { method: "POST", body: form })
+	)
 }
 
 export const fs_rename = async (bucket, old_path, new_path) => {
@@ -64,47 +86,40 @@ export const fs_rename = async (bucket, old_path, new_path) => {
 	form.append("action", "rename")
 	form.append("target", new_path)
 
-	const resp = await fetch(fs_path_url(bucket, old_path), { method: "POST", body: form })
-	if (resp.status >= 400) {
-		throw new Error(await resp.text())
-	}
+	return await fs_check_response(
+		await fetch(fs_path_url(bucket, old_path), { method: "POST", body: form })
+	)
 }
 
 export const fs_delete = async (bucket, path) => {
-	const resp = await fetch(fs_path_url(bucket, path), { method: "DELETE" });
-	if (resp.status >= 400) {
-		throw new Error(await resp.text())
-	}
+	return await fs_check_response(
+		await fetch(fs_path_url(bucket, path), { method: "DELETE" })
+	)
 }
 export const fs_delete_all = async (bucket, path) => {
-	const resp = await fetch(fs_path_url(bucket, path) + "?recursive", { method: "DELETE" });
-	if (resp.status >= 400) {
-		throw new Error(await resp.text())
-	}
+	return await fs_check_response(
+		await fetch(fs_path_url(bucket, path) + "?recursive", { method: "DELETE" })
+	)
 }
 
 export const fs_search = async (bucket, path, term, limit = 10) => {
-	const resp = await fetch(
-		fs_path_url(bucket, path) +
-		"?search=" + encodeURIComponent(term) +
-		"&limit=" + limit
+	return await fs_check_response(
+		await fetch(
+			fs_path_url(bucket, path) +
+			"?search=" + encodeURIComponent(term) +
+			"&limit=" + limit
+		)
 	)
-	if (resp.status >= 400) {
-		throw await resp.text()
-	}
-	return resp.json()
 }
 
 export const fs_timeseries = async (bucket, path, start, end, interval = 60) => {
-	const resp = await fetch(
-		fs_path_url(bucket, path) +
-		"?timeseries" +
-		"&start=" + start.toISOString() +
-		"&end=" + end.toISOString() +
-		"&interval=" + interval
+	return await fs_check_response(
+		await fetch(
+			fs_path_url(bucket, path) +
+			"?timeseries" +
+			"&start=" + start.toISOString() +
+			"&end=" + end.toISOString() +
+			"&interval=" + interval
+		)
 	)
-	if (resp.status >= 400) {
-		throw await resp.text()
-	}
-	return resp.json()
 }

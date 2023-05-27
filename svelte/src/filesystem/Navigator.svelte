@@ -37,10 +37,7 @@ export const navigate = async (path, push_history) => {
 		let resp = await fs_get_node(state.root.id, path)
 		open_node(resp, push_history)
 	} catch (err) {
-		console.error(err)
-		let errj = JSON.parse(err)
-
-		if (errj.value === "path_not_found") {
+		if (err.value && err.value === "path_not_found") {
 			if (path !== "/" && path !== "") {
 				console.debug("Path", path, "was not found, trying to navigate to parent")
 				navigate(fs_split_path(path).parent, push_history)

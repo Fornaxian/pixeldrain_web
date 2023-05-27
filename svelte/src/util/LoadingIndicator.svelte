@@ -17,6 +17,5 @@ export let loading = false
 	right: 10px;
 	height: 120px;
 	width: 120px;
-	z-index: 1000;
 }
 </style>

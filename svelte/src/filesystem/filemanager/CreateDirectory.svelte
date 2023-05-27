@@ -17,7 +17,11 @@ let create_dir = () => {
 	).then(resp => {
 		new_dir_name = "" // Clear input field
 	}).catch(err => {
-		alert("Error: "+err)
+		if (err.value && err.value === "node_already_exists") {
+			alert("A directory with this name already exists")
+		} else {
+			alert(err)
+		}
 	}).finally(() => {
 		dispatch("done")
 	})

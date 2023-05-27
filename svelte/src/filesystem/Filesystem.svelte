@@ -10,6 +10,7 @@ import DetailsWindow from './DetailsWindow.svelte';
 import Navigator from './Navigator.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 import SearchView from './SearchView.svelte';
+import UploadWidget from './upload_widget/UploadWidget.svelte';
 
 let loading = true
 let toolbar_visible = (window.innerWidth > 600)
@@ -110,8 +111,6 @@ const loading_evt = e => {
 
 <svelte:window on:keydown={keydown} />
 
-<LoadingIndicator loading={loading}/>
-
 <Navigator
 	bind:this={fs_navigator}
 	bind:state
@@ -140,18 +139,6 @@ const loading_evt = e => {
 	</div>
 
 	<div class="viewer_area">
-		<Toolbar
-			visible={toolbar_visible}
-			fs_navigator={fs_navigator}
-			state={state}
-			bind:details_visible={details_visible}
-			edit_window={edit_window}
-			bind:edit_visible={edit_visible}
-			bind:view={view}
-			on:download={download}
-			on:search={search}
-		/>
-
 		<div class="file_preview checkers" class:toolbar_visible>
 			{#if view === "file"}
 				<FilePreview
@@ -171,6 +158,18 @@ const loading_evt = e => {
 				/>
 			{/if}
 		</div>
+
+		<Toolbar
+			visible={toolbar_visible}
+			fs_navigator={fs_navigator}
+			state={state}
+			bind:details_visible={details_visible}
+			edit_window={edit_window}
+			bind:edit_visible={edit_visible}
+			bind:view={view}
+			on:download={download}
+			on:search={search}
+		/>
 	</div>
 
 	<!-- This frame will load the download URL when a download button is pressed -->
@@ -179,20 +178,24 @@ const loading_evt = e => {
 		title="Frame for downloading files"
 		style="display: none; width: 1px; height: 1px;">
 	</iframe>
-
-	<DetailsWindow
-		state={state}
-		bind:visible={details_visible}
-	/>
-
-	<EditWindow
-		bind:this={edit_window}
-		bind:visible={edit_visible}
-		bucket={state.root.id}
-		fs_navigator={fs_navigator}
-		on:loading={loading_evt}
-	/>
 </div>
+
+<DetailsWindow
+	state={state}
+	bind:visible={details_visible}
+/>
+
+<EditWindow
+	bind:this={edit_window}
+	bind:visible={edit_visible}
+	bucket={state.root.id}
+	fs_navigator={fs_navigator}
+	on:loading={loading_evt}
+/>
+
+<UploadWidget fs_state={state} drop_upload on:uploads_finished={() => fs_navigator.reload()}/>
+
+<LoadingIndicator loading={loading}/>
 
 <style>
 /* Viewer container */
@@ -215,7 +218,6 @@ const loading_evt = e => {
 	display: flex;
 	flex-direction: row;
 	text-align: left;
-	z-index: 10;
 	box-shadow: none;
 	padding: 4px;
 }
@@ -258,7 +260,6 @@ const loading_evt = e => {
 	width: auto;
 	height: auto;
 	margin: 0;
-	z-index: 9;
 }
 
 .file_preview {

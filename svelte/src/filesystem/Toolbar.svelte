@@ -134,7 +134,6 @@ let share = async () => {
 .toolbar {
 	position: absolute;
 	width: 8em;
-	z-index: 49;
 	overflow: hidden;
 	float: left;
 	left: -8em;

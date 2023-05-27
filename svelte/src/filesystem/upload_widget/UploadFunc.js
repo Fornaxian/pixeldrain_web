@@ -8,8 +8,12 @@
 // ID
 //
 // on_error is called when the upload has failed. The parameters are the error
+
+import { fs_get_node, fs_mkdirall } from "../FilesystemAPI"
+import { fs_path_url, fs_split_path } from "../FilesystemUtil"
+
 // code and an error message
-export const upload_file = (file, name, on_progress, on_success, on_error) => {
+export const upload_file = async (file, bucket, path, on_progress, on_success, on_error) => {
 	// Check the file size limit. For free accounts it's 20 GB
 	if (window.user.subscription.file_size_limit === 0) {
 		window.user.subscription.file_size_limit = 20e9
@@ -23,8 +27,20 @@ export const upload_file = (file, name, on_progress, on_success, on_error) => {
 		return
 	}
 
+	// Check if the parent directory exists
+	try {
+		await ensure_parent_dir(bucket, path)
+	} catch (err) {
+		if (err.value && err.message) {
+			on_error(err.value, err.message)
+		} else {
+			on_error(err, err)
+		}
+		return
+	}
+
 	let xhr = new XMLHttpRequest();
-	xhr.open("PUT", window.api_endpoint + "/file/" + encodeURIComponent(name), true);
+	xhr.open("PUT", fs_path_url(bucket, path), true);
 	xhr.timeout = 86400000; // 24 hours, to account for slow connections
 
 	xhr.upload.addEventListener("progress", evt => {
@@ -65,4 +81,26 @@ export const upload_file = (file, name, on_progress, on_success, on_error) => {
 	};
 
 	xhr.send(file);
+}
+
+const ensure_parent_dir = async (bucket, path) => {
+	let parent = fs_split_path(path).parent
+
+	console.debug("Checking if parent directory exists", parent)
+
+	try {
+		let node = await fs_get_node(bucket, parent)
+		if (node.path[node.base_index].type !== "dir") {
+			throw "Path " + path + " is not a directory"
+		}
+	} catch (err) {
+		if (err.value && err.value === "path_not_found") {
+			// Directory does not exist. Create it
+			await fs_mkdirall(bucket, parent)
+
+			console.debug("Created parent directory", parent)
+		} else {
+			throw err
+		}
+	}
 }

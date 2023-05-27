@@ -108,11 +108,6 @@ let handle_errors = (response) => {
 </script>
 
 <form method="POST" on:submit={submit}>
-	{#if loading}
-		<div class="spinner_container">
-			<Spinner></Spinner>
-		</div>
-	{/if}
 	{#if submitted}
 		{#if submit_result.messages}
 			<div id="submit_result" class:highlight_green={submit_result.success} class:highlight_red={!submit_result.success}>
@@ -239,15 +234,20 @@ let handle_errors = (response) => {
 			<button type="submit" class="button_highlight">{@html config.submit_label}</button>
 		{/if}
 	</div>
+
+	{#if loading}
+		<div class="spinner_container">
+			<Spinner></Spinner>
+		</div>
+	{/if}
 </form>
 
 <style>
 .spinner_container {
 	position: absolute;
 	top: 10px;
-	left: 10px;
+	right: 10px;
 	height: 100px;
 	width: 100px;
-	z-index: 1000;
 }
 </style>
