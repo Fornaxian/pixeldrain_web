@@ -67,16 +67,11 @@ export const open_node = (node, push_history) => {
 	// still replace the URL with replaceState. This way the user is not greeted
 	// to a 404 page when refreshing after renaming a file
 	window.document.title = node.path[node.base_index].name+" ~ pixeldrain"
+	let url = "/d/"+node.path[0].id+node.path[node.base_index].path
 	if (push_history) {
-		window.history.pushState(
-			{}, window.document.title,
-			"/d/"+node.path[0].id+node.path[node.base_index].path,
-		)
+		window.history.pushState({}, window.document.title, url)
 	} else {
-		window.history.replaceState(
-			{}, window.document.title,
-			"/d/"+node.path[0].id+node.path[node.base_index].path,
-		)
+		window.history.replaceState({}, window.document.title, url)
 	}
 
 	// If the new node is a child of the previous node we save the parent's

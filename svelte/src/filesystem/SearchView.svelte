@@ -59,15 +59,24 @@ const search = async (limit = 10) => {
 	}
 }
 
-// Submitting opens the first result
-const submit_search = () => {
-	if (search_results.length !== 0) {
-		fs_navigator.navigate(search_results[0], true)
+const keyup = e => {
+	if (e.key === "Escape") {
+		dispatch("done")
+	} else {
+		search()
 	}
 }
 
-const node_click = index => {
+// Submitting opens the first result
+const submit_search = () => {
+	if (search_results.length !== 0) {
+		open_result(0)
+	}
+}
+
+const open_result = index => {
 	fs_navigator.navigate(search_results[index], true)
+	dispatch("done")
 }
 </script>
 
@@ -84,12 +93,19 @@ const node_click = index => {
 	</div>
 {/if}
 
-<form class="search_bar highlight_shaded center" on:submit|preventDefault={submit_search}>
-	<i class="icon">search</i>
-	<!-- svelte-ignore a11y-autofocus -->
-	<input class="term" type="text" style="width: 100%;" bind:value={search_term} on:keyup={() => search()} autofocus />
-	<input class="submit" type="submit" value="Search"/>
-</form>
+
+<div class="search_bar highlight_shaded center">
+	<div>
+		Currently searching in <b>{state.base.path}</b>. Use the navigation buttons
+		above to search in a different location.
+	</div>
+	<form class="search_form" on:submit|preventDefault={submit_search}>
+		<i class="icon">search</i>
+		<!-- svelte-ignore a11y-autofocus -->
+		<input class="term" type="text" style="width: 100%;" bind:value={search_term} on:keyup={keyup} autofocus />
+		<input class="submit" type="submit" value="Search"/>
+	</form>
+</div>
 
 <div class="directory center">
 	<tr>
@@ -99,7 +115,7 @@ const node_click = index => {
 	{#each search_results as result, index}
 		<a
 			href={state.path_root+result}
-			on:click|preventDefault={() => node_click(index)}
+			on:click|preventDefault={() => open_result(index)}
 			class="node"
 		>
 			<td>
@@ -133,9 +149,13 @@ const node_click = index => {
 
 .search_bar {
 	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+}
+.search_form {
+	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-top: 10px;
 }
 .term {
 	flex: 1 1 auto;

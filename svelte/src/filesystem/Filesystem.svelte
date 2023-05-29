@@ -43,7 +43,9 @@ let state = {
 	shuffle: false,
 }
 
-onMount(() => fs_navigator.open_node(window.initial_node, false))
+onMount(() => {
+	fs_navigator.open_node(window.initial_node, false)
+})
 
 const keydown = e => {
 	if (e.ctrlKey || e.altKey || e.metaKey) {
@@ -115,10 +117,6 @@ const loading_evt = e => {
 	bind:this={fs_navigator}
 	bind:state
 	on:loading={loading_evt}
-	on:navigation_complete={() => {
-		// Reset the view to the file view if we were in search view
-		view = "file"
-	}}
 />
 
 <div class="file_viewer">
@@ -155,6 +153,7 @@ const loading_evt = e => {
 					state={state}
 					fs_navigator={fs_navigator}
 					on:loading={loading_evt}
+					on:done={() => {view = "file"}}
 				/>
 			{/if}
 		</div>
