@@ -24,11 +24,10 @@ let visible = false
 let upload_queue = [];
 let task_id_counter = 0
 
-export const upload_files = async (files) => {
+export const upload_files = async files => {
 	if (files.length === 0) {
 		return
-	}
-	if (current_dir.type !== "dir") {
+	}else if (fs_state.base.type !== "dir") {
 		alert("Can only upload to directory")
 		return
 	}
@@ -43,16 +42,22 @@ export const upload_file = async file => {
 	if (fs_state.base.type !== "dir") {
 		alert("Can only upload to directory")
 		return
-	}
-	if (file.type === "" && file.size === 0) {
+	}else if (file.type === "" && file.size === 0) {
 		return
+	}
+
+	let path = fs_state.base.path + "/"
+	if (file.webkitRelativePath) {
+		path += file.webkitRelativePath
+	} else {
+		path += file.name
 	}
 
 	upload_queue.push({
 		task_id: task_id_counter,
 		file: file,
 		bucket: fs_state.root.id,
-		path: fs_state.base.path + "/" + file.webkitRelativePath,
+		path: path,
 		component: null,
 		status: "queued",
 		total_size: file.size,

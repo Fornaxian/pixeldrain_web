@@ -14,7 +14,7 @@ import UploadWidget from './upload_widget/UploadWidget.svelte';
 
 let loading = true
 let toolbar_visible = (window.innerWidth > 600)
-let file_preview
+let upload_widget
 let download_frame
 let details_visible = false
 let edit_window
@@ -140,13 +140,13 @@ const loading_evt = e => {
 		<div class="file_preview checkers" class:toolbar_visible>
 			{#if view === "file"}
 				<FilePreview
-					bind:this={file_preview}
 					fs_navigator={fs_navigator}
 					state={state}
 					edit_window={edit_window}
 					on:loading={loading_evt}
 					on:open_sibling={e => fs_navigator.open_sibling(e.detail)}
 					on:download={download}
+					on:upload_picker={() => upload_widget.pick_files()}
 				/>
 			{:else if view === "search"}
 				<SearchView
@@ -192,7 +192,12 @@ const loading_evt = e => {
 	on:loading={loading_evt}
 />
 
-<UploadWidget fs_state={state} drop_upload on:uploads_finished={() => fs_navigator.reload()}/>
+<UploadWidget
+	bind:this={upload_widget}
+	fs_state={state}
+	drop_upload
+	on:uploads_finished={() => fs_navigator.reload()}
+/>
 
 <LoadingIndicator loading={loading}/>
 

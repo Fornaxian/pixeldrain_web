@@ -39,6 +39,8 @@ export const upload_file = async (file, bucket, path, on_progress, on_success, o
 		return
 	}
 
+	console.log("Uploading file to ", fs_path_url(bucket, path))
+
 	let xhr = new XMLHttpRequest();
 	xhr.open("PUT", fs_path_url(bucket, path), true);
 	xhr.timeout = 86400000; // 24 hours, to account for slow connections

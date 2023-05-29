@@ -44,6 +44,7 @@ const state_update = async (base) => {
 		state={state}
 		edit_window={edit_window}
 		on:loading
+		on:upload_picker
 	/>
 {:else if viewer_type === "audio"}
 	<Audio state={state} on:open_sibling/>

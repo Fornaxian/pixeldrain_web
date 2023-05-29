@@ -2,7 +2,6 @@
 import { fs_delete } from './../FilesystemAPI.js'
 import { createEventDispatcher, onMount } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
-import FileUploader from './FileUploader.svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
 let dispatch = createEventDispatcher()
@@ -145,7 +144,7 @@ onMount(() => {
 
 			<div class="toolbar_spacer"></div>
 			{#if state.permissions.update}
-				<button on:click={uploader.picker} title="Upload files to this directory">
+				<button on:click={() => dispatch("upload_picker")} title="Upload files to this directory">
 					<i class="icon">cloud_upload</i>
 				</button>
 				<button on:click={() => {creating_dir = !creating_dir}} class:button_highlight={creating_dir} title="Make folder">
@@ -189,15 +188,6 @@ onMount(() => {
 				on:loading
 			/>
 		{/if}
-
-		<FileUploader
-			bind:this={uploader}
-			bucket_id={state.root.id}
-			target_dir={state.base.path}
-			on:reload={fs_navigator.reload}
-			write_password={state.write_password}
-		></FileUploader>
-
 	</div>
 
 	{#if directory_view === "list"}
