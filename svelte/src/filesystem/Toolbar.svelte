@@ -49,7 +49,7 @@ const copy_link = () => {
 }
 let share = async () => {
 	if (share_url === "") {
-		edit_window.edit(state.base, "share", true)
+		edit_window.edit(state.base, true, "share")
 		return
 	}
 
@@ -111,11 +111,11 @@ let share = async () => {
 		<button id="btn_copy" class="toolbar_button" on:click={copy_link} class:button_highlight={link_copied}>
 			<i class="icon">content_copy</i> <u>C</u>opy Link
 		</button>
-
-		<button on:click={share} class="toolbar_button" class:button_highlight={sharebar_visible}>
-			<i class="icon">share</i> Share
-		</button>
 	{/if}
+
+	<button on:click={share} class="toolbar_button" class:button_highlight={sharebar_visible}>
+		<i class="icon">share</i> Share
+	</button>
 
 	<button on:click={() => details_visible = !details_visible} class="toolbar_button" class:button_highlight={details_visible}>
 		<i class="icon">help</i> Deta<u>i</u>ls

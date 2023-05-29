@@ -44,6 +44,10 @@ const navigate_up = () => {
 		fs_navigator.navigate(state.path[state.path.length-2].path, true)
 	}
 }
+const navigate_back = () => {
+	creating_dir = false
+	history.back()
+}
 
 const delete_selected = () => {
 	if (mode !== "selecting") {
@@ -120,8 +124,11 @@ onMount(() => {
 <div class="container">
 	<div class="width_container">
 		<div class="toolbar">
-			<button on:click={navigate_up} disabled={state.path.length <= 1} title="Back">
+			<button on:click={navigate_back} title="Back">
 				<i class="icon">arrow_back</i>
+			</button>
+			<button on:click={navigate_up} disabled={state.path.length <= 1} title="Up">
+				<i class="icon">north</i>
 			</button>
 			<button on:click={fs_navigator.reload()} title="Refresh directory listing">
 				<i class="icon">refresh</i>

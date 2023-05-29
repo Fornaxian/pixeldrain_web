@@ -27,7 +27,7 @@ let task_id_counter = 0
 export const upload_files = async files => {
 	if (files.length === 0) {
 		return
-	}else if (fs_state.base.type !== "dir") {
+	} else if (fs_state.base.type !== "dir") {
 		alert("Can only upload to directory")
 		return
 	}
@@ -42,7 +42,7 @@ export const upload_file = async file => {
 	if (fs_state.base.type !== "dir") {
 		alert("Can only upload to directory")
 		return
-	}else if (file.type === "" && file.size === 0) {
+	} else if (file.type === "" && file.size === 0) {
 		return
 	}
 
