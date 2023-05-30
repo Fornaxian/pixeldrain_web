@@ -19,7 +19,7 @@ const visibility_change = visible => {
 	}
 }
 
-$: direct_url = window.location.origin+fs_path_url(state.root.id, state.base.path)
+$: direct_url = window.location.origin+fs_path_url(state.base.path)
 $: share_url = generate_share_url(state.path)
 
 let chart
@@ -75,7 +75,7 @@ let update_chart = async (base, timespan, interval) => {
 	let end = new Date()
 
 	try {
-		let resp = await fs_timeseries(state.root.id, base.path, start, end, interval)
+		let resp = await fs_timeseries(base.path, start, end, interval)
 
 		chart.data().datasets = [
 			{

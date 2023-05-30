@@ -37,7 +37,7 @@ const search = async (limit = 10) => {
 	dispatch("loading", true)
 
 	try {
-		search_results = await fs_search(state.root.id, state.base.path, search_term, limit)
+		search_results = await fs_search(state.base.path, search_term, limit)
 	} catch (err) {
 		try {
 			error = JSON.parse(err).value
@@ -95,15 +95,18 @@ const open_result = index => {
 
 
 <div class="search_bar highlight_shaded center">
-	<div>
-		Currently searching in <b>{state.base.path}</b>. Use the navigation buttons
-		above to search in a different location.
-	</div>
 	<form class="search_form" on:submit|preventDefault={submit_search}>
 		<i class="icon">search</i>
 		<!-- svelte-ignore a11y-autofocus -->
-		<input class="term" type="text" style="width: 100%;" bind:value={search_term} on:keyup={keyup} autofocus />
-		<input class="submit" type="submit" value="Search"/>
+		<input
+			class="term"
+			type="text"
+			placeholder="Type to search in {state.base.name}"
+			style="width: 100%;"
+			bind:value={search_term}
+			on:keyup={keyup}
+			autofocus
+		/>
 	</form>
 </div>
 
@@ -119,10 +122,11 @@ const open_result = index => {
 			class="node"
 		>
 			<td>
-				<img src={fs_thumbnail_url(state.root.id, result, 32, 32)} class="node_icon" alt="icon"/>
+				<img src={fs_thumbnail_url(result, 32, 32)} class="node_icon" alt="icon"/>
 			</td>
 			<td class="node_name">
-				{result}
+				<!-- Remove the search directory from the result -->
+				{result.slice(state.base.path.length+1)}
 			</td>
 		</a>
 	{/each}
@@ -159,9 +163,6 @@ const open_result = index => {
 }
 .term {
 	flex: 1 1 auto;
-}
-.submit {
-	flex: 0 0 auto;
 }
 
 .directory {

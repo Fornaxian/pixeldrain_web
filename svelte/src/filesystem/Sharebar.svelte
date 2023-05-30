@@ -39,7 +39,7 @@ $: {
 const share = async () => {
 	console.debug("Making file sharable", state.base)
 	try {
-		await fs_update(state.root.id, state.base.path, {shared: true})
+		await fs_update(state.base.path, {shared: true})
 	} catch (err) {
 		console.error(err)
 		alert(err)

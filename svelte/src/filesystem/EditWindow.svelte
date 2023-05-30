@@ -5,7 +5,6 @@ import { createEventDispatcher } from "svelte";
 
 let dispatch = createEventDispatcher()
 
-export let bucket = ""
 export let fs_navigator
 let file = {
 	path: "",
@@ -42,7 +41,6 @@ const save = async () => {
 	try {
 		dispatch("loading", true)
 		await fs_update(
-			bucket,
 			file.path,
 			{
 				shared: shared,
@@ -55,12 +53,16 @@ const save = async () => {
 			let parent = file.path.slice(0, -file.name.length)
 			console.log("Moving", file.path, "to", parent+file_name)
 
-			await fs_rename(bucket, file.path, parent+file_name)
+			await fs_rename(file.path, parent+file_name)
 			file.path = parent+file_name
 		}
 	} catch (err) {
-		console.error(err)
-		alert(err)
+		if (err.message) {
+			alert(err.message)
+		} else {
+			console.error(err)
+			alert(err)
+		}
 		return
 	} finally {
 		dispatch("loading", false)

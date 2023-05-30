@@ -1,6 +1,6 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
-import { fs_file_url } from "../FilesystemUtil";
+import { fs_path_url } from "../FilesystemUtil";
 let dispatch = createEventDispatcher()
 
 export let state
@@ -100,7 +100,7 @@ const fullscreen = () => {
 					on:play={() => playing = true }
 					on:ended={() => dispatch("next", {})}
 				>
-					<source src={fs_file_url(state.root.id, state.base.path)} type={state.base.file_type} />
+					<source src={fs_path_url(state.base.path)} type={state.base.file_type} />
 				</video>
 			{/if}
 		</div>

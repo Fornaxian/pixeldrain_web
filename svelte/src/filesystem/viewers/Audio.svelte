@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher, onMount } from 'svelte'
-import { fs_file_url } from "../FilesystemUtil.js";
+import { fs_path_url } from '../FilesystemUtil';
 let dispatch = createEventDispatcher()
 
 export let state
@@ -53,7 +53,7 @@ onMount(() => {
 	<audio
 		bind:this={player}
 		class="player"
-		src={fs_file_url(state.root.id, state.base.path)}
+		src={fs_path_url(state.base.path)}
 		autoplay="autoplay"
 		controls="controls"
 		on:pause={() => playing = false }

@@ -1,23 +1,23 @@
-export const fs_split_path = (path) => {
+export const fs_split_path = path => {
 	let patharr = path.split("/")
 	return { base: patharr.pop(), parent: patharr.join("/") }
 }
 
-export const fs_path_url = (bucket, path) => {
+export const fs_encode_path = path => {
 	// Encode all path elements separately to preserve forward slashes
 	let split = path.split("/")
 	for (let i = 0; i < split.length; i++) {
 		split[i] = encodeURIComponent(split[i])
 	}
-	return window.api_endpoint + "/filesystem/" + bucket + split.join("/")
+	return split.join("/")
 }
 
-export const fs_file_url = (bucket, path) => {
-	return fs_path_url(bucket, path)
+export const fs_path_url = path => {
+	return window.api_endpoint + "/filesystem" + fs_encode_path(path)
 }
 
-export const fs_thumbnail_url = (bucket, path, width = 64, height = 64) => {
-	return fs_path_url(bucket, path) + "?thumbnail&width=" + width + "&height=" + height
+export const fs_thumbnail_url = (path, width = 64, height = 64) => {
+	return fs_path_url(path) + "?thumbnail&width=" + width + "&height=" + height
 }
 
 export const fs_node_type = node => {
@@ -55,7 +55,7 @@ export const fs_node_type = node => {
 	}
 }
 
-export const fs_node_icon = (bucket, node, width = 64, height = 64) => {
+export const fs_node_icon = (node, width = 64, height = 64) => {
 	if (node.type === "dir") {
 		// Folders with an ID are publically shared, use the shared folder icon
 		if (node.id) {
@@ -65,5 +65,5 @@ export const fs_node_icon = (bucket, node, width = 64, height = 64) => {
 		}
 	}
 
-	return fs_thumbnail_url(bucket, node.path, width, height)
+	return fs_thumbnail_url(node.path, width, height)
 }

@@ -12,9 +12,7 @@ let create_dir = () => {
 	let form = new FormData()
 	form.append("type", "dir")
 
-	fs_mkdir(
-		state.root.id, state.base.path+"/"+new_dir_name,
-	).then(resp => {
+	fs_mkdir(state.base.path+"/"+new_dir_name).then(resp => {
 		new_dir_name = "" // Clear input field
 	}).catch(err => {
 		if (err.value && err.value === "node_already_exists") {

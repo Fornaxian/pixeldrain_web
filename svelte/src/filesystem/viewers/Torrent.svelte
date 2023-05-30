@@ -6,7 +6,7 @@ import { copy_text } from "../../util/Util.svelte";
 import TorrentItem from "./TorrentItem.svelte"
 import IconBlock from "../../file_viewer/viewers/IconBlock.svelte";
 import TextBlock from "../../file_viewer/viewers/TextBlock.svelte";
-import { fs_file_url, fs_node_icon } from "../FilesystemUtil";
+import { fs_node_icon, fs_path_url } from "../FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
@@ -18,7 +18,7 @@ export const update = async () => {
 	dispatch("loading", true)
 
 	try {
-		let resp = await fetch(fs_file_url(state.root.id, state.base.path)+"?torrent_info")
+		let resp = await fetch(fs_path_url(state.base.path)+"?torrent_info")
 
 		if (resp.status >= 400) {
 			let json = await resp.json()
@@ -75,7 +75,7 @@ const copy_magnet = () => {
 
 <h1>{state.base.name}</h1>
 
-<IconBlock icon_href={fs_node_icon(state.root.id, state.base, 256, 256)}>
+<IconBlock icon_href={fs_node_icon(state.base, 256, 256)}>
 	{#if status === "finished"}
 		Created by: {torrent.created_by}<br/>
 		Comment: {torrent.comment}<br/>

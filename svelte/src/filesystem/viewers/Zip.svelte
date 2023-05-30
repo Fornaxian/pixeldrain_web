@@ -4,7 +4,7 @@ import { formatDataVolume, formatDate } from "../../util/Formatting.svelte"
 import ZipItem from "./ZipItem.svelte";
 import IconBlock from "../../file_viewer/viewers/IconBlock.svelte";
 import TextBlock from "../../file_viewer/viewers/TextBlock.svelte";
-import { fs_file_url, fs_node_icon } from "../FilesystemUtil";
+import { fs_node_icon, fs_path_url } from "../FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
@@ -23,7 +23,7 @@ export const update = async () => {
 	dispatch("loading", true)
 
 	try {
-		let resp = await fetch(fs_file_url(state.root.id, state.base.path)+"?zip_info")
+		let resp = await fetch(fs_path_url(state.base.path)+"?zip_info")
 
 		if (resp.status >= 400) {
 			status = "parse_failed"
@@ -61,7 +61,7 @@ const recursive_size = (file) => {
 
 <h1>{state.base.name}</h1>
 
-<IconBlock icon_href={fs_node_icon(state.root.id, state.base, 256, 256)}>
+<IconBlock icon_href={fs_node_icon(state.base, 256, 256)}>
 	Compressed size: {formatDataVolume(state.base.file_size, 3)}<br/>
 	Uncompressed size: {formatDataVolume(uncomp_size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
 	Uploaded on: {formatDate(state.base.created, true, true, true)}

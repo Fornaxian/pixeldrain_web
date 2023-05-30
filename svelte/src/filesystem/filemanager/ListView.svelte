@@ -25,7 +25,7 @@ export let show_hidden = false
 			class:hidden={child.name.startsWith(".") && !show_hidden}
 		>
 			<td>
-				<img src={fs_node_icon(state.root.id, child, 32, 32)} class="node_icon" alt="icon"/>
+				<img src={fs_node_icon(child, 32, 32)} class="node_icon" alt="icon"/>
 			</td>
 			<td class="node_name">
 				{child.name}

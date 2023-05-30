@@ -75,7 +75,7 @@ const delete_selected = () => {
 	let promises = []
 	state.children.forEach(child => {
 		if (!child.fm_selected) { return }
-		promises.push(fs_delete(state.root.id, child.path))
+		promises.push(fs_delete(child.path))
 	})
 
 	// Wait for all the promises to finish

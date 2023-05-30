@@ -18,9 +18,15 @@ export let edit_window
 export let state
 let viewer
 let viewer_type = ""
+let last_path = ""
 
 $: state_update(state.base)
 const state_update = async (base) => {
+	if (base.path === last_path) {
+		return
+	}
+	last_path = base.path
+
 	// Update the viewer area with the right viewer type
 	viewer_type = fs_node_type(base)
 

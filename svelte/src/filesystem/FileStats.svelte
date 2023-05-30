@@ -26,7 +26,7 @@ const update_base = async base => {
 	error_msg = "Loading..."
 
 	let ws_endpoint = location.origin.replace(/^http/, 'ws') +
-		fs_path_url(state.root.id, base.path).replace(/^http/, 'ws') +
+		fs_path_url(base.path).replace(/^http/, 'ws') +
 		"?download_stats"
 
 	console.log("Opening socket to", ws_endpoint)

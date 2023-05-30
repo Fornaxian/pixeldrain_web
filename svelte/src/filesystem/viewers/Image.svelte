@@ -1,5 +1,6 @@
 <script>
-import { fs_file_url } from "../FilesystemUtil.js";
+import { fs_path_url } from "../FilesystemUtil";
+
 
 export let state
 let container
@@ -50,7 +51,7 @@ const mouseup = (e) => {
 		on:doubletap={() => {zoom = !zoom}}
 		on:mousedown={mousedown}
 		class="image" class:zoom
-		src={fs_file_url(state.root.id, state.base.path)}
+		src={fs_path_url(state.base.path)}
 		alt="no description available" />
 </div>
 

@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { fs_get_node } from "./FilesystemAPI";
-import { fs_split_path } from "./FilesystemUtil";
+import { fs_encode_path, fs_split_path } from "./FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
@@ -15,9 +15,6 @@ export let state = {
 	// The part of the path that base_index points to
 	base: {},
 
-	// First node in the path
-	root: {},
-
 	// Passwords for accessing this bucket. Passwords are not always required
 	// but sometimes they are
 	read_password: "",
@@ -30,15 +27,19 @@ export let state = {
 }
 
 export const navigate = async (path, push_history) => {
+	if (path[0] !== "/") {
+		path = "/"+path
+	}
+
 	dispatch("loading", true)
 	console.debug("Navigating to path", path, push_history)
 
 	try {
-		let resp = await fs_get_node(state.root.id, path)
+		let resp = await fs_get_node(path)
 		open_node(resp, push_history)
 	} catch (err) {
 		if (err.value && err.value === "path_not_found") {
-			if (path !== "/" && path !== "") {
+			if (path !== state.path[0].path && path !== "/" && path !== "") {
 				console.debug("Path", path, "was not found, trying to navigate to parent")
 				navigate(fs_split_path(path).parent, push_history)
 			}
@@ -56,18 +57,11 @@ export const reload = () => {
 }
 
 export const open_node = (node, push_history) => {
-	// We need to properly URL encode the file paths so they don't cause
-	// issues.. but we also want the slashes to stay clean. So here we encode
-	// the whole path, then decode the slashes
-	let cleanup_func = p => p.path_uri = encodeURIComponent(p.path).replaceAll("%2F", "/")
-	node.path.forEach(cleanup_func)
-	node.children.forEach(cleanup_func)
-
 	// Update window title and navigation history. If push_history is false we
 	// still replace the URL with replaceState. This way the user is not greeted
 	// to a 404 page when refreshing after renaming a file
 	window.document.title = node.path[node.base_index].name+" ~ pixeldrain"
-	let url = "/d/"+node.path[0].id+node.path[node.base_index].path
+	let url = "/d"+ fs_encode_path(node.path[node.base_index].path)
 	if (push_history) {
 		window.history.pushState({}, window.document.title, url)
 	} else {
@@ -90,7 +84,6 @@ export const open_node = (node, push_history) => {
 	state.path = node.path
 	state.base = node.path[node.base_index]
 	state.base_index = node.base_index
-	state.root = node.path[0]
 	state.children = node.children
 	state.permissions = node.permissions
 
@@ -131,7 +124,7 @@ export const open_sibling = async offset => {
 	} else {
 		console.debug("Cached siblings not available. Fetching new")
 		try {
-			let resp = await fs_get_node(state.root.id, state.path[state.path.length - 2].path)
+			let resp = await fs_get_node(state.path[state.path.length - 2].path)
 
 			// Sort directory children to make sure the order is consistent
 			sort_children(resp.children)
@@ -198,8 +191,8 @@ const sort_children = children => {
 
 // Capture browser back and forward navigation buttons
 window.onpopstate = (e) => {
-	// Get the part of the URL after the bucket ID and navigate to it
-	let path = document.location.pathname.replace("/d/"+state.root.id, "")
+	// Get the part of the URL after the fs root and navigate to it
+	let path = document.location.pathname.replace("/d/", "")
 	navigate(decodeURIComponent(path), false)
 };
 </script>

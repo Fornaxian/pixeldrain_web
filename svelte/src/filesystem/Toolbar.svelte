@@ -95,7 +95,7 @@ let share = async () => {
 		</button>
 	</div>
 
-	{#if state.root.id === "me"}
+	{#if state.path[0].id === "me"}
 		<button on:click={() => dispatch("search")} class="toolbar_button" class:button_highlight={view === "search"}>
 			<i class="icon">search</i> Search
 		</button>
@@ -121,7 +121,7 @@ let share = async () => {
 		<i class="icon">help</i> Deta<u>i</u>ls
 	</button>
 
-	{#if state.base.path !== "/"}
+	{#if state.path.length > 1}
 		<button on:click={() => edit_window.edit(state.base, true)} class="toolbar_button" class:button_highlight={edit_visible}>
 			<i class="icon">edit</i> <u>E</u>dit
 		</button>

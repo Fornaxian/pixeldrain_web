@@ -1,5 +1,5 @@
 <script>
-import { fs_file_url } from "../FilesystemUtil";
+import { fs_path_url } from "../FilesystemUtil";
 
 export let state
 let text_pre
@@ -14,7 +14,7 @@ export const set_file = file => {
 		return
 	}
 
-	fetch(fs_file_url(state.root.id, file.path)).then(resp => {
+	fetch(fs_path_url(file.path)).then(resp => {
 		if (!resp.ok) { return Promise.reject(resp.status) }
 		return resp.text()
 	}).then(resp => {

@@ -1,9 +1,8 @@
 <script>
-import { onMount, tick } from 'svelte';
+import { onMount } from 'svelte';
 import PixeldrainLogo from '../util/PixeldrainLogo.svelte';
 import LoadingIndicator from '../util/LoadingIndicator.svelte';
 import EditWindow from './EditWindow.svelte';
-import { fs_file_url } from './FilesystemUtil';
 import Toolbar from './Toolbar.svelte';
 import Breadcrumbs from './Breadcrumbs.svelte';
 import DetailsWindow from './DetailsWindow.svelte';
@@ -30,7 +29,6 @@ let state = {
 
 	// Shortcuts
 	base: window.initial_node.path[window.initial_node.base_index],
-	root: window.initial_node.path[0],
 
 	// Passwords for accessing this bucket. Passwords are not always required
 	// but sometimes they are
@@ -90,7 +88,7 @@ const keydown = e => {
 };
 
 const download = () => {
-	download_frame.src = fs_file_url(state.root.id, state.base.path) + "?attach"
+	download_frame.src = fs_path_url(state.base.path) + "?attach"
 }
 
 const search = async () => {
@@ -187,7 +185,6 @@ const loading_evt = e => {
 <EditWindow
 	bind:this={edit_window}
 	bind:visible={edit_visible}
-	bucket={state.root.id}
 	fs_navigator={fs_navigator}
 	on:loading={loading_evt}
 />
