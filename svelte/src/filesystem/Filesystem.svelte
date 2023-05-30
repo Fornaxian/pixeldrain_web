@@ -10,6 +10,7 @@ import Navigator from './Navigator.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 import SearchView from './SearchView.svelte';
 import UploadWidget from './upload_widget/UploadWidget.svelte';
+import { fs_path_url } from './FilesystemUtil';
 
 let loading = true
 let toolbar_visible = (window.innerWidth > 600)
