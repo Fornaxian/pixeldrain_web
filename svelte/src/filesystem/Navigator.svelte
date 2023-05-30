@@ -35,6 +35,9 @@ export const navigate = async (path, push_history) => {
 				console.debug("Path", path, "was not found, trying to navigate to parent")
 				navigate(fs_split_path(path).parent, push_history)
 			}
+		} else if (err.message) {
+			console.error(err)
+			alert("Error: "+err.message)
 		} else {
 			console.error(err)
 			alert("Error: "+err)

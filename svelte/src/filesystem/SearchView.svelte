@@ -39,9 +39,9 @@ const search = async (limit = 10) => {
 	try {
 		search_results = await fs_search(state.base.path, search_term, limit)
 	} catch (err) {
-		try {
-			error = JSON.parse(err).value
-		} catch {
+		if (err.value) {
+			error = err.value
+		} else {
 			alert(err)
 			console.error(err)
 		}

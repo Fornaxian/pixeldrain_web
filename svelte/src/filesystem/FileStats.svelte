@@ -6,7 +6,7 @@ import { fs_path_url } from "./FilesystemUtil";
 export let state
 
 let downloads = 0
-let bandwidth_used = 0
+let transfer_used = 0
 let socket = null
 let error_msg = "Loading..."
 
@@ -37,7 +37,7 @@ const update_base = async base => {
 
 		error_msg = ""
 		downloads = j.downloads
-		bandwidth_used = j.bandwidth_free + j.bandwidth_paid
+		transfer_used = j.transfer_free + j.transfer_paid
 	}
 	socket.onerror = err => {
 		if (socket === null) {
@@ -74,8 +74,8 @@ onDestroy(close_socket)
 	{:else}
 		<div class="label">Downloads</div>
 		<div class="stat">{formatThousands(downloads)}</div>
-		<div class="label">Bandwidth used</div>
-		<div class="stat">{formatDataVolume(bandwidth_used, 3)}</div>
+		<div class="label">Transfer used</div>
+		<div class="stat">{formatDataVolume(transfer_used, 3)}</div>
 	{/if}
 </div>
 
