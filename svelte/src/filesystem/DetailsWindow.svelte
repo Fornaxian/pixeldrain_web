@@ -36,8 +36,8 @@ let chart_timespans = [
 ]
 
 let total_downloads = 0
-let total_bandwidth_free = 0
-let total_bandwidth_paid = 0
+let total_transfer_free = 0
+let total_transfer_paid = 0
 
 $: update_chart(state.base, chart_timespan, chart_interval)
 let update_chart = async (base, timespan, interval) => {
@@ -109,22 +109,22 @@ let update_chart = async (base, timespan, interval) => {
 		});
 
 		total_downloads = 0
-		total_bandwidth_free = 0
-		total_bandwidth_paid = 0
+		total_transfer_free = 0
+		total_transfer_paid = 0
 
 		resp.downloads.amounts.forEach(val => total_downloads += val);
-		resp.bandwidth_free.amounts.forEach((val, idx) => {
-			resp.bandwidth_free.amounts[idx] = val / base.file_size;
-			total_bandwidth_free += val
+		resp.transfer_free.amounts.forEach((val, idx) => {
+			resp.transfer_free.amounts[idx] = val / base.file_size;
+			total_transfer_free += val
 		});
-		resp.bandwidth_paid.amounts.forEach((val, idx) => {
-			resp.bandwidth_paid.amounts[idx] = val / base.file_size;
-			total_bandwidth_paid += val
+		resp.transfer_paid.amounts.forEach((val, idx) => {
+			resp.transfer_paid.amounts[idx] = val / base.file_size;
+			total_transfer_paid += val
 		});
 		chart.data().labels = resp.downloads.timestamps
 		chart.data().datasets[0].data = resp.downloads.amounts
-		chart.data().datasets[1].data = resp.bandwidth_free.amounts
-		chart.data().datasets[2].data = resp.bandwidth_paid.amounts
+		chart.data().datasets[1].data = resp.transfer_free.amounts
+		chart.data().datasets[2].data = resp.transfer_paid.amounts
 		chart.update()
 	} catch (err) {
 		console.error("Failed to get time series data:", err)
@@ -156,17 +156,17 @@ let update_chart = async (base, timespan, interval) => {
 			<tr>
 				<td>Free bandwidth used</td>
 				<td>
-					{formatDataVolume(total_bandwidth_free, 4)}
-					( {formatThousands(total_bandwidth_free)} B ),
-					{(total_bandwidth_free/state.base.file_size).toFixed(1)}x file size
+					{formatDataVolume(total_transfer_free, 4)}
+					( {formatThousands(total_transfer_free)} B ),
+					{(total_transfer_free/state.base.file_size).toFixed(1)}x file size
 				</td>
 			</tr>
 			<tr>
 				<td>Premium bandwidth used</td>
 				<td>
-					{formatDataVolume(total_bandwidth_paid, 4)}
-					( {formatThousands(total_bandwidth_paid)} B ),
-					{(total_bandwidth_paid/state.base.file_size).toFixed(1)}x file size
+					{formatDataVolume(total_transfer_paid, 4)}
+					( {formatThousands(total_transfer_paid)} B ),
+					{(total_transfer_paid/state.base.file_size).toFixed(1)}x file size
 				</td>
 			</tr>
 			<tr><td>SHA256 sum</td><td>{state.base.sha256_sum}</td></tr>
