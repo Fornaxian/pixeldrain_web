@@ -30,14 +30,6 @@ let state = {
 	// Shortcuts
 	base: window.initial_node.path[window.initial_node.base_index],
 
-	// Passwords for accessing this bucket. Passwords are not always required
-	// but sometimes they are
-	read_password: "",
-	write_password: "",
-
-	// Root path of the bucket. Used for navigation by prepending it to a file
-	// path
-	path_root: "/d/"+window.initial_node.path[0].id,
 	shuffle: false,
 }
 

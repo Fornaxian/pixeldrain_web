@@ -1,4 +1,6 @@
 <script>
+import { fs_encode_path } from "./FilesystemUtil";
+
 export let state = {}
 export let fs_navigator
 </script>
@@ -6,7 +8,7 @@ export let fs_navigator
 {#each state.path as node, i (node.path)}
 	{@const shared = node.id !== undefined && node.id !== "me"}
 	<a
-		href={state.path_root+node.path}
+		href={"/d"+fs_encode_path(node.path)}
 		class="breadcrumb button"
 		class:button_highlight={state.base_index === i}
 		on:click|preventDefault={() => {fs_navigator.navigate(node.path, true)}}

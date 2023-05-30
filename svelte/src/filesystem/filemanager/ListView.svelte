@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { formatDataVolume } from "../../util/Formatting.svelte";
-import { fs_node_icon } from "../FilesystemUtil";
+import { fs_encode_path, fs_node_icon } from "../FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
@@ -18,7 +18,7 @@ export let show_hidden = false
 	</tr>
 	{#each state.children as child, index (child.path)}
 		<a
-			href={state.path_root+child.path_uri}
+			href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={() => {dispatch("node_click", index)}}
 			class="node"
 			class:node_selected={child.fm_selected}
@@ -37,7 +37,11 @@ export let show_hidden = false
 			</td>
 			<td class="node_icons">
 				{#if child.id}
-					<a href="/d/{child.id}" on:click|stopPropagation class="button small_button">
+					<a
+						href="/d/{child.id}"
+						on:click|preventDefault|stopPropagation={() => {dispatch("node_share_click", index)}}
+						class="button small_button"
+					>
 						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 					</a>
 				{/if}

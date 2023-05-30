@@ -15,14 +15,6 @@ export let state = {
 	// The part of the path that base_index points to
 	base: {},
 
-	// Passwords for accessing this bucket. Passwords are not always required
-	// but sometimes they are
-	read_password: "",
-	write_password: "",
-
-	// Root path of the bucket. Used for navigation by prepending it to a file
-	// path
-	path_root: "",
 	shuffle: false,
 }
 

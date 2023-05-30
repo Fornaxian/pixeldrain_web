@@ -23,8 +23,6 @@ export const edit = (f, oae = false, t = "file") => {
 
 	file_name = file.name
 	shared = !(file.id === undefined || file.id === "")
-	read_password = file.read_password ? file.read_password : ""
-	write_password = file.write_password ? file.write_password : ""
 	visible = true
 }
 
@@ -33,8 +31,6 @@ let open_after_edit = false
 
 let file_name = ""
 let shared = false
-let read_password = ""
-let write_password = ""
 
 const save = async () => {
 	console.debug("Saving file", file.path)
@@ -42,11 +38,7 @@ const save = async () => {
 		dispatch("loading", true)
 		await fs_update(
 			file.path,
-			{
-				shared: shared,
-				read_password: read_password,
-				write_password: write_password,
-			},
+			{shared: shared},
 		)
 
 		if (file_name !== file.name) {
@@ -138,10 +130,6 @@ const delete_file = async () => {
 					<input bind:checked={shared} id="shared" type="checkbox" class="form_input"/>
 					<label for="shared">Share this file or directory</label>
 				</div>
-				<label for="read_password">Read password:</label>
-				<input bind:value={read_password} id="read_password" type="text" class="form_input"/>
-				<label for="write_password">Write password:</label>
-				<input bind:value={write_password} id="write_password" type="text" class="form_input"/>
 			</div>
 		{/if}
 	</form>

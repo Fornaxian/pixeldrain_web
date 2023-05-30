@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte"
-import { fs_node_icon, fs_node_type } from "../FilesystemUtil";
+import { fs_encode_path, fs_node_icon, fs_node_type } from "../FilesystemUtil";
 let dispatch = createEventDispatcher()
 
 export let state
@@ -10,7 +10,7 @@ export let show_hidden = false
 <div class="gallery">
 	{#each state.children as child, index (child.path)}
 		<a class="file"
-			href={state.path_root+child.path_uri}
+			href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={() => {dispatch("node_click", index)}}
 			class:selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}

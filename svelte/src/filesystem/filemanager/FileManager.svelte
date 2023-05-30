@@ -32,6 +32,12 @@ const node_click = e => {
 		state.children[index].fm_selected = !state.children[index].fm_selected
 	}
 }
+const node_share_click = e => {
+	let index = e.detail
+
+	creating_dir = false
+	fs_navigator.navigate(state.children[index].id, true)
+}
 
 const node_settings = e => {
 	edit_window.edit(state.children[e.detail], false)
@@ -198,9 +204,20 @@ onMount(() => {
 	</div>
 
 	{#if directory_view === "list"}
-		<ListView state={state} show_hidden={show_hidden} on:node_click={node_click} on:node_settings={node_settings}></ListView>
+		<ListView
+			state={state}
+			show_hidden={show_hidden}
+			on:node_click={node_click}
+			on:node_share_click={node_share_click}
+			on:node_settings={node_settings}
+		/>
 	{:else if directory_view === "gallery"}
-		<GalleryView state={state} show_hidden={show_hidden} on:node_click={node_click} on:node_settings={node_settings}></GalleryView>
+		<GalleryView
+			state={state}
+			show_hidden={show_hidden}
+			on:node_click={node_click}
+			on:node_settings={node_settings}
+		/>
 	{/if}
 </div>
 

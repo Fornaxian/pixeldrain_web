@@ -69,12 +69,6 @@ export const fs_update = async (path, opts) => {
 	if (opts.shared !== undefined) {
 		form.append("shared", opts.shared)
 	}
-	if (opts.read_password !== undefined) {
-		form.append("read_password", opts.read_password)
-	}
-	if (opts.write_password !== undefined) {
-		form.append("write_password", opts.write_password)
-	}
 
 	return await fs_check_response(
 		await fetch(fs_path_url(path), { method: "POST", body: form })

@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { fs_search } from "./FilesystemAPI";
-import { fs_thumbnail_url } from "./FilesystemUtil";
+import { fs_encode_path, fs_thumbnail_url } from "./FilesystemUtil";
 
 export let state
 export let fs_navigator
@@ -117,7 +117,7 @@ const open_result = index => {
 	</tr>
 	{#each search_results as result, index}
 		<a
-			href={state.path_root+result}
+			href={"/d"+fs_encode_path(result)}
 			on:click|preventDefault={() => open_result(index)}
 			class="node"
 		>
