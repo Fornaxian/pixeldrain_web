@@ -3,6 +3,7 @@ package webcontroller
 import (
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -11,6 +12,8 @@ import (
 	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"fornaxian.tech/util"
 	"github.com/julienschmidt/httprouter"
+	"github.com/microcosm-cc/bluemonday"
+	blackfriday "github.com/russross/blackfriday/v2"
 )
 
 func (wc *WebController) viewTokenOrBust() (t string) {
@@ -200,5 +203,41 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
 	if err != nil && !util.IsNetError(err) {
 		log.Error("Error executing template file_viewer: %s", err)
+	}
+}
+
+func (wc *WebController) serveFilePreview(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	apiKey, _ := wc.getAPIKey(r)
+	api := wc.api.Login(apiKey).RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent())
+
+	file, err := api.GetFileInfo(p.ByName("id")) // TODO: Error handling
+	if err != nil {
+		wc.serveNotFound(w, r)
+		return
+	}
+
+	if strings.HasPrefix(file.MimeType, "text") &&
+		(strings.HasSuffix(file.Name, ".md") || strings.HasSuffix(file.Name, ".markdown")) {
+		if file.Size > 1<<22 { // Prevent out of memory errors
+			w.Write([]byte("File is too large to view online.\nPlease download and view it locally."))
+			return
+		}
+
+		body, err := api.GetFile(file.ID)
+		if err != nil {
+			log.Error("Can't download text file for preview: %s", err)
+			w.Write([]byte("An error occurred while downloading this file."))
+			return
+		}
+		defer body.Close()
+
+		bodyBytes, err := io.ReadAll(body)
+		if err != nil {
+			log.Error("Can't read text file for preview: %s", err)
+			w.Write([]byte("An error occurred while reading this file."))
+			return
+		}
+
+		w.Write(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.Run(bodyBytes)))
 	}
 }

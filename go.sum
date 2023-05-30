@@ -2,10 +2,10 @@ fornaxian.tech/config v0.0.0-20211108212237-6133aed90586 h1:/4a0Iq3cYeyTWcPHsN9p
 fornaxian.tech/config v0.0.0-20211108212237-6133aed90586/go.mod h1:ULIXF4J1DbBw4EsIPRNQDf6J3hl4P/jlihjy6UCm9FM=
 fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640 h1:UPDxJwLRCfh/cv80UMSanzmZ0jIcfS1mcd0Y06HYuLw=
 fornaxian.tech/log v0.0.0-20211102185326-552e9b1f8640/go.mod h1:sN82qMToeHhP2u3ehvrcE8y1IudRZJAZO9yG5OBYblo=
-fornaxian.tech/util v0.0.0-20230510125310-1bc41b5fe13b h1:ZJXnWqTReW9OElnanpLlpl8ElVErbYZb4cK4zjnlM1E=
-fornaxian.tech/util v0.0.0-20230510125310-1bc41b5fe13b/go.mod h1:lCmtcb4/SVt2ol55/EHDWGySY7o0ONbj97RR9CdsN4M=
-github.com/BurntSushi/toml v1.2.1 h1:9F2/+DoOYIOksmaJFPw1tGFy1eDnIJXg+UHjuD8lTak=
-github.com/BurntSushi/toml v1.2.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
+fornaxian.tech/util v0.0.0-20230520114728-bd827686fec7 h1:8I/BQQYO/cjREsGP+1fUqaXXM4dQ3BWfARnaUScLIec=
+fornaxian.tech/util v0.0.0-20230520114728-bd827686fec7/go.mod h1:lCmtcb4/SVt2ol55/EHDWGySY7o0ONbj97RR9CdsN4M=
+github.com/BurntSushi/toml v1.3.0 h1:Ws8e5YmnrGEHzZEzg0YvK/7COGYtTC5PbaH9oSSbgfA=
+github.com/BurntSushi/toml v1.3.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/aymerick/douceur v0.2.0 h1:Mv+mAeH1Q+n9Fr+oyamOlAkUNPWPlA8PPGR0QAaYuPk=
 github.com/aymerick/douceur v0.2.0/go.mod h1:wlT5vV2O3h55X9m7iVYN0TBM0NH/MmbLnd30/FjWUq4=
 github.com/bitly/go-hostpool v0.0.0-20171023180738-a3a6125de932 h1:mXoPYz/Ul5HYEDvkta6I8/rnYM5gSdSV2tJ6XbZuEtY=
@@ -29,8 +29,8 @@ github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORN
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
-github.com/microcosm-cc/bluemonday v1.0.23 h1:SMZe2IGa0NuHvnVNAZ+6B38gsTbi5e4sViiWJyDDqFY=
-github.com/microcosm-cc/bluemonday v1.0.23/go.mod h1:mN70sk7UkkF8TUr2IGBpNN0jAgStuPzlK76QuruE/z4=
+github.com/microcosm-cc/bluemonday v1.0.24 h1:NGQoPtwGVcbGkKfvyYk1yRqknzBuoMiUrO6R7uFTPlw=
+github.com/microcosm-cc/bluemonday v1.0.24/go.mod h1:ArQySAMps0790cHSkdPEJ7bGkF2VePWH773hsJNSHf8=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
