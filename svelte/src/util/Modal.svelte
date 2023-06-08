@@ -93,7 +93,7 @@ const keydown = e => {
 
 <style>
 .background {
-	position: absolute;
+	position: fixed;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
