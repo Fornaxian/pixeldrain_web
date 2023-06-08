@@ -69,7 +69,7 @@ const save = async () => {
 const delete_file = async () => {
 	try {
 		dispatch("loading", true)
-		await fs_delete_all(bucket, file.path)
+		await fs_delete_all(file.path)
 	} catch (err) {
 		console.error(err)
 		alert(err)
