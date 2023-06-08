@@ -47,6 +47,7 @@ export const fs_node_type = node => {
 	) {
 		return "pdf"
 	} else if (
+		node.file_type === "application/json" ||
 		node.file_type.startsWith("text")
 	) {
 		return "text"
