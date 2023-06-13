@@ -18,6 +18,10 @@ let download_captcha_window
 let captcha_type = "" // rate_limit or malware
 let captcha_window_title = ""
 let captcha_container
+
+let error_window = null
+let error_code = ""
+let error_message = ""
 export const download_file = () => {
 	if (!window.viewer_data.captcha_key) {
 		console.debug("Server doesn't support captcha, starting download")
@@ -30,7 +34,10 @@ export const download_file = () => {
 		return
 	}
 	if (!file.availability.endsWith("_captcha_required")) {
-		console.debug("File is unavailable, ignoring download request")
+		error_code = file.availability
+		error_message = file.availability_message
+		error_window.show()
+		console.debug("File is unavailable, showing error message")
 		return
 	}
 
@@ -113,6 +120,15 @@ export const download_list = () => {
 	{/if}
 	<br/>
 	<div bind:this={captcha_container} class="captcha_container"></div>
+</Modal>
+
+<Modal bind:this={error_window} title="Download error" width="500px" padding>
+	<p>
+		Can't download file: {error_code}
+	</p>
+	<p>
+		{error_message}
+	</p>
 </Modal>
 
 <style>

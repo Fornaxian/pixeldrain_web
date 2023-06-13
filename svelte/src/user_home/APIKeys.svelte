@@ -108,10 +108,11 @@ const logout = async (key) => {
 
 	<p>
 		If you delete the API key that you are currently using you will be
-		logged out of your account. API keys expire 30 days after the last
-		time they're used. If you think someone is using your account
-		without your authorization it's probably a good idea to delete all
-		your keys.
+		logged out of your account. Keys are sorted based on how recently they
+		were used, so your session usually the top one. API keys expire 30 days
+		after the last time they're used. If you think someone is using your
+		account without your authorization it's probably a good idea to delete
+		all your keys.
 	</p>
 </section>
 <div class="table_scroll">

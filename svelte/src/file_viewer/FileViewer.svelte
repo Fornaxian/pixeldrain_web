@@ -448,10 +448,11 @@ const keyboard_event = evt => {
 
 			<div class="separator"></div>
 
-			{#if view === "file" && file.can_download && !disable_download_button}
+			{#if view === "file" && !disable_download_button}
 				<button
 					on:click={downloader.download_file}
 					class="toolbar_button"
+					class:button_red={file.can_download === false}
 					title="Save this file to your computer">
 					<i class="icon">download</i>
 					<span>Download</span>
