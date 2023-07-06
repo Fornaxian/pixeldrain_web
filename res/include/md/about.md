@@ -15,45 +15,14 @@ published anywhere. As long as you don't share it nobody will see it.
 
 ## Can I donate to pixeldrain?
 
-We provide extra features for users who support us on Patreon, but if you just
-want to give some money and don't care about the perks these options are also
+The best way to support pixeldrain is through Patreon. But if you just want to
+give some money and don't care about the Pro plan these options are also
 available:
 
  * Bitcoin:
    [bc1qy8c2lx2zhetmnwwkpl9y7ygzs6yfaaev8nx09n](bitcoin:bc1qy8c2lx2zhetmnwwkpl9y7ygzs6yfaaev8nx09n?label=Pixeldrain%20Donation)
- * BasicAttentionToken: Donate BAT by clicking the BAT icon in your address bar.
-   <a href="/brave">Learn more about Brave browser</a>.
- * Siacoin:
-   d12e359efe7ed38097d9bd55f42a164ef00d4ef75fa83b8c264f1ffb1f640b78044a2fbaf129
  * <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">
    Donate with PayPal</a>
-
-## How does pixeldrain store files?
-
-Pixeldrain uses a few different techniques to store files cheaply, efficiently
-and performantly. The servers which accept files from users have a hard disk
-drive cache of typically a few terabytes (4 to 16). This is where most of the
-files are kept. When a file is requested from another server it will look up
-where the file is stored using a lookup table in the shared database. It will
-then try to contact that server to request the file and proxy the data directly
-to the requesting user.
-
-Each server keeps track of which files are popular with its own userbase. This
-includes files which it is not storing locally. It does this using a popularity
-score. Every time a request to read a file comes in it will add 1 to the score
-of that file. This score will slowly degrade over time. Periodically the server
-will request all files with a high popularity score so it can store them locally
-to save bandwidth. If there is not enough space available to store these popular
-files it will move some less popular files to the next storage medium to make
-space available for the more popular files.
-
-The next storage medium is Sia. This is where all the files live which are not
-requested frequently, but are still occasionally needed. Sia is a storage
-marketplace where anyone can sell their storage space for financial compensation
-in Siacoins. If you have storage space available and would like to provide it to
-pixeldrain and other services you should read our [Sia hosting
-guidelines](/hosting). There we explain which requirements we are setting for
-hosts and some handy tips for getting started with hosting.
 
 ## Do I need to register an account?
 
@@ -91,6 +60,18 @@ Orbitron, it was designed by Matt McInerney and uses the Open Font License.
 And here's a vector version of just the icon:
 
 <img src="/res/img/pixeldrain.svg" style="max-width: 100%; height: 80px;" /><br/>
+
+## Can I advertise on pixeldrain?
+
+Please send your advertising inquiries to this e-mail address:
+[fuck.off@pixeldrain.com](mailto:fuck.off@pixeldrain.com). That will make sure
+your mails never get anywhere near my inbox.
+
+But in all seriousness, I am not interested in running ads on pixeldrain. Ads
+are destroying the web through greed and deception. I won't want anything to do
+with that. I would recommend everyone to install [uBlock
+Origin](https://ublockorigin.com/) to let the greedy ad tech companies know that
+we're not standing for it.
 
 ## Support
 

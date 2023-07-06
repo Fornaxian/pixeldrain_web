@@ -65,8 +65,6 @@ import UploadWidget from "./UploadWidget.svelte";
 		<br/>
 	</section>
 
-	<ForCreators/>
-	<br/>
 	<br/>
 	<Footer></Footer>
 </div>
