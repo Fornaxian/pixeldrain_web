@@ -56,7 +56,6 @@ export const upload_file = async file => {
 	upload_queue.push({
 		task_id: task_id_counter,
 		file: file,
-		bucket: fs_state.root.id,
 		path: path,
 		component: null,
 		status: "queued",

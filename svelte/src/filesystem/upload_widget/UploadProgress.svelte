@@ -19,7 +19,6 @@ let error_message = ""
 export const start = () => {
 	upload_file(
 		job.file,
-		job.bucket,
 		job.path,
 		(prog_loaded, prog_total) => {
 			loaded = prog_loaded
@@ -30,7 +29,7 @@ export const start = () => {
 			dispatch("finished")
 		},
 		(code, message) => {
-			console.log("error", code, message)
+			console.log("Upload error", code, message)
 			error_code = code
 			error_message = message
 			job.status = "error"
