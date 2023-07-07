@@ -29,6 +29,8 @@ onMount(() => {
 		set_ad_type("reddit")
 	} else if (rand < 0.4) {
 		set_ad_type("reviews")
+	} else if (rand < 0.5) {
+		set_ad_type("lemmy")
 	} else {
 		set_ad_type("patreon_support")
 	}
@@ -186,6 +188,17 @@ head.valueimpression_loaded.subscribe(v => {
 			>
 				<Reddit style="color: #ffffff;"/>
 				Follow Pixeldrain on Reddit: /r/pixeldrain
+			</a>
+		</div>
+
+
+	{:else if ad_type === "lemmy"}
+
+		<div class="banner social_button">
+			<a href="https://lemmy.fornaxian.tech/c/pixeldrain"
+				rel="noreferrer" class="button" target="_blank" style="background-color: #14854f; color: #ffffff;"
+			>
+				Follow Pixeldrain on Lemmy: lemmy.fornaxian.tech
 			</a>
 		</div>
 

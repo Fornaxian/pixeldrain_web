@@ -68,7 +68,7 @@ Please send your advertising inquiries to this e-mail address:
 your mails never get anywhere near my inbox.
 
 But in all seriousness, I am not interested in running ads on pixeldrain. Ads
-are destroying the web through greed and deception. I won't want anything to do
+are destroying the web through greed and deception. I don't want anything to do
 with that. I would recommend everyone to install [uBlock
 Origin](https://ublockorigin.com/) to let the greedy ad tech companies know that
 we're not standing for it.
