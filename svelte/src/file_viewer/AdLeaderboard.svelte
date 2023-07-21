@@ -17,20 +17,16 @@ onMount(() => {
 		return
 	}
 
-	// 10% pixeldrain socials
-	// 90% patreon
+
+	// 30% pixeldrain socials
+	// 20% reviews
+	// 50% patreon
 
 	let rand = Math.random()
-	if (rand < 0.1) {
-		set_ad_type("twitter")
-	} else if (rand < 0.2) {
-		set_ad_type("mastodon")
-	} else if (rand < 0.3) {
-		set_ad_type("reddit")
-	} else if (rand < 0.4) {
-		set_ad_type("reviews")
+	if (rand < 0.3) {
+		set_ad_type("socials")
 	} else if (rand < 0.5) {
-		set_ad_type("lemmy")
+		set_ad_type("reviews")
 	} else {
 		set_ad_type("patreon_support")
 	}
@@ -202,6 +198,39 @@ head.valueimpression_loaded.subscribe(v => {
 			</a>
 		</div>
 
+	{:else if ad_type === "socials"}
+		<div class="banner center">
+			<div class="socials">
+				Pixeldrain is on the fediverse!<br/>
+
+				<a href="https://mastodon.social/@fornax" rel="noreferrer" class="button" target="_blank" style="background-color: #595aff; color: #ffffff;">
+					<i class="icon small">people</i>
+					Mastodon
+				</a>
+				<a href="https://lemmy.fornaxian.tech/c/pixeldrain"
+					rel="noreferrer" class="button" target="_blank" style="background-color: #14854f; color: #ffffff;"
+				>
+					<i class="icon small">people</i>
+					Lemmy
+				</a>
+			</div>
+
+			<div class="socials">
+				And on legacy media too<br/>
+
+				<a href="https://twitter.com/Fornax96" rel="noreferrer" class="button" target="_blank" style="background-color: #1a8cd8; color: #ffffff;">
+					<i class="icon small">people</i>
+					Twitter
+				</a>
+				<a href="https://www.reddit.com/r/PixelDrain"
+					rel="noreferrer" class="button" target="_blank" style="background-color: #ff4500; color: #ffffff;"
+				>
+					<i class="icon small">people</i>
+					Reddit
+				</a>
+			</div>
+		</div>
+
 	{:else if ad_type === "reviews"}
 
 		<div class="banner support_banner">
@@ -230,25 +259,32 @@ head.valueimpression_loaded.subscribe(v => {
 	display: block;
 	margin: auto;
 	transform-origin: 0 0;
+	font-size: 1.2em;
+}
+.center {
+	text-align: center;
 }
 .support_banner {
-	font-size: 1.2em;
 	text-align: center;
 	padding: 2px;
 }
 .social_button {
-	font-size: 1.4em;
 	text-align: center;
 	padding: 4px;
 }
+.socials {
+	display: inline-block;
+	text-align: center;
+	margin: 0 5px;
+}
 
-/* Vertical estate is sparse on some devices*/
-@media(max-height: 600px) {
-	.support_banner {
+/* Try to avoid text wrapping */
+@media(max-width: 600px) {
+	.banner {
 		font-size: 1em;
 	}
-	.social_button {
-		font-size: 1.2em;
+	.socials {
+		font-size: 0.8em;
 	}
 }
 </style>
