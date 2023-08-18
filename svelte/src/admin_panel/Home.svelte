@@ -215,12 +215,12 @@ onDestroy(() => {
 				<tr>
 					<td>Address</td>
 					<td>Role</td>
-					<td>Alive</td>
 					<td>Err</td>
 					<td>1m</td>
 					<td>5m</td>
 					<td>15m</td>
 					<td>Ping</td>
+					<td>Netload</td>
 					<td>Free</td>
 					<td>Min free</td>
 				</tr>
@@ -234,12 +234,12 @@ onDestroy(() => {
 				>
 					<td>{peer.address}</td>
 					<td>{peer.role}</td>
-					<td>{peer.reachable}</td>
 					<td>{peer.unreachable_count}</td>
 					<td>{peer.load_1_min.toFixed(1)}</td>
 					<td>{peer.load_5_min.toFixed(1)}</td>
 					<td>{peer.load_15_min.toFixed(1)}</td>
-					<td>{(peer.latency/1000).toPrecision(3)} ms</td>
+					<td>{(peer.latency/1000).toPrecision(3)}</td>
+					<td>{formatDataVolume(peer.avg_network_load, 4)}/s</td>
 					<td>{formatDataVolume(peer.free_space, 4)}</td>
 					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
 				</tr>
@@ -262,23 +262,23 @@ onDestroy(() => {
 			<tr>
 				<td>Local cache</td>
 				<td>{status.local_reads}</td>
-				<td>{status.local_reads_per_sec.toPrecision(4)} / s</td>
+				<td>{status.local_reads_per_sec.toPrecision(4)}/s</td>
 				<td>{formatDataVolume(status.local_read_size, 4)}</td>
-				<td>{formatDataVolume(status.local_read_size_per_sec, 4)} / s</td>
+				<td>{formatDataVolume(status.local_read_size_per_sec, 4)}/s</td>
 			</tr>
 			<tr>
 				<td>Neighbour</td>
 				<td>{status.neighbour_reads}</td>
-				<td>{status.neighbour_reads_per_sec.toPrecision(4)} / s</td>
+				<td>{status.neighbour_reads_per_sec.toPrecision(4)}/s</td>
 				<td>{formatDataVolume(status.neighbour_read_size, 4)}</td>
-				<td>{formatDataVolume(status.neighbour_read_size_per_sec, 4)} / s</td>
+				<td>{formatDataVolume(status.neighbour_read_size_per_sec, 4)}/s</td>
 			</tr>
 			<tr>
 				<td>Reed-solomon</td>
 				<td>{status.remote_reads}</td>
-				<td>{status.remote_reads_per_sec.toPrecision(4)} / s</td>
+				<td>{status.remote_reads_per_sec.toPrecision(4)}/s</td>
 				<td>{formatDataVolume(status.remote_read_size, 4)}</td>
-				<td>{formatDataVolume(status.remote_read_size_per_sec, 4)} /s</td>
+				<td>{formatDataVolume(status.remote_read_size_per_sec, 4)}/s</td>
 			</tr>
 		</tbody>
 	</table>
