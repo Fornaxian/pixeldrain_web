@@ -294,7 +294,7 @@ const copy_url = () => {
 }
 
 const grab_file = async () => {
-	if (!window.user_authenticated || file.can_edit) {
+	if (!window.user_authenticated) {
 		return
 	}
 
@@ -546,7 +546,7 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			{#if view === "file" && window.user_authenticated && !file.can_edit}
+			{#if view === "file" && window.user_authenticated && !disable_download_button}
 				<button
 					on:click={grab_file}
 					class="toolbar_button"
