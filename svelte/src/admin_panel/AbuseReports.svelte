@@ -4,11 +4,25 @@ import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import AbuseReport from "./AbuseReport.svelte";
 
 let loading = true
-let reports_pending = []
-let reports_processed = []
+let reports = []
 
 let startPicker
 let endPicker
+
+let tab = "pending"
+
+let refresh_timeout = null
+const resolve_report = (remove = -1) => {
+	if (remove >= 0) {
+		console.debug("removing item", remove)
+		reports.splice(remove, 1)
+		reports = reports
+	}
+
+	// If a refresh is already scheduled we remove it and schedule a new one
+	clearTimeout(refresh_timeout)
+	refresh_timeout = setTimeout(get_reports, 5000)
+}
 
 const get_reports = async () => {
 	loading = true;
@@ -18,12 +32,14 @@ const get_reports = async () => {
 			window.api_endpoint+
 				"/admin/abuse_report"+
 				"?start="+(new Date(startPicker.value)).toISOString()+
-				"&end="+(new Date(endPicker.value)).toISOString()
+				"&end="+(new Date(endPicker.value)).toISOString()+
+				"&status="+tab
 		);
 		if(resp.status >= 400) {
 			throw new Error(resp.text());
 		}
-		let reports = await resp.json();
+
+		reports = await resp.json();
 
 		// Sort files by number of reports. If the number of reports is equal we
 		// sort by number of views. If the number of views is equal we sort by
@@ -46,9 +62,6 @@ const get_reports = async () => {
 			}
 		})
 
-		reports_pending = []
-		reports_processed = []
-
 		// Sort individual reports of each file from old to new, then separate
 		// pending reports and processed reports
 		reports.forEach(v => {
@@ -61,17 +74,7 @@ const get_reports = async () => {
 					return 0
 				}
 			})
-
-			if (v.status === "pending") {
-				reports_pending.push(v)
-			} else {
-				reports_processed.push(v)
-			}
 		})
-
-		// Update svelte views
-		reports_processed = reports_processed
-		reports_pending = reports_pending
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -95,6 +98,7 @@ onMount(() => {
 
 <section>
 	<div class="toolbar" style="text-align: left;">
+		<div>Reports: {reports.length}</div>
 		<div class="toolbar_spacer"></div>
 		<div>Start:</div>
 		<input type="date" bind:this={startPicker}/>
@@ -103,18 +107,23 @@ onMount(() => {
 		<button on:click={get_reports}>Go</button>
 	</div>
 
-	<h2>Pending</h2>
-	{#each reports_pending as report (report.id)}
-		{#if report.status === "pending"}
-		<AbuseReport report={report} on:refresh={get_reports}/>
-		{/if}
-	{/each}
+	<div class="tab_bar">
+		<button on:click={() => {tab = "pending"; get_reports()}} class:button_highlight={tab === "pending"}>
+			<i class="icon">flag</i>
+			Pending
+		</button>
+		<button on:click={() => {tab = "granted"; get_reports()}} class:button_highlight={tab === "granted"}>
+			<i class="icon">flag</i>
+			Granted
+		</button>
+		<button on:click={() => {tab = "rejected"; get_reports()}} class:button_highlight={tab === "rejected"}>
+			<i class="icon">flag</i>
+			Rejected
+		</button>
+	</div>
 
-	<h2>Resolved</h2>
-	{#each reports_processed as report (report.id)}
-		{#if report.status !== "pending"}
-		<AbuseReport report={report} on:refresh={get_reports}/>
-		{/if}
+	{#each reports as report, i (report.id)}
+		<AbuseReport report={report} on:refresh={() => resolve_report(i)}/>
 	{/each}
 </section>
 
@@ -128,4 +137,7 @@ onMount(() => {
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }
 
+.tab_bar {
+	border-bottom: 2px solid var(--separator);
+}
 </style>
