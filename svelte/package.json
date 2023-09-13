@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "behave-js": "^1.5.0",
-    "chart.js": "^3.9.1"
+    "chart.js": "^3.9.1",
+    "svelte-flag-icons": "^0.7.1"
   }
 }
