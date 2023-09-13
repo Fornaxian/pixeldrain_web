@@ -1,4 +1,5 @@
 <script>
+import { onMount } from "svelte";
 import Euro from "../util/Euro.svelte"
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import SuccessMessage from "../util/SuccessMessage.svelte";
@@ -30,21 +31,38 @@ const update = async () => {
 		loading = false
 	}
 }
+
+
+let checkout_success = false
+
+onMount(() => {
+	if (window.location.hash === "#checkout_complete") {
+		checkout_success = true
+		window.location.hash = ""
+	}
+})
 </script>
 
 <LoadingIndicator loading={loading}/>
 
 <section>
+	{#if checkout_success}
+		<div class="highlight_green">
+			<h2>Payment successful!</h2>
+			<p>
+				The credit has been added to your account balance. Activate a
+				subscription plan below to finish upgrading your account.
+			</p>
+		</div>
+	{/if}
 	<h2>Manage subscription</h2>
 	<p>
 		Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
 	</p>
 	<p>
-		When your prepaid subscription is active you will be charged daily based
-		on usage. The prepaid subscription will stay active for as long as you
-		have credit on your account. When you reach negative balance the
-		subscription will automatically end. You will need a positive balance to
-		activate the subscription again.
+		Prepaid subscriptions are charged daily based on usage. When you reach
+		negative balance the subscription will automatically end. You will need
+		a positive balance to activate the subscription again.
 	</p>
 
 	<h3>Prepaid plans</h3>
@@ -65,16 +83,28 @@ const update = async () => {
 			</div>
 			<div class="feat_normal round_tr" class:feat_highlight={subscription === "prepaid"}>
 				<ul>
-					<li>Base price of €1 per month</li>
+					<li>Base price of €2 per month</li>
 					<li>€4 per TB per month for storage</li>
-					<li>€2 per TB for data transfer</li>
+					<li>
+						€2 per TB for data transfer (with <a
+						href="user/sharing/bandwidth">bandwidth sharing</a>
+						enabled)
+					</li>
 					<li>Files never expire as long as subscription is active</li>
+					<li>
+						Download page <a href="/user/sharing/branding">branding
+						options</a>
+					</li>
+					<li>
+						File <a href="/user/sharing/embedding">embedding
+						control</a> options
+					</li>
 				</ul>
 			</div>
 		</div>
 		<div>
 			<div class="feat_label" class:feat_highlight={subscription === "prepaid_temp_storage_120d"}>
-				120 days storage<br/>
+				240 days storage<br/>
 				{#if subscription === "prepaid_temp_storage_120d"}
 					Currently active
 				{:else}
@@ -88,8 +118,20 @@ const update = async () => {
 				<ul>
 					<li>Base price of €1 per month</li>
 					<li>€0.50 per TB per month for storage</li>
-					<li>€2 per TB for data transfer</li>
-					<li>Files expire 120 days after the last time they're viewed</li>
+					<li>
+						€2 per TB for data transfer (with <a
+						href="user/sharing/bandwidth">bandwidth sharing</a>
+						enabled)
+					</li>
+					<li>Files never expire as long as subscription is active</li>
+					<li>
+						Download page <a href="/user/sharing/branding">branding
+						options</a>
+					</li>
+					<li>
+						File <a href="/user/sharing/embedding">embedding
+						control</a> options
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -108,6 +150,7 @@ const update = async () => {
 			<div class="feat_normal round_br" class:feat_highlight={subscription === ""}>
 				<ul>
 					<li>Standard free plan, files expire after 60 days.</li>
+					<li>Download limit of 10 GB per day</li>
 				</ul>
 			</div>
 		</div>

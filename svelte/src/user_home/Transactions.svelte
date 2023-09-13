@@ -147,32 +147,34 @@ onMount(() => {
 					<td>Time</td>
 					<td>Balance</td>
 					<td>Subscription</td>
-					<td colspan="2">Storage</td>
-					<td colspan="2">Bandwidth</td>
+					<td>Storage</td>
+					<td>Bandwidth</td>
 					<td>Deposit</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td>Charge</td>
-					<td>Charge</td>
-					<td>Usage</td>
-					<td>Charge</td>
-					<td>Usage</td>
-					<td></td>
 				</tr>
 			</thead>
 			<tbody>
 				{#each transactions.rows as row}
 					<tr>
-						<td>{formatDate(row.time, true, true, false)}</td>
-						<td><Euro amount={row.new_balance}></Euro></td>
-						<td><Euro amount={row.subscription_charge} precision="6"></Euro></td>
-						<td><Euro amount={row.storage_charge} precision="6"></Euro></td>
-						<td>{formatDataVolume(row.storage_used, 3)}</td>
-						<td><Euro amount={row.bandwidth_charge} precision="6"></Euro></td>
-						<td>{formatDataVolume(row.bandwidth_used, 3)}</td>
-						<td><Euro amount={row.deposit_amount}></Euro></td>
+						<td>
+							{formatDate(row.time, true, true, false)}
+						</td>
+						<td>
+							<Euro amount={row.new_balance}></Euro>
+						</td>
+						<td>
+							<Euro amount={row.subscription_charge} precision="6"/>
+						</td>
+						<td>
+							<Euro amount={row.storage_charge} precision="6"/>
+							({formatDataVolume(row.storage_used, 3)})
+						</td>
+						<td>
+							<Euro amount={row.bandwidth_charge} precision="6"/>
+							({formatDataVolume(row.bandwidth_used, 3)})
+						</td>
+						<td>
+							<Euro amount={row.deposit_amount}/>
+						</td>
 					</tr>
 				{/each}
 			</tbody>
