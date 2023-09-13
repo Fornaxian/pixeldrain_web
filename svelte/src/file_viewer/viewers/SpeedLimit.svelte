@@ -33,7 +33,7 @@ export let file = {
 	</p>
 	<ul>
 		<li>
-			Come back next week when your free transfer limit resets
+			Come back tomorrow when your free transfer limit resets
 		</li>
 		<li>
 			Download the file at a rate of {file.download_speed_limit/(1<<10)}

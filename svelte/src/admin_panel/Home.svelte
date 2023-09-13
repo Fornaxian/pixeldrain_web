@@ -4,6 +4,7 @@ import { formatDataVolume, formatThousands, formatDate, formatNumber, formatDura
 import Chart from "../util/Chart.svelte";
 import { color_by_name } from "../util/Util.svelte";
 import ServerDiagnostics from "./ServerDiagnostics.svelte";
+import PeerTable from "./PeerTable.svelte";
 
 let graphViews
 let graphBandwidth
@@ -208,45 +209,13 @@ onDestroy(() => {
 			<td>{formatNumber(status.db_latency / 1000, 3)} ms</td>
 		</tr>
 	</table>
-	<h3>Pixelstore peers</h3>
-	<div class="table_scroll">
-		<table>
-			<thead>
-				<tr>
-					<td>Address</td>
-					<td>Role</td>
-					<td>Err</td>
-					<td>1m</td>
-					<td>5m</td>
-					<td>15m</td>
-					<td>Ping</td>
-					<td>Netload</td>
-					<td>Free</td>
-					<td>Min free</td>
-				</tr>
-			</thead>
-			<tbody>
-				{#each status.peers as peer}
-				<tr style="text-align: left; border: none;"
-					class:highlight_red={peer.free_space < peer.min_free_space / 2 || !peer.reachable}
-					class:highlight_yellow={peer.free_space < peer.min_free_space}
-					class:highlight_green={peer.reachable}
-				>
-					<td>{peer.address}</td>
-					<td>{peer.role}</td>
-					<td>{peer.unreachable_count}</td>
-					<td>{peer.load_1_min.toFixed(1)}</td>
-					<td>{peer.load_5_min.toFixed(1)}</td>
-					<td>{peer.load_15_min.toFixed(1)}</td>
-					<td>{(peer.latency/1000).toPrecision(3)}</td>
-					<td>{formatDataVolume(peer.avg_network_load, 4)}/s</td>
-					<td>{formatDataVolume(peer.free_space, 4)}</td>
-					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
-				</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
+
+	<h3>Cache nodes</h3>
+	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "cache") {acc.push(val)}; return acc}, [])}/>
+
+	<h3>Storage nodes</h3>
+	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "storage") {acc.push(val)}; return acc}, [])}/>
+
 	<h3>Pixelstore stats</h3>
 	<table>
 		<thead>
