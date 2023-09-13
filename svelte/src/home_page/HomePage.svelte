@@ -2,12 +2,11 @@
 import Footer from "../layout/Footer.svelte";
 import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
-import ForCreators from "./ForCreators.svelte";
 import OtherPlans from "./OtherPlans.svelte";
 import UploadWidget from "./UploadWidget.svelte";
 </script>
 
-<div id="page_content" class="page_content">
+<div class="page_content">
 	<header>
 		<div class="header_image_container"></div>
 	</header>
@@ -15,7 +14,9 @@ import UploadWidget from "./UploadWidget.svelte";
 	<AddressReputation/>
 
 	<UploadWidget></UploadWidget>
+</div>
 
+<div class="page_content">
 	<header>
 		<h1>What is pixeldrain?</h1>
 	</header>
@@ -43,6 +44,9 @@ import UploadWidget from "./UploadWidget.svelte";
 			registration page</a>. More about pixeldrain's features below.
 		</p>
 	</section>
+</div>
+
+<div class="page_content">
 	<header>
 		<h1 id="pro">Getting more out of pixeldrain</h1>
 	</header>
@@ -65,11 +69,23 @@ import UploadWidget from "./UploadWidget.svelte";
 		<br/>
 	</section>
 
-	<br/>
+</div>
+
+<div class="page_content">
 	<Footer></Footer>
 </div>
 
 <style>
+.page_content {
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+@media (max-width: 1100px) {
+	.page_content {
+		margin-top: 0;
+	}
+}
+
 .header_image_container {
 	margin: auto;
 	height: 200px;

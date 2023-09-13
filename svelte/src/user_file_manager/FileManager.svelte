@@ -257,7 +257,7 @@ onMount(() => {
 
 <svelte:window on:keydown={keydown} on:hashchange={hashChange} />
 
-<div id="file_manager" class="file_manager">
+<div id="file_manager" class="file_manager page_margins">
 	<div id="nav_bar" class="nav_bar">
 		<button id="btn_menu" onclick="toggleMenu()"><i class="icon">menu</i></button>
 		<button on:click={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
@@ -354,12 +354,14 @@ is collapsed */
 }
 
 #file_manager {
-	position:         absolute;
-	padding:          0;
-	width:            100%;
-	height:           100%;
-	display:          flex;
-	flex-direction:   column;
+	position: absolute;
+	padding: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
 }
 .nav_bar {
 	flex-shrink: 0;

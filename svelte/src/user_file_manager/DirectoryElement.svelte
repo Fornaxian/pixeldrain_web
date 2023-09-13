@@ -359,6 +359,7 @@ const node_click = (index) => {
 	background: var(--body_background);
 	min-width: 850px;
 	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
 	border-bottom: 1px solid var(--separator);
 }
 .sorter_button {
@@ -389,6 +390,7 @@ const node_click = (index) => {
 	overflow-x: auto;
 	background: var(--body_background);
 	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
 }
 #node_container {
 	display: block;

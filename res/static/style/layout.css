@@ -135,7 +135,7 @@ footer>.footer_content {
 	height: 100%;
 	left: 0;
 	float: left;
-	padding: 20px 10px 10px 0;
+	padding: 20px 0 10px 0;
 	overflow-y: auto;
 	overflow-x: hidden;
 	text-align: left;
@@ -154,14 +154,19 @@ footer>.footer_content {
 	/* Center the header and body */
 	overflow-y: auto;
 	overflow-x: hidden;
-	transition: margin-left 0.5s;
+	transition: margin 0.5s;
 }
 
 .page_content {
 	background: var(--body_background);
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
-	transition: border-top-left-radius 1s, border-bottom-left-radius 1s;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.page_content,
+.page_margins {
+	margin-right: 5px;
+	margin-left: 5px;
 }
 
 @media (max-width: 1100px) {
@@ -171,12 +176,14 @@ footer>.footer_content {
 
 	.page_body {
 		margin-left: 0;
+		margin-right: 0;
 		width: 100%;
 	}
 
-	.page_content {
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
+	.page_content,
+	.page_margins {
+		margin-left: 0;
+		margin-right: 0;
 	}
 
 	header>h1 {
