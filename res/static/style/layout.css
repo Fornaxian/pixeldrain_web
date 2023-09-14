@@ -687,13 +687,13 @@ input[type=file] {
 }
 
 ::-webkit-scrollbar-track {
-	background: var(--body_color);
+	background: var(--background_color);
 }
 
 ::-webkit-scrollbar-thumb {
 	background-color: var(--scrollbar_foreground_color);
 	border-radius: 10px;
-	border: 4px solid var(--body_color);
+	border: 4px solid var(--background_color);
 	height: 40px;
 	width: 40px;
 }

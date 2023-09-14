@@ -1,23 +1,23 @@
 <script>
 import MollieDeposit from "../user_home/MollieDeposit.svelte";
+import Euro from "../util/Euro.svelte";
 </script>
 
 <header id="prepaid">
 	<div class="header_image_container"></div>
 </header>
 <section>
-	<p style="text-align: center; font-size: 1.2em;">
-		We have a special offer for content creators and businesses
-	</p>
-	<p style="text-align: center; font-size: 1.2em;">
-		Whether you're working with large video files, high quality
-		photography or a different kind of media. Pixeldrain is the
-		best way to transfer data to your customers!
+	<h2>Prepaid</h2>
+	<p>
+		Whether you're working with large video files, high quality photography
+		or a different kind of media. Pixeldrain is the best way to transfer
+		files to your customers! With prepaid you only pay for what you use. No
+		money wasted.
 	</p>
 	<br/>
 
 	<img src="/res/img/misc/sunrise.webp" class="float_right" alt="Sunrise">
-	<h2>Simple and affordable</h2>
+	<h2>Simple and affordable pricing</h2>
 
 	No file expiry:
 	<ul>
@@ -48,8 +48,19 @@ import MollieDeposit from "../user_home/MollieDeposit.svelte";
 	<br style="clear: both;"/>
 	<h2>Get started</h2>
 	{#if window.user.username !== ""}
-		{#if window.user.subscription.id !== ""}
-			<p>You already have a subscription active</p>
+		{#if window.user.subscription.type === "patreon"}
+			<p>
+				You already have a Patreon subscription active. You cannot use
+				Prepaid while that subscription is active.
+			</p>
+
+		{:else if window.user.subscription.type === "prepaid"}
+			<p>
+				You already have a Prepaid subscription active. You account balance
+				is <Euro amount={window.user.balance_micro_eur}/>. Use the form
+				below to top up your balance.
+			</p>
+			<MollieDeposit/>
 		{:else}
 			<p>
 				You are currently logged in as {window.user.username}. Use the
@@ -89,7 +100,7 @@ header {
 }
 .header_image_container {
 	margin: auto;
-	height: 300px;
+	height: 250px;
 	width: 750px;
 	max-width: 100%;
 	background-image: url("/res/img/professional_header.webp");
