@@ -72,7 +72,7 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h2>Deposit credits</h2>
+	<h2 id="deposit">Deposit credits</h2>
 	<p>
 		Pixeldrain credits can be used for our prepaid plans, which are
 		different from the Patreon plans. With prepaid you only pay for what you
@@ -81,11 +81,10 @@ onMount(() => {
 	</p>
 	<p>
 		Use the form below to deposit credit on your pixeldrain account using
-		Mollie. The minimum deposit is €10. <b>Mollie payments are currently
-		only available in Europe</b>.
+		Mollie. The minimum deposit is €10.
 	</p>
 
-	<MollieDeposit on:checkout={e => checkout("mollie", e.detail.amount, e.detail.country)}/>
+	<MollieDeposit/>
 
 	<h3>Crypto payments</h3>
 	<p>
@@ -116,7 +115,7 @@ onMount(() => {
 		</button>
 	</div>
 
-	<h3>Past invoices</h3>
+	<h3 id="invoices">Past invoices</h3>
 	<p>
 		Invoices are deleted after one year of inactivity.
 	</p>

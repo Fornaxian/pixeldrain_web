@@ -2,6 +2,7 @@
 import Footer from "../layout/Footer.svelte";
 import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
+import ForCreators from "./ForCreators.svelte";
 import OtherPlans from "./OtherPlans.svelte";
 import UploadWidget from "./UploadWidget.svelte";
 </script>
@@ -68,17 +69,18 @@ import UploadWidget from "./UploadWidget.svelte";
 		<OtherPlans></OtherPlans>
 		<br/>
 	</section>
-
 </div>
 
 <div class="page_content">
-	<Footer></Footer>
+	<ForCreators/>
 </div>
+
+<Footer/>
 
 <style>
 .page_content {
-	margin-top: 5px;
-	margin-bottom: 10px;
+	margin-top: 16px;
+	margin-bottom: 16px;
 }
 @media (max-width: 1100px) {
 	.page_content {

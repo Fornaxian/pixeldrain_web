@@ -35,13 +35,3 @@ import Twitter from "../icons/Twitter.svelte";
 		</span>
 	</div>
 </footer>
-
-<style>
-.footer_content {
-	background-color: var(--body_background);
-	color: var(--body_text_color);
-	display: inline-block;
-	border-radius: 8px;
-	margin: 160px 0 60px 0;
-}
-</style>

@@ -1,17 +1,17 @@
 <script>
-import { createEventDispatcher } from 'svelte';
 import {
 	At, Be, Bg, Hr, Cy, Cz, Dk, Ee, Fi, Fr, De, Gr, Hu, Ie, It, Lv, Lt, Lu, Mt,
 	Nl, Pl, Pt, Ro, Sk, Si, Es, Se,
 } from 'svelte-flag-icons';
 import Euro from '../util/Euro.svelte';
+import LoadingIndicator from '../util/LoadingIndicator.svelte';
 
-let dispatch = createEventDispatcher()
-
-let credit_amount = 10
-$: credit_micro = credit_amount*1e6
-$: vat_micro = country === null ? 0 : (credit_amount*1e6)*(country.vat/100)
+let loading = false
+let amount = 20
 let country = null
+
+$: credit_micro = amount*1e6
+$: vat_micro = country === null ? 0 : (amount*1e6)*(country.vat/100)
 
 let countries = [
 	{name: "Austria", code: At, vat: 20},
@@ -41,27 +41,74 @@ let countries = [
 	{name: "Slovenia", code: Si, vat: 22},
 	{name: "Spain", code: Es, vat: 21},
 	{name: "Sweden", code: Se, vat: 25},
+	{name: "Other", code: null, vat: 0},
 ]
 
 let amounts = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
 
-const checkout = () => {
-	dispatch("checkout", {country: country.name, amount: credit_amount})
+const checkout = async () => {
+	loading = true
+
+	if (amount < 10) {
+		alert("Amount needs to be at least €10")
+		return
+	}
+
+	const form = new FormData()
+	form.set("amount", amount*1e6)
+	form.set("network", "mollie")
+	form.set("country", country.name)
+
+	try {
+		const resp = await fetch(
+			window.api_endpoint+"/user/invoice",
+			{method: "POST", body: form},
+		)
+		if(resp.status >= 400) {
+			let json = await resp.json()
+			throw json.message
+		}
+
+		window.location = (await resp.json()).checkout_url
+	} catch (err) {
+		alert(err)
+	} finally {
+		loading = false
+	}
 }
 
 </script>
 
 <div class="highlight_border">
+	<LoadingIndicator loading={loading}/>
+
 	{#if country === null}
 
 		<div>Please pick your country of residence</div>
 		<div class="countries">
 			{#each countries as c}
 				<button on:click={() => country = c}>
-					<svelte:component this={c.code} size="1.5em" />
+					{#if c.code}
+						<svelte:component this={c.code} size="1.5em" />
+					{:else}
+						<i class="icon">public</i>
+					{/if}
 					<span>{c.name}</span>
 				</button>
 			{/each}
+		</div>
+		<div>
+			We support the following payment processors<br/>
+			<img class="bankicon" src="/res/img/payment_providers/ideal.svg" alt="iDEAL"/>
+			<img class="bankicon" src="/res/img/payment_providers/klarna.svg" alt="Klarna"/>
+			<img class="bankicon" src="/res/img/payment_providers/bancontact.svg" alt="Bancontact"/>
+			<img class="bankicon" src="/res/img/payment_providers/banktransfer.svg" alt="SEPA"/>
+			<img class="bankicon" src="/res/img/payment_providers/sofort.svg" alt="SOFORT"/>
+			<img class="bankicon" src="/res/img/payment_providers/kbc.svg" alt="KBC/CBC"/>
+			<img class="bankicon" src="/res/img/payment_providers/belfius.svg" alt="Belfius"/>
+			<img class="bankicon" src="/res/img/payment_providers/giropay.svg" alt="Giropay"/>
+			<img class="bankicon" src="/res/img/payment_providers/eps.svg" alt="EPS"/>
+			<img class="bankicon" src="/res/img/payment_providers/przelewy24.svg" alt="Przelewy24"/>
 		</div>
 
 	{:else}
@@ -74,7 +121,11 @@ const checkout = () => {
 			<div style="flex: 1 1 auto;"></div>
 			<div style="flex: 0 0 auto; display: flex; gap: 0.25em; align-items: center;">
 				<span>Paying from</span>
-				<svelte:component this={country.code} size="1.5em" />
+				{#if country.code}
+					<svelte:component this={country.code} size="1.5em" />
+				{:else}
+					<i class="icon">public</i>
+				{/if}
 				<span>{country.name} ({country.vat}% VAT)</span>
 			</div>
 		</div>
@@ -82,14 +133,14 @@ const checkout = () => {
 		<form class="amount_grid" on:submit|preventDefault={checkout}>
 			<div class="span3">Please choose an amount</div>
 			{#each amounts as a}
-				<button on:click|preventDefault={() => credit_amount = a} style="font-size: 1.1em;" class:button_highlight={credit_amount === a}>
+				<button on:click|preventDefault={() => amount = a} style="font-size: 1.1em;" class:button_highlight={amount === a}>
 					<div style="padding: 6px;">€ {a}</div>
 				</button>
 			{/each}
 
 			<div class="span3 mollie_checkout">
 				<div>Custom amount €</div>
-				<input type="number" bind:value={credit_amount} min="10"/>
+				<input type="number" bind:value={amount} min="10"/>
 			</div>
 
 			<div class="span2" style="text-align: initial;">
@@ -144,5 +195,10 @@ const checkout = () => {
 }
 .mollie_checkout > input[type="number"] {
 	flex: 1 1 auto;
+}
+
+.bankicon {
+	width: 40px;
+	height: 30px;
 }
 </style>

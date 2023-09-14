@@ -24,9 +24,9 @@ func formAPIError(err error, f *Form) {
 		return name
 	}
 
-	if err, ok := err.(pixelapi.Error); ok {
-		if err.StatusCode == "multiple_errors" {
-			for _, err := range err.Errors {
+	if apierr, ok := err.(pixelapi.Error); ok {
+		if apierr.StatusCode == "multiple_errors" {
+			for _, err := range apierr.Errors {
 				// Modify the message to make it more user-friendly
 				if err.StatusCode == "string_out_of_range" {
 					err.Message = fmt.Sprintf(
@@ -47,7 +47,7 @@ func formAPIError(err error, f *Form) {
 				f.SubmitMessages = append(f.SubmitMessages, template.HTML(err.Message))
 			}
 		} else {
-			f.SubmitMessages = append(f.SubmitMessages, template.HTML(err.Message))
+			f.SubmitMessages = append(f.SubmitMessages, template.HTML(apierr.Message))
 		}
 	} else {
 		log.Error("Error submitting form: %s", err)
@@ -141,6 +141,7 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 		}
 		log.Debug("capt: %s", f.FieldVal("recaptcha_response"))
 
+		// Register the user
 		if err = td.PixelAPI.UserRegister(
 			f.FieldVal("username"),
 			f.FieldVal("email"),
@@ -148,14 +149,31 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 			f.FieldVal("recaptcha_response"),
 		); err != nil {
 			formAPIError(err, &f)
-		} else {
-			// Request was a success
-			f.SubmitSuccess = true
-			f.SubmitMessages = []template.HTML{
-				`Registration completed! You can now <a href="/login">log in ` +
-					`to your account</a>.<br/>We're glad to have you on ` +
-					`board, have fun sharing!`}
+			return f
 		}
+
+		// Registration successful. Log the user in
+		session, err := td.PixelAPI.PostUserLogin(
+			f.FieldVal("username"),
+			f.FieldVal("password"),
+			"website login",
+		)
+		if err != nil {
+			log.Debug("Login failed: %s", err)
+			formAPIError(err, &f)
+			return
+		}
+
+		f.Extra.SetCookie = wc.sessionCookie(session)
+		f.Extra.RedirectTo = wc.loginRedirect(r)
+
+		// Request was a success
+		f.SubmitSuccess = true
+		f.SubmitMessages = []template.HTML{
+			`Registration completed! You can now <a href="/login">log in ` +
+				`to your account</a>.<br/>We're glad to have you on ` +
+				`board, have fun sharing!`}
+
 	}
 	return f
 }
@@ -186,6 +204,13 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 		),
 	}
 
+	// If the user is already logged in we redirect to the target page
+	// immediately
+	if td.Authenticated {
+		f.Extra.RedirectTo = wc.loginRedirect(r)
+		return f
+	}
+
 	if f.ReadInput(r) {
 		if session, err := td.PixelAPI.PostUserLogin(
 			f.FieldVal("username"),
@@ -200,27 +225,39 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 			f.SubmitMessages = []template.HTML{"Success!"}
 
 			// Set the autentication cookie
-			f.Extra.SetCookie = &http.Cookie{
-				Name:    "pd_auth_key",
-				Value:   session.AuthKey.String(),
-				Path:    "/",
-				Expires: time.Now().AddDate(50, 0, 0),
-				Domain:  wc.config.SessionCookieDomain,
-
-				// Strict means the Cookie will only be sent when the user
-				// reaches a page by a link from the same domain. Lax means any
-				// page on the domain gets the cookie and None means embedded
-				// content also gets the cookie.
-				//
-				// Users who see pixeldrain links in iframes also expect their
-				// accounts to be logged in so we need to use None
-				SameSite: http.SameSiteNoneMode,
-				Secure:   true,
-			}
-			f.Extra.RedirectTo = "/user"
+			f.Extra.SetCookie = wc.sessionCookie(session)
+			f.Extra.RedirectTo = wc.loginRedirect(r)
 		}
 	}
 	return f
+}
+
+func (wc *WebController) sessionCookie(session pixelapi.UserSession) *http.Cookie {
+	return &http.Cookie{
+		Name:    "pd_auth_key",
+		Value:   session.AuthKey.String(),
+		Path:    "/",
+		Expires: time.Now().AddDate(50, 0, 0),
+		Domain:  wc.config.SessionCookieDomain,
+
+		// Strict means the Cookie will only be sent when the user
+		// reaches a page by a link from the same domain. Lax means any
+		// page on the domain gets the cookie and None means embedded
+		// content also gets the cookie.
+		//
+		// Users who see pixeldrain links in iframes also expect their
+		// accounts to be logged in so we need to use None
+		SameSite: http.SameSiteNoneMode,
+		Secure:   true,
+	}
+}
+
+func (wc *WebController) loginRedirect(r *http.Request) string {
+	if redirect := r.URL.Query().Get("redirect"); redirect == "checkout" {
+		return "/user/prepaid/deposit#deposit"
+	} else {
+		return "/user"
+	}
 }
 
 func (wc *WebController) passwordResetForm(td *TemplateData, r *http.Request) (f Form) {

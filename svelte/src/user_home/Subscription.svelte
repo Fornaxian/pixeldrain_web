@@ -50,8 +50,17 @@ onMount(() => {
 		<div class="highlight_green">
 			<h2>Payment successful!</h2>
 			<p>
-				The credit has been added to your account balance. Activate a
-				subscription plan below to finish upgrading your account.
+				Thank you for supporting pixeldrain! The credit has been added
+				to your account balance. Activate a subscription plan below to
+				finish upgrading your account.
+			</p>
+			<p>
+				If your account credit has not been updated, please check the
+				status of your invoice on <a
+				href="/user/prepaid/deposit#invoices">the invoices page</a>.
+				Depending on the payment processor you used to can take a while
+				before your credit is deposited. If it takes too long contact
+				support@pixeldrain.com.
 			</p>
 		</div>
 	{/if}
