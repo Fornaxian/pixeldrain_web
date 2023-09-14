@@ -6,6 +6,7 @@ import Euro from "../util/Euro.svelte";
 <header id="prepaid">
 	<div class="header_image_container"></div>
 </header>
+
 <section>
 	<h2>Prepaid</h2>
 	<p>

@@ -1,6 +1,8 @@
 <script>
 import { onMount } from "svelte";
+import Euro from "../util/Euro.svelte";
 import Modal from "../util/Modal.svelte";
+import OtherPlans from "./OtherPlans.svelte";
 
 let file_expiry
 let direct_linking
@@ -11,123 +13,167 @@ onMount(() => {
 	}
 })
 </script>
-<div class="feat_table">
-	<div>
+
+<header id="pro">
+	<h1>Getting more out of pixeldrain</h1>
+</header>
+
+<section>
+	<p>
+		By purchasing a subscription you support pixeldrain on its mission
+		to make content sharing easier, safer and faster for everyone. If
+		you're on mobile the feature table might be easier to read
+		horizontally.
+	</p>
+</section>
+
+<div class="vertical_scroll">
+	<div class="grid">
 		<div></div>
-		<div class="feat_normal round_tl">Free</div>
-		<div class="feat_pro round_tr pro_header">Pro</div>
-	</div>
-	<div>
-		<div class="feat_label">Size limit per file</div>
-		<div class="feat_normal">20 GB per file (18.63 GiB)</div>
-		<div class="feat_pro">
-			<span class="text_highlight">50 GB</span> per file (46.57 GiB)
+		<div class="top_row">
+			Free
 		</div>
-	</div>
-	<div>
-		<div class="feat_label">
-			Data transfer limit
+		<div class="top_row pro_feat">
+			Pro
 		</div>
-		<div class="feat_normal">
-			Download limit of <span class="text_highlight">10 GB</span> per day
-			(24 hours). When this threshold is reached your download speed will
-			be reduced to 1 MiB/s
+		<div class="top_row pro_feat">
+			Prepaid
 		</div>
-		<div class="feat_pro">
-			Transfer limit of <span class="text_highlight">2 terabytes</span>
-			per month. If the transfer limit is exceeded the restrictions of the
-			free plan will apply
+
+		<div class="left_col">
+			Price
 		</div>
-	</div>
-	<div>
-		<div class="feat_label">
-			File expiry
+		<div class="feature_cell">
+			<span class="bold">Free</span>
 		</div>
-		<div class="feat_normal">
-			60 days after the last time it is viewed
+		<div class="feature_cell pro_feat">
+			<span class="bold">€4 / month</span> or
+			<span class="bold">€40 / year</span><br/>
+			Charged through Patreon
 		</div>
-		<div class="feat_pro">
-			<span class="text_highlight">240 days</span> after the last time it is viewed
-			<br/>
-			<button class="round" on:click={file_expiry.toggle}>
-				<i class="icon">info</i>
-				More information
-			</button>
+		<div class="feature_cell pro_feat">
+			<span class="bold">€2 / month</span><br/>
+			From account credit
 		</div>
-	</div>
-	<div>
-		<div class="feat_label">
-			Storage space
+
+		<div class="left_col">
+			Max file size
 		</div>
-		<div class="feat_pro">
-			<span class="text_highlight">No storage limit</span>
+		<div class="feature_cell">
+			<span class="bold">20 GB</span> per file
 		</div>
-	</div>
-	<div>
-		<div class="feat_label">
-			Hotlinking / embedding files
+		<div class="feature_cell span2 pro_feat">
+			<span class="bold">50 GB</span> per file
 		</div>
-		<div class="feat_normal">
-			Hotlinking is not allowed, files which are being hotlinked will be
-			blocked
+
+		<div class="left_col">
+			Download limit
 		</div>
-		<div class="feat_pro">
-			<span class="text_highlight">Hotlinking is allowed</span> within
-			your data cap
-			<br/>
+		<div class="feature_cell">
+			<span class="bold">10 GB</span> per day<br/>
+			Download speed is reduced to 1 MiB/s when exceeded
+		</div>
+		<div class="feature_cell vspan2 pro_feat">
+			<span class="bold">2 TB per month</span><br/>
+			Transfer limit used for downloading and sharing files
+		</div>
+		<div class="feature_cell vspan2 pro_feat">
+			<span class="bold">€2.00 per TB</span><br/>
+
+			Used for downloading and sharing files. There is no limit. You only
+			pay for what you use
+		</div>
+
+		<div class="left_col">
 			<button class="round" on:click={direct_linking.toggle}>
 				<i class="icon">info</i>
-				More information
+				Hotlinking
 			</button>
 		</div>
-	</div>
-	<div>
-		<div class="feat_label">
-			Adver&shy;tise&shy;ments
+		<div class="feature_cell">
+			No
 		</div>
-		<!-- <div class="feat_normal">
-			Banner advertisements on the file viewer page
-		</div> -->
-		<div class="feat_pro">
-			<span class="text_highlight">No ads</span> on files
-			you share. No ads when viewing files uploaded by
-			other users
+
+		<div class="left_col">
+			<button class="round" on:click={file_expiry.toggle}>
+				<i class="icon">info</i>
+				File expiry
+			</button>
 		</div>
-	</div>
-	<div>
-		<div class="feat_label">Privacy</div>
-		<!-- <div class="feat_normal">
-			No trackers, but advertisers can see your IP address
-			and browser fingerprint
-		</div> -->
-		<div class="feat_pro">
-			<span class="text_highlight">Completely private</span>. No third
-			party tracking scripts and no logging
+		<div class="feature_cell">
+			<span class="bold">60 days</span><br/>
+			After last download
 		</div>
-	</div>
-	<div>
-		<div class="feat_label">
+		<div class="feature_cell pro_feat">
+			<span class="bold">240 days</span><br/>
+			After last download
+		</div>
+		<div class="feature_cell pro_feat">
+			<span class="bold">Never</span><br/>
+			While subscription is active
+		</div>
+
+		<div class="left_col">
+			Storage
+		</div>
+		<div class="feature_cell span2 pro_feat">
+			<span class="bold">No limit</span><br/>
+			But files expire when they are not downloaded
+		</div>
+		<div class="feature_cell pro_feat">
+			<span class="bold">€2 / TB / month</span><br/>
+			There is no limit. You only pay for what you use
+		</div>
+
+		<div class="left_col">
+			Advertising
+		</div>
+		<div class="feature_cell span3 pro_feat">
+			<span class="bold">None</span>. Pixeldrain does not have third-party
+			advertising. Though we do promote our own product on the free plan
+		</div>
+
+		<div class="left_col">
+			Privacy
+		</div>
+		<div class="feature_cell span3 pro_feat">
+			<span class="bold">Completely private</span>.
+			No third party tracking scripts and no logging
+		</div>
+
+		<div class="left_col">
+			Download page customization
+		</div>
+		<div class="feature_cell span2">
+			No customization
+		</div>
+		<div class="feature_cell pro_feat">
+			Custom <span class="bold">colour theme</span>,
+			<span class="bold">background</span> and
+			<span class="bold">banner images</span>
+		</div>
+
+		<div class="left_col">
 			Online file previews
 		</div>
-		<div class="feat_normal">
-			View image, audio, PDF and text files directly in your
-			web browser
+		<div class="feature_cell">
+			<span class="bold">Image, audio, PDF and text files</span><br/>
+			Can all be viewed in the browser
 		</div>
-		<div class="feat_pro">
-			<span class="text_highlight">Video streaming</span> in
-			your web browser. Free users will also be able to watch
-			videos you uploaded
+		<div class="feature_cell span2 pro_feat">
+			<span class="bold">Video streaming</span><br/>
+			Plus the free previews of course
 		</div>
-	</div>
-	<div>
+
 		<div></div>
-		<div class="feat_normal round_bl">Free</div>
-		<div class="feat_pro round_br">
+		<div class="bottom_row">
+			Free
+		</div>
+		<div class="bottom_row pro_feat">
 			{#if window.user.subscription.id === "patreon_1"}
 				You have this plan<br/>
 				Thank you for supporting pixeldrain!
 			{:else}
-				Only
 				<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701&cadence=1" class="button button_highlight round">
 					€ 4 per month
 				</a>
@@ -141,8 +187,55 @@ onMount(() => {
 				Subscription managed by Patreon
 			{/if}
 		</div>
+		<div class="bottom_row pro_feat">
+			{#if window.user.username === ""}
+				<!-- User is not logged in -->
+				Account required<br/>
+				<a href="/login?redirect=checkout" class="button button_highlight round">
+					<i class="icon">login</i>
+					Log in
+				</a>
+				or
+				<a href="/register?redirect=checkout" class="button button_highlight round">
+					<i class="icon">how_to_reg</i>
+					Register
+				</a>
+				<br/>
+				Payments processed by Mollie<br/>
+				No recurring payments
+			{:else}
+				<!-- User is logged in -->
+				{#if window.user.subscription.type === ""}
+					<a href="/user/prepaid/deposit?deposit" class="button button_highlight round">
+						Deposit credit
+					</a>
+					to activate Prepaid
+				{:else if window.user.subscription.type === "patreon"}
+					Patreon subscription active. Prepaid cannot be activated
+				{:else if window.user.subscription.type === "prepaid"}
+					Prepaid plan is active.<br/>
+					Current balance <Euro amount={window.user.balance_micro_eur}/>
+					<br/>
+					<a href="/user/prepaid/deposit?deposit" class="button button_highlight round">
+						Top up my credit
+					</a>
+				{/if}
+			{/if}
+		</div>
 	</div>
 </div>
+
+<section>
+	<br/>
+	<br/>
+	<br/>
+	<div style="text-align: center;">
+		These plans can also be subscribed to through Patreon:
+	</div>
+	<br/>
+	<OtherPlans/>
+	<br/>
+</section>
 
 <Modal bind:this={file_expiry} title="File Expiry Postponing" padding>
 	<p>
@@ -240,52 +333,80 @@ onMount(() => {
 </Modal>
 
 <style>
-.feat_table {
-	display: flex;
-	flex-direction: column;
+header {
+	background-image: url("/res/img/inflating_star.webp");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
+	background-blend-mode: normal;
+	box-shadow: inset 0 0 10px -4px var(--shadow_color);
 }
-.feat_table > div {
-	display: flex;
-	flex-direction: row;
+header > h1 {
+	margin-top: 70px;
+	margin-bottom: 70px;
+	color: #ffffff;
+	text-shadow: 0 0 3px #000000;
 }
-.feat_table > div > div:first-child {
-	flex: 0 0 20%;
-	max-width: 20%;
+
+.bold {
+	font-weight: bold;
 }
-.feat_table > div > div {
-	flex: 1 1 0;
-	margin: 0.2em;
-	padding: 0.5em;
+
+.vertical_scroll {
+	overflow-x: scroll;
+	overflow-y: hidden;
+	width: 100%;
+}
+
+.grid {
+	display: inline-grid;
+	grid-auto-flow: row;
+	grid-template-columns: 9em 1fr 1fr 1fr;
+	min-width: 40em;
+	max-width: 70em;
+	gap: 8px;
+	margin: 0.5em;
+}
+.grid > div {
+	justify-content: center;
+	align-items: center;
 	text-align: center;
-	word-wrap: break-word;
-	hyphens: auto;
+	padding: 0.5em;
+	min-height: 3em;
 }
-.feat_table > div > .feat_label {
+
+.left_col {
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
 	border: 1px solid var(--separator);
 }
-.feat_table > div > .feat_normal {
-	background-color: var(--card_color);
+.top_row {
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
 	border: 1px solid var(--separator);
-}
-.feat_table > div > .feat_pro {
-	background-color: var(--card_color);
-	border: 1px solid var(--highlight_color);
-}
-.text_highlight {
 	font-weight: bold;
 }
-.feat_table > div > .pro_header {
-	background-image: url("/res/img/benefit_1.webp");
-	background-size: cover;
-	font-size: 1.2em;
-	text-shadow: 1px 1px 2px #000000;
-	color: #ffffff;
+.bottom_row {
+	border-bottom-left-radius: 0.5em;
+	border-bottom-right-radius: 0.5em;
+	border: 1px solid var(--separator);
+	font-weight: bold;
 }
-
-.feat_table > div > div.round_tl { border-top-left-radius:     0.5em; }
-.feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
-.feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
-.feat_table > div > div.round_bl { border-bottom-left-radius:  0.5em; }
+.feature_cell {
+	background-color: var(--card_color);
+	border: 1px solid var(--background_color);
+}
+.pro_feat {
+	border: 1px solid var(--highlight_color);
+}
+.span2 {
+	grid-column: span 2;
+}
+.span3 {
+	grid-column: span 3;
+}
+.vspan2 {
+	grid-row: span 2;
+}
 </style>

@@ -3,7 +3,6 @@ import Footer from "../layout/Footer.svelte";
 import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
 import ForCreators from "./ForCreators.svelte";
-import OtherPlans from "./OtherPlans.svelte";
 import UploadWidget from "./UploadWidget.svelte";
 </script>
 
@@ -48,27 +47,7 @@ import UploadWidget from "./UploadWidget.svelte";
 </div>
 
 <div class="page_content">
-	<header>
-		<h1 id="pro">Getting more out of pixeldrain</h1>
-	</header>
-	<section>
-		<p>
-			By purchasing a subscription you support pixeldrain on its mission
-			to make content sharing easier, safer and faster for everyone. The
-			standard subscription plans use Patreon for payment processing.
-			Check out our <a href="#prepaid">prepaid plans</a> if you are
-			interested in more professional services.
-		</p>
-		<br/>
-		<FeatureTable></FeatureTable>
-		<br/>
-		<div style="text-align: center;">
-			Do you need even more time and space? Check out our other plans
-		</div>
-		<br/>
-		<OtherPlans></OtherPlans>
-		<br/>
-	</section>
+	<FeatureTable/>
 </div>
 
 <div class="page_content">
@@ -88,6 +67,22 @@ import UploadWidget from "./UploadWidget.svelte";
 	}
 }
 
+header {
+	background-image: url("/res/img/inflating_star.webp");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
+	background-blend-mode: normal;
+	box-shadow: inset 0 0 10px -4px var(--shadow_color);
+}
+header > h1 {
+	margin-top: 70px;
+	margin-bottom: 70px;
+	color: #ffffff;
+	text-shadow: 0 0 3px #000000;
+}
+
 .header_image_container {
 	margin: auto;
 	height: 200px;
@@ -102,9 +97,5 @@ import UploadWidget from "./UploadWidget.svelte";
 	.header_image_container {
 		background-image: url("/res/img/header_orbitron.webp");
 	}
-}
-header>h1{
-	color: #ffffff;
-	margin: 40px 10px 40px 10px;
 }
 </style>
