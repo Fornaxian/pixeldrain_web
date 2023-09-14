@@ -1,8 +1,8 @@
 import svelte from 'rollup-plugin-svelte';
-import resolve from '@rollup/plugin-node-resolve';
+import resolve, { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -42,18 +42,20 @@ export default [
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		// file: `public/build/${name}.js`
-		file: `${builddir}/${name}.js`
+		file: `${builddir}/${name}.js`,
 	},
 	plugins: [
 		svelte({
-			// enable run-time checks when not in production
-			dev: !production,
-			// we'll extract any component CSS out into
-			// a separate file - better for performance
-			css: css => {
-				css.write(`${name}.css`);
-			}
+			compilerOptions: {
+				// enable run-time checks when not in production
+				dev: !production,
+				// we'll extract any component CSS out into
+				// a separate file - better for performance
+				// css: css => {
+				// 	css.write(`${name}.css`);
+				// },
+			},
+			emitCss: false,
 		}),
 
 		// If you have external dependencies installed from
@@ -63,9 +65,11 @@ export default [
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
 		resolve({
 			browser: true,
-			dedupe: ['svelte']
+			exportConditions: ['svelte'],
+			extensions: ['.svelte'],
 		}),
 		commonjs(),
+		nodeResolve(),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
@@ -84,5 +88,5 @@ export default [
 	],
 	watch: {
 		clearScreen: false
-	}
+	},
 }));

@@ -49,8 +49,17 @@ const keydown = e => {
 <svelte:window on:keydown={keydown}/>
 
 {#if visible}
-	<div class="background" use:load_bg on:click={hide} transition:fade={{duration: 200}} on:keydown={keydown}>
+	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+	<div
+		class="background"
+		use:load_bg
+		on:click={hide}
+		transition:fade={{duration: 200}}
+		on:keydown={keydown}
+		role="dialog"
+	>
 		<div class="top_padding"></div>
+		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<div
 			class="window"
 			class:small_radius={form !== ""}

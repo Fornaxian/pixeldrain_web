@@ -28,7 +28,15 @@ export let highlight = false
 </script>
 
 <div class="expandable">
-	<div class="header" class:click_expand class:highlight on:click={header_click} on:keypress={keypress}>
+	<div
+		class="header"
+		class:click_expand
+		class:highlight
+		role="button"
+		tabindex="0"
+		on:click={header_click}
+		on:keypress={keypress}
+	>
 		<div class="title">
 			<slot name="header"></slot>
 		</div>

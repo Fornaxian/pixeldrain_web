@@ -98,6 +98,7 @@ const drop = (e, index) => {
 			on:dragenter={() => hovering = -2}
 			on:dragend={() => {hovering = -1}}
 			class:highlight={!dragging && hovering === -2}
+			role="listitem"
 		>
 			<button on:click={e => dispatch("pick_files")} style="font-size: 1.5em; cursor: pointer;">
 				<i class="icon">cloud_upload</i>

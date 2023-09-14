@@ -46,6 +46,7 @@ const mouseup = (e) => {
 <svelte:window on:mousemove={mousemove} on:mouseup={mouseup} />
 
 <div bind:this={container} class="container" class:zoom>
+	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img
 		on:dblclick={() => {zoom = !zoom}}
 		on:doubletap={() => {zoom = !zoom}}
