@@ -28,6 +28,7 @@ let chart_element
 let chart_object
 export let data_type = ""
 export let legend = true
+export let tooltips = true
 
 export const chart = () => {
 	return chart_object
@@ -66,6 +67,9 @@ onMount(() => {
 							boxWidth: 12,
 							boxHeight: 12,
 						}
+					},
+					tooltip: {
+						enabled: tooltips,
 					},
 				},
 				layout: {
@@ -107,7 +111,7 @@ onMount(() => {
 							drawBorder: false,
 						}
 					}
-				}
+				},
 			}
 		}
 	);
