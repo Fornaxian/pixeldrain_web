@@ -60,18 +60,18 @@ onMount(() => {
 			Download limit
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">10 GB</span> per day<br/>
+			<span class="bold">10 GB per day</span><br/>
 			Download speed is reduced to 1 MiB/s when exceeded
 		</div>
-		<div class="feature_cell vspan2 pro_feat">
+		<div class="feature_cell pro_feat">
 			<span class="bold">2 TB per month</span><br/>
-			Transfer limit used for downloading and sharing files
+			Transfer limit is used for downloading, sharing and hotlinking files
 		</div>
-		<div class="feature_cell vspan2 prepaid_feat">
-			<span class="bold">€2.00 per TB</span><br/>
+		<div class="feature_cell prepaid_feat">
+			<span class="bold">€2 per TB transferred</span><br/>
 
-			Used for downloading and sharing files. There is no limit. You only
-			pay for what you use
+			Used for downloading, sharing and hotlinking files. You only pay for
+			what you use
 		</div>
 
 		<div class="left_col">
@@ -81,7 +81,12 @@ onMount(() => {
 			</button>
 		</div>
 		<div class="feature_cell free_feat">
-			No
+			Only <span class="bold">image files</span> below <span
+			class="bold">1 MB</span> in size
+		</div>
+		<div class="feature_cell span2 pro_feat">
+			<span class="bold">Any file type</span><br/>
+			Hotlinking uses your transfer limit
 		</div>
 
 		<div class="left_col">
@@ -103,12 +108,12 @@ onMount(() => {
 			</button>
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">60 days</span><br/>
-			After last download
+			<span class="bold">60 days</span> (2 months)<br/>
+			After last download or view
 		</div>
 		<div class="feature_cell pro_feat">
-			<span class="bold">240 days</span><br/>
-			After last download. Plans without expiry are available on Patreon
+			<span class="bold">240 days</span> (8 months)<br/>
+			After last download or view. Plans without expiry are available on Patreon
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">Never</span><br/>
@@ -365,8 +370,8 @@ header > h1 {
 	grid-template-columns: 9em 1fr 1fr 1fr;
 	min-width: 40em;
 	max-width: 65em;
-	gap: 8px;
-	margin: 0.5em;
+	gap: 6px;
+	margin: 12px;
 }
 .grid > div {
 	justify-content: center;
