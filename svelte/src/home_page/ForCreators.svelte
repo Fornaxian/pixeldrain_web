@@ -57,9 +57,9 @@ import Euro from "../util/Euro.svelte";
 
 		{:else if window.user.subscription.type === "prepaid"}
 			<p>
-				You already have a Prepaid subscription active. You account balance
-				is <Euro amount={window.user.balance_micro_eur}/>. Use the form
-				below to top up your balance.
+				You already have a Prepaid subscription active. Your account
+				balance is <Euro amount={window.user.balance_micro_eur}/>. Use
+				the form below to top up your balance.
 			</p>
 			<MollieDeposit/>
 		{:else}

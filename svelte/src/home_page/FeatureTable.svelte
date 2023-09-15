@@ -57,16 +57,6 @@ onMount(() => {
 		</div>
 
 		<div class="left_col">
-			Max file size
-		</div>
-		<div class="feature_cell">
-			<span class="bold">20 GB</span> per file
-		</div>
-		<div class="feature_cell span2 pro_feat">
-			<span class="bold">50 GB</span> per file
-		</div>
-
-		<div class="left_col">
 			Download limit
 		</div>
 		<div class="feature_cell">
@@ -95,6 +85,18 @@ onMount(() => {
 		</div>
 
 		<div class="left_col">
+			Storage
+		</div>
+		<div class="feature_cell span2 pro_feat">
+			<span class="bold">No limit</span><br/>
+			But files expire when they are not downloaded
+		</div>
+		<div class="feature_cell pro_feat">
+			<span class="bold">€4 / TB / month</span><br/>
+			There is no limit. You only pay for what you use
+		</div>
+
+		<div class="left_col">
 			<button class="round" on:click={file_expiry.toggle}>
 				<i class="icon">info</i>
 				File expiry
@@ -114,15 +116,13 @@ onMount(() => {
 		</div>
 
 		<div class="left_col">
-			Storage
+			Max file size
+		</div>
+		<div class="feature_cell">
+			<span class="bold">20 GB</span> per file
 		</div>
 		<div class="feature_cell span2 pro_feat">
-			<span class="bold">No limit</span><br/>
-			But files expire when they are not downloaded
-		</div>
-		<div class="feature_cell pro_feat">
-			<span class="bold">€2 / TB / month</span><br/>
-			There is no limit. You only pay for what you use
+			<span class="bold">50 GB</span> per file
 		</div>
 
 		<div class="left_col">
@@ -206,7 +206,7 @@ onMount(() => {
 			{:else}
 				<!-- User is logged in -->
 				{#if window.user.subscription.type === ""}
-					<a href="/user/prepaid/deposit?deposit" class="button button_highlight round">
+					<a href="/user/prepaid/deposit#deposit" class="button button_highlight round">
 						Deposit credit
 					</a>
 					to activate Prepaid
@@ -216,7 +216,7 @@ onMount(() => {
 					Prepaid plan is active.<br/>
 					Current balance <Euro amount={window.user.balance_micro_eur}/>
 					<br/>
-					<a href="/user/prepaid/deposit?deposit" class="button button_highlight round">
+					<a href="/user/prepaid/deposit#deposit" class="button button_highlight round">
 						Top up my credit
 					</a>
 				{/if}
@@ -364,7 +364,7 @@ header > h1 {
 	grid-auto-flow: row;
 	grid-template-columns: 9em 1fr 1fr 1fr;
 	min-width: 40em;
-	max-width: 70em;
+	max-width: 65em;
 	gap: 8px;
 	margin: 0.5em;
 }

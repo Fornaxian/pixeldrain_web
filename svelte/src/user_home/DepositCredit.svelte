@@ -79,10 +79,6 @@ onMount(() => {
 		use, at a rate of €4 per TB per month for storage and €2 per TB for data
 		transfer.
 	</p>
-	<p>
-		Use the form below to deposit credit on your pixeldrain account using
-		Mollie. The minimum deposit is €10.
-	</p>
 
 	<MollieDeposit/>
 
