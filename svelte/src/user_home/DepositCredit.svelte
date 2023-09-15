@@ -7,6 +7,7 @@ import MollieDeposit from "./MollieDeposit.svelte";
 
 let loading = false
 let credit_amount = 10
+let tab = "mollie"
 
 const checkout = async (network = "", amount = 0, country = "") => {
 	loading = true
@@ -40,6 +41,7 @@ const checkout = async (network = "", amount = 0, country = "") => {
 }
 
 let invoices = []
+let unpaid_invoice = false
 const load_invoices = async () => {
 	loading = true
 	try {
@@ -49,8 +51,13 @@ const load_invoices = async () => {
 		}
 
 		let invoices_tmp = await resp.json()
+		unpaid_invoice = false
 		invoices_tmp.forEach(row => {
 			row.time = new Date(row.time)
+
+			if (row.payment_method === "mollie" && row.status === "open") {
+				unpaid_invoice = true
+			}
 		})
 		invoices_tmp.sort((a, b) => {
 			return b.time - a.time
@@ -80,36 +87,59 @@ onMount(() => {
 		transfer.
 	</p>
 
-	<MollieDeposit/>
-
-	<h3>Crypto payments</h3>
-	<p>
-		Alternatively you can use Bitcoin, Lightning network (<a
-		href="https://btcpay.pixeldrain.com/embed/uS2mbWjXUuaAqMh8XLjkjwi8oehFuxeBZxekMxv68LN/BTC/ln"
-		target="_blank" rel="noreferrer">node info</a>) and Dogecoin to deposit
-		credits on your pixeldrain account. You must pay the full amount as
-		stated on the invoice, else your payment will fail.
-	</p>
-	<p>
-		Do note that it is not possible to withdraw coins from your
-		pixeldrain account. It's not a wallet. Any amount of money you
-		deposit has to be used up.
-	</p>
-	<div class="highlight_border">
-		Deposit amount €
-		<input type="number" bind:value={credit_amount} min="10"/>
-		<br/>
-		Choose payment method:<br/>
-		<button on:click={() => {checkout("btc", credit_amount)}}>
-			<span class="icon_unicode">₿</span> Bitcoin
+	<div class="tab_bar">
+		<button on:click={() => tab = "mollie"} class:button_highlight={tab === "mollie"}>
+			<i class="icon">euro</i>
+			Mollie
 		</button>
-		<button on:click={() => {checkout("btc_lightning", credit_amount)}}>
-			<i class="icon">bolt</i> Lightning network
-		</button>
-		<button on:click={() => {checkout("doge", credit_amount)}}>
-			<span class="icon_unicode">Ð</span> Dogecoin
+		<button on:click={() => tab = "btcpay"} class:button_highlight={tab === "btcpay"}>
+			<i class="icon">currency_bitcoin</i>
+			Crypto
 		</button>
 	</div>
+	{#if tab === "mollie"}
+		{#if unpaid_invoice}
+			<div class="highlight_yellow">
+				<p>
+					You still have an unpaid invoice open. Please pay that one
+					before requesting a new invoice. You can find unpaid
+					invoices at the bottom of this page. You can cancel an
+					invoice by clicking Pay, and then clicking the Back link at
+					the bottom of the page.
+				</p>
+			</div>
+		{:else}
+			<MollieDeposit/>
+		{/if}
+	{:else if tab === "btcpay"}
+		<div class="highlight_border">
+			<p style="text-align: initial">
+				Alternatively you can use Bitcoin, Lightning network (<a
+				href="https://btcpay.pixeldrain.com/embed/uS2mbWjXUuaAqMh8XLjkjwi8oehFuxeBZxekMxv68LN/BTC/ln"
+				target="_blank" rel="noreferrer">node info</a>) and Dogecoin to deposit
+				credits on your pixeldrain account. You must pay the full amount as
+				stated on the invoice, else your payment will fail.
+			</p>
+			<p style="text-align: initial">
+				Do note that it is not possible to withdraw coins from your
+				pixeldrain account. It's not a wallet. Any amount of money you
+				deposit has to be used up.
+			</p>
+			Deposit amount €
+			<input type="number" bind:value={credit_amount} min="10"/>
+			<br/>
+			Choose payment method:<br/>
+			<button on:click={() => {checkout("btc", credit_amount)}}>
+				<i class="icon">currency_bitcoin</i> Bitcoin
+			</button>
+			<button on:click={() => {checkout("btc_lightning", credit_amount)}}>
+				<i class="icon">bolt</i> Lightning network
+			</button>
+			<button on:click={() => {checkout("doge", credit_amount)}}>
+				<span class="icon_unicode">Ð</span> Dogecoin
+			</button>
+		</div>
+	{/if}
 
 	<h3 id="invoices">Past invoices</h3>
 	<p>

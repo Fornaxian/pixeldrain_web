@@ -34,9 +34,10 @@ $: frac = used / total
 	<div class="highlight_blue">
 		<p>
 			You have used {(frac*100).toFixed(0)}% of your data cap. If your
-			data runs out people won't be able to download your files directly
-			from the API anymore, ads will be shown on the file viewer and
-			transfer rates will be limited.
+			data runs out the premium features related to downloading will be
+			disabled. This means that the download page shows pixeldrain
+			branding, people who download your files have a daily download limit
+			and hotlinking is disabled.
 		</p>
 
 		{#if window.user.monthly_transfer_cap > 0}

@@ -74,7 +74,6 @@ header {
 	background-position: center;
 	background-size: cover;
 	background-blend-mode: normal;
-	box-shadow: inset 0 0 10px -4px var(--shadow_color);
 }
 header > h1 {
 	margin-top: 60px;

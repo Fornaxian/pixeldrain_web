@@ -57,21 +57,25 @@ onMount(() => {
 		</div>
 
 		<div class="left_col">
-			Download limit
+			Downloading
 		</div>
 		<div class="feature_cell free_feat">
 			<span class="bold">10 GB per day</span><br/>
-			Download speed is reduced to 1 MiB/s when exceeded
+
+			Download speed is reduced to 1 MiB/s when exceeded. Max 3 concurrent
+			downloads
 		</div>
 		<div class="feature_cell pro_feat">
 			<span class="bold">2 TB per month</span><br/>
-			Transfer limit is used for downloading, sharing and hotlinking files
+
+			Transfer limit is used for downloading, sharing and hotlinking. No
+			connection limit
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">€2 per TB transferred</span><br/>
 
-			Used for downloading, sharing and hotlinking files. You only pay for
-			what you use
+			Used for downloading, sharing and hotlinking. You only pay for what
+			you use. No connection limit
 		</div>
 
 		<div class="left_col">
@@ -82,7 +86,7 @@ onMount(() => {
 		</div>
 		<div class="feature_cell free_feat">
 			Only <span class="bold">image files</span> below <span
-			class="bold">1 MB</span> in size
+			class="bold">1 MB</span> in size can be hotlinked
 		</div>
 		<div class="feature_cell span2 pro_feat">
 			<span class="bold">Any file type</span><br/>
@@ -94,7 +98,7 @@ onMount(() => {
 		</div>
 		<div class="feature_cell span2 pro_feat">
 			<span class="bold">No limit</span><br/>
-			But files expire when they are not downloaded
+			Files expire when they are not downloaded
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">€4 / TB / month</span><br/>
@@ -345,7 +349,6 @@ header {
 	background-position: center;
 	background-size: cover;
 	background-blend-mode: normal;
-	box-shadow: inset 0 0 10px -4px var(--shadow_color);
 }
 header > h1 {
 	margin-top: 60px;
@@ -369,9 +372,9 @@ header > h1 {
 	grid-auto-flow: row;
 	grid-template-columns: 9em 1fr 1fr 1fr;
 	min-width: 40em;
-	max-width: 65em;
-	gap: 6px;
-	margin: 12px;
+	max-width: 70em;
+	gap: 5px;
+	margin: 10px;
 }
 .grid > div {
 	justify-content: center;
@@ -414,8 +417,5 @@ header > h1 {
 }
 .span3 {
 	grid-column: span 3;
-}
-.vspan2 {
-	grid-row: span 2;
 }
 </style>
