@@ -60,6 +60,11 @@ onMount(() => {
 				datasets: [],
 			},
 			options: {
+				responsive: true,
+				// Only update the chart 100ms after the last time the container
+				// is resized. This fixes the stuttering that happens when the
+				// chart updates each frame
+				resizeDelay: 100,
 				plugins: {
 					legend: {
 						display: legend,
