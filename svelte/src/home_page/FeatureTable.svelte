@@ -30,20 +30,20 @@ onMount(() => {
 <div class="vertical_scroll">
 	<div class="grid">
 		<div></div>
-		<div class="top_row">
-			Free
+		<div class="top_row free_feat">
+			<span class="bold">Free</span>
 		</div>
 		<div class="top_row pro_feat">
-			Pro
+			<span class="bold">Pro</span>
 		</div>
 		<div class="top_row pro_feat">
-			Prepaid
+			<span class="bold">Prepaid</span> (currently only in Europe)
 		</div>
 
 		<div class="left_col">
 			Price
 		</div>
-		<div class="feature_cell">
+		<div class="feature_cell free_feat">
 			<span class="bold">Free</span>
 		</div>
 		<div class="feature_cell pro_feat">
@@ -59,7 +59,7 @@ onMount(() => {
 		<div class="left_col">
 			Download limit
 		</div>
-		<div class="feature_cell">
+		<div class="feature_cell free_feat">
 			<span class="bold">10 GB</span> per day<br/>
 			Download speed is reduced to 1 MiB/s when exceeded
 		</div>
@@ -80,7 +80,7 @@ onMount(() => {
 				Hotlinking
 			</button>
 		</div>
-		<div class="feature_cell">
+		<div class="feature_cell free_feat">
 			No
 		</div>
 
@@ -102,7 +102,7 @@ onMount(() => {
 				File expiry
 			</button>
 		</div>
-		<div class="feature_cell">
+		<div class="feature_cell free_feat">
 			<span class="bold">60 days</span><br/>
 			After last download
 		</div>
@@ -118,7 +118,7 @@ onMount(() => {
 		<div class="left_col">
 			Max file size
 		</div>
-		<div class="feature_cell">
+		<div class="feature_cell free_feat">
 			<span class="bold">20 GB</span> per file
 		</div>
 		<div class="feature_cell span2 pro_feat">
@@ -144,7 +144,7 @@ onMount(() => {
 		<div class="left_col">
 			Download page customization
 		</div>
-		<div class="feature_cell span2">
+		<div class="feature_cell free_feat span2">
 			No customization
 		</div>
 		<div class="feature_cell pro_feat">
@@ -156,7 +156,7 @@ onMount(() => {
 		<div class="left_col">
 			Online file previews
 		</div>
-		<div class="feature_cell">
+		<div class="feature_cell free_feat">
 			<span class="bold">Image, audio, PDF and text files</span><br/>
 			Can all be viewed in the browser
 		</div>
@@ -166,7 +166,7 @@ onMount(() => {
 		</div>
 
 		<div></div>
-		<div class="bottom_row">
+		<div class="bottom_row free_feat">
 			Free
 		</div>
 		<div class="bottom_row pro_feat">
@@ -384,8 +384,6 @@ header > h1 {
 .top_row {
 	border-top-left-radius: 0.5em;
 	border-top-right-radius: 0.5em;
-	border: 1px solid var(--separator);
-	font-weight: bold;
 }
 .bottom_row {
 	border-bottom-left-radius: 0.5em;
@@ -399,6 +397,9 @@ header > h1 {
 }
 .pro_feat {
 	border: 1px solid var(--highlight_color);
+}
+.free_feat {
+	border: 1px solid var(--danger_color);
 }
 .span2 {
 	grid-column: span 2;
