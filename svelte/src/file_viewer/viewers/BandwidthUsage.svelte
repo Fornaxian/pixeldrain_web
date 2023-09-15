@@ -32,8 +32,8 @@ $: transfer_left = $download_limits.transfer_limit - $download_limits.transfer_l
 
 		<p>
 			<strong>
-				<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
-					<i class="icon">bolt</i> Support Pixeldrain on Patreon
+				<a href="/#pro" target="_blank" class="button button_highlight" rel="noreferrer">
+					<i class="icon">bolt</i> Upgrade your account
 				</a>
 				to disable the transfer limit
 			</strong>

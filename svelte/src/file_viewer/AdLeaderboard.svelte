@@ -18,14 +18,14 @@ onMount(() => {
 	}
 
 
-	// 30% pixeldrain socials
+	// 20% pixeldrain socials
 	// 20% reviews
 	// 50% patreon
 
 	let rand = Math.random()
-	if (rand < 0.3) {
+	if (rand < 0.2) {
 		set_ad_type("socials")
-	} else if (rand < 0.5) {
+	} else if (rand < 0.4) {
 		set_ad_type("reviews")
 	} else {
 		set_ad_type("patreon_support")
@@ -149,52 +149,14 @@ head.valueimpression_loaded.subscribe(v => {
 		<img bind:this={banner} usemap="#socials_map" class="banner" src="/res/img/advertising/pixeldrain_socials.webp" style="display: inline-block; width: 728px; height: 90px;" alt="Pixeldrain social media"/>
 
 	{:else if ad_type === "patreon_support"}
+
 		<div class="banner support_banner">
 			<span style="display: block; margin-bottom: 2px;">
 				No ads today. Pixeldrain is currently funded by our subscribers!
 			</span>
-			<a href="https://www.patreon.com/join/pixeldrain" rel="noreferrer" class="button button_highlight" target="_blank">
+			<a href="/#pro" rel="noreferrer" class="button button_highlight" target="_blank">
 				<i class="icon">bolt</i>
 				Support Pixeldrain to help keep the project going
-			</a>
-		</div>
-	{:else if ad_type === "twitter"}
-
-		<div class="banner social_button">
-			<a href="https://twitter.com/Fornax96" rel="noreferrer" class="button" target="_blank" style="background-color: #1a8cd8; color: #ffffff;">
-				<Twitter style="color: #ffffff;"/>
-				Follow Pixeldrain on Twitter: @Fornax96
-			</a>
-		</div>
-
-	{:else if ad_type === "mastodon"}
-
-		<div class="banner social_button">
-			<a href="https://mastodon.social/@fornax" rel="noreferrer" class="button" target="_blank" style="background-color: #595aff; color: #ffffff;">
-				<Mastodon style="color: #ffffff;"/>
-				Follow Pixeldrain on Mastodon: fornax@mastodon.social
-			</a>
-		</div>
-
-	{:else if ad_type === "reddit"}
-
-		<div class="banner social_button">
-			<a href="https://www.reddit.com/r/PixelDrain"
-				rel="noreferrer" class="button" target="_blank" style="background-color: #ff4500; color: #ffffff;"
-			>
-				<Reddit style="color: #ffffff;"/>
-				Follow Pixeldrain on Reddit: /r/pixeldrain
-			</a>
-		</div>
-
-
-	{:else if ad_type === "lemmy"}
-
-		<div class="banner social_button">
-			<a href="https://lemmy.fornaxian.tech/c/pixeldrain"
-				rel="noreferrer" class="button" target="_blank" style="background-color: #14854f; color: #ffffff;"
-			>
-				Follow Pixeldrain on Lemmy: lemmy.fornaxian.tech
 			</a>
 		</div>
 
@@ -267,10 +229,6 @@ head.valueimpression_loaded.subscribe(v => {
 .support_banner {
 	text-align: center;
 	padding: 2px;
-}
-.social_button {
-	text-align: center;
-	padding: 4px;
 }
 .socials {
 	display: inline-block;

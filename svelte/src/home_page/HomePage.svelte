@@ -77,8 +77,8 @@ header {
 	box-shadow: inset 0 0 10px -4px var(--shadow_color);
 }
 header > h1 {
-	margin-top: 70px;
-	margin-bottom: 70px;
+	margin-top: 60px;
+	margin-bottom: 60px;
 	color: #ffffff;
 	text-shadow: 0 0 3px #000000;
 }

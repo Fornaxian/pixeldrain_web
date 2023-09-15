@@ -1,5 +1,5 @@
 <script>
-import { createEventDispatcher, onMount } from "svelte";
+import { createEventDispatcher } from "svelte";
 import { formatDataVolume } from "../../util/Formatting.svelte";
 import { download_limits } from "../DownloadLimitStore";
 import IconBlock from "./IconBlock.svelte";
@@ -48,8 +48,10 @@ let file = {
 		</p>
 	{/if}
 	<p>
-		This warning disappears when you are a
-		<a href="https://www.patreon.com/join/pixeldrain/checkout?rid=5736701&cadence=12" target="_blank" rel="noreferrer">Patreon supporter</a>,
+		This warning disappears when you have a
+		<a href="/#pro" target="_blank">
+			premium account
+		</a>
 		or when the uploader of the file enables
 		<a href="/user/subscription">bandwidth sharing</a> on their Pro account
 		(and their data cap has not been used up). Using a download manager with
@@ -72,7 +74,7 @@ let file = {
 	<button on:click={() => {dispatch("download")}}>
 		<i class="icon">download</i> Download
 	</button>
-	<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
-		<i class="icon">bolt</i> Support Pixeldrain on Patreon
+	<a href="/#pro" target="_blank" class="button button_highlight">
+		<i class="icon">bolt</i> Upgrade your account
 	</a>
 </IconBlock>

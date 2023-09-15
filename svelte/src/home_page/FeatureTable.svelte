@@ -36,7 +36,7 @@ onMount(() => {
 		<div class="top_row pro_feat">
 			<span class="bold">Pro</span>
 		</div>
-		<div class="top_row pro_feat">
+		<div class="top_row prepaid_feat">
 			<span class="bold">Prepaid</span> (currently only in Europe)
 		</div>
 
@@ -51,7 +51,7 @@ onMount(() => {
 			<span class="bold">€40 / year</span><br/>
 			Charged through Patreon
 		</div>
-		<div class="feature_cell pro_feat">
+		<div class="feature_cell prepaid_feat">
 			<span class="bold">€2 / month</span><br/>
 			From account credit
 		</div>
@@ -67,7 +67,7 @@ onMount(() => {
 			<span class="bold">2 TB per month</span><br/>
 			Transfer limit used for downloading and sharing files
 		</div>
-		<div class="feature_cell vspan2 pro_feat">
+		<div class="feature_cell vspan2 prepaid_feat">
 			<span class="bold">€2.00 per TB</span><br/>
 
 			Used for downloading and sharing files. There is no limit. You only
@@ -91,7 +91,7 @@ onMount(() => {
 			<span class="bold">No limit</span><br/>
 			But files expire when they are not downloaded
 		</div>
-		<div class="feature_cell pro_feat">
+		<div class="feature_cell prepaid_feat">
 			<span class="bold">€4 / TB / month</span><br/>
 			There is no limit. You only pay for what you use
 		</div>
@@ -108,9 +108,9 @@ onMount(() => {
 		</div>
 		<div class="feature_cell pro_feat">
 			<span class="bold">240 days</span><br/>
-			After last download
+			After last download. Plans without expiry are available on Patreon
 		</div>
-		<div class="feature_cell pro_feat">
+		<div class="feature_cell prepaid_feat">
 			<span class="bold">Never</span><br/>
 			While subscription is active
 		</div>
@@ -147,7 +147,7 @@ onMount(() => {
 		<div class="feature_cell free_feat span2">
 			No customization
 		</div>
-		<div class="feature_cell pro_feat">
+		<div class="feature_cell prepaid_feat">
 			Custom <span class="bold">colour theme</span>,
 			<span class="bold">background</span> and
 			<span class="bold">banner images</span>
@@ -187,7 +187,7 @@ onMount(() => {
 				Subscription managed by Patreon
 			{/if}
 		</div>
-		<div class="bottom_row pro_feat">
+		<div class="bottom_row prepaid_feat">
 			{#if window.user.username === ""}
 				<!-- User is not logged in -->
 				Account required<br/>
@@ -343,8 +343,8 @@ header {
 	box-shadow: inset 0 0 10px -4px var(--shadow_color);
 }
 header > h1 {
-	margin-top: 70px;
-	margin-bottom: 70px;
+	margin-top: 60px;
+	margin-bottom: 60px;
 	color: #ffffff;
 	text-shadow: 0 0 3px #000000;
 }
@@ -399,7 +399,10 @@ header > h1 {
 	border: 1px solid var(--highlight_color);
 }
 .free_feat {
-	border: 1px solid var(--danger_color);
+	border: 1px solid #ebcb8b;
+}
+.prepaid_feat {
+	border: 1px solid #ec2cfa;
 }
 .span2 {
 	grid-column: span 2;

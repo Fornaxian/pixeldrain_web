@@ -41,8 +41,8 @@ export let file = {
 			{formatDuration((file.size/file.download_speed_limit)*1000)}
 		</li>
 		<li>
-			<a href="https://www.patreon.com/join/pixeldrain" target="_blank" class="button button_highlight" rel="noreferrer">
-				<i class="icon">bolt</i> Support Pixeldrain on Patreon
+			<a href="/#pro" target="_blank" class="button button_highlight">
+				<i class="icon">bolt</i> Upgrade your account
 			</a>
 			and earn my eternal gratitude
 			{#if !window.user_authenticated}
