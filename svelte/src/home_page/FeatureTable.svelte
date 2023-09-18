@@ -60,7 +60,7 @@ onMount(() => {
 			Downloading
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">10 GB per day</span><br/>
+			<span class="bold">5 GB per day</span><br/>
 
 			Download speed is reduced to 1 MiB/s when exceeded. Max 3 concurrent
 			downloads

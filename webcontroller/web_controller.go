@@ -87,7 +87,6 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 	// Static assets
 	r.GET(prefix+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
 	r.GET(prefix+"/robots.txt" /*   */, wc.serveFile("/robots.txt"))
-	r.GET(prefix+"/ads.txt" /*      */, wc.serveFile("/ads.txt"))
 
 	if conf.MaintenanceMode {
 		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -143,12 +142,10 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "d/*path" /*         */, wc.serveDirectory},
 		{GET, "t" /*               */, wc.serveTemplate("text_upload", handlerOpts{})},
 		{GET, "donation" /*        */, wc.serveMarkdown("donation.md", handlerOpts{})},
-		{GET, "advertising" /*     */, wc.serveMarkdown("advertising.md", handlerOpts{})},
 		{GET, "widgets" /*         */, wc.serveTemplate("widgets", handlerOpts{})},
 		{GET, "about" /*           */, wc.serveMarkdown("about.md", handlerOpts{})},
 		{GET, "appearance" /*      */, wc.serveTemplate("appearance", handlerOpts{})},
 		{GET, "hosting" /*         */, wc.serveMarkdown("hosting.md", handlerOpts{})},
-		{GET, "brave" /*           */, wc.serveMarkdown("brave.md", handlerOpts{})},
 		{GET, "acknowledgements" /**/, wc.serveMarkdown("acknowledgements.md", handlerOpts{})},
 		{GET, "business" /*        */, wc.serveMarkdown("business.md", handlerOpts{})},
 		{GET, "limits" /*          */, wc.serveMarkdown("limits.md", handlerOpts{})},
@@ -204,10 +201,6 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "admin/user_management" /**/, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
 		{PST, "admin/globals" /*        */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
-
-		// Advertising related
-		{GET, "click/:id" /*     */, wc.serveAdClick},
-		{GET, "campaign/:id" /*  */, wc.serveCampaignPartner},
 
 		// Misc
 		{GET, "misc/sharex/pixeldrain.com.sxcu", wc.serveShareXConfig},

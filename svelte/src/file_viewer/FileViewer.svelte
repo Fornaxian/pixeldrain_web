@@ -12,8 +12,7 @@ import EditWindow from "./EditWindow.svelte";
 import EmbedWindow from "./EmbedWindow.svelte";
 import ReportWindow from "./ReportWindow.svelte";
 import IntroPopup from "./IntroPopup.svelte";
-import AdHead from "./AdHead.svelte";
-import AdLeaderboard from "./AdLeaderboard.svelte";
+import BottomBanner from "./BottomBanner.svelte";
 import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
 import Downloader from "./Downloader.svelte";
@@ -383,15 +382,11 @@ const keyboard_event = evt => {
 			}
 	}
 }
-
 </script>
 
 <svelte:window on:keydown={keyboard_event} on:hashchange={hash_change}/>
 
 <div class="file_viewer">
-	<!-- Head elements for the ads -->
-	<AdHead></AdHead>
-
 	<LoadingIndicator loading={loading}/>
 
 	<div class="headerbar">
@@ -612,7 +607,7 @@ const keyboard_event = evt => {
 	</div>
 
 	{#if ads_enabled}
-		<AdLeaderboard></AdLeaderboard>
+		<BottomBanner/>
 		<TransferLimit/>
 	{:else if custom_footer}
 		<CustomBanner src={custom_footer} link={custom_footer_link}></CustomBanner>

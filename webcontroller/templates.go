@@ -125,7 +125,6 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 	// Import template functions
 	tpl.Funcs(template.FuncMap{
 		"cacheID":    tm.cacheID,
-		"isBrave":    tm.isBrave,
 		"debugMode":  tm.debugMode,
 		"apiUrl":     tm.apiURL,
 		"pageNr":     tm.pageNr,
@@ -217,10 +216,6 @@ var cacheID = time.Now().Unix() / 3600
 
 func (tm *TemplateManager) cacheID() int64 {
 	return cacheID
-}
-
-func (tm *TemplateManager) isBrave(useragent string) bool {
-	return strings.Contains(useragent, "Brave")
 }
 func (tm *TemplateManager) debugMode() bool {
 	return tm.debugModeEnabled

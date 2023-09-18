@@ -241,6 +241,11 @@ onDestroy(() => {
 		{#if window.user.balance_micro_eur !== 0}
 			<li>
 				Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
+				{#if window.user.subscription.id === ""}
+					<br/>
+					You have account credit but no active subscription. Activate
+					a subscription on the <a href="/user/prepaid/subscriptions">subscriptions page</a>
+				{/if}
 			</li>
 		{/if}
 	</ul>

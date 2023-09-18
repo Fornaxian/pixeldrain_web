@@ -20,16 +20,17 @@ $: {
 }
 </script>
 
-{#if $download_limits.loaded}
-	<div class="progress_bar_outer" title="{title}">
+<!-- Always show the outer bar to prevent layout shift -->
+<div class="progress_bar_outer" title="{title}">
+	{#if $download_limits.loaded}
 		<div class="progress_bar_text">
 			{title}
 		</div>
 		<div class="progress_bar_inner" style="width: {percent}%;">
 			{title}
 		</div>
-	</div>
-{/if}
+	{/if}
+</div>
 
 <style>
 .progress_bar_outer {
