@@ -3,6 +3,7 @@ import resolve, { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import terser from '@rollup/plugin-terser';
+import babel from '@rollup/plugin-babel'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -35,6 +36,11 @@ export default [
 				// },
 			},
 			emitCss: false,
+		}),
+
+		babel({
+			extensions: [".js", ".html", ".svelte"],
+			babelHelpers: "bundled",
 		}),
 
 		// If you have external dependencies installed from
