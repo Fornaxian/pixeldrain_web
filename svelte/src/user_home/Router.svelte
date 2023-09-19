@@ -64,7 +64,6 @@ let pages = [
 		path: "/user/prepaid",
 		title: "Prepaid",
 		icon: "receipt_long",
-		hidden: window.user.subscription.type === "patreon",
 		subpages: [
 			{
 				path: "/user/prepaid/deposit",

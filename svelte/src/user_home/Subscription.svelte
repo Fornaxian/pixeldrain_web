@@ -64,6 +64,25 @@ onMount(() => {
 			</p>
 		</div>
 	{/if}
+
+	{#if window.user.subscription.type === "patreon"}
+		<div class="highlight_yellow">
+			<p>
+				Activating a prepaid subscription will not cancel your active
+				Patreon subscription. Go to Patreon's
+				<a
+				href="https://www.patreon.com/settings/memberships">memberships
+				page</a> to end your subscription there.
+			</p>
+			<p>
+				If you enable a prepaid plan here your Patreon subscription will
+				be overridden. If you wish to go back to your Patreon plan use
+				the <a href="/user/home">Link Patreon subscription</a> button on
+				the home page to link your Patreon account back to pixeldrain.
+			</p>
+		</div>
+	{/if}
+
 	<h2>Manage subscription</h2>
 	<p>
 		Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
