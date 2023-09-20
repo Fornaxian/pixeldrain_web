@@ -1,4 +1,4 @@
-module.exports = function (api) {
+export default api => {
 	api.cache(true);
 	return {
 		presets: [
@@ -6,7 +6,8 @@ module.exports = function (api) {
 				"@babel/env",
 				{
 					"targets": {
-						"firefox": "52"
+						"firefox": "52",
+						"esmodules": true,
 					}
 				}
 			]
