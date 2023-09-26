@@ -131,7 +131,7 @@ onMount(() => {
 			<span class="bold">20 GB</span> per file
 		</div>
 		<div class="feature_cell span2 pro_feat">
-			<span class="bold">50 GB</span> per file
+			<span class="bold">100 GB</span> per file
 		</div>
 
 		<div class="left_col">

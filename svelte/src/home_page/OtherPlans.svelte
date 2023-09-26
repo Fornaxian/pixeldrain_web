@@ -13,7 +13,7 @@
 			{/if}
 		</div>
 		<div class="feat_pro features_cell round_tr">
-			<div><span class="text_highlight">50 GB</span> max file size</div>
+			<div><span class="text_highlight">100 GB</span> max file size</div>
 			<div><span class="text_highlight">Files never expire</span></div>
 			<div><span class="text_highlight">4 TB</span> transfer limit</div>
 			<div><span class="text_highlight">4 TB</span> storage space</div>
@@ -39,7 +39,7 @@
 			{/if}
 		</div>
 		<div class="feat_pro features_cell">
-			<div><span class="text_highlight">50 GB</span> max file size</div>
+			<div><span class="text_highlight">100 GB</span> max file size</div>
 			<div><span class="text_highlight">Files never expire</span></div>
 			<div><span class="text_highlight">8 TB</span> transfer limit</div>
 			<div><span class="text_highlight">8 TB</span> storage space</div>
@@ -60,7 +60,7 @@
 			{/if}
 		</div>
 		<div class="feat_pro features_cell">
-			<div><span class="text_highlight">50 GB</span> max file size</div>
+			<div><span class="text_highlight">100 GB</span> max file size</div>
 			<div><span class="text_highlight">Files never expire</span></div>
 			<div><span class="text_highlight">16 TB</span> transfer limit</div>
 			<div><span class="text_highlight">16 TB</span> storage space</div>
@@ -81,7 +81,7 @@
 			{/if}
 		</div>
 		<div class="feat_pro features_cell round_br">
-			<div><span class="text_highlight">50 GB</span> max file size</div>
+			<div><span class="text_highlight">100 GB</span> max file size</div>
 			<div><span class="text_highlight">Files never expire</span></div>
 			<div><span class="text_highlight">32 TB</span> transfer limit</div>
 			<div><span class="text_highlight">32 TB</span> storage space</div>

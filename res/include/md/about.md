@@ -64,7 +64,7 @@ And here's a vector version of just the icon:
 ## Can I advertise on pixeldrain?
 
 Please send your advertising inquiries to this e-mail address:
-[fuck.off@pixeldrain.com](mailto:fuck.off@pixeldrain.com). That will make sure
+[buzz.off@pixeldrain.com](mailto:buzz.off@pixeldrain.com). That will make sure
 your mails never get anywhere near my inbox.
 
 But in all seriousness, I am not interested in running ads on pixeldrain. Ads
