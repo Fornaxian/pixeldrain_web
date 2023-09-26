@@ -4,8 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv public"
+    "dev": "rollup -c -w"
   },
   "devDependencies": {
     "@babel/core": "^7.22.20",
