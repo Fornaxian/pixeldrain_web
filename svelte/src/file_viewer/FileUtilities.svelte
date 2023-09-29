@@ -61,6 +61,7 @@ export const file_type = file => {
 		return "pdf"
 	} else if (
 		file.mime_type === "application/json" ||
+		file.mime_type === "application/x-shellscript" ||
 		file.mime_type.startsWith("text")
 	) {
 		return "text"
