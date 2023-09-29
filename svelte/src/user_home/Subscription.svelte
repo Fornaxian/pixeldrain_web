@@ -151,7 +151,10 @@ onMount(() => {
 						href="user/sharing/bandwidth">bandwidth sharing</a>
 						enabled)
 					</li>
-					<li>Files never expire as long as subscription is active</li>
+					<li>
+						Files expire 240 days after they are last viewed or
+						downloaded
+					</li>
 					<li>
 						Download page <a href="/user/sharing/branding">branding
 						options</a>
