@@ -41,7 +41,6 @@ let countries = [
 	{name: "Slovenia", code: Si, vat: 22},
 	{name: "Spain", code: Es, vat: 21},
 	{name: "Sweden", code: Se, vat: 25},
-	{name: "Other", code: null, vat: 0},
 ]
 
 let amounts = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
@@ -99,16 +98,16 @@ const checkout = async () => {
 		</div>
 		<div>
 			We support the following payment processors<br/>
-			<img class="bankicon" src="/res/img/payment_providers/ideal.svg" alt="iDEAL"/>
-			<img class="bankicon" src="/res/img/payment_providers/klarna.svg" alt="Klarna"/>
-			<img class="bankicon" src="/res/img/payment_providers/bancontact.svg" alt="Bancontact"/>
-			<img class="bankicon" src="/res/img/payment_providers/banktransfer.svg" alt="SEPA"/>
-			<img class="bankicon" src="/res/img/payment_providers/sofort.svg" alt="SOFORT"/>
-			<img class="bankicon" src="/res/img/payment_providers/kbc.svg" alt="KBC/CBC"/>
-			<img class="bankicon" src="/res/img/payment_providers/belfius.svg" alt="Belfius"/>
-			<img class="bankicon" src="/res/img/payment_providers/giropay.svg" alt="Giropay"/>
-			<img class="bankicon" src="/res/img/payment_providers/eps.svg" alt="EPS"/>
-			<img class="bankicon" src="/res/img/payment_providers/przelewy24.svg" alt="Przelewy24"/>
+			<img class="bankicon" src="/res/img/payment_providers/ideal.svg" alt="iDEAL" title="iDEAL"/>
+			<img class="bankicon" src="/res/img/payment_providers/klarna.svg" alt="Klarna" title="Klarna"/>
+			<img class="bankicon" src="/res/img/payment_providers/bancontact.svg" alt="Bancontact" title="Bancontact"/>
+			<img class="bankicon" src="/res/img/payment_providers/banktransfer.svg" alt="SEPA" title="SEPA"/>
+			<img class="bankicon" src="/res/img/payment_providers/sofort.svg" alt="SOFORT" title="SOFORT"/>
+			<img class="bankicon" src="/res/img/payment_providers/kbc.svg" alt="KBC/CBC" title="CBC"/>
+			<img class="bankicon" src="/res/img/payment_providers/belfius.svg" alt="Belfius" title="Belfius"/>
+			<img class="bankicon" src="/res/img/payment_providers/giropay.svg" alt="Giropay" title="Giropay"/>
+			<img class="bankicon" src="/res/img/payment_providers/eps.svg" alt="EPS" title="EPS"/>
+			<img class="bankicon" src="/res/img/payment_providers/przelewy24.svg" alt="Przelewy24" title="Przelewy24"/>
 		</div>
 
 	{:else}
