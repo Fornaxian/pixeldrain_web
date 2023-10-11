@@ -6,6 +6,7 @@ import BlockFiles from "./BlockFiles.svelte";
 import TabMenu from "../util/TabMenu.svelte";
 import UserManagement from "./UserManagement.svelte";
 import EmailReporters from "./EmailReporters.svelte";
+import MollieSettlements from "./MollieSettlements.svelte";
 
 let pages = [
 	{
@@ -38,6 +39,11 @@ let pages = [
 		title: "User Management",
 		icon: "person",
 		component: UserManagement,
+	}, {
+		path: "/admin/mollie_settlements",
+		title: "Mollie Settlements",
+		icon: "paid",
+		component: MollieSettlements,
 	},
 ]
 </script>
