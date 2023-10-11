@@ -43,15 +43,17 @@ export let highlight = false
 
 		<button class="bucket_expand" on:click|stopPropagation={toggle}>
 			{#if expanded}
-			<i class="icon">expand_less</i>
+				<i class="icon">expand_less</i>
 			{:else}
-			<i class="icon">expand_more</i>
+				<i class="icon">expand_more</i>
 			{/if}
 		</button>
 	</div>
-	<div class="body" class:hidden={!expanded}>
-		<slot></slot>
-	</div>
+	{#if expanded}
+		<div class="body">
+			<slot></slot>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -89,8 +91,5 @@ export let highlight = false
 	flex-direction: column;
 	text-decoration: none;
 	border-top: 1px solid var(--separator);
-}
-.hidden {
-	display: none;
 }
 </style>
