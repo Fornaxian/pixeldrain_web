@@ -69,6 +69,11 @@ let impersonate_form = {
 			label: "User e-mail",
 			type: "text",
 			default_value: "",
+		}, {
+			name: "patron_id",
+			label: "Patreon user ID",
+			type: "text",
+			default_value: "",
 		},
 	],
 	submit_label: `<i class="icon">send</i> Submit`,
@@ -77,6 +82,7 @@ let impersonate_form = {
 		form.append("id", fields.user_id)
 		form.append("name", fields.user_name)
 		form.append("email", fields.user_email)
+		form.append("patron_id", fields.patron_id)
 
 		const resp = await fetch(
 			window.api_endpoint+"/admin/impersonate",
