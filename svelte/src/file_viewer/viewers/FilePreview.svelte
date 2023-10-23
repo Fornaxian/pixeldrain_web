@@ -48,14 +48,14 @@ export const set_file = async file => {
 }
 </script>
 
-{#if !premium_download && $download_limits.transfer_limit_used > $download_limits.transfer_limit}
-	<SpeedLimit file={current_file} on:download></SpeedLimit>
-{:else if viewer_type === "loading"}
+{#if viewer_type === "loading"}
 	<div class="center">
 		<Spinner></Spinner>
 	</div>
 {:else if viewer_type === "abuse"}
 	<Abuse bind:this={viewer} on:download></Abuse>
+{:else if !premium_download && $download_limits.transfer_limit_used > $download_limits.transfer_limit}
+	<SpeedLimit file={current_file} on:download></SpeedLimit>
 {:else if viewer_type === "rate_limit"}
 	<RateLimit bind:this={viewer} on:download></RateLimit>
 {:else if viewer_type === "image"}

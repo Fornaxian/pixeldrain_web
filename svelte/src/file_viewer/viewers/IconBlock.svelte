@@ -28,6 +28,7 @@ export let width = "750px"
 	border-radius: 8px;
 	/* Prevent icon from being stretched if text content is too large */
 	align-self: center;
+	width: 128px;
 }
 .description {
 	flex: 1 1 auto;
