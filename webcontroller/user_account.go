@@ -185,7 +185,7 @@ func (wc *WebController) loginForm(td *TemplateData, r *http.Request) (f Form) {
 		Fields: []Field{
 			{
 				Name:  "username",
-				Label: "Username / e-mail",
+				Label: "Username",
 				Type:  FieldTypeUsername,
 			}, {
 				Name:  "password",
