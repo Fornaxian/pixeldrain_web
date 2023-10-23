@@ -300,7 +300,7 @@ func BackgroundTiles() template.URL {
 	} else if month == time.December && (day == 25 || day == 26 || day == 27) {
 		file = "checker_christmas"
 	} else {
-		file = fmt.Sprintf("checker%d", now.UnixNano()%19)
+		file = fmt.Sprintf("checker%d", now.UnixNano()%20)
 	}
 
 	return template.URL("/res/img/background_patterns/" + file + "_transparent.png")
