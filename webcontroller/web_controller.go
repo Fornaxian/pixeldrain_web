@@ -213,7 +213,10 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 func middleware(handle httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		// Redirect the user to the correct domain
-		if r.Host == "pixeldrain.net" || r.Host == "pixeldra.in" {
+		switch r.Host {
+		case "www.pixeldrain.com",
+			"pixeldrain.net", "www.pixeldrain.net",
+			"pixeldra.in", "www.pixeldra.in":
 			var target = "https://pixeldrain.com" + r.URL.String()
 			log.Debug("Redirecting user from '%s' to '%s'", r.URL.String(), target)
 			http.Redirect(w, r, target, http.StatusMovedPermanently)
