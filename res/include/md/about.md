@@ -2,7 +2,7 @@
 
 ## For how long will my files be stored?
 
-Files will be removed if they have not been viewed for 60 days. A view is
+Files will be removed if they have not been viewed for 90 days. A view is
 counted when someone visits the file's download page (pixeldrain.com/u/somefile)
 or views the file through a list the file is included in
 (pixeldrain.com/l/somelist).
