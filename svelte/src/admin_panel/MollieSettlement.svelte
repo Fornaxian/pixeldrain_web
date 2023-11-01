@@ -71,12 +71,32 @@ onMount(get_payments);
 <h3>Accounting information</h3>
 
 {#if per_country.NL}
-	<ul>
-		<li>NL excluding VAT: <Euro amount={per_country.NL.amount}/></li>
-		<li>NL VAT: <Euro amount={per_country.NL.vat}/></li>
-		<li>OSS VAT: <Euro amount={totals.vat-per_country.NL.vat}/></li>
-		<li>Remainder: <Euro amount={(settlement.amount.value*1e6)-per_country.NL.amount-(totals.vat-per_country.NL.vat)}/></li>
-	</ul>
+	<table>
+		<tr>
+			<td>Bedrag</td>
+			<td>BTW-code</td>
+			<td>BTW</td>
+			<td>Tegenrekening</td>
+		</tr>
+		<tr>
+			<td><Euro amount={per_country.NL.amount + per_country.NL.vat}/></td>
+			<td>BTW hoog 21%</td>
+			<td><Euro amount={per_country.NL.vat}/></td>
+			<td>8030 - Omzet Mollie inkomsten</td>
+		</tr>
+		<tr>
+			<td><Euro amount={totals.vat-per_country.NL.vat}/></td>
+			<td>Geen BTW</td>
+			<td><Euro amount={0}/></td>
+			<td>1651 - BTW OSS</td>
+		</tr>
+		<tr>
+			<td><Euro amount={(settlement.amount.value*1e6)-totals.vat-per_country.NL.amount}/></td>
+			<td>Geen BTW</td>
+			<td><Euro amount={0}/></td>
+			<td>8030 - Omzet Mollie inkomsten</td>
+		</tr>
+	</table>
 {/if}
 
 
