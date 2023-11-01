@@ -11,21 +11,11 @@ let endPicker
 
 let tab = "pending"
 
-let refresh_timeout = null
-const resolve_report = (remove = -1) => {
-	if (remove >= 0) {
-		console.debug("removing item", remove)
-		reports.splice(remove, 1)
-		reports = reports
-	}
-
-	// If a refresh is already scheduled we remove it and schedule a new one
-	clearTimeout(refresh_timeout)
-	refresh_timeout = setTimeout(get_reports, 5000)
-}
-
 const get_reports = async () => {
 	loading = true;
+
+	// Remove refresh timeout if there is one
+	clearTimeout(refresh_timeout)
 
 	try {
 		const resp = await fetch(
@@ -75,12 +65,82 @@ const get_reports = async () => {
 				}
 			})
 		})
+
+		count_ip_reports()
 	} catch (err) {
 		alert(err);
 	} finally {
 		loading = false;
 	}
 };
+
+let ip_report_count = {}
+const count_ip_reports = () => {
+	ip_report_count = {}
+	reports.forEach(v => {
+		// Count the number of pending reports per IP address
+		v.reports.forEach(v => {
+			if (ip_report_count[v.ip_address] === undefined) {
+				ip_report_count[v.ip_address] = 0
+			}
+			ip_report_count[v.ip_address]++
+		})
+	})
+}
+
+const resolve_report = async (report_id, action, report_type) => {
+	const form = new FormData()
+	form.append("action", action)
+	if (action === "grant") {
+		form.append("type", report_type)
+	}
+
+	try {
+		const resp = await fetch(
+			window.api_endpoint+"/admin/abuse_report/"+report_id,
+			{ method: "POST", body: form }
+		);
+		if(resp.status >= 400) {
+			throw new Error(resp.text())
+		}
+
+		remove_report(report_id)
+	} catch (err) {
+		alert(err);
+	}
+}
+
+const resolve_by_ip = (ip = "", action = "grant") => {
+	// Find which files were reported by this IP address
+	reports.forEach(report => {
+		report.reports.forEach(v => {
+			if (v.ip_address === ip) {
+				// We found a file which was reported by the same IP address
+				resolve_report(report.id, action, v.type)
+			}
+		})
+	})
+}
+
+let refresh_timeout = null
+const remove_report = (id = "") => {
+	// Find the report with our ID and remove it from the array
+	for (let i = 0; i < reports.length; i++) {
+		if (reports[i].id === id) {
+			console.debug("removing item", id)
+			reports.splice(i, 1)
+			reports = reports
+
+			// Update the report counts per IP address
+			count_ip_reports()
+			break
+		}
+	}
+
+	// If a refresh is already scheduled we remove it and schedule a new one
+	clearTimeout(refresh_timeout)
+	refresh_timeout = setTimeout(get_reports, 5000)
+}
 
 onMount(() => {
 	let start = new Date()
@@ -122,8 +182,13 @@ onMount(() => {
 		</button>
 	</div>
 
-	{#each reports as report, i (report.id)}
-		<AbuseReport report={report} on:refresh={() => resolve_report(i)}/>
+	{#each reports as report (report.id)}
+		<AbuseReport
+			report={report}
+			ip_report_count={ip_report_count}
+			on:resolve_report={e => resolve_report(report.id, e.detail.action, e.detail.report_type)}
+			on:resolve_by_ip={e => resolve_by_ip(e.detail.ip, e.detail.action)}
+		/>
 	{/each}
 </section>
 

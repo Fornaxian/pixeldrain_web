@@ -5,28 +5,14 @@ import { createEventDispatcher } from "svelte";
 let dispatch = createEventDispatcher()
 
 export let report
+export let ip_report_count
 let preview = false
 
+$: can_grant = report.status !== "granted"
+$: can_reject = report.status !== "rejected"
+
 let set_status = async (action, report_type) => {
-	const form = new FormData()
-	form.append("action", action)
-	if (action === "grant") {
-		form.append("type", report_type)
-	}
-
-	try {
-		const resp = await fetch(
-			window.api_endpoint+"/admin/abuse_report/"+report.id,
-			{ method: "POST", body: form }
-		);
-		if(resp.status >= 400) {
-			throw new Error(resp.text())
-		}
-
-		dispatch("refresh");
-	} catch (err) {
-		alert(err);
-	}
+	dispatch("resolve_report", {action: action, report_type: report_type})
 }
 </script>
 
@@ -56,12 +42,16 @@ let set_status = async (action, report_type) => {
 				<button class:button_highlight={preview} on:click={() => {preview = !preview}}>
 					<i class="icon">visibility</i> Preview
 				</button>
-				<button class="button_highlight" on:click={() => {set_status("grant", report.type)}}>
-					<i class="icon">done</i> Block ({report.type})
-				</button>
-				<button class="button_red" on:click={() => {set_status("reject", "")}}>
-					<i class="icon">delete</i> Ignore
-				</button>
+				{#if can_grant}
+					<button class="button_highlight" on:click={() => {set_status("grant", report.type)}}>
+						<i class="icon">done</i> Block ({report.type})
+					</button>
+				{/if}
+				{#if can_reject}
+					<button class="button_red" on:click={() => {set_status("reject", "")}}>
+						<i class="icon">delete</i> Ignore
+					</button>
+				{/if}
 			</div>
 			<div style="flex: 0 1 auto">
 				<button on:click={() => {set_status("grant", "terrorism")}}>terrorism</button>
@@ -87,6 +77,7 @@ let set_status = async (action, report_type) => {
 				<td>IP</td>
 				<td>Type</td>
 				<td>Status</td>
+				<td colspan="2">Reports from this IP</td>
 			</tr>
 			{#each report.reports as user_report}
 				<tr>
@@ -94,6 +85,19 @@ let set_status = async (action, report_type) => {
 					<td>{user_report.ip_address}</td>
 					<td>{user_report.type}</td>
 					<td>{user_report.status}</td>
+					<td>{ip_report_count[user_report.ip_address]}</td>
+					<td>
+						{#if can_grant}
+							<button on:click={() => dispatch("resolve_by_ip", {ip: user_report.ip_address, action: "grant"})}>
+								Accept all
+							</button>
+						{/if}
+						{#if can_reject}
+							<button on:click={() => dispatch("resolve_by_ip", {ip: user_report.ip_address, action: "reject"})}>
+								Ignore all
+							</button>
+						{/if}
+					</td>
 				</tr>
 			{/each}
 		</table>
