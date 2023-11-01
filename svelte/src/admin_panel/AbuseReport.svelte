@@ -99,6 +99,14 @@ let set_status = async (action, report_type) => {
 						{/if}
 					</td>
 				</tr>
+				{#if user_report.description !== ""}
+					<tr>
+						<td>Description</td>
+						<td colspan="4" style="white-space: pre;">
+							{user_report.description}
+						</td>
+					</tr>
+				{/if}
 			{/each}
 		</table>
 	</div>

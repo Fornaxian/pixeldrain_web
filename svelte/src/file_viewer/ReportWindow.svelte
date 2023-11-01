@@ -13,6 +13,7 @@ export let list = {
 
 let abuse_type = ""
 let single_or_all = "single"
+let description = ""
 let loading = false
 let results = []
 
@@ -20,8 +21,10 @@ let submit = async e => {
 	e.preventDefault()
 
 	if (abuse_type === "") {
-		result_success = false
-		result_text = "Please select an abuse type"
+		results = [{success: false, text: "Please select an abuse type"}]
+		return
+	} else if (description.length > 300) {
+		results = [{success: false, text: "Description is too long"}]
 		return
 	}
 
@@ -41,6 +44,7 @@ let submit = async e => {
 
 	const form = new FormData()
 	form.append("type", abuse_type)
+	form.append("description", description)
 
 	results = []
 
@@ -78,10 +82,7 @@ let submit = async e => {
 	<p>
 		If you think this file violates pixeldrain's
 		<a href="/abuse">content policy</a> you can report it for moderation
-		with this form. You cannot report copyright abuse with this form, send a
-		formal DMCA notification to the
-		<a href="/abuse#copyright-infringement">abuse e-mail address</a>
-		instead.
+		with this form.
 	</p>
 	<form on:submit={submit} style="width: 100%">
 		<h3>Abuse type</h3>
@@ -110,10 +111,15 @@ let submit = async e => {
 			<b>Doxing</b>: Personally identifiable information uploaded without
 			the consent of the owner.
 		</label>
-		<label for="type_malware" style="border-bottom: none;">
+		<label for="type_malware">
 			<input type="radio" bind:group={abuse_type} id="type_malware" name="abuse_type" value="malware">
 			<b>Malware</b>: Software programs designed to cause harm to
 			computer systems.
+		</label>
+		<label for="type_copyright" style="border-bottom: none;">
+			<input type="radio" bind:group={abuse_type} id="type_copyright" name="abuse_type" value="copyright">
+			<b>Copyright</b>: Protected content which is shared without constent
+			from the rightsholder.
 		</label>
 
 		{#if list.id !== ""}
@@ -127,6 +133,14 @@ let submit = async e => {
 				Report all {list.files.length} files in this list
 			</label>
 		{/if}
+
+		<h3>Description</h3>
+		<p>
+			Please provide some context for your report, like contact
+			information in case of copyright abuse, or a password if the file is
+			encrypted. ({description.length}/300)
+		</p>
+		<textarea bind:value={description} placeholder="Context here..." style="width: 100%; height: 5em;"></textarea>
 
 		<h3>Send</h3>
 		{#if loading}

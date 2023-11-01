@@ -160,9 +160,8 @@ onMount(() => {
 	<div class="toolbar" style="text-align: left;">
 		<div>Reports: {reports.length}</div>
 		<div class="toolbar_spacer"></div>
-		<div>Start:</div>
+		<div>Range:</div>
 		<input type="date" bind:this={startPicker}/>
-		<div>End:</div>
 		<input type="date" bind:this={endPicker}/>
 		<button on:click={get_reports}>Go</button>
 	</div>
