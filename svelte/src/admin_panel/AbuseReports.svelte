@@ -139,7 +139,7 @@ const remove_report = (id = "") => {
 
 	// If a refresh is already scheduled we remove it and schedule a new one
 	clearTimeout(refresh_timeout)
-	refresh_timeout = setTimeout(get_reports, 5000)
+	refresh_timeout = setTimeout(get_reports, 10000)
 }
 
 onMount(() => {
@@ -151,6 +151,8 @@ onMount(() => {
 	endPicker.valueAsNumber = end.getTime()
 
 	get_reports()
+
+	return () => clearTimeout(refresh_timeout)
 });
 </script>
 
