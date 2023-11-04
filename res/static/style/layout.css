@@ -98,7 +98,7 @@ footer {
 }
 
 footer>.footer_content {
-	background-color: var(--body_background);
+	background: var(--body_background);
 	color: var(--body_text_color);
 	display: inline-block;
 	width: 1000px;
