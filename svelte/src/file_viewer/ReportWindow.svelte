@@ -23,7 +23,7 @@ let submit = async e => {
 	if (abuse_type === "") {
 		results = [{success: false, text: "Please select an abuse type"}]
 		return
-	} else if (description.length > 300) {
+	} else if (description.length > 500) {
 		results = [{success: false, text: "Description is too long"}]
 		return
 	}
@@ -138,7 +138,7 @@ let submit = async e => {
 		<p>
 			Please provide some context for your report, like contact
 			information in case of copyright abuse, or a password if the file is
-			encrypted. ({description.length}/300)
+			encrypted. ({description.length}/500)
 		</p>
 		<textarea bind:value={description} placeholder="Context here..." style="width: 100%; height: 5em;"></textarea>
 
