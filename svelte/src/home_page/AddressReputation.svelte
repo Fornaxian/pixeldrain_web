@@ -74,6 +74,24 @@ onMount(async () => {
 			</div>
 
 			<p>
+				That these files originated from your IP address does not
+				necessarily mean that they were uploaded by you. It's possible
+				that people on your home/business network are sharing the same
+				IP address. If you're using a VPN then there are often many
+				people using the same IP address. And some ISPs deploy CGNAT, in
+				which case there could be hundreds of people sharing the same IP
+				address. In all of these cases IPv6 is the solution, but most
+				ISPs are decades behind on implementing internet standards. They
+				just don't care.
+			</p>
+			<p>
+				Now you may be asking: If IP banning is so unreliable, why are
+				you still using it? Well, I need to protect my service from
+				abuse somehow. The alternative is authenticating every user.
+				This adds another barrier to entry and generally complicates
+				things.
+			</p>
+			<p>
 				If you would like to dispute your IP ban you can mail me at
 				support@pixeldrain.com. Please do not mail unless you have a good
 				reason. If you do not provide a valid reason why the IP ban should

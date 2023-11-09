@@ -6,6 +6,7 @@ import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
 let loading = true
 let rows = []
+let total_offences = 0
 
 let expanded = false
 let creating = false
@@ -20,6 +21,10 @@ const get_bans = async () => {
 			throw new Error(resp.text());
 		}
 		rows = await resp.json()
+
+		total_offences = rows.reduce(
+			(acc, curr) => acc + curr.offences.length, 0,
+		)
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -83,6 +88,12 @@ onMount(get_bans);
 
 <section>
 	<div class="toolbar">
+		<div class="toolbar_label">
+			Bans {rows.length}
+		</div>
+		<div class="toolbar_label">
+			Offences {total_offences}
+		</div>
 		<div class="toolbar_spacer"></div>
 		<button class:button_highlight={expanded} on:click={() => {expanded = !expanded}}>
 			{#if expanded}
@@ -185,6 +196,7 @@ onMount(get_bans);
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }
+.toolbar_label { margin: 5px; }
 
 
 .header {

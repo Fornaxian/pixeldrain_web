@@ -86,10 +86,7 @@ export let highlight = false
 	height: auto;
 }
 .body {
-	display: flex;
-	padding: 0.4em;
-	flex-direction: column;
-	text-decoration: none;
+	padding: 0.5em;
 	border-top: 1px solid var(--separator);
 }
 </style>
