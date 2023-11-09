@@ -165,14 +165,14 @@ onMount(() => {
 		<div class="left_col">
 			Online file previews
 		</div>
-		<div class="feature_cell free_feat">
-			<span class="bold">Image, audio, PDF and text files</span><br/>
+		<div class="feature_cell span3 pro_feat">
+			<span class="bold">Image, audio, video, PDF and text files</span><br/>
 			Can all be viewed in the browser
 		</div>
-		<div class="feature_cell span2 pro_feat">
+		<!-- <div class="feature_cell span2 pro_feat">
 			<span class="bold">Video streaming</span><br/>
 			Plus the free previews of course
-		</div>
+		</div> -->
 
 		<div></div>
 		<div class="bottom_row free_feat">
