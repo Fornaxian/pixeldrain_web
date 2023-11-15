@@ -226,8 +226,9 @@ onMount(() => {
 	height: 100%;
 	width: 100%;
 	padding: 0;
-	overflow-y: auto;
+	overflow: auto;
 	text-align: center;
+	display: block;
 }
 .width_container {
 	position: relative;
@@ -238,7 +239,8 @@ onMount(() => {
 	background: var(--shaded_background);
 }
 .toolbar {
-	position: relative;
+	position: sticky;
+	top: 0;
 	display: inline-flex;
 	flex-direction: row;
 	width: 100%;

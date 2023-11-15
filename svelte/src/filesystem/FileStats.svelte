@@ -65,29 +65,79 @@ const close_socket = () => {
 	}
 }
 
+// Tallys
+$: total_directories = state.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
+$: total_files = state.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
+$: total_file_size = state.children.reduce((acc, cur) => acc + cur.file_size, 0)
+
 onDestroy(close_socket)
 </script>
 
-<div>
-	{#if error_msg !== ""}
-		{error_msg}
-	{:else}
-		<div class="label">Downloads</div>
-		<div class="stat">{formatThousands(downloads)}</div>
-		<div class="label">Transfer used</div>
-		<div class="stat">{formatDataVolume(transfer_used, 3)}</div>
+<div class="container">
+	{#if state.base.type === "file"}
+		{#if error_msg !== ""}
+			{error_msg}
+		{:else}
+			<div class="group">
+				<div class="label">Downloads</div>
+				<div class="stat">{formatThousands(downloads)}</div>
+			</div>
+			<div class="group">
+				<div class="label">Transfer used</div>
+				<div class="stat">{formatDataVolume(transfer_used, 3)}</div>
+			</div>
+		{/if}
+
+		<div class="group">
+			<div class="label">Size</div>
+			<div class="stat">{formatDataVolume(state.base.file_size, 3)}</div>
+		</div>
+
+	{:else if state.base.type === "dir" || state.base.type === "bucket"}
+
+		<div class="group">
+			<div class="label">Directories</div>
+			<div class="stat">{formatThousands(total_directories, 3)}</div>
+		</div>
+
+		<div class="group">
+			<div class="label">Files</div>
+			<div class="stat">{formatThousands(total_files, 3)}</div>
+		</div>
+
+		<div class="group">
+			<div class="label">Total size</div>
+			<div class="stat">{formatDataVolume(total_file_size, 3)}</div>
+		</div>
 	{/if}
 </div>
 
 <style>
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+.group {
+	flex: 1 1 auto;
+}
 .label {
+	padding-left: 0.5em;
 	text-align: left;
-	padding-left: 10px;
-	font-size: 0.8em;
+	font-size: 0.75em;
 	line-height: 0.7em;
 	margin-top: 0.5em;
 }
 .stat {
 	text-align: center;
+}
+@media (orientation: portrait) {
+	.container {
+		flex-direction: row;
+	}
+	.label {
+		text-align: center;
+		padding-left: 0;
+	}
 }
 </style>

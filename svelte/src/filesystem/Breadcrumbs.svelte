@@ -5,24 +5,35 @@ export let state = {}
 export let fs_navigator
 </script>
 
-{#each state.path as node, i (node.path)}
-	{@const shared = node.id !== undefined && node.id !== "me"}
-	<a
-		href={"/d"+fs_encode_path(node.path)}
-		class="breadcrumb button"
-		class:button_highlight={state.base_index === i}
-		on:click|preventDefault={() => {fs_navigator.navigate(node.path, true)}}
-	>
-		{#if shared}
-			<i class="icon small">share</i>
-		{/if}
-		<div class="node_name" class:nopad={shared}>
-			{node.name}
-		</div>
-	</a>
-{/each}
+<div class="breadcrumbs">
+	{#each state.path as node, i (node.path)}
+		{@const shared = node.id !== undefined && node.id !== "me"}
+		<a
+			href={"/d"+fs_encode_path(node.path)}
+			class="breadcrumb button"
+			class:button_highlight={state.base_index === i}
+			on:click|preventDefault={() => {fs_navigator.navigate(node.path, true)}}
+		>
+			{#if shared}
+				<i class="icon small">share</i>
+			{/if}
+			<div class="node_name" class:nopad={shared} class:base={state.base_index === i}>
+				{node.name}
+			</div>
+		</a>
+	{/each}
+</div>
 
 <style>
+.breadcrumbs {
+	flex-grow: 1;
+	flex-shrink: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
 .breadcrumb {
 	min-width: 1em;
 	text-align: center;
@@ -34,6 +45,14 @@ export let fs_navigator
 }
 .node_name {
 	margin: 6px 8px;
+	max-width: 20vw;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.node_name.base {
+	max-width: none;
+	white-space: unset;
 }
 .nopad {
 	margin-left: 0;

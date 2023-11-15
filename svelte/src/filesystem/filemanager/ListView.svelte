@@ -40,13 +40,13 @@ export let show_hidden = false
 					<a
 						href="/d/{child.id}"
 						on:click|preventDefault|stopPropagation={() => {dispatch("node_share_click", index)}}
-						class="button small_button"
+						class="button action_button"
 					>
 						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 					</a>
 				{/if}
 				{#if state.permissions.update}
-					<button class="small_button" on:click|preventDefault|stopPropagation={() => {dispatch("node_settings", index)}}>
+					<button class="action_button" on:click|preventDefault|stopPropagation={() => {dispatch("node_settings", index)}}>
 						<i class="icon">edit</i>
 					</button>
 				{/if}
@@ -117,6 +117,11 @@ td {
 .node_icons {
 	white-space: nowrap;
 	text-align: right;
+	padding: 0;
+}
+.action_button {
+	margin: 0;
+	background: none;
 }
 .hidden {
 	display: none;

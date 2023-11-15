@@ -10,10 +10,10 @@ import Navigator from './Navigator.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 import SearchView from './SearchView.svelte';
 import UploadWidget from './upload_widget/UploadWidget.svelte';
+import HomeButton from '../file_viewer/HomeButton.svelte';
 import { fs_path_url } from './FilesystemUtil';
 
 let loading = true
-let toolbar_visible = (window.innerWidth > 600)
 let upload_widget
 let download_frame
 let details_visible = false
@@ -112,23 +112,26 @@ const loading_evt = e => {
 
 <div class="file_viewer">
 	<div class="headerbar">
-		<button
-			on:click={() => toolbar_visible = !toolbar_visible}
-			class="button_toggle_toolbar round"
-			class:button_highlight={toolbar_visible}
-		>
-			<i class="icon">menu</i>
-		</button>
-		<a href="/" id="button_home" class="button button_home round">
-			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 0.2em 0 0; color: currentColor;"/>
-		</a>
-		<div class="breadcrumbs">
-			<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
+		<div>
+			<HomeButton/>
 		</div>
+
+		<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
 	</div>
 
 	<div class="viewer_area">
-		<div class="file_preview checkers" class:toolbar_visible>
+		<Toolbar
+			fs_navigator={fs_navigator}
+			state={state}
+			bind:details_visible={details_visible}
+			edit_window={edit_window}
+			bind:edit_visible={edit_visible}
+			bind:view={view}
+			on:download={download}
+			on:search={search}
+		/>
+
+		<div class="file_preview checkers">
 			{#if view === "file"}
 				<FilePreview
 					fs_navigator={fs_navigator}
@@ -148,18 +151,6 @@ const loading_evt = e => {
 				/>
 			{/if}
 		</div>
-
-		<Toolbar
-			visible={toolbar_visible}
-			fs_navigator={fs_navigator}
-			state={state}
-			bind:details_visible={details_visible}
-			edit_window={edit_window}
-			bind:edit_visible={edit_visible}
-			bind:view={view}
-			on:download={download}
-			on:search={search}
-		/>
 	</div>
 
 	<!-- This frame will load the download URL when a download button is pressed -->
@@ -195,20 +186,19 @@ const loading_evt = e => {
 /* Viewer container */
 .file_viewer {
 	position: absolute;
-	display: flex;
-	flex-direction: column;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
+	display: flex;
+	flex-direction: column;
 	overflow: hidden;
 	background: var(--body_background);
 }
 
 /* Headerbar (row 1) */
 .headerbar {
-	flex-grow: 0;
-	flex-shrink: 0;
+	flex: 0 0 0;
 	display: flex;
 	flex-direction: row;
 	text-align: left;
@@ -225,54 +215,23 @@ const loading_evt = e => {
 	display: inline;
 	align-self: center;
 }
-.button_toggle_toolbar > .icon {
-	font-size: 1.6em;
-}
-.breadcrumbs {
-	flex-grow: 1;
-	flex-shrink: 1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
-	flex-direction: row;
-}
-.button_home::after {
-	content: "pixeldrain";
-}
-@media (max-width: 600px) {
-	.button_home::after {
-		content: "pd";
-	}
-}
 /* File preview area (row 2) */
 .viewer_area {
-	flex-grow: 1;
-	flex-shrink: 1;
-	position: relative;
-	display: inline-block;
-	width: auto;
-	height: auto;
-	margin: 0;
+	flex: 1 1 0;
+	display: flex;
+	flex-direction: row;
+	overflow: hidden;
+}
+@media (orientation: portrait) {
+	.viewer_area {
+		flex-direction: column-reverse;
+	}
 }
 
 .file_preview {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	display: block;
-	min-height: 100px;
-	min-width: 100px;
-	transition: left 0.25s;
-	overflow: auto;
-	text-align: center;
+	flex: 1 1 0;
 	border-radius: 8px;
+	overflow: auto;
 	border: 2px solid var(--separator);
-}
-
-.file_preview.toolbar_visible {
-	left: 8em;
 }
 </style>

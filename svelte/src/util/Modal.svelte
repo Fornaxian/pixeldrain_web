@@ -111,7 +111,7 @@ const keydown = e => {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.7);
 }
 /* The modal looks weird when it's in the dead center of the page, so we use
 these padding divs to move it 25% up */
