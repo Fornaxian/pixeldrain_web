@@ -1,10 +1,5 @@
 <script>
-import { onMount } from "svelte";
-import Euro from "../util/Euro.svelte";
 import Form from "../util/Form.svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
-
-let loading = true
 
 let credit_form = {
 	name: "give_credit",
@@ -97,89 +92,7 @@ let impersonate_form = {
 		return {success: true, message: "Success"}
 	},
 }
-
-let coupon_form = {
-	name: "make_coupon",
-	fields: [
-		{
-			name: "id",
-			label: "Code",
-			type: "text",
-			default_value: "",
-		}, {
-			name: "credit",
-			label: "Credit",
-			type: "decimal",
-			default_value: 0,
-		}, {
-			name: "uses",
-			label: "Uses",
-			type: "number",
-			default_value: "",
-		},
-	],
-	submit_label: `<i class="icon">send</i> Create`,
-	on_submit: async fields => {
-		const form = new FormData()
-		form.append("id", fields.id)
-		form.append("credit", fields.credit*1e6)
-		form.append("uses", fields.uses)
-
-		const resp = await fetch(
-			window.api_endpoint+"/coupon",
-			{ method: "POST", body: form }
-		);
-		if(resp.status >= 400) {
-			return {error_json: await resp.json()}
-		}
-
-		get_coupons()
-		return {success: true, message: "Success: Coupon created"}
-	},
-}
-
-let coupons = []
-const get_coupons = async () => {
-	loading = true;
-	try {
-		const resp = await fetch(window.api_endpoint+"/coupon");
-		if(resp.status >= 400) {
-			throw new Error(resp.text());
-		}
-		coupons = await resp.json()
-		coupons.sort((a, b) => {
-			return a.id.localeCompare(b.id)
-		});
-	} catch (err) {
-		alert(err);
-	} finally {
-		loading = false;
-	}
-};
-const delete_coupon = async (id) => {
-	if (!confirm("Delete this coupon code?\n\n"+id)) {
-		return
-	}
-
-	try {
-		const resp = await fetch(
-			window.api_endpoint+"/coupon/"+encodeURI(id),
-			{ method: "DELETE" }
-		);
-		if(resp.status >= 400) {
-			throw new Error(await resp.text());
-		}
-	} catch (err) {
-		alert("Failed to delete ban! "+err)
-	}
-
-	get_coupons();
-}
-onMount(get_coupons)
-
 </script>
-
-<LoadingIndicator loading={loading}/>
 
 <section>
 	<h2>Impersonate user</h2>
@@ -194,34 +107,5 @@ onMount(get_coupons)
 	</p>
 	<div class="highlight_shaded">
 		<Form config={credit_form}></Form>
-	</div>
-
-	<h2>Create coupon codes</h2>
-	<div class="highlight_shaded">
-		<Form config={coupon_form}></Form>
-	</div>
-
-	<h3>Active coupon codes</h3>
-	<div class="table_scroll">
-		<table style="text-align: left;">
-			<tr>
-				<td>ID</td>
-				<td>Uses</td>
-				<td>Credit</td>
-				<td></td>
-			</tr>
-			{#each coupons as row (row.id)}
-				<tr>
-					<td>{row.id}</td>
-					<td>{row.uses}</td>
-					<td><Euro amount={row.credit}></Euro></td>
-					<td>
-						<button on:click|preventDefault={() => {delete_coupon(row.id)}} class="button button_red round">
-							<i class="icon">delete</i>
-						</button>
-					</td>
-				</tr>
-			{/each}
-		</table>
 	</div>
 </section>

@@ -182,12 +182,6 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
 		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
 
-		{GET, "knoxfs_activate", wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
-		{PST, "knoxfs_activate", wc.serveForm(wc.knoxfsLinkForm, handlerOpts{Auth: true})},
-
-		{GET, "coupon_redeem", wc.serveForm(wc.couponForm, handlerOpts{})},
-		{PST, "coupon_redeem", wc.serveForm(wc.couponForm, handlerOpts{})},
-
 		// Admin settings
 		{GET, "admin" /*                   */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/status" /*            */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
