@@ -60,10 +60,8 @@ const seek_relative = delta => {
 
 const mute = () => {
 	if (player.muted) {
-		// volume_seeker.disabled = false
 		player.muted = false
 	} else {
-		// volume_seeker.disabled = true
 		player.muted = true
 	}
 }
@@ -74,18 +72,18 @@ const fullscreen = () => {
 </script>
 
 <div class="container">
-		{#if
-			state.base.file_type === "video/x-matroska" ||
-			state.base.file_type === "video/quicktime" ||
-			state.base.file_type === "video/x-ms-asf"
-		}
-			<div class="compatibility_warning">
-				This video file type is not compatible with every web
-				browser. If the video fails to play you can try downloading
-				the video and watching it locally.
-			</div>
-		{/if}
-
+	{#if
+		state.base.file_type === "video/x-matroska" ||
+		state.base.file_type === "video/quicktime" ||
+		state.base.file_type === "video/x-ms-asf"
+	}
+		<div class="compatibility_warning">
+			This video file type is not compatible with every web
+			browser. If the video fails to play you can try downloading
+			the video and watching it locally.
+		</div>
+	{/if}
+	<div class="player_and_controls">
 		<div class="player">
 			{#if loaded}
 				<!-- svelte-ignore a11y-media-has-caption -->
@@ -95,7 +93,7 @@ const fullscreen = () => {
 					playsinline
 					autoplay
 					loop={loop}
-					class="video drop_shadow"
+					class="video"
 					on:pause={() => playing = false }
 					on:play={() => playing = true }
 					on:ended={() => dispatch("next", {})}
@@ -105,44 +103,51 @@ const fullscreen = () => {
 			{/if}
 		</div>
 
-	<div class="controls">
-		<div class="spacer"></div>
-		<button on:click={() => dispatch("open_sibling", -1) }>
-			<i class="icon">skip_previous</i>
-		</button>
-		<button on:click={() => seek_relative(-10)}>
-			<i class="icon">replay_10</i>
-		</button>
-		<button on:click={toggle_play} class="button_highlight">
-			{#if playing}
-				<i class="icon">pause</i>
-			{:else}
-				<i class="icon">play_arrow</i>
-			{/if}
-		</button>
-		<button on:click={() => seek_relative(10)}>
-			<i class="icon">forward_10</i>
-		</button>
-		<button on:click={() => dispatch("open_sibling", 1) }>
-			<i class="icon">skip_next</i>
-		</button>
-		<div style="width: 16px; height: 8px;"></div>
-		<button on:click={mute} class:button_red={player && player.muted}>
-			{#if player && player.muted}
-				<i class="icon">volume_off</i>
-			{:else}
-				<i class="icon">volume_up</i>
-			{/if}
-		</button>
-		<button on:click={fullscreen}>
-			<i class="icon">fullscreen</i>
-		</button>
-		<div class="spacer"></div>
+		<div class="controls">
+			<div class="spacer"></div>
+			<button on:click={() => dispatch("open_sibling", -1) }>
+				<i class="icon">skip_previous</i>
+			</button>
+			<button on:click={() => seek_relative(-10)}>
+				<i class="icon">replay_10</i>
+			</button>
+			<button on:click={toggle_play} class="button_highlight">
+				{#if playing}
+					<i class="icon">pause</i>
+				{:else}
+					<i class="icon">play_arrow</i>
+				{/if}
+			</button>
+			<button on:click={() => seek_relative(10)}>
+				<i class="icon">forward_10</i>
+			</button>
+			<button on:click={() => dispatch("open_sibling", 1) }>
+				<i class="icon">skip_next</i>
+			</button>
+			<div style="width: 16px; height: 8px;"></div>
+			<button on:click={mute} class:button_red={player && player.muted}>
+				{#if player && player.muted}
+					<i class="icon">volume_off</i>
+				{:else}
+					<i class="icon">volume_up</i>
+				{/if}
+			</button>
+			<button on:click={fullscreen}>
+				<i class="icon">fullscreen</i>
+			</button>
+			<div class="spacer"></div>
+		</div>
 	</div>
 </div>
 
 <style>
 .container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+.player_and_controls {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -177,7 +182,7 @@ const fullscreen = () => {
 	max-height: 100%;
 }
 @media(max-height: 500px) {
-	.container {
+	.player_and_controls {
 		flex-direction: row;
 	}
 	.controls {

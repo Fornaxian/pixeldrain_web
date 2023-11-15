@@ -62,11 +62,6 @@ const download = () => { dispatch("download", {}) }
 
 const toggle_play = () => playing ? player.pause() : player.play()
 
-// let video_seeker
-// const seek = () => {
-// 	player.fastSeek(player.duration * (video_seeker.value/1000))
-// }
-
 const seek_relative = delta => {
 	if (player.fastSeek) {
 		player.fastSeek(player.currentTime + delta)
@@ -75,17 +70,10 @@ const seek_relative = delta => {
 	}
 }
 
-// let volume_seeker
-// const volume_seek = () => {
-// 	player.volume = volume_seeker.value/100
-// }
-
 const mute = () => {
 	if (player.muted) {
-		// volume_seeker.disabled = false
 		player.muted = false
 	} else {
-		// volume_seeker.disabled = true
 		player.muted = true
 	}
 }
@@ -111,60 +99,62 @@ const fullscreen = () => {
 				</div>
 			{/if}
 
-			<div class="player">
-				<!-- svelte-ignore a11y-media-has-caption -->
-				<video
-					bind:this={player}
-					controls
-					playsinline
-					autoplay
-					loop={loop}
-					class="video drop_shadow"
-					on:pause={() => playing = false }
-					on:play={() => playing = true }
-					on:ended={() => dispatch("next", {})}
-				>
-					<source src={file.get_href} type={file.mime_type} />
-				</video>
-			</div>
+			<div class="player_and_controls">
+				<div class="player">
+					<!-- svelte-ignore a11y-media-has-caption -->
+					<video
+						bind:this={player}
+						controls
+						playsinline
+						autoplay
+						loop={loop}
+						class="video"
+						on:pause={() => playing = false }
+						on:play={() => playing = true }
+						on:ended={() => dispatch("next", {})}
+					>
+						<source src={file.get_href} type={file.mime_type} />
+					</video>
+				</div>
 
-			<div class="controls">
-				<div class="spacer"></div>
-				{#if is_list}
-					<button on:click={() => dispatch("prev") }>
-						<i class="icon">skip_previous</i>
-					</button>
-				{/if}
-				<button on:click={() => seek_relative(-10)}>
-					<i class="icon">replay_10</i>
-				</button>
-				<button on:click={toggle_play} class="button_highlight">
-					{#if playing}
-						<i class="icon">pause</i>
-					{:else}
-						<i class="icon">play_arrow</i>
+				<div class="controls">
+					<div class="spacer"></div>
+					{#if is_list}
+						<button on:click={() => dispatch("prev") }>
+							<i class="icon">skip_previous</i>
+						</button>
 					{/if}
-				</button>
-				<button on:click={() => seek_relative(10)}>
-					<i class="icon">forward_10</i>
-				</button>
-				{#if is_list}
-					<button on:click={() => dispatch("next") }>
-						<i class="icon">skip_next</i>
+					<button on:click={() => seek_relative(-10)}>
+						<i class="icon">replay_10</i>
 					</button>
-				{/if}
-				<div style="width: 16px; height: 8px;"></div>
-				<button on:click={mute} class:button_red={player && player.muted}>
-					{#if player && player.muted}
-						<i class="icon">volume_off</i>
-					{:else}
-						<i class="icon">volume_up</i>
+					<button on:click={toggle_play} class="button_highlight">
+						{#if playing}
+							<i class="icon">pause</i>
+						{:else}
+							<i class="icon">play_arrow</i>
+						{/if}
+					</button>
+					<button on:click={() => seek_relative(10)}>
+						<i class="icon">forward_10</i>
+					</button>
+					{#if is_list}
+						<button on:click={() => dispatch("next") }>
+							<i class="icon">skip_next</i>
+						</button>
 					{/if}
-				</button>
-				<button on:click={fullscreen}>
-					<i class="icon">fullscreen</i>
-				</button>
-				<div class="spacer"></div>
+					<div style="width: 16px; height: 8px;"></div>
+					<button on:click={mute} class:button_red={player && player.muted}>
+						{#if player && player.muted}
+							<i class="icon">volume_off</i>
+						{:else}
+							<i class="icon">volume_up</i>
+						{/if}
+					</button>
+					<button on:click={fullscreen}>
+						<i class="icon">fullscreen</i>
+					</button>
+					<div class="spacer"></div>
+				</div>
 			</div>
 		</div>
 
@@ -202,6 +192,12 @@ h1 {
 	height: 100%;
 	width: 100%;
 }
+.player_and_controls {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
 .player {
 	flex: 1 1 auto;
 	display: flex;
@@ -231,7 +227,7 @@ h1 {
 	max-height: 100%;
 }
 @media(max-height: 500px) {
-	.container {
+	.player_and_controls {
 		flex-direction: row;
 	}
 	.controls {
