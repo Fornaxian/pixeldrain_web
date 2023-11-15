@@ -3,7 +3,6 @@ import { onMount, tick } from "svelte";
 import { copy_text } from "../util/Util.svelte";
 import { file_struct, list_struct, file_set_href } from "./FileUtilities.svelte";
 import Modal from "../util/Modal.svelte";
-import PixeldrainLogo from "../util/PixeldrainLogo.svelte";
 import DetailsWindow from "./DetailsWindow.svelte";
 import FilePreview from "./viewers/FilePreview.svelte";
 import ListNavigator from "./ListNavigator.svelte";
@@ -11,7 +10,6 @@ import FileStats from "./FileStats.svelte";
 import EditWindow from "./EditWindow.svelte";
 import EmbedWindow from "./EmbedWindow.svelte";
 import ReportWindow from "./ReportWindow.svelte";
-import IntroPopup from "./IntroPopup.svelte";
 import BottomBanner from "./BottomBanner.svelte";
 import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
@@ -21,6 +19,7 @@ import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import TransferLimit from "./TransferLimit.svelte";
 import ListStats from "./ListStats.svelte";
 import ListUpdater from "./ListUpdater.svelte";
+import HomeButton from "./HomeButton.svelte";
 
 let loading = true
 let embedded = false
@@ -34,7 +33,6 @@ let is_list = false
 let list_downloadable = false
 let file_preview
 
-let button_home
 let list_navigator
 let list_shuffle = false
 let toggle_shuffle = () => {
@@ -85,7 +83,6 @@ let report_window
 let report_visible = false
 let embed_window
 let embed_visible = false
-let skyscraper_visible = false
 
 onMount(() => {
 	let viewer_data = window.viewer_data
@@ -400,14 +397,7 @@ const keyboard_event = evt => {
 			</button>
 		{/if}
 
-		<a
-			href="/"
-			bind:this={button_home}
-			class="button button_home round"
-			target={embedded ? "_blank" : ""}
-			title="Go to the pixeldrain home page">
-			<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 4px 0 0;"></PixeldrainLogo>
-		</a>
+		<HomeButton embedded_viewer={embedded}/>
 
 		<div class="file_viewer_headerbar_title">
 			{#if list.title !== ""}{list.title}<br/>{/if}
@@ -580,7 +570,6 @@ const keyboard_event = evt => {
 			class:checkers={!custom_background}
 			class:custom_background={!!custom_background}
 			class:toolbar_visible
-			class:skyscraper_visible
 		>
 			{#if view === "file"}
 				<FilePreview
@@ -632,10 +621,6 @@ const keyboard_event = evt => {
 	<Modal bind:this={report_window} on:is_visible={e => {report_visible = e.detail}} title="Report abuse" width="800px">
 		<ReportWindow file={file} list={list}></ReportWindow>
 	</Modal>
-
-	{#if ads_enabled}
-		<IntroPopup target={button_home}></IntroPopup>
-	{/if}
 
 	<Downloader bind:this={downloader} file={file} list={list}></Downloader>
 
@@ -697,14 +682,6 @@ const keyboard_event = evt => {
 .headerbar > button > .icon {
 	font-size: 1.6em;
 }
-.headerbar > .button_home::after {
-	content: "pixeldrain";
-}
-@media (max-width: 600px) {
-	.headerbar > .button_home::after {
-		content: "pd";
-	}
-}
 
 /* File preview area (row 3) */
 .file_preview_row {
@@ -729,7 +706,6 @@ const keyboard_event = evt => {
 	border: 2px solid var(--separator);
 }
 .file_preview.toolbar_visible { left: 8.2em; }
-.file_preview.skyscraper_visible { right: 160px; }
 .file_preview.custom_background {
 	background-size: cover;
 	background-position: center;

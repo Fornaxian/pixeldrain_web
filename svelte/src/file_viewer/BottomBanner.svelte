@@ -6,16 +6,13 @@ let ad_type = ""
 onMount(() => {
 	// 20% pixeldrain socials
 	// 20% reviews
-	// 10% battle cry
-	// 40% patreon
+	// 60% patreon
 
 	let rand = Math.random()
 	if (rand < 0.2) {
 		ad_type = "socials"
 	} else if (rand < 0.4) {
 		ad_type = "reviews"
-	} else if (rand < 0.5) {
-		ad_type = "slava_ukraini"
 	} else {
 		ad_type = "patreon_support"
 	}
