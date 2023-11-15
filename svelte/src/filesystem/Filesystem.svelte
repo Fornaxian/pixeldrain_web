@@ -210,8 +210,6 @@ const loading_evt = e => {
 .headerbar > * {
 	flex-grow: 0;
 	flex-shrink: 0;
-	margin-left: 4px;
-	margin-right: 4px;
 	display: inline;
 	align-self: center;
 }
@@ -222,7 +220,7 @@ const loading_evt = e => {
 	flex-direction: row;
 	overflow: hidden;
 }
-@media (orientation: portrait) {
+@media (max-width: 700px) {
 	.viewer_area {
 		flex-direction: column-reverse;
 	}

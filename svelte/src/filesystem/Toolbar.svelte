@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import Sharebar, { generate_share_url } from "./Sharebar.svelte";
+import { generate_share_url } from "./Sharebar.svelte";
 import { copy_text } from "../util/Util.svelte";
 import FileStats from "./FileStats.svelte";
 
@@ -46,13 +46,29 @@ let share = async () => {
 			url: share_url
 		})
 	} else {
-		alert("Navigator does not support sharing")
+		alert("Navigator does not support sharing, use copy link button to copy the link instead")
 	}
+}
+
+let expanded = false
+let expand = e => {
+	e.preventDefault()
+	e.stopPropagation()
+	expanded = !expanded
 }
 </script>
 
-<div class="toolbar">
-	<FileStats state={state}/>
+<div class="toolbar" class:expanded>
+	<div class="stats_container" on:click={expand} on:keypress={expand} role="button" tabindex="0">
+		<button class="button_expand" on:click={expand}>
+			{#if expanded}
+				<i class="icon">expand_more</i>
+			{:else}
+				<i class="icon">expand_less</i>
+			{/if}
+		</button>
+		<FileStats state={state}/>
+	</div>
 
 	<div class="separator"></div>
 	<div class="grid">
@@ -87,11 +103,9 @@ let share = async () => {
 			</button>
 		{/if}
 
-		{#if navigator.share}
-			<button on:click={share} class="toolbar_button">
-				<i class="icon">share</i> Share
-			</button>
-		{/if}
+		<button on:click={share} class="toolbar_button">
+			<i class="icon">share</i> Share
+		</button>
 
 		<button on:click={() => details_visible = !details_visible} class="toolbar_button" class:button_highlight={details_visible}>
 			<i class="icon">help</i> Deta<u>i</u>ls
@@ -110,6 +124,7 @@ let share = async () => {
 	flex: 0 0 auto;
 	overflow-x: hidden;
 	overflow-y: scroll;
+	transition: max-height 0.3s;
 }
 .grid {
 	display: grid;
@@ -133,4 +148,29 @@ let share = async () => {
 .button_row > * {
 	flex: 1 1 auto;
 }
+
+.stats_container {
+	display: flex;
+	flex-direction: column;
+}
+.button_expand {
+	display: none;
+}
+@media (max-width: 700px) {
+	.toolbar {
+		overflow-y: hidden;
+		max-height: 2.5em;
+	}
+	.toolbar.expanded {
+		overflow-y: scroll;
+		max-height: 25vh;
+	}
+	.stats_container {
+		flex-direction: row;
+	}
+	.button_expand {
+		display: inline-block;
+	}
+}
+
 </style>

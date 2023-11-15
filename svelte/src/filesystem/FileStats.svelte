@@ -73,51 +73,44 @@ $: total_file_size = state.children.reduce((acc, cur) => acc + cur.file_size, 0)
 onDestroy(close_socket)
 </script>
 
-<div class="container">
-	{#if state.base.type === "file"}
-		{#if error_msg !== ""}
-			{error_msg}
-		{:else}
-			<div class="group">
-				<div class="label">Downloads</div>
-				<div class="stat">{formatThousands(downloads)}</div>
-			</div>
-			<div class="group">
-				<div class="label">Transfer used</div>
-				<div class="stat">{formatDataVolume(transfer_used, 3)}</div>
-			</div>
-		{/if}
-
+{#if state.base.type === "file"}
+	{#if error_msg !== ""}
+		{error_msg}
+	{:else}
 		<div class="group">
-			<div class="label">Size</div>
-			<div class="stat">{formatDataVolume(state.base.file_size, 3)}</div>
+			<div class="label">Downloads</div>
+			<div class="stat">{formatThousands(downloads)}</div>
 		</div>
-
-	{:else if state.base.type === "dir" || state.base.type === "bucket"}
-
 		<div class="group">
-			<div class="label">Directories</div>
-			<div class="stat">{formatThousands(total_directories, 3)}</div>
-		</div>
-
-		<div class="group">
-			<div class="label">Files</div>
-			<div class="stat">{formatThousands(total_files, 3)}</div>
-		</div>
-
-		<div class="group">
-			<div class="label">Total size</div>
-			<div class="stat">{formatDataVolume(total_file_size, 3)}</div>
+			<div class="label">Transfer used</div>
+			<div class="stat">{formatDataVolume(transfer_used, 3)}</div>
 		</div>
 	{/if}
-</div>
+
+	<div class="group">
+		<div class="label">Size</div>
+		<div class="stat">{formatDataVolume(state.base.file_size, 3)}</div>
+	</div>
+
+{:else if state.base.type === "dir" || state.base.type === "bucket"}
+
+	<div class="group">
+		<div class="label">Directories</div>
+		<div class="stat">{formatThousands(total_directories, 3)}</div>
+	</div>
+
+	<div class="group">
+		<div class="label">Files</div>
+		<div class="stat">{formatThousands(total_files, 3)}</div>
+	</div>
+
+	<div class="group">
+		<div class="label">Total size</div>
+		<div class="stat">{formatDataVolume(total_file_size, 3)}</div>
+	</div>
+{/if}
 
 <style>
-.container {
-	display: flex;
-	flex-direction: column;
-}
-
 .group {
 	flex: 1 1 auto;
 }
@@ -131,10 +124,7 @@ onDestroy(close_socket)
 .stat {
 	text-align: center;
 }
-@media (orientation: portrait) {
-	.container {
-		flex-direction: row;
-	}
+@media (max-width: 700px) {
 	.label {
 		text-align: center;
 		padding-left: 0;
