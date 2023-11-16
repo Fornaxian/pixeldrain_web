@@ -260,7 +260,7 @@ func (s styleSheet) String() string {
 		s.BodyBackground.CSS(),
 		s.BodyText.CSS(),
 		s.Separator.CSS(),
-		s.BodyColor.WithAlpha(0.6).CSS(), // shaded_background
+		s.BodyColor.WithAlpha(0.75).CSS(), // shaded_background
 		s.CardColor.CSS(),
 		s.Chart1.CSS(),
 		s.Chart2.CSS(),

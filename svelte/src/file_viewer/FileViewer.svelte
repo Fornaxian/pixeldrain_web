@@ -653,6 +653,7 @@ const keyboard_event = evt => {
 	flex-direction: row;
 	text-align: left;
 	padding: 4px;
+	align-items: center;
 }
 @media(max-height: 600px) {
 	.headerbar {

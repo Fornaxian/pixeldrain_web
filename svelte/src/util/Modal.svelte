@@ -74,10 +74,10 @@ const keydown = e => {
 				<slot name="title">
 					{#if form !== ""}
 						<Button click={hide} icon="close" label="Cancel"/>
-						<div class="title">{title}</div>
+						<span class="title">{title}</span>
 						<Button highlight type="submit" form={form} click={hide} icon="save" label="Save"/>
 					{:else}
-						<div class="title">{title}</div>
+						<span class="title">{title}</span>
 						<Button round click={hide} icon="close" />
 					{/if}
 				</slot>
@@ -133,18 +133,16 @@ these padding divs to move it 25% up */
 	padding: 1px;
 	background: var(--background_color);
 	color: var(--background_text_color);
+	align-items: center;
 }
 .title {
 	flex-grow: 1;
 	flex-shrink: 1;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
 	font-size: 1.2em;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	text-align: center;
 }
 .body {
 	flex-grow: 1;

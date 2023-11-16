@@ -11,7 +11,8 @@ export let nobg = false
 		class:nobg
 		target={embedded_viewer ? "_blank" : ""}
 		title="Go to the pixeldrain home page">
-		<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0 4px 0 0;"></PixeldrainLogo>
+		<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0;"></PixeldrainLogo>
+		<span class="label"></span>
 	</a>
 {:else}
 	<a
@@ -28,7 +29,10 @@ export let nobg = false
 {/if}
 
 <style>
-.button_home::after {
+.button {
+	flex: 0 0 content;
+}
+.label::after {
 	content: "pixeldrain";
 }
 
@@ -38,7 +42,7 @@ export let nobg = false
 }
 
 @media (max-width: 600px) {
-	.button_home::after {
+	.label::after {
 		content: "pd";
 	}
 

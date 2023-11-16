@@ -180,7 +180,7 @@ const leave_confirmation = e => {
 	max-height: 50%;
 	right: 20px;
 	bottom: 20px;
-	border-radius: 20px 20px 8px 8px;
+	border-radius: 8px;
 	overflow: hidden;
 	box-shadow: 1px 1px 8px var(--shadow_color);
 }
