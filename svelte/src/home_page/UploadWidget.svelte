@@ -351,12 +351,12 @@ const keydown = (e) => {
 <input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple"/>
 <button on:click={() => { file_input_field.click() }} class="big_button button_highlight">
 	<i class="icon small">cloud_upload</i>
-	<u>U</u>pload Files
+	<span><u>U</u>pload Files</span>
 </button>
 
 <a bind:this={btn_upload_text} href="/t" id="upload_text_button" class="button big_button button_highlight">
 	<i class="icon small">text_fields</i>
-	Upload <u>T</u>ext
+	<span>Upload <u>T</u>ext</span>
 </a>
 <br/>
 <p>
@@ -448,13 +448,16 @@ const keydown = (e) => {
 	<br/>
 {/if}
 <button bind:this={btn_copy_links} on:click={copy_links} disabled={state !== "finished"}>
-	<i class="icon">content_copy</i> Copy <u>a</u>ll links to clipboard
+	<i class="icon">content_copy</i>
+	<span>Copy <u>a</u>ll links to clipboard</span>
 </button>
 <button bind:this={btn_copy_markdown} on:click={copy_markdown} disabled={state !== "finished"}>
-	<i class="icon">content_copy</i> Copy mark<u>d</u>own to clipboard
+	<i class="icon">content_copy</i>
+	<span>Copy mark<u>d</u>own to clipboard</span>
 </button>
 <button bind:this={btn_copy_bbcode} on:click={copy_bbcode} disabled={state !== "finished"}>
-	<i class="icon">content_copy</i> Copy <u>B</u>BCode to clipboard
+	<i class="icon">content_copy</i>
+	<span>Copy <u>B</u>BCode to clipboard</span>
 </button>
 <br/>
 
@@ -491,13 +494,14 @@ const keydown = (e) => {
 <br/>
 
 <style>
-.big_button{
+.big_button {
 	width: 40%;
 	min-width: 300px;
 	max-width: 400px;
 	margin: 10px !important;
 	border-radius: 32px;
 	font-size: 1.8em;
+	justify-content: center;
 }
 .instruction {
 	border-top: 1px solid var(--separator);

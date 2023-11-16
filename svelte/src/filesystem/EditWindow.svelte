@@ -2,6 +2,7 @@
 import { fs_delete_all, fs_rename, fs_update } from "./FilesystemAPI";
 import Modal from "../util/Modal.svelte";
 import { createEventDispatcher } from "svelte";
+import Button from "../layout/Button.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -66,7 +67,9 @@ const save = async () => {
 		fs_navigator.reload()
 	}
 }
-const delete_file = async () => {
+const delete_file = async e => {
+	e.preventDefault()
+
 	try {
 		dispatch("loading", true)
 		await fs_delete_all(file.path)
@@ -110,9 +113,7 @@ const delete_file = async () => {
 					Delete this file or directory. If this is a directory then all
 					subfiles will be deleted as well. This action cannot be undone.
 				</p>
-				<button on:click|preventDefault={delete_file} class="button_red" style="align-self: flex-start;">
-					<i class="icon small">delete</i> Delete
-				</button>
+				<Button click={delete_file} red icon="delete" label="Delete" style="align-self: flex-start;"/>
 			</div>
 		{:else if tab === "share"}
 			<div class="form">

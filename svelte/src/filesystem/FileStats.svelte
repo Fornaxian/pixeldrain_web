@@ -113,18 +113,16 @@ onDestroy(close_socket)
 <style>
 .group {
 	flex: 1 1 auto;
+	text-align: center;
 }
 .label {
 	padding-left: 0.5em;
 	text-align: left;
 	font-size: 0.75em;
-	line-height: 0.7em;
+	line-height: 0.75em;
 	margin-top: 0.5em;
 }
-.stat {
-	text-align: center;
-}
-@media (max-width: 700px) {
+@media (max-width: 600px) {
 	.label {
 		text-align: center;
 		padding-left: 0;

@@ -23,7 +23,7 @@ export let edit_visible = false
 
 $: share_url = generate_share_url(state.path)
 let link_copied = false
-const copy_link = () => {
+export const copy_link = () => {
 	if (share_url === "") {
 		edit_window.edit(state.base, "share", true)
 		return
@@ -86,34 +86,40 @@ let expand = e => {
 		</div>
 
 		{#if state.path[0].id === "me"}
-			<button on:click={() => dispatch("search")} class="toolbar_button" class:button_highlight={view === "search"}>
-				<i class="icon">search</i> Search
+			<button on:click={() => dispatch("search")} class:button_highlight={view === "search"}>
+				<i class="icon">search</i>
+				<span>Search</span>
 			</button>
 		{/if}
 
 		{#if state.base.type === "file"}
-			<button on:click={() => dispatch("download")} class="toolbar_button">
-				<i class="icon">save</i> Download
+			<button on:click={() => dispatch("download")}>
+				<i class="icon">save</i>
+				<span>Download</span>
 			</button>
 		{/if}
 
 		{#if share_url !== ""}
-			<button id="btn_copy" class="toolbar_button" on:click={copy_link} class:button_highlight={link_copied}>
-				<i class="icon">content_copy</i> <u>C</u>opy Link
+			<button on:click={copy_link} class:button_highlight={link_copied}>
+				<i class="icon">content_copy</i>
+				<span><u>C</u>opy Link</span>
 			</button>
 		{/if}
 
-		<button on:click={share} class="toolbar_button">
-			<i class="icon">share</i> Share
+		<button on:click={share}>
+			<i class="icon">share</i>
+			<span>Share</span>
 		</button>
 
-		<button on:click={() => details_visible = !details_visible} class="toolbar_button" class:button_highlight={details_visible}>
-			<i class="icon">help</i> Deta<u>i</u>ls
+		<button on:click={() => details_visible = !details_visible} class:button_highlight={details_visible}>
+			<i class="icon">help</i>
+			<span>Deta<u>i</u>ls</span>
 		</button>
 
 		{#if state.path.length > 1}
-			<button on:click={() => edit_window.edit(state.base, true)} class="toolbar_button" class:button_highlight={edit_visible}>
-				<i class="icon">edit</i> <u>E</u>dit
+			<button on:click={() => edit_window.edit(state.base, true)} class:button_highlight={edit_visible}>
+				<i class="icon">edit</i>
+				<span><u>E</u>dit</span>
 			</button>
 		{/if}
 	</div>
@@ -134,11 +140,7 @@ let expand = e => {
 .separator {
 	height: 2px;
 	width: 100%;
-	margin: 4px 0;
 	background-color: var(--separator);
-}
-.toolbar_button {
-	text-align: left;
 }
 
 .button_row {
@@ -147,6 +149,7 @@ let expand = e => {
 }
 .button_row > * {
 	flex: 1 1 auto;
+	justify-content: center;
 }
 
 .stats_container {
@@ -156,14 +159,14 @@ let expand = e => {
 .button_expand {
 	display: none;
 }
-@media (max-width: 700px) {
+@media (max-width: 600px) {
 	.toolbar {
 		overflow-y: hidden;
 		max-height: 2.5em;
 	}
 	.toolbar.expanded {
 		overflow-y: scroll;
-		max-height: 25vh;
+		max-height: 40vh;
 	}
 	.stats_container {
 		flex-direction: row;

@@ -64,8 +64,8 @@ onMount(() => get_page())
 					href="{page.path}"
 					class:button_highlight={current_page && page.path === current_page.path}
 					on:click|preventDefault={() => {navigate(page.path, page.title)}}>
-					<i class="icon">{page.icon}</i><br/>
-					{page.title}
+					<i class="icon">{page.icon}</i>
+					<span>{page.title}</span>
 				</a>
 			{/if}
 		{/each}
@@ -82,8 +82,8 @@ onMount(() => get_page())
 							href="{page.path}"
 							class:button_highlight={current_subpage && page.path === current_subpage.path}
 							on:click|preventDefault={() => {navigate(page.path, page.title)}}>
-							<i class="icon">{page.icon}</i><br/>
-							{page.title}
+							<i class="icon">{page.icon}</i>
+							<span>{page.title}</span>
 						</a>
 					{/if}
 				{/each}
@@ -101,7 +101,11 @@ onMount(() => get_page())
 <Footer/>
 
 <style>
-.submenu{
+.submenu {
 	border-bottom: 2px solid var(--separator);
+}
+.tab_bar > .button {
+	flex-direction: column;
+	gap: 0;
 }
 </style>

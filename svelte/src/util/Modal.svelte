@@ -7,6 +7,7 @@ let global_index = 10000;
 <script>
 import { createEventDispatcher } from 'svelte';
 import { fade } from 'svelte/transition';
+import Button from '../layout/Button.svelte';
 
 // Form can be used to turn the modal into a save dialog. Enter the ID of a form
 // inside the modal and the modal will provide a submit button for that form
@@ -72,23 +73,12 @@ const keydown = e => {
 			<div class="header">
 				<slot name="title">
 					{#if form !== ""}
-						<button class="button" on:click={hide}>
-							<i class="icon">close</i> Cancel
-						</button>
+						<Button click={hide} icon="close" label="Cancel"/>
 						<div class="title">{title}</div>
-						<button
-							class="button button_highlight"
-							type="submit"
-							form="{form}"
-							on:click={hide}
-						>
-							<i class="icon">save</i> Save
-						</button>
+						<Button highlight type="submit" form={form} click={hide} icon="save" label="Save"/>
 					{:else}
 						<div class="title">{title}</div>
-						<button class="button round" on:click={hide}>
-							<i class="icon">close</i>
-						</button>
+						<Button round click={hide} icon="close" />
 					{/if}
 				</slot>
 			</div>
@@ -155,10 +145,6 @@ these padding divs to move it 25% up */
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
-}
-.button {
-	flex-grow: 0;
-	flex-shrink: 0;
 }
 .body {
 	flex-grow: 1;

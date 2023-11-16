@@ -33,6 +33,7 @@ export let fs_navigator
 	justify-content: center;
 	flex-wrap: wrap;
 	flex-direction: row;
+	overflow: hidden;
 }
 .breadcrumb {
 	min-width: 1em;
@@ -44,15 +45,15 @@ export let fs_navigator
 	flex-direction: row;
 }
 .node_name {
-	margin: 6px 8px;
+	margin: 2px 8px;
 	max-width: 20vw;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 .node_name.base {
-	max-width: none;
-	white-space: unset;
+	/* The base name uses all available space */
+	max-width: unset;
 }
 .nopad {
 	margin-left: 0;

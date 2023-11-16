@@ -472,23 +472,27 @@ input[type="submit"],
 input[type="button"],
 input[type="color"],
 select {
-	display: inline-block;
+	display: inline-flex;
+	flex-direction: row;
+	gap: 0.25em;
 	border-radius: 6px;
 	margin: 3px;
 	background: var(--input_background);
 	padding: 5px 5px 5px 5px;
 	overflow: hidden;
 	color: var(--input_text);
-	vertical-align: middle;
-	align-items: center;
 	cursor: pointer;
 	transition: padding 0.1s, box-shadow 0.1s, background 0.1s;
+
+	/* Align content vertically in relation to the container */
+	vertical-align: middle;
+	/* Align content vertically in relation to eachother */
+	align-items: center;
 
 	/* Remove default styles set by the user-agent */
 	outline: 0;
 	font-size: 1em;
 	font-weight: normal;
-	line-height: 1;
 	text-decoration: none;
 	text-shadow: none;
 	border: none;

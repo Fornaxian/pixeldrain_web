@@ -1,6 +1,5 @@
 <script>
 import { onMount } from 'svelte';
-import PixeldrainLogo from '../util/PixeldrainLogo.svelte';
 import LoadingIndicator from '../util/LoadingIndicator.svelte';
 import EditWindow from './EditWindow.svelte';
 import Toolbar from './Toolbar.svelte';
@@ -14,6 +13,7 @@ import HomeButton from '../file_viewer/HomeButton.svelte';
 import { fs_path_url } from './FilesystemUtil';
 
 let loading = true
+let toolbar
 let upload_widget
 let download_frame
 let details_visible = false
@@ -47,6 +47,9 @@ const keydown = e => {
 	}
 
 	switch (e.key) {
+		case "c":
+			toolbar.copy_link()
+			break;
 		case "i":
 			details_visible = !details_visible
 			break;
@@ -113,7 +116,7 @@ const loading_evt = e => {
 <div class="file_viewer">
 	<div class="headerbar">
 		<div>
-			<HomeButton/>
+			<HomeButton nobg/>
 		</div>
 
 		<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
@@ -121,6 +124,7 @@ const loading_evt = e => {
 
 	<div class="viewer_area">
 		<Toolbar
+			bind:this={toolbar}
 			fs_navigator={fs_navigator}
 			state={state}
 			bind:details_visible={details_visible}
@@ -220,7 +224,7 @@ const loading_evt = e => {
 	flex-direction: row;
 	overflow: hidden;
 }
-@media (max-width: 700px) {
+@media (max-width: 600px) {
 	.viewer_area {
 		flex-direction: column-reverse;
 	}
