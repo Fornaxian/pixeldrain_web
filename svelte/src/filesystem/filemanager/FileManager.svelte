@@ -1,9 +1,10 @@
 <script>
-import { fs_delete } from './../FilesystemAPI.js'
+import { fs_delete_all, fs_rename } from './../FilesystemAPI.js'
 import { createEventDispatcher, onMount } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
+import Button from '../../layout/Button.svelte';
 let dispatch = createEventDispatcher()
 
 export let fs_navigator
@@ -28,6 +29,12 @@ const node_click = e => {
 	// other modules
 	if (mode === "viewing") {
 		fs_navigator.navigate(state.children[index].path, true)
+	} else if (mode === "moving") {
+		// If we are moving files we can only enter directories, and only if
+		// they're not selected
+		if (state.children[index].type === "dir") {
+			fs_navigator.navigate(state.children[index].path, true)
+		}
 	} else if (mode === "selecting") {
 		state.children[index].fm_selected = !state.children[index].fm_selected
 	}
@@ -37,6 +44,11 @@ const node_share_click = e => {
 
 	creating_dir = false
 	fs_navigator.navigate(state.children[index].id, true)
+}
+const node_select = e => {
+	let index = e.detail
+	mode = "selecting"
+	state.children[index].fm_selected = !state.children[index].fm_selected
 }
 
 const node_settings = e => {
@@ -55,11 +67,7 @@ const navigate_back = () => {
 	history.back()
 }
 
-const delete_selected = () => {
-	if (mode !== "selecting") {
-		return
-	}
-
+const delete_selected = async () => {
 	let count = state.children.reduce((acc, cur) => {
 		if (cur.fm_selected) {
 			acc++
@@ -77,33 +85,36 @@ const delete_selected = () => {
 
 	dispatch("loading", true)
 
-	// Save all promises with deletion requests in an array
-	let promises = []
-	state.children.forEach(child => {
-		if (!child.fm_selected) { return }
-		promises.push(fs_delete(child.path))
-	})
+	try {
+		// Save all promises with deletion requests in an array
+		let promises = []
+		state.children.forEach(child => {
+			if (!child.fm_selected) { return }
+			promises.push(fs_delete_all(child.path))
+		})
 
-	// Wait for all the promises to finish
-	Promise.all(promises).catch((err) => {
-		console.error(err)
-		alert("Delete failed: ", err)
-	}).finally(() => {
-		mode = "viewing"
+		// Wait for all the promises to finish
+		await Promise.all(promises)
+	} catch (err) {
+		console.log(err)
+		alert("Delete failed: " + err.message + " ("+err.value+")")
+	} finally {
+		viewing_mode()
 		fs_navigator.reload()
-	})
-}
-const toggle_select = () => {
-	if (mode !== "selecting") {
-		mode = "selecting"
-		return
 	}
+}
+const selecting_mode = () => {
+	mode = "selecting"
+}
+const viewing_mode = () => {
+	// Remove any items which we were moving
+	moving_items = []
 
 	// Unmark all the selected files and return to viewing mode
 	state.children.forEach((child, i) => {
-		if (child.fm_selected) {
-			state.children[i].fm_selected = false
-		}
+	if (child.fm_selected) {
+		state.children[i].fm_selected = false
+	}
 	})
 	mode = "viewing"
 }
@@ -117,6 +128,58 @@ const toggle_view = () => {
 
 	localStorage.setItem("directory_view", directory_view)
 }
+
+let moving_items = []
+
+// When the directory is reloaded we want to keep our selection, so this
+// function watches the children array for changes and updates the selection
+// when it changes
+$: update(state.children)
+const update = (children) => {
+	console.log("update")
+	// Highlight the files which were previously selected
+	for (let i = 0; i < children.length; i++) {
+		for (let j = 0; j < moving_items.length; j++) {
+			if (moving_items[j].path === children[i].path) {
+				console.log("selecting", children[i].path)
+				children[i].fm_selected = true
+			}
+		}
+	}
+}
+const move_start = () => {
+	moving_items = state.children.reduce((acc, child) => {
+		if (child.fm_selected) {
+			acc.push(child)
+		}
+		return acc
+	}, [])
+	mode = "moving"
+}
+const move_here = async () => {
+	dispatch("loading", true)
+
+	let target_dir = state.base.path + "/"
+
+	try {
+		// Save all promises with deletion requests in an array
+		let promises = []
+		moving_items.forEach(item => {
+			console.log("moving", item.path, "to", target_dir + item.name)
+			promises.push(fs_rename(item.path, target_dir + item.name))
+		})
+
+		// Wait for all the promises to finish
+		await Promise.all(promises)
+	} catch (err) {
+		console.log(err)
+		alert("Move failed: " + err.message + " ("+err.value+")")
+	} finally {
+		viewing_mode()
+		fs_navigator.reload()
+	}
+}
+
 onMount(() => {
 	if(typeof Storage !== "undefined") {
 		directory_view = localStorage.getItem("directory_view")
@@ -129,71 +192,71 @@ onMount(() => {
 
 <div class="container">
 	<div class="width_container">
-		<div class="toolbar">
-			<button on:click={navigate_back} title="Back">
-				<i class="icon">arrow_back</i>
-			</button>
-			<button on:click={navigate_up} disabled={state.path.length <= 1} title="Up">
-				<i class="icon">north</i>
-			</button>
-			<button on:click={fs_navigator.reload()} title="Refresh directory listing">
-				<i class="icon">refresh</i>
-			</button>
-				<button on:click={() => toggle_view()} title="Switch between gallery view and list view">
-					{#if directory_view === "list"}
-						<i class="icon">collections</i>
-					{:else if directory_view === "gallery"}
-						<i class="icon">list</i>
+		{#if mode === "viewing"}
+			<div class="toolbar">
+				<button on:click={navigate_back} title="Back">
+					<i class="icon">arrow_back</i>
+				</button>
+				<button on:click={navigate_up} disabled={state.path.length <= 1} title="Up">
+					<i class="icon">north</i>
+				</button>
+				<button on:click={fs_navigator.reload()} title="Refresh directory listing">
+					<i class="icon">refresh</i>
+				</button>
+					<button on:click={() => toggle_view()} title="Switch between gallery view and list view">
+						{#if directory_view === "list"}
+							<i class="icon">collections</i>
+						{:else if directory_view === "gallery"}
+							<i class="icon">list</i>
+						{/if}
+					</button>
+
+				<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
+					{#if show_hidden}
+						<i class="icon">visibility_off</i>
+					{:else}
+						<i class="icon">visibility</i>
 					{/if}
 				</button>
 
-			<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
-				{#if show_hidden}
-					<i class="icon">visibility_off</i>
-				{:else}
-					<i class="icon">visibility</i>
+				<div class="toolbar_spacer"></div>
+				{#if state.permissions.update}
+					<button on:click={() => dispatch("upload_picker")} title="Upload files to this directory">
+						<i class="icon">cloud_upload</i>
+					</button>
+					<Button click={() => {creating_dir = !creating_dir}} highlight={creating_dir} icon="create_new_folder" title="Make folder"/>
+
+					<button
+						on:click={selecting_mode}
+						class:button_highlight={mode === "selecting"}
+						title="Select and delete files"
+					>
+						<i class="icon">edit</i>
+					</button>
 				{/if}
-			</button>
-
-			<div class="toolbar_spacer"></div>
-			{#if state.permissions.update}
-				<button on:click={() => dispatch("upload_picker")} title="Upload files to this directory">
-					<i class="icon">cloud_upload</i>
-				</button>
-				<button on:click={() => {creating_dir = !creating_dir}} class:button_highlight={creating_dir} title="Make folder">
-					<i class="icon">create_new_folder</i>
-				</button>
-
-				<button
-					on:click={toggle_select}
-					class:button_highlight={mode === "selecting"}
-					title="Select and delete files"
-				>
-					<i class="icon">edit</i>
-				</button>
-			{/if}
-		</div>
-		<br/>
-
-		{#if mode === "selecting"}
-			<div class="toolbar toolbar_edit highlight_green">
-				<div style="flex: 1 1 auto; justify-self: center;">
-					Select files or directories by clicking on them. Then you
-					can choose which action to perform
-				</div>
-				<div style="display: flex; flex-direction: row; justify-content: center;">
-					<button on:click={toggle_select}>
-						<i class="icon">undo</i>
-						Cancel
-					</button>
-					<button on:click={delete_selected} class="button_red">
-						<i class="icon">delete</i>
-						Delete selected
-					</button>
-				</div>
 			</div>
-			<br/>
+		{:else if mode === "selecting"}
+			<div class="toolbar toolbar_edit">
+				<Button click={viewing_mode} icon="close"/>
+				<div class="toolbar_spacer"></div>
+				<Button click={move_start} icon="drive_file_move" label="Move"/>
+				<button on:click={delete_selected} class="button_red">
+					<i class="icon">delete</i>
+					Delete
+				</button>
+			</div>
+		{:else if mode === "moving"}
+			<div class="toolbar toolbar_edit">
+				<Button click={viewing_mode} icon="close"/>
+				<Button click={navigate_up} disabled={state.path.length <= 1} icon="north"/>
+				<div class="toolbar_spacer">
+					Moving {moving_items.length} items
+				</div>
+				<Button click={() => {creating_dir = !creating_dir}} highlight={creating_dir} icon="create_new_folder" title="Make folder"/>
+				<Button click={move_here} highlight icon="done" label="Move here"/>
+			</div>
 		{/if}
+
 		{#if creating_dir}
 			<CreateDirectory
 				state={state}
@@ -210,6 +273,7 @@ onMount(() => {
 			on:node_click={node_click}
 			on:node_share_click={node_share_click}
 			on:node_settings={node_settings}
+			on:node_select={node_select}
 		/>
 	{:else if directory_view === "gallery"}
 		<GalleryView
@@ -217,6 +281,7 @@ onMount(() => {
 			show_hidden={show_hidden}
 			on:node_click={node_click}
 			on:node_settings={node_settings}
+			on:node_select={node_select}
 		/>
 	{/if}
 </div>
@@ -227,11 +292,11 @@ onMount(() => {
 	width: 100%;
 	padding: 0;
 	overflow: auto;
-	text-align: center;
 	display: block;
 }
 .width_container {
-	position: relative;
+	position: sticky;
+	top: 0;
 	display: block;
 	width: 100%;
 	margin: auto;
@@ -239,22 +304,21 @@ onMount(() => {
 	background: var(--shaded_background);
 }
 .toolbar {
-	position: sticky;
-	top: 0;
-	display: inline-flex;
+	display: flex;
 	flex-direction: row;
 	width: 100%;
 	max-width: 1000px;
-	margin: 0;
+	margin: auto;
 	padding: 0;
 	justify-content: center;
+	align-items: center;
 }
 .toolbar > * { flex: 0 0 auto; }
-.toolbar_spacer { flex: 1 1 auto; }
-
-@media(max-width: 800px) {
-	.toolbar_edit {
-		flex-direction: column;
-	}
+.toolbar_spacer {
+	flex: 1 1 auto;
+	text-align: center;
+}
+.toolbar_edit {
+	background-color: rgba(0, 255, 0, 0.05);
 }
 </style>

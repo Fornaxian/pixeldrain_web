@@ -7,6 +7,14 @@ let dispatch = createEventDispatcher()
 
 export let state
 export let show_hidden = false
+
+let handle_longpress = (e, index) => {
+	// If this is a touch event we will select the item
+	if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
+		e.preventDefault()
+		dispatch("node_select", index)
+	}
+}
 </script>
 
 <div class="directory">
@@ -20,6 +28,7 @@ export let show_hidden = false
 		<a
 			href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={() => {dispatch("node_click", index)}}
+			on:contextmenu={e => handle_longpress(e, index)}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
@@ -59,10 +68,7 @@ export let show_hidden = false
 
 .directory {
 	display: table;
-	position: relative;
-	overflow: hidden;
 	margin: 8px auto 16px auto;
-	text-align: left;
 	background: var(--body_color);
 	border-collapse: collapse;
 	border-radius: 8px;
@@ -106,7 +112,6 @@ td {
 }
 .node_name {
 	width: 100%;
-	overflow: hidden;
 	line-height: 1.2em;
 	word-break: break-all;
 }

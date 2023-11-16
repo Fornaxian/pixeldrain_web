@@ -1,6 +1,7 @@
 <script>
 import { onMount, createEventDispatcher } from "svelte";
 import { fs_mkdir } from "../FilesystemAPI.js";
+import Button from "../../layout/Button.svelte";
 let dispatch = createEventDispatcher()
 
 export let state;
@@ -28,10 +29,10 @@ let create_dir = () => {
 onMount(() => { name_input.focus() })
 </script>
 
-<form class="create_dir highlight_shaded" on:submit|preventDefault={create_dir}>
+<form id="create_dir_form" class="create_dir" on:submit|preventDefault={create_dir}>
 	<img src="/res/img/mime/folder.png" class="icon" alt="icon"/>
-	<input class="dirname" type="text" style="width: 100%;" bind:this={name_input} bind:value={new_dir_name} />
-	<input class="submit" type="submit" value="create"/>
+	<input class="dirname" type="text" bind:this={name_input} bind:value={new_dir_name} />
+	<Button form="create_dir_form" type="submit" icon="create_new_folder" label="Create"/>
 </form>
 
 <style>
@@ -41,15 +42,13 @@ onMount(() => { name_input.focus() })
 	width: 100%;
 	max-width: 1000px;
 }
-.create_dir > img {
+.icon {
+	align-self: center;
 	height: 32px;
 	width: 32px;
 	flex: 0 0 auto;
 }
 .dirname {
 	flex: 1 1 auto;
-}
-.submit {
-	flex: 0 0 auto;
 }
 </style>

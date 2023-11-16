@@ -3,9 +3,11 @@ export let highlight = false;
 export let red = false;
 export let round = false;
 export let flat = false;
+export let disabled = false;
 export let icon = ""
 export let icon_small = false;
 export let label = ""
+export let title = ""
 export let link_href = ""
 export let link_target = ""
 export let click = e => {}
@@ -22,9 +24,11 @@ export let form = ""
 		class:button_red={red}
 		class:round
 		class:flat
+		title={title}
 		style={style}
 		type={type}
 		form={form}
+		disabled={disabled ? "disabled":""}
 	>
 		{#if icon !== ""}
 			<i class="icon" class:small={icon_small}>{icon}</i>
@@ -42,7 +46,9 @@ export let form = ""
 		class:button_red={red}
 		class:round
 		class:flat
+		title={title}
 		style={style}
+		disabled={disabled ? "disabled":""}
 	>
 		{#if icon !== ""}
 			<i class="icon" class:small={icon_small}>{icon}</i>

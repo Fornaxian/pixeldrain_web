@@ -34,7 +34,7 @@ const state_update = async (base) => {
 
 	// Render the viewer component and set the file type
 	await tick()
-	if (viewer) {
+	if (viewer && viewer.update) {
 		viewer.update()
 	}
 }
