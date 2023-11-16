@@ -18,6 +18,10 @@ const update_base = async base => {
 	if (connected_to === base.path) {
 		return
 	}
+	if (base.type === "dir") {
+		console.debug("Not opening websocket for directory")
+		return
+	}
 	connected_to = base.path
 
 	// If the socket is already active we need to close it
@@ -52,7 +56,7 @@ const update_base = async base => {
 			if (socket === null) {
 				update_base(base)
 			}
-		}, 3000)
+		}, 5000)
 	}
 }
 
