@@ -7,14 +7,7 @@ let dispatch = createEventDispatcher()
 
 export let state
 export let show_hidden = false
-
-let handle_longpress = (e, index) => {
-	// If this is a touch event we will select the item
-	if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
-		e.preventDefault()
-		dispatch("node_select", index)
-	}
-}
+export let large_icons = false
 </script>
 
 <div class="directory">
@@ -28,13 +21,13 @@ let handle_longpress = (e, index) => {
 		<a
 			href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={() => {dispatch("node_click", index)}}
-			on:contextmenu={e => handle_longpress(e, index)}
+			on:contextmenu={e => {dispatch("node_context", {event: e, index: index})}}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
 		>
 			<td>
-				<img src={fs_node_icon(child, 32, 32)} class="node_icon" alt="icon"/>
+				<img src={fs_node_icon(child, 64, 64)} class="node_icon" class:large_icons alt="icon"/>
 			</td>
 			<td class="node_name">
 				{child.name}
@@ -130,5 +123,13 @@ td {
 }
 .hidden {
 	display: none;
+}
+
+/* Large icon mode only supported on wide screens */
+@media (min-width: 500px) {
+	.node_icon.large_icons {
+		height: 64px;
+		width: 64px;
+	}
 }
 </style>

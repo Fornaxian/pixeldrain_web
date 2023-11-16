@@ -5,72 +5,101 @@ let dispatch = createEventDispatcher()
 
 export let state
 export let show_hidden = false
+export let large_icons = false
 </script>
 
 <div class="gallery">
 	{#each state.children as child, index (child.path)}
 		<a class="file"
 			href={"/d"+fs_encode_path(child.path)}
-			on:click|preventDefault={() => {dispatch("node_click", index)}}
+			on:click|preventDefault={() => dispatch("node_click", index)}
+			on:contextmenu={e => dispatch("node_context", {event: e, index: index})}
 			class:selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
+			class:large_icons
 			title={child.name}
 		>
 			<div
-				class="icon_container"
+				class="node_icon"
 				class:cover={fs_node_type(child) === "image" || fs_node_type(child) === "video"}
 				style='background-image: url("{fs_node_icon(child, 256, 256)}");'>
 			</div>
-			{child.name}
+			<div class="node_name">
+				{child.name}
+			</div>
 		</a>
 	{/each}
 </div>
 
 <style>
-.gallery{
-	padding: 16px;
-	overflow: hidden;
+.gallery {
 	display: flex;
 	flex-wrap: wrap;
+	gap: 10px;
+	margin: 10px;
 	justify-content: center;
 }
-.file{
-	width: 200px;
-	max-width: 42%;
-	height: 200px;
-	margin: 8px;
+.file {
+	aspect-ratio: 1;
+	width: 150px;
+	height: 150px;
 	overflow: hidden;
 	border-radius: 8px;
 	background: var(--input_background);
-	word-break: break-all;
-	text-align: center;
-	line-height: 1.2em;
-	display: inline-block;
-	text-overflow: ellipsis;
-	text-decoration: none;
-	vertical-align: top;
+	display: flex;
+	flex-direction: column;
 	color: var(--body_text_color);
 	transition: background 0.2s;
+	text-decoration: none;
+	padding: 3px;
+}
+.file.large_icons {
+	width: 200px;
+	height: 200px;
+}
+
+/* On very small screens we switch to grid layout  */
+@media (max-width: 500px) {
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	}
+	.file {
+		width: unset;
+		height: unset;
+		max-width: 200px;
+		max-height: 200px;
+	}
+	.file.large_icons {
+		width: unset;
+		height: unset;
+	}
 }
 .file:hover {
 	background: var(--input_hover_background);
 }
 .selected {
-	box-shadow: 0 0 2px 2px var(--highlight_color);
-	text-decoration: none;
+	background: var(--highlight_background);
+	color: var(--highlight_text_color);
 }
-.icon_container {
-	margin: 3px;
-	height: 148px;
+.node_icon {
+	flex: 1 1 0;
 	border-radius: 6px;
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;
-	font-size: 22px;
-	text-align: left;
 }
-.icon_container.cover {
+.node_icon.cover {
 	background-size: cover;
+}
+.node_name {
+	flex: 0 0 auto;
+	word-break: break-all;
+	line-clamp: 2;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .hidden {
 	display: none;

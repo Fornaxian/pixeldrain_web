@@ -11,6 +11,7 @@ export let fs_navigator
 export let state
 export let edit_window
 export let directory_view = ""
+let large_icons = false
 let uploader
 let mode = "viewing"
 let creating_dir = false
@@ -19,6 +20,8 @@ let show_hidden = false
 export const upload = files => {
 	return uploader.upload(files)
 }
+
+// Navigation functions
 
 const node_click = e => {
 	let index = e.detail
@@ -37,6 +40,13 @@ const node_click = e => {
 		}
 	} else if (mode === "selecting") {
 		state.children[index].fm_selected = !state.children[index].fm_selected
+	}
+}
+let node_context = e => {
+	// If this is a touch event we will select the item
+	if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
+		e.detail.event.preventDefault()
+		node_select({detail: e.detail.index})
 	}
 }
 const node_share_click = e => {
@@ -66,6 +76,8 @@ const navigate_back = () => {
 	creating_dir = false
 	history.back()
 }
+
+// Deletion function
 
 const delete_selected = async () => {
 	let count = state.children.reduce((acc, cur) => {
@@ -103,6 +115,9 @@ const delete_selected = async () => {
 		fs_navigator.reload()
 	}
 }
+
+// Mode switches
+
 const selecting_mode = () => {
 	mode = "selecting"
 }
@@ -128,6 +143,12 @@ const toggle_view = () => {
 
 	localStorage.setItem("directory_view", directory_view)
 }
+const toggle_large_icons = () => {
+	large_icons = !large_icons
+	localStorage.setItem("large_icons", large_icons)
+}
+
+// Moving functions
 
 let moving_items = []
 
@@ -160,7 +181,6 @@ const move_here = async () => {
 	let target_dir = state.base.path + "/"
 
 	try {
-		// Save all promises with deletion requests in an array
 		let promises = []
 		moving_items.forEach(item => {
 			console.log("moving", item.path, "to", target_dir + item.name)
@@ -181,6 +201,7 @@ const move_here = async () => {
 onMount(() => {
 	if(typeof Storage !== "undefined") {
 		directory_view = localStorage.getItem("directory_view")
+		large_icons = localStorage.getItem("large_icons") === "true"
 	}
 	if (directory_view === "" || directory_view === null) {
 		directory_view = "list"
@@ -201,19 +222,28 @@ onMount(() => {
 				<button on:click={fs_navigator.reload()} title="Refresh directory listing">
 					<i class="icon">refresh</i>
 				</button>
-					<button on:click={() => toggle_view()} title="Switch between gallery view and list view">
-						{#if directory_view === "list"}
-							<i class="icon">collections</i>
-						{:else if directory_view === "gallery"}
-							<i class="icon">list</i>
-						{/if}
-					</button>
 
 				<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
 					{#if show_hidden}
 						<i class="icon">visibility_off</i>
 					{:else}
 						<i class="icon">visibility</i>
+					{/if}
+				</button>
+
+				<button on:click={() => toggle_view()} title="Switch between gallery view and list view">
+					{#if directory_view === "list"}
+						<i class="icon">collections</i>
+					{:else if directory_view === "gallery"}
+						<i class="icon">list</i>
+					{/if}
+				</button>
+
+				<button class="button_large_icons" on:click={() => toggle_large_icons()} title="Switch between large and small icons">
+					{#if large_icons}
+						<i class="icon">zoom_out</i>
+					{:else}
+						<i class="icon">zoom_in</i>
 					{/if}
 				</button>
 
@@ -268,7 +298,9 @@ onMount(() => {
 		<ListView
 			state={state}
 			show_hidden={show_hidden}
+			large_icons={large_icons}
 			on:node_click={node_click}
+			on:node_context={node_context}
 			on:node_share_click={node_share_click}
 			on:node_settings={node_settings}
 			on:node_select={node_select}
@@ -277,7 +309,9 @@ onMount(() => {
 		<GalleryView
 			state={state}
 			show_hidden={show_hidden}
+			large_icons={large_icons}
 			on:node_click={node_click}
+			on:node_context={node_context}
 			on:node_settings={node_settings}
 			on:node_select={node_select}
 		/>
@@ -318,5 +352,12 @@ onMount(() => {
 }
 .toolbar_edit {
 	background-color: rgba(0, 255, 0, 0.05);
+}
+
+/* Large icon mode only supported on wide screens. Hide the button on small screen */
+@media (max-width: 500px) {
+	.button_large_icons {
+		display: none;
+	}
 }
 </style>
