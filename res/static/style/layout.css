@@ -123,7 +123,7 @@ header>h1 {
 	z-index: 10;
 	top: 0;
 	left: 0;
-	padding: 10px 20px 15px 10px;
+	padding: 8px 16px 16px 8px;
 	font-size: 2em;
 	margin: 0;
 	background: #3f3f3f;
@@ -133,7 +133,7 @@ header>h1 {
 }
 
 .button_toggle_navigation:active {
-	padding: 15px 15px 10px 15px;
+	padding: 12px 14px 14px 12px;
 }
 
 .page_navigation {
