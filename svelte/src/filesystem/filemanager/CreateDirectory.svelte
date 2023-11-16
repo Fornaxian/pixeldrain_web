@@ -37,10 +37,11 @@ onMount(() => { name_input.focus() })
 
 <style>
 .create_dir {
-	display: inline-flex;
+	display: flex;
 	flex-direction: row;
 	width: 100%;
 	max-width: 1000px;
+	margin: auto;
 }
 .icon {
 	align-self: center;
