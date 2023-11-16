@@ -58,7 +58,7 @@ export let large_icons = false
 	height: 200px;
 }
 
-/* On very small screens we switch to grid layout  */
+/* On very small screens we switch to grid layout */
 @media (max-width: 500px) {
 	.gallery {
 		display: grid;
@@ -78,7 +78,7 @@ export let large_icons = false
 .file:hover {
 	background: var(--input_hover_background);
 }
-.selected {
+.file.selected {
 	background: var(--highlight_background);
 	color: var(--highlight_text_color);
 }
