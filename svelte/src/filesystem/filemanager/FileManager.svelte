@@ -136,12 +136,10 @@ let moving_items = []
 // when it changes
 $: update(state.children)
 const update = (children) => {
-	console.log("update")
 	// Highlight the files which were previously selected
 	for (let i = 0; i < children.length; i++) {
 		for (let j = 0; j < moving_items.length; j++) {
 			if (moving_items[j].path === children[i].path) {
-				console.log("selecting", children[i].path)
 				children[i].fm_selected = true
 			}
 		}
