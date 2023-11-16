@@ -32,7 +32,7 @@ const node_click = e => {
 	} else if (mode === "moving") {
 		// If we are moving files we can only enter directories, and only if
 		// they're not selected
-		if (state.children[index].type === "dir") {
+		if (state.children[index].type === "dir" && !state.children[index].fm_selected) {
 			fs_navigator.navigate(state.children[index].path, true)
 		}
 	} else if (mode === "selecting") {
