@@ -100,14 +100,12 @@ const drop = (e, index) => {
 			class:highlight={!dragging && hovering === -2}
 			role="listitem"
 		>
-			<button on:click={e => dispatch("pick_files")} style="font-size: 1.5em; cursor: pointer;">
+			<button class="add_button_part" on:click={e => dispatch("pick_files")}>
 				<i class="icon">cloud_upload</i>
-				<br/>
 				Upload files
 			</button>
-			<button on:click={file_picker.open} style="font-size: 1.5em; cursor: pointer;">
+			<button class="add_button_part" on:click={file_picker.open}>
 				<i class="icon">add</i>
-				<br/>
 				Add files
 			</button>
 		</div>
@@ -244,5 +242,9 @@ const drop = (e, index) => {
 }
 .add_button > * {
 	flex: 1 1 auto;
+	font-size: 1.5em;
+	cursor: pointer;
+	flex-direction: column;
+	justify-content: center;
 }
 </style>
