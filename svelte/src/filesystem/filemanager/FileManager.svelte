@@ -17,6 +17,13 @@ let mode = "viewing"
 let creating_dir = false
 let show_hidden = false
 
+$: selected_files = state.children.reduce((acc, file) => {
+	if (file.fm_selected) {
+		acc++
+	}
+	return acc
+}, 0)
+
 export const upload = files => {
 	return uploader.upload(files)
 }
@@ -34,12 +41,13 @@ const node_click = e => {
 		fs_navigator.navigate(state.children[index].path, true)
 	} else if (mode === "moving") {
 		// If we are moving files we can only enter directories, and only if
-		// they're not selected
+		// they're not selected. That last requirement prevents people from
+		// moving a directory into itself
 		if (state.children[index].type === "dir" && !state.children[index].fm_selected) {
 			fs_navigator.navigate(state.children[index].path, true)
 		}
 	} else if (mode === "selecting") {
-		state.children[index].fm_selected = !state.children[index].fm_selected
+		select_node(index)
 	}
 }
 let node_context = e => {
@@ -152,6 +160,34 @@ const toggle_large_icons = () => {
 
 let moving_items = []
 
+// We need to detect if shift is pressed so we can select multiple items
+let shift_pressed = false
+let last_selected_node = -1
+const detect_shift = (e) => {
+	if (e.key === "Shift") {
+		shift_pressed = e.type === "keydown"
+	}
+}
+
+const select_node = index => {
+	if (shift_pressed) {
+		// If shift is pressed we do a range select. We select all files between
+		// the last selected file and the file that is being selected now
+		let id_low = Math.min(last_selected_node, index)
+		let id_high = Math.max(last_selected_node, index)
+
+		for (let i = id_low; i <= id_high; i++) {
+			if (i != last_selected_node) {
+				state.children[i].fm_selected = !state.children[i].fm_selected
+			}
+		}
+	} else {
+		state.children[index].fm_selected = !state.children[index].fm_selected
+	}
+
+	last_selected_node = index
+}
+
 // When the directory is reloaded we want to keep our selection, so this
 // function watches the children array for changes and updates the selection
 // when it changes
@@ -166,15 +202,26 @@ const update = (children) => {
 		}
 	}
 }
+
+let moving_files = 0
+let moving_directories = 0
 const move_start = () => {
+	moving_files = 0
+	moving_directories = 0
 	moving_items = state.children.reduce((acc, child) => {
 		if (child.fm_selected) {
+			if (child.type === "file") {
+				moving_files++
+			} else if (child.type === "dir") {
+				moving_directories++
+			}
 			acc.push(child)
 		}
 		return acc
 	}, [])
 	mode = "moving"
 }
+
 const move_here = async () => {
 	dispatch("loading", true)
 
@@ -208,6 +255,8 @@ onMount(() => {
 	}
 })
 </script>
+
+<svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
 
 <div class="container">
 	<div class="width_container">
@@ -266,7 +315,9 @@ onMount(() => {
 		{:else if mode === "selecting"}
 			<div class="toolbar toolbar_edit">
 				<Button click={viewing_mode} icon="close"/>
-				<div class="toolbar_spacer"></div>
+				<div class="toolbar_spacer">
+					Selected {selected_files} files
+				</div>
 				<Button click={move_start} icon="drive_file_move" label="Move"/>
 				<button on:click={delete_selected} class="button_red">
 					<i class="icon">delete</i>
@@ -278,7 +329,7 @@ onMount(() => {
 				<Button click={viewing_mode} icon="close"/>
 				<Button click={navigate_up} disabled={state.path.length <= 1} icon="north"/>
 				<div class="toolbar_spacer">
-					Moving {moving_items.length} items
+					Moving {moving_files} files and {moving_directories} directories
 				</div>
 				<Button click={() => {creating_dir = !creating_dir}} highlight={creating_dir} icon="create_new_folder" title="Make folder"/>
 				<Button click={move_here} highlight icon="done" label="Move here"/>
