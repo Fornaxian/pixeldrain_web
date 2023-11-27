@@ -106,7 +106,6 @@ const fullscreen = () => {
 						bind:this={player}
 						controls
 						playsinline
-						autoplay
 						loop={loop}
 						class="video"
 						on:pause={() => playing = false }

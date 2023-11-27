@@ -83,7 +83,9 @@ const checkout = async () => {
 
 	{#if country === null}
 
-		<div>Please pick your country of residence</div>
+		<div>
+			Please pick your country of residence
+		</div>
 		<div class="countries">
 			{#each countries as c}
 				<button on:click={() => country = c}>
@@ -97,17 +99,53 @@ const checkout = async () => {
 			{/each}
 		</div>
 		<div>
-			We support the following payment processors<br/>
-			<img class="bankicon" src="/res/img/payment_providers/ideal.svg" alt="iDEAL" title="iDEAL"/>
-			<img class="bankicon" src="/res/img/payment_providers/klarna.svg" alt="Klarna" title="Klarna"/>
-			<img class="bankicon" src="/res/img/payment_providers/bancontact.svg" alt="Bancontact" title="Bancontact"/>
-			<img class="bankicon" src="/res/img/payment_providers/banktransfer.svg" alt="SEPA" title="SEPA"/>
-			<img class="bankicon" src="/res/img/payment_providers/sofort.svg" alt="SOFORT" title="SOFORT"/>
-			<img class="bankicon" src="/res/img/payment_providers/kbc.svg" alt="KBC/CBC" title="CBC"/>
-			<img class="bankicon" src="/res/img/payment_providers/belfius.svg" alt="Belfius" title="Belfius"/>
-			<img class="bankicon" src="/res/img/payment_providers/giropay.svg" alt="Giropay" title="Giropay"/>
-			<img class="bankicon" src="/res/img/payment_providers/eps.svg" alt="EPS" title="EPS"/>
-			<img class="bankicon" src="/res/img/payment_providers/przelewy24.svg" alt="Przelewy24" title="Przelewy24"/>
+			We support the following payment processors
+		</div>
+		<div class="processors">
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/paypal.svg" alt="PayPal" title="PayPal"/>
+				PayPal
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/ideal.svg" alt="iDEAL" title="iDEAL"/>
+				iDEAL
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/klarna.svg" alt="Klarna" title="Klarna"/>
+				Klarna
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/bancontact.svg" alt="Bancontact" title="Bancontact"/>
+				Bancontact
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/banktransfer.svg" alt="SEPA" title="SEPA"/>
+				SEPA
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/sofort.svg" alt="SOFORT" title="SOFORT"/>
+				SOFORT
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/kbc.svg" alt="KBC/CBC" title="CBC"/>
+				KBC/CBC
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/belfius.svg" alt="Belfius" title="Belfius"/>
+				Belfius
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/giropay.svg" alt="Giropay" title="Giropay"/>
+				Giropay
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/eps.svg" alt="EPS" title="EPS"/>
+				EPS
+			</div>
+			<div>
+				<img class="bankicon" src="/res/img/payment_providers/przelewy24.svg" alt="Przelewy24" title="Przelewy24"/>
+				Przelewy24
+			</div>
 		</div>
 
 	{:else}
@@ -132,8 +170,12 @@ const checkout = async () => {
 		<form class="amount_grid" on:submit|preventDefault={checkout}>
 			<div class="span3">Please choose an amount</div>
 			{#each amounts as a}
-				<button on:click|preventDefault={() => amount = a} style="font-size: 1.1em;" class:button_highlight={amount === a}>
-					<div style="padding: 6px;">€ {a}</div>
+				<button
+					on:click|preventDefault={() => amount = a}
+					class="amount_button"
+					class:button_highlight={amount === a}
+				>
+					€ {a}
 				</button>
 			{/each}
 
@@ -157,15 +199,24 @@ const checkout = async () => {
 <style>
 .countries {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 .countries > button {
 	display: flex;
 	flex-direction: row;
 	text-align: left;
+	gap: 5px;
 }
-.countries > button > span {
-	margin-left: 0.5em;
+
+.processors {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+.processors > div {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	margin: 3px;
 }
 
 .amount_grid {
@@ -174,6 +225,11 @@ const checkout = async () => {
 	display: inline-grid;
 	align-items: center;
 	grid-template-columns: 1fr 1fr 1fr;
+}
+.amount_button {
+	font-size: 1.1em;
+	line-height: 1.6em;
+	justify-content: center;
 }
 
 .span2 {
