@@ -24,6 +24,28 @@ let pages = [
 		icon: "settings",
 		component: AccountSettings,
 	}, {
+		path: "/user/prepaid",
+		title: "Prepaid",
+		icon: "receipt_long",
+		subpages: [
+			{
+				path: "/user/prepaid/deposit",
+				title: "Deposit credit",
+				icon: "account_balance_wallet",
+				component: DepositCredit,
+			}, {
+				path: "/user/prepaid/subscriptions",
+				title: "Subscriptions",
+				icon: "shopping_cart",
+				component: Subscription,
+			}, {
+				path: "/user/prepaid/transactions",
+				title: "Transactions",
+				icon: "receipt",
+				component: Transactions,
+			},
+		],
+	}, {
 		path: "/user/sharing",
 		title: "Sharing",
 		icon: "share",
@@ -60,28 +82,6 @@ let pages = [
 		title: "Activity Log",
 		icon: "list",
 		component: ActivityLog,
-	}, {
-		path: "/user/prepaid",
-		title: "Prepaid",
-		icon: "receipt_long",
-		subpages: [
-			{
-				path: "/user/prepaid/deposit",
-				title: "Deposit credit",
-				icon: "account_balance_wallet",
-				component: DepositCredit,
-			}, {
-				path: "/user/prepaid/subscriptions",
-				title: "Subscriptions",
-				icon: "shopping_cart",
-				component: Subscription,
-			}, {
-				path: "/user/prepaid/transactions",
-				title: "Transactions",
-				icon: "receipt",
-				component: Transactions,
-			},
-		],
 	},
 ]
 </script>

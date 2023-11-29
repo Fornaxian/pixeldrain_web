@@ -79,12 +79,15 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h2 id="deposit">Deposit credits</h2>
+	<h2 id="deposit">Deposit credit</h2>
 	<p>
-		Pixeldrain credits can be used for our prepaid plans, which are
-		different from the Patreon plans. With prepaid you only pay for what you
-		use, at a rate of €4 per TB per month for storage and €2 per TB for data
-		transfer.
+		Pixeldrain credit can be used for our prepaid plans, which are different
+		from the Patreon plans. With prepaid you only pay for what you use, at a
+		rate of €4 per TB per month for storage and €2 per TB for data transfer.
+		See the Subscriptions tab for more information about the perks.
+	</p>
+	<p>
+		Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
 	</p>
 
 	<div class="tab_bar">

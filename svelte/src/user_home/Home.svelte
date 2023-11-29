@@ -225,7 +225,8 @@ onDestroy(() => {
 			{#if window.user.subscription.type === "patreon"}
 				(<a href="https://www.patreon.com/join/pixeldrain/checkout?edit=1">Manage subscription</a>)
 			{:else if window.user.subscription.id === ""}
-				(<a href="/api/patreon_auth/start" class="button">Link Patreon subscription</a>)
+				(<a href="/api/patreon_auth/start">Link Patreon subscription</a> /
+				<a href="/user/prepaid/deposit">deposit account credit</a>)
 			{/if}
 			<ul>
 				<li>
@@ -241,6 +242,7 @@ onDestroy(() => {
 		{#if window.user.balance_micro_eur !== 0}
 			<li>
 				Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
+				(<a href="/user/prepaid/deposit">deposit credit</a>)
 				{#if window.user.subscription.id === ""}
 					<br/>
 					You have account credit but no active subscription. Activate
