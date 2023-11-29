@@ -1,8 +1,4 @@
 <script>
-import {
-	At, Be, Bg, Hr, Cy, Cz, Dk, Ee, Fi, Fr, De, Gr, Hu, Ie, It, Lv, Lt, Lu, Mt,
-	Nl, Pl, Pt, Ro, Sk, Si, Es, Se,
-} from 'svelte-flag-icons';
 import Euro from '../util/Euro.svelte';
 import LoadingIndicator from '../util/LoadingIndicator.svelte';
 
@@ -14,33 +10,34 @@ $: credit_micro = amount*1e6
 $: vat_micro = country === null ? 0 : (amount*1e6)*(country.vat/100)
 
 let countries = [
-	{name: "Austria", code: At, vat: 20},
-	{name: "Belgium", code: Be, vat: 21},
-	{name: "Bulgaria", code: Bg, vat: 20},
-	{name: "Croatia", code: Hr, vat: 25},
-	{name: "Cyprus", code: Cy, vat: 19},
-	{name: "Czechia", code: Cz, vat: 21},
-	{name: "Denmark", code: Dk, vat: 25},
-	{name: "Estonia", code: Ee, vat: 20},
-	{name: "Finland", code: Fi, vat: 24},
-	{name: "France", code: Fr, vat: 20},
-	{name: "Germany", code: De, vat: 19},
-	{name: "Greece", code: Gr, vat: 24},
-	{name: "Hungary", code: Hu, vat: 27},
-	{name: "Ireland", code: Ie, vat: 23},
-	{name: "Italy", code: It, vat: 22},
-	{name: "Latvia", code: Lv, vat: 21},
-	{name: "Lithuania", code: Lt, vat: 21},
-	{name: "Luxembourg", code: Lu, vat: 16},
-	{name: "Malta", code: Mt, vat: 18},
-	{name: "Netherlands", code: Nl, vat: 21},
-	{name: "Poland", code: Pl, vat: 23},
-	{name: "Portugal", code: Pt, vat: 23},
-	{name: "Romania", code: Ro, vat: 19},
-	{name: "Slovakia", code: Sk, vat: 20},
-	{name: "Slovenia", code: Si, vat: 22},
-	{name: "Spain", code: Es, vat: 21},
-	{name: "Sweden", code: Se, vat: 25},
+	{name: "Austria", flag: "🇦🇹", vat: 20},
+	{name: "Belgium", flag: "🇧🇪", vat: 21},
+	{name: "Bulgaria", flag: "🇧🇬", vat: 20},
+	{name: "Croatia", flag: "🇭🇷", vat: 25},
+	{name: "Cyprus", flag: "🇨🇾", vat: 19},
+	{name: "Czechia", flag: "🇨🇿", vat: 21},
+	{name: "Denmark", flag: "🇩🇰", vat: 25},
+	{name: "Estonia", flag: "🇪🇪", vat: 20},
+	{name: "Finland", flag: "🇫🇮", vat: 24},
+	{name: "France", flag: "🇫🇷", vat: 20},
+	{name: "Germany", flag: "🇩🇪", vat: 19},
+	{name: "Greece", flag: "🇬🇷", vat: 24},
+	{name: "Hungary", flag: "🇭🇺", vat: 27},
+	{name: "Ireland", flag: "🇮🇪", vat: 23},
+	{name: "Italy", flag: "🇮🇹", vat: 22},
+	{name: "Latvia", flag: "🇱🇻", vat: 21},
+	{name: "Lithuania", flag: "🇱🇹", vat: 21},
+	{name: "Luxembourg", flag: "🇱🇺", vat: 16},
+	{name: "Malta", flag: "🇲🇹", vat: 18},
+	{name: "Netherlands", flag: "🇳🇱", vat: 21},
+	{name: "Poland", flag: "🇵🇱", vat: 23},
+	{name: "Portugal", flag: "🇵🇹", vat: 23},
+	{name: "Romania", flag: "🇷🇴", vat: 19},
+	{name: "Slovakia", flag: "🇸🇰", vat: 20},
+	{name: "Slovenia", flag: "🇸🇮", vat: 22},
+	{name: "Spain", flag: "🇪🇸", vat: 21},
+	{name: "Sweden", flag: "🇸🇪", vat: 25},
+	{name: "Other", flag: "🌐", vat: 0},
 ]
 
 let amounts = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
@@ -89,11 +86,7 @@ const checkout = async () => {
 		<div class="countries">
 			{#each countries as c}
 				<button on:click={() => country = c}>
-					{#if c.code}
-						<svelte:component this={c.code} size="1.5em" />
-					{:else}
-						<i class="icon">public</i>
-					{/if}
+					<span style="font-size: 1.7em; line-height: 0.9em;">{c.flag}</span>
 					<span>{c.name}</span>
 				</button>
 			{/each}
@@ -158,11 +151,7 @@ const checkout = async () => {
 			<div style="flex: 1 1 auto;"></div>
 			<div style="flex: 0 0 auto; display: flex; gap: 0.25em; align-items: center;">
 				<span>Paying from</span>
-				{#if country.code}
-					<svelte:component this={country.code} size="1.5em" />
-				{:else}
-					<i class="icon">public</i>
-				{/if}
+				<span style="font-size: 1.5em; line-height: 1em;">{country.flag}</span>
 				<span>{country.name} ({country.vat}% VAT)</span>
 			</div>
 		</div>

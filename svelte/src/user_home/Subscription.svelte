@@ -32,13 +32,11 @@ const update = async () => {
 	}
 }
 
-
 let checkout_success = false
 
 onMount(() => {
 	if (window.location.hash === "#checkout_complete") {
 		checkout_success = true
-		window.location.hash = ""
 	}
 })
 </script>
@@ -58,8 +56,9 @@ onMount(() => {
 				If your account credit has not been updated, please check the
 				status of your invoice on <a
 				href="/user/prepaid/deposit#invoices">the invoices page</a>.
-				Depending on the payment processor you used to can take a while
-				before your credit is deposited. If it takes too long contact
+				Depending on the payment processor you used it can take a while
+				before your credit is deposited. SEPA transfers can take up to
+				two working days for example. If it takes too long contact
 				support@pixeldrain.com.
 			</p>
 		</div>

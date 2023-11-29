@@ -37,7 +37,8 @@ onMount(() => {
 			<span class="bold">Pro</span>
 		</div>
 		<div class="top_row prepaid_feat">
-			<span class="bold">Prepaid</span> (currently only in Europe)
+			<span class="bold">Prepaid</span><br/>
+			Now available worldwide!
 		</div>
 
 		<div class="left_col">
@@ -135,44 +136,26 @@ onMount(() => {
 		</div>
 
 		<div class="left_col">
-			Advertising
-		</div>
-		<div class="feature_cell span3 pro_feat">
-			<span class="bold">None</span>. Pixeldrain does not have third-party
-			advertising. Though we do promote our own product on the free plan
-		</div>
-
-		<div class="left_col">
-			Privacy
-		</div>
-		<div class="feature_cell span3 pro_feat">
-			<span class="bold">Completely private</span>.
-			No third party tracking scripts and no logging
-		</div>
-
-		<div class="left_col">
-			Download page customization
-		</div>
-		<div class="feature_cell free_feat span2">
-			No customization
-		</div>
-		<div class="feature_cell prepaid_feat">
-			Custom <span class="bold">colour theme</span>,
-			<span class="bold">background</span> and
-			<span class="bold">banner images</span>
-		</div>
-
-		<div class="left_col">
 			Online file previews
 		</div>
 		<div class="feature_cell span3 pro_feat">
 			<span class="bold">Image, audio, video, PDF and text files</span><br/>
 			Can all be viewed in the browser
 		</div>
-		<!-- <div class="feature_cell span2 pro_feat">
-			<span class="bold">Video streaming</span><br/>
-			Plus the free previews of course
-		</div> -->
+
+		<div class="left_col">
+			Payment processors
+		</div>
+		<div class="feature_cell free_feat">
+			None
+		</div>
+		<div class="feature_cell pro_feat">
+			<span class="bold">PayPal</span>, <span class="bold">Credit card</span>
+		</div>
+		<div class="feature_cell prepaid_feat">
+			<span class="bold">PayPal</span>, <span class="bold">SEPA</span><br/>
+			And many EU regional providers
+		</div>
 
 		<div></div>
 		<div class="bottom_row free_feat">

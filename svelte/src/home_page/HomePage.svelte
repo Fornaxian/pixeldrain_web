@@ -39,9 +39,23 @@ import UploadWidget from "./UploadWidget.svelte";
 			An account is not required to use pixeldrain, but it enables some
 			useful features. With a pixeldrain account you can access your files
 			and albums on all your devices. You can also rename and delete files
-			you have uploaded. And create and reorder albums you have created.
-			Sign up for a pixeldrain account on <a href="/register">the
-			registration page</a>. More about pixeldrain's features below.
+			you have uploaded. Sign up for a pixeldrain account on
+			<a href="/register">the registration page</a>. More about
+			pixeldrain's features below.
+		</p>
+		<h2>Privacy</h2>
+		<p>
+			Privacy is an important value for pixeldrain. There is too much
+			tracking on the web nowadays. Pixeldrain goes in the other
+			direction, this site does not contain any advertisements or third
+			party tracking scripts. We don't even require you to enter an e-mail
+			address to register an account.
+		</p>
+		<p>
+			Not running ads does mean that we miss out on a lot of revenue of
+			course. Running a site like this is a very expensive endeavour.
+			Please consider supporting the project with one of the premium plans
+			below.
 		</p>
 	</section>
 </div>
