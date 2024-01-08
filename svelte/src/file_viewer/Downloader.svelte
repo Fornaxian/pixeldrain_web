@@ -75,6 +75,10 @@ export const download_file = () => {
 	) {
 		captcha_type = "ip_rate_limit"
 		captcha_window_title = "IP address rate limited"
+	} else {
+		captcha_window_title = "CAPTCHA required"
+		error_code = file.availability
+		error_message = file.availability_message
 	}
 
 	if (load_captcha_script) {
@@ -116,6 +120,13 @@ export const download_list = () => {
 		<p class="indent">
 			A lot of downloads have originated from this IP address lately.
 			Please prove that you are not a robot:
+		</p>
+	{:else}
+		<p class="indent">
+			{error_message}
+		</p>
+		<p class="indent">
+			Reponse code: {error_code}
 		</p>
 	{/if}
 	<br/>
