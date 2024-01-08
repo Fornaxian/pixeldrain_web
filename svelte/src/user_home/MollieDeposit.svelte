@@ -86,7 +86,7 @@ const checkout = async () => {
 		<div class="countries">
 			{#each countries as c}
 				<button on:click={() => country = c}>
-					<span style="font-size: 1.7em; line-height: 0.9em;">{c.flag}</span>
+					<span style="font-size: 1.6em; line-height: 1em;">{c.flag}</span>
 					<span>{c.name}</span>
 				</button>
 			{/each}
