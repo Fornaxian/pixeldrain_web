@@ -252,7 +252,7 @@ onDestroy(() => {
 		</tbody>
 	</table>
 	<p>
-		Cache threshold: {status.cache_threshold.toFixed(2)}
+		Cache threshold: {status.cache_threshold.toFixed(3)}
 	</p>
 
 	<h3>Socket statistics</h3>

@@ -9,9 +9,9 @@ onMount(() => {
 	// 60% patreon
 
 	let rand = Math.random()
-	if (rand < 0.2) {
+	if (rand < 0.3) {
 		ad_type = "socials"
-	} else if (rand < 0.4) {
+	} else if (rand < 0.5) {
 		ad_type = "reviews"
 	} else {
 		ad_type = "patreon_support"
@@ -50,8 +50,12 @@ onMount(() => {
 		</div>
 
 		<div class="socials">
-			And on legacy media too<br/>
+			And on other media too<br/>
 
+			<a href="https://discord.gg/TWKGvYAFvX" rel="noreferrer" class="button" target="_blank" style="background-color: #5b5eee; color: #ffffff;">
+				<i class="icon small">people</i>
+				Discord
+			</a>
 			<a href="https://twitter.com/Fornax96" rel="noreferrer" class="button" target="_blank" style="background-color: #1a8cd8; color: #ffffff;">
 				<i class="icon small">people</i>
 				Twitter
@@ -104,6 +108,7 @@ onMount(() => {
 	margin: auto;
 	transform-origin: 0 0;
 	font-size: 1.2em;
+	line-height: 1.2em;
 }
 .center {
 	text-align: center;
@@ -124,7 +129,7 @@ onMount(() => {
 		font-size: 1em;
 	}
 	.socials {
-		font-size: 0.8em;
+		font-size: 0.9em;
 	}
 }
 
