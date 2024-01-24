@@ -152,6 +152,7 @@ onMount(() => {
 		<table style="text-align: left;">
 			<thead>
 				<tr>
+					<td>ID</td>
 					<td>Created</td>
 					<td>Amount</td>
 					<td>VAT</td>
@@ -164,6 +165,7 @@ onMount(() => {
 			<tbody>
 				{#each invoices as row (row.id)}
 					<tr>
+						<td>{row.id}</td>
 						<td>{formatDate(row.time, true, true, false)}</td>
 						<td><Euro amount={row.amount}/></td>
 						<td><Euro amount={row.vat}/></td>
