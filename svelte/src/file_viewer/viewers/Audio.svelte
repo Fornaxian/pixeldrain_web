@@ -1,6 +1,7 @@
 <script>
 import { createEventDispatcher, tick } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
+import FileTitle from "./FileTitle.svelte";
 let dispatch = createEventDispatcher()
 
 export let is_list = false
@@ -52,7 +53,7 @@ const toggle_play = () => playing ? player.pause() : player.play()
 </script>
 
 <div class="container">
-	<h1>{file.name}</h1>
+	<FileTitle title={file.name}/>
 
 	{#if is_list}
 		<button on:click={() => dispatch("prev") }>

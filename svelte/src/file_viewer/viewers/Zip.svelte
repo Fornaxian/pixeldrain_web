@@ -5,6 +5,7 @@ import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 import ZipItem from "./ZipItem.svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
+import FileTitle from "./FileTitle.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -18,10 +19,10 @@ let file = {
 	icon_href: ""
 }
 let zip = {
+	download_url: "",
 	size: 0,
 	children: null,
 }
-let uncomp_size = 0
 let comp_ratio = 0
 
 export const set_file = async f => {
@@ -39,8 +40,10 @@ export const set_file = async f => {
 
 		zip = await resp.json()
 
-		uncomp_size = recursive_size(zip)
-		comp_ratio = (uncomp_size / file.size)
+		// Set the download URL for each file in the zip
+		recursive_set_url(f.info_href+"/zip", zip)
+
+		comp_ratio = (zip.size / file.size)
 	} catch (err) {
 		console.error(err)
 	} finally {
@@ -50,27 +53,22 @@ export const set_file = async f => {
 	status = "finished"
 }
 
-const recursive_size = (file) => {
-	let size = file.size
+const recursive_set_url = (parent_path, file) => {
+	file.download_url = parent_path
 
-	// If the file has children (array is iterable) we call this function on all
-	// the children and add the size to our size accumulator
-	if (file.children.forEach) {
-		file.children.forEach(child => {
-			size += recursive_size(child)
+	if (file.children) {
+		Object.entries(file.children).forEach(child => {
+			recursive_set_url(file.download_url + "/" +child[0], child[1])
 		});
 	}
-
-	// Return the total size of this file and all its children
-	return size
 }
 </script>
 
-<h1>{file.name}</h1>
+<FileTitle title={file.name}/>
 
 <IconBlock icon_href={file.icon_href}>
 	Compressed size: {formatDataVolume(file.size, 3)}<br/>
-	Uncompressed size: {formatDataVolume(uncomp_size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
+	Uncompressed size: {formatDataVolume(zip.size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
 	Uploaded on: {formatDate(file.date_upload, true, true, true)}
 	<br/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>
@@ -95,10 +93,3 @@ const recursive_size = (file) => {
 		</p>
 	</TextBlock>
 {/if}
-
-<style>
-h1 {
-	text-shadow: 1px 1px 3px var(--shadow_color);
-	line-break: anywhere;
-}
-</style>

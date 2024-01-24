@@ -6,6 +6,7 @@ import { copy_text } from "../../util/Util.svelte";
 import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 import TorrentItem from "./TorrentItem.svelte"
+import FileTitle from "./FileTitle.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -79,7 +80,7 @@ const copy_magnet = () => {
 }
 </script>
 
-<h1>{file.name}</h1>
+<FileTitle title={file.name}/>
 
 <IconBlock icon_href={file.icon_href}>
 	{#if status === "finished"}
@@ -129,14 +130,3 @@ const copy_magnet = () => {
 		<TorrentItem item={torrent.files} />
 	</TextBlock>
 {/if}
-
-<style>
-h1 {
-	text-shadow: 1px 1px 3px var(--shadow_color);
-	line-break: anywhere;
-}
-.icon {
-	display: inline-block;
-	vertical-align: middle;
-}
-</style>

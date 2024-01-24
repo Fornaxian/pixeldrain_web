@@ -2,6 +2,7 @@
 import { createEventDispatcher } from "svelte";
 import IconBlock from "./IconBlock.svelte"
 import TextBlock from "./TextBlock.svelte"
+import FileTitle from "./FileTitle.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -16,7 +17,7 @@ let file = {
 }
 </script>
 
-<h1>{file.name}</h1>
+<FileTitle title={file.name}/>
 
 <TextBlock>
 	<h2>Unavailable for legal reasons</h2>

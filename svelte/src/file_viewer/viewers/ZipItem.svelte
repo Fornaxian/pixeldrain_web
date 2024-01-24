@@ -2,6 +2,7 @@
 import { formatDataVolume } from "../../util/Formatting.svelte";
 
 export let item = {
+	download_url: "",
 	size: 0,
 	children: null,
 }
@@ -24,7 +25,7 @@ export let item = {
 	{#each Object.entries(item.children) as [name, child]}
 		{#if !child.children}
 			<li>
-				{name} ({formatDataVolume(child.size, 3)})<br/>
+				<a href={child.download_url}>{name}</a> ({formatDataVolume(child.size, 3)})<br/>
 			</li>
 		{/if}
 	{/each}

@@ -2,6 +2,7 @@
 import { createEventDispatcher } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
 import IconBlock from "./IconBlock.svelte";
+import FileTitle from "./FileTitle.svelte";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f
@@ -16,7 +17,7 @@ let file = {
 }
 </script>
 
-<h1>{file.name}</h1>
+<FileTitle title={file.name}/>
 
 <IconBlock icon_href={file.icon_href}>
 	Type: {file.mime_type}<br/>
@@ -31,14 +32,3 @@ let file = {
 {#if file.show_ads}
 	<BandwidthUsage file={file} on:reload/>
 {/if}
-
-<style>
-h1 {
-	text-shadow: 1px 1px 3px var(--shadow_color);
-	line-break: anywhere;
-}
-.icon {
-	display: inline-block;
-	vertical-align: middle;
-}
-</style>
