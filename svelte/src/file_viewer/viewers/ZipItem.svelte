@@ -25,7 +25,12 @@ export let item = {
 	{#each Object.entries(item.children) as [name, child]}
 		{#if !child.children}
 			<li>
-				<a href={child.download_url}>{name}</a> ({formatDataVolume(child.size, 3)})<br/>
+				{#if child.download_url}
+					<a href={child.download_url}>{name}</a>
+				{:else}
+					{name}
+				{/if}
+				({formatDataVolume(child.size, 3)})<br/>
 			</li>
 		{/if}
 	{/each}

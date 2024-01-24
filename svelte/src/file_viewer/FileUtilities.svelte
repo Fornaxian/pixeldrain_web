@@ -38,7 +38,7 @@ export const file_set_href = file => {
 export const file_type = file => {
 	if (file.mime_type === "application/bittorrent" || file.mime_type === "application/x-bittorrent") {
 		return "torrent"
-	} else if (file.mime_type === "application/zip") {
+	} else if (file.mime_type === "application/zip" || file.mime_type === "application/x-7z-compressed") {
 		return "zip"
 	} else if (file.mime_type.startsWith("image")) {
 		return "image"
