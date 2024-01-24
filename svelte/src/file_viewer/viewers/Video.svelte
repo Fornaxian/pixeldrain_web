@@ -100,21 +100,19 @@ const fullscreen = () => {
 			{/if}
 
 			<div class="player_and_controls">
-				<div class="player">
-					<!-- svelte-ignore a11y-media-has-caption -->
-					<video
-						bind:this={player}
-						controls
-						playsinline
-						loop={loop}
-						class="video"
-						on:pause={() => playing = false }
-						on:play={() => playing = true }
-						on:ended={() => dispatch("next", {})}
-					>
-						<source src={file.get_href} type={file.mime_type} />
-					</video>
-				</div>
+				<!-- svelte-ignore a11y-media-has-caption -->
+				<video
+					bind:this={player}
+					controls
+					playsinline
+					loop={loop}
+					class="player"
+					on:pause={() => playing = false }
+					on:play={() => playing = true }
+					on:ended={() => dispatch("next", {})}
+				>
+					<source src={file.get_href} type={file.mime_type} />
+				</video>
 
 				<div class="controls">
 					<div class="spacer"></div>
@@ -192,8 +190,10 @@ h1 {
 	width: 100%;
 }
 .player_and_controls {
+	flex: 1 1 0;
 	display: flex;
 	flex-direction: column;
+	overflow: auto;
 	height: 100%;
 	width: 100%;
 }
@@ -208,6 +208,7 @@ h1 {
 	flex: 0 0 auto;
 	display: flex;
 	flex-direction: row;
+	overflow: auto;
 	background-color: var(--shaded_background);
 	padding: 0 2px 2px 2px;
 	align-items: center;
@@ -217,13 +218,6 @@ h1 {
 }
 .controls > .spacer {
 	flex: 1 1 auto;
-}
-.video {
-	position: relative;
-	display: block;
-	margin: auto;
-	max-width: 100%;
-	max-height: 100%;
 }
 @media(max-height: 500px) {
 	.player_and_controls {
