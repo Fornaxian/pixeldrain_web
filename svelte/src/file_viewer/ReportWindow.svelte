@@ -31,6 +31,12 @@ let submit = async e => {
 	loading = true
 	let files = []
 
+	if (file.id === "") {
+		single_or_all = "all"
+	} else if (list.id === "") {
+		single_or_all = "single"
+	}
+
 	if (single_or_all === "all") {
 		list.files.forEach(file => {
 			// Only report files which have not been blocked yet
@@ -94,35 +100,40 @@ let submit = async e => {
 			<input type="radio" bind:group={abuse_type} id="type_terrorism" name="abuse_type" value="terrorism">
 			<b>Terrorism</b>: Videos, images or audio fragments showing
 			or promoting the use of intentional violence to achieve
-			political aims.
+			political aims
 		</label>
 		<label for="type_gore">
 			<input type="radio" bind:group={abuse_type} id="type_gore" name="abuse_type" value="gore">
 			<b>Gore</b>: Graphic and shocking videos or images depicting
-			severe harm to humans (or animals).
+			severe harm to humans (or animals)
 		</label>
 		<label for="type_child_abuse">
 			<input type="radio" bind:group={abuse_type} id="type_child_abuse" name="abuse_type" value="child_abuse">
 			<b>Child abuse</b>: Videos or images depicting inappropriate
-			touching or nudity of minors.
+			touching or nudity of minors
 		</label>
 		<label for="type_doxing">
 			<input type="radio" bind:group={abuse_type} id="type_doxing" name="doxing" value="doxing">
 			<b>Doxing</b>: Personally identifiable information uploaded without
-			the consent of the owner.
+			the consent of the owner
 		</label>
 		<label for="type_malware">
 			<input type="radio" bind:group={abuse_type} id="type_malware" name="abuse_type" value="malware">
 			<b>Malware</b>: Software programs designed to cause harm to
-			computer systems.
+			computer systems
+		</label>
+		<label for="type_revenge_porn">
+			<input type="radio" bind:group={abuse_type} id="type_revenge_porn" name="abuse_type" value="revenge_porn">
+			<b>Revenge porn</b>: The distribution of sexually explicit images or
+			videos of individuals without their consent
 		</label>
 		<label for="type_copyright" style="border-bottom: none;">
 			<input type="radio" bind:group={abuse_type} id="type_copyright" name="abuse_type" value="copyright">
 			<b>Copyright</b>: Protected content which is shared without constent
-			from the rightsholder.
+			from the rightsholder
 		</label>
 
-		{#if list.id !== ""}
+		{#if list.id !== "" && file.id !== ""}
 			<h3>Report multiple files?</h3>
 			<label for="report_single">
 				<input type="radio" bind:group={single_or_all} id="report_single" name="single_or_all" value="single">
@@ -130,7 +141,7 @@ let submit = async e => {
 			</label>
 			<label for="report_all" style="border-bottom: none;">
 				<input type="radio" bind:group={single_or_all} id="report_all" name="single_or_all" value="all">
-				Report all {list.files.length} files in this list
+				Report all {list.files.length} files in this album
 			</label>
 		{/if}
 

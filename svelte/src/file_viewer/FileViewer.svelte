@@ -552,16 +552,14 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			{#if view === "file"}
-				<button
-					class="toolbar_button"
-					title="Report this file as abusive"
-					on:click={report_window.toggle}
-					class:button_highlight={report_visible}>
-					<i class="icon">flag</i>
-					<span>Report</span>
-				</button>
-			{/if}
+			<button
+				class="toolbar_button"
+				title="Report this file as abusive"
+				on:click={report_window.toggle}
+				class:button_highlight={report_visible}>
+				<i class="icon">flag</i>
+				<span>Report</span>
+			</button>
 			<br/>
 		</div>
 

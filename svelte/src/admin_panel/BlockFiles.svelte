@@ -22,6 +22,7 @@ let block_form = {
 				"gore",
 				"malware",
 				"doxing",
+				"revenge_porn",
 				"none",
 			]
 		}, {
