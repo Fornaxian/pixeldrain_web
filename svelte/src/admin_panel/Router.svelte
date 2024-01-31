@@ -7,6 +7,7 @@ import TabMenu from "../util/TabMenu.svelte";
 import UserManagement from "./UserManagement.svelte";
 import EmailReporters from "./EmailReporters.svelte";
 import MollieSettlements from "./MollieSettlements.svelte";
+import PayPalTaxes from "./PayPalTaxes.svelte";
 
 let pages = [
 	{
@@ -41,9 +42,22 @@ let pages = [
 		component: UserManagement,
 	}, {
 		path: "/admin/mollie_settlements",
-		title: "Mollie Settlements",
+		title: "Prepaid accounting",
 		icon: "paid",
 		component: MollieSettlements,
+		subpages: [
+			{
+				path: "/admin/mollie_settlements",
+				title: "Mollie Settlements",
+				icon: "paid",
+				component: MollieSettlements,
+			}, {
+				path: "/admin/paypal_taxes",
+				title: "Paypal Taxes",
+				icon: "paypal",
+				component: PayPalTaxes,
+			},
+		],
 	},
 ]
 </script>

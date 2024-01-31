@@ -1,6 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import { formatDate } from "../util/Formatting.svelte";
+import { mollie_proxy_call } from "./MollieAPI.js";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import Euro from "../util/Euro.svelte";
 
@@ -19,9 +20,7 @@ let totals = {
 const get_payments = async () => {
 	loading = true;
 	try {
-		const req = await fetch(
-			window.api_endpoint+"/admin/mollie_settlements/" + settlement.id + "/payments?limit=250"
-		);
+		const req = await mollie_proxy_call("settlements/"+settlement.id+"/payments?limit=250")
 		if(req.status >= 400) {
 			throw new Error(req.text());
 		}
