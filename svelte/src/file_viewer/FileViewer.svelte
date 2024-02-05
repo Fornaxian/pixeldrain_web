@@ -320,6 +320,7 @@ const keyboard_event = evt => {
 	if (
 		document.activeElement.type && (
 			document.activeElement.type === "text" ||
+			document.activeElement.type === "email" ||
 			document.activeElement.type === "textarea"
 		)
 	) {

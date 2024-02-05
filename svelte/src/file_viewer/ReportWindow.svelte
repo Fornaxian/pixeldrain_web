@@ -13,7 +13,6 @@ export let list = {
 
 let abuse_type = ""
 let single_or_all = "single"
-let description = ""
 let loading = false
 let results = []
 
@@ -50,7 +49,7 @@ let submit = async e => {
 
 	const form = new FormData()
 	form.append("type", abuse_type)
-	form.append("description", description)
+	form.append("description", report_description())
 
 	results = []
 
@@ -82,6 +81,30 @@ let submit = async e => {
 
 	loading = false
 }
+
+let description = ""
+let copyright_rightsholder = ""
+let copyright_email =  ""
+let copyright_sources = ""
+let malware_proof = ""
+let child_abuse_password = ""
+
+const report_description = () => {
+	if (abuse_type === "copyright") {
+		return "Rightholder name: " + copyright_rightsholder + "\n" +
+			"Contact e-mail: " + copyright_email + "\n" +
+			"Sources:\n" + copyright_sources + "\n\n" +
+			"Description:\n" + description;
+	} else if (abuse_type === "malware") {
+		return "Proof: " + malware_proof + "\n" +
+			"Description:\n" + description;
+	} else if (abuse_type === "child_abuse") {
+		return "Password: " + child_abuse_password + "\n" +
+			"Description:\n" + description;
+	} else {
+		return description
+	}
+}
 </script>
 
 <div class="container">
@@ -90,12 +113,17 @@ let submit = async e => {
 		<a href="/abuse">content policy</a> you can report it for moderation
 		with this form.
 	</p>
-	<form on:submit={submit} style="width: 100%">
+	<form on:submit={submit} style="width: 100%" class="report_form">
 		<h3>Abuse type</h3>
 		<p>
 			Which type of abuse is shown in this file? Pick the most
 			appropriate one.
 		</p>
+		<label for="type_copyright" style="border-bottom: none;">
+			<input type="radio" bind:group={abuse_type} id="type_copyright" name="abuse_type" value="copyright">
+			<b>Copyright</b>: Protected content which is shared without constent
+			from the rightsholder
+		</label>
 		<label for="type_terrorism">
 			<input type="radio" bind:group={abuse_type} id="type_terrorism" name="abuse_type" value="terrorism">
 			<b>Terrorism</b>: Videos, images or audio fragments showing
@@ -127,11 +155,6 @@ let submit = async e => {
 			<b>Revenge porn</b>: The distribution of sexually explicit images or
 			videos of individuals without their consent
 		</label>
-		<label for="type_copyright" style="border-bottom: none;">
-			<input type="radio" bind:group={abuse_type} id="type_copyright" name="abuse_type" value="copyright">
-			<b>Copyright</b>: Protected content which is shared without constent
-			from the rightsholder
-		</label>
 
 		{#if list.id !== "" && file.id !== ""}
 			<h3>Report multiple files?</h3>
@@ -146,12 +169,40 @@ let submit = async e => {
 		{/if}
 
 		<h3>Description</h3>
-		<p>
-			Please provide some context for your report, like contact
-			information in case of copyright abuse, or a password if the file is
-			encrypted. ({description.length}/500)
-		</p>
-		<textarea bind:value={description} placeholder="Context here..." style="width: 100%; height: 5em;"></textarea>
+
+		{#if abuse_type === "copyright"}
+
+			<div>Name rightsholder (can be a registered company name)</div>
+			<input type="text" bind:value={copyright_rightsholder} required/>
+
+			<div>Contact e-mail</div>
+			<input type="email" bind:value={copyright_email} required/>
+
+			<div>Source URLs (links to the places where this content was allegedly stolen from)</div>
+			<textarea bind:value={copyright_sources} placeholder="https://some.store.com" required></textarea>
+
+		{:else if abuse_type === "malware"}
+
+			<div>
+				Proof that this file is malware. This can be a link to
+				<a href="https://www.virustotal.com/"target="_blank">VirusTotal</a>
+				scan results, or some other security vendor which has
+				information about this file
+			</div>
+			<input type="text" bind:value={malware_proof} required/>
+
+		{:else if abuse_type === "child_abuse"}
+
+			<div>If this file is an encrypted archive, please provide the password so we can verify the contents</div>
+			<input type="text" bind:value={child_abuse_password} placeholder="Password..."/>
+
+		{/if}
+
+		<div>
+			Please provide some context for your report. Why do you think this
+			file violates the content policy? ({description.length}/500)
+		</div>
+		<textarea bind:value={description} placeholder="Context here..." required></textarea>
 
 		<h3>Send</h3>
 		{#if loading}
@@ -170,10 +221,10 @@ let submit = async e => {
 			take more than 24 hours. During busy periods it can take
 			longer.
 		</p>
-		<div style="text-align: right;">
-			<button class="button_highlight abuse_report_submit" type="submit">
+		<div style="text-align: center;">
+			<button class="button_highlight abuse_report_submit" type="submit" style="justify-content: center; width: 100%; max-width: 200px">
 				<i class="icon">send</i>
-				<span>Send</span>
+				<span>Submit report</span>
 			</button>
 		</div>
 	</form>
@@ -197,5 +248,17 @@ label {
 	height: 100px;
 	width: 100px;
 	z-index: 1000;
+}
+.report_form {
+	width: 100%;
+}
+.report_form > input[type="text"],
+.report_form > input[type="email"],
+.report_form > textarea {
+	width: 100%;
+	margin: 0 0 0.5em 0;
+}
+.report_form > textarea {
+	height: 5em;
 }
 </style>
