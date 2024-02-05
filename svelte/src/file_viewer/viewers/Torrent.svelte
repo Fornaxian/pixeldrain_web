@@ -162,22 +162,33 @@ const copy_magnet = () => {
 		<p>
 			Your torrent client will make sure that the files you receive from
 			your peers are actually what they say it is. This makes it just as
-			safe as any other form of downloading. Like any other form of
-			downloading files you still need to be aware of what you are
-			downloading. Don't just blindly trust any file anyone sends you.
+			safe as any other form of downloading. Like always when downloading
+			files you still need to be aware of what you are downloading. Don't
+			just blindly trust any file anyone sends you.
 		</p>
+		<h3>Is it private?</h3>
 		<p>
 			When downloading a torrent file you will be part of the so-called
 			'torrent swarm'. Anyone in the swarm can see each other's IP
 			addresses. This is not a bad thing on its own, but there a few cases
-			in which this can be abused. If you are downloading copyrighted
-			material (which I do not condone) then rightsholders will be able to
-			see your IP address. In most cases this is not a problem because
-			your ISP will still protect your identity. But there are some
-			countries (notably the USA) where your ISP will not respect your
-			right to privacy and the rightsholder will be able to contact you.
-			If this worries you then you should look into VPN services to
-			protect your privacy, like <a
+			in which this can be abused.
+		</p>
+		<p>
+			Anyone in the swarm will be able to see what you are downloading,
+			even across different torrents. This is something to keep in mind
+			when downloading torrents. If someone can link your IP address to
+			your identity then there are ways to find out which files you have
+			downloaded in the past (provided that your IP address has not
+			changed since then).
+		</p>
+		<p>
+			If you are downloading copyrighted material (which I do not condone)
+			then rightsholders will be able to see your IP address. In most
+			cases this is not a problem because your ISP will still protect your
+			identity. But there are some countries (notably the USA) where your
+			ISP will not respect your right to privacy and the rightsholder will
+			be able to contact you. If this worries you then you should look
+			into VPN services to protect your privacy, like <a
 			href="https://mullvad.net">Mullvad</a>.
 		</p>
 	</details>
