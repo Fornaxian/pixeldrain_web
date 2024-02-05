@@ -13,17 +13,6 @@ logged in and you accidentally upload something you shouldn't have, just don't
 share the link. The file will expire eventually. File links are not indexed or
 published anywhere. As long as you don't share it nobody will see it.
 
-## Can I donate to pixeldrain?
-
-The best way to support pixeldrain is through Patreon. But if you just want to
-give some money and don't care about the Pro plan these options are also
-available:
-
- * Bitcoin:
-   [bc1qy8c2lx2zhetmnwwkpl9y7ygzs6yfaaev8nx09n](bitcoin:bc1qy8c2lx2zhetmnwwkpl9y7ygzs6yfaaev8nx09n?label=Pixeldrain%20Donation)
- * <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WU49A5NHPAZ9G&source=url">
-   Donate with PayPal</a>
-
 ## Do I need to register an account?
 
 Not if you don't want to. You're free to use pixeldrain completely anonymously.
@@ -75,7 +64,12 @@ we're not standing for it.
 
 ## Support
 
-For other questions you can reach me at
+If you have more questions please try asking them in our [support forum on
+Discord](https://discord.gg/UDjaBGwr4p). Pixeldrain is a one-man operation, I
+can't answer all the e-mails I get. By asking your questions on Discord there's
+a chance that someone else can help you. I am also active on Discord myself.
+
+If your question is not suitable for Discord you can reach me at
 [support@pixeldrain.com](mailto:support@pixeldrain.com). I get a lot more e-mail
 than I can reply to, so I will only reply to urgent problems or things which I
 deem important. Abuse reports sent to this address will not be reviewed, use the
