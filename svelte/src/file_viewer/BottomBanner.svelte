@@ -4,15 +4,18 @@ import { onMount } from "svelte"
 let ad_type = ""
 
 onMount(() => {
-	// 20% pixeldrain socials
+	// 30% pixeldrain socials
 	// 20% reviews
-	// 60% patreon
+	// 10% ad block promo
+	// 40% patreon
 
 	let rand = Math.random()
 	if (rand < 0.3) {
 		ad_type = "socials"
 	} else if (rand < 0.5) {
 		ad_type = "reviews"
+	} else if (rand < 0.6) {
+		ad_type = "ad_block"
 	} else {
 		ad_type = "patreon_support"
 	}
@@ -89,17 +92,19 @@ onMount(() => {
 		</a>
 	</div>
 
-{:else if ad_type === "slava_ukraini"}
+{:else if ad_type === "ad_block"}
 
-	<a href="https://en.wikipedia.org/wiki/War_crimes_in_the_Russian_invasion_of_Ukraine" class="banner flag" target="_blank" rel="noreferrer">
-		<div class="flag_top">
-			We do not forget
-		</div>
-		<div class="flag_bottom">
-			Slava Ukraini!
-		</div>
-	</a>
-
+	<div class="banner support_banner">
+		<span style="display: block; margin-bottom: 2px;">
+			Protect your privacy, protect your sanity. Get an ad blocker!
+		</span>
+		<a href="https://ublockorigin.com/"
+			rel="noreferrer" class="button" target="_blank" style="background-color: #800000; color: #FFFFFF; font-weight: bold;"
+		>
+			<i class="icon">security</i>
+			Get uBlock Origin
+		</a>
+	</div>
 {/if}
 
 <style>
@@ -131,31 +136,5 @@ onMount(() => {
 	.socials {
 		font-size: 0.9em;
 	}
-}
-
-.flag {
-	display: block;
-	margin: auto;
-	padding: 4px;
-	overflow: hidden;
-	text-decoration: none;
-	text-align: center;
-	font-size: 1.1em;
-	width: 100%;
-	max-width: 400px;
-}
-.flag_top {
-	background-color: #0057b7;
-	color: #ffd700;
-	padding: 2px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-}
-.flag_bottom {
-	background-color: #ffd700;
-	color: #0057b7;
-	padding: 2px;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
 }
 </style>
