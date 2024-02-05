@@ -89,7 +89,7 @@ const copy_magnet = () => {
 		Created at: {formatDate(new Date(torrent.created_at), true, true, true)}<br/>
 		Info hash: {torrent.info_hash}<br/>
 		<a href={magnet} class="button button_highlight">
-			<Magnet></Magnet>
+			<Magnet/>
 			<span>Open magnet link</span>
 		</a>
 		<button
@@ -97,7 +97,7 @@ const copy_magnet = () => {
 			class:button_highlight={copy_magnet_status === "copied"}
 			class:button_red={copy_magnet_status === "error"}
 		>
-			<Magnet></Magnet>
+			<Magnet/>
 			<span>
 				{#if copy_magnet_status === ""}
 					Copy magnet link
@@ -124,9 +124,75 @@ const copy_magnet = () => {
 	</button>
 </IconBlock>
 
+<TextBlock>
+	<details>
+		<summary>How do I download this? (expand for more information)</summary>
+		<p>
+			This is a torrent file, which means you will need a torrent client to
+			download it. Here are some good torrent clients for various platforms:
+		</p>
+		<ul>
+			<li><a href="https://transmissionbt.com/download">Transmission</a> (Linux, Mac, Windows)</li>
+			<li><a href="https://www.qbittorrent.org/download">qBittorrent</a> (Linux, Mac, Windows)</li>
+			<li><a href="https://play.google.com/store/apps/details?id=org.proninyaroslav.libretorrent">LibreTorrent</a> (Android)</li>
+		</ul>
+		<p>
+			After installing your torrent client you will be able to use the
+			<a href={magnet}><Magnet/> Open magnet link</a>
+			button to download the files in your torrent client.
+		</p>
+		<h3>What is a torrent?</h3>
+		<p>
+			<a href="https://wikipedia.org/wiki/BitTorrent">BitTorrent</a> is a
+			peer-to-peer network for sharing files. This torrent file does not
+			actually contain the files listed below, instead it contains
+			instructions for your torrent client to download the files from
+			other people who happen to be downloading the same files currently.
+			This means that instead of connecting to a single server (like
+			pixeldrain), you will be connecting to other people on the internet
+			to download these files.
+		</p>
+		<p>
+			Torrents are a highly efficient and free method of transferring
+			files over the internet. Since the bandwidth is shared directly
+			between users there is no need for expensive servers to host the
+			files for you.
+		</p>
+		<h3>Is this safe?</h3>
+		<p>
+			Your torrent client will make sure that the files you receive from
+			your peers are actually what they say it is. This makes it just as
+			safe as any other form of downloading. Like any other form of
+			downloading files you still need to be aware of what you are
+			downloading. Don't just blindly trust any file anyone sends you.
+		</p>
+		<p>
+			When downloading a torrent file you will be part of the so-called
+			'torrent swarm'. Anyone in the swarm can see each other's IP
+			addresses. This is not a bad thing on its own, but there a few cases
+			in which this can be abused. If you are downloading copyrighted
+			material (which I do not condone) then rightsholders will be able to
+			see your IP address. In most cases this is not a problem because
+			your ISP will still protect your identity. But there are some
+			countries (notably the USA) where your ISP will not respect your
+			right to privacy and the rightsholder will be able to contact you.
+			If this worries you then you should look into VPN services to
+			protect your privacy, like <a
+			href="https://mullvad.net">Mullvad</a>.
+		</p>
+	</details>
+</TextBlock>
+
 {#if status === "finished"}
 	<TextBlock>
 		<h2>Files in this torrent</h2>
 		<TorrentItem item={torrent.files} />
 	</TextBlock>
 {/if}
+
+<style>
+summary {
+	cursor: pointer;
+	border-bottom: 1px solid var(--separator);
+}
+</style>

@@ -1,4 +1,4 @@
-<script>export let style;</script>
+<script>export let style = "";</script>
 
 <svg style={style} xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 987.525 987.525">
 	<path fill="currentColor" d="M132.138,855.425c43,43,93.2,76.301,149.3,99.101c54.1,21.899,111.1,33,169.6,33s115.601-11.101,169.601-33
