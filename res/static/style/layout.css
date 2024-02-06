@@ -115,6 +115,10 @@ header>h1 {
 	color: var(--background_text_color);
 }
 
+p>img {
+	max-width: 100%;
+}
+
 /* Page layout elements */
 
 .button_toggle_navigation {

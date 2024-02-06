@@ -157,6 +157,11 @@ const loading_evt = e => {
 		</div>
 	</div>
 
+	<div class="highlight_yellow">
+		The filesystem is an experimental feature! Please read <a
+		href="/filesystem">the guide</a> before using it.
+	</div>
+
 	<!-- This frame will load the download URL when a download button is pressed -->
 	<iframe
 		bind:this={download_frame}

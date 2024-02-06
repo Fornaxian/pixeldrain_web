@@ -150,6 +150,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "business" /*        */, wc.serveMarkdown("business.md", handlerOpts{})},
 		{GET, "limits" /*          */, wc.serveMarkdown("limits.md", handlerOpts{})},
 		{GET, "abuse" /*           */, wc.serveMarkdown("abuse.md", handlerOpts{})},
+		{GET, "filesystem" /*      */, wc.serveMarkdown("filesystem.md", handlerOpts{})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
 
 		// User account pages

@@ -7,18 +7,21 @@
 	<a href="/#pro">Subscriptions</a>
 	<a href="/#prepaid">For creators</a>
 	<hr />
-	{{if .Authenticated}}<a href="/user">{{.User.Username}}</a>
-	<a href="/user/filemanager#files">My Files</a>
-	<a href="/user/filemanager#lists">My Albums</a>
-	{{if .User.IsAdmin}}
-		<a href="/d/me">Filesystem</a>
-		<a href="/admin">Admin Panel</a>
-	{{end}}
-	<a href="/logout">Log out</a>
+	{{if .Authenticated}}
+		<a href="/user">{{.User.Username}}</a>
+		<a href="/user/filemanager#files">My Files</a>
+		<a href="/user/filemanager#lists">My Albums</a>
+		{{if .User.IsAdmin}}
+			<a href="/admin">Admin Panel</a>
+		{{end}}
+		{{if .User.Subscription.FilesystemAccess}}
+			<a href="/d/me">Filesystem</a>
+		{{end}}
+		<a href="/logout">Log out</a>
 	{{else}}
-	<a href="/login">Login</a>
-	<a href="/register">Register</a>
-	<a href="/history">Upload History</a>
+		<a href="/login">Login</a>
+		<a href="/register">Register</a>
+		<a href="/history">Upload History</a>
 	{{end}}
 	<hr />
 	<a href="/about">About</a>
