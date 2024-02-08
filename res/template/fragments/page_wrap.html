@@ -11,11 +11,11 @@
 		<a href="/user">{{.User.Username}}</a>
 		<a href="/user/filemanager#files">My Files</a>
 		<a href="/user/filemanager#lists">My Albums</a>
-		{{if .User.IsAdmin}}
-			<a href="/admin">Admin Panel</a>
-		{{end}}
 		{{if .User.Subscription.FilesystemAccess}}
 			<a href="/d/me">Filesystem</a>
+		{{end}}
+		{{if .User.IsAdmin}}
+			<a href="/admin">Admin Panel</a>
 		{{end}}
 		<a href="/logout">Log out</a>
 	{{else}}
@@ -28,6 +28,7 @@
 	<a href="/apps">Apps</a>
 	<a href="/appearance">Theme</a>
 	<a href="/api">API</a>
+	<a href="/filesystem">Filesystem Guide</a>
 	<a href="/acknowledgements">Acknowledgements</a>
 	<a href="/abuse">DMCA and abuse</a>
 	<a href="https://stats.uptimerobot.com/p9v2ktzyjm" target="_blank">Server Status</a>

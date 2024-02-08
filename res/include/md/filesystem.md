@@ -1,7 +1,7 @@
-# Filesystem
+# Filesystem Guide
 
 Pixeldrain has an experimental filesystem feature. It can be accessed from any
-account with a Prepaid plan or a Persistence or higher subscription by going to
+account with a paid subscription (Patreon or Prepaid) by going to
 [pixeldrain.com/d/me](/d/me).
 
  * **IMPORTANT**: The filesystem is *experimental*. This means that it's not
@@ -17,7 +17,7 @@ Contents:
  * [Directory sharing](#directory-sharing)
  * [Limits](#limits)
  * [Client integrations](#client-integrations)
-   * [Rclone integration](#rclone-integration)
+   * [Rclone](#rclone)
    * [FTPS](#ftps)
 
 ## Pricing
@@ -25,6 +25,9 @@ Contents:
 Every time you create or remove a file your account's storage usage will be
 updated. This can take some time. If your account's storage is full you will no
 longer be able to upload anything to the filesystem.
+
+The Pro subscription has a storage limit of 2 TB. It doesn't show on the profile
+page because it's calculated differently from the other plans, but it is there.
 
 For Prepaid plans the storage is charged at €4 per TB per month. You can view
 your usage in the [transaction log](/user/prepaid/transactions).
@@ -71,7 +74,7 @@ directories you have. Keep that in mind when organizing your files.
 
 There are two ways to access your filesystem from outside the web interface.
 
-### Rclone integration
+### Rclone
 
 I have built a custom rclone backend to integrate with the filesystem. It can be
 found [on my GitHub](https://github.com/Fornaxian/rclone). To use it you will
