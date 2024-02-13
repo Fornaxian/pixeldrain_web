@@ -117,3 +117,13 @@ export const fs_timeseries = async (path, start, end, interval = 60) => {
 		)
 	)
 }
+
+export const fs_import = async (parent_dir_path = "", filelist = []) => {
+	const form = new FormData()
+	form.append("action", "import")
+	form.append("files", JSON.stringify(filelist))
+
+	return await fs_check_response(
+		await fetch(fs_path_url(parent_dir_path), { method: "POST", body: form })
+	)
+}

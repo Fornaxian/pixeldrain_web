@@ -14,7 +14,7 @@
 	font-display: block;
 	src: local('Material Icons'),
 		local('MaterialIcons-Regular'),
-		url(/res/misc/MaterialIcons-Regular.ttf) format('truetype');
+		url(/res/misc/MaterialIcons.woff2) format('truetype');
 }
 
 .icon {
@@ -31,6 +31,7 @@
 	direction: ltr;
 	text-rendering: optimizeLegibility;
 	vertical-align: middle;
+	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 .icon_unicode {

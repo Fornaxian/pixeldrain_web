@@ -5,6 +5,7 @@ import CreateDirectory from './CreateDirectory.svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
 import Button from '../../layout/Button.svelte';
+import FileImporter from './FileImporter.svelte';
 let dispatch = createEventDispatcher()
 
 export let fs_navigator
@@ -16,6 +17,7 @@ let uploader
 let mode = "viewing"
 let creating_dir = false
 let show_hidden = false
+let file_importer
 
 $: selected_files = state.children.reduce((acc, file) => {
 	if (file.fm_selected) {
@@ -301,7 +303,12 @@ onMount(() => {
 					<button on:click={() => dispatch("upload_picker")} title="Upload files to this directory">
 						<i class="icon">cloud_upload</i>
 					</button>
+
 					<Button click={() => {creating_dir = !creating_dir}} highlight={creating_dir} icon="create_new_folder" title="Make folder"/>
+
+					<button on:click={() => file_importer.open()} title="Import files from list">
+						<i class="icon">move_to_inbox</i>
+					</button>
 
 					<button
 						on:click={selecting_mode}
@@ -368,6 +375,13 @@ onMount(() => {
 		/>
 	{/if}
 </div>
+
+<FileImporter
+	state={state}
+	bind:this={file_importer}
+	on:loading
+	on:reload={() => fs_navigator.reload()}
+/>
 
 <style>
 .container {
