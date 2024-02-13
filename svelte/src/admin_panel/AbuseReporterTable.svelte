@@ -18,10 +18,7 @@ export let reporters = []
 	</tr>
 	{#each reporters as rep}
 		<tr>
-			<td>
-				{rep.from_address}<br/>
-				{rep.mail_server}
-			</td>
+			<td>{rep.from_address}</td>
 			<td>{rep.name}</td>
 			<td>{rep.reports_sent}</td>
 			<td>{rep.files_blocked}</td>

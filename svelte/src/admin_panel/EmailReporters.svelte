@@ -45,16 +45,12 @@ const get_reporters = async () => {
 let edit_button
 let creating = false
 let new_reporter_from_address
-let new_reporter_mail_server
 let new_reporter_name
 let new_reporter_status = "trusted"
 
 const create_reporter = async () => {
 	if (!new_reporter_from_address.value) {
 		alert("Please enter an e-mail address")
-		return
-	} else if (!new_reporter_mail_server.value) {
-		alert("Please enter a mail server")
 		return
 	} else if (!new_reporter_name.value) {
 		alert("Please enter a name")
@@ -67,7 +63,6 @@ const create_reporter = async () => {
 	try {
 		const form = new FormData()
 		form.append("from_address", new_reporter_from_address.value)
-		form.append("mail_server", new_reporter_mail_server.value)
 		form.append("name", new_reporter_name.value)
 		form.append("status", new_reporter_status)
 
@@ -90,7 +85,6 @@ const approve_reporter = async reporter => {
 	try {
 		const form = new FormData()
 		form.append("from_address", reporter.from_address)
-		form.append("mail_server", reporter.mail_server)
 		form.append("name", reporter.name)
 		form.append("status", "trusted")
 
@@ -110,7 +104,6 @@ const spam_reporter = async reporter => {
 	try {
 		const form = new FormData()
 		form.append("from_address", reporter.from_address)
-		form.append("mail_server", reporter.mail_server)
 		form.append("name", reporter.name)
 		form.append("status", "rejected")
 
@@ -132,7 +125,6 @@ const edit_reporter = async reporter => {
 	creating = true
 	await tick()
 	new_reporter_from_address.value = reporter.from_address
-	new_reporter_mail_server.value = reporter.mail_server
 	new_reporter_name.value = reporter.name
 	new_reporter_status = reporter.status
 }
@@ -140,9 +132,7 @@ const edit_reporter = async reporter => {
 const delete_reporter = async reporter => {
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/admin/abuse_reporter/"+
-				encodeURI(reporter.from_address)+"/"+
-				encodeURI(reporter.mail_server),
+			window.api_endpoint+"/admin/abuse_reporter/"+encodeURI(reporter.from_address),
 			{ method: "DELETE" }
 		);
 		if(resp.status >= 400) {
@@ -173,10 +163,8 @@ onMount(get_reporters);
 				<div class="form">
 					<label for="field_from_address">E-mail address</label>
 					<input id="field_from_address" type="text" bind:this={new_reporter_from_address}/>
-					<label for="field_mailserver">Mail server</label>
-					<input id="field_mailserver" type="text" bind:this={new_reporter_mail_server}/>
 					<label for="field_name">Name</label>
-					<input id="field_name" type="text" bind:this={new_reporter_name} value="Anonymous tip"/>
+					<input id="field_name" type="text" bind:this={new_reporter_name}/>
 					<label for="reporter_status">Status</label>
 					<div>
 						<input id="reporter_status_1" name="reporter_status" type="radio" bind:group={new_reporter_status} value="trusted" />

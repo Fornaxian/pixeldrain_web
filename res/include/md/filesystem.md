@@ -91,15 +91,7 @@ server is hosted at `pixeldrain.com` on port 990. The encryption mode used is
 
 ![FTP configuration](/res/img/misc/ftp_login.webp)
 
-There are a two different ways to log in to the FTP server:
-
-#### Read-only shared directory
-
-To access a shared directory in read-only mode you need to enter the directory
-ID as username in your FTP client. The directory ID can be found at the end of a
-shared directory URL. Example: `https://pixeldrain.com/d/abcd1234`, in this case
-`abcd1234` is the directory ID. The ID will always be 8 characters long and is
-case-sensitive. The password must be left empty
+There are two different ways to log in to the FTP server:
 
 #### Read-write personal directory
 
@@ -108,3 +100,11 @@ as username in the FTP client. The password needs to be an API key from the [API
 keys page](/user/api_keys). If you connect now you will be able to access your
 personal directory (called `/me`). Here you can upload and download to your
 heart's desire.
+
+#### Read-only shared directory
+
+To access a shared directory in read-only mode you need to enter the directory
+ID as username in your FTP client. The directory ID can be found at the end of a
+shared directory URL. Example: `https://pixeldrain.com/d/abcd1234`, in this case
+`abcd1234` is the directory ID. The ID will always be 8 characters long and is
+case-sensitive. The password must be left empty
