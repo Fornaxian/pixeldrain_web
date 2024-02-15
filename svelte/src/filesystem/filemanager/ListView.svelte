@@ -120,6 +120,7 @@ td {
 .action_button {
 	margin: 0;
 	background: none;
+	color: var(--body_text_color);
 }
 .hidden {
 	display: none;

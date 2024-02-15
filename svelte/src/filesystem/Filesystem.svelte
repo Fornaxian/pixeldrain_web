@@ -11,6 +11,7 @@ import SearchView from './SearchView.svelte';
 import UploadWidget from './upload_widget/UploadWidget.svelte';
 import HomeButton from '../file_viewer/HomeButton.svelte';
 import { fs_path_url } from './FilesystemUtil';
+import { branding_from_node, branding_from_path } from './BrandingOptions.svelte';
 
 let loading = true
 let toolbar
@@ -103,6 +104,14 @@ const search = async () => {
 const loading_evt = e => {
 	loading = e.detail
 }
+
+// Custom CSS rules for the whole viewer. This is updated by either the
+// navigation_complete event or the style_change event
+let custom_css = ""
+$: update_css(state.path)
+const update_css = path => {
+	custom_css = branding_from_path(path)
+}
 </script>
 
 <svelte:window on:keydown={keydown} />
@@ -113,7 +122,7 @@ const loading_evt = e => {
 	on:loading={loading_evt}
 />
 
-<div class="file_viewer">
+<div class="file_viewer" style={custom_css}>
 	<div class="headerbar">
 		<div>
 			<HomeButton nobg/>
@@ -135,7 +144,7 @@ const loading_evt = e => {
 			on:search={search}
 		/>
 
-		<div class="file_preview checkers">
+		<div class="file_preview">
 			{#if view === "file"}
 				<FilePreview
 					fs_navigator={fs_navigator}
@@ -158,8 +167,7 @@ const loading_evt = e => {
 	</div>
 
 	<div class="highlight_yellow">
-		The filesystem is an experimental feature! Please read <a
-		href="/filesystem">the guide</a> before using it.
+		The filesystem is experimental! <a href="/filesystem">Please read the guide</a>
 	</div>
 
 	<!-- This frame will load the download URL when a download button is pressed -->
@@ -168,30 +176,43 @@ const loading_evt = e => {
 		title="Frame for downloading files"
 		style="display: none; width: 1px; height: 1px;">
 	</iframe>
+
+	<DetailsWindow
+		state={state}
+		bind:visible={details_visible}
+	/>
+
+	<EditWindow
+		bind:this={edit_window}
+		bind:visible={edit_visible}
+		fs_navigator={fs_navigator}
+		on:loading={loading_evt}
+		on:style_change={e => {
+			custom_css = branding_from_node(e.detail)
+		}}
+	/>
+
+	<UploadWidget
+		bind:this={upload_widget}
+		fs_state={state}
+		drop_upload
+		on:uploads_finished={() => fs_navigator.reload()}
+	/>
+
+	<LoadingIndicator loading={loading}/>
 </div>
 
-<DetailsWindow
-	state={state}
-	bind:visible={details_visible}
-/>
-
-<EditWindow
-	bind:this={edit_window}
-	bind:visible={edit_visible}
-	fs_navigator={fs_navigator}
-	on:loading={loading_evt}
-/>
-
-<UploadWidget
-	bind:this={upload_widget}
-	fs_state={state}
-	drop_upload
-	on:uploads_finished={() => fs_navigator.reload()}
-/>
-
-<LoadingIndicator loading={loading}/>
-
 <style>
+:global(*) {
+	transition: background-color 0.5s,
+		border 0.5s,
+		border-top 0.5s,
+		border-right 0.5s,
+		border-bottom 0.5s,
+		border-left 0.5s,
+		color 0.5s;
+}
+
 /* Viewer container */
 .file_viewer {
 	position: absolute;
@@ -202,7 +223,10 @@ const loading_evt = e => {
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
+
+	/* Force some variable usage that is normally out of scope */
 	background: var(--body_background);
+	color: var(--body_text_color);
 }
 
 /* Headerbar (row 1) */
@@ -240,5 +264,10 @@ const loading_evt = e => {
 	border-radius: 8px;
 	overflow: auto;
 	border: 2px solid var(--separator);
+	background-image: var(--background_image, var(--background_pattern));
+	background-color: var(--background_pattern_color);
+	background-size: var(--background_image_size, initial);
+	background-position: var(--background_image_position, initial);
+	background-repeat: var(--background_image_repeat, repeat);
 }
 </style>

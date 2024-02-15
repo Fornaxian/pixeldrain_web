@@ -46,9 +46,9 @@ export let large_icons = false
 	overflow: hidden;
 	border-radius: 8px;
 	background: var(--input_background);
+	color: var(--input_text);
 	display: flex;
 	flex-direction: column;
-	color: var(--body_text_color);
 	transition: background 0.2s;
 	text-decoration: none;
 	padding: 3px;

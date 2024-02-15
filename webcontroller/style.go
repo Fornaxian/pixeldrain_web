@@ -215,7 +215,7 @@ func (s styleSheet) String() string {
 	--highlight_color:            %s;
 	--highlight_text_color:       %s;
 	--danger_color:               %s;
-	--danger_color_dark:          %s;
+	--danger_text_color:          %s;
 	--scrollbar_foreground_color: %s;
 	--scrollbar_hover_color:      %s;
 
@@ -247,7 +247,7 @@ func (s styleSheet) String() string {
 		s.Highlight.CSS(),
 		s.HighlightText.CSS(),
 		s.Danger.CSS(),
-		s.Danger.Add(0, 0, -.02).CSS(),
+		s.HighlightText.CSS(),
 		s.ScrollbarForeground.CSS(),
 		s.ScrollbarHover.CSS(),
 		s.BackgroundColor.CSS(),

@@ -5,10 +5,11 @@ import { fs_path_url } from "./FilesystemUtil";
 
 export let state
 
+let loading = true
 let downloads = 0
 let transfer_used = 0
 let socket = null
-let error_msg = "Loading..."
+let error_msg = ""
 
 let connected_to = ""
 
@@ -27,7 +28,7 @@ const update_base = async base => {
 	// If the socket is already active we need to close it
 	close_socket()
 
-	error_msg = "Loading..."
+	loading = true
 
 	let ws_endpoint = location.origin.replace(/^http/, 'ws') +
 		fs_path_url(base.path).replace(/^http/, 'ws') +
@@ -40,6 +41,7 @@ const update_base = async base => {
 		console.debug("WS update", j)
 
 		error_msg = ""
+		loading = false
 		downloads = j.downloads
 		transfer_used = j.transfer_free + j.transfer_paid
 	}
@@ -83,11 +85,16 @@ onDestroy(close_socket)
 	{:else}
 		<div class="group">
 			<div class="label">Downloads</div>
-			<div class="stat">{formatThousands(downloads)}</div>
+			<div class="stat">
+				{loading ? "Loading..." : formatThousands(downloads)}
+			</div>
+
 		</div>
 		<div class="group">
 			<div class="label">Transfer used</div>
-			<div class="stat">{formatDataVolume(transfer_used, 3)}</div>
+			<div class="stat">
+				{loading ? "Loading..." : formatDataVolume(transfer_used, 3)}
+			</div>
 		</div>
 	{/if}
 

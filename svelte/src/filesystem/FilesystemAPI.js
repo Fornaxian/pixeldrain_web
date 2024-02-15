@@ -57,17 +57,12 @@ export const fs_update = async (path, opts) => {
 	const form = new FormData()
 	form.append("action", "update")
 
-	if (opts.created !== undefined) {
-		form.append("created", opts.created.toISOString())
-	}
-	if (opts.modified !== undefined) {
-		form.append("modified", opts.modified.toISOString())
-	}
-	if (opts.mode !== undefined) {
-		form.append("mode", opts.mode)
-	}
-	if (opts.shared !== undefined) {
-		form.append("shared", opts.shared)
+	for (let key of Object.keys(opts)) {
+		if (key === "created" || key === "modified") {
+			form.append(key, opts[key].toISOString())
+		} else {
+			form.append(key, opts[key])
+		}
 	}
 
 	return await fs_check_response(

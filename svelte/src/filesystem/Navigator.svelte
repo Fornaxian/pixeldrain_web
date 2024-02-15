@@ -5,6 +5,8 @@ import { fs_encode_path, fs_split_path } from "./FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
+export let history_enabled = true
+
 export let state = {
 	// Parts of the raw API response
 	path: [],
@@ -55,12 +57,14 @@ export const open_node = (node, push_history) => {
 	// Update window title and navigation history. If push_history is false we
 	// still replace the URL with replaceState. This way the user is not greeted
 	// to a 404 page when refreshing after renaming a file
-	window.document.title = node.path[node.base_index].name+" ~ pixeldrain"
-	let url = "/d"+ fs_encode_path(node.path[node.base_index].path)
-	if (push_history) {
-		window.history.pushState({}, window.document.title, url)
-	} else {
-		window.history.replaceState({}, window.document.title, url)
+	if (history_enabled) {
+		window.document.title = node.path[node.base_index].name+" ~ pixeldrain"
+		let url = "/d"+ fs_encode_path(node.path[node.base_index].path)
+		if (push_history) {
+			window.history.pushState({}, window.document.title, url)
+		} else {
+			window.history.replaceState({}, window.document.title, url)
+		}
 	}
 
 	// If the new node is a child of the previous node we save the parent's

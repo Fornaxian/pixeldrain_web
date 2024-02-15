@@ -66,5 +66,6 @@ export let form = ""
 .flat {
 	background: none;
 	margin: 0;
+	color: var(--body_text_color);
 }
 </style>

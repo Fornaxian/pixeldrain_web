@@ -39,6 +39,7 @@ export let nobg = false
 .nobg {
 	background: none;
 	margin: 0;
+	color: var(--body_text_color);
 }
 
 @media (max-width: 600px) {
