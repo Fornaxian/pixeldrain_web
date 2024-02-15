@@ -16,6 +16,7 @@ Contents:
  * [Pricing](#pricing)
  * [Directory sharing](#directory-sharing)
  * [Limits](#limits)
+ * [Importing files](#importing-files)
  * [Client integrations](#client-integrations)
    * [Rclone](#rclone)
    * [FTPS](#ftps)
@@ -43,9 +44,9 @@ again.
 ## Directory sharing
 
 Files in the the filesystem are private by default. Only you can access them
-from your own account. Files and directories can be shared by clicking the Share
-button in the toolbar while inside the directory, or by clicking the pencil icon
-next to the directory in the file viewer.
+from your own account. Files and directories can be shared by clicking the
+`Share` button in the toolbar while inside the directory, or by clicking the
+pencil icon next to the directory in the file viewer.
 
 Shared directories and files will have a shared icon next to them in the file
 manager. Clicking that icon will open the shared link. You can also copy the
@@ -70,6 +71,15 @@ When traversing a path, pixeldrain requests one directory at a time from the
 database. This means that filesystem operations will get slower the more nested
 directories you have. Keep that in mind when organizing your files.
 
+## Importing files
+
+It's possible to import files from your account's file list to your filesystem.
+To do so, navigate to a directory in your filesystem, click the `Import files`
+button on the toolbar. It's on the right side, between the `Create directory`
+and `Edit files` buttons. You will be prompted to select the files you would
+like to import. After selecting the files click `Add` and they will be added to
+your filesystem.
+
 ## Client integrations
 
 There are two ways to access your filesystem from outside the web interface.
@@ -86,7 +96,7 @@ but it has not been accepted yet.
 ### FTPS
 
 The filesystem also supports FTPS, both anonymously and with an account. The FTP
-server is hosted at `pixeldrain.com` on port 990. The encryption mode used is
+server is hosted at `pixeldrain.com` on port `990`. The encryption mode used is
 `Implicit FTP over TLS`. Here is an example configuration in FileZilla:
 
 ![FTP configuration](/res/img/misc/ftp_login.webp)

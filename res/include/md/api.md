@@ -45,17 +45,14 @@ URL.
 
 Here's how to anonymously upload a file using curl:
 
-```
-curl -T "file_name.txt" https://pixeldrain.com/api/file/
-```
+`curl -T "file_name.txt" https://pixeldrain.com/api/file/`
 
 You can also upload a file to your pixeldrain account using curl. Get an API key
 from the [API keys page](/user/api_keys) and enter it in the command. Replace
 the example API key here with your own:
 
-```
-curl -T "file_name.txt" -u :5f45f184-64bb-4eaa-be19-4a5f0459db49 https://pixeldrain.com/api/file/
-```
+`curl -T "file_name.txt" -u :5f45f184-64bb-4eaa-be19-4a5f0459db49
+https://pixeldrain.com/api/file/`
 
 ## Form value order
 
