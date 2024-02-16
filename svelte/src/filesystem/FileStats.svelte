@@ -46,13 +46,10 @@ const update_base = async base => {
 		transfer_used = j.transfer_free + j.transfer_paid
 	}
 	socket.onerror = err => {
-		if (socket === null) {
-			return
-		}
 		console.error("WS error", err)
-		socket.close()
-		socket = null
 		error_msg = "failed to get stats, retrying..."
+
+		close_socket()
 
 		window.setTimeout(() => {
 			if (socket === null) {

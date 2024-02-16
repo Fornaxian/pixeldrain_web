@@ -37,30 +37,35 @@ const add_styles = (style, properties) => {
 	if (properties.brand_input_color) {
 		style.input_background = properties.brand_input_color
 		style.input_hover_background = properties.brand_input_color
-		style.input_text = add_light(properties.brand_input_color, 70)
+		style.input_text = add_contrast(properties.brand_input_color, 70)
 	}
 	if (properties.brand_highlight_color) {
 		style.highlight_color = properties.brand_highlight_color
 		style.highlight_background = properties.brand_highlight_color
-		style.highlight_text_color = add_light(properties.brand_highlight_color, 70)
-		style.link_color = properties.brand_highlight_color
+		style.highlight_text_color = add_contrast(properties.brand_highlight_color, 70)
+
+		// If we have a body colour to compare it to we use the highlight colour
+		// to generate the link colour
+		if (properties.brand_body_color) {
+			style.link_color = generate_link_color(properties.brand_highlight_color, properties.brand_body_color)
+		}
 	}
 	if (properties.brand_danger_color) {
 		style.danger_color = properties.brand_danger_color
-		style.danger_text_color = add_light(properties.brand_danger_color, 70)
+		style.danger_text_color = add_contrast(properties.brand_danger_color, 70)
 	}
 	if (properties.brand_background_color) {
 		style.background_color = properties.brand_background_color
 		style.background = properties.brand_background_color
-		style.background_text_color = add_light(properties.brand_background_color, 70)
+		style.background_text_color = add_contrast(properties.brand_background_color, 70)
 		style.background_pattern_color = properties.brand_background_color
 	}
 	if (properties.brand_body_color) {
 		style.body_color = properties.brand_body_color
 		style.body_background = properties.brand_body_color
-		style.body_text_color = add_light(properties.brand_body_color, 70)
+		style.body_text_color = add_contrast(properties.brand_body_color, 70)
 		style.shaded_background = set_alpha(properties.brand_body_color, 0.8)
-		style.separator = add_light(properties.brand_body_color, 5)
+		style.separator = add_contrast(properties.brand_body_color, 6)
 		style.shadow_color = darken(properties.brand_body_color, 0.8)
 	}
 	if (properties.brand_card_color) {
@@ -74,7 +79,7 @@ const add_styles = (style, properties) => {
 	}
 }
 
-const add_light = (color, amt) => {
+const add_contrast = (color, amt) => {
 	let hsl = rgb2hsl(parse(color)) // Convert hex to hsl
 	// If the lightness is less than 40 it is considered a dark colour. This
 	// threshold is 40 instead of 50 because overall dark text is more legible
@@ -98,4 +103,18 @@ const set_alpha = (color, amt) => {
 	let rgb = parse(color)
 	rgb.push(amt)
 	return "rgba(" + rgb.join(", ") + ")"
+}
+
+const generate_link_color = (link_color, body_color) => {
+	let link = rgb2hsl(parse(link_color))
+	let body = rgb2hsl(parse(body_color))
+
+	// If the body and link colours are both dark we lighten the link, and the
+	// other way around too
+	if (body[2] < 50 && link[2] < 50) {
+		link[2] = link[2] + 40 // Dark color, add lightness
+	} else if (body[2] > 50 && link[2] > 50) {
+		link[2] = link[2] - 40 // Light color, remove lightness
+	}
+	return rgb2hex(hsl2rgb(link)) // Convert back to hex
 }
