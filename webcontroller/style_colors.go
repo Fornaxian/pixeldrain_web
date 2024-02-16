@@ -99,6 +99,12 @@ func (hsl HSL) Add(hue int, saturation float64, lightness float64) HSL {
 	return new
 }
 
+func (hsl HSL) Darken(percent float64) HSL {
+	hsl.Lightness = hsl.Lightness * percent
+	hsl.Saturation = hsl.Saturation * percent
+	return hsl
+}
+
 func (hsl HSL) WithAlpha(alpha float64) HSLA {
 	return HSLA{hsl.Hue, hsl.Saturation, hsl.Lightness, alpha}
 }

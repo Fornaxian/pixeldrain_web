@@ -184,6 +184,7 @@ const drop = (e, index) => {
 	vertical-align: top;
 	color: var(--body_text_color);
 	transition: background 0.2s, padding 0.2s, box-shadow 0.2s;
+	box-shadow: 1px 1px 0px 0px var(--shadow_color);
 }
 .file:hover {
 	background: var(--input_hover_background);

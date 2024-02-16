@@ -4,6 +4,7 @@ import Modal from "../util/Modal.svelte";
 import { createEventDispatcher } from "svelte";
 import Button from "../layout/Button.svelte";
 import BrandingOptions from "./BrandingOptions.svelte";
+import PathLink from "./util/PathLink.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -15,6 +16,8 @@ let file = {
 	mode_octal: "",
 	properties: {},
 };
+
+$: is_root_dir = file.path === "/"+file.id
 
 export let visible
 export const edit = (f, oae = false, t = "file") => {
@@ -124,11 +127,11 @@ const delete_file = async e => {
 }
 </script>
 
-<Modal bind:visible={visible} title="Edit {file.name}" width="700px" form="file_edit_form">
+<Modal bind:visible={visible} title="Edit {file.name}" width="700px" form="edit_form">
 	<div class="tab_bar">
 		<button class:button_highlight={tab === "file"} on:click={() => tab = "file"}>
 			<i class="icon">edit</i>
-			Edit file
+			Properties
 		</button>
 		<button class:button_highlight={tab === "share"} on:click={() => tab = "share"}>
 			<i class="icon">share</i>
@@ -140,13 +143,24 @@ const delete_file = async e => {
 		</button>
 	</div>
 
-	<form id="file_edit_form" on:submit|preventDefault={save}></form>
+	<form id="edit_form" on:submit|preventDefault={save}></form>
+
 	{#if tab === "file"}
 		<div class="tab_content">
-			<span class="header">File settings</span>
-			<label for="file_name">Name:</label>
-			<input form="file_edit_form" bind:value={file_name} id="file_name" type="text" class="form_input"/>
-			<span class="header">Delete</span>
+			<h2>File settings</h2>
+			{#if is_root_dir}
+				<div class="highlight_yellow">
+					Filesystem root cannot be renamed. If this shared directory
+					is in
+					<PathLink nav={fs_navigator} path="/me">your filesystem</PathLink>
+					you can rename it from there
+				</div>
+			{/if}
+			<div class="form_grid">
+				<label for="file_name">Name</label>
+				<input form="edit_form" bind:value={file_name} id="file_name" type="text" class="form_input" disabled={is_root_dir}/>
+			</div>
+			<h2>Delete</h2>
 			<p>
 				Delete this file or directory. If this is a directory then all
 				subfiles will be deleted as well. This action cannot be undone.
@@ -155,6 +169,7 @@ const delete_file = async e => {
 		</div>
 	{:else if tab === "share"}
 		<div class="tab_content">
+			<h2>Share this file/directory</h2>
 			<p>
 				When a file or directory is shared it can be accessed
 				through a unique link. You can get the URL with the 'Copy
@@ -163,7 +178,7 @@ const delete_file = async e => {
 				within the directory are also accessible from the link.
 			</p>
 			<div>
-				<input bind:checked={shared} id="shared" type="checkbox" class="form_input"/>
+				<input form="edit_form" bind:checked={shared} id="shared" type="checkbox" class="form_input"/>
 				<label for="shared">Share this file or directory</label>
 			</div>
 		</div>
@@ -175,11 +190,6 @@ const delete_file = async e => {
 </Modal>
 
 <style>
-.header {
-	margin-top: 1em;
-	font-size: 1.5em;
-	border-bottom: 1px var(--separator) solid;
-}
 .tab_bar {
 	border-bottom: 2px solid var(--separator);
 }
@@ -187,5 +197,10 @@ const delete_file = async e => {
 	display: flex;
 	flex-direction: column;
 	padding: 8px;
+}
+.form_grid {
+	display: grid;
+	grid-template-columns: 1fr 10fr;
+	align-items: center;
 }
 </style>

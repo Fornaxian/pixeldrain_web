@@ -116,7 +116,7 @@ let expand = e => {
 			<span>Deta<u>i</u>ls</span>
 		</button>
 
-		{#if state.path.length > 1}
+		{#if state.base.id !== "me" && state.permissions.update === true}
 			<button on:click={() => edit_window.edit(state.base, true)} class:button_highlight={edit_visible}>
 				<i class="icon">edit</i>
 				<span><u>E</u>dit</span>

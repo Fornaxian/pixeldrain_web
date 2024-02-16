@@ -121,6 +121,7 @@ td {
 	margin: 0;
 	background: none;
 	color: var(--body_text_color);
+	box-shadow: none;
 }
 .hidden {
 	display: none;

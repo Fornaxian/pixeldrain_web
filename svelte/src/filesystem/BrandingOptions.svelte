@@ -39,13 +39,12 @@ const add_styles = (style, properties) => {
 		style.input_background = properties.brand_input_color
 		style.input_hover_background = properties.brand_input_color
 		style.input_text = add_light(properties.brand_input_color, 70)
-		style.shadow_color = add_light(properties.brand_input_color, 20)
 	}
 	if (properties.brand_highlight_color) {
 		style.highlight_color = properties.brand_highlight_color
 		style.highlight_background = properties.brand_highlight_color
 		style.highlight_text_color = add_light(properties.brand_highlight_color, 70)
-		style.link_color = add_light(properties.brand_highlight_color, 10)
+		style.link_color = properties.brand_highlight_color
 	}
 	if (properties.brand_danger_color) {
 		style.danger_color = properties.brand_danger_color
@@ -55,6 +54,7 @@ const add_styles = (style, properties) => {
 		style.background_color = properties.brand_background_color
 		style.background = properties.brand_background_color
 		style.background_text_color = add_light(properties.brand_background_color, 70)
+		style.background_pattern_color = properties.brand_background_color
 	}
 	if (properties.brand_body_color) {
 		style.body_color = properties.brand_body_color
@@ -62,6 +62,7 @@ const add_styles = (style, properties) => {
 		style.body_text_color = add_light(properties.brand_body_color, 70)
 		style.shaded_background = set_alpha(properties.brand_body_color, 0.8)
 		style.separator = add_light(properties.brand_body_color, 5)
+		style.shadow_color = darken(properties.brand_body_color, 0.8)
 	}
 	if (properties.brand_card_color) {
 		style.card_color = properties.brand_card_color
@@ -76,13 +77,24 @@ const add_styles = (style, properties) => {
 
 const add_light = (color, amt) => {
 	let hsl = rgb2hsl(parse(color)) // Convert hex to hsl
-	if (hsl[2] < 50) {
+	// If the lightness is less than 30 it is considered a dark colour. This
+	// threshold is 30 instead of 50 because overall dark text is more legible
+	if (hsl[2] < 30) {
 		hsl[2] = hsl[2]+amt // Dark color, add lightness
 	} else {
 		hsl[2] = hsl[2]-amt // Light color, remove lightness
 	}
 	return rgb2hex(hsl2rgb(hsl)) // Convert back to hex
 }
+
+// Darken and desaturate. Only used for shadows
+const darken = (color, percent) => {
+	let hsl = rgb2hsl(parse(color)) // Convert hex to hsl
+	hsl[1] = hsl[1]*percent
+	hsl[2] = hsl[2]*percent
+	return rgb2hex(hsl2rgb(hsl)) // Convert back to hex
+}
+
 const set_alpha = (color, amt) => {
 	let rgb = parse(color)
 	rgb.push(amt)
@@ -200,9 +212,10 @@ const handle_picker = async e => {
 		<hr/>
 
 		You can choose an image to show above or behind the files in this
-		directory. The image will be picked from your filesystem. If the image
-		is not shared yet it will be made shared so it can be publicly
-		downloaded.
+		directory. The image will be picked from your filesystem. The image will
+		get a shared file link. You can move and rename the file like normal,
+		but if you remove the shared file property your branding will stop
+		working.
 	</div>
 	<div>Header image ID</div>
 	<button on:click={() => pick_image("brand_header_image")}>

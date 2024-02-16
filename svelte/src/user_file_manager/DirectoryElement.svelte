@@ -367,6 +367,7 @@ const node_click = (index) => {
 	margin: 4px 10px;
 	text-align: initial;
 	background: none;
+	box-shadow: none;
 }
 .sorter_button:hover {
 	background: var(--input_hover_background);

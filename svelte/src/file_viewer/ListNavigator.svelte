@@ -138,6 +138,7 @@ export const set_item = idx => {
 	border-width: 2px;
 	border-style: solid;
 	border-color: var(--input_background);
+	box-shadow: 1px 1px 0px 0px var(--shadow_color);
 }
 
 .file_button:hover {

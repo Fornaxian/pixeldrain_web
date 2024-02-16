@@ -40,6 +40,7 @@ export let nobg = false
 	background: none;
 	margin: 0;
 	color: var(--body_text_color);
+	box-shadow: none;
 }
 
 @media (max-width: 600px) {

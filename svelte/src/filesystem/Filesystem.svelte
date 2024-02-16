@@ -35,15 +35,12 @@ let state = {
 	shuffle: false,
 }
 
-onMount(() => {
-	fs_navigator.open_node(window.initial_node, false)
-})
+onMount(() => fs_navigator.open_node(window.initial_node, false))
 
 const keydown = e => {
 	if (e.ctrlKey || e.altKey || e.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
-	}
-	if (document.activeElement.type && document.activeElement.type === "text") {
+	} else if (document.activeElement.type && document.activeElement.type === "text") {
 		return // Prevent shortcuts from interfering with input fields
 	}
 
@@ -101,17 +98,12 @@ const search = async () => {
 	view = "search"
 }
 
-const loading_evt = e => {
-	loading = e.detail
-}
+const loading_evt = e => loading = e.detail
 
 // Custom CSS rules for the whole viewer. This is updated by either the
 // navigation_complete event or the style_change event
-let custom_css = ""
 $: update_css(state.path)
-const update_css = path => {
-	custom_css = branding_from_path(path)
-}
+const update_css = path => document.documentElement.style = branding_from_path(path)
 </script>
 
 <svelte:window on:keydown={keydown} />
@@ -122,7 +114,7 @@ const update_css = path => {
 	on:loading={loading_evt}
 />
 
-<div class="file_viewer" style={custom_css}>
+<div class="file_viewer">
 	<div class="headerbar">
 		<div>
 			<HomeButton nobg/>
@@ -187,9 +179,7 @@ const update_css = path => {
 		bind:visible={edit_visible}
 		fs_navigator={fs_navigator}
 		on:loading={loading_evt}
-		on:style_change={e => {
-			custom_css = branding_from_node(e.detail)
-		}}
+		on:style_change={e => document.documentElement.style = branding_from_node(e.detail)}
 	/>
 
 	<UploadWidget

@@ -134,8 +134,6 @@ type styleSheet struct {
 	Chart1 HSL
 	Chart2 HSL
 	Chart3 HSL
-
-	Shadow HSL
 }
 
 func (s styleSheet) withDefaults() styleSheet {
@@ -197,7 +195,6 @@ func (s styleSheet) withHue(hue int) styleSheet {
 	s.Separator.Hue = hue
 	s.CardColor.Hue = hue
 	s.CardText.Hue = hue
-	s.Shadow.Hue = hue
 	return s
 }
 
@@ -265,7 +262,7 @@ func (s styleSheet) String() string {
 		s.Chart1.CSS(),
 		s.Chart2.CSS(),
 		s.Chart3.CSS(),
-		s.Shadow.CSS(),
+		s.BodyColor.Darken(0.7).CSS(),
 	)
 }
 
@@ -328,8 +325,6 @@ var purpleDrainStyle = styleSheet{
 	BodyBackground:    NewGradient(120, HSL{255, .84, .18}, HSL{300, .85, .16}),
 	BodyText:          HSL{0, 0, .8},
 	CardColor:         HSL{275, .8, .18},
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var classicStyle = styleSheet{
@@ -345,8 +340,6 @@ var classicStyle = styleSheet{
 	BodyColor:       HSL{0, 0, .12},
 	BodyText:        HSL{0, 0, .8},
 	CardColor:       HSL{0, 0, .16},
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var maroonStyle = styleSheet{
@@ -362,8 +355,6 @@ var maroonStyle = styleSheet{
 	BodyColor:       HSL{0, .8, .08}, // HSL{0, .8, .15},
 	BodyText:        HSL{0, 0, .8},
 	CardColor:       HSL{0, .9, .14},
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var hackerStyle = styleSheet{
@@ -379,8 +370,6 @@ var hackerStyle = styleSheet{
 	BodyColor:       HSL{0, 0, .03},
 	BodyText:        HSL{0, 0, .8},
 	CardColor:       HSL{120, .4, .05},
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var cantaPixeldrainStyle = styleSheet{
@@ -396,8 +385,6 @@ var cantaPixeldrainStyle = styleSheet{
 	BodyColor:       HSL{168, .05, .21},
 	BodyText:        HSL{0, 0, .8},
 	CardColor:       HSL{170, .05, .26},
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var skeuosPixeldrainStyle = styleSheet{
@@ -413,8 +400,6 @@ var skeuosPixeldrainStyle = styleSheet{
 	BodyColor:       HSL{229, .14, .16}, // hsl(229, 14%, 16%)
 	BodyText:        HSL{60, .06, .93},  // hsl(60, 6%, 93%)
 	CardColor:       HSL{225, .14, .17}, // hsl(225, 14%, 17%)
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var (
@@ -446,8 +431,6 @@ var nordDarkStyle = styleSheet{
 	BodyColor:       nord1,
 	BodyText:        nord4,
 	CardColor:       nord2,
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var nordLightStyle = styleSheet{
@@ -469,8 +452,6 @@ var nordLightStyle = styleSheet{
 	Separator:         nord4,
 	BackgroundPattern: nord4,
 	CardColor:         nord5,
-
-	Shadow: HSL{220, .16, .36},
 }
 
 var sweetPixeldrainStyle = styleSheet{
@@ -486,8 +467,6 @@ var sweetPixeldrainStyle = styleSheet{
 	BodyColor:       HSL{228, .25, .12}, // hsl(228, 25%, 12%)
 	BodyText:        HSL{223, .13, .79}, // hsl(223, 13%, 79%)
 	CardColor:       HSL{229, .25, .14}, // hsl(229, 25%, 14%)
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var adwaitaDarkStyle = styleSheet{
@@ -503,8 +482,6 @@ var adwaitaDarkStyle = styleSheet{
 	BodyColor:       HSL{0, 0, .14},
 	BodyText:        HSL{0, 0, 1},
 	CardColor:       HSL{0, 0, .21},
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var adwaitaLightStyle = styleSheet{
@@ -521,8 +498,6 @@ var adwaitaLightStyle = styleSheet{
 	BodyText:        HSL{0, 0, .2},
 	Separator:       HSL{0, 0, .86},
 	CardColor:       HSL{0, 0, 1},
-
-	Shadow: HSL{0, 0, 0.36},
 }
 
 var solarizedDarkStyle = styleSheet{
@@ -538,8 +513,6 @@ var solarizedDarkStyle = styleSheet{
 	BodyColor:       HSL{192, .81, .14}, // hsl(192, 81%, 14%)
 	BodyText:        HSL{180, .07, .60}, // hsl(180, 7%, 60%)
 	CardColor:       HSL{192, .81, .16},
-
-	Shadow: HSL{0, 0, 0},
 }
 
 var solarizedLightStyle = styleSheet{
@@ -557,6 +530,4 @@ var solarizedLightStyle = styleSheet{
 	BodyText:        HSL{194, .14, .40}, // hsl(194, 14%, 40%)
 	Separator:       HSL{46, .42, .88},
 	CardColor:       HSL{44, .87, .92},
-
-	Shadow: HSL{0, 0, 0.36},
 }

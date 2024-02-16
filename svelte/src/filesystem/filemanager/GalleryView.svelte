@@ -52,6 +52,7 @@ export let large_icons = false
 	transition: background 0.2s;
 	text-decoration: none;
 	padding: 3px;
+	box-shadow: 1px 1px 0px 0px var(--shadow_color);
 }
 .file.large_icons {
 	width: 200px;
