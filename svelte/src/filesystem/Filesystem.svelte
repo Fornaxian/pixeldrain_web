@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 import LoadingIndicator from '../util/LoadingIndicator.svelte';
-import EditWindow from './EditWindow.svelte';
+import EditWindow from './edit_window/EditWindow.svelte';
 import Toolbar from './Toolbar.svelte';
 import Breadcrumbs from './Breadcrumbs.svelte';
 import DetailsWindow from './DetailsWindow.svelte';
@@ -10,8 +10,8 @@ import FilePreview from './viewers/FilePreview.svelte';
 import SearchView from './SearchView.svelte';
 import UploadWidget from './upload_widget/UploadWidget.svelte';
 import HomeButton from '../file_viewer/HomeButton.svelte';
-import { fs_path_url } from './FilesystemUtil';
-import { branding_from_node, branding_from_path } from './BrandingOptions.svelte';
+import { fs_path_url } from './FilesystemUtil.js';
+import { branding_from_path } from './edit_window/Branding.js'
 
 let loading = true
 let toolbar
@@ -179,7 +179,6 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 		bind:visible={edit_visible}
 		fs_navigator={fs_navigator}
 		on:loading={loading_evt}
-		on:style_change={e => document.documentElement.style = branding_from_node(e.detail)}
 	/>
 
 	<UploadWidget

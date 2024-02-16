@@ -7,6 +7,8 @@ let dispatch = createEventDispatcher()
 export let state
 </script>
 
+<slot></slot>
+
 <h1>{state.base.name}</h1>
 
 <IconBlock icon_href={fs_thumbnail_url(state.base.path, 256, 256)}>

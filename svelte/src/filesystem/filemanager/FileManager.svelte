@@ -71,9 +71,9 @@ const node_select = e => {
 	state.children[index].fm_selected = !state.children[index].fm_selected
 }
 
-const node_settings = e => {
-	edit_window.edit(state.children[e.detail], false)
-}
+const node_settings = e => edit_window.edit(state.children[e.detail], false)
+const node_branding = e => edit_window.edit(state.children[e.detail], false, "branding")
+
 const navigate_up = () => {
 	creating_dir = false
 
@@ -352,6 +352,8 @@ onMount(() => {
 		{/if}
 	</div>
 
+	<slot></slot>
+
 	{#if directory_view === "list"}
 		<ListView
 			state={state}
@@ -361,6 +363,7 @@ onMount(() => {
 			on:node_context={node_context}
 			on:node_share_click={node_share_click}
 			on:node_settings={node_settings}
+			on:node_branding={node_branding}
 			on:node_select={node_select}
 		/>
 	{:else if directory_view === "gallery"}

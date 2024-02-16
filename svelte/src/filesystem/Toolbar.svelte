@@ -106,10 +106,12 @@ let expand = e => {
 			</button>
 		{/if}
 
-		<button on:click={share}>
-			<i class="icon">share</i>
-			<span>Share</span>
-		</button>
+		{#if state.base.id !== "me"}
+			<button on:click={share}>
+				<i class="icon">share</i>
+				<span>Share</span>
+			</button>
+		{/if}
 
 		<button on:click={() => details_visible = !details_visible} class:button_highlight={details_visible}>
 			<i class="icon">help</i>

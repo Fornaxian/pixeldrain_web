@@ -1,5 +1,12 @@
 <script context="module">
 export const generate_share_url = path => {
+	let share_path = generate_share_path(path)
+	if (share_path !== "") {
+		share_path = window.location.protocol+"//"+window.location.host+"/d/"+share_path
+	}
+	return share_path
+}
+export const generate_share_path = path => {
 	let share_url = ""
 	let bucket_idx = -1
 
@@ -11,9 +18,7 @@ export const generate_share_url = path => {
 		}
 	}
 	if (bucket_idx !== -1) {
-		share_url = window.location.protocol+"//"+
-			window.location.host+"/d/"+
-			path[bucket_idx].id
+		share_url = path[bucket_idx].id
 
 		// Construct the path starting from the bucket
 		for (let i = bucket_idx+1; i < path.length; i++) {

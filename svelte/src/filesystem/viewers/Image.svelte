@@ -75,6 +75,7 @@ const mouseup = (e) => {
 	max-width: 100%;
 	max-height: 100%;
 	cursor: pointer;
+	box-shadow: 1px 1px 4px 0px var(--shadow_color);
 }
 .image.zoom {
 	max-width: none;

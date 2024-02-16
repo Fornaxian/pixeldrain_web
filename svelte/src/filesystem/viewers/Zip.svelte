@@ -59,6 +59,8 @@ const recursive_size = (file) => {
 }
 </script>
 
+<slot></slot>
+
 <h1>{state.base.name}</h1>
 
 <IconBlock icon_href={fs_node_icon(state.base, 256, 256)}>

@@ -1,6 +1,7 @@
 <script>
 import { createEventDispatcher, onMount } from 'svelte'
 import { fs_path_url } from '../FilesystemUtil';
+import FileTitle from '../../file_viewer/viewers/FileTitle.svelte';
 let dispatch = createEventDispatcher()
 
 export let state
@@ -37,7 +38,9 @@ onMount(() => {
 })
 </script>
 
+<slot></slot>
 <div class="container">
+	<FileTitle title={state.base.name}/>
 	<button on:click={() => dispatch("open_sibling", -1) }><i class="icon">skip_previous</i></button>
 	<button on:click={() => player.currentTime -= 10 }><i class="icon">replay_10</i></button>
 	<button on:click={toggle_play}>
@@ -65,7 +68,6 @@ onMount(() => {
 
 <style>
 .container {
-	margin: 50px 0 0 0;
 	padding: 0;
 	overflow-y: auto;
 	text-align: center;

@@ -11,6 +11,7 @@ import Text from "./Text.svelte";
 import Video from "./Video.svelte";
 import Torrent from "./Torrent.svelte";
 import Zip from "./Zip.svelte";
+import CustomBanner from "./CustomBanner.svelte";
 
 export let fs_navigator
 export let edit_window
@@ -51,9 +52,13 @@ const state_update = async (base) => {
 		edit_window={edit_window}
 		on:loading
 		on:upload_picker
-	/>
+	>
+		<CustomBanner path={state.path}/>
+	</FileManager>
 {:else if viewer_type === "audio"}
-	<Audio state={state} on:open_sibling/>
+	<Audio state={state} on:open_sibling>
+		<CustomBanner path={state.path}/>
+	</Audio>
 {:else if viewer_type === "image"}
 	<Image state={state} on:open_sibling/>
 {:else if viewer_type === "video"}
@@ -61,13 +66,21 @@ const state_update = async (base) => {
 {:else if viewer_type === "pdf"}
 	<Pdf state={state}/>
 {:else if viewer_type === "text"}
-	<Text state={state}/>
+	<Text state={state}>
+		<CustomBanner path={state.path}/>
+	</Text>
 {:else if viewer_type === "torrent"}
-	<Torrent state={state} bind:this={viewer} on:loading on:download/>
+	<Torrent state={state} bind:this={viewer} on:loading on:download>
+		<CustomBanner path={state.path}/>
+	</Torrent>
 {:else if viewer_type === "zip"}
-	<Zip state={state} bind:this={viewer} on:loading on:download />
+	<Zip state={state} bind:this={viewer} on:loading on:download>
+		<CustomBanner path={state.path}/>
+	</Zip>
 {:else}
-	<File state={state} on:download/>
+	<File state={state} on:download>
+		<CustomBanner path={state.path}/>
+	</File>
 {/if}
 
 <style>

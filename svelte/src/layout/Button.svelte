@@ -1,5 +1,6 @@
 <script>
 export let highlight = false;
+export let highlight_on_click = false
 export let red = false;
 export let round = false;
 export let flat = false;
@@ -14,11 +15,25 @@ export let click = e => {}
 export let style = ""
 export let type = ""
 export let form = ""
+
+let click_int = e => {
+	if (highlight_on_click) {
+		try {
+			click(e)
+			highlight = true
+		} catch (err) {
+			red = true
+			throw err
+		}
+	} else {
+		click(e)
+	}
+}
 </script>
 
 {#if link_target === ""}
 	<button
-		on:click={click}
+		on:click={click_int}
 		class="button"
 		class:button_highlight={highlight}
 		class:button_red={red}

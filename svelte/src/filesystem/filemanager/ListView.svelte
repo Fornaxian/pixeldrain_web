@@ -47,8 +47,13 @@ export let large_icons = false
 						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 					</a>
 				{/if}
+				{#if child.properties && child.properties.branding_enabled}
+					<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_branding", index)}>
+						<i class="icon">palette</i>
+					</button>
+				{/if}
 				{#if state.permissions.update}
-					<button class="action_button" on:click|preventDefault|stopPropagation={() => {dispatch("node_settings", index)}}>
+					<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_settings", index)}>
 						<i class="icon">edit</i>
 					</button>
 				{/if}

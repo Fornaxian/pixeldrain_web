@@ -5,6 +5,7 @@ import GalleryView from './GalleryView.svelte'
 import Modal from '../../util/Modal.svelte';
 import Navigator from '../Navigator.svelte';
 import LoadingIndicator from '../../util/LoadingIndicator.svelte';
+import Breadcrumbs from '../Breadcrumbs.svelte'
 
 let fs_navigator
 let state
@@ -172,6 +173,9 @@ onMount(() => {
 			<i class="icon">done</i> Pick
 		</button>
 	</div>
+
+	<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
+
 	{#if directory_view === "list"}
 		<ListView
 			state={state}

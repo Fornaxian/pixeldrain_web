@@ -1,10 +1,11 @@
 <script>
-import { fs_delete_all, fs_rename, fs_update } from "./FilesystemAPI";
-import Modal from "../util/Modal.svelte";
+import { fs_delete_all, fs_rename, fs_update } from "../FilesystemAPI";
+import Modal from "../../util/Modal.svelte";
 import { createEventDispatcher } from "svelte";
-import Button from "../layout/Button.svelte";
+import Button from "../../layout/Button.svelte";
 import BrandingOptions from "./BrandingOptions.svelte";
-import PathLink from "./util/PathLink.svelte";
+import PathLink from "../util/PathLink.svelte";
+import { branding_from_node } from "./Branding";
 
 let dispatch = createEventDispatcher()
 
@@ -17,6 +18,7 @@ let file = {
 	properties: {},
 };
 
+let custom_css = ""
 $: is_root_dir = file.path === "/"+file.id
 
 export let visible
@@ -33,7 +35,14 @@ export const edit = (f, oae = false, t = "file") => {
 	if (file.properties === undefined) {
 		file.properties = {}
 	}
+
 	branding_enabled = file.properties.branding_enabled === "true"
+	if (branding_enabled) {
+		custom_css = branding_from_node(file)
+	} else {
+		custom_css = ""
+	}
+
 	visible = true
 }
 
@@ -127,7 +136,7 @@ const delete_file = async e => {
 }
 </script>
 
-<Modal bind:visible={visible} title="Edit {file.name}" width="700px" form="edit_form">
+<Modal bind:visible={visible} title="Edit {file.name}" width="700px" form="edit_form" style="color: var(--body_text_color); {custom_css}">
 	<div class="tab_bar">
 		<button class:button_highlight={tab === "file"} on:click={() => tab = "file"}>
 			<i class="icon">edit</i>
@@ -184,7 +193,12 @@ const delete_file = async e => {
 		</div>
 	{:else if tab === "branding"}
 		<div class="tab_content">
-			<BrandingOptions bind:enabled={branding_enabled} bind:colors={branding_colors} file={file} on:style_change/>
+			<BrandingOptions
+				bind:enabled={branding_enabled}
+				bind:colors={branding_colors}
+				file={file}
+				on:style_change={e => custom_css = branding_from_node(file)}
+			/>
 		</div>
 	{/if}
 </Modal>

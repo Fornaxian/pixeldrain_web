@@ -13,6 +13,9 @@ export const fs_encode_path = path => {
 }
 
 export const fs_path_url = path => {
+	if (path[0] !== "/") {
+		path = "/" + path
+	}
 	return window.api_endpoint + "/filesystem" + fs_encode_path(path)
 }
 

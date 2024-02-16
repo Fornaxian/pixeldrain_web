@@ -27,6 +27,7 @@ export const set_file = file => {
 
 
 <div class="container">
+	<slot></slot>
 	<pre bind:this={text_pre}>
 		Loading...
 	</pre>

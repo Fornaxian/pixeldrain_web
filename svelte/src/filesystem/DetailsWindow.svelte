@@ -4,9 +4,10 @@ import { formatDataVolume, formatDate, formatThousands } from "../util/Formattin
 import Modal from "../util/Modal.svelte";
 import { fs_timeseries } from "./FilesystemAPI";
 import { fs_path_url } from "./FilesystemUtil";
-import { generate_share_url } from "./Sharebar.svelte";
-import { color_by_name } from "../util/Util.svelte";
+import { generate_share_path, generate_share_url } from "./Sharebar.svelte";
+import { color_by_name, copy_text } from "../util/Util.svelte";
 import { tick } from "svelte";
+import Button from "../layout/Button.svelte";
 
 export let state
 export let visible = false
@@ -21,6 +22,7 @@ const visibility_change = visible => {
 
 $: direct_url = window.location.origin+fs_path_url(state.base.path)
 $: share_url = generate_share_url(state.path)
+$: direct_share_url = window.location.origin+fs_path_url(generate_share_path(state.path))
 
 let chart
 let chart_timespan = 0
@@ -171,9 +173,28 @@ let update_chart = async (base, timespan, interval) => {
 			</tr>
 			<tr><td>SHA256 sum</td><td>{state.base.sha256_sum}</td></tr>
 		{/if}
-		<tr><td>Direct URL</td><td><a href="{direct_url}">{direct_url}</a></td></tr>
+		<tr>
+			<td>Direct link</td>
+			<td>
+				<Button highlight_on_click icon="content_copy" label="Copy" click={e => copy_text(direct_url)}/>
+				<a href="{direct_url}">{direct_url}</a>
+			</td>
+		</tr>
 		{#if share_url !== ""}
-			<tr><td>Share URL</td><td><a href="{share_url}">{share_url}</a></td></tr>
+			<tr>
+				<td>Sharing link</td>
+				<td>
+					<Button highlight_on_click icon="content_copy" label="Copy" click={e => copy_text(share_url)}/>
+					<a href="{share_url}">{share_url}</a>
+				</td>
+			</tr>
+			<tr>
+				<td>Direct sharing link</td>
+				<td>
+					<Button highlight_on_click icon="content_copy" label="Copy" click={e => copy_text(direct_share_url)}/>
+					<a href="{direct_share_url}">{direct_share_url}</a>
+				</td>
+			</tr>
 		{/if}
 	</table>
 

@@ -18,6 +18,7 @@ export let width = "800px";
 export let height = "auto";
 export let padding = false;
 export let visible = false;
+export let style = "";
 
 const load_bg = background => {
 	background.style.zIndex = global_index.valueOf();
@@ -53,6 +54,7 @@ const keydown = e => {
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<div
 		class="background"
+		style={style}
 		use:load_bg
 		on:click={hide}
 		transition:fade={{duration: 200}}

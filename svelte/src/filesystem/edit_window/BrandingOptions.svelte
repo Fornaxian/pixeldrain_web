@@ -1,124 +1,21 @@
-<script context="module">
-import parse from "pure-color/parse"
-import rgb2hsl from "pure-color/convert/rgb2hsl";
-import hsl2rgb from "pure-color/convert/hsl2rgb";
-import rgb2hex from "pure-color/convert/rgb2hex";
-
-// Generate a branding style from a file's properties map
-export const branding_from_path = path => {
-	let style = {}
-	for (let node of path) {
-		add_styles(style, node.properties)
-	}
-	last_generated_style = style
-	return gen_css(style)
-}
-
-// The last style which was generated is cached, when we don't have a complete
-// path to generate the style with we will use the cached style as a basis
-let last_generated_style = {}
-export const branding_from_node = node => {
-	add_styles(last_generated_style, node.properties)
-	return gen_css(last_generated_style)
-}
-
-const gen_css = style => {
-	return Object.entries(style).map(([key, value]) => `--${key}:${value}`).join(';');
-}
-
-// add_styles adds the styles configured in the properties struct to the
-// existing style which is passed as the first argument. When navigating to a
-// path this function is executed on every member of the path so all the styles
-// get combined
-const add_styles = (style, properties) => {
-	if (!properties || !properties.branding_enabled || properties.branding_enabled !== "true") {
-		return
-	}
-
-	if (properties.brand_input_color) {
-		style.input_background = properties.brand_input_color
-		style.input_hover_background = properties.brand_input_color
-		style.input_text = add_light(properties.brand_input_color, 70)
-	}
-	if (properties.brand_highlight_color) {
-		style.highlight_color = properties.brand_highlight_color
-		style.highlight_background = properties.brand_highlight_color
-		style.highlight_text_color = add_light(properties.brand_highlight_color, 70)
-		style.link_color = properties.brand_highlight_color
-	}
-	if (properties.brand_danger_color) {
-		style.danger_color = properties.brand_danger_color
-		style.danger_text_color = add_light(properties.brand_danger_color, 70)
-	}
-	if (properties.brand_background_color) {
-		style.background_color = properties.brand_background_color
-		style.background = properties.brand_background_color
-		style.background_text_color = add_light(properties.brand_background_color, 70)
-		style.background_pattern_color = properties.brand_background_color
-	}
-	if (properties.brand_body_color) {
-		style.body_color = properties.brand_body_color
-		style.body_background = properties.brand_body_color
-		style.body_text_color = add_light(properties.brand_body_color, 70)
-		style.shaded_background = set_alpha(properties.brand_body_color, 0.8)
-		style.separator = add_light(properties.brand_body_color, 5)
-		style.shadow_color = darken(properties.brand_body_color, 0.8)
-	}
-	if (properties.brand_card_color) {
-		style.card_color = properties.brand_card_color
-	}
-	if (properties.brand_background_image) {
-		style.background_image = "url('/api/filesystem/"+properties.brand_background_image+"')"
-		style.background_image_size = "cover"
-		style.background_image_position = "center"
-		style.background_image_repeat = "no-repeat"
-	}
-}
-
-const add_light = (color, amt) => {
-	let hsl = rgb2hsl(parse(color)) // Convert hex to hsl
-	// If the lightness is less than 30 it is considered a dark colour. This
-	// threshold is 30 instead of 50 because overall dark text is more legible
-	if (hsl[2] < 30) {
-		hsl[2] = hsl[2]+amt // Dark color, add lightness
-	} else {
-		hsl[2] = hsl[2]-amt // Light color, remove lightness
-	}
-	return rgb2hex(hsl2rgb(hsl)) // Convert back to hex
-}
-
-// Darken and desaturate. Only used for shadows
-const darken = (color, percent) => {
-	let hsl = rgb2hsl(parse(color)) // Convert hex to hsl
-	hsl[1] = hsl[1]*percent
-	hsl[2] = hsl[2]*percent
-	return rgb2hex(hsl2rgb(hsl)) // Convert back to hex
-}
-
-const set_alpha = (color, amt) => {
-	let rgb = parse(color)
-	rgb.push(amt)
-	return "rgba("+rgb.join(", ")+")"
-}
-</script>
-
 <script>
 import { createEventDispatcher } from "svelte";
-import FilePicker from "./filemanager/FilePicker.svelte";
-import { fs_update } from "./FilesystemAPI";
-import { fs_node_type } from "./FilesystemUtil";
+import FilePicker from "../filemanager/FilePicker.svelte";
+import { fs_update } from "../FilesystemAPI";
+import { fs_node_type } from "../FilesystemUtil";
+import CustomBanner from "../viewers/CustomBanner.svelte";
 
 let dispatch = createEventDispatcher()
 
 export let file = {
 	properties: {
-		branding_enabled: "false",
-		brand_input_color: "#2d2d2d",
-		brand_highlight_color: "#75b72d",
-		brand_danger_color: "#bd5f69",
-		brand_background_color: "#141414",
-		brand_body_color: "#1e1e1e",
-		brand_card_color: "#282828",
+		branding_enabled: "",
+		brand_input_color: "",
+		brand_highlight_color: "",
+		brand_danger_color: "",
+		brand_background_color: "",
+		brand_body_color: "",
+		brand_card_color: "",
 		brand_header_image: "",
 		brand_header_link: "",
 		brand_footer_image: "",
@@ -133,7 +30,7 @@ $: update_colors(file)
 const update_colors = file => {
 	if (enabled) {
 		file.properties.branding_enabled = "true"
-		dispatch("style_change", file)
+		dispatch("style_change")
 	} else {
 		file.properties.branding_enabled = ""
 	}
@@ -208,15 +105,13 @@ const handle_picker = async e => {
 	<div>Card</div>
 	<input type="color" bind:value={file.properties.brand_card_color}/>
 	<input type="text" bind:value={file.properties.brand_card_color}/>
-	<div class="span3">
-		<hr/>
-
+	<p class="span3">
 		You can choose an image to show above or behind the files in this
 		directory. The image will be picked from your filesystem. The image will
 		get a shared file link. You can move and rename the file like normal,
 		but if you remove the shared file property your branding will stop
-		working.
-	</div>
+		working. Recommended dimensions for the header image are 1000x90 px.
+	</p>
 	<div>Header image ID</div>
 	<button on:click={() => pick_image("brand_header_image")}>
 		<i class="icon">folder_open</i>
@@ -243,7 +138,9 @@ const handle_picker = async e => {
 
 	<div class="example example_body">
 		<div>The content body. <a href="/">A link</a>!</div>
-
+		<hr/>
+		<div>Below is your custom header image, if you chose one.</div>
+		<CustomBanner path={[file]}/>
 		<hr/>
 
 		<div class="example_button_row">
