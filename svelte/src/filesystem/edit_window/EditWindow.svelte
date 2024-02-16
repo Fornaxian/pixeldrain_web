@@ -1,11 +1,11 @@
 <script>
-import { fs_delete_all, fs_rename, fs_update } from "../FilesystemAPI";
+import { fs_rename, fs_update } from "../FilesystemAPI";
 import Modal from "../../util/Modal.svelte";
 import { createEventDispatcher } from "svelte";
-import Button from "../../layout/Button.svelte";
 import BrandingOptions from "./BrandingOptions.svelte";
-import PathLink from "../util/PathLink.svelte";
 import { branding_from_node } from "./Branding";
+import FileOptions from "./FileOptions.svelte";
+import SharingOptions from "./SharingOptions.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -19,17 +19,24 @@ let file = {
 };
 
 let custom_css = ""
-$: is_root_dir = file.path === "/"+file.id
 
 export let visible
-export const edit = (f, oae = false, t = "file") => {
+
+// Open the edit window. Argument 1 is the file to edit, 2 is whether the file
+// should be opened after the user finishes editing and 3 is the default tab
+// that should be open when the window shows
+export const edit = (f, oae = false, open_tab = "") => {
 	file = f
 	open_after_edit = oae
-	tab = t
+	if (open_tab !== "") {
+		tab = open_tab
+	}
 
 	console.log("Editing file", file)
 
-	file_name = file.name
+	// We save the name in a separate field because we need both the original
+	// name and the new name for the rename operation
+	new_name = file.name
 	shared = !(file.id === undefined || file.id === "")
 
 	if (file.properties === undefined) {
@@ -49,8 +56,8 @@ export const edit = (f, oae = false, t = "file") => {
 let tab = "file"
 let open_after_edit = false
 
-let file_name = ""
 let shared = false
+let new_name = ""
 
 let branding_enabled = false
 let branding_colors
@@ -63,14 +70,13 @@ let branding_fields = [
 	"brand_card_color",
 	"brand_header_image",
 	"brand_header_link",
-	"brand_footer_image",
-	"brand_footer_link",
 	"brand_background_image",
 ]
 
-const save = async () => {
+const save = async (keep_editing = false) => {
 	console.debug("Saving file", file.path)
 
+	let new_file
 	try {
 		dispatch("loading", true)
 		let opts = {shared: shared}
@@ -86,14 +92,17 @@ const save = async () => {
 			}
 		}
 
-		await fs_update(file.path, opts)
+		new_file = await fs_update(file.path, opts)
 
-		if (file_name !== file.name) {
+		if (new_name !== file.name) {
 			let parent = file.path.slice(0, -file.name.length)
-			console.log("Moving", file.path, "to", parent+file_name)
+			console.log("Moving", file.path, "to", parent+new_name)
 
-			await fs_rename(file.path, parent+file_name)
-			file.path = parent+file_name
+			await fs_rename(file.path, parent+new_name)
+			file.path = parent+new_name
+
+			new_file.name = new_name
+			new_file.path = file.path
 		}
 	} catch (err) {
 		if (err.message) {
@@ -112,27 +121,10 @@ const save = async () => {
 	} else {
 		fs_navigator.reload()
 	}
-}
-const delete_file = async e => {
-	e.preventDefault()
 
-	try {
-		dispatch("loading", true)
-		await fs_delete_all(file.path)
-	} catch (err) {
-		console.error(err)
-		alert(err)
-		return
-	} finally {
-		dispatch("loading", false)
+	if (keep_editing) {
+		edit(new_file, open_after_edit)
 	}
-
-	if (open_after_edit) {
-		fs_navigator.navigate(file.path, false)
-	} else {
-		fs_navigator.reload()
-	}
-	visible = false
 }
 </script>
 
@@ -152,55 +144,33 @@ const delete_file = async e => {
 		</button>
 	</div>
 
-	<form id="edit_form" on:submit|preventDefault={save}></form>
+	<form id="edit_form" on:submit|preventDefault={() => save(false)}></form>
 
-	{#if tab === "file"}
-		<div class="tab_content">
-			<h2>File settings</h2>
-			{#if is_root_dir}
-				<div class="highlight_yellow">
-					Filesystem root cannot be renamed. If this shared directory
-					is in
-					<PathLink nav={fs_navigator} path="/me">your filesystem</PathLink>
-					you can rename it from there
-				</div>
-			{/if}
-			<div class="form_grid">
-				<label for="file_name">Name</label>
-				<input form="edit_form" bind:value={file_name} id="file_name" type="text" class="form_input" disabled={is_root_dir}/>
-			</div>
-			<h2>Delete</h2>
-			<p>
-				Delete this file or directory. If this is a directory then all
-				subfiles will be deleted as well. This action cannot be undone.
-			</p>
-			<Button click={delete_file} red icon="delete" label="Delete" style="align-self: flex-start;"/>
-		</div>
-	{:else if tab === "share"}
-		<div class="tab_content">
-			<h2>Share this file/directory</h2>
-			<p>
-				When a file or directory is shared it can be accessed
-				through a unique link. You can get the URL with the 'Copy
-				link' button on the toolbar, or share the link with the
-				'Share' button. If you share a directory all the files
-				within the directory are also accessible from the link.
-			</p>
-			<div>
-				<input form="edit_form" bind:checked={shared} id="shared" type="checkbox" class="form_input"/>
-				<label for="shared">Share this file or directory</label>
-			</div>
-		</div>
-	{:else if tab === "branding"}
-		<div class="tab_content">
+	<div class="tab_content">
+		{#if tab === "file"}
+			<FileOptions
+				fs_navigator={fs_navigator}
+				bind:file
+				bind:new_name
+				bind:visible
+				bind:open_after_edit
+				on:loading
+			/>
+		{:else if tab === "share"}
+			<SharingOptions
+				bind:file
+				bind:shared
+				on:save={() => save(true)}
+			/>
+		{:else if tab === "branding"}
 			<BrandingOptions
 				bind:enabled={branding_enabled}
 				bind:colors={branding_colors}
-				file={file}
+				bind:file
 				on:style_change={e => custom_css = branding_from_node(file)}
 			/>
-		</div>
-	{/if}
+		{/if}
+	</div>
 </Modal>
 
 <style>
@@ -208,13 +178,6 @@ const delete_file = async e => {
 	border-bottom: 2px solid var(--separator);
 }
 .tab_content {
-	display: flex;
-	flex-direction: column;
 	padding: 8px;
-}
-.form_grid {
-	display: grid;
-	grid-template-columns: 1fr 10fr;
-	align-items: center;
 }
 </style>

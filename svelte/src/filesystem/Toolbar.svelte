@@ -25,7 +25,7 @@ $: share_url = generate_share_url(state.path)
 let link_copied = false
 export const copy_link = () => {
 	if (share_url === "") {
-		edit_window.edit(state.base, "share", true)
+		edit_window.edit(state.base, true, "share")
 		return
 	}
 
@@ -119,7 +119,7 @@ let expand = e => {
 		</button>
 
 		{#if state.base.id !== "me" && state.permissions.update === true}
-			<button on:click={() => edit_window.edit(state.base, true)} class:button_highlight={edit_visible}>
+			<button on:click={() => edit_window.edit(state.base, true, "file")} class:button_highlight={edit_visible}>
 				<i class="icon">edit</i>
 				<span><u>E</u>dit</span>
 			</button>
@@ -161,7 +161,10 @@ let expand = e => {
 .button_expand {
 	display: none;
 }
-@media (max-width: 600px) {
+
+/* This max-width needs to be synced with the .viewer_area max-width in
+Toolbar.svelte and the .label max-width in FileStats.svelte */
+@media (max-width: 700px) {
 	.toolbar {
 		overflow-y: hidden;
 		max-height: 2.5em;

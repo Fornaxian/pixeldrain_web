@@ -55,7 +55,7 @@ const keydown = e => {
 			if (edit_visible) {
 				edit_visible = false
 			} else {
-				edit_window.edit(state.base, true)
+				edit_window.edit(state.base, true, "file")
 			}
 			break;
 		case "s":
@@ -242,7 +242,10 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 	flex-direction: row;
 	overflow: hidden;
 }
-@media (max-width: 600px) {
+
+/* This max-width needs to be synced with the .toolbar max-width in
+Toolbar.svelte and the .label max-width in FileStats.svelte */
+@media (max-width: 700px) {
 	.viewer_area {
 		flex-direction: column-reverse;
 	}

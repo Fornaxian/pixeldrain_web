@@ -130,7 +130,7 @@ onDestroy(close_socket)
 	line-height: 0.75em;
 	margin-top: 0.5em;
 }
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 	.label {
 		text-align: center;
 		padding-left: 0;

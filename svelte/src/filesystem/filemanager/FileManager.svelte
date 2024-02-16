@@ -71,7 +71,7 @@ const node_select = e => {
 	state.children[index].fm_selected = !state.children[index].fm_selected
 }
 
-const node_settings = e => edit_window.edit(state.children[e.detail], false)
+const node_settings = e => edit_window.edit(state.children[e.detail], false, "file")
 const node_branding = e => edit_window.edit(state.children[e.detail], false, "branding")
 
 const navigate_up = () => {
