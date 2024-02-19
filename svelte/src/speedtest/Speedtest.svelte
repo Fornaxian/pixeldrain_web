@@ -7,9 +7,8 @@ import { copy_text } from "../util/Util.svelte";
 
 let running = false
 let data_received = 0
-let update_interval = 100
+const update_interval = 100
 let test_duration = 0
-let current_duration = 0
 let latency = 0
 const start = async (dur = 6000) => {
 	if (running) {
@@ -20,11 +19,11 @@ const start = async (dur = 6000) => {
 	test_duration = dur
 	data_received = 0
 
-	let latency_start = Date.now()
+	const latency_start = Date.now()
 
 	// Start a request for 10 GB of random data. We omit credentials so the
 	// server does fetch the API key from the database which increases latency
-	let req = await fetch(
+	const req = await fetch(
 		window.api_endpoint+"/misc/speedtest?limit="+10e9,
 		{credentials: "omit"},
 	)
@@ -32,17 +31,16 @@ const start = async (dur = 6000) => {
 	// Measure request latency
 	latency = Date.now() - latency_start
 
-	let reader = req.body.getReader();
+	const reader = req.body.getReader();
 
 	measure_speed(reader, update_interval, test_duration)
 
-	// Read from the connection, add the received data to the total
 	while(true) {
-		const {done, value} = await reader.read();
+		const {done, value} = await reader.read()
 		if (done) {
 			break;
 		}
-		data_received += value.length;
+		data_received += value.byteLength;
 	}
 
 	running = false
@@ -51,39 +49,34 @@ const start = async (dur = 6000) => {
 // Average speed for the whole test
 let speed = 0
 let result_link = ""
+let current_duration = 0
 
 const measure_speed = (reader, update_interval, test_duration) => {
-	// We measure the transfer speed for 1/3 the duration of the test, after
-	// that we start overwriting the lowest speed values with the highest speed
-	// values to account for slow start and jitter. At the end of the test the
-	// average speed in this array is the final result.
-	let hist = new Array((test_duration/3)/update_interval)
+	speed = 0
+	result_link = ""
+
+	// This slice contains the speed measurements for 1/3 the duration of the
+	// test. This value is averaged and if the average is higher than the
+	// previously calculated average then it is saved
+	const hist = new Uint32Array((test_duration/3)/update_interval)
 	let idx = 0
 	let previous_transferred = 0
-	let start = Date.now()
+	const start = Date.now()
 
-	console.debug("History length", hist.length)
+	console.debug("Test duration", test_duration, "interval", update_interval, "history", hist.length)
 
 	let measure = async () => {
-		let current_speed = data_received - previous_transferred
+		// Update the speed measurement
+		hist[idx%hist.length] = data_received - previous_transferred
 		previous_transferred = data_received
-
-		// If the current measurement is higher than the last measurement we
-		// save it in the speed history array
-		if (hist[idx%hist.length] === undefined || current_speed > hist[idx%hist.length]) {
-			hist[idx%hist.length] = current_speed
-		}
 		idx++
 
-		// Calculate the average of the speed measurements
-		let sum = hist.reduce((acc, val) => {
-			if (val !== undefined) {
-				acc.sum += val
-				acc.count++
-			}
-			return acc
-		}, {sum: 0, count: 0})
-		speed = (sum.sum/sum.count)*(1000/update_interval)
+		// Calculate the average of all the speed measurements
+		const sum = hist.reduce((acc, val) => acc + val, 0)
+		const new_speed = (sum/hist.length)*(1000/update_interval)
+		if (new_speed > speed) {
+			speed = new_speed
+		}
 
 		// Only used for the progress bar
 		current_duration = Date.now() - start
@@ -94,10 +87,13 @@ const measure_speed = (reader, update_interval, test_duration) => {
 			// single test which significantly impacts results
 			setTimeout(measure, update_interval - (current_duration-(idx*update_interval)))
 		} else {
-			console.debug("Done! Test ran for", current_duration, )
-			current_duration = 0
+			// Test is done, break the reader out of the counting loop
 			await reader.cancel()
 
+			console.debug("Done! Test ran for", current_duration)
+			current_duration = 0
+
+			// Update the URL so the results can be shared
 			history.replaceState(
 				undefined,
 				undefined,
@@ -107,15 +103,17 @@ const measure_speed = (reader, update_interval, test_duration) => {
 		}
 	}
 
+	// Start the measurement loop
 	setTimeout(measure, update_interval)
 }
 
 onMount(() => {
+	// Parse the results saved in the URL, if any
 	if (window.location.hash[0] === "#") {
-		var hash = window.location.hash.replace("#", "");
-		let result = hash.replace("#", "").split('&').reduce((res, item) => {
-			let parts = item.split('=')
-			let n = Number(parts[1])
+		const hash = window.location.hash.replace("#", "");
+		const result = hash.replace("#", "").split('&').reduce((res, item) => {
+			const parts = item.split('=')
+			const n = Number(parts[1])
 			if (n !== NaN) {
 				res[parts[0]] = n
 			}
@@ -153,8 +151,9 @@ onMount(() => {
 		<div class="highlight_shaded">Latency {latency}ms</div>
 		<div class="highlight_shaded">Received {formatDataVolume(data_received, 3)}</div>
 	</div>
-	<!-- Progress bar starts at log10(3) becasue the we want the lowest speed shown to be 1 kB/s -->
-	<ProgressBar animation="linear" speed={update_interval} used={Math.log10(speed*8)-5} total={5}/>
+	<!-- Progress bar starts at log10(6) because the we want the lowest speed
+	shown to be 1 Mbps (1e6 bits) -->
+	<ProgressBar animation="linear" speed={update_interval} used={Math.log10(speed*8)-6} total={4}/>
 
 	<div class="speed_grid">
 		<div>↑</div>
@@ -162,10 +161,8 @@ onMount(() => {
 		<div>↑</div>
 		<div>↑</div>
 		<div>↑</div>
-		<div>↑</div>
 	</div>
 	<div class="speed_grid">
-		<div>100 kb</div>
 		<div>1 Mb</div>
 		<div>10 Mb</div>
 		<div>100 Mb</div>
