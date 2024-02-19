@@ -33,7 +33,7 @@ import Speedtest from "./Speedtest.svelte";
 		<p>
 			The second number shows the download speed in bits. This is usually
 			the speed your ISP advertises to you. This number is equal to the
-			first number but multiplied by 8, because there are eight bits in a
+			first number multiplied by eight, because there are eight bits in a
 			byte.
 		</p>
 		<p>
@@ -46,10 +46,10 @@ import Speedtest from "./Speedtest.svelte";
 		</p>
 		<p>
 			The last number shows how much data the speedtest was able to
-			transfer in duration of the test. The standard test is five seconds
-			and the long test is 10 seconds. The long test is better
-			representative of the real download speed because the speed needs to
-			ramp up at the beginning which also takes time.
+			transfer in the duration of the test. The standard test is six
+			seconds and the long test is twelve seconds. The long test might be
+			slightly more accurate than the short one, but it uses more
+			bandwidth.
 		</p>
 
 		<h2>Why is the speed different from other speed tests?</h2>

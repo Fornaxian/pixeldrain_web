@@ -364,7 +364,9 @@ a {
 	color: var(--link_color);
 }
 
-p {
+p,
+ul,
+ol {
 	margin: 0.5em 0;
 }
 
