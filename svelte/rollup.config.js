@@ -16,6 +16,7 @@ export default [
 	"admin_panel",
 	"home_page",
 	"text_upload",
+	"speedtest",
 ].map((name, index) => ({
 	input: `src/${name}.js`,
 	output: {

@@ -30,6 +30,24 @@ export const formatDataVolume = (amt, precision) => {
 	}
 	return amt + " B"
 }
+export const formatDataVolumeBits = (amt, precision) => {
+	amt = amt*8
+	if (precision < 3) { precision = 3; }
+	if (amt >= 1e18-1e15) {
+		return (amt/1e18).toPrecision(precision) + " Eb";
+	}else if (amt >= 1e15-1e12) {
+		return (amt/1e15).toPrecision(precision) + " Pb";
+	}else if (amt >= 1e12-1e9) {
+		return (amt/1e12).toPrecision(precision) + " Tb";
+	} else if (amt >= 1e9-1e6) {
+		return (amt/1e9).toPrecision(precision) + " Gb";
+	} else if (amt >= 1e6-1e3) {
+		return (amt/1e6).toPrecision(precision) + " Mb";
+	} else if (amt >= 1e3-1) {
+		return (amt/1e3).toPrecision(precision) + " kb";
+	}
+	return amt + " b"
+}
 
 const second = 1000
 const minute = second*60

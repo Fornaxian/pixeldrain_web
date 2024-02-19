@@ -3,6 +3,8 @@ export let total = 0
 export let used = 0
 export let animation = "ease"
 export let speed = 1000
+export let no_animation = false
+export let style = ""
 let percent = 0
 $: {
 	// Avoid division by 0
@@ -19,9 +21,10 @@ $: {
 }
 </script>
 
-<div class="progress_bar_outer">
+<div class="progress_bar_outer" style={style}>
 	<div
 		class="progress_bar_inner"
+		class:no_animation
 		style="width: {percent}%; transition-timing-function: {animation}; transition-duration: {speed}ms;">
 	</div>
 </div>
@@ -34,7 +37,7 @@ $: {
 	height: 6px;
 	border-radius: 6px;
 	overflow: hidden;
-	margin: 6px 0 12px 0;
+	margin: 6px 0;
 }
 .progress_bar_inner {
 	background: var(--highlight_background);
@@ -42,5 +45,8 @@ $: {
 	width: 0;
 	border-radius: 6px;
 	transition-property: width;
+}
+.no_animation {
+	transition-property: none;
 }
 </style>

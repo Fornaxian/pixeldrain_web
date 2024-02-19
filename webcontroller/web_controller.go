@@ -152,6 +152,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "abuse" /*           */, wc.serveMarkdown("abuse.md", handlerOpts{})},
 		{GET, "filesystem" /*      */, wc.serveMarkdown("filesystem.md", handlerOpts{})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
+		{GET, "speedtest" /*       */, wc.serveTemplate("speedtest", handlerOpts{})},
 
 		// User account pages
 		{GET, "register" /*         */, wc.serveForm(wc.registerForm, handlerOpts{NoEmbed: true})},

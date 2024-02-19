@@ -96,7 +96,7 @@ const fullscreen = () => {
 					class="video"
 					on:pause={() => playing = false }
 					on:play={() => playing = true }
-					on:ended={() => dispatch("next", {})}
+					on:ended={() => dispatch("open_sibling", 1)}
 				>
 					<source src={fs_path_url(state.base.path)} type={state.base.file_type} />
 				</video>

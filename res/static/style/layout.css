@@ -525,7 +525,6 @@ select:focus {
 	color: var(--input_text);
 	text-decoration: none;
 	background: var(--input_hover_background);
-
 }
 
 button:active,
@@ -564,7 +563,7 @@ select.disabled {
 	color: var(--input_disabled_text);
 	box-shadow: none;
 	transition: none;
-	padding: 4px 5px 4px 5px;
+	padding: 5px 5px 5px 5px;
 	cursor: not-allowed;
 	background: var(--input_background);
 }
