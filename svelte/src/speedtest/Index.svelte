@@ -18,6 +18,17 @@ import Speedtest from "./Speedtest.svelte";
 			servers to your computer. This speed is not affected by the daily
 			download limit for free users.
 		</p>
+		<p>
+			The speed measured is the maximum speed reached for two continuous
+			seconds during the test. The normal test has a time limit of 30
+			seconds and the long test 60 seconds. When the maximum speed has not
+			changed for a third of the test duration (10 or 20 seconds) the test
+			will end and the result will be final.
+		</p>
+		<p>
+			The speed gauge uses a logarithmic scale, which means that each
+			datapoint is 10 times more than the last one.
+		</p>
 
 		<h2>What do the numbers mean?</h2>
 		<p>
@@ -46,10 +57,7 @@ import Speedtest from "./Speedtest.svelte";
 		</p>
 		<p>
 			The last number shows how much data the speedtest was able to
-			transfer in the duration of the test. The standard test is six
-			seconds and the long test is twelve seconds. The long test might be
-			slightly more accurate than the short one, but it uses more
-			bandwidth.
+			transfer in the duration of the test.
 		</p>
 
 		<h2>Why is the speed different from other speed tests?</h2>

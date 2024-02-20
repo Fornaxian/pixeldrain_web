@@ -33,7 +33,7 @@ const start = async (dur = 6000) => {
 
 	const reader = req.body.getReader();
 
-	measure_speed(reader, update_interval, test_duration)
+	measure_speed(() => reader.cancel(), test_duration)
 
 	while(true) {
 		const {done, value} = await reader.read()
@@ -49,17 +49,30 @@ const start = async (dur = 6000) => {
 // Average speed for the whole test
 let speed = 0
 let result_link = ""
-let current_duration = 0
 
-const measure_speed = (reader, update_interval, test_duration) => {
+let progress_duration = 0
+let progress_unchanged = 0
+
+const measure_speed = (stop, test_duration) => {
 	speed = 0
 	result_link = ""
 
-	// This slice contains the speed measurements for 1/3 the duration of the
-	// test. This value is averaged and if the average is higher than the
-	// previously calculated average then it is saved
-	const hist = new Uint32Array((test_duration/3)/update_interval)
+	// Updates per second
+	const ups = (1000/update_interval)
+
+	// This slice contains the speed measurements for four seconds of the test.
+	// This value is averaged and if the average is higher than the previously
+	// calculated average then it is saved. The resulting speed is the highest
+	// speed that was sustained for four seconds at any point in the test
+	const hist = new Uint32Array(ups*2)
 	let idx = 0
+
+	// This var measures for how many ticks the max speed has not changed. When
+	// the speed has not changed for a third of the test duration the test is
+	// considered over
+	let unchanged = 0
+	const unchanged_limit = (test_duration/3)/update_interval
+
 	let previous_transferred = 0
 	const start = Date.now()
 
@@ -72,26 +85,44 @@ const measure_speed = (reader, update_interval, test_duration) => {
 		idx++
 
 		// Calculate the average of all the speed measurements
-		const sum = hist.reduce((acc, val) => acc + val, 0)
-		const new_speed = (sum/hist.length)*(1000/update_interval)
+		const sum = hist.reduce((acc, val) => {
+			if (val !== 0) {
+				acc.sum += val
+				acc.count++
+			}
+			return acc
+		}, {sum: 0, count: 0})
+		const new_speed = (sum.sum/sum.count)*ups
 		if (new_speed > speed) {
 			speed = new_speed
+			unchanged = 0
+		} else {
+			unchanged++
 		}
 
-		// Only used for the progress bar
-		current_duration = Date.now() - start
+		// Update the duration of the test. Used for calculating progress and
+		// clock drift
+		const current_duration = Date.now() - start
 
-		if (idx < test_duration/update_interval) {
+		// Update the progress bar
+		progress_unchanged = unchanged/unchanged_limit
+		progress_duration = current_duration/test_duration
+
+		if (idx < test_duration/update_interval && unchanged < unchanged_limit) {
 			// We have to manually calculate and subtract drift, because in my
 			// tests with setInterval the clock would drift like 200ms in a
 			// single test which significantly impacts results
 			setTimeout(measure, update_interval - (current_duration-(idx*update_interval)))
 		} else {
 			// Test is done, break the reader out of the counting loop
-			await reader.cancel()
+			await stop()
 
-			console.debug("Done! Test ran for", current_duration)
-			current_duration = 0
+			console.debug(
+				"Done! Test ran for", current_duration,
+				"result did not change for", unchanged*update_interval,
+			)
+			progress_unchanged = 0
+			progress_duration = 0
 
 			// Update the URL so the results can be shared
 			history.replaceState(
@@ -132,8 +163,8 @@ onMount(() => {
 
 <section class="highlight_border">
 	<div style="text-align: center">
-		<Button icon="speed" label="Start test" click={() => start(6000)} disabled={running} highlight={!running}/>
-		<Button icon="speed" label="Long test" click={() => start(12000)} disabled={running}/>
+		<Button icon="speed" label="Start test" click={() => start(30000)} disabled={running} highlight={!running}/>
+		<Button icon="speed" label="Long test" click={() => start(60000)} disabled={running}/>
 		<Button
 			highlight_on_click
 			disabled={result_link === ""}
@@ -143,7 +174,14 @@ onMount(() => {
 		/>
 	</div>
 
-	<ProgressBar animation="linear" speed={update_interval} total={test_duration} used={current_duration}/>
+	<!-- This progress bar shows either the progress for the test duration, or
+	when the test will time out. Whichever is higher -->
+	<ProgressBar
+		animation="linear"
+		speed={update_interval}
+		used={Math.max(progress_unchanged, progress_duration)}
+		total={1}
+	/>
 
 	<div class="speed_stats">
 		<div class="highlight_shaded">{formatDataVolume(speed, 4)}/s</div>
