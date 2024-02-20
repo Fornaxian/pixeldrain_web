@@ -8,15 +8,13 @@ import { copy_text } from "../util/Util.svelte";
 let running = false
 let data_received = 0
 const update_interval = 100
-let test_duration = 0
 let latency = 0
-const start = async (dur = 6000) => {
+const start = async (dur = 10000) => {
 	if (running) {
 		return
 	}
 
 	running = true
-	test_duration = dur
 	data_received = 0
 
 	const latency_start = Date.now()
@@ -33,7 +31,7 @@ const start = async (dur = 6000) => {
 
 	const reader = req.body.getReader();
 
-	measure_speed(() => reader.cancel(), test_duration)
+	measure_speed(() => reader.cancel(), dur)
 
 	while(true) {
 		const {done, value} = await reader.read()
@@ -163,8 +161,8 @@ onMount(() => {
 
 <section class="highlight_border">
 	<div style="text-align: center">
-		<Button icon="speed" label="Start test" click={() => start(30000)} disabled={running} highlight={!running}/>
-		<Button icon="speed" label="Long test" click={() => start(60000)} disabled={running}/>
+		<Button icon="speed" label="Start test" click={() => start(15000)} disabled={running} highlight={!running}/>
+		<Button icon="speed" label="Long test" click={() => start(30000)} disabled={running}/>
 		<Button
 			highlight_on_click
 			disabled={result_link === ""}
