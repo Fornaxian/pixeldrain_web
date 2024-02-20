@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { copy_text, domain_url } from "../../util/Util.svelte";
-    import Button from "../../layout/Button.svelte";
+import { domain_url } from "../../util/Util.svelte";
+import CopyButton from "../../layout/CopyButton.svelte";
 
 let dispatch = createEventDispatcher()
 export let shared
@@ -25,16 +25,6 @@ let embed_iframe = file => {
 		`src="${url}" ` +
 		`style="border: none; width: 800px; max-width: 100%; height: 600px; max-height: 100%; border-radius: 8px;"` +
 		`></iframe>`
-}
-
-let copy_status = "" // empty, success or error
-const copy = () => {
-	if (copy_text(embed_html)) {
-		copy_status = "success"
-	} else {
-		copy_status = "error"
-		alert("Your browser does not support copying text.")
-	}
 }
 
 let example = false
@@ -67,7 +57,7 @@ const toggle_example = () => {
 
 	{#if is_shared}
 		<span>Your sharing link: <a href={share_link}>{share_link}</a></span>
-		<Button highlight_on_click icon="content_copy" label="Copy" click={e => copy_text(share_link)}/>
+		<CopyButton text={share_link}>Copy</CopyButton>
 	{/if}
 </div>
 
@@ -87,16 +77,7 @@ const toggle_example = () => {
 <div class="center">
 	<textarea bind:value={embed_html} style="width: 100%; height: 4em;"></textarea>
 	<br/>
-	<button on:click={copy} class:button_highlight={copy_status === "success"} class:button_red={copy_status === "error"}>
-		<i class="icon">content_copy</i>
-		{#if copy_status === "success"}
-			Copied!
-		{:else if copy_status === "error"}
-			Error!
-		{:else}
-			Copy HTML
-		{/if}
-	</button>
+	<CopyButton text={embed_html} label="Copy HTML"/>
 	<button on:click={toggle_example} class:button_highlight={example} disabled={!is_shared}>
 		<i class="icon">visibility</i> Show example
 	</button>

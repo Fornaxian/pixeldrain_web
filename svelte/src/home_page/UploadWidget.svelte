@@ -1,6 +1,6 @@
 <script>
 import UploadProgressBar from "./UploadProgressBar.svelte"
-import { copy_text, domain_url } from "../util/Util.svelte"
+import { domain_url } from "../util/Util.svelte"
 import { tick } from "svelte"
 import Facebook from "../icons/Facebook.svelte"
 import Reddit from "../icons/Reddit.svelte"
@@ -9,6 +9,7 @@ import Tumblr from "../icons/Tumblr.svelte"
 import StorageProgressBar from "../user_home/StorageProgressBar.svelte"
 import Konami from "../util/Konami.svelte"
 import UploadStats from "./UploadStats.svelte";
+import CopyButton from "../layout/CopyButton.svelte";
 
 // === UPLOAD LOGIC ===
 
@@ -134,7 +135,7 @@ let btn_copy_links
 let btn_copy_markdown
 let btn_copy_bbcode
 
-const uploads_finished = () => {
+const uploads_finished = async () => {
 	let count = upload_queue.reduce(
 		(acc, curr) => curr.status === "finished" ? acc + 1 : acc, 0,
 	)
@@ -143,14 +144,17 @@ const uploads_finished = () => {
 		share_title = "Download " + upload_queue[0].name + " here"
 		share_link = domain_url() + "/u/" + upload_queue[0].id
 	} else if (count > 1) {
-		create_list(count+" files", true).then(resp => {
+		try {
+			const resp = await create_list(count+" files", true)
 			console.log("Automatic list ID " + resp.id)
 			share_title = "View a collection of "+count+" files here"
 			share_link = domain_url() + "/l/" + resp.id
-		}).catch(err => {
+		} catch (err) {
 			alert("Failed to generate link. Please check your internet connection and try again.\nError: " + err)
-		})
+		}
 	}
+
+	generate_link_list()
 }
 
 async function create_list(title, anonymous) {
@@ -180,19 +184,6 @@ async function create_list(title, anonymous) {
 		return Promise.reject("HTTP error: "+resp.status)
 	}
 	return await resp.json()
-}
-
-const copy_link = () => {
-	if (copy_text(share_link)) {
-		console.log('Text copied')
-		btn_copy_link.querySelector("span").textContent = "Copied!"
-		btn_copy_link.classList.add("button_highlight")
-	} else {
-		console.log('Copying not supported')
-		btn_copy_link.querySelector("span").textContent = "Failed"
-		btn_copy_link.classList.add("button_red")
-		alert("Your browser does not support copying text.")
-	}
 }
 
 let qr_visible = false
@@ -229,69 +220,35 @@ const get_finished_files = () => {
 		[],
 	)
 }
-const copy_links = () => {
+
+let link_list = ""
+let bbcode = ""
+let markdown = ""
+const generate_link_list = () => {
 	// Add the text to the textarea
-	let text = ""
+	link_list = ""
+	bbcode = ""
+	markdown = ""
+
 	let files = get_finished_files()
 	files.forEach(file => {
-		// Example: https://pixeldrain.com/u/abcd1234 Some_file.png
-		text += domain_url() + "/u/" + file.id + " " + file.name + "\n"
+		// Link list example: https://pixeldrain.com/u/abcd1234 Some_file.png
+		link_list += domain_url() + "/u/" + file.id + " " + file.name + "\n"
+
+		// BBCode example: [url=https://pixeldrain.com/u/abcd1234]Some_file.png[/url]
+		bbcode += "[url=" + domain_url() + "/u/" + file.id + "]" + file.name + "[/url]\n"
+
+		// Markdown example: * [Some_file.png](https://pixeldrain.com/u/abcd1234)
+		if (files.length > 1) {
+			markdown += " * "
+		}
+		markdown += "[" + file.name + "](" + domain_url() + "/u/" + file.id + ")\n"
 	})
+
 	if (share_link.includes("/l/")) {
-		text += "\n" + share_link + " All " + files.length + " files\n"
-	}
-
-	// Copy the selected text
-	if (copy_text(text)) {
-		btn_copy_links.classList.add("button_highlight")
-		btn_copy_links.innerHTML = "Links copied to clipboard!"
-	} else {
-		btn_copy_links.classList.add("button_red")
-		btn_copy_links.innerHTML = "Copying links failed"
-	}
-}
-const copy_bbcode = () => {
-	// Add the text to the textarea
-	let text = ""
-	let files = get_finished_files()
-	files.forEach(file => {
-		// Example: [url=https://pixeldrain.com/u/abcd1234]Some_file.png[/url]
-		text += "[url=" + domain_url() + "/u/" + file.id + "]" + file.name + "[/url]\n"
-	})
-	if (share_link.includes("/l/")) {
-		text += "\n[url=" + share_link + "]All " + files.length + " files[/url]\n"
-	}
-
-	// Copy the selected text
-	if (copy_text(text)) {
-		btn_copy_bbcode.classList.add("button_highlight")
-		btn_copy_bbcode.innerHTML = "BBCode copied to clipboard!"
-	} else {
-		btn_copy_bbcode.classList.add("button_red")
-		btn_copy_bbcode.innerHTML = "Copying links failed"
-	}
-}
-const copy_markdown = () => {
-	// Add the text to the textarea
-	let text = ""
-	let files = get_finished_files()
-	files.forEach(file => {
-		// Example: * [Some_file.png](https://pixeldrain.com/u/abcd1234)
-
-		if (files.length > 1) { text += " * " }
-		text += "[" + file.name + "](" + domain_url() + "/u/" + file.id + ")\n"
-	})
-	if (share_link.includes("/l/")) {
-		text += " * [All " + files.length + " files](" + share_link + ")\n"
-	}
-
-	// Copy the selected text
-	if (copy_text(text)) {
-		btn_copy_markdown.classList.add("button_highlight")
-		btn_copy_markdown.innerHTML = "Markdown copied to clipboard!"
-	} else {
-		btn_copy_markdown.classList.add("button_red")
-		btn_copy_markdown.innerHTML = "Copying links failed"
+		link_list += "\n" + share_link + " All " + files.length + " files\n"
+		bbcode += "\n[url=" + share_link + "]All " + files.length + " files[/url]\n"
+		markdown += " * [All " + files.length + " files](" + share_link + ")\n"
 	}
 }
 
@@ -305,7 +262,7 @@ const keydown = (e) => {
 	switch (e.key) {
 	case "u": file_input_field.click();   break
 	case "t": btn_upload_text.click();    break
-	case "c": btn_copy_link.click();      break
+	case "c": btn_copy_link.copy();       break
 	case "o": btn_open_link.click();      break
 	case "q": btn_show_qr.click();        break
 	case "l": btn_create_list.click();    break
@@ -314,9 +271,9 @@ const keydown = (e) => {
 	case "f": btn_share_facebook.click(); break
 	case "r": btn_share_reddit.click();   break
 	case "m": btn_share_tumblr.click();   break
-	case "a": btn_copy_links.click();     break
-	case "d": btn_copy_markdown.click();  break
-	case "b": btn_copy_bbcode.click();    break
+	case "a": btn_copy_links.copy();      break
+	case "d": btn_copy_markdown.copy();   break
+	case "b": btn_copy_bbcode.copy();     break
 	}
 }
 
@@ -408,38 +365,35 @@ const keydown = (e) => {
 		Share
 	</button>
 </div>
-<button bind:this={btn_copy_link} on:click={copy_link} class="social_buttons" disabled={state !== "finished"}>
-	<i class="icon">content_copy</i><br/>
-	<span><u>C</u>opy link</span>
-</button>
+<CopyButton bind:this={btn_copy_link} text={share_link} large_icon><u>C</u>opy link</CopyButton>
 <button bind:this={btn_open_link} on:click={open_link} class="social_buttons" disabled={state !== "finished"}>
-	<i class="icon">open_in_new</i><br/>
+	<i class="icon">open_in_new</i>
 	<span><u>O</u>pen link</span>
 </button>
 <button bind:this={btn_show_qr} on:click={show_qr_code} class="social_buttons" disabled={state !== "finished"} class:button_highlight={qr_visible}>
-	<i class="icon">qr_code</i><br/>
+	<i class="icon">qr_code</i>
 	<span><u>Q</u>R code</span>
 </button>
-<div class="social_buttons" class:hide={navigator_share}>
+<div style="display: inline-block;" class:hide={navigator_share}>
 	<button bind:this={btn_share_email} on:click={share_mail} class="social_buttons" disabled={state !== "finished"}>
-		<i class="icon">email</i><br/>
-		<u>E</u>-Mail
+		<i class="icon">email</i>
+		<span><u>E</u>-Mail</span>
 	</button>
 	<button bind:this={btn_share_twitter} on:click={share_twitter} class="social_buttons" disabled={state !== "finished"}>
-		<Twitter style="width: 40px; height: 40px; margin: 5px 15px;"></Twitter><br/>
-		T<u>w</u>itter
+		<Twitter style="width: 40px; height: 40px;"></Twitter>
+		<span>T<u>w</u>itter</span>
 	</button>
 	<button bind:this={btn_share_facebook} on:click={share_facebook} class="social_buttons" disabled={state !== "finished"}>
-		<Facebook style="width: 40px; height: 40px; margin: 5px 15px;"></Facebook><br/>
-		<u>F</u>acebook
+		<Facebook style="width: 40px; height: 40px;"></Facebook>
+		<span><u>F</u>acebook</span>
 	</button>
 	<button bind:this={btn_share_reddit} on:click={share_reddit} class="social_buttons" disabled={state !== "finished"}>
-		<Reddit style="width: 40px; height: 40px; margin: 5px 15px;"></Reddit><br/>
-		<u>R</u>eddit
+		<Reddit style="width: 40px; height: 40px;"></Reddit>
+		<span><u>R</u>eddit</span>
 	</button>
 	<button bind:this={btn_share_tumblr} on:click={share_tumblr} class="social_buttons" disabled={state !== "finished"}>
-		<Tumblr style="width: 40px; height: 40px; margin: 5px 15px;"></Tumblr><br/>
-		Tu<u>m</u>blr
+		<Tumblr style="width: 40px; height: 40px;"></Tumblr>
+		<span>Tu<u>m</u>blr</span>
 	</button>
 </div>
 <br/>
@@ -447,18 +401,10 @@ const keydown = (e) => {
 	<img src="/api/misc/qr?text={encodeURIComponent(share_link)}" alt="QR code" style="width: 300px; max-width: 100%;">
 	<br/>
 {/if}
-<button bind:this={btn_copy_links} on:click={copy_links} disabled={state !== "finished"}>
-	<i class="icon">content_copy</i>
-	<span>Copy <u>a</u>ll links to clipboard</span>
-</button>
-<button bind:this={btn_copy_markdown} on:click={copy_markdown} disabled={state !== "finished"}>
-	<i class="icon">content_copy</i>
-	<span>Copy mark<u>d</u>own to clipboard</span>
-</button>
-<button bind:this={btn_copy_bbcode} on:click={copy_bbcode} disabled={state !== "finished"}>
-	<i class="icon">content_copy</i>
-	<span>Copy <u>B</u>BCode to clipboard</span>
-</button>
+
+<CopyButton bind:this={btn_copy_links} text={link_list}>Copy <u>a</u>ll links to clipboard</CopyButton>
+<CopyButton bind:this={btn_copy_markdown} text={markdown}>Copy mark<u>d</u>own to clipboard</CopyButton>
+<CopyButton bind:this={btn_copy_bbcode} text={bbcode}>Copy <u>B</u>BCode to clipboard</CopyButton>
 <br/>
 
 {#if window.user.subscription.name === ""}
@@ -498,7 +444,7 @@ const keydown = (e) => {
 	width: 40%;
 	min-width: 300px;
 	max-width: 400px;
-	margin: 10px !important;
+	margin: 10px;
 	border-radius: 32px;
 	font-size: 1.8em;
 	justify-content: center;
@@ -537,8 +483,8 @@ const keydown = (e) => {
 }
 
 .social_buttons {
-	margin: 5px;
-	display: inline-block
+	flex-direction: column;
+	min-width: 5em;
 }
 .social_buttons.hide {
 	display: none;
@@ -546,9 +492,6 @@ const keydown = (e) => {
 .social_buttons > .icon {
 	font-size: 40px;
 	display: inline-block;
-	width: 40px;
-	height: 40px;
-	margin: 5px 15px;
 }
 .hide {
 	display: none;

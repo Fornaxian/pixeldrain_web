@@ -12,19 +12,12 @@ export function print_date(date, hours, minutes, seconds) {
 }
 
 export function copy_text(text) {
-	// Create a textarea to copy the text from
-	let ta = document.createElement("textarea");
-	ta.setAttribute("readonly", "readonly")
-	ta.style.position = "absolute";
-	ta.style.left = "-9999px";
-	ta.value = text; // Put the text in the textarea
-
-	// Add the textarea to the DOM so it can be seleted by the user
-	document.body.appendChild(ta);
-	ta.select() // Select the contents of the textarea
-	let success = document.execCommand("copy"); // Copy the selected text
-	document.body.removeChild(ta); // Remove the textarea
-	return success;
+	try {
+		navigator.clipboard.writeText(text)
+	} catch (err) {
+		return false
+	}
+	return true;
 }
 
 export function domain_url() {

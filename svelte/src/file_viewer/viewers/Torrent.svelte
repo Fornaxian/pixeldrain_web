@@ -2,11 +2,11 @@
 import { createEventDispatcher } from "svelte";
 import Magnet from "../../icons/Magnet.svelte";
 import { formatDate } from "../../util/Formatting.svelte"
-import { copy_text } from "../../util/Util.svelte";
 import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 import TorrentItem from "./TorrentItem.svelte"
 import FileTitle from "./FileTitle.svelte";
+import CopyButton from "../../layout/CopyButton.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -66,18 +66,6 @@ let torrent = {
 }
 
 let magnet = ""
-
-let copy_magnet_status = "" // empty, copied, or error
-const copy_magnet = () => {
-	if (copy_text(magnet)) {
-		copy_magnet_status = "copied"
-	} else {
-		copy_magnet_status = "error"
-		alert("Your browser does not support copying text.")
-	}
-
-	setTimeout(() => { copy_magnet_status = "" }, 60000)
-}
 </script>
 
 <FileTitle title={file.name}/>
@@ -92,22 +80,7 @@ const copy_magnet = () => {
 			<Magnet/>
 			<span>Open magnet link</span>
 		</a>
-		<button
-			on:click={copy_magnet}
-			class:button_highlight={copy_magnet_status === "copied"}
-			class:button_red={copy_magnet_status === "error"}
-		>
-			<Magnet/>
-			<span>
-				{#if copy_magnet_status === ""}
-					Copy magnet link
-				{:else if copy_magnet_status === "copied"}
-					Copied magnet
-				{:else if copy_magnet_status === "error"}
-					Error!
-				{/if}
-			</span>
-		</button>
+		<CopyButton text={magnet}>Copy magnet link</CopyButton>
 	{:else if status === "too_large"}
 		<p>
 			Torrent file is too large to parse. Please download the file and

@@ -5,9 +5,9 @@ import Modal from "../util/Modal.svelte";
 import { fs_timeseries } from "./FilesystemAPI";
 import { fs_path_url } from "./FilesystemUtil";
 import { generate_share_path, generate_share_url } from "./Sharebar.svelte";
-import { color_by_name, copy_text } from "../util/Util.svelte";
+import { color_by_name } from "../util/Util.svelte";
 import { tick } from "svelte";
-import Button from "../layout/Button.svelte";
+import CopyButton from "../layout/CopyButton.svelte";
 
 export let state
 export let visible = false
@@ -176,7 +176,7 @@ let update_chart = async (base, timespan, interval) => {
 		<tr>
 			<td>Direct link</td>
 			<td>
-				<Button highlight_on_click icon="content_copy" label="Copy" click={e => copy_text(direct_url)}/>
+				<CopyButton text={direct_url}>Copy</CopyButton>
 				<a href="{direct_url}">{direct_url}</a>
 			</td>
 		</tr>
@@ -184,14 +184,14 @@ let update_chart = async (base, timespan, interval) => {
 			<tr>
 				<td>Sharing link</td>
 				<td>
-					<Button highlight_on_click icon="content_copy" label="Copy" click={e => copy_text(share_url)}/>
+					<CopyButton text={share_url}>Copy</CopyButton>
 					<a href="{share_url}">{share_url}</a>
 				</td>
 			</tr>
 			<tr>
 				<td>Direct sharing link</td>
 				<td>
-					<Button highlight_on_click icon="content_copy" label="Copy" click={e => copy_text(direct_share_url)}/>
+					<CopyButton text={direct_share_url}>Copy</CopyButton>
 					<a href="{direct_share_url}">{direct_share_url}</a>
 				</td>
 			</tr>

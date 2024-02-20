@@ -20,9 +20,9 @@ import Speedtest from "./Speedtest.svelte";
 		</p>
 		<p>
 			The speed measured is the maximum speed reached for two continuous
-			seconds during the test. The normal test has a time limit of 15
+			seconds during the test. The normal test has a time limit of 12
 			seconds and the long test 30 seconds. When the maximum speed has not
-			changed for a third of the test duration (5 or 10 seconds) the test
+			changed for a third of the test duration (4 or 10 seconds) the test
 			will end and the result will be final. The long test will use much
 			more bandwidth, so if you're on a cap it's recommended to use the
 			normal test.

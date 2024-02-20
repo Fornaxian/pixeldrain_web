@@ -3,7 +3,7 @@ import { onMount } from "svelte";
 import Button from "../layout/Button.svelte";
 import { formatDataVolume, formatDataVolumeBits } from "../util/Formatting.svelte";
 import ProgressBar from "../util/ProgressBar.svelte";
-import { copy_text } from "../util/Util.svelte";
+import CopyButton from "../layout/CopyButton.svelte";
 
 let running = false
 let data_received = 0
@@ -161,15 +161,9 @@ onMount(() => {
 
 <section class="highlight_border">
 	<div style="text-align: center">
-		<Button icon="speed" label="Start test" click={() => start(15000)} disabled={running} highlight={!running}/>
+		<Button icon="speed" label="Start test" click={() => start(12000)} disabled={running} highlight={!running}/>
 		<Button icon="speed" label="Long test" click={() => start(30000)} disabled={running}/>
-		<Button
-			highlight_on_click
-			disabled={result_link === ""}
-			icon="content_copy"
-			label="Copy test result"
-			click={e => copy_text(result_link)}
-		/>
+		<CopyButton text={result_link}>Copy test result</CopyButton>
 	</div>
 
 	<!-- This progress bar shows either the progress for the test duration, or

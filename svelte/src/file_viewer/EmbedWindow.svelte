@@ -1,6 +1,7 @@
 <script>
+import CopyButton from "../layout/CopyButton.svelte";
 import ThemePicker from "../util/ThemePicker.svelte";
-import { copy_text, domain_url } from "../util/Util.svelte";
+import { domain_url } from "../util/Util.svelte";
 import { file_type } from "./FileUtilities.svelte";
 
 export let file = {
@@ -87,16 +88,6 @@ let html_escape = s => {
 		replace(/'/g, "&#039;");
 }
 
-let copy_status = "" // empty, success or error
-const copy = () => {
-	if (copy_text(embed_html)) {
-		copy_status = "success"
-	} else {
-		copy_status = "error"
-		alert("Your browser does not support copying text.")
-	}
-}
-
 let example = false
 const toggle_example = () => {
 	example = !example
@@ -177,16 +168,7 @@ const update_example = () => {
 		<div class="center">
 			<textarea bind:value={embed_html} style="width: 99%; height: 4em;"></textarea>
 			<br/>
-			<button on:click={copy} class:button_highlight={copy_status === "success"} class:button_red={copy_status === "error"}>
-				<i class="icon">content_copy</i>
-				{#if copy_status === "success"}
-					Copied!
-				{:else if copy_status === "error"}
-					Error!
-				{:else}
-					Copy HTML
-				{/if}
-			</button>
+			<CopyButton text={embed_html}>Copy HTML</CopyButton>
 			<button on:click={toggle_example} class:button_highlight={example}>
 				<i class="icon">visibility</i> Show example
 			</button>

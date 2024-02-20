@@ -1,6 +1,5 @@
 <script>
 import { onMount, tick } from "svelte";
-import { copy_text } from "../util/Util.svelte";
 import { file_struct, list_struct, file_set_href } from "./FileUtilities.svelte";
 import Modal from "../util/Modal.svelte";
 import DetailsWindow from "./DetailsWindow.svelte";
@@ -20,6 +19,7 @@ import TransferLimit from "./TransferLimit.svelte";
 import ListStats from "./ListStats.svelte";
 import ListUpdater from "./ListUpdater.svelte";
 import HomeButton from "./HomeButton.svelte";
+import CopyButton from "../layout/CopyButton.svelte";
 
 let loading = true
 let embedded = false
@@ -277,18 +277,6 @@ const apply_customizations = file => {
 	}
 }
 
-let copy_url_status = "" // empty, copied, or error
-const copy_url = () => {
-	if (copy_text(window.location.href)) {
-		copy_url_status = "copied"
-	} else {
-		copy_url_status = "error"
-		alert("Your browser does not support copying text.")
-	}
-
-	setTimeout(() => { copy_url_status = "" }, 60000)
-}
-
 const grab_file = async () => {
 	if (!window.user_authenticated) {
 		return
@@ -313,6 +301,7 @@ const grab_file = async () => {
 	}
 }
 
+let copy_btn
 const keyboard_event = evt => {
 	if (evt.ctrlKey || evt.altKey || evt.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
@@ -355,7 +344,7 @@ const keyboard_event = evt => {
 			}
 			break
 		case "c": // C to copy to clipboard
-			copy_url()
+			copy_btn.copy()
 			break
 		case "i": // I to open the details window
 			details_window.toggle()
@@ -455,23 +444,9 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			<button
-				on:click={copy_url}
-				class="toolbar_button"
-				class:button_highlight={copy_url_status === "copied"}
-				class:button_red={copy_url_status === "error"}
-				title="Copy a link to this page to your clipboard">
-				<i class="icon">content_copy</i>
-				<span>
-					{#if copy_url_status === "copied"}
-						Copied!
-					{:else if copy_url_status === "error"}
-						Error!
-					{:else}
-						<u>C</u>opy link
-					{/if}
-				</span>
-			</button>
+			<CopyButton bind:this={copy_btn} text={window.location.href} style="width: calc(100% - 6px)">
+				<u>C</u>opy link
+			</CopyButton>
 
 			{#if !disable_share_button}
 				<button
@@ -731,10 +706,8 @@ const keyboard_event = evt => {
 }
 .toolbar.toolbar_visible { left: 0; }
 
-.toolbar_button {
-	text-align: left;
-	margin: 4px;
-	width: calc(100% - 8px);
+.toolbar_button{
+	width: calc(100% - 6px);
 }
 .toolbar_button > span {
 	vertical-align: middle;

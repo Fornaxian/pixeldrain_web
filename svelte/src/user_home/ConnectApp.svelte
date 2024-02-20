@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
-import { copy_text } from "../util/Util.svelte";
+import CopyButton from "../layout/CopyButton.svelte";
 
 let loading = false
 let app_name = ""
@@ -28,13 +28,6 @@ const create_key = async () => {
 		alert("Failed to create new API key! "+err)
 	} finally {
 		loading = false
-	}
-}
-
-let copied = false
-const copy_key = () => {
-	if (copy_text(api_key)) {
-		copied = true
 	}
 }
 
@@ -109,14 +102,7 @@ onMount(() => {
 			<h4>Key created</h4>
 
 			<div class="copy_container">
-				<button on:click={copy_key} class="copy_button" class:button_highlight={copied}>
-					<i class="icon">content_copy</i>
-					{#if copied}
-						Copied!
-					{:else}
-						Copy key to clipboard
-					{/if}
-				</button>
+				<CopyButton text={api_key}>Copy key to clipboard</CopyButton>
 				<button on:click={toggle_show_key} class="copy_button" class:button_highlight={show_key !== ""}>
 					<i class="icon">visibility</i>
 					{#if show_key === ""}
