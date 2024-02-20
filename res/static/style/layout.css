@@ -495,7 +495,7 @@ select {
 	overflow: hidden;
 	color: var(--input_text);
 	cursor: pointer;
-	box-shadow: 1px 1px 0px 0px var(--shadow_color);
+	box-shadow: 1px 1px 0px 1px var(--shadow_color);
 	transition: padding 0.1s, box-shadow 0.1s, background 0.1s;
 
 	/* Align content vertically in relation to the container */
@@ -510,6 +510,7 @@ select {
 	text-decoration: none;
 	text-shadow: none;
 	border: none;
+	line-height: inherit;
 }
 
 button:hover,
@@ -649,7 +650,7 @@ input[type="datetime-local"] {
 	border-radius: 6px;
 	background: var(--input_background);
 	padding: 3px 5px;
-	box-shadow: inset 1px 1px 0px 0px var(--shadow_color);
+	box-shadow: inset 1px 1px 0px 1px var(--shadow_color);
 	/* override user-agent style */
 	min-width: 100px;
 	color: var(--input_text);

@@ -38,14 +38,13 @@ export let fs_navigator
 .breadcrumb {
 	min-width: 1em;
 	text-align: center;
-	margin: 4px;
+	line-height: 1em;
 	word-break: break-all;
-	padding: 0;
 	display: flex;
 	flex-direction: row;
 }
 .node_name {
-	margin: 2px 8px;
+	margin: 2px;
 	max-width: 20vw;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -57,8 +56,5 @@ export let fs_navigator
 }
 .nopad {
 	margin-left: 0;
-}
-.icon {
-	margin: 2px 4px;
 }
 </style>

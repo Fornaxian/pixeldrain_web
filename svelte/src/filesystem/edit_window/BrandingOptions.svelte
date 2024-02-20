@@ -181,7 +181,7 @@ input[type="color"] {
 	grid-column: span 3;
 }
 .disabled {
-	filter: brightness(50%);
+	filter: opacity(40%);
 }
 
 .example {
