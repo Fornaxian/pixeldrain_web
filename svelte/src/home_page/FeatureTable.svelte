@@ -53,8 +53,8 @@ onMount(() => {
 			Charged through Patreon
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">€2 / month</span><br/>
-			From account credit
+			<span class="bold">€1 / month</span><br/>
+			Base fee from account credit
 		</div>
 
 		<div class="left_col">
@@ -67,7 +67,7 @@ onMount(() => {
 			downloads
 		</div>
 		<div class="feature_cell pro_feat">
-			<span class="bold">2 TB per 30 days</span><br/>
+			<span class="bold">4 TB per 30 days</span><br/>
 
 			Transfer limit is used for downloading, sharing and hotlinking. No
 			connection limit
@@ -86,11 +86,11 @@ onMount(() => {
 			</button>
 		</div>
 		<div class="feature_cell free_feat">
-			Only <span class="bold">image files</span> below <span
-			class="bold">1 MB</span> in size can be hotlinked
+			<span class="bold">Hotlinking not supported</span><br/>
+			Hotlinked files get blocked
 		</div>
 		<div class="feature_cell span2 pro_feat">
-			<span class="bold">Any file type</span><br/>
+			<span class="bold">Hotlinking supported</span><br/>
 			Hotlinking uses your transfer limit
 		</div>
 
@@ -113,7 +113,7 @@ onMount(() => {
 			</button>
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">90 days</span> (3 months)<br/>
+			<span class="bold">120 days</span> (4 months)<br/>
 			After last download or view
 		</div>
 		<div class="feature_cell pro_feat">
@@ -147,7 +147,7 @@ onMount(() => {
 			Payment processors
 		</div>
 		<div class="feature_cell free_feat">
-			None
+			<span class="bold">None</span>
 		</div>
 		<div class="feature_cell pro_feat">
 			<span class="bold">PayPal</span>, <span class="bold">Credit card</span>

@@ -259,10 +259,10 @@ onDestroy(() => {
 	{/if}
 
 	{#if transfer_cap === -1}
-		Premium transfers in the last 30 days: {formatDataVolume(transfer_used, 3)}.
+		Premium transfer used in the last 30 days: {formatDataVolume(transfer_used, 3)}.
 		<a href="/user/sharing/bandwidth">Configure limit</a>
 	{:else}
-		Premium transfers:
+		Transfer cap:
 		{formatDataVolume(transfer_used, 3)}
 		out of
 		{formatDataVolume(transfer_cap, 3)}

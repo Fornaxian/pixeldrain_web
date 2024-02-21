@@ -110,13 +110,14 @@ onMount(() => {
 			</div>
 			<div class="feat_normal round_tr" class:feat_highlight={subscription === "prepaid"}>
 				<ul>
-					<li>Base price of €2 per month</li>
+					<li>Base price of €1 per month</li>
 					<li>€4 per TB per month for storage</li>
 					<li>
 						€2 per TB for data transfer (with <a
 						href="user/sharing/bandwidth">bandwidth sharing</a>
 						enabled)
 					</li>
+					<li>Access to the <a href="/filesystem">filesystem</a></li>
 					<li>Files never expire as long as subscription is active</li>
 					<li>
 						Download page <a href="/user/sharing/branding">branding
