@@ -24,20 +24,20 @@ let pages = [
 		icon: "settings",
 		component: AccountSettings,
 	}, {
-		path: "/user/prepaid",
-		title: "Prepaid",
-		icon: "receipt_long",
+		path: "/user/subscription",
+		title: "Subscription",
+		icon: "shopping_cart",
 		subpages: [
 			{
-				path: "/user/prepaid/deposit",
-				title: "Deposit credit",
-				icon: "account_balance_wallet",
-				component: DepositCredit,
-			}, {
-				path: "/user/prepaid/subscriptions",
-				title: "Subscriptions",
+				path: "/user/subscription",
+				title: "Manage subscription",
 				icon: "shopping_cart",
 				component: Subscription,
+			}, {
+				path: "/user/prepaid/deposit",
+				title: "Prepaid",
+				icon: "account_balance_wallet",
+				component: DepositCredit,
 			}, {
 				path: "/user/prepaid/transactions",
 				title: "Transactions",

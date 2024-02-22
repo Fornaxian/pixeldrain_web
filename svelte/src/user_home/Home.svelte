@@ -1,5 +1,5 @@
 <script>
-import { onDestroy, onMount } from "svelte";
+import { onMount } from "svelte";
 import { formatDataVolume, formatThousands } from "../util/Formatting.svelte";
 import Chart from "../util/Chart.svelte";
 import StorageProgressBar from "./StorageProgressBar.svelte";
@@ -126,14 +126,7 @@ let load_direct_bw = () => {
 	})
 }
 
-let patreon_response = ""
-
 onMount(() => {
-	if (window.location.hash.startsWith("#patreon_")) {
-		patreon_response = window.location.hash.replace("#patreon_", "")
-		window.location.hash = ""
-	}
-
 	if (window.user.monthly_transfer_cap > 0) {
 		transfer_cap = window.user.monthly_transfer_cap
 	} else if (window.user.subscription.monthly_transfer_cap > 0) {
@@ -176,58 +169,33 @@ onMount(() => {
 	];
 
 	update_graphs(43200, 1440, true);
-})
-onDestroy(() => {
-	if (graph_timeout !== null) {
-		clearTimeout(graph_timeout)
+
+	return () => {
+		if (graph_timeout !== null) {
+			clearTimeout(graph_timeout)
+		}
 	}
 })
 </script>
 
 <section>
-	{#if patreon_response !== ""}
-		{#if patreon_response === "error"}
-			<div class="highlight_red">
-				An error occurred while linking Patreon subscription. Please try
-				again later.
-			</div>
-		{:else if patreon_response === "pledge_not_found"}
-			<div class="highlight_yellow">
-				<p>
-					We were not able to find your payment on Patreon. Please
-					wait until the payment is confirmed and try again. Even if
-					the payment says confirmed on Patreon itself it takes a
-					while before it's communicated to pixeldrain. Please wait at
-					least 10 minutes and try again.
-				</p>
-				<p>
-					If it has been more than 30 minutes, your payment is
-					complete and your account is still not upgraded please
-					contact me at support@pixeldrain.com, or send me a message
-					on Patreon.
-				<p/>
-			</div>
-		{:else if patreon_response === "success"}
-			<div class="highlight_green">
-				Success! Your Patreon pledge has been linked to your pixeldrain
-				account. You are now able to use Pro features.
-			</div>
-		{/if}
-		<br/>
-	{/if}
-
 	<h2>Account information</h2>
 	<ul>
 		<li>Username: {window.user.username}</li>
-		<li>E-mail address: {window.user.email}</li>
+		<li>
+			{#if window.user.email === ""}
+				No e-mail address configured. You will not be able to recover
+				your account if you lose your password. Set an e-mail address on
+				the <a href="/user/settings">settings page</a>.
+			{:else}
+				E-mail address: {window.user.email}
+				(<a href="/user/settings">configure</a>)
+			{/if}
+		</li>
 		<li>
 			Supporter level: {window.user.subscription.name}
-			{#if window.user.subscription.type === "patreon"}
-				(<a href="https://www.patreon.com/join/pixeldrain/checkout?edit=1">Manage subscription</a>)
-			{:else if window.user.subscription.id === ""}
-				(<a href="/api/patreon_auth/start">Link Patreon subscription</a> /
-				<a href="/user/prepaid/deposit">deposit account credit</a>)
-			{/if}
+			(<a href="/user/subscription">manage subscriptions</a> /
+			<a href="/api/patreon_auth/start">link patreon subscription</a>)
 			<ul>
 				<li>
 					Max file size: {formatDataVolume(window.user.subscription.file_size_limit, 3)}
@@ -239,17 +207,17 @@ onDestroy(() => {
 				{/if}
 			</ul>
 		</li>
-		{#if window.user.balance_micro_eur !== 0}
-			<li>
-				Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
-				(<a href="/user/prepaid/deposit">deposit credit</a>)
-				{#if window.user.subscription.id === ""}
-					<br/>
-					You have account credit but no active subscription. Activate
-					a subscription on the <a href="/user/prepaid/subscriptions">subscriptions page</a>
-				{/if}
-			</li>
-		{/if}
+		<li>
+			Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
+			(<a href="/user/prepaid/deposit">deposit credit</a> /
+			<a href="/user/prepaid/transactions">transaction log</a>)
+
+			{#if window.user.balance_micro_eur > 0 && window.user.subscription.id === ""}
+				<br/>
+				You have account credit but no active subscription. Activate
+				a subscription on the <a href="/user/subscription">subscriptions page</a>
+			{/if}
+		</li>
 	</ul>
 
 	{#if window.user.subscription.storage_space === -1}
@@ -259,8 +227,8 @@ onDestroy(() => {
 	{/if}
 
 	{#if transfer_cap === -1}
-		Premium transfer used in the last 30 days: {formatDataVolume(transfer_used, 3)}.
-		<a href="/user/sharing/bandwidth">Configure limit</a>
+		Premium transfer used in the last 30 days: {formatDataVolume(transfer_used, 3)}
+		(<a href="/user/sharing/bandwidth">configure limit</a>)
 	{:else}
 		Transfer cap:
 		{formatDataVolume(transfer_used, 3)}

@@ -3,28 +3,44 @@ import { onMount } from "svelte";
 import Euro from "../util/Euro.svelte"
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import SuccessMessage from "../util/SuccessMessage.svelte";
+import PatreonActivationResult from "./PatreonActivationResult.svelte";
 
 let loading = false
 let subscription = window.user.subscription.id
+let subscription_type = window.user.subscription.type
 let success_message
 
-const update = async () => {
+const update = async (plan) => {
 	loading = true
 
 	const form = new FormData()
-	form.append("subscription", subscription)
+	form.append("subscription", plan)
 
 	try {
-		const resp = await fetch(
-			window.api_endpoint+"/user",
-			{ method: "PUT", body: form },
-		)
-		if(resp.status >= 400) {
-			let json = await resp.json()
-			throw json.message
+		{
+			const resp = await fetch(
+				window.api_endpoint+"/user",
+				{ method: "PUT", body: form },
+			)
+			if(resp.status >= 400) {
+				let json = await resp.json()
+				throw json.message
+			}
+
+			success_message.set(true, "Subscription updated")
 		}
 
-		success_message.set(true, "Subscription updated")
+		{
+			const resp = await fetch(window.api_endpoint+"/user")
+			if(resp.status >= 400) {
+				let json = await resp.json()
+				throw json.message
+			}
+
+			window.user = await resp.json()
+			subscription = window.user.subscription.id
+			subscription_type = window.user.subscription.type
+		}
 	} catch (err) {
 		success_message.set(false, "Failed to update subscription: "+err)
 	} finally {
@@ -64,27 +80,16 @@ onMount(() => {
 		</div>
 	{/if}
 
-	{#if window.user.subscription.type === "patreon"}
-		<div class="highlight_yellow">
-			<p>
-				Activating a prepaid subscription will not cancel your active
-				Patreon subscription. Go to Patreon's
-				<a
-				href="https://www.patreon.com/settings/memberships">memberships
-				page</a> to end your subscription there.
-			</p>
-			<p>
-				If you enable a prepaid plan here your Patreon subscription will
-				be overridden. If you wish to go back to your Patreon plan use
-				the <a href="/user/home">Link Patreon subscription</a> button on
-				the home page to link your Patreon account back to pixeldrain.
-			</p>
-		</div>
-	{/if}
+	<PatreonActivationResult/>
 
 	<h2>Manage subscription</h2>
 	<p>
-		Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro>
+		On pixeldrain you can freely switch between active subscription plans
+		when you want. When switching from Patreon to Prepaid/free you should
+		separately cancel your subscription <a
+		href="https://www.patreon.com/settings/memberships/pixeldrain"
+		target="_blank">on Patreon</a>. That does not happen automatically.
+		Pixeldrain cannot modify your Patreon membership in any way.
 	</p>
 	<p>
 		Prepaid subscriptions are charged daily based on usage. When you reach
@@ -92,23 +97,65 @@ onMount(() => {
 		a positive balance to activate the subscription again.
 	</p>
 
-	<h3>Prepaid plans</h3>
+	<h3>Available subscription plans</h3>
 	<SuccessMessage bind:this={success_message}/>
 
 	<div class="feat_table">
 		<div>
+			<div class="feat_label" class:feat_highlight={subscription_type === "patreon"}>
+				Patreon<br/>
+				{#if subscription_type === "patreon"}
+					Currently active<br/>
+					<a class="button" href="https://www.patreon.com/settings/memberships/pixeldrain" target="_blank">
+						<i class="icon">settings</i>
+						Manage
+					</a>
+				{:else}
+					<a class="button" href="/api/patreon_auth/start">
+						<i class="icon">add_link</i>
+						Link Patreon
+					</a>
+				{/if}
+			</div>
+			<div class="feat_normal round_tr" class:feat_highlight={subscription_type === "patreon"}>
+				<p>
+					This subscription is managed by Patreon. You will need to <a
+					href="https://www.patreon.com/pixeldrain/membership"
+					target="_blank">purchase a plan on Patreon</a> before you
+					can activate this subscription. After your purchase you can
+					click the "Link Patreon" button and your account will be
+					upgraded.
+				</p>
+				<ul>
+					<li>€4 per month</li>
+					<li>2 TB storage limit (higher plans available)</li>
+					<li>4 TB transfer limit (higher plans available)</li>
+					<li>Access to the <a href="/filesystem">filesystem</a></li>
+					<li>File expire after 240 days for Pro, and never on the other plans</li>
+				</ul>
+			</div>
+		</div>
+		<div>
 			<div class="feat_label" class:feat_highlight={subscription === "prepaid"}>
-				Prepaid<br/>
+				Prepaid (credit <Euro amount={window.user.balance_micro_eur}/>)<br/>
 				{#if subscription === "prepaid"}
 					Currently active
 				{:else}
-					<button on:click={() => {subscription = "prepaid"; update("subscription")}}>
+					<button on:click={() => update("prepaid")}>
 						<i class="icon">attach_money</i>
 						Activate
 					</button>
 				{/if}
 			</div>
 			<div class="feat_normal round_tr" class:feat_highlight={subscription === "prepaid"}>
+				<p>
+					You will need a positive account balance to activate this
+					plan. If you currently have a Patreon subscription active,
+					then enabling prepaid will not cancel that subscription. You
+					can end your subscription <a
+					href="https://www.patreon.com/settings/memberships/pixeldrain"
+					target="_blank">on Patreon.com</a>.
+				</p>
 				<ul>
 					<li>Base price of €1 per month</li>
 					<li>€4 per TB per month for storage</li>
@@ -136,13 +183,17 @@ onMount(() => {
 				{#if subscription === "prepaid_temp_storage_120d"}
 					Currently active
 				{:else}
-					<button on:click={() => {subscription = "prepaid_temp_storage_120d"; update("subscription")}}>
+					<button on:click={() => update("prepaid_temp_storage_120d")}>
 						<i class="icon">attach_money</i>
 						Activate
 					</button>
 				{/if}
 			</div>
 			<div class="feat_normal" class:feat_highlight={subscription === "prepaid_temp_storage_120d"}>
+				<p>
+					You will need a positive account balance to activate this
+					plan.
+				</p>
 				<ul>
 					<li>Base price of €1 per month</li>
 					<li>€0.50 per TB per month for storage</li>
@@ -172,13 +223,17 @@ onMount(() => {
 				{#if subscription === ""}
 					Currently active
 				{:else}
-					<button on:click={() => {subscription = ""; update("subscription")}}>
+					<button on:click={() => update("")}>
 						<i class="icon">money_off</i>
 						Activate
 					</button>
 				{/if}
 			</div>
 			<div class="feat_normal round_br" class:feat_highlight={subscription === ""}>
+				<p>
+					Switching to the free plan with another subscription active
+					may cause your files to expire!
+				</p>
 				<ul>
 					<li>Standard free plan, files expire after 120 days.</li>
 					<li>Download limit of 5 GB per day</li>
@@ -199,14 +254,16 @@ onMount(() => {
 }
 .feat_table > div > div:first-child {
 	flex: 0 0 25%;
-	max-width: 25%;
+	border-radius: 8px 0 0 8px;
 }
 .feat_table > div > div {
 	flex: 1 1 0;
-	margin: 0.25em;
+	margin: 2px;
 	padding: 0.5em;
 	word-wrap: break-word;
 	hyphens: auto;
+	border-radius: 0 8px 8px 0;
+	border: 2px solid var(--separator)
 }
 .feat_table > div > .feat_label {
 	border-top-left-radius: 0.5em;
@@ -221,6 +278,17 @@ onMount(() => {
 	border: 2px solid var(--highlight_color)
 }
 
-.feat_table > div > div.round_tr { border-top-right-radius:    0.5em; }
-.feat_table > div > div.round_br { border-bottom-right-radius: 0.5em; }
+/* On small screens we stack the table vertically */
+@media(max-width: 800px) {
+	.feat_table > div {
+		flex-direction: column;
+	}
+	.feat_table > div > div:first-child {
+		flex: 0 0 auto;
+		border-radius: 8px 8px 0 0;
+	}
+	.feat_table > div > div {
+		border-radius: 0 0 8px 8px;
+	}
+}
 </style>

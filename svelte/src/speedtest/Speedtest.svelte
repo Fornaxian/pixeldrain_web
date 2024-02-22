@@ -140,7 +140,7 @@ onMount(() => {
 	// Parse the results saved in the URL, if any
 	if (window.location.hash[0] === "#") {
 		const hash = window.location.hash.replace("#", "");
-		const result = hash.replace("#", "").split('&').reduce((res, item) => {
+		const result = hash.split('&').reduce((res, item) => {
 			const parts = item.split('=')
 			const n = Number(parts[1])
 			if (n !== NaN) {
