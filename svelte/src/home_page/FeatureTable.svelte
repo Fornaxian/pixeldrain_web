@@ -237,13 +237,13 @@ onMount(() => {
 	</p>
 	<p>
 		Unlike most other sharing sites pixeldrain uses a postponing system for
-		expiring files. When a file is freshly uploaded it gets 90 days by
-		default (240 days if you have the pro plan). After these 90 days we will
-		check when the file was last viewed. Files which are regularly viewed
-		could still bring new users to the platform, it would be rude to show
-		these people a File Not Found page. So if the file was viewed in the
-		last 90 days we will simply postpone the next check a month. If the file
-		was not viewed however it will immediately be removed.
+		expiring files. When a file is freshly uploaded it gets 120 days by
+		default (240 days if you have the pro plan). After these 120 days we
+		will check when the file was last viewed. Files which are regularly
+		viewed could still bring new users to the platform, it would be rude to
+		show these people a File Not Found page. So if the file was viewed in
+		the last 120 days we will simply postpone the next check a month. If the
+		file was not viewed however it will immediately be removed.
 	</p>
 	<p>
 		Views are only counted when someone visits the download page in a web

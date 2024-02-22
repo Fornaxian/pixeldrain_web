@@ -77,7 +77,7 @@ const toggle_example = () => {
 <div class="center">
 	<textarea bind:value={embed_html} style="width: 100%; height: 4em;"></textarea>
 	<br/>
-	<CopyButton text={embed_html} label="Copy HTML"/>
+	<CopyButton text={embed_html}>Copy HTML</CopyButton>
 	<button on:click={toggle_example} class:button_highlight={example} disabled={!is_shared}>
 		<i class="icon">visibility</i> Show example
 	</button>

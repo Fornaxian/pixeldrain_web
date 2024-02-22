@@ -180,7 +180,7 @@ onMount(() => {
 			</div>
 			<div class="feat_normal round_br" class:feat_highlight={subscription === ""}>
 				<ul>
-					<li>Standard free plan, files expire after 90 days.</li>
+					<li>Standard free plan, files expire after 120 days.</li>
 					<li>Download limit of 5 GB per day</li>
 				</ul>
 			</div>
