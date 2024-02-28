@@ -211,10 +211,13 @@ onDestroy(() => {
 	</table>
 
 	<h3>Cache nodes</h3>
+</section>
 	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "cache") {acc.push(val)}; return acc}, [])}/>
-
+<section>
 	<h3>Storage nodes</h3>
+</section>
 	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "storage") {acc.push(val)}; return acc}, [])}/>
+<section>
 
 	<h3>Pixelstore stats</h3>
 	<table>

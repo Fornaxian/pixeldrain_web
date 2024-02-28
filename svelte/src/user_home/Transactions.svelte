@@ -104,8 +104,8 @@ onMount(() => {
 
 		€ 8 / 30.4375 = € 0.2628 per day<br/>
 
-		Similarly the subscription charge of €2 per month is also charged at € 2
-		/ 30.4375 = € 0.065708 per day.
+		Similarly the subscription charge of €2 per month is also charged at € 1
+		/ 30.4375 = € 0.032854 per day.
 	</p>
 
 	<h3>{month_str}</h3>

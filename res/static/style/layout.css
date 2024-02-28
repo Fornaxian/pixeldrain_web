@@ -491,7 +491,7 @@ select {
 	border-radius: 6px;
 	margin: 3px;
 	background: var(--input_background);
-	padding: 5px 5px 5px 5px;
+	padding: 4px 5px;
 	overflow: hidden;
 	color: var(--input_text);
 	cursor: pointer;
@@ -538,7 +538,7 @@ input[type="color"]:active,
 select:active {
 	box-shadow: inset 4px 4px 6px var(--shadow_color);
 	/* Exactly 4px offset compared to the inactive padding to give a depth effect */
-	padding: 9px 1px 1px 9px;
+	padding: 8px 1px 0px 9px;
 }
 
 .button_highlight {

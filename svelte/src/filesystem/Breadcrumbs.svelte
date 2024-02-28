@@ -17,7 +17,7 @@ export let fs_navigator
 			{#if shared}
 				<i class="icon small">share</i>
 			{/if}
-			<div class="node_name" class:nopad={shared} class:base={state.base_index === i}>
+			<div class="node_name" class:base={state.base_index === i}>
 				{node.name}
 			</div>
 		</a>
@@ -38,23 +38,22 @@ export let fs_navigator
 .breadcrumb {
 	min-width: 1em;
 	text-align: center;
-	line-height: 1em;
 	word-break: break-all;
-	display: flex;
+	display: inline-flex;
 	flex-direction: row;
+	line-height: 1em;
 }
 .node_name {
-	margin: 2px;
+	/* This padding makes sure that characters which extend below the
+	line-height do not get cut off */
+	padding: 4px 2px;
 	max-width: 20vw;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-.node_name.base {
+.base {
 	/* The base name uses all available space */
 	max-width: unset;
-}
-.nopad {
-	margin-left: 0;
 }
 </style>
