@@ -6,10 +6,12 @@ export let sort_func
 </script>
 
 <button class:button_highlight={active_field === field} on:click={() => sort_func(field)}>
-	{#if asc}
-		↓
-	{:else}
-		↑
+	{#if active_field === field}
+		{#if asc}
+			↓
+		{:else}
+			↑
+		{/if}
 	{/if}
 	<slot></slot>
 </button>
@@ -17,6 +19,6 @@ export let sort_func
 <style>
 button {
 	margin: 0;
-	line-height: 1.2em;
+	line-height: 1em;
 }
 </style>
