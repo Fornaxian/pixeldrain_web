@@ -160,9 +160,9 @@ const sortBy = (field) => {
 			}
 		} else {
 			if (currentSortAscending) {
-				return fieldA.localeCompare(fieldB)
+				return fieldA.localeCompare(fieldB, undefined, {numeric: true})
 			} else {
-				return fieldB.localeCompare(fieldA)
+				return fieldB.localeCompare(fieldA, undefined, {numeric: true})
 			}
 		}
 	})
