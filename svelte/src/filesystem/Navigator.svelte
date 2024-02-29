@@ -184,7 +184,7 @@ const sort_children = children => {
 		if (a.type !== b.type) {
 			return a.type === "dir" ? -1 : 1
 		}
-		return a.name.localeCompare(b.name)
+		return a.name.localeCompare(b.name, "default", {numeric: true})
 	})
 }
 

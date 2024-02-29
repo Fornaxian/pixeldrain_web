@@ -27,22 +27,10 @@ export const upload_file = async (file, path, on_progress, on_success, on_error)
 		return
 	}
 
-	// Check if the parent directory exists
-	try {
-		await ensure_parent_dir(path)
-	} catch (err) {
-		if (err.value && err.message) {
-			on_error(err.value, err.message)
-		} else {
-			on_error(err, err)
-		}
-		return
-	}
-
 	console.log("Uploading file to ", fs_path_url(path))
 
 	let xhr = new XMLHttpRequest();
-	xhr.open("PUT", fs_path_url(path), true);
+	xhr.open("PUT", fs_path_url(path) + "?make_parents=true", true);
 	xhr.timeout = 86400000; // 24 hours, to account for slow connections
 
 	xhr.upload.addEventListener("progress", evt => {
@@ -83,50 +71,4 @@ export const upload_file = async (file, path, on_progress, on_success, on_error)
 	};
 
 	xhr.send(file);
-}
-
-let created_dirs = new Map()
-
-const ensure_parent_dir = async path => {
-	let parent = fs_split_path(path).parent
-
-	if (created_dirs.has(parent)) {
-		// We have already checked this directory
-		return
-	}
-
-	console.debug("Checking if parent directory exists", parent)
-
-	try {
-		let node = await fs_get_node(parent)
-		if (node.path[node.base_index].type !== "dir") {
-			throw "Path " + path + " is not a directory"
-		}
-	} catch (err) {
-		if (err.value && err.value === "path_not_found") {
-			// Directory does not exist. Create it
-			await create_parent_dir(parent)
-			console.debug("Created parent directory", parent)
-		} else {
-			throw err
-		}
-	}
-}
-
-const create_parent_dir = async path => {
-	try {
-		await fs_mkdirall(path)
-	} catch (err) {
-		// This function can run concurrently, so it's possible the directory
-		// was already created before this runs. In that case we just return
-		if (err.value === "node_already_exists") {
-			console.debug("Parent dir", path, "already existed during creation")
-			return
-		} else {
-			throw err
-		}
-	}
-
-	// Mark the directory as created.
-	created_dirs.set(path, null)
 }
