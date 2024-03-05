@@ -2,7 +2,7 @@
 export const generate_share_url = path => {
 	let share_path = generate_share_path(path)
 	if (share_path !== "") {
-		share_path = window.location.protocol+"//"+window.location.host+"/d/"+share_path
+		share_path = window.location.protocol+"//"+window.location.host+"/d/"+fs_encode_path(share_path)
 	}
 	return share_path
 }
@@ -22,7 +22,7 @@ export const generate_share_path = path => {
 
 		// Construct the path starting from the bucket
 		for (let i = bucket_idx+1; i < path.length; i++) {
-			share_url += "/" + encodeURIComponent(path[i].name)
+			share_url += "/" + path[i].name
 		}
 	}
 
@@ -32,6 +32,7 @@ export const generate_share_path = path => {
 
 <script>
 import { fs_update } from "./FilesystemAPI";
+import { fs_encode_path } from "./FilesystemUtil";
 
 export let visible = false
 export let share_url = ""
