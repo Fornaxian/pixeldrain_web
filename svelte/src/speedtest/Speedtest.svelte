@@ -8,7 +8,6 @@ import CopyButton from "../layout/CopyButton.svelte";
 let running = false
 let data_received = 0
 const update_interval = 100
-let latency = 0
 const start = async (dur = 10000) => {
 	if (running) {
 		return
@@ -17,7 +16,7 @@ const start = async (dur = 10000) => {
 	running = true
 	data_received = 0
 
-	const latency_start = Date.now()
+	await measure_latency()
 
 	// Start a request for 10 GB of random data. We omit credentials so the
 	// server does fetch the API key from the database which increases latency
@@ -25,10 +24,6 @@ const start = async (dur = 10000) => {
 		window.api_endpoint+"/misc/speedtest?limit="+10e9,
 		{credentials: "omit"},
 	)
-
-	// Measure request latency
-	latency = Date.now() - latency_start
-
 	const reader = req.body.getReader();
 
 	measure_speed(() => reader.cancel(), dur)
@@ -44,9 +39,38 @@ const start = async (dur = 10000) => {
 	running = false
 }
 
+let latency = 0
+const measure_latency = async () => {
+	// We request one byte from the server ten times. If the latency of one
+	// request is lower than the last one then that latency is saved in the
+	// 'latency' variable
+	const tests = 10
+	let start = 0
+	let latency_min = 1e9
+	for (let i = 0; i < tests; i++) {
+		start = Date.now()
+
+		// Measure how long it takes to download 0 bytes. Effectively a ping
+		await fetch(
+			window.api_endpoint+"/misc/speedtest?limit=0",
+			{credentials: "omit"},
+		)
+
+		latency = Date.now() - start
+		if (latency < latency_min) {
+			latency_min = latency
+		}
+
+		// Update the progress bar
+		progress_duration = (i+1)/tests
+	}
+	latency = latency_min
+}
+
 // Average speed for the whole test
 let speed = 0
 let result_link = ""
+let server = ""
 
 let progress_duration = 0
 let progress_unchanged = 0
@@ -54,6 +78,7 @@ let progress_unchanged = 0
 const measure_speed = (stop, test_duration) => {
 	speed = 0
 	result_link = ""
+	server = window.server_hostname
 
 	// Updates per second
 	const ups = (1000/update_interval)
@@ -126,7 +151,7 @@ const measure_speed = (stop, test_duration) => {
 			history.replaceState(
 				undefined,
 				undefined,
-				"#s="+speed+"&l="+latency+"&t="+data_received,
+				"#s="+speed+"&l="+latency+"&t="+data_received+"&h="+encodeURIComponent(server),
 			)
 			result_link = window.location.href
 		}
@@ -142,19 +167,17 @@ onMount(() => {
 		const hash = window.location.hash.replace("#", "");
 		const result = hash.split('&').reduce((res, item) => {
 			const parts = item.split('=')
-			const n = Number(parts[1])
-			if (n !== NaN) {
-				res[parts[0]] = n
-			}
+			res[parts[0]] = parts[1]
 			return res;
 		}, {});
-
-		if (result.s && result.l && result.t) {
-			speed = result.s
-			latency = result.l
-			data_received = result.t
-			result_link = window.location.href
-		}
+		if (result.s) { speed = Number(result.s) }
+		if (result.l) { latency = Number(result.l) }
+		if (result.t) { data_received = Number(result.t) }
+		if (result.h) { server = decodeURIComponent(result.h) }
+		result_link = window.location.href
+	}
+	if (server === "") {
+		server = window.server_hostname
 	}
 })
 </script>
@@ -178,9 +201,11 @@ onMount(() => {
 	<div class="speed_stats">
 		<div class="highlight_shaded">{formatDataVolume(speed, 4)}/s</div>
 		<div class="highlight_shaded">{formatDataVolumeBits(speed, 4)}ps</div>
-		<div class="highlight_shaded">Latency {latency}ms</div>
-		<div class="highlight_shaded">Received {formatDataVolume(data_received, 3)}</div>
+		<div class="highlight_shaded">Ping {latency}ms</div>
+		<div class="highlight_shaded">Loaded {formatDataVolume(data_received, 3)}</div>
+		<div class="highlight_shaded">Host {server}</div>
 	</div>
+
 	<!-- Progress bar starts at log10(6) because the we want the lowest speed
 	shown to be 1 Mbps (1e6 bits) -->
 	<ProgressBar animation="linear" speed={update_interval} used={Math.log10(speed*8)-6} total={4}/>
@@ -209,7 +234,7 @@ onMount(() => {
 	font-size: 1.5em;
 }
 .speed_stats > * {
-	flex: 1 0 9em;
+	flex: 1 0 10em;
 }
 .speed_grid {
 	display: flex;
