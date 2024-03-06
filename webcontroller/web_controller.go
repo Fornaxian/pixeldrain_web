@@ -151,6 +151,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "limits" /*          */, wc.serveMarkdown("limits.md", handlerOpts{})},
 		{GET, "abuse" /*           */, wc.serveMarkdown("abuse.md", handlerOpts{})},
 		{GET, "filesystem" /*      */, wc.serveMarkdown("filesystem.md", handlerOpts{})},
+		{GET, "100_gigabit_ethernet", wc.serveMarkdown("100_gigabit_ethernet.md", handlerOpts{NoExec: true})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
 		{GET, "speedtest" /*       */, wc.serveTemplate("speedtest", handlerOpts{})},
 
@@ -229,6 +230,7 @@ func middleware(handle httprouter.Handle) httprouter.Handle {
 type handlerOpts struct {
 	Auth    bool
 	NoEmbed bool
+	NoExec  bool
 }
 
 func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.Handle {
