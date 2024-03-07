@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Sysctls](#sysctls)
   - [net.ipv4.tcp_congestion_control](#net-ipv4-tcp-congestion-control)
-  - [net.core.default_qdisc](#net-core-default-qdisc)
+  - [net.core.default_qdisc and txqueuelen](#net-core-default-qdisc-and-txqueuelen)
   - [net.ipv4.tcp_shrink_window](#net-ipv4-tcp-shrink-window)
   - [net.ipv4.tcp_{w,r}mem](#net-ipv4-tcp-w-r-mem)
   - [net.ipv4.tcp_mem](#net-ipv4-tcp-mem)
@@ -17,9 +17,10 @@
   - [SMT Control](#smt-control)
   - [IOMMU](#iommu)
 - [Reverse proxy](#reverse-proxy)
+- [HTTP/2 or QUIC?](#http-2-or-quic)
 - [Operating system](#operating-system)
 - [Kernel](#kernel)
-- [That's all, folks!](#thats-all-folks)
+- [That's all, folks!](#that-s-all-folks)
 
 ## Introduction
 
@@ -38,12 +39,13 @@ paid good money for that 100 Gigabit connection and I'll be damned if I can't
 use all of it. I'm getting to the bottom of this no matter how long it takes...
 
 It took me well over a year to figure out all the details of high speed
-networking. My good friend Jeff (who has been hosting pixeldrain for nearly ten
-years now) was able to point me in the right direction by showing me some
-sysctls and ethtool commands which might affect performance. That was just the
-entrance of the rabbit hole though, and this one carried on deep. After about a
-year of trial and error pixeldrain can finally serve files at 100 Gigabit per
-second.
+networking. My good friend [Jeff
+Brandt](https://www.linkedin.com/in/jeff-brandt-51b2a65/) (who has been hosting
+pixeldrain for nearly ten years now) was able to point me in the right direction
+by explaining the basics and showing me some sysctls and ethtool commands which
+might affect performance. That was just the entrance of the rabbit hole though,
+and this one carried on deep. After about a year of trial and error pixeldrain
+can finally serve files at 100 Gigabit per second.
 
 Below is a summary of everything I discovered during my year of reading NIC
 manuals, digging through the kernel sources, running profilers, patching the
@@ -74,7 +76,7 @@ but it works for IPv6 as well.
 
 `net.ipv4.tcp_congestion_control=bbr`
 
-### net.core.default_qdisc
+### net.core.default_qdisc and txqueuelen
 
 The qdisc (queuing discipline) is another param which gets mentioned often. The
 qdisc orders packets which are queued so they can be sent in the most efficient
@@ -83,11 +85,18 @@ completely irrelevant, the network is rarely the bottleneck here.
 
 Google used to require `fq` with `bbr`, but that requirement has been dropped. I
 suggest you use something minimal and fast. How about `pfifo_fast`, it has fast
-in the name, must be good, right?
+in the name, must be good, right? This is actually already the default on Linux
+nowadays, so there's not really a need to change it.
 
 `net.core.default_qdisc=pfifo_fast`
 
-This option is only applied after a reboot.
+A queue must have a size though. Linux gives the network queues a size of 1000
+packets by default. As we'll learn later, a thousand packets is really not a lot
+when running at 100 Gbps. When the queue is full the kernel will actually drop
+packets, which is absolutely not what we want. So we increase the queue length
+to 10000 packets instead:
+
+`ip link set $INTERFACE txqueuelen 10000`
 
 ### net.ipv4.tcp_shrink_window
 
@@ -103,13 +112,17 @@ Cloudflare has an extensive writeup about the problem this sysctl solves here:
 it](https://blog.cloudflare.com/unbounded-memory-usage-by-tcp-for-receive-buffers-and-how-we-fixed-it/)
 
 This sysctl makes sure that TCP buffers are shrunk if they are larger than they
-need to be. Without this sysctl your buffers will grow forever! Before I
-discovered this patch my servers would regularly run out of memory during peak
-load, and these are servers with a TERABYTE OF RAM! After applying the patches
-(and compiling the kernel, because the patches were not merged yet back then)
-memory usage from TCP buffers was reduced by 90%. And performance has improved
-considerably. This patch is so crucial for performance that it boggles my mind
-that it's not enabled by default.
+need to be. Without this sysctl your buffers will just continue to grow until
+memory runs out! Before I discovered this patch my servers would regularly run
+out of memory during peak load, and these are servers with a **TeraByte of
+RAM**! After applying the patches (and compiling the kernel, because the patches
+were not merged yet back then) memory usage from TCP buffers was reduced by 80%
+on my systems. And performance has improved considerably. This patch is so
+crucial for performance that it boggles my mind that it's not enabled by
+default. It's even described in the [TCP
+spec](https://www.rfc-editor.org/rfc/rfc7323#section-2.4), it's standardized
+behaviour. If you're a kernel or systemd developer, please consider just turning
+this on by default instead of hiding it behind a toggle.
 
 `net.ipv4.tcp_shrink_window=1`
 
@@ -124,7 +137,7 @@ important for throughput.
 ### net.ipv4.tcp_{w,r}mem
 
 These variables dictate how much memory can be allocated for your send and
-receive buffers. The send and receive buffers are where TCP packets are stores
+receive buffers. The send and receive buffers are where TCP packets are stored
 which are not yet acknowledged by the peer. The required size of these buffers
 depends on your [Bandwidth-Delay Product
 (BDP)](https://en.wikipedia.org/wiki/Bandwidth-delay_product). This concept is
@@ -150,7 +163,9 @@ a 260ms round trip.
 
 The kernel also stores some other TCP-related stuff in that memory, and we also
 need to account for packet loss which causes packets to be stored for a longer
-time. For this reason pixeldrain servers use a maximum buffer size of 1 GiB.
+time. I also don't want the speed to be limited to 10 Gbps, we're running a 100
+GbE NIC after all. For this reason pixeldrain servers use a maximum buffer size
+of 1 GiB.
 
 ```
 net.ipv4.tcp_wmem='4096 65536 1073741824'
@@ -160,7 +175,9 @@ net.core.rmem_max=1073741824
 ```
 
 The three values in the wmem and rmem are the minimum buffer size, the default
-buffer size and the maximum buffer size.
+buffer size and the maximum buffer size. The pixeldrain server application uses
+64k reusable buffers (with [sync.Pool](https://pkg.go.dev/sync#Pool)) all over
+the codebase. For this reason we initialize the window size at 64k as well.
 
 ### net.ipv4.tcp_mem
 
@@ -170,8 +187,9 @@ kernel still limits the TCP buffers globally.
 
 This sysctl configures how much system memory can be used for TCP buffers. On
 boot these values are set based on available system memory, which is good. But
-by default it only uses like 5% of the memory, which is bad. We need to pump
-those numbers way up to get anywhere near the speed that we want.
+by default it only uses like 5% of the memory, which is not even close to
+enough. We need to pump those numbers way up to get anywhere near the speed that
+we want.
 
 tcp_mem is defined as three separate values. These values are in numbers of
 memory pages. A memory page is usually 4096B. Here is what these three values mean:
@@ -206,10 +224,10 @@ I set these values dynamically per host with Ansible:
 
 ## Network Interface Cards
 
-There are lots of NICs to choose from. From my testing there are a lot of bad
-apples in the bunch. The only NIC types I have had any luck with are ConnectX-5
-and ConnectX-6. Intel's E810 NICs are also not terrible, but Nvidia cards seem
-to fare better with high connection counts. I currently have two servers with
+There are lots of NICs to choose from. From my testing every NIC seems to behave
+differently. The only NIC types I have had any luck with are ConnectX-5 and
+ConnectX-6. Intel's E810 NICs are also not terrible, but Nvidia cards seem to
+fare much better with high connection counts. I currently have two servers with
 E810 cards and two servers with ConnectX-6 cards. The E810 cards are usually the
 first to crap out during a load peak. NICs are just fickle beasts overall. I
 don't know if my experiences are actually related to the quality of the cards,
@@ -235,6 +253,10 @@ matter.
 Ethtool needs your network interface name for every operation. In this guide we
 will refer to your interface name as `$INTERFACE`. You can get your interface
 name from `ip a`.
+
+Ethtool options are not persistent through reboots. And there's no configuration
+file to put them in either. So you'll need to put them in a script which runs
+somewhere in the boot process somehow.
 
 ### Channels (ethtool -l)
 
@@ -504,6 +526,35 @@ made](https://github.com/Fornaxian/zerodown). I use it for pixeldrain and it
 works like a charm. Your software updates are just one `SIGHUP` away from being
 deployed.
 
+## HTTP/2 or QUIC?
+
+HTTP/2 and QUIC (HTTP/3) are new revisions of the HyperText Transfer Protocol.
+HTTP/2 introduces multiplexing which significantly reduces handshake latency.
+HTTP/1.1 will open a separate TCP session for each file it needs to reqeust,
+HTTP/2 opens one connection instead and uses framing to send multiple requests
+at the same time instead, this allows the connection to ramp up to a higher
+speed and quicker. This goes hand in hand with the BBR congestion control
+algorithm which also significantly reduces connection ramp-up time. The result
+is 60% faster loading times for web pages on average.
+
+HTTP/2 is trivially enabled in the Go HTTP server. Simply add `NextProtos =
+[]string{"h2"}` to your `tls.Config` and it's good to go. An annoying
+implementation detail is that Go's HTTP/2 server throws completely different
+errors than HTTP/1.1, so you will have to redo all your error handling. To make
+matters worse, HTTP/2's errors are not exported by the `http` package, so you
+have to resort to string searching to catch these errors.. 😒.
+
+Then along comes HTTP/3, also known as QUIC. HTTP/3 throws everything we just
+did out of the window and uses UDP instead. It moves all the buffer management
+and congestion control to userspace. Sure, you get more control that way, but
+that's really only useful if you're Google. I tried the most popular HTTP/3
+server implementation for Go, and it struggled to even reach half of the
+throughput I got with HTTP/2. Sure, latency is lower, but that's not that useful
+to me when the most important part of my site stops functioning. Sure, TCP is
+not perfect, but it's better than having to do everything yourself.
+
+To summarize, if you only care about throughput: HTTP/2 👍 HTTP/3 👎 (for now)
+
 ## Operating system
 
 Choose something up-to-date, lightweight and minimalist. Pixeldrain used to run
@@ -548,6 +599,13 @@ promising a 40% TCP performance boost. Crazy!
 
 ## That's all, folks!
 
+**Behold.. One hundred gigabits per second!**
+
+![nload showing 85 Gbps](/res/img/100gbps.webp)
+
+Actually my nload seems to cap out at around 87 Gbps.. there's probably some
+overhead somewhere. It's close though.
+
 I hope this guide was useful to you. I wish I had something like this when I
 started out. I could have quite literally saved me months of time. Then again,
 chasing 100 Gigabit is one of the most educative challenges I have ever faced. I
@@ -561,7 +619,9 @@ all.
 Anyway, check out [Pixeldrain](/) if you like, it's the fastest way to transfer
 files across the web. And I'm working on a [cloud storage](/filesystem) offering
 as well. It has built in rclone and FTPS support. Pixeldrain also has a built in
-[speedtest](/speedtest) which you can use to see the fruits of my labour.
+[speedtest](/speedtest) which you can use to see the fruits of my labour. The
+source for this document is available in markdown format on [my
+GitHub](https://github.com/Fornaxian/pixeldrain_web/blob/master/res/include/md/100_gigabit_ethernet.md).
 
 Follow me on [Mastodon](https://mastodon.social/@fornax),
 [Twitter](https://twitter.com/Fornax96), join our

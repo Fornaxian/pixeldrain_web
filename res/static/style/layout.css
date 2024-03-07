@@ -120,10 +120,21 @@ p>img {
 	max-width: 100%;
 }
 
+pre,
 code {
-	display: inline-block;
 	background: var(--background);
 	border-radius: 5px;
+	margin: 0;
+	padding: 0 0.2em;
+}
+
+pre {
+	overflow-x: auto;
+}
+
+pre>code {
+	background: none;
+	padding: 0;
 }
 
 /* Page layout elements */
@@ -423,12 +434,6 @@ tr {
 tr>td,
 tr>th {
 	padding: 0.2em 0.5em;
-}
-
-pre {
-	padding: 0.2em 0;
-	border-bottom: 1px var(--separator) solid;
-	overflow-x: auto;
 }
 
 /* API documentation markup */

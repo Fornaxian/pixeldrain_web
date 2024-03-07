@@ -83,11 +83,11 @@ const measure_speed = (stop, test_duration) => {
 	// Updates per second
 	const ups = (1000/update_interval)
 
-	// This slice contains the speed measurements for four seconds of the test.
+	// This slice contains the speed measurements for three seconds of the test.
 	// This value is averaged and if the average is higher than the previously
 	// calculated average then it is saved. The resulting speed is the highest
-	// speed that was sustained for four seconds at any point in the test
-	const hist = new Uint32Array(ups*2)
+	// speed that was sustained for three seconds at any point in the test
+	const hist = new Uint32Array(ups*3)
 	let idx = 0
 
 	// This var measures for how many ticks the max speed has not changed. When
@@ -108,14 +108,8 @@ const measure_speed = (stop, test_duration) => {
 		idx++
 
 		// Calculate the average of all the speed measurements
-		const sum = hist.reduce((acc, val) => {
-			if (val !== 0) {
-				acc.sum += val
-				acc.count++
-			}
-			return acc
-		}, {sum: 0, count: 0})
-		const new_speed = (sum.sum/sum.count)*ups
+		const sum = hist.reduce((acc, val) => acc += val, 0)
+		const new_speed = (sum/hist.length)*ups
 		if (new_speed > speed) {
 			speed = new_speed
 			unchanged = 0
