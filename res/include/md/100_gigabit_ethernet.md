@@ -19,11 +19,13 @@
 - [Reverse proxy](#reverse-proxy)
 - [Operating system](#operating-system)
 - [Kernel](#kernel)
+- [That's all, folks!](#thats-all-folks)
 
 ## Introduction
 
-You might have just downloaded a 10 GB file in 20 seconds and wondered how that
-is even possible. Well, it took a lot of effort to get there.
+If you are one of the lucky few who has a fast enough connection, you might have
+just downloaded a 5 GB file in 10 seconds and wondered how that is even
+possible. Well, it took a lot of effort to get there.
 
 When I first ordered a 100 GbE server I expected things to just work. Imagine my
 surprise when the server crashed when serving at just 20 Gigabit.
@@ -31,13 +33,21 @@ surprise when the server crashed when serving at just 20 Gigabit.
 Then I expected my server host to be able to help with the performance problems.
 Spoiler alert: They could not help me.
 
-That's where my journey into the rabbit hole of network performance started. It
-took me just about a year to figure out all the details of high speed
-networking, and now pixeldrain can finally serve files at 100 Gigabit per
+That's where my journey into the rabbit hole of network performance started. I
+paid good money for that 100 Gigabit connection and I'll be damned if I can't
+use all of it. I'm getting to the bottom of this no matter how long it takes...
+
+It took me well over a year to figure out all the details of high speed
+networking. My good friend Jeff (who has been hosting pixeldrain for nearly ten
+years now) was able to point me in the right direction by showing me some
+sysctls and ethtool commands which might affect performance. That was just the
+entrance of the rabbit hole though, and this one carried on deep. After about a
+year of trial and error pixeldrain can finally serve files at 100 Gigabit per
 second.
 
 Below is a summary of everything I discovered during my year of reading NIC
-manuals, digging through the kernel sources and patching the kernel.
+manuals, digging through the kernel sources, running profilers, patching the
+kernel, learning about CPU topology and TCP inner workings.
 
 ## Sysctls
 
@@ -170,8 +180,9 @@ memory pages. A memory page is usually 4096B. Here is what these three values me
    limited.
  * `pressure`: When the TCP memory usage exceeds this threshold it will try to
    shrink some TCP buffers to free up memory. It will keep doing this until
-   memory usage drops below `low` again. You don't want to set `low` and
-   `pressure` too far apart.
+   memory usage drops below `low` again. Shrinking TCP buffers takes a lot of
+   CPU time, and during this time no data is sent to the client. You don't want
+   to set `low` and `pressure` too far apart.
  * `high`: The TCP system can't allocate more than this number of pages. If this
    limit is reached and a new TCP session is opened it will not be able to
    allocate any memory. Needless to say this is terrible for performance.
@@ -197,14 +208,23 @@ I set these values dynamically per host with Ansible:
 
 There are lots of NICs to choose from. From my testing there are a lot of bad
 apples in the bunch. The only NIC types I have had any luck with are ConnectX-5
-and ConnectX-6.
+and ConnectX-6. Intel's E810 NICs are also not terrible, but Nvidia cards seem
+to fare better with high connection counts. I currently have two servers with
+E810 cards and two servers with ConnectX-6 cards. The E810 cards are usually the
+first to crap out during a load peak. NICs are just fickle beasts overall. I
+don't know if my experiences are actually related to the quality of the cards,
+or just bad luck with faulty hardware.
 
 Often you see advice to install a proprietary driver for your NIC. Don't do
 that. In my experience that has only caused problems. Nvidia's NIC drivers are
 just as shitty as their video drivers. They will break kernel updates and
-generally make your life miserable.
+generally make your life miserable. The drivers in the Linux kernel are good and
+well maintained. You don't need to taint your kernel with some scary proprietary
+blob.
 
-Upgrading the firmware for your NIC can be a good idea.
+Upgrading the firmware for your NIC can be a good idea, if you can figure out
+how, that is. Nvidia's tools for upgrading firmware are a huge hassle to work
+with and the documentation is outdated and scarce.
 
 ## ethtool
 
@@ -227,7 +247,10 @@ it's not that big of a problem.
 
 If you are running on a multi-CPU platform you only want one CPU to communicate
 with the NIC. Distributing your channels over multiple CPUs will cause cache
-thrashing which absolutely tanks performance.
+thrashing which absolutely tanks performance. Many of pixeldrain's server are
+dual CPU, where one CPU runs the pixeldrain software and the other only
+communicates with the NIC. Buying a $10k CPU just to talk to a NIC is a bit
+wasteful, I recommend just using one CPU if you have the choice.
 
 Your NIC will usually configure the channels correctly on boot, so in most of
 the cases you don't need to change anything here. You can query the settings
@@ -236,46 +259,49 @@ $INTERFACE combined 63`.
 
 ### Ring buffers (ethtool -g)
 
-The ring buffers are queues where the NIC stores your IP packets before they are
-sent out to the network (tx) or sent to the CPU (rx). Increasing the ring buffer
-sizes can increase network latency a little bit because more packets are getting
-buffered before being sent out to the network. But again, at 100 GbE this
-happens so fast that the difference is in the order of microseconds, that makes
-absolutely no difference to us.
+The ring buffers are portions of RAM where the NIC stores your IP packets before
+they are sent out to the network (tx) or sent to the CPU (rx). Increasing the
+ring buffer sizes can increase network latency a little bit because more packets
+are getting buffered before being sent out to the network. But again, at 100 GbE
+this happens so fast that the difference is in the order of microseconds, that
+makes absolutely no difference to us. We just want to move as much data as
+possible in as little time as possible.
 
 If we can buffer more packets then it means we can transfer more data in bulk
 with every clock cycle. So we simply set this to the maximum. For Mellanox cards
 the maximum is usually `8192`, but this can vary. Check the maximum values for
 your card with `ethtool -g $INTERFACE`.
 
-`ethtool -G $INTERFACE rx 8192 tx 8192`
+Set the receive and send buffers to 8192 packets: `ethtool -G $INTERFACE rx 8192
+tx 8192`
 
 ### Interrupt Coalescing (ethtool -c)
 
 The NIC can't just write your packets to the CPU and expect it to do something
 with them. Your CPU needs to be made aware that there is new data to process.
-That happens with interrupts. Ethtool's interrupt coalescing values tell the NIC
-when and how to send interrupts to the CPU. This is a delicate balance. We don't
-want to interrupt the CPU too often, because then it won't be able to get any
-work done. That's like getting a new ping in team chat every half hour, how are
-you supposed to concentrate like that? But if we set the interrupt rate too
-slow, the NIC won't be able to send all packets in time.
+That happens with an interrupt. Ethtool's interrupt coalescing values tell the
+NIC when and how to send interrupts to the CPU. This is a delicate balance. We
+don't want to interrupt the CPU too often, because then it won't be able to get
+any work done. That's like getting a new ping in team chat every half hour, how
+are you supposed to concentrate like that? But if we set the interrupt rate too
+slow, the NIC won't be able to send all packets in time before the buffers fill
+up.
 
 The interrupt coalescing options vary a lot per NIC type.. These are the ones
 which are present on my ConnectX-6 Dx: `rx-usecs`, `rx-frames`, `tx-usecs`,
-`tx-frames`, `cqe-mode-rx`, `cqe-mode-tx`. I'll explain what these are one by
-one:
+`tx-frames`, `cqe-mode-rx`, `cqe-mode-tx`. I'll explain what these are:
 
  * `rx-usecs`, `tx-usecs`: These values dictate how often the NIC interrupts the
    CPU to receive packets `rx` or send packets `tx`. The value is in
    microseconds. The SI prefix for micro is µ, but for convenience they use the
    letter u here. A microsecond is one-millionth of a second.
  * `rx-frames`, `tx-frames`: Like the values above this defines how often the
-   CPU is interrupted, but instead of interrupting the CPU at fixed moments it
-   interrupts the CPU when a certain number of packets is in the buffer.
+   CPU is interrupted, but instead of interrupting the CPU at a fixed interval
+   it interrupts the CPU when a certain number of packets are in the buffer.
  * `cqe-mode-rx`, `cqe-mode-tx`: These options enable packet compression in the
-   PCI bus. This is handy if your PCI bus is overloaded. In most cases it's best
-   to leave this at the default value.
+   PCI bus. This is handy if your PCI bus is a bottleneck, like when your 100G
+   NIC is plugged into 4x PCI 4.0 lanes, which only has 7.88 GB/s bandwidth. In
+   most cases it's best to leave these at the default value.
  * `adaptive-rx`, `adaptive-tx`: These values tell the NIC to calculate its own
    interrupt timings. This disregards the values we configure ourselves. The
    timings calculated by the NIC often prefer low latency over throughput and
@@ -285,21 +311,23 @@ one:
 So what are good values for these? Well, we can do some math here. Our NIC can
 send 100 Gigabits per second. That's 12.5 GB. A network packet is usually 1500
 bytes. This means that we need to send 8333333 packets per second to reach full
-speed. Our ring buffer can hold 8192 packets, so if we divide that number again
-we learn that we need to send 1017 full ring buffers per second to reach full
+speed. Our ring buffer can hold 8192 packets, so if we divide by that number we
+learn that we need to send 1017 entire ring buffers per second to reach full
 speed.
 
 Waiting for the ring buffer to be completely full is probably not a good idea,
 since then we can't add more packets until the previous packets have been copied
 out. So we want to be able to empty the ring buffer twice. That leaves us with
-ring buffers per second. Now convert that buffers per second number to µs per
-buffer: `1000000 / 2034 = 492µs`, we land on a value of 492µs per interrupt.
+2034 ring buffers per second. Now convert that buffers per second number to µs
+per buffer: `1000000 / 2034 = 492µs`, we land on a value of 492µs per interrupt.
 This is our ceiling value. Higher than this and the buffers will overflow. But
 492µs is nearly half a millisecond, that's an eternity in CPU time. That's high
 enough that it might actually make a measurable difference in packet latency. So
-we opt for a safe value of 100µs instead. That still gives the CPU plenty of
-time to do other work in between interrupts, but is low enough to barely make a
-measurable difference in latency.
+we opt for a more sane value of 100µs instead. That still gives the CPU plenty
+of time to do other work in between interrupts. A 3 GHz CPU core will be able to
+perform about 30000 calculations inbetween each interrupt. At the same time it's
+low enough to barely make a measurable difference in latency, at most a tenth of
+a millisecond.
 
 As for the `{rx,tx}-frames` variables. We just spent all that time calculating
 the ideal interrupt interval, I don't really want the NIC to start interrupting
@@ -315,7 +343,7 @@ ethtool -C $INTERFACE adaptive-rx off adaptive-tx off \
 		rx-frames 8192 tx-frames 8192
 ```
 
-Tip: If you want to see how much time your CPU is spending in handling
+Tip: If you want to see how much time your CPU is spending on handling
 interrupts, go into `htop`, then to Setup (F2) and enable "Detailed CPU time"
 under Display options. The CPU gauge will now show time spent on handling
 interrupts in purple. Press F10 to save changes.
@@ -328,10 +356,13 @@ most important optimizations must be configured here.
 ### NUMA Nodes per socket
 
 Big CPUs with lots of cores often segment their memory into NUMA nodes. These
-smaller nodes can coordinate better with each other because they are close to
-each other. But one downside is that the segmentation causes performance
-problems with NIC queues. Because of this you always need to set `NUMA nodes per
-socket` to `NPS1`.
+smaller nodes get exclusive access to a certain portion of RAM and don't have to
+contend over memory access with the other NUMA nodes. This can improve your
+performance... if your software supports it well. But from my testing the setup
+of one NIC queue per core does not combine well with having multiple NUMA nodes.
+The fact that I use Go, which does not have a NUMA aware scheduler as far as I
+know, probably does not help either. For these reasons I prefer to set `NUMA
+nodes per socket` to `NPS1`.
 
 Some AMD BIOSes also have an option called `ACPI SRAT L3 Cache as NUMA Domain`.
 This will create NUMA nodes based on the L3 cache topology, *even if you
@@ -347,38 +378,55 @@ performance.
 
 Most apps have no way to effectively use hundreds of CPU threads. At some point
 adding more threads will only consume more memory and CPU cycles just because
-they kernel scheduler and memory controller has to manage all those threads. My
-rule of thumb: If you have more than 64 threads: `SMT OFF`
+they kernel scheduler, memory controller and your language runtime have to
+manage all those threads. This can cause huge amounts of overhead. My rule of
+thumb: If you have 64 or more cores: `SMT OFF`
 
 ### IOMMU
 
 The [Input-output memory management
 unit](https://en.wikipedia.org/wiki/Input%E2%80%93output_memory_management_unit)
 is a CPU component for virtualizing your memory access. This can be useful if
-you run a lot of VMs for example. You know what it's also good for? **COMPLETELY
-DESTROYING NIC PERFORMANCE**.
+you run a lot of VMs for example. You know what it's also good for? **Completely
+destroying NIC performance**.
 
-A high end NIC needs to shuffle a lot of data over the PCI bus. When the IOMMU
-is enabled that means that the data needs to be shuffled through the IOMMU first
-before it can go into memory. This adds some latency. When you are running a
+A high end NIC needs to shuffle a lot of data over the PCI bus. A 100 GbE NIC in
+full duplex can reach up to 25 GB/s! When the IOMMU is enabled it means that all
+the data that the NIC sends/receives needs to go through the IOMMU first before
+it can go into RAM. This adds a little bit of latency. When you are running a
 high end NIC in your PCI slot, then the added latency makes sure that your NIC
-will *never ever reach the advertised speed*. In some cases the overhead is so
-large that the NIC will effectively drop off the PCI bus, immediately crashing
-your system once it gets only slightly overloaded.
+will **never ever get anywhwere near the advertised speed**. In some cases the
+overhead is so large that the NIC will effectively drop off the PCI bus,
+immediately crashing your system once it gets only slightly overloaded. Yes,
+really, I have seen this happen.
 
 Seriously, if you have a high end NIC plugged into your PCI slot and you have
-the IOMMU enabled. **You might as well plug a fucking brick into your PCI
-slot**, because that's about how useful your expensive NIC will be.
+the IOMMU enabled. **You might as well plug a goddamn brick into your PCI
+slot**, because that's about as useful as your expensive NIC will be.
 
 It took me way too long to find this information. The difference between IOMMU
-off and on is night and day. I am actually **furious** that it took me this long
-to discover this. All the NIC tuning guides talk about is tweaking little
-ethtool params and shit like that, the IOMMU was completely omitted. I was
-getting so desperate with my terrible NIC performance that I just started
-flipping toggles in the BIOS to see if anything made a difference, that's how I
-discovered that the IOMMU was the source of **all my problems**.
+off and on is night and day. I am actually **furious** that it took me so long
+to discover this. I spent *weeks* pulling hair out of my head trying to figure
+out why my NIC was locking up whenever I tried to put any real load on it. All
+the NIC tuning guides I could find talk about tweaking little ethtool params,
+installing drivers, updating firmware and useles crap like that, the IOMMU was
+completely omitted in every one of them. I was getting so desperate with my
+terrible NIC performance that I just started flipping toggles in the BIOS to see
+if anything made a difference. If you have any idea how long it takes to reboot
+a high end server system you know how tedious this is. That's how I discovered
+that the IOMMU was the source of **all my problems**.
+
+Ugh, just thinking about all the time I wasted because because nobody told me to
+just turn the IOMMU off gets my blood boiling. That's why I am writing this
+guide, I want to spare you the suffering.
 
 So yea... `AMD CBS > NBIO Common Options > IOMMU > Disabled` ...AND STAY DOWN!
+
+I also just turn off anything related to virtualization nowadays. Having
+virtualization options enabled when you are not running VMs is a waste of
+resources. No worries, docker is not virtualization, it's just namespacing,
+nothing virtual about that. And if you are running VMs.. well, consider bare
+metal. It's really not that scary and there is lots of performance to be gained.
 
 You can verify that your IOMMU is disabled with this command `dmesg | grep
 iommu`. Your IOMMU is disabled if it prints something along the lines of:
@@ -391,30 +439,34 @@ iommu`. Your IOMMU is disabled if it prints something along the lines of:
 If you see more output than that, you need to drop into the BIOS and nuke that
 shit immediately.
 
+One little caveat is that Linux requires the IOMMU to support more than 255 CPU
+threads. So if you have 256 threads and the IOMMU is turned off one of your
+threads will be disabled. So once again I will repeat my rule of thumb with
+regards to multithreading: If you have 64 or more cores: `SMT OFF`
+
 ## Reverse proxy
 
 A lot of sites run behind a reverse proxy like nginx or Caddy. It seems to be an
 industry standard nowadays. People are surprised when they learn that pixeldrain
-does not use a web server like nginx or Caddy.
+does not use one of the standard web servers.
 
-Turns out that 100 Gigabit per second is a lot of data. It takes a considerable
-amount of CPU time to churn through that much data, so ideally you want to touch
-it as few times as you can. And when you are moving that much data the memcpy
-overhead really starts to show its true face. At this scale playing hot potato
-with your HTTP requests is a really bad idea.
+As it turns out, 100 Gigabit per second is a lot of data. It takes a
+considerable amount of CPU time to churn through that much data, so ideally you
+want to touch it as few times as you can. At this scale playing hot potato with
+your HTTP requests is a really bad idea.
 
 A big bottleneck with networking on Linux is copying data across the kernel
 boundary. The kernel always needs to copy your buffers because userspace is
-dirty, would not want to share memory with that. When you are running a reverse
-proxy every request is effectively crossing the kernel boundary *six times*.
-Let's assume we're running nginx here, the client sends a request to the server.
-The kernel copies the request body from kernel space to nginx's listener (from
-kernel space to userspace), nginx opens a request to your app and copies the
-body the to localhost TCP socket (back to kernel space). The kernel sends the
-body to your app's listener on localhost (now it's in userspace again). And then
-the response body follows the same path again. Request: NIC -> kernel ->
-userspace -> kernel -> userspace. Response: userspace -> kernel -> userspace ->
-kernel -> NIC. That's crazy inefficient.
+dirty, ew, would not want to share memory with that. When you are running a
+reverse proxy every HTTP request is effectively crossing the kernel boundary
+*six times*. Let's assume we're running nginx here, the client sends a request
+to the server. The kernel copies the request body from kernel space to nginx's
+listener (from kernel space to userspace), nginx opens a request to your app and
+copies the body the to localhost TCP socket (back to kernel space). The kernel
+sends the body to your app's listener on localhost (now it's in userspace
+again). And then the response body follows the same path again. Request: NIC ->
+kernel -> userspace -> kernel -> userspace. Response: userspace -> kernel ->
+userspace -> kernel -> NIC. That's crazy inefficient.
 
 That's why pixeldrain just uses Go's built in HTTP server. Go's HTTP server is
 very complete. Everything you need is there:
@@ -429,18 +481,46 @@ very complete. Everything you need is there:
 The only requirement is that your app is written in Go. Of course other
 languages also have libraries for this.
 
+Zero-downtime restarts are a bit tricky. Luckily the geniuses tinkering away at
+the Linux kernel every day made something neat for us. It's called
+`SO_REUSEPORT` (Wow! Catchy name!). By putting this socket option on your TCP
+listener you allow future instances of your server process to listen on the same
+port at the same time. By doing this your upgrades become really quite simple:
+
+1. Upload new server executable to the server.
+2. Start the new executable up.
+3. When everything is initialized it starts listening on the same port as the
+   previous process using `SO_REUSEPORT`.
+4. After the listener is installed we signal to the old server process (which is
+   still running at this point) that it can start shutting down. The listener is
+   closed and the active HTTP requests are gracefully completed.
+5. Once the old listener is closed all new requests will go to the new process
+   and the upgrade is complete.
+
+Now there may be one question on your mind: How do I signal to the previous
+process that the new process has finished initializing? I have just the thing
+for you. [This handy-dandy library that I
+made](https://github.com/Fornaxian/zerodown). I use it for pixeldrain and it
+works like a charm. Your software updates are just one `SIGHUP` away from being
+deployed.
+
 ## Operating system
 
-Choose something up-to-date, light and minimalist. Pixeldrain used to run on
-Ubuntu because I was familiar with it, but after a while Ubuntu server got more
+Choose something up-to-date, lightweight and minimalist. Pixeldrain used to run
+on Ubuntu because I was familiar with it, but over time Ubuntu server got more
 bloated and heavy. Unnecessary stuff was being added with each new release
 (looking at you snapd), and I just didn't want to deal with that. Eventually I
 switched to Debian.
 
-Debian is much better than Ubuntu. After booting it for the first time there
+Debian is so much better than Ubuntu. After booting it for the first time there
 will only be like 10 processes running on the system, just the essentials. It
 really is a clean sandbox waiting for you to build a castle in it. It might take
 some getting used to, but it will definitely pay off.
+
+Anyway, that's just my opinion. In reality you can pick any distro you like. It
+does not really matter that much. Just keep in mind that some distro's ship
+newer kernels than others, and that's really quite important as we will learn in
+the next paragraph.
 
 ## Kernel
 
@@ -449,8 +529,8 @@ sysctl. But generally, **newer is better**. There are dozens of engineers from
 Google, Cloudflare and Meta tinkering away at the Linux network stack every day.
 It gets better with every release, really, the pace is staggering.
 
-But doesn't Debian ship really old kernel packages? (you might ask) Yes...
-kinda. By using [this guide](https://wiki.debian.org/HowToUpgradeKernel) you can
+But doesn't Debian ship quite old kernel packages? (you might ask) Yes... kinda.
+By using [this guide](https://wiki.debian.org/HowToUpgradeKernel) you can
 upgrade your kernel version to the `testing` or even the `experimental` branch
 while keeping the rest of the OS the same.
 
@@ -465,3 +545,24 @@ blog](https://www.phoronix.com/linux/Linux+Networking) for new kernel features.
 Pretty much every kernel version that comes out boasts about huge network
 performance wins. I'm personally waiting for Kernel 6.8 to come out. They are
 promising a 40% TCP performance boost. Crazy!
+
+## That's all, folks!
+
+I hope this guide was useful to you. I wish I had something like this when I
+started out. I could have quite literally saved me months of time. Then again,
+chasing 100 Gigabit is one of the most educative challenges I have ever faced. I
+have learned so much about Linux's structure, kernel performance profiling, CPU
+architecture, the PCIe bus and tons of other things that I would never have
+known if I did not go down this rabbit hole. And I have a feeling the journey is
+not over. I will always have this urge to get the absolute most out of my
+servers. I'm paying for the whole CPU and I'm going to use the whole CPU after
+all.
+
+Anyway, check out [Pixeldrain](/) if you like, it's the fastest way to transfer
+files across the web. And I'm working on a [cloud storage](/filesystem) offering
+as well. It has built in rclone and FTPS support. Pixeldrain also has a built in
+[speedtest](/speedtest) which you can use to see the fruits of my labour.
+
+Follow me on [Mastodon](https://mastodon.social/@fornax),
+[Twitter](https://twitter.com/Fornax96), join our
+[Discord](https://discord.gg/pixeldrain), et cetera et cetera
