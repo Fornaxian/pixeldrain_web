@@ -75,6 +75,14 @@ import Speedtest from "./Speedtest.svelte";
 			This means that the data has to travel further and is more likely to
 			be throttled.
 		</p>
+		<p>
+			VPN services also add overhead to your connections, which lowers
+			effective download speed. VPNs using OpenVPN lower your download
+			speed by approximately 17.2%, and VPNs using the more modern
+			WireGuard protocol lower your download speed by approximately 4.5%.
+			To get most accurate results make sure you have any VPN services
+			turned off.
+		</p>
 		<h2>How do I read these results?</h2>
 		<p>
 			If the speed is a lot slower than your usual downloads it can mean

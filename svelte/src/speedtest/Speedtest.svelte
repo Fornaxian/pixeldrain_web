@@ -83,11 +83,11 @@ const measure_speed = (stop, test_duration) => {
 	// Updates per second
 	const ups = (1000/update_interval)
 
-	// This slice contains the speed measurements for three seconds of the test.
+	// This slice contains the speed measurements for two seconds of the test.
 	// This value is averaged and if the average is higher than the previously
 	// calculated average then it is saved. The resulting speed is the highest
-	// speed that was sustained for three seconds at any point in the test
-	const hist = new Uint32Array(ups*3)
+	// speed that was sustained for two seconds at any point in the test
+	const hist = new Uint32Array(ups*2)
 	let idx = 0
 
 	// This var measures for how many ticks the max speed has not changed. When
@@ -96,12 +96,19 @@ const measure_speed = (stop, test_duration) => {
 	let unchanged = 0
 	const unchanged_limit = (test_duration/3)/update_interval
 
+
+	console.debug(
+		"Test duration", test_duration,
+		"interval", update_interval,
+		"unchanged_limit", unchanged_limit,
+		"history", hist.length,
+	)
+
+	// Variables used in the loop
 	let previous_transferred = 0
 	const start = Date.now()
 
-	console.debug("Test duration", test_duration, "interval", update_interval, "history", hist.length)
-
-	let measure = async () => {
+	const measure = async () => {
 		// Update the speed measurement
 		hist[idx%hist.length] = data_received - previous_transferred
 		previous_transferred = data_received
@@ -145,7 +152,10 @@ const measure_speed = (stop, test_duration) => {
 			history.replaceState(
 				undefined,
 				undefined,
-				"#s="+speed+"&l="+latency+"&t="+data_received+"&h="+encodeURIComponent(server),
+				"#s="+Math.round(speed)+
+					"&l="+latency+
+					"&t="+data_received+
+					"&h="+encodeURIComponent(server),
 			)
 			result_link = window.location.href
 		}
