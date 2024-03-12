@@ -29,21 +29,28 @@ onMount(() => {
 
 
 {#if patreon_result !== ""}
-	{#if patreon_result === "error"}
-		<div class="highlight_red">
-			An error occurred while linking Patreon subscription. Please try
-			again later.
+	{#if patreon_error === "patreon_authentication_denied"}
+		<div class="highlight_yellow">
+			Please press "Allow" when asked if pixeldrain can access your
+			profile.
 		</div>
-		<p>
-			If it has been more than 30 minutes, your payment is complete and
-			the upgrade still fails please contact me on Patreon or through
-			e-mail at support@pixeldrain.com.
-		<p/>
-		<p>
-			When contacting support please provide the following information:<br/>
-			Server response: {patreon_message}<br/>
-			Server error code: {patreon_error}
-		</p>
+	{:else if patreon_result === "error"}
+		<div class="highlight_red">
+			<p>
+				An error occurred while linking Patreon subscription. Please try
+				again later.
+			</p>
+			<p>
+				If it has been more than 30 minutes, your payment is complete and
+				the upgrade still fails please contact me on Patreon or through
+				e-mail at support@pixeldrain.com.
+			<p/>
+			<p>
+				When contacting support please provide the following information:<br/>
+				Server response: {patreon_message}<br/>
+				Server error code: {patreon_error}
+			</p>
+		</div>
 	{:else if patreon_result === "pledge_not_found"}
 		<div class="highlight_yellow">
 			<p>

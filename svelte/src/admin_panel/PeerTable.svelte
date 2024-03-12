@@ -1,4 +1,5 @@
 <script>
+import { flip } from "svelte/animate";
 import { formatDataVolume } from "../util/Formatting.svelte";
 import SortButton from "./SortButton.svelte";
 
@@ -66,11 +67,12 @@ let sort = (field) => {
 			</tr>
 		</thead>
 		<tbody>
-			{#each peers as peer}
+			{#each peers as peer (peer.address)}
 				<tr style="border: none;"
 					class:highlight_red={peer.free_space < peer.min_free_space / 2 || !peer.reachable}
 					class:highlight_yellow={peer.free_space < peer.min_free_space}
 					class:highlight_green={peer.reachable}
+					animate:flip={{duration: 1000}}
 				>
 					<td>{peer.address}</td>
 					<td>{peer.unreachable_count}</td>

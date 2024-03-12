@@ -150,7 +150,7 @@ client in memory until the client acknowledges (ACK) that it has been properly
 received. The acknowledgment takes one round trip to the client and back.
 
 Let's say you want to send a file from Amsterdam to Tokyo. The server sends the
-first packet, 130ms later the client on Tokyo receives the data packet. The
+first packet, 130ms later the client in Tokyo receives the data packet. The
 client then sends ACK to tell the server that the packet was properly received,
 the ACK takes 130ms to arrive back in Amsterdam. Only now can the server remove
 the packet from memory. The whole exchange took 260ms.

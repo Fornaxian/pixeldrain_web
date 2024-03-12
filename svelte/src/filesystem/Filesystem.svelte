@@ -9,9 +9,9 @@ import Navigator from './Navigator.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 import SearchView from './SearchView.svelte';
 import UploadWidget from './upload_widget/UploadWidget.svelte';
-import HomeButton from '../file_viewer/HomeButton.svelte';
 import { fs_path_url } from './FilesystemUtil.js';
 import { branding_from_path } from './edit_window/Branding.js'
+import Menu from './Menu.svelte';
 
 let loading = true
 let toolbar
@@ -44,6 +44,7 @@ const keydown = e => {
 		return // Prevent shortcuts from interfering with input fields
 	}
 
+	let action_performed = true
 	switch (e.key) {
 		case "c":
 			toolbar.copy_link()
@@ -76,9 +77,13 @@ const keydown = e => {
 		case "ArrowRight":
 			fs_navigator.open_sibling(1)
 			break;
+		default:
+			action_performed = false
 	}
 
-	e.preventDefault()
+	if (action_performed) {
+		e.preventDefault()
+	}
 };
 
 const download = () => {
@@ -116,10 +121,7 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 
 <div class="file_viewer">
 	<div class="headerbar">
-		<div>
-			<HomeButton nobg/>
-		</div>
-
+		<Menu/>
 		<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
 	</div>
 
@@ -156,10 +158,6 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 				/>
 			{/if}
 		</div>
-	</div>
-
-	<div class="highlight_yellow">
-		The filesystem is experimental! <a href="/filesystem">Please read the guide</a>
 	</div>
 
 	<!-- This frame will load the download URL when a download button is pressed -->
@@ -228,13 +226,6 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 	padding: 4px;
 }
 
-/* Headerbar components */
-.headerbar > * {
-	flex-grow: 0;
-	flex-shrink: 0;
-	display: inline;
-	align-self: center;
-}
 /* File preview area (row 2) */
 .viewer_area {
 	flex: 1 1 0;

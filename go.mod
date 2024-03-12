@@ -1,6 +1,8 @@
 module fornaxian.tech/pixeldrain_web
 
-go 1.18
+go 1.21
+
+toolchain go1.22.0
 
 replace (
 	fornaxian.tech/pixeldrain_api_client => ../pixeldrain_api_client
@@ -13,7 +15,7 @@ require (
 	fornaxian.tech/pixeldrain_api_client v0.0.0-20221207191816-6872676df741
 	fornaxian.tech/util v0.0.0-20230520114728-bd827686fec7
 	github.com/julienschmidt/httprouter v1.3.0
-	github.com/microcosm-cc/bluemonday v1.0.25
+	github.com/microcosm-cc/bluemonday v1.0.26
 	github.com/russross/blackfriday/v2 v2.1.0
 )
 
@@ -22,9 +24,9 @@ require (
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/gocql/gocql v1.6.0 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/gorilla/css v1.0.0 // indirect
+	github.com/gorilla/css v1.0.1 // indirect
 	github.com/hailocab/go-hostpool v0.0.0-20160125115350-e80d13ce29ed // indirect
-	golang.org/x/crypto v0.13.0 // indirect
-	golang.org/x/net v0.15.0 // indirect
+	golang.org/x/crypto v0.21.0 // indirect
+	golang.org/x/net v0.22.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 )

@@ -10,7 +10,7 @@ export let icon_small = false;
 export let label = ""
 export let title = ""
 export let link_href = ""
-export let link_target = ""
+export let link_target = "_self"
 export let click = e => {}
 export let style = ""
 export let type = ""
@@ -31,7 +31,7 @@ let click_int = e => {
 }
 </script>
 
-{#if link_target === ""}
+{#if link_href === ""}
 	<button
 		on:click={click_int}
 		class="button"

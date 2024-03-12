@@ -128,9 +128,10 @@ onMount(() => {
 				</p>
 				<ul>
 					<li>€4 per month</li>
-					<li>2 TB storage limit (higher plans available)</li>
+					<li>No storage limit for file sharing</li>
 					<li>4 TB transfer limit (higher plans available)</li>
 					<li>Access to the <a href="/filesystem">filesystem</a></li>
+					<li>2 TB filesytem storage limit (higher plans available)</li>
 					<li>File expire after 240 days for Pro, and never on the other plans</li>
 				</ul>
 			</div>
