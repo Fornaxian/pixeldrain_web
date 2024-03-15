@@ -41,7 +41,7 @@ onMount(() => {
 
 <FileTitle title={state.base.name}/>
 
-<TextBlock>
+<TextBlock width="1000px">
 	<audio
 		bind:this={player}
 		class="player"

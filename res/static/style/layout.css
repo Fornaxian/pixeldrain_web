@@ -287,17 +287,17 @@ section {
 }
 
 .highlight_green {
-	background-color: rgba(0, 255, 0, 0.05);
+	background-color: rgba(0, 255, 0, 0.1);
 	border-color: #00D000;
 }
 
 .highlight_blue {
-	background-color: rgba(32, 32, 255, 0.2);
+	background-color: rgba(0, 0, 255, 0.1);
 	border-color: #3636FF;
 }
 
 .highlight_yellow {
-	background-color: rgba(255, 255, 0, 0.05);
+	background-color: rgba(255, 255, 0, 0.1);
 	border-color: #A0A000;
 }
 

@@ -37,8 +37,11 @@ onMount(() => {
 	{:else if patreon_result === "error"}
 		<div class="highlight_red">
 			<p>
-				An error occurred while linking Patreon subscription. Please try
-				again later.
+				An error occurred while linking Patreon subscription. Check if
+				there are any Pixeldrain integrations under "Logged in with
+				Patreon" on this page: <a
+				href="https://www.patreon.com/settings/apps">https://www.patreon.com/settings/apps</a>.
+				Try disconnecting all Pixeldrain logins and try again.
 			</p>
 			<p>
 				If it has been more than 30 minutes, your payment is complete and

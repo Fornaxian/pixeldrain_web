@@ -60,6 +60,10 @@ const update_base = async base => {
 }
 
 const close_socket = () => {
+	// Clear this path so the update_base function does not instantly return
+	// with the next retry
+	connected_to = ""
+
 	if (socket !== null) {
 		// Disable the error handler so it doesn't start retrying the connection
 		socket.onerror = null

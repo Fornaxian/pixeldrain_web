@@ -69,8 +69,9 @@ let sort = (field) => {
 		<tbody>
 			{#each peers as peer (peer.address)}
 				<tr style="border: none;"
-					class:highlight_red={peer.free_space < peer.min_free_space / 2 || !peer.reachable}
-					class:highlight_yellow={peer.free_space < peer.min_free_space}
+					class:highlight_red={!peer.reachable}
+					class:highlight_yellow={peer.free_space < peer.min_free_space / 2}
+					class:highlight_blue={peer.free_space < peer.min_free_space}
 					class:highlight_green={peer.reachable}
 					animate:flip={{duration: 1000}}
 				>
