@@ -30,7 +30,7 @@ let chart_interval = 0
 let chart_timespans = [
 	{label: "Day (1m)", span: 1440, interval: 1},
 	{label: "Week (1h)", span: 10080, interval: 60},
-	{label: "Month (1h)", span: 43200, interval: 60},
+	{label: "Month (1d)", span: 43200, interval: 1440},
 	{label: "Quarter (1d)", span: 131400, interval: 1440},
 	{label: "Year (1d)", span: 525600, interval: 1440},
 	{label: "Two Years (1d)", span: 1051200, interval: 1440},
@@ -38,7 +38,6 @@ let chart_timespans = [
 ]
 
 let total_downloads = 0
-let total_transfer_free = 0
 let total_transfer_paid = 0
 
 $: update_chart(state.base, chart_timespan, chart_interval)
@@ -81,19 +80,13 @@ let update_chart = async (base, timespan, interval) => {
 
 		chart.data().datasets = [
 			{
-				label: "Unique downloads",
+				label: "Unique Downloads",
 				borderWidth: 2,
 				pointRadius: 0,
 				borderColor: color_by_name("chart_1_color"),
 				backgroundColor: color_by_name("chart_1_color"),
 			}, {
-				label: "Free downloads",
-				borderWidth: 2,
-				pointRadius: 0,
-				borderColor: color_by_name("chart_2_color"),
-				backgroundColor: color_by_name("chart_2_color"),
-			}, {
-				label: "Paid downloads",
+				label: "Total Downloads",
 				borderWidth: 2,
 				pointRadius: 0,
 				borderColor: color_by_name("chart_3_color"),
@@ -111,22 +104,16 @@ let update_chart = async (base, timespan, interval) => {
 		});
 
 		total_downloads = 0
-		total_transfer_free = 0
 		total_transfer_paid = 0
 
 		resp.downloads.amounts.forEach(val => total_downloads += val);
-		resp.transfer_free.amounts.forEach((val, idx) => {
-			resp.transfer_free.amounts[idx] = val / base.file_size;
-			total_transfer_free += val
-		});
 		resp.transfer_paid.amounts.forEach((val, idx) => {
 			resp.transfer_paid.amounts[idx] = val / base.file_size;
 			total_transfer_paid += val
 		});
 		chart.data().labels = resp.downloads.timestamps
 		chart.data().datasets[0].data = resp.downloads.amounts
-		chart.data().datasets[1].data = resp.transfer_free.amounts
-		chart.data().datasets[2].data = resp.transfer_paid.amounts
+		chart.data().datasets[1].data = resp.transfer_paid.amounts
 		chart.update()
 	} catch (err) {
 		console.error("Failed to get time series data:", err)
@@ -135,13 +122,27 @@ let update_chart = async (base, timespan, interval) => {
 </script>
 
 <Modal bind:visible={visible} title="Details" width={(state.base.type === "file" ? 1000 : 750) + "px"}>
-	<h3 class="indent">Node details</h3>
 	<table style="width: 100%;">
-		<tr><td>Name</td><td>{state.base.name}</td></tr>
-		<tr><td>Path</td><td>{state.base.path}</td></tr>
-		<tr><td>Date created</td><td>{formatDate(state.base.created, true, true, true)}</td></tr>
-		<tr><td>Date modified</td><td>{formatDate(state.base.modified, true, true, true)}</td></tr>
-		<tr><td>Mode</td><td>{state.base.mode_string}</td></tr>
+		<tr>
+			<td>Name</td>
+			<td>{state.base.name}</td>
+		</tr>
+		<tr>
+			<td>Path</td>
+			<td>{state.base.path}</td>
+		</tr>
+		<tr>
+			<td>Created</td>
+			<td>{formatDate(state.base.created, true, true, true)}</td>
+		</tr>
+		<tr>
+			<td>Modified</td>
+			<td>{formatDate(state.base.modified, true, true, true)}</td>
+		</tr>
+		<tr>
+			<td>Mode</td>
+			<td>{state.base.mode_string}</td>
+		</tr>
 		{#if state.base.id}
 			<tr>
 				<td>Public ID</td>
@@ -149,22 +150,20 @@ let update_chart = async (base, timespan, interval) => {
 			</tr>
 		{/if}
 		{#if state.base.type === "file"}
-			<tr><td>File type</td><td>{state.base.file_type}</td></tr>
+			<tr>
+				<td>File type</td>
+				<td>{state.base.file_type}</td>
+			</tr>
 			<tr>
 				<td>File size</td>
 				<td>{formatDataVolume(state.base.file_size, 4)} ( {formatThousands(state.base.file_size)} B )</td>
 			</tr>
-			<tr><td>Unique downloads</td><td>{formatThousands(total_downloads)}</td></tr>
 			<tr>
-				<td>Free bandwidth used</td>
-				<td>
-					{formatDataVolume(total_transfer_free, 4)}
-					( {formatThousands(total_transfer_free)} B ),
-					{(total_transfer_free/state.base.file_size).toFixed(1)}x file size
-				</td>
+				<td>Downloads</td>
+				<td>{formatThousands(total_downloads)} (unique, counted once per IP)</td>
 			</tr>
 			<tr>
-				<td>Premium bandwidth used</td>
+				<td>Transfer used</td>
 				<td>
 					{formatDataVolume(total_transfer_paid, 4)}
 					( {formatThousands(total_transfer_paid)} B ),

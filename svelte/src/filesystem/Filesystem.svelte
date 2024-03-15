@@ -236,7 +236,7 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 
 /* This max-width needs to be synced with the .toolbar max-width in
 Toolbar.svelte and the .label max-width in FileStats.svelte */
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 	.viewer_area {
 		flex-direction: column-reverse;
 	}

@@ -138,7 +138,6 @@ let expand = e => {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
 }
-
 .separator {
 	height: 2px;
 	width: 100%;
@@ -164,7 +163,7 @@ let expand = e => {
 
 /* This max-width needs to be synced with the .viewer_area max-width in
 Toolbar.svelte and the .label max-width in FileStats.svelte */
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 	.toolbar {
 		overflow-y: hidden;
 		max-height: 2.5em;

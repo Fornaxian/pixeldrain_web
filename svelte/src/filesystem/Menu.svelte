@@ -25,8 +25,8 @@ const click = e => {
 
 <div class="wrapper">
 	<button bind:this={button} on:click={open} href="/user" class="button round" title="Menu">
-		<PixeldrainLogo style="height: 1.6em; width: 1.6em; margin: 0;"></PixeldrainLogo>
-		<span>
+		<PixeldrainLogo style="height: 1.8em; width: 1.8em; margin: 0;"></PixeldrainLogo>
+		<span class="button_username">
 			{window.user.username === "" ? "Pixeldrain" : window.user.username}
 		</span>
 	</button>
@@ -37,6 +37,7 @@ const click = e => {
 <dialog bind:this={dialog} on:click={click}>
 	<div class="menu">
 		{#if window.user.username !== ""}
+			<div class="menu_username">{window.user.username}</div>
 			<div class="stats_table">
 				<div>Subscription</div>
 				<div>{window.user.subscription.name}</div>
@@ -53,9 +54,13 @@ const click = e => {
 			</div>
 			<Button link_href="/d/me" icon="folder" label="My Filesystem"/>
 			<Button link_href="/user" icon="person" label="Profile"/>
-			<Button link_href="/user/settings" icon="settings" label="Settings"/>
+			<Button link_href="/user/settings" icon="settings" label="Account Settings"/>
 			<Button link_href="/user/subscription" icon="shopping_cart" label="Subscription"/>
 			<Button link_href="/user/prepaid/transactions" icon="receipt" label="Transactions"/>
+
+			{#if window.user.is_admin}
+				<Button link_href="/admin" icon="admin_panel_settings" label="Admin Panel"/>
+			{/if}
 		{:else}
 			<Button link_href="/" icon="home" label="Home"/>
 			<Button link_href="/#pro" icon="star" label="Get Premium"/>
@@ -94,10 +99,22 @@ dialog {
 	display: flex;
 	flex-direction: column;
 }
+.menu_username {
+	text-align: center;
+	border-bottom: 2px solid var(--separator);
+	font-size: 1.1em;
+}
 .stats_table {
 	display: grid;
 	grid-template-columns: auto auto;
 	gap: 0.2em 1em;
 	margin: 3px;
+}
+
+/* Hide username on small screen */
+@media(max-width: 800px) {
+	.button_username {
+		display: none;
+	}
 }
 </style>
