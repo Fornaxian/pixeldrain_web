@@ -29,7 +29,7 @@ export const navigate = async (path, push_history) => {
 	console.debug("Navigating to path", path, push_history)
 
 	try {
-		let resp = await fs_get_node(path)
+		const resp = await fs_get_node(path)
 		open_node(resp, push_history)
 	} catch (err) {
 		if (err.value && err.value === "path_not_found") {
@@ -59,7 +59,7 @@ export const open_node = (node, push_history) => {
 	// to a 404 page when refreshing after renaming a file
 	if (history_enabled) {
 		window.document.title = node.path[node.base_index].name+" ~ pixeldrain"
-		let url = "/d"+ fs_encode_path(node.path[node.base_index].path)
+		const url = "/d"+ fs_encode_path(node.path[node.base_index].path)
 		if (push_history) {
 			window.history.pushState({}, window.document.title, url)
 		} else {
@@ -72,8 +72,8 @@ export const open_node = (node, push_history) => {
 	if (node.path.length > 1 && node.path[node.path.length-2].path === state.base.path) {
 		console.debug("Current parent path and new node path match. Saving siblings")
 
-		siblings_path = node.path[node.path.length-1].path
-		siblings = state.children
+		cached_siblings_path = node.path[node.path.length-1].path
+		cached_siblings = state.children
 	}
 
 	// Sort directory children
@@ -104,8 +104,25 @@ export const open_node = (node, push_history) => {
 // directory. The siblings_path variable is used to verify that the parent
 // directory is still the same. If it's sifferent the siblings array is not
 // used
-let siblings_path = ""
-let siblings = null
+let cached_siblings_path = ""
+let cached_siblings = null
+
+export const get_siblings = async () => {
+	// Check if we already have siblings cached
+	if (cached_siblings === null || cached_siblings_path !== state.path[state.path.length - 2].path) {
+		console.debug("Cached siblings not available. Fetching new")
+		const resp = await fs_get_node(state.path[state.path.length - 2].path)
+
+		// Sort directory children to make sure the order is consistent
+		sort_children(resp.children)
+
+		// Save new siblings in navigator state
+		cached_siblings_path = state.path[state.path.length - 2].path
+		cached_siblings = resp.children
+	}
+
+	return cached_siblings
+}
 
 // Opens a sibling of the currently open file. The offset is relative to the
 // file which is currently open. Give a positive number to move forward and a
@@ -117,26 +134,14 @@ export const open_sibling = async offset => {
 
 	dispatch("loading", true)
 
-	// Check if we already have siblings cached
-	if (siblings != null && siblings_path == state.path[state.path.length - 2].path) {
-		console.debug("Using cached siblings", siblings)
-	} else {
-		console.debug("Cached siblings not available. Fetching new")
-		try {
-			let resp = await fs_get_node(state.path[state.path.length - 2].path)
-
-			// Sort directory children to make sure the order is consistent
-			sort_children(resp.children)
-
-			// Save new siblings in navigator state
-			siblings_path = state.path[state.path.length - 2].path
-			siblings = resp.children
-		} catch (err) {
-			console.error(err)
-			alert(err)
-			dispatch("loading", false)
-			return
-		}
+	let siblings
+	try {
+		siblings = await get_siblings()
+	} catch (err) {
+		console.error(err)
+		alert(err)
+		dispatch("loading", false)
+		return
 	}
 
 	let next_sibling = null
@@ -191,7 +196,7 @@ const sort_children = children => {
 // Capture browser back and forward navigation buttons
 window.onpopstate = (e) => {
 	// Get the part of the URL after the fs root and navigate to it
-	let path = document.location.pathname.replace("/d/", "")
+	const path = document.location.pathname.replace("/d/", "")
 	navigate(decodeURIComponent(path), false)
 };
 </script>

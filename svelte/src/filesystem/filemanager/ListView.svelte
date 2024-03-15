@@ -83,7 +83,7 @@ export let large_icons = false
 .node {
 	display: table-row;
 	text-decoration: none;
-	color: var(--text-color);
+	color: var(--body_text-color);
 	padding: 6px;
 }
 .node:not(:last-child) {
