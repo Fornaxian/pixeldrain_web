@@ -53,6 +53,7 @@ const click = e => {
 				<div>{formatDataVolume(window.user.monthly_transfer_used, 3)}</div>
 			</div>
 			<Button link_href="/d/me" icon="folder" label="My Filesystem"/>
+			<Button link_href="/filesystem" icon="description" label="Filesystem Guide"/>
 			<Button link_href="/user" icon="person" label="Profile"/>
 			<Button link_href="/user/settings" icon="settings" label="Account Settings"/>
 			<Button link_href="/user/subscription" icon="shopping_cart" label="Subscription"/>
