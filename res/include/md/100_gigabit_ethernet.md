@@ -530,7 +530,7 @@ deployed.
 
 HTTP/2 and QUIC (HTTP/3) are new revisions of the HyperText Transfer Protocol.
 HTTP/2 introduces multiplexing which significantly reduces handshake latency.
-HTTP/1.1 will open a separate TCP session for each file it needs to reqeust,
+HTTP/1.1 will open a separate TCP session for each file it needs to request,
 HTTP/2 opens one connection instead and uses framing to send multiple requests
 at the same time instead, this allows the connection to ramp up to a higher
 speed and quicker. This goes hand in hand with the BBR congestion control
