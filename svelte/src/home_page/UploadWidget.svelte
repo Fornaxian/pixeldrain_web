@@ -417,8 +417,8 @@ const keydown = (e) => {
 			Pixeldrain costs a lot of money to maintain. Currently the site
 			makes just barely enough money to pay for hosting. I have never been
 			able to compensate myself for the hours I have put in developing
-			this project. Please consider getting getting a subscription so I
-			can continue working on pixeldrain and make it even better.
+			this project. Please consider getting a subscription so I can
+			continue working on pixeldrain and make it even better.
 		</p>
 		<p>
 			Pro costs only <b>€40 per year</b> or <b>€4 per month</b>. You will
