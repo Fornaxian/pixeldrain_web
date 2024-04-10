@@ -44,30 +44,56 @@ onMount(() => {
 				Try disconnecting all Pixeldrain logins and try again.
 			</p>
 			<p>
-				If it has been more than 30 minutes, your payment is complete and
-				the upgrade still fails please contact me on Patreon or through
-				e-mail at support@pixeldrain.com.
+				It might also help to try linking the subscription in a
+				different web browser. Sometimes cookies or cached redirects can
+				cause issues with the authentication process. Try linking your
+				subscription in <a
+				href="https://www.mozilla.org/firefox/">Firefox</a> for example.
 			<p/>
 			<p>
-				When contacting support please provide the following information:<br/>
-				Server response: {patreon_message}<br/>
-				Server error code: {patreon_error}
+				If the information above does not solve your issue then please
+				contact me on <a
+				href="https://www.patreon.com/messages">Patreon</a> or <a
+				href="https://discord.gg/UDjaBGwr4p">Discord</a>. When
+				contacting support please provide the following
+				information:<br/> Server response: {patreon_message}<br/> Server
+				error code: {patreon_error}
 			</p>
 		</div>
 	{:else if patreon_result === "pledge_not_found"}
 		<div class="highlight_yellow">
 			<p>
-				We were not able to find your payment on Patreon. Please
-				wait until the payment is confirmed and try again. Even if
-				the payment says confirmed on Patreon itself it takes a
-				while before it's communicated to pixeldrain. Please wait at
-				least 10 minutes and try again.
+				We were not able to find your payment on Patreon. There can be a
+				few reasons for this, which I will list below:
 			</p>
-			<p>
-				If it has been more than 30 minutes, your payment is complete
-				and the upgrade still fails please contact me on Patreon or
-				through e-mail at support@pixeldrain.com.
-			<p/>
+			<ol>
+				<li>
+					Your payment is not confirmed yet. It can take up to 30
+					minutes before your payment is confirmed. If you paid with
+					PayPal it's usually instant, but with creditcard it can take
+					longer. If your payment is not confirmed after 30 minutes
+					please contact me on <a
+					href="https://www.patreon.com/messages">Patreon</a> or <a
+					href="https://discord.gg/UDjaBGwr4p">Discord</a>.
+				</li>
+				<li>
+					You pledged without selecting a support tier. It happens
+					sometimes that people pledge an amount of money without
+					selecting a support tier. If you don't have a tier
+					pixeldrain won't know which subscription you should get,
+					regardless of how much you paid. To fix this you can select
+					a tier from <a
+					href="https://www.patreon.com/pixeldrain/membership">the
+					memberships page</a> and proceed to checkout. If you already
+					pledged the right amount you will not have to pay again.
+				</li>
+				<li>
+					Or you have not pledged at all yet. In that case it's
+					simple: <a
+					href="https://www.patreon.com/pixeldrain/membership">go to
+					Patreon</a> and purchase a membership.
+				</li>
+			</ol>
 			<p>
 				When contacting support please provide the following
 				information:<br/>Server response: {patreon_message}<br/>Server
