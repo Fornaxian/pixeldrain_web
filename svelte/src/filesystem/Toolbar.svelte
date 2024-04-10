@@ -136,7 +136,7 @@ let expand = e => {
 }
 .grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(7.5em, 1fr));
 }
 .separator {
 	height: 2px;

@@ -78,7 +78,7 @@ let sort = (field) => {
 					<td>{peer.address}</td>
 					<td>{peer.unreachable_count}</td>
 					<td>{peer.load_1_min.toFixed(1)} / {peer.load_5_min.toFixed(1)} / {peer.load_15_min.toFixed(1)}</td>
-					<td>{(peer.latency/1000).toPrecision(3)}</td>
+					<td>{(peer.latency/1000).toFixed(3)}</td>
 					<td>{formatDataVolume(peer.avg_network_tx, 3)}/s</td>
 					<td>{formatDataVolume(peer.avg_network_rx, 3)}/s</td>
 					<td>{peer.network_ratio.toFixed(2)}</td>

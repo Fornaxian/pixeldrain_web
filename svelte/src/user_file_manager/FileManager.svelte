@@ -367,7 +367,7 @@ is collapsed */
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: row;
-	padding: 4px;
+	padding: 2px;
 }
 .nav_bar > button {
 	flex-shrink: 0;

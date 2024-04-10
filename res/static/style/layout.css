@@ -494,13 +494,13 @@ select {
 	flex-direction: row;
 	gap: 0.25em;
 	border-radius: 6px;
-	margin: 3px;
+	margin: 2px;
 	background: var(--input_background);
-	padding: 4px 5px;
+	padding: 3px 4px;
 	overflow: hidden;
 	color: var(--input_text);
 	cursor: pointer;
-	box-shadow: 1px 1px 0px 1px var(--shadow_color);
+	box-shadow: 1px 1px 0px 0px var(--shadow_color);
 	transition: padding 0.1s, box-shadow 0.1s, background 0.1s;
 
 	/* Align content vertically in relation to the container */
@@ -542,8 +542,8 @@ input[type="button"]:active,
 input[type="color"]:active,
 select:active {
 	box-shadow: inset 4px 4px 6px var(--shadow_color);
-	/* Exactly 4px offset compared to the inactive padding to give a depth effect */
-	padding: 8px 1px 0px 9px;
+	/* Exactly 3px offset compared to the inactive padding to give a depth effect */
+	padding: 6px 1px 0px 7px;
 }
 
 .button_highlight {
@@ -571,7 +571,7 @@ select.disabled {
 	color: var(--input_disabled_text);
 	box-shadow: none;
 	transition: none;
-	padding: 5px 5px 5px 5px;
+	padding: 3px 4px;
 	cursor: not-allowed;
 	background: var(--input_background);
 }
@@ -627,7 +627,7 @@ button>svg,
 
 .tab_bar>button,
 .tab_bar>.button {
-	margin: .5em .4em 0 .4em;
+	margin: .5em .3em 0 .3em;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 	min-width: 5em;
@@ -649,13 +649,13 @@ input[type="number"],
 input[type="date"],
 input[type="datetime-local"] {
 	display: inline-block;
-	margin: 3px;
+	margin: 2px;
 	/* Same as button, to make them align nicely */
 	border: none;
-	border-radius: 6px;
+	border-radius: 5px;
 	background: var(--input_background);
-	padding: 3px 5px;
-	box-shadow: inset 1px 1px 0px 1px var(--shadow_color);
+	padding: 3px 4px;
+	box-shadow: inset 1px 1px 0px 0px var(--shadow_color);
 	/* override user-agent style */
 	min-width: 100px;
 	color: var(--input_text);
@@ -737,43 +737,6 @@ input[type=file] {
 	height: 10px;
 	width: 10px;
 }
-
-::-webkit-scrollbar-button:single-button:vertical:decrement {
-	display: none;
-	/* border-width: 0 8px 8px 8px; */
-	/* border-color: transparent transparent var(--scrollbar_foreground_color) transparent; */
-}
-
-/* ::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
-	border-color: transparent transparent var(--scrollbar_hover_color) transparent;
-} */
-::-webkit-scrollbar-button:single-button:vertical:increment {
-	display: none;
-	/* border-width: 8px 8px 0 8px; */
-	/* border-color: var(--scrollbar_foreground_color) transparent transparent transparent; */
-}
-
-/* ::-webkit-scrollbar-button:vertical:single-button:increment:hover {
-	border-color: var(--scrollbar_hover_color) transparent transparent transparent;
-} */
-::-webkit-scrollbar-button:single-button:horizontal:decrement {
-	display: none;
-	/* border-width: 8px 8px 8px 0px; */
-	/* border-color: transparent var(--scrollbar_foreground_color) transparent transparent; */
-}
-
-/* ::-webkit-scrollbar-button:single-button:horizontal:decrement:hover {
-	border-color: transparent var(--scrollbar_hover_color) transparent transparent;
-} */
-::-webkit-scrollbar-button:single-button:horizontal:increment {
-	display: none;
-	/* border-width: 8px 0px 8px 8px; */
-	/* border-color: transparent transparent transparent var(--scrollbar_foreground_color); */
-}
-
-/* ::-webkit-scrollbar-button:horizontal:single-button:increment:hover {
-    border-color: transparent transparent transparent var(--scrollbar_hover_color);
-} */
 
 /* Firefox Scrollbar */
 

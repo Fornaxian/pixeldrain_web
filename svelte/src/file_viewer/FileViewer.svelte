@@ -444,7 +444,7 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
-			<CopyButton bind:this={copy_btn} text={window.location.href} style="width: calc(100% - 6px)">
+			<CopyButton bind:this={copy_btn} text={window.location.href} style="width: calc(100% - 4px)">
 				<u>C</u>opy link
 			</CopyButton>
 
@@ -626,7 +626,7 @@ const keyboard_event = evt => {
 	display: flex;
 	flex-direction: row;
 	text-align: left;
-	padding: 4px;
+	padding: 2px;
 	align-items: center;
 }
 @media(max-height: 600px) {
@@ -707,7 +707,7 @@ const keyboard_event = evt => {
 .toolbar.toolbar_visible { left: 0; }
 
 .toolbar_button{
-	width: calc(100% - 6px);
+	width: calc(100% - 4px);
 }
 .toolbar_button > span {
 	vertical-align: middle;

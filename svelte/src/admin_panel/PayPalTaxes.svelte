@@ -94,7 +94,9 @@ const get_page = async (url) => {
 			v.method === "paypal" &&
 			v.status === "paid" &&
 			(new Date(v.createdAt)) > startDate &&
-			(new Date(v.createdAt)) < endDate
+			(new Date(v.createdAt)) < endDate &&
+			(v.amountRefunded === undefined || v.amountRefunded.value === "0.00") &&
+			(v.amountChargedBack === undefined || v.amountChargedBack.value === "0.00")
 		) {
 			payments.push(v)
 			added++

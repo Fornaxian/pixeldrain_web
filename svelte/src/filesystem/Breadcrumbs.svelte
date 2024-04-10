@@ -41,14 +41,10 @@ export let fs_navigator
 	word-break: break-all;
 	display: inline-flex;
 	flex-direction: row;
-	line-height: 1em;
 }
 .node_name {
-	/* This padding makes sure that characters which extend below the
-	line-height do not get cut off */
-	padding: 4px 2px;
-	max-width: 20vw;
-	overflow: hidden;
+	max-width: 25vw;
+	overflow-x: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }

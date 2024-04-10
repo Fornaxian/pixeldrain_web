@@ -18,7 +18,10 @@ export let sort_func
 
 <style>
 button {
+	display: block;
 	margin: 0;
 	line-height: 1em;
+	width: 100%;
+	text-align: center;
 }
 </style>

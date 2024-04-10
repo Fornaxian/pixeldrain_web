@@ -223,7 +223,7 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 	flex-direction: row;
 	text-align: left;
 	box-shadow: none;
-	padding: 4px;
+	padding: 2px;
 }
 
 /* File preview area (row 2) */

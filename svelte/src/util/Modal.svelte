@@ -140,7 +140,7 @@ these padding divs to move it 25% up */
 .title {
 	flex-grow: 1;
 	flex-shrink: 1;
-	font-size: 1.2em;
+	font-size: 1.1em;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
