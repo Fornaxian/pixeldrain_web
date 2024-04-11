@@ -1,19 +1,35 @@
 <script>
 import { createEventDispatcher } from "svelte"
+import { swipe_nav } from "./SwipeNavigate.svelte";
 let dispatch = createEventDispatcher()
 
-export const set_file = f => file = f
+export const set_file = f => {
+	file = f
+	dispatch("loading", true)
+}
 let file = {
 	id: "",
 	name: "",
 	mime_type: "",
 	get_href: "",
 }
+export let is_list = false
 
 let container
 let zoom = false
 let x, y = 0
 let dragging = false
+
+// For some reason the dblclick event is firing twice during testing.. So here's
+// an event debouncer
+let last_dblclick = 0
+const double_click = e => {
+	let now = Date.now()
+	if (now - last_dblclick > 500) {
+		zoom = !zoom
+	}
+	last_dblclick = now
+}
 
 const mousedown = (e) => {
 	if (!dragging && e.which === 1 && zoom) {
@@ -48,20 +64,35 @@ const mouseup = (e) => {
 		return false
 	}
 }
+
+let container_style = ""
+const on_load = () => {
+	dispatch("loading", false)
+	container_style = ""
+}
 </script>
 
 <svelte:window on:mousemove={mousemove} on:mouseup={mouseup} />
 
-<div bind:this={container} class="container" class:zoom>
+<div
+	bind:this={container}
+	class="container"
+	class:zoom
+	use:swipe_nav={!zoom && is_list}
+	on:style={e => container_style = e.detail}
+	on:prev
+	on:next
+	style={container_style}
+>
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img
-		on:loadstart={() => {dispatch("loading", true)}}
-		on:load={() => {dispatch("loading", false)}}
-		on:error={() => {dispatch("loading", false)}}
-		on:dblclick={() => {zoom = !zoom}}
-		on:doubletap={() => {zoom = !zoom}}
+		on:load={on_load}
+		on:error={on_load}
+		on:dblclick={double_click}
+		on:doubletap={double_click}
 		on:mousedown={mousedown}
-		class="image" class:zoom
+		class="image"
+		class:zoom
 		src={file.get_href}
 		alt={file.name} />
 </div>

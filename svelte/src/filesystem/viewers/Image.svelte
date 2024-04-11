@@ -1,12 +1,20 @@
 <script>
+import { createEventDispatcher } from "svelte";
+import { swipe_nav } from "../../file_viewer/viewers/SwipeNavigate.svelte";
 import { fs_path_url } from "../FilesystemUtil";
 
+let dispatch = createEventDispatcher()
 
 export let state
 let container
 let zoom = false
 let x, y = 0
 let dragging = false
+let container_style = ""
+
+export const update = () => {
+	container_style = ""
+}
 
 const mousedown = (e) => {
 	if (!dragging && e.which === 1 && zoom) {
@@ -45,7 +53,16 @@ const mouseup = (e) => {
 
 <svelte:window on:mousemove={mousemove} on:mouseup={mouseup} />
 
-<div bind:this={container} class="container" class:zoom>
+<div
+	bind:this={container}
+	class="container"
+	class:zoom
+	use:swipe_nav={!zoom}
+	on:style={e => container_style = e.detail}
+	on:prev={() => dispatch("open_sibling", -1)}
+	on:next={() => dispatch("open_sibling", 1)}
+	style={container_style}
+>
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img
 		on:dblclick={() => {zoom = !zoom}}

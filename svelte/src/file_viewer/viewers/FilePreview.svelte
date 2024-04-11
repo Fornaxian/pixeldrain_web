@@ -59,7 +59,7 @@ export const set_file = async file => {
 {:else if viewer_type === "rate_limit"}
 	<RateLimit bind:this={viewer} on:download></RateLimit>
 {:else if viewer_type === "image"}
-	<Image bind:this={viewer} on:loading></Image>
+	<Image bind:this={viewer} is_list={is_list} on:prev on:next on:loading></Image>
 {:else if viewer_type === "video"}
 	<Video bind:this={viewer} is_list={is_list} on:loading on:download on:prev on:next on:reload></Video>
 {:else if viewer_type === "audio"}

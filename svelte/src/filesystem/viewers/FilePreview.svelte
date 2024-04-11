@@ -56,11 +56,11 @@ const state_update = async (base) => {
 		<CustomBanner path={state.path}/>
 	</FileManager>
 {:else if viewer_type === "audio"}
-	<Audio bind:this={viewer} fs_navigator={fs_navigator} state={state}>
+	<Audio state={state} bind:this={viewer} fs_navigator={fs_navigator}>
 		<CustomBanner path={state.path}/>
 	</Audio>
 {:else if viewer_type === "image"}
-	<Image state={state} on:open_sibling/>
+	<Image state={state} bind:this={viewer} on:open_sibling/>
 {:else if viewer_type === "video"}
 	<Video state={state} bind:this={viewer} on:open_sibling/>
 {:else if viewer_type === "pdf"}

@@ -23,7 +23,7 @@
 	font-style: normal;
 	font-size: 1.5em;
 	display: inline-block;
-	line-height: 1;
+	line-height: 1em;
 	text-transform: none;
 	letter-spacing: normal;
 	word-wrap: normal;
@@ -496,7 +496,7 @@ select {
 	border-radius: 6px;
 	margin: 2px;
 	background: var(--input_background);
-	padding: 3px 4px;
+	padding: 3px;
 	overflow: hidden;
 	color: var(--input_text);
 	cursor: pointer;
@@ -543,7 +543,7 @@ input[type="color"]:active,
 select:active {
 	box-shadow: inset 4px 4px 6px var(--shadow_color);
 	/* Exactly 3px offset compared to the inactive padding to give a depth effect */
-	padding: 6px 1px 0px 7px;
+	padding: 6px 0px 0px 6px;
 }
 
 .button_highlight {
@@ -654,7 +654,7 @@ input[type="datetime-local"] {
 	border: none;
 	border-radius: 5px;
 	background: var(--input_background);
-	padding: 3px 4px;
+	padding: 3px;
 	box-shadow: inset 1px 1px 0px 0px var(--shadow_color);
 	/* override user-agent style */
 	min-width: 100px;

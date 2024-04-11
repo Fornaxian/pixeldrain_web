@@ -94,7 +94,6 @@ export const set_item = idx => {
 .nav_button{
 	flex-grow: 0;
 	flex-shrink: 0;
-	margin: 4px;
 }
 
 .list_navigator {
@@ -107,9 +106,9 @@ export const set_item = idx => {
 
 .file_button {
 	position: relative;
-	height: 48px;
+	height: 2.6em;
 	width: 220px;
-	margin: 4px 3px;
+	margin: 2px;
 	padding: 0;
 	overflow: hidden;
 	border-radius: 6px;
@@ -124,7 +123,7 @@ export const set_item = idx => {
 	text-decoration: none;
 	vertical-align: top;
 	cursor: pointer;
-	border-width: 2px;
+	border-width: 1px;
 	border-style: solid;
 	border-color: var(--input_background);
 	box-shadow: 1px 1px 0px 0px var(--shadow_color);

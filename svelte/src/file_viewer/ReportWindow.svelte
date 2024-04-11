@@ -182,9 +182,12 @@ const report_description = () => {
 
 		{#each abuse_categories as cat}
 			{#if cat.filter === undefined || cat.filter(file.mime_type) }
-				<label class="type_label" for="type_{cat.type}">
-					<input class="type_button" type="radio" bind:group={abuse_type} id="type_{cat.type}" name="abuse_type" value="{cat.type}">
-					<span class="type_desc"><b>{cat.name}</b>: {cat.desc}</span>
+				<label for="type_{cat.type}">
+					<input type="radio" bind:group={abuse_type} id="type_{cat.type}" name="abuse_type" value="{cat.type}">
+					<div>
+						<b>{cat.name}</b><br/>
+						{cat.desc}
+					</div>
 				</label>
 			{/if}
 		{/each}
@@ -193,11 +196,11 @@ const report_description = () => {
 			<h3>Report multiple files?</h3>
 			<label for="report_single">
 				<input type="radio" bind:group={single_or_all} id="report_single" name="single_or_all" value="single">
-				Report only the selected file ({file.name})
+				<div>Report only the selected file ({file.name})</div>
 			</label>
 			<label for="report_all" style="border-bottom: none;">
 				<input type="radio" bind:group={single_or_all} id="report_all" name="single_or_all" value="all">
-				Report all {list.files.length} files in this album
+				<div>Report all {list.files.length} files in this album</div>
 			</label>
 		{/if}
 
@@ -270,9 +273,22 @@ const report_description = () => {
 	overflow: hidden;
 }
 label {
-	display: block;
-	border-bottom: 1px var(--separator) solid;
-	padding: 0.5em;
+	padding: 0.2em;
+	display: flex;
+	flex-direction: row;
+}
+label > input {
+	flex: 0 0 auto;
+	margin-right: 0.5em;
+}
+label > div {
+	flex: 1 1 auto;
+	padding: 0 0.2em;
+	border-radius: 6px;
+	border: 1px solid var(--separator);
+}
+input[type="radio"]:checked+div {
+	border-color: var(--highlight_color);
 }
 .spinner_container {
 	position: absolute;
@@ -293,16 +309,5 @@ label {
 }
 .report_form > textarea {
 	height: 5em;
-}
-.type_label {
-	display: flex;
-	flex-direction: row;
-}
-.type_button {
-	flex: 0 0 auto;
-	margin-right: 1em;
-}
-.type_label {
-	flex: 1 1 auto;
 }
 </style>

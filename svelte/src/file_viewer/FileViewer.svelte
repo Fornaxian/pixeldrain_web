@@ -372,8 +372,9 @@ const keyboard_event = evt => {
 		{#if !disable_menu}
 			<button
 				on:click={toolbar_toggle}
-				class="button_toggle_toolbar round"
+				class="round"
 				class:button_highlight={toolbar_visible}
+				style="line-height: 1em;"
 				title="Open or close the toolbar">
 				<i class="icon">menu</i>
 			</button>
