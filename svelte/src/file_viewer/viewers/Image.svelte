@@ -65,10 +65,10 @@ const mouseup = (e) => {
 	}
 }
 
-let container_style = ""
+let swipe_style = ""
 const on_load = () => {
 	dispatch("loading", false)
-	container_style = ""
+	swipe_style = ""
 }
 </script>
 
@@ -79,10 +79,9 @@ const on_load = () => {
 	class="container"
 	class:zoom
 	use:swipe_nav={!zoom && is_list}
-	on:style={e => container_style = e.detail}
+	on:style={e => swipe_style = e.detail}
 	on:prev
 	on:next
-	style={container_style}
 >
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img
@@ -93,6 +92,7 @@ const on_load = () => {
 		on:mousedown={mousedown}
 		class="image"
 		class:zoom
+		style={swipe_style}
 		src={file.get_href}
 		alt={file.name} />
 </div>

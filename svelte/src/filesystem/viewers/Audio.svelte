@@ -11,7 +11,9 @@ let playing = false
 let media_session = false
 let siblings = []
 
-const toggle_play = () => playing ? player.pause() : player.play()
+export const toggle_playback = () => {
+	playing ? player.pause() : player.play()
+}
 
 export const update = async () => {
 	if (media_session) {
@@ -56,7 +58,7 @@ onMount(() => {
 	<div style="text-align: center;">
 		<button on:click={() => fs_navigator.open_sibling(-1) }><i class="icon">skip_previous</i></button>
 		<button on:click={() => player.currentTime -= 10 }><i class="icon">replay_10</i></button>
-		<button on:click={toggle_play}>
+		<button on:click={toggle_playback}>
 			{#if playing}
 				<i class="icon">pause</i>
 			{:else}

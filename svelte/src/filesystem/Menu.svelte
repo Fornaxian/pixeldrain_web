@@ -25,7 +25,7 @@ const click = e => {
 
 <div class="wrapper">
 	<button bind:this={button} on:click={open} href="/user" class="button round" title="Menu">
-		<PixeldrainLogo style="height: 1.8em; width: 1.8em; margin: 0;"></PixeldrainLogo>
+		<PixeldrainLogo style="height: 1.8em; width: 1.8em; margin: 2px;"></PixeldrainLogo>
 		<span class="button_username">
 			{window.user.username === "" ? "Pixeldrain" : window.user.username}
 		</span>

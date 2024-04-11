@@ -340,6 +340,9 @@ const keyboard_event = evt => {
 				list_navigator.next()
 			}
 			break
+		case " ": // Spacebar pauses / unpauses video and audio playback
+			file_preview.toggle_playback()
+			break
 		case "s":
 		case "S":
 			if (evt.shiftKey) {

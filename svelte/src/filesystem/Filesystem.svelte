@@ -15,6 +15,7 @@ import Menu from './Menu.svelte';
 
 let loading = true
 let file_viewer
+let file_preview
 let toolbar
 let upload_widget
 let download_frame
@@ -78,6 +79,11 @@ const keydown = e => {
 		case "ArrowRight":
 			fs_navigator.open_sibling(1)
 			break;
+		case " ": // Spacebar pauses / unpauses video and audio playback
+			if (file_preview) {
+				file_preview.toggle_playback()
+			}
+			break
 		default:
 			action_performed = false
 	}
@@ -143,6 +149,7 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 		<div class="file_preview">
 			{#if view === "file"}
 				<FilePreview
+					bind:this={file_preview}
 					fs_navigator={fs_navigator}
 					state={state}
 					edit_window={edit_window}
@@ -225,7 +232,6 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 	flex-direction: row;
 	text-align: left;
 	box-shadow: none;
-	padding: 2px;
 }
 
 /* File preview area (row 2) */

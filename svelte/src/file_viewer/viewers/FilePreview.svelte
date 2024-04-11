@@ -46,6 +46,12 @@ export const set_file = async file => {
 		viewer.set_file(file)
 	}
 }
+
+export const toggle_playback = () => {
+	if (viewer && viewer.toggle_playback) {
+		viewer.toggle_playback()
+	}
+}
 </script>
 
 {#if viewer_type === "loading"}

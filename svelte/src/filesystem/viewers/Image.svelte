@@ -10,10 +10,15 @@ let container
 let zoom = false
 let x, y = 0
 let dragging = false
-let container_style = ""
 
 export const update = () => {
-	container_style = ""
+	dispatch("loading", true)
+}
+
+let swipe_style = ""
+const on_load = () => {
+	dispatch("loading", false)
+	swipe_style = ""
 }
 
 const mousedown = (e) => {
@@ -58,17 +63,20 @@ const mouseup = (e) => {
 	class="container"
 	class:zoom
 	use:swipe_nav={!zoom}
-	on:style={e => container_style = e.detail}
+	on:style={e => swipe_style = e.detail}
 	on:prev={() => dispatch("open_sibling", -1)}
 	on:next={() => dispatch("open_sibling", 1)}
-	style={container_style}
 >
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img
 		on:dblclick={() => {zoom = !zoom}}
 		on:doubletap={() => {zoom = !zoom}}
 		on:mousedown={mousedown}
-		class="image" class:zoom
+		on:load={on_load}
+		on:error={on_load}
+		class="image"
+		class:zoom
+		style={swipe_style}
 		src={fs_path_url(state.base.path)}
 		alt="no description available" />
 </div>

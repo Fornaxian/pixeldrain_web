@@ -16,13 +16,15 @@ export const swipe_nav = (node, swipe_enabled) => {
 			return
 		}
 
-		let offset_x = e.touches[0].clientX - start_x
-		let abs_x = Math.abs(offset_x)
-		let abs_y = Math.abs(e.touches[0].clientY - start_y)
-		let neg = offset_x < 0 ? -1 : 1
+		const offset_x = e.touches[0].clientX - start_x
+		const abs_x = Math.abs(offset_x)
+		const abs_y = Math.abs(e.touches[0].clientY - start_y)
+		const neg = offset_x < 0 ? -1 : 1
 
-		if (abs_x > 100 && abs_y < abs_x/3) {
-			set_offset((abs_x-100)*neg, false)
+		// The cursor must have moved at least 50 pixels and three times as much
+		// on the x axis than the y axis for it to count as a swipe
+		if (abs_x > 50 && abs_y < abs_x/3) {
+			set_offset((abs_x-50)*neg, false)
 		} else {
 			set_offset(0, true)
 		}

@@ -39,6 +39,12 @@ const state_update = async (base) => {
 		viewer.update()
 	}
 }
+
+export const toggle_playback = () => {
+	if (viewer && viewer.toggle_playback) {
+		viewer.toggle_playback()
+	}
+}
 </script>
 
 {#if viewer_type === ""}

@@ -48,7 +48,9 @@ export const set_file = async f => {
 	}
 }
 
-const toggle_play = () => playing ? player.pause() : player.play()
+export const toggle_playback = () => {
+	playing ? player.pause() : player.play()
+}
 
 </script>
 
@@ -63,7 +65,7 @@ const toggle_play = () => playing ? player.pause() : player.play()
 	<button on:click={() => player.currentTime -= 10 }>
 		<i class="icon">replay_10</i>
 	</button>
-	<button on:click={toggle_play}>
+	<button on:click={toggle_playback}>
 		{#if playing}
 			<i class="icon">pause</i>
 		{:else}

@@ -37,6 +37,10 @@ export const update = async () => {
 	}
 }
 
+export const toggle_playback = () => {
+	playing ? player.pause() : player.play()
+}
+
 onMount(() => {
 	if ('mediaSession' in navigator) {
 		media_session = true
@@ -47,8 +51,6 @@ onMount(() => {
 		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("open_sibling", 1));
 	}
 })
-
-const toggle_play = () => playing ? player.pause() : player.play()
 
 const seek_relative = delta => {
 	if (player.fastSeek) {
@@ -111,7 +113,7 @@ const fullscreen = () => {
 			<button on:click={() => seek_relative(-10)}>
 				<i class="icon">replay_10</i>
 			</button>
-			<button on:click={toggle_play} class="button_highlight">
+			<button on:click={toggle_playback} class="button_highlight">
 				{#if playing}
 					<i class="icon">pause</i>
 				{:else}

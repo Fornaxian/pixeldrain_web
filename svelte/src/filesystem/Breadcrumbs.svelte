@@ -43,7 +43,7 @@ export let fs_navigator
 	flex-direction: row;
 }
 .node_name {
-	max-width: 25vw;
+	max-width: 20vw;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
