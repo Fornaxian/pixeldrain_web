@@ -130,9 +130,12 @@ onDestroy(close_socket)
 .label {
 	padding-left: 0.5em;
 	text-align: left;
-	font-size: 0.75em;
-	line-height: 0.75em;
-	margin-top: 0.5em;
+	font-size: 0.8em;
+	line-height: 0.8em;
+	margin-top: 0.25em;
+}
+.stat {
+	line-height: 1.4em;
 }
 @media (max-width: 800px) {
 	.label {

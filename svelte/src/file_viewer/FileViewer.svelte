@@ -32,13 +32,7 @@ let list = list_struct
 let is_list = false
 let list_downloadable = false
 let file_preview
-
 let list_navigator
-let list_shuffle = false
-let toggle_shuffle = () => {
-	list_shuffle = !list_shuffle
-}
-
 let sharebar
 let sharebar_visible = false
 let toggle_sharebar = () => {
@@ -338,10 +332,8 @@ const keyboard_event = evt => {
 				downloader.download_file() // S to download the current file
 			}
 			break
-		case "r": // R to toggle list shuffle
-			if (list_navigator) {
-				toggle_shuffle()
-			}
+		case "r": // R to toggle the report window
+			report_window.toggle()
 			break
 		case "c": // C to copy to clipboard
 			copy_btn.copy()
@@ -404,7 +396,6 @@ const keyboard_event = evt => {
 		<ListNavigator
 			bind:this={list_navigator}
 			files={list.files}
-			shuffle={list_shuffle}
 			on:set_file={e => open_file_index(e.detail)}
 			on:toggle_gallery={toggle_gallery}
 		>
@@ -468,21 +459,6 @@ const keyboard_event = evt => {
 				<span>QR code</span>
 			</button>
 
-			{#if is_list}
-				<button
-					class="toolbar_button"
-					title="Go to a random file when pressing → or clicking the next file button"
-					class:button_highlight={list_shuffle}
-					on:click={toggle_shuffle}>
-					<i class="icon">shuffle</i>
-					{#if list_shuffle}
-						<span>Shuffle&nbsp;&#x2611;</span>
-					{:else}
-						<span>Shuffle&nbsp;&#x2610;</span>
-					{/if}
-				</button>
-			{/if}
-
 			{#if view === "file"}
 				<button
 					class="toolbar_button"
@@ -517,6 +493,15 @@ const keyboard_event = evt => {
 				</button>
 			{/if}
 
+			<button
+				class="toolbar_button"
+				title="Report this file as abusive"
+				on:click={report_window.toggle}
+				class:button_highlight={report_visible}>
+				<i class="icon">flag</i>
+				<span>Report</span>
+			</button>
+
 			{#if !disable_download_button}
 				<button
 					class="toolbar_button"
@@ -527,16 +512,6 @@ const keyboard_event = evt => {
 					<span>E<u>m</u>bed</span>
 				</button>
 			{/if}
-
-			<button
-				class="toolbar_button"
-				title="Report this file as abusive"
-				on:click={report_window.toggle}
-				class:button_highlight={report_visible}>
-				<i class="icon">flag</i>
-				<span>Report</span>
-			</button>
-			<br/>
 		</div>
 
 		<div bind:this={file_preview_background}

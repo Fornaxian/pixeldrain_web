@@ -166,7 +166,7 @@ Toolbar.svelte and the .label max-width in FileStats.svelte */
 @media (max-width: 800px) {
 	.toolbar {
 		overflow-y: hidden;
-		max-height: 2.5em;
+		max-height: 2.2em;
 	}
 	.toolbar.expanded {
 		overflow-y: scroll;

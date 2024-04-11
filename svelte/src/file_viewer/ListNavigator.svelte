@@ -4,23 +4,12 @@ import { createEventDispatcher } from "svelte";
 let dispatch = createEventDispatcher()
 
 export let files = []
-export let shuffle = false
 let file_list_div
 let selected_file_index = 0
 
-export const next = () => {
-	if (shuffle) {
-		rand_item()
-	} else {
-		dispatch("set_file", selected_file_index+1)
-	}
-}
-export const prev = () => {
-	dispatch("set_file", selected_file_index-1)
-}
-export const toggle_gallery = () => {
-	dispatch("toggle_gallery")
-}
+export const next = () => dispatch("set_file", selected_file_index+1)
+export const prev = () => dispatch("set_file", selected_file_index-1)
+export const toggle_gallery = () => dispatch("toggle_gallery")
 
 let history = []
 export const rand_item = () => {

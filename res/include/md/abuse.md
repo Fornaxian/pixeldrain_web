@@ -9,9 +9,18 @@ will be removed when reported.
   not valid it will be ignored. Takedown requests which are sent to any other
   address than abuse@pixeldrain.com will also be ignored. See the chapter
   [Copyright infringement](#copyright-infringement) below.
+* **Porn**: Pornographic material is not strictly banned on pixeldrain. But in
+  order to comply with international regulations I have to prevent it from
+  spreading too far. For this reason pornographic videos and images can be
+  reported through the file reporting form. Once reported the file will be
+  removed from public viewing. The IP address of the uploader will not be
+  banned, and if the file was uploaded with an account, the owner of the file
+  will still be able to download their files.
 * **Abuse of minors**: Videos, images or audio fragments depicting abuse or
   inappropriate touching of minors will be removed and reported to the National
   Center for Missing and Exploited Children when found.
+* **Zoophilia**: Videos, images or audio depicting abuse or inappropriate
+  touching of animals.
 * **Terrorism**: Videos, images or audio fragments which promote and
   glorify acts of terrorism.
 * **Gore**: Graphic and shocking videos or images depicting severe harm to
@@ -24,6 +33,8 @@ will be removed when reported.
 * **Doxing**: Posting private information about an individual or organisation.
   This includes publicly sharing private photos, videos or documents. Shaming
   and extortion are not accepted.
+* **Revenge porn**: The distribution of sexually explicit images or videos of
+  individuals without their consent
 
 Violating these rules will result in your IP address being banned from uploading
 to pixeldrain.
