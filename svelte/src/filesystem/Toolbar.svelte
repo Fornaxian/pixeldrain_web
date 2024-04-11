@@ -188,6 +188,7 @@ let expand = e => {
 }
 .button_expand {
 	display: none;
+	line-height: 1em;
 }
 
 /* This max-width needs to be synced with the .viewer_area max-width in
@@ -195,11 +196,11 @@ Toolbar.svelte and the .label max-width in FileStats.svelte */
 @media (max-width: 800px) {
 	.toolbar {
 		overflow-y: hidden;
-		max-height: 2.2em;
+		max-height: 2.1em;
 	}
 	.toolbar.expanded {
 		overflow-y: scroll;
-		max-height: 40vh;
+		max-height: 25vh;
 	}
 	.stats_container {
 		flex-direction: row;
