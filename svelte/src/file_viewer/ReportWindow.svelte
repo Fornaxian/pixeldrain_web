@@ -11,6 +11,45 @@ export let list = {
 	files: [],
 }
 
+const abuse_categories = [
+	{
+		type: "copyright", name: "Copyright",
+		desc: `Protected content which is shared without constent from the
+			rightsholder`,
+	}, {
+		type: "porn", name: "Porn",
+		desc: `Sexually explicit videos or images`,
+	}, {
+		type: "terrorism", name: "Terrorism",
+		desc: `Videos, images or audio fragments showing or promoting the use
+			of intentional violence to achieve political aims`,
+	}, {
+		type: "gore", name: "Gore",
+		desc: `Graphic and shocking videos or images depicting severe harm to
+			humans (or animals)`,
+	}, {
+		type: "child_abuse", name: "Child abuse",
+		desc: `Videos or images depicting inappropriate touching or nudity of
+			children under 18 years old`,
+	}, {
+		type: "zoophilia", name: "Zoophilia",
+		desc: `Videos or images depicting of sexual acts being performed on
+			animals`,
+	}, {
+		type: "doxing", name: "Doxing",
+		desc: `Personally identifiable information being shared without the
+			consent of the owner. This includes things like passport scans,
+			e-mail addresses, telephone numbers and passwords`,
+	}, {
+		type: "malware", name: "Malware",
+		desc: `Software programs designed to cause harm to computer systems`,
+	}, {
+		type: "revenge_porn", name: "Revenge porn",
+		desc: `The distribution of sexually explicit images or videos of
+			individuals without their consent`,
+	},
+]
+
 let abuse_type = ""
 let single_or_all = "single"
 let loading = false
@@ -119,42 +158,13 @@ const report_description = () => {
 			Which type of abuse is shown in this file? Pick the most
 			appropriate one.
 		</p>
-		<label for="type_copyright" style="border-bottom: none;">
-			<input type="radio" bind:group={abuse_type} id="type_copyright" name="abuse_type" value="copyright">
-			<b>Copyright</b>: Protected content which is shared without constent
-			from the rightsholder
-		</label>
-		<label for="type_terrorism">
-			<input type="radio" bind:group={abuse_type} id="type_terrorism" name="abuse_type" value="terrorism">
-			<b>Terrorism</b>: Videos, images or audio fragments showing
-			or promoting the use of intentional violence to achieve
-			political aims
-		</label>
-		<label for="type_gore">
-			<input type="radio" bind:group={abuse_type} id="type_gore" name="abuse_type" value="gore">
-			<b>Gore</b>: Graphic and shocking videos or images depicting
-			severe harm to humans (or animals)
-		</label>
-		<label for="type_child_abuse">
-			<input type="radio" bind:group={abuse_type} id="type_child_abuse" name="abuse_type" value="child_abuse">
-			<b>Child abuse</b>: Videos or images depicting inappropriate
-			touching or nudity of minors
-		</label>
-		<label for="type_doxing">
-			<input type="radio" bind:group={abuse_type} id="type_doxing" name="doxing" value="doxing">
-			<b>Doxing</b>: Personally identifiable information uploaded without
-			the consent of the owner
-		</label>
-		<label for="type_malware">
-			<input type="radio" bind:group={abuse_type} id="type_malware" name="abuse_type" value="malware">
-			<b>Malware</b>: Software programs designed to cause harm to
-			computer systems
-		</label>
-		<label for="type_revenge_porn">
-			<input type="radio" bind:group={abuse_type} id="type_revenge_porn" name="abuse_type" value="revenge_porn">
-			<b>Revenge porn</b>: The distribution of sexually explicit images or
-			videos of individuals without their consent
-		</label>
+
+		{#each abuse_categories as cat}
+			<label for="type_{cat.type}">
+				<input type="radio" bind:group={abuse_type} id="type_{cat.type}" name="abuse_type" value="{cat.type}">
+				<b>{cat.name}</b>: {cat.desc}
+			</label>
+		{/each}
 
 		{#if list.id !== "" && file.id !== ""}
 			<h3>Report multiple files?</h3>

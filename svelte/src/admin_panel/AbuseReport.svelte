@@ -1,5 +1,5 @@
 <script>
-import { formatDate } from "../util/Formatting.svelte";
+import { formatDate, formatNumber } from "../util/Formatting.svelte";
 import Expandable from "../util/Expandable.svelte";
 import { createEventDispatcher } from "svelte";
 let dispatch = createEventDispatcher()
@@ -30,12 +30,12 @@ let set_status = async (action, report_type) => {
 			<div class="stats">Status<br/>{report.status}</div>
 		{/if}
 		<div class="stats">R<br/>{report.reports.length}</div>
-		<div class="stats">V<br/>{report.file.views}</div>
-		<div class="stats">DL<br/>{Math.round(report.file.bandwidth_used / report.file.size)}</div>
+		<div class="stats">V<br/>{formatNumber(report.file.views, 3)}</div>
+		<div class="stats">DL<br/>{formatNumber(report.file.bandwidth_used / report.file.size, 3)}</div>
 	</div>
 	<div class="details">
 		<div class="toolbar">
-			<div style="flex: 1 1 auto">
+			<div class="action_list">
 				<a class="button" target="_blank" href={"/u/"+report.file.id} rel="noreferrer">
 					<i class="icon">open_in_new</i> Open file
 				</a>
@@ -53,14 +53,16 @@ let set_status = async (action, report_type) => {
 					</button>
 				{/if}
 			</div>
-			<div style="flex: 0 1 auto">
+			<div class="type_list">
+				<button on:click={() => {set_status("grant", "copyright")}}>copyright</button>
+				<button on:click={() => {set_status("grant", "porn")}}>porn</button>
 				<button on:click={() => {set_status("grant", "terrorism")}}>terrorism</button>
 				<button on:click={() => {set_status("grant", "gore")}}>gore</button>
 				<button on:click={() => {set_status("grant", "child_abuse")}}>child_abuse</button>
+				<button on:click={() => {set_status("grant", "zoophilia")}}>zoophilia</button>
 				<button on:click={() => {set_status("grant", "malware")}}>malware</button>
 				<button on:click={() => {set_status("grant", "doxing")}}>doxing</button>
 				<button on:click={() => {set_status("grant", "revenge_porn")}}>revenge_porn</button>
-				<button on:click={() => {set_status("grant", "copyright")}}>copyright</button>
 			</div>
 		</div>
 		<div style="text-align: center;">
@@ -148,5 +150,27 @@ let set_status = async (action, report_type) => {
 .file_icon {
 	width:48px;
 	height:48px;
+}
+.action_list {
+	flex: 0 0 auto;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+@media(max-width: 600px) {
+	.action_list {
+		grid-template-columns: 1fr;
+	}
+}
+
+.type_list {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-content: center;
+}
+.type_list > * {
+	flex: 0 0 auto;
 }
 </style>

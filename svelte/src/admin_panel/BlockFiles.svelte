@@ -17,7 +17,9 @@ let block_form = {
 			radio_values: [
 				"unknown",
 				"copyright",
+				"porn",
 				"child_abuse",
+				"zoophilia",
 				"terrorism",
 				"gore",
 				"malware",
