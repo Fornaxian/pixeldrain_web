@@ -31,10 +31,12 @@ let file = file_struct
 let list = list_struct
 let is_list = false
 let list_downloadable = false
+let file_viewer
 let file_preview
 let list_navigator
 let sharebar
 let sharebar_visible = false
+let fullscreen = false
 let toggle_sharebar = () => {
 	if (navigator.share) {
 		let name = file.name
@@ -221,6 +223,20 @@ const toggle_gallery = () => {
 	}
 }
 
+const toggle_fullscreen = () => {
+	if (fullscreen || document.fullscreenElement) {
+		try {
+			document.exitFullscreen()
+		} catch (err) {
+			console.debug("Failed to exit fullscreen", err)
+		}
+		fullscreen = false
+	} else {
+		file_viewer.requestFullscreen()
+		fullscreen = true
+	}
+}
+
 // Premium page customizations. In the gallery view we will use the
 // customizations for the first file in the list, else we simply use the
 // selected file. In most cases they are all the same so the user won't notice
@@ -365,7 +381,7 @@ const keyboard_event = evt => {
 
 <svelte:window on:keydown={keyboard_event} on:hashchange={hash_change}/>
 
-<div class="file_viewer">
+<div class="file_viewer" bind:this={file_viewer}>
 	<div class="headerbar">
 		{#if !disable_menu}
 			<button
@@ -456,6 +472,19 @@ const keyboard_event = evt => {
 				title="Show a QR code with a link to this page. Useful for sharing files in-person">
 				<i class="icon">qr_code</i>
 				<span>QR code</span>
+			</button>
+
+			<button
+				class="toolbar_button"
+				on:click={toggle_fullscreen}
+				class:button_highlight={fullscreen}
+				title="Open page in full screen mode">
+				{#if fullscreen}
+					<i class="icon">fullscreen_exit</i>
+				{:else}
+					<i class="icon">fullscreen</i>
+				{/if}
+				<span>Fullscreen</span>
 			</button>
 
 			{#if view === "file"}

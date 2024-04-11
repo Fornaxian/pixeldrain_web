@@ -20,6 +20,7 @@ export let view = "file"
 export let details_visible = false
 export let edit_window
 export let edit_visible = false
+export let file_viewer
 
 $: share_url = generate_share_url(state.path)
 let link_copied = false
@@ -47,6 +48,21 @@ let share = async () => {
 		})
 	} else {
 		alert("Navigator does not support sharing, use copy link button to copy the link instead")
+	}
+}
+
+let fullscreen = false
+const toggle_fullscreen = () => {
+	if (fullscreen || document.fullscreenElement) {
+		try {
+			document.exitFullscreen()
+		} catch (err) {
+			console.debug("Failed to exit fullscreen", err)
+		}
+		fullscreen = false
+	} else {
+		file_viewer.requestFullscreen()
+		fullscreen = true
 	}
 }
 
@@ -112,6 +128,19 @@ let expand = e => {
 				<span>Share</span>
 			</button>
 		{/if}
+
+		<button
+			class="toolbar_button"
+			on:click={toggle_fullscreen}
+			class:button_highlight={fullscreen}
+			title="Open page in full screen mode">
+			{#if fullscreen}
+				<i class="icon">fullscreen_exit</i>
+			{:else}
+				<i class="icon">fullscreen</i>
+			{/if}
+			<span>Fullscreen</span>
+		</button>
 
 		<button on:click={() => details_visible = !details_visible} class:button_highlight={details_visible}>
 			<i class="icon">help</i>

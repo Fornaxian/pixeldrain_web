@@ -14,6 +14,7 @@ import { branding_from_path } from './edit_window/Branding.js'
 import Menu from './Menu.svelte';
 
 let loading = true
+let file_viewer
 let toolbar
 let upload_widget
 let download_frame
@@ -119,7 +120,7 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 	on:loading={loading_evt}
 />
 
-<div class="file_viewer">
+<div bind:this={file_viewer} class="file_viewer">
 	<div class="headerbar">
 		<Menu/>
 		<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
@@ -130,6 +131,7 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 			bind:this={toolbar}
 			fs_navigator={fs_navigator}
 			state={state}
+			file_viewer={file_viewer}
 			bind:details_visible={details_visible}
 			edit_window={edit_window}
 			bind:edit_visible={edit_visible}
