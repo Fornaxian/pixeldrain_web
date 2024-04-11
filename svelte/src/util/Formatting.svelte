@@ -6,7 +6,7 @@ export const formatNumber = (amt, precision) => {
 	} else if (amt >= 1e3) {
 		return (amt/1e3).toPrecision(precision) + "k";
 	}
-	return amt
+	return amt.toPrecision(precision)
 }
 
 export const formatThousands = (x) => {

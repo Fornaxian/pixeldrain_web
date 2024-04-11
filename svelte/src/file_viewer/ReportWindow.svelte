@@ -5,10 +5,27 @@ export let file = {
 	id: "",
 	name: "",
 	get_href: "",
+	mime_type: "",
 }
 export let list = {
 	id: "",
 	files: [],
+}
+
+const filter_visual = type => {
+	return type.startsWith("image/") ||
+		type.startsWith("video/") ||
+		type === "application/pdf"
+}
+const filter_audiovisual = type => {
+	return type.startsWith("image/") ||
+		type.startsWith("video/") ||
+		type.startsWith("audio/") ||
+		type === "application/pdf"
+}
+const filter_app = type => {
+	return type.startsWith("application/") ||
+		type.startsWith("text/")
 }
 
 const abuse_categories = [
@@ -19,14 +36,17 @@ const abuse_categories = [
 	}, {
 		type: "porn", name: "Porn",
 		desc: `Sexually explicit videos or images`,
+		filter: filter_visual,
 	}, {
 		type: "terrorism", name: "Terrorism",
 		desc: `Videos, images or audio fragments showing or promoting the use
 			of intentional violence to achieve political aims`,
+		filter: filter_audiovisual,
 	}, {
 		type: "gore", name: "Gore",
 		desc: `Graphic and shocking videos or images depicting severe harm to
 			humans (or animals)`,
+		filter: filter_visual,
 	}, {
 		type: "child_abuse", name: "Child abuse",
 		desc: `Videos or images depicting inappropriate touching or nudity of
@@ -36,6 +56,10 @@ const abuse_categories = [
 		desc: `Videos or images depicting of sexual acts being performed on
 			animals`,
 	}, {
+		type: "revenge_porn", name: "Revenge porn",
+		desc: `The distribution of sexually explicit images or videos of
+			individuals without their consent`,
+	}, {
 		type: "doxing", name: "Doxing",
 		desc: `Personally identifiable information being shared without the
 			consent of the owner. This includes things like passport scans,
@@ -43,10 +67,7 @@ const abuse_categories = [
 	}, {
 		type: "malware", name: "Malware",
 		desc: `Software programs designed to cause harm to computer systems`,
-	}, {
-		type: "revenge_porn", name: "Revenge porn",
-		desc: `The distribution of sexually explicit images or videos of
-			individuals without their consent`,
+		filter: filter_app,
 	},
 ]
 
@@ -160,10 +181,12 @@ const report_description = () => {
 		</p>
 
 		{#each abuse_categories as cat}
-			<label for="type_{cat.type}">
-				<input type="radio" bind:group={abuse_type} id="type_{cat.type}" name="abuse_type" value="{cat.type}">
-				<b>{cat.name}</b>: {cat.desc}
-			</label>
+			{#if cat.filter === undefined || cat.filter(file.mime_type) }
+				<label class="type_label" for="type_{cat.type}">
+					<input class="type_button" type="radio" bind:group={abuse_type} id="type_{cat.type}" name="abuse_type" value="{cat.type}">
+					<span class="type_desc"><b>{cat.name}</b>: {cat.desc}</span>
+				</label>
+			{/if}
 		{/each}
 
 		{#if list.id !== "" && file.id !== ""}
@@ -270,5 +293,16 @@ label {
 }
 .report_form > textarea {
 	height: 5em;
+}
+.type_label {
+	display: flex;
+	flex-direction: row;
+}
+.type_button {
+	flex: 0 0 auto;
+	margin-right: 1em;
+}
+.type_label {
+	flex: 1 1 auto;
 }
 </style>

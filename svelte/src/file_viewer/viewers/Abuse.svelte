@@ -37,11 +37,13 @@ let file = {
 
 		{/if}
 	</p>
-	<p>
-		Pixeldrain has zero tolerance towards abuse. The IP address this file
-		originated from has been banned and is no longer able to upload files to
-		pixeldrain.
-	</p>
+	{#if file.abuse_type !== "porn"}
+		<p>
+			Pixeldrain has zero tolerance towards abuse. The IP address this file
+			originated from has been banned and is no longer able to upload files to
+			pixeldrain.
+		</p>
+	{/if}
 </TextBlock>
 
 {#if file.can_download}
