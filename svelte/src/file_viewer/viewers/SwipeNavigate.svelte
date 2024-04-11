@@ -52,6 +52,11 @@ export const swipe_nav = (node, swipe_enabled) => {
 			detail += "transition: transform 500ms;"
 		}
 
+		// Clear the transformation if the offset is zero
+		if (off === 0) {
+			detail = ""
+		}
+
 		node.dispatchEvent(new CustomEvent("style", {detail: detail}))
 	}
 

@@ -366,8 +366,6 @@ const keyboard_event = evt => {
 <svelte:window on:keydown={keyboard_event} on:hashchange={hash_change}/>
 
 <div class="file_viewer">
-	<LoadingIndicator loading={loading}/>
-
 	<div class="headerbar">
 		{#if !disable_menu}
 			<button
@@ -582,6 +580,9 @@ const keyboard_event = evt => {
 			on:loading={e => {loading = e.detail}}
 		/>
 	{/if}
+
+	<!-- At the bottom so it renders over everything else -->
+	<LoadingIndicator loading={loading}/>
 </div>
 
 <style>
