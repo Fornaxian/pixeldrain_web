@@ -75,8 +75,10 @@ let expand = e => {
 </script>
 
 <div class="toolbar" class:expanded>
+	<div class="separator hidden_horizontal" style="margin-top: 6px;"></div>
+
 	<div class="stats_container" on:click={expand} on:keypress={expand} role="button" tabindex="0">
-		<button class="button_expand" on:click={expand}>
+		<button class="button_expand hidden_vertical" on:click={expand}>
 			{#if expanded}
 				<i class="icon">expand_more</i>
 			{:else}
@@ -107,6 +109,8 @@ let expand = e => {
 				<span>Search</span>
 			</button>
 		{/if}
+
+		<div class="separator hidden_horizontal"></div>
 
 		{#if state.base.type === "file"}
 			<button on:click={() => dispatch("download")}>
@@ -142,6 +146,8 @@ let expand = e => {
 			<span>Fullscreen</span>
 		</button>
 
+		<div class="separator hidden_horizontal"></div>
+
 		<button on:click={() => details_visible = !details_visible} class:button_highlight={details_visible}>
 			<i class="icon">help</i>
 			<span>Deta<u>i</u>ls</span>
@@ -169,6 +175,7 @@ let expand = e => {
 }
 .separator {
 	height: 2px;
+	margin: 4px 0;
 	width: 100%;
 	background-color: var(--separator);
 }
@@ -187,8 +194,14 @@ let expand = e => {
 	flex-direction: column;
 }
 .button_expand {
-	display: none;
 	line-height: 1em;
+}
+
+.hidden_vertical {
+	display: none;
+}
+.hidden_horizontal {
+	display: block;
 }
 
 /* This max-width needs to be synced with the .viewer_area max-width in
@@ -200,13 +213,21 @@ Toolbar.svelte and the .label max-width in FileStats.svelte */
 	}
 	.toolbar.expanded {
 		overflow-y: scroll;
-		max-height: 25vh;
+		max-height: 30vh;
 	}
 	.stats_container {
 		flex-direction: row;
 	}
-	.button_expand {
-		display: inline-block;
+	.separator {
+		margin: 2px 0;
+	}
+
+
+	.hidden_vertical {
+		display: block;
+	}
+	.hidden_horizontal {
+		display: none;
 	}
 }
 

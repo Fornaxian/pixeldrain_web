@@ -34,7 +34,6 @@ const update_links = (path) => {
 
 <style>
 .container {
-	margin: 6px 0;
 	text-align: center;
 }
 .link {

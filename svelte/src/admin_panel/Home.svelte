@@ -90,6 +90,8 @@ let status = {
 	download_clients: 0,
 	download_connections: 0,
 }
+$: total_reads = status.local_reads + status.neighbour_reads + status.remote_reads
+$: total_read_size = status.local_read_size + status.neighbour_read_size + status.remote_read_size
 
 function getStats(order) {
 	lastOrder = order
@@ -207,6 +209,8 @@ onDestroy(() => {
 			<td>{formatDate(new Date(status.db_time), true, true, true)}</td>
 			<td>DB Latency</td>
 			<td>{formatNumber(status.db_latency / 1000, 3)} ms</td>
+			<td>PID</td>
+			<td>{status.pid}</td>
 		</tr>
 	</table>
 
@@ -225,8 +229,10 @@ onDestroy(() => {
 			<tr>
 				<td>Source</td>
 				<td>Reads</td>
+				<td>Reads %</td>
 				<td>Reads / s</td>
 				<td>Total size</td>
+				<td>Size %</td>
 				<td>Size / s</td>
 			</tr>
 		</thead>
@@ -234,22 +240,28 @@ onDestroy(() => {
 			<tr>
 				<td>Local cache</td>
 				<td>{status.local_reads}</td>
+				<td>{((status.local_reads / total_reads) * 100).toPrecision(3)}%</td>
 				<td>{status.local_reads_per_sec.toPrecision(4)}/s</td>
 				<td>{formatDataVolume(status.local_read_size, 4)}</td>
+				<td>{((status.local_read_size / total_read_size) * 100).toPrecision(3)}%</td>
 				<td>{formatDataVolume(status.local_read_size_per_sec, 4)}/s</td>
 			</tr>
 			<tr>
 				<td>Neighbour</td>
 				<td>{status.neighbour_reads}</td>
+				<td>{((status.neighbour_reads / total_reads) * 100).toPrecision(3)}%</td>
 				<td>{status.neighbour_reads_per_sec.toPrecision(4)}/s</td>
 				<td>{formatDataVolume(status.neighbour_read_size, 4)}</td>
+				<td>{((status.neighbour_read_size / total_read_size) * 100).toPrecision(3)}%</td>
 				<td>{formatDataVolume(status.neighbour_read_size_per_sec, 4)}/s</td>
 			</tr>
 			<tr>
 				<td>Reed-solomon</td>
 				<td>{status.remote_reads}</td>
+				<td>{((status.remote_reads / total_reads) * 100).toPrecision(3)}%</td>
 				<td>{status.remote_reads_per_sec.toPrecision(4)}/s</td>
 				<td>{formatDataVolume(status.remote_read_size, 4)}</td>
+				<td>{((status.remote_read_size / total_read_size) * 100).toPrecision(3)}%</td>
 				<td>{formatDataVolume(status.remote_read_size_per_sec, 4)}/s</td>
 			</tr>
 		</tbody>

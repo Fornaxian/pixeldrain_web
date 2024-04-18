@@ -37,12 +37,12 @@ const add_styles = (style, properties) => {
 	if (properties.brand_input_color) {
 		style.input_background = properties.brand_input_color
 		style.input_hover_background = properties.brand_input_color
-		style.input_text = add_contrast(properties.brand_input_color, 70)
+		style.input_text = add_contrast(properties.brand_input_color, 75)
 	}
 	if (properties.brand_highlight_color) {
 		style.highlight_color = properties.brand_highlight_color
 		style.highlight_background = properties.brand_highlight_color
-		style.highlight_text_color = add_contrast(properties.brand_highlight_color, 70)
+		style.highlight_text_color = add_contrast(properties.brand_highlight_color, 75)
 
 		// If we have a body colour to compare it to we use the highlight colour
 		// to generate the link colour
@@ -52,20 +52,20 @@ const add_styles = (style, properties) => {
 	}
 	if (properties.brand_danger_color) {
 		style.danger_color = properties.brand_danger_color
-		style.danger_text_color = add_contrast(properties.brand_danger_color, 70)
+		style.danger_text_color = add_contrast(properties.brand_danger_color, 75)
 	}
 	if (properties.brand_background_color) {
 		style.background_color = properties.brand_background_color
 		style.background = properties.brand_background_color
-		style.background_text_color = add_contrast(properties.brand_background_color, 70)
+		style.background_text_color = add_contrast(properties.brand_background_color, 75)
 		style.background_pattern_color = properties.brand_background_color
 	}
 	if (properties.brand_body_color) {
 		style.body_color = properties.brand_body_color
 		style.body_background = properties.brand_body_color
-		style.body_text_color = add_contrast(properties.brand_body_color, 70)
+		style.body_text_color = add_contrast(properties.brand_body_color, 75)
 		style.shaded_background = set_alpha(properties.brand_body_color, 0.8)
-		style.separator = add_contrast(properties.brand_body_color, 6)
+		style.separator = add_contrast(properties.brand_body_color, 7)
 		style.shadow_color = darken(properties.brand_body_color, 0.8)
 	}
 	if (properties.brand_card_color) {

@@ -161,7 +161,7 @@ func (s styleSheet) withDefaults() styleSheet {
 	defaultCSS(&s.Navigation, RawCSS("none"))
 	defaultCSS(&s.BodyBackground, s.BodyColor)
 	defaultHSL(&s.BackgroundText, s.BodyText)
-	defaultHSL(&s.Separator, s.BodyColor.Add(0, 0, .05))
+	defaultHSL(&s.Separator, s.BodyColor.Add(0, 0, .06))
 
 	return s
 }

@@ -86,7 +86,7 @@ const checkout = async () => {
 		<div class="countries">
 			{#each countries as c}
 				<button on:click={() => country = c}>
-					<span style="font-size: 1.6em; line-height: 1em;">{c.flag}</span>
+					<span class="icon_unicode">{c.flag}</span>
 					<span>{c.name}</span>
 				</button>
 			{/each}
@@ -189,12 +189,6 @@ const checkout = async () => {
 .countries {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-}
-.countries > button {
-	display: flex;
-	flex-direction: row;
-	text-align: left;
-	gap: 5px;
 }
 
 .processors {

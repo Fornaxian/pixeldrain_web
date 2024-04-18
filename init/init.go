@@ -1,9 +1,7 @@
 package init
 
 import (
-	"math/rand"
 	"os"
-	"time"
 
 	"fornaxian.tech/config"
 	"fornaxian.tech/log"
@@ -45,9 +43,6 @@ maintenance_mode      = false
 func Init(r *httprouter.Router, prefix string, setLogLevel bool) {
 	log.Colours = true
 	log.Info("Starting web UI server (PID %v)", os.Getpid())
-
-	// Seed the RNG
-	rand.Seed(time.Now().UnixNano())
 
 	var conf webcontroller.Config
 	var _, err = config.New(

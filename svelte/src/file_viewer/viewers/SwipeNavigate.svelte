@@ -1,4 +1,9 @@
 <script context="module">
+// Dead zone before the swipe action gets detected
+const swipe_inital_offset = 25
+// Amount of pixels after which the navigation triggers
+const swipe_trigger_offset = 75
+
 export const swipe_nav = (node, swipe_enabled) => {
 	let start_x = 0
 	let start_y = 0
@@ -23,8 +28,8 @@ export const swipe_nav = (node, swipe_enabled) => {
 
 		// The cursor must have moved at least 50 pixels and three times as much
 		// on the x axis than the y axis for it to count as a swipe
-		if (abs_x > 50 && abs_y < abs_x/3) {
-			set_offset((abs_x-50)*neg, false)
+		if (abs_x > swipe_inital_offset && abs_y < abs_x/3) {
+			set_offset((abs_x-swipe_inital_offset)*neg, false)
 		} else {
 			set_offset(0, true)
 		}
@@ -35,10 +40,10 @@ export const swipe_nav = (node, swipe_enabled) => {
 			return
 		}
 
-		if (render_offset > 100) {
+		if (render_offset > swipe_trigger_offset) {
 			set_offset(1000, true)
 			node.dispatchEvent(new CustomEvent("prev"))
-		} else if (render_offset < -100) {
+		} else if (render_offset < -swipe_trigger_offset) {
 			set_offset(-1000, true)
 			node.dispatchEvent(new CustomEvent("next"))
 		} else {
@@ -51,7 +56,7 @@ export const swipe_nav = (node, swipe_enabled) => {
 
 		let detail = "transform: translateX("+off+"px);"
 		if (animate) {
-			detail += "transition: transform 500ms;"
+			detail += "transition: transform 400ms;"
 		}
 
 		// Clear the transformation if the offset is zero

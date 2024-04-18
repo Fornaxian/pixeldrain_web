@@ -635,7 +635,6 @@ const keyboard_event = evt => {
 	display: flex;
 	flex-direction: row;
 	text-align: left;
-	padding: 2px;
 	align-items: center;
 }
 @media(max-height: 600px) {
@@ -650,7 +649,6 @@ const keyboard_event = evt => {
 	flex-shrink: 0;
 	margin-left: 4px;
 	margin-right: 4px;
-	display: inline;
 }
 .headerbar > .file_viewer_headerbar_title {
 	flex-grow: 1;
@@ -658,7 +656,7 @@ const keyboard_event = evt => {
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	line-height: 1.2em; /* When the page is a list there will be two lines. Dont's want to stretch the container*/
+	line-height: 1.2em; /* When the page is a list there will be two lines. Don't want to stretch the container */
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	justify-content: center;

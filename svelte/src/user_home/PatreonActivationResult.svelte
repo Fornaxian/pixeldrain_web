@@ -43,6 +43,14 @@ onMount(() => {
 				href="https://www.patreon.com/settings/apps">https://www.patreon.com/settings/apps</a>.
 				Try disconnecting all Pixeldrain logins and try again.
 			</p>
+			<li>
+				This can also happen if you canceled your Patreon membership
+				before upgrading your pixeldrain account. In that case, go to
+				the <a
+				href="https://www.patreon.com/pixeldrain/membership">memberships
+				page</a> and activate your membership again. If you already paid
+				in the last 30 days you will not be charged again.
+			</li>
 			<p>
 				It might also help to try linking the subscription in a
 				different web browser. Sometimes cookies or cached redirects can

@@ -492,10 +492,10 @@ input[type="color"],
 select {
 	display: inline-flex;
 	flex-direction: row;
-	gap: 0.25em;
 	border-radius: 6px;
 	margin: 2px;
 	background: var(--input_background);
+	gap: 3px;
 	padding: 3px;
 	overflow: hidden;
 	color: var(--input_text);
