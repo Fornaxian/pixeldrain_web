@@ -3,7 +3,6 @@ import { formatDataVolume, formatDate } from "../util/Formatting.svelte";
 
 // Main elements
 let directoryArea
-let directorySorters
 let nodeContainer
 let statusBar = "Loading..."
 
@@ -70,12 +69,6 @@ export const search = (term) => {
 	let fileName = ""
 	for (let i in allFiles) {
 		fileName = allFiles[i].name.toLowerCase()
-
-		// If there's an exact match we'll show it as the only result
-		// if (fileName === term) {
-		// 	allFiles[i].filtered = false
-		// 	break
-		// }
 
 		if (fileName.includes(term)) {
 			// If a file name contains the search term we include it in the results
@@ -229,12 +222,6 @@ const render_visible_files = () => {
 	if (selectedFiles !== 0) {
 		statusBar += ", "+selectedFiles+" selected ("+formatDataVolume(selectedSize, 4)+")"
 	}
-
-	console.debug(
-		"start " + start +
-		" end " + end +
-		" children " + nodeContainer.childElementCount
-	)
 }
 
 let selectionMode = false
@@ -300,7 +287,7 @@ const node_click = (index) => {
 <svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
 
 <div id="directory_element">
-	<div bind:this={directorySorters} id="sorters" class="directory_sorters">
+	<div class="directory_sorters">
 		{#each tableColumns as col}
 			<button style="min-width: {col.width}" on:click={sortBy(col.field)} class="sorter_button">
 				{col.name}
@@ -351,7 +338,7 @@ const node_click = (index) => {
 	text-align: left;
 }
 
-#sorters {
+.directory_sorters {
 	flex: 0 0 auto;
 	display: flex;
 	flex-direction: row;
@@ -373,12 +360,12 @@ const node_click = (index) => {
 	background: var(--input_hover_background);
 }
 
-#sorters > :first-child,
+.directory_sorters > :first-child,
 .node > :first-child {
 	flex-shrink: 1;
 	flex-grow: 1;
 }
-#sorters > :not(:first-child),
+.directory_sorters > :not(:first-child),
 .node > :not(:first-child) {
 	flex-shrink: 0;
 	flex-grow: 0;
