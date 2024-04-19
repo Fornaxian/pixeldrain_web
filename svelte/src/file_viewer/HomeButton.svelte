@@ -35,6 +35,9 @@ export let nobg = false
 .label::after {
 	content: "pixeldrain";
 }
+.label, .username {
+	margin-right: 3px;
+}
 
 .nobg {
 	background: none;

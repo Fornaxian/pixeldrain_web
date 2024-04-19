@@ -515,7 +515,7 @@ select {
 	text-decoration: none;
 	text-shadow: none;
 	border: none;
-	line-height: inherit;
+	line-height: 1.3em;
 }
 
 button:hover,
