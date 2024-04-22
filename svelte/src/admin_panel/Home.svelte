@@ -203,6 +203,7 @@ onDestroy(() => {
 </a>
 
 <section>
+	<h3>Process stats</h3>
 	<table>
 		<tr>
 			<td>DB Time</td>
@@ -214,63 +215,56 @@ onDestroy(() => {
 		</tr>
 	</table>
 
-	<h3>Cache nodes</h3>
-</section>
-	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "cache") {acc.push(val)}; return acc}, [])}/>
-<section>
-	<h3>Storage nodes</h3>
-</section>
-	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "storage") {acc.push(val)}; return acc}, [])}/>
-<section>
-
 	<h3>Pixelstore stats</h3>
-	<table>
-		<thead>
-			<tr>
-				<td>Source</td>
-				<td>Reads</td>
-				<td>Reads %</td>
-				<td>Reads / s</td>
-				<td>Total size</td>
-				<td>Size %</td>
-				<td>Size / s</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>Local cache</td>
-				<td>{status.local_reads}</td>
-				<td>{((status.local_reads / total_reads) * 100).toPrecision(3)}%</td>
-				<td>{status.local_reads_per_sec.toPrecision(4)}/s</td>
-				<td>{formatDataVolume(status.local_read_size, 4)}</td>
-				<td>{((status.local_read_size / total_read_size) * 100).toPrecision(3)}%</td>
-				<td>{formatDataVolume(status.local_read_size_per_sec, 4)}/s</td>
-			</tr>
-			<tr>
-				<td>Neighbour</td>
-				<td>{status.neighbour_reads}</td>
-				<td>{((status.neighbour_reads / total_reads) * 100).toPrecision(3)}%</td>
-				<td>{status.neighbour_reads_per_sec.toPrecision(4)}/s</td>
-				<td>{formatDataVolume(status.neighbour_read_size, 4)}</td>
-				<td>{((status.neighbour_read_size / total_read_size) * 100).toPrecision(3)}%</td>
-				<td>{formatDataVolume(status.neighbour_read_size_per_sec, 4)}/s</td>
-			</tr>
-			<tr>
-				<td>Reed-solomon</td>
-				<td>{status.remote_reads}</td>
-				<td>{((status.remote_reads / total_reads) * 100).toPrecision(3)}%</td>
-				<td>{status.remote_reads_per_sec.toPrecision(4)}/s</td>
-				<td>{formatDataVolume(status.remote_read_size, 4)}</td>
-				<td>{((status.remote_read_size / total_read_size) * 100).toPrecision(3)}%</td>
-				<td>{formatDataVolume(status.remote_read_size_per_sec, 4)}/s</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="table_scroll">
+		<table>
+			<thead>
+				<tr>
+					<td>Source</td>
+					<td>Reads</td>
+					<td>Reads %</td>
+					<td>Reads / s</td>
+					<td>Total size</td>
+					<td>Size %</td>
+					<td>Size / s</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Local cache</td>
+					<td>{status.local_reads}</td>
+					<td>{((status.local_reads / total_reads) * 100).toPrecision(3)}%</td>
+					<td>{status.local_reads_per_sec.toPrecision(4)}/s</td>
+					<td>{formatDataVolume(status.local_read_size, 4)}</td>
+					<td>{((status.local_read_size / total_read_size) * 100).toPrecision(3)}%</td>
+					<td>{formatDataVolume(status.local_read_size_per_sec, 4)}/s</td>
+				</tr>
+				<tr>
+					<td>Neighbour</td>
+					<td>{status.neighbour_reads}</td>
+					<td>{((status.neighbour_reads / total_reads) * 100).toPrecision(3)}%</td>
+					<td>{status.neighbour_reads_per_sec.toPrecision(4)}/s</td>
+					<td>{formatDataVolume(status.neighbour_read_size, 4)}</td>
+					<td>{((status.neighbour_read_size / total_read_size) * 100).toPrecision(3)}%</td>
+					<td>{formatDataVolume(status.neighbour_read_size_per_sec, 4)}/s</td>
+				</tr>
+				<tr>
+					<td>Reed-solomon</td>
+					<td>{status.remote_reads}</td>
+					<td>{((status.remote_reads / total_reads) * 100).toPrecision(3)}%</td>
+					<td>{status.remote_reads_per_sec.toPrecision(4)}/s</td>
+					<td>{formatDataVolume(status.remote_read_size, 4)}</td>
+					<td>{((status.remote_read_size / total_read_size) * 100).toPrecision(3)}%</td>
+					<td>{formatDataVolume(status.remote_read_size_per_sec, 4)}/s</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	<p>
-		Cache threshold: {status.cache_threshold.toFixed(3)}
+		Cache threshold: {formatDataVolume(status.cache_threshold, 4)}
 	</p>
 
-	<h3>Socket statistics</h3>
+	<h3>Socket stats</h3>
 	<table>
 		<thead>
 			<tr>
@@ -295,6 +289,16 @@ onDestroy(() => {
 			</tr>
 		</tbody>
 	</table>
+
+	<h3>Cache nodes</h3>
+</section>
+	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "cache") {acc.push(val)}; return acc}, [])}/>
+<section>
+	<h3>Storage nodes</h3>
+</section>
+	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "storage") {acc.push(val)}; return acc}, [])}/>
+<section>
+
 	<h3>Query statistics</h3>
 	<div class="table_scroll" style="text-align: left;">
 		<table>

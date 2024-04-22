@@ -28,7 +28,7 @@ export const formatDataVolume = (amt, precision) => {
 	} else if (amt >= 1e3-1) {
 		return (amt/1e3).toPrecision(precision) + " kB";
 	}
-	return amt + " B"
+	return amt.toPrecision(precision) + " B"
 }
 export const formatDataVolumeBits = (amt, precision) => {
 	amt = amt*8
