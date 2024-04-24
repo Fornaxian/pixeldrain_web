@@ -1,4 +1,5 @@
 <script>
+import { onMount } from "svelte";
 import { formatDataVolume, formatThousands } from "../util/Formatting.svelte"
 
 export let file = {
@@ -9,6 +10,7 @@ export let file = {
 	bandwidth_used: 0,
 	bandwidth_used_paid: 0,
 }
+export let view_token = ""
 
 let views = 0
 let downloads = 0
@@ -30,18 +32,28 @@ let update_stats = async id => {
 	}
 	size = file.size
 
-	// If the socket is already active we need to close it
-	if (socket !== null) {
-		// Disable the error handler so it doesn't start retrying the connection
-		socket.onerror = null
-		socket.close()
-		socket = null
+	send_watch_command()
+}
+
+const send_watch_command = () => {
+	if (socket.readyState === WebSocket.OPEN) {
+		socket.send(
+			JSON.stringify(
+				{cmd: "watch_file", a1: file.id, a2: view_token}
+			)
+		)
+	}
+}
+
+const init_socket = () => {
+	if (socket !== null || socket.readyState !== WebSocket.CLOSED) {
+		return
 	}
 
-	console.log("opening socket for", id)
-	socket = new WebSocket(
-		location.origin.replace(/^http/, 'ws') + "/api/file/" + id + "/stats"
-	)
+	console.log("initializing socket")
+	socket = new WebSocket(location.origin.replace(/^http/, 'ws') + "/api/file_stats")
+
+	socket.onopen = () => send_watch_command()
 	socket.onmessage = msg => {
 		let j = JSON.parse(msg.data)
 		console.debug("WS update", j)
@@ -63,14 +75,20 @@ let update_stats = async id => {
 		socket = null
 		error_msg = "failed to get stats, retrying..."
 
-		window.setTimeout(() => {
-			if (socket === null) {
-				update_stats(file.id)
-			}
-		}, 3000)
+		window.setTimeout(init_socket, 2000)
 	}
 }
 
+onMount(() => {
+	init_socket()
+
+	return () => {
+		if (socket !== null) {
+			socket.close()
+			socket = null
+		}
+	}
+})
 </script>
 
 <div>

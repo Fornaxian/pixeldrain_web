@@ -207,13 +207,6 @@ const open_file_index = async index => {
 	}
 
 	apply_customizations(file)
-
-	// Register a file view
-	fetch(window.api_endpoint + "/file/" + file.id + "/view", {
-		method: "POST",
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: "token=" + view_token
-	})
 }
 const toggle_gallery = () => {
 	if (view === "gallery") {
@@ -425,7 +418,7 @@ const keyboard_event = evt => {
 	<div class="file_preview_row">
 		<div class="toolbar" class:toolbar_visible>
 			{#if view === "file"}
-				<FileStats file={file}/>
+				<FileStats file={file} view_token={view_token}/>
 			{:else if view === "gallery"}
 				<ListStats list={list}/>
 			{/if}
