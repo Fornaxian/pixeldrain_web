@@ -10,7 +10,14 @@ let year = 0
 let month = 0
 let month_str = ""
 let transactions = {
-	rows: []
+	rows: [],
+	total_subscription_charge: 0,
+	total_storage_used: 0,
+	total_storage_charge: 0,
+	total_bandwidth_used: 0,
+	total_bandwidth_charge: 0,
+	total_deposited: 0,
+	total_deducted: 0,
 }
 
 const load_transactions = async () => {
