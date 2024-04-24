@@ -155,7 +155,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	var templateData = wc.newTemplateData(w, r)
 	var list, err = templateData.PixelAPI.GetListID(p.ByName("id"))
 	if err != nil {
-		if err, ok := err.(pixelapi.Error); ok && err.Status == http.StatusNotFound {
+		if apiErr, ok := err.(pixelapi.Error); ok && apiErr.Status == http.StatusNotFound {
 			w.WriteHeader(http.StatusNotFound)
 			wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
 		} else {
