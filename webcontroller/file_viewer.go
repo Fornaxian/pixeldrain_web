@@ -16,14 +16,6 @@ import (
 	blackfriday "github.com/russross/blackfriday/v2"
 )
 
-func (wc *WebController) viewTokenOrBust() (t string) {
-	var err error
-	if t, err = wc.api.GetMiscViewToken(); err != nil && !wc.config.ProxyAPIRequests {
-		log.Error("Could not get viewtoken: %s", err)
-	}
-	return t
-}
-
 func browserCompat(ua string) bool {
 	return strings.Contains(ua, "MSIE") || strings.Contains(ua, "Trident/7.0")
 }
@@ -32,7 +24,6 @@ type fileViewerData struct {
 	Type           string       `json:"type"` // file or list
 	APIResponse    interface{}  `json:"api_response"`
 	CaptchaKey     string       `json:"captcha_key"`
-	ViewToken      string       `json:"view_token"`
 	Embedded       bool         `json:"embedded"`
 	UserAdsEnabled bool         `json:"user_ads_enabled"`
 	ThemeURI       template.URL `json:"theme_uri"`
@@ -101,7 +92,6 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	var vd = fileViewerData{
 		CaptchaKey:     wc.captchaKey(),
-		ViewToken:      wc.viewTokenOrBust(),
 		UserAdsEnabled: templateData.User.Subscription.ID == "",
 	}
 
@@ -176,7 +166,6 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	var vd = fileViewerData{
 		Type:           "list",
 		CaptchaKey:     wc.captchaSiteKey,
-		ViewToken:      wc.viewTokenOrBust(),
 		UserAdsEnabled: templateData.User.Subscription.ID == "",
 		APIResponse:    list,
 	}

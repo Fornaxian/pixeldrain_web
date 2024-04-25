@@ -1,28 +1,28 @@
 <script>
 import { formatDataVolume } from "../util/Formatting.svelte";
-import { download_limits } from "./DownloadLimitStore.js"
+import { stats } from "./StatsSocket.js"
 
 let percent = 0
 let title = ""
 $: {
-	if ($download_limits.transfer_limit === 0) {
+	if ($stats.limits.transfer_limit === 0) {
 		percent = 0 // Avoid division by 0
-	}else if ($download_limits.transfer_limit_used / $download_limits.transfer_limit > 1) {
+	} else if ($stats.limits.transfer_limit_used / $stats.limits.transfer_limit > 1) {
 		percent = 100
 	} else {
-		percent = ($download_limits.transfer_limit_used / $download_limits.transfer_limit) * 100
+		percent = ($stats.limits.transfer_limit_used / $stats.limits.transfer_limit) * 100
 	}
 
 	title = "Download limit used: " +
-		formatDataVolume($download_limits.transfer_limit_used, 3) +
+		formatDataVolume($stats.limits.transfer_limit_used, 3) +
 		" of " +
-		formatDataVolume($download_limits.transfer_limit, 3);
+		formatDataVolume($stats.limits.transfer_limit, 3);
 }
 </script>
 
 <!-- Always show the outer bar to prevent layout shift -->
 <div class="progress_bar_outer" title="{title}">
-	{#if $download_limits.loaded}
+	{#if $stats.limits_init}
 		<div class="progress_bar_text">
 			{title}
 		</div>

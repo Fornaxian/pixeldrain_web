@@ -12,7 +12,7 @@ import { file_type } from "../FileUtilities.svelte";
 import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
 import SpeedLimit from "./SpeedLimit.svelte";
-import { download_limits } from "../DownloadLimitStore";
+import { stats } from "../StatsSocket";
 import Zip from "./Zip.svelte";
 
 let viewer
@@ -60,7 +60,7 @@ export const toggle_playback = () => {
 	</div>
 {:else if viewer_type === "abuse"}
 	<Abuse bind:this={viewer} on:download></Abuse>
-{:else if !premium_download && $download_limits.transfer_limit_used > $download_limits.transfer_limit}
+{:else if !premium_download && $stats.limits.transfer_limit_used > $stats.limits.transfer_limit}
 	<SpeedLimit file={current_file} on:download></SpeedLimit>
 {:else if viewer_type === "rate_limit"}
 	<RateLimit bind:this={viewer} on:download></RateLimit>

@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { formatDataVolume } from "../../util/Formatting.svelte";
-import { download_limits } from "../DownloadLimitStore";
+import { stats } from "../StatsSocket";
 import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
@@ -36,15 +36,15 @@ let file = {
 		</h1>
 		<p>
 			You have reached your download limit for today. Without a pixeldrain
-			account you are limited to downloading {$download_limits.download_limit} files
-			or {formatDataVolume($download_limits.transfer_limit, 3)} per 48 hours. This limit
+			account you are limited to downloading {$stats.limits.download_limit} files
+			or {formatDataVolume($stats.limits.transfer_limit, 3)} per 48 hours. This limit
 			is counted per IP address, so if you're on a shared network it's
 			possible that others have also contributed to this limit.
 		</p>
 		<p>
 			In the last 24 hours you have downloaded
-			{$download_limits.download_limit_used} files and used
-			{formatDataVolume($download_limits.transfer_limit_used, 3)} bandwidth.
+			{$stats.limits.download_limit_used} files and used
+			{formatDataVolume($stats.limits.transfer_limit_used, 3)} bandwidth.
 		</p>
 	{/if}
 	<p>

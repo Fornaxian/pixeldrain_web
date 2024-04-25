@@ -23,7 +23,6 @@ import CopyButton from "../layout/CopyButton.svelte";
 
 let loading = true
 let embedded = false
-let view_token = ""
 let ads_enabled = false
 
 let view = "" // file or gallery
@@ -87,8 +86,6 @@ onMount(() => {
 	if (embedded) {
 		toolbar_visible = false
 	}
-
-	view_token = viewer_data.view_token
 
 	if (viewer_data.type === "list") {
 		open_list(viewer_data.api_response)
@@ -418,7 +415,7 @@ const keyboard_event = evt => {
 	<div class="file_preview_row">
 		<div class="toolbar" class:toolbar_visible>
 			{#if view === "file"}
-				<FileStats file={file} view_token={view_token}/>
+				<FileStats file={file}/>
 			{:else if view === "gallery"}
 				<ListStats list={list}/>
 			{/if}

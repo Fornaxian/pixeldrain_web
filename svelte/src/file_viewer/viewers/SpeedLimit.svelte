@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { formatDataVolume, formatDuration } from "../../util/Formatting.svelte";
-import { download_limits } from "../DownloadLimitStore";
+import { stats } from "../StatsSocket";
 import IconBlock from "./IconBlock.svelte";
 import TextBlock from "./TextBlock.svelte";
 let dispatch = createEventDispatcher()
@@ -20,10 +20,10 @@ export let file = {
 	<p>
 		Pixeldrain's free tier is supported by my Patrons (be grateful). There's
 		only so much that you can do with the budget they provide.
-		{formatDataVolume($download_limits.transfer_limit, 3)} per day is about
+		{formatDataVolume($stats.limits.transfer_limit, 3)} per day is about
 		the most I can give away for free while keeping it fair for everyone,
 		and according to our records you have already downloaded
-		{formatDataVolume($download_limits.transfer_limit_used, 3)}.
+		{formatDataVolume($stats.limits.transfer_limit_used, 3)}.
 	</p>
 	<p>
 		It's not that I want to withold this file from you, it's just that I

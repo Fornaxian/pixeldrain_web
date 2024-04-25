@@ -2,16 +2,16 @@
 import { formatDataVolume } from "../../util/Formatting.svelte";
 import TextBlock from "./TextBlock.svelte";
 import ProgressBar from "../../util/ProgressBar.svelte";
-import { download_limits } from "../DownloadLimitStore";
+import { stats } from "../StatsSocket"
 
 export let file = {
 	size: 0,
 }
 
-$: transfer_left = $download_limits.transfer_limit - $download_limits.transfer_limit_used
+$: transfer_left = $stats.limits.transfer_limit - $stats.limits.transfer_limit_used
 </script>
 
-{#if $download_limits.loaded}
+{#if $stats.limits_init}
 	<TextBlock center={true}>
 		{#if file.size > transfer_left}
 			<div class="highlight_yellow">
@@ -24,8 +24,8 @@ $: transfer_left = $download_limits.transfer_limit - $download_limits.transfer_l
 		{/if}
 
 		<p>
-			You have used {formatDataVolume($download_limits.transfer_limit_used, 3)} of
-			your daily {formatDataVolume($download_limits.transfer_limit, 3)} transfer
+			You have used {formatDataVolume($stats.limits.transfer_limit_used, 3)} of
+			your daily {formatDataVolume($stats.limits.transfer_limit, 3)} transfer
 			limit. When the transfer limit is exceeded your download speed will
 			be reduced.
 		</p>
@@ -39,6 +39,6 @@ $: transfer_left = $download_limits.transfer_limit - $download_limits.transfer_l
 			</strong>
 		</p>
 
-		<ProgressBar total={$download_limits.transfer_limit} used={$download_limits.transfer_limit_used}></ProgressBar>
+		<ProgressBar total={$stats.limits.transfer_limit} used={$stats.limits.transfer_limit_used}></ProgressBar>
 	</TextBlock>
 {/if}
