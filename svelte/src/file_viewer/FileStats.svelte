@@ -36,7 +36,7 @@ let update_stats = async id => {
 }
 
 const send_watch_command = () => {
-	if (socket.readyState === WebSocket.OPEN) {
+	if (socket !== null && socket.readyState === WebSocket.OPEN) {
 		socket.send(
 			JSON.stringify(
 				{cmd: "watch_file", a1: file.id, a2: view_token}
@@ -46,7 +46,7 @@ const send_watch_command = () => {
 }
 
 const init_socket = () => {
-	if (socket !== null || socket.readyState !== WebSocket.CLOSED) {
+	if (socket !== null && socket.readyState !== WebSocket.CLOSED) {
 		return
 	}
 
