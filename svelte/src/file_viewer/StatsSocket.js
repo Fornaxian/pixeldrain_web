@@ -22,7 +22,7 @@ export const stats = readable(
 	results,
 	(set) => {
 		start_sock(set)
-		return stop_sock
+		return () => stop_sock(set)
 	},
 );
 
