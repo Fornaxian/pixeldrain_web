@@ -87,6 +87,10 @@ let status = {
 	running_since: "",
 	stats_watcher_listeners: 0,
 	stats_watcher_threads: 0,
+	filesystem_watcher_listeners: 0,
+	filesystem_watcher_threads: 0,
+	rate_limit_watcher_threads: 0,
+	rate_limit_watcher_listeners: 0,
 	download_clients: 0,
 	download_connections: 0,
 }
@@ -271,18 +275,30 @@ onDestroy(() => {
 				<td>Watcher</td>
 				<td>Threads</td>
 				<td>Listeners</td>
-				<td>Avg</td>
+				<td>Ratio</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>File statistics</td>
+				<td>File statistics (per file)</td>
 				<td>{status.stats_watcher_threads}</td>
 				<td>{status.stats_watcher_listeners}</td>
 				<td>{(status.stats_watcher_listeners / status.stats_watcher_threads).toPrecision(3)}</td>
 			</tr>
 			<tr>
-				<td>Downloads</td>
+				<td>Filesystem statistics (per file)</td>
+				<td>{status.filesystem_watcher_threads}</td>
+				<td>{status.filesystem_watcher_listeners}</td>
+				<td>{(status.filesystem_watcher_listeners / status.filesystem_watcher_threads).toPrecision(3)}</td>
+			</tr>
+			<tr>
+				<td>Rate limits (per IP)</td>
+				<td>{status.rate_limit_watcher_threads}</td>
+				<td>{status.rate_limit_watcher_listeners}</td>
+				<td>{(status.rate_limit_watcher_listeners / status.rate_limit_watcher_threads).toPrecision(3)}</td>
+			</tr>
+			<tr>
+				<td>Downloads (per IP)</td>
 				<td>{status.download_clients}</td>
 				<td>{status.download_connections}</td>
 				<td>{(status.download_connections / status.download_clients).toPrecision(3)}</td>
