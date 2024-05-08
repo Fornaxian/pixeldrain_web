@@ -4,18 +4,15 @@ import { onMount } from "svelte"
 let ad_type = ""
 
 onMount(() => {
-	// 30% pixeldrain socials
-	// 20% reviews
-	// 10% ad block promo
-	// 40% patreon
+	// 40% pixeldrain socials
+	// 10% reviews
+	// 50% patreon
 
 	let rand = Math.random()
-	if (rand < 0.3) {
+	if (rand < 0.4) {
 		ad_type = "socials"
 	} else if (rand < 0.5) {
 		ad_type = "reviews"
-	} else if (rand < 0.6) {
-		ad_type = "ad_block"
 	} else {
 		ad_type = "patreon_support"
 	}

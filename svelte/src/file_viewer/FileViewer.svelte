@@ -637,8 +637,7 @@ const keyboard_event = evt => {
 .headerbar > * {
 	flex-grow: 0;
 	flex-shrink: 0;
-	margin-left: 4px;
-	margin-right: 4px;
+	margin: 3px;
 }
 .headerbar > .file_viewer_headerbar_title {
 	flex-grow: 1;

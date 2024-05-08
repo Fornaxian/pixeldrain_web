@@ -112,12 +112,10 @@ let expand = e => {
 
 		<div class="separator hidden_horizontal"></div>
 
-		{#if state.base.type === "file"}
-			<button on:click={() => dispatch("download")}>
-				<i class="icon">save</i>
-				<span>Download</span>
-			</button>
-		{/if}
+		<button on:click={() => dispatch("download")}>
+			<i class="icon">save</i>
+			<span>Download</span>
+		</button>
 
 		{#if share_url !== ""}
 			<button on:click={copy_link} class:button_highlight={link_copied}>

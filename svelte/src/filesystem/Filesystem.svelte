@@ -94,7 +94,11 @@ const keydown = e => {
 };
 
 const download = () => {
-	download_frame.src = fs_path_url(state.base.path) + "?attach"
+	if (state.base.type === "file") {
+		download_frame.src = fs_path_url(state.base.path) + "?attach"
+	} else if (state.base.type === "dir") {
+		download_frame.src = fs_path_url(state.base.path) + "?bulk_download"
+	}
 }
 
 const search = async () => {
