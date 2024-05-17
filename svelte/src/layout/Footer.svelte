@@ -18,7 +18,7 @@ import Twitter from "../icons/Twitter.svelte";
 			<a href="https://www.patreon.com/pixeldrain" target="_blank" rel="noreferrer">
 				<Patreon style="color: var(--body_text_color);"/> Patreon
 			</a> |
-			<a href="https://discord.gg/pixeldrain" target="_blank" rel="noreferrer">
+			<a href="https://discord.gg/TWKGvYAFvX" target="_blank" rel="noreferrer">
 				<Discord style="color: var(--body_text_color);"/> Discord
 			</a> |
 			<a href="https://twitter.com/Fornax96" target="_blank" rel="noreferrer">

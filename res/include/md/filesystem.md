@@ -9,7 +9,7 @@ account with a paid subscription (Patreon or Prepaid) by going to
    personally too, you are strongly advised to keep backups of anything you
    upload there.
  * If you experience any issues while using the filesystem, feel free to discuss
-   them on [the Discord community](https://discord.gg/pixeldrain).
+   them on [the Discord community](https://discord.gg/TWKGvYAFvX).
 
 Contents:
 

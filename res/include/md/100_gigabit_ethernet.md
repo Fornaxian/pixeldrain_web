@@ -625,4 +625,4 @@ GitHub](https://github.com/Fornaxian/pixeldrain_web/blob/master/res/include/md/1
 
 Follow me on [Mastodon](https://mastodon.social/@fornax),
 [Twitter](https://twitter.com/Fornax96), join our
-[Discord](https://discord.gg/pixeldrain), et cetera et cetera
+[Discord](https://discord.gg/TWKGvYAFvX), et cetera et cetera

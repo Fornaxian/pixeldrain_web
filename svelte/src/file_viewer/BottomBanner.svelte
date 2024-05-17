@@ -52,7 +52,7 @@ onMount(() => {
 		<div class="socials">
 			And on other media too<br/>
 
-			<a href="https://discord.gg/pixeldrain" rel="noreferrer" class="button" target="_blank" style="background-color: #5b5eee; color: #ffffff;">
+			<a href="https://discord.gg/TWKGvYAFvX" rel="noreferrer" class="button" target="_blank" style="background-color: #5b5eee; color: #ffffff;">
 				<i class="icon small">people</i>
 				Discord
 			</a>
