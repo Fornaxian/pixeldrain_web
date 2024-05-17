@@ -141,6 +141,9 @@ onMount(() => {
 			<button on:click={() => {checkout("doge", credit_amount)}}>
 				<span class="icon_unicode">Ð</span> Dogecoin
 			</button>
+			<button on:click={() => {checkout("xmr", credit_amount)}}>
+				<span class="icon_unicode">M</span> Monero
+			</button>
 		</div>
 	{/if}
 
