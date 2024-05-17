@@ -1,12 +1,28 @@
 <script>
 import { onMount, tick } from "svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
-import AbuseReporterTable from "./AbuseReporterTable.svelte";
+import EmailReportersTable from "./EmailReportersTable.svelte";
 
 let loading = true
-let reporters_pending = []
-let reporters_trusted = []
-let reporters_rejected = []
+let reporters = []
+$: reporters_pending = reporters.reduce((acc, val) => {
+	if (val.status === "pending") {
+		acc.push(val)
+	}
+	return acc
+}, [])
+$: reporters_trusted = reporters.reduce((acc, val) => {
+	if (val.status === "trusted") {
+		acc.push(val)
+	}
+	return acc
+}, [])
+$: reporters_rejected = reporters.reduce((acc, val) => {
+	if (val.status === "rejected") {
+		acc.push(val)
+	}
+	return acc
+}, [])
 
 const get_reporters = async () => {
 	loading = true;
@@ -15,26 +31,7 @@ const get_reporters = async () => {
 		if(resp.status >= 400) {
 			throw new Error(await resp.text());
 		}
-		let reporters = await resp.json();
-
-		reporters_pending = reporters.reduce((acc, val) => {
-			if (val.status === "pending") {
-				acc.push(val)
-			}
-			return acc
-		}, [])
-		reporters_trusted = reporters.reduce((acc, val) => {
-			if (val.status === "trusted") {
-				acc.push(val)
-			}
-			return acc
-		}, [])
-		reporters_rejected = reporters.reduce((acc, val) => {
-			if (val.status === "rejected") {
-				acc.push(val)
-			}
-			return acc
-		}, [])
+		reporters = await resp.json();
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -60,33 +57,24 @@ const create_reporter = async () => {
 		return
 	}
 
-	try {
-		const form = new FormData()
-		form.append("from_address", new_reporter_from_address.value)
-		form.append("name", new_reporter_name.value)
-		form.append("status", new_reporter_status)
-
-		const resp = await fetch(
-			window.api_endpoint+"/admin/abuse_reporter",
-			{ method: "POST", body: form }
-		);
-		if(resp.status >= 400) {
-			throw new Error(await resp.text());
-		}
-	} catch (err) {
-		alert("Failed to add abuse reporter! "+err)
-	}
+	await save_reporter(
+		new_reporter_from_address.value,
+		new_reporter_name.value,
+		new_reporter_status,
+	)
 
 	creating = false
-	get_reporters();
 }
 
-const approve_reporter = async reporter => {
+const approve_reporter = reporter => save_reporter(reporter.from_address, reporter.name, "trusted")
+const spam_reporter = reporter => save_reporter(reporter.from_address, reporter.name, "rejected")
+
+const save_reporter = async (from, name, status) => {
 	try {
 		const form = new FormData()
-		form.append("from_address", reporter.from_address)
-		form.append("name", reporter.name)
-		form.append("status", "trusted")
+		form.append("from_address", from)
+		form.append("name", name !== "" ? name : from)
+		form.append("status", status)
 
 		const resp = await fetch(
 			window.api_endpoint+"/admin/abuse_reporter",
@@ -98,26 +86,7 @@ const approve_reporter = async reporter => {
 	} catch (err) {
 		alert("Failed to add abuse reporter! "+err)
 	}
-	get_reporters();
-}
-const spam_reporter = async reporter => {
-	try {
-		const form = new FormData()
-		form.append("from_address", reporter.from_address)
-		form.append("name", reporter.name)
-		form.append("status", "rejected")
-
-		const resp = await fetch(
-			window.api_endpoint+"/admin/abuse_reporter",
-			{ method: "POST", body: form }
-		);
-		if(resp.status >= 400) {
-			throw new Error(await resp.text());
-		}
-	} catch (err) {
-		alert("Failed to add abuse reporter! "+err)
-	}
-	get_reporters();
+	await get_reporters();
 }
 
 const edit_reporter = async reporter => {
@@ -130,6 +99,12 @@ const edit_reporter = async reporter => {
 }
 
 const delete_reporter = async reporter => {
+	const index = reporters.indexOf(reporter)
+	if (index > -1) {
+		reporters.splice(index, 1)
+		reporters = reporters
+	}
+
 	try {
 		const resp = await fetch(
 			window.api_endpoint+"/admin/abuse_reporter/"+encodeURI(reporter.from_address),
@@ -186,32 +161,32 @@ onMount(get_reporters);
 
 <div class="table_scroll">
 	<h2>Pending reporters</h2>
-	<AbuseReporterTable
+	<EmailReportersTable
 		reporters={reporters_pending}
 		on:edit={e => edit_reporter(e.detail)}
 		on:approve={e => approve_reporter(e.detail)}
 		on:spam={e => spam_reporter(e.detail)}
 		on:delete={e => delete_reporter(e.detail)}>
-	</AbuseReporterTable>
+	</EmailReportersTable>
 
 
 	<h2>Trusted reporters</h2>
-	<AbuseReporterTable
+	<EmailReportersTable
 		reporters={reporters_trusted}
 		on:edit={e => edit_reporter(e.detail)}
 		on:approve={e => approve_reporter(e.detail)}
 		on:spam={e => spam_reporter(e.detail)}
 		on:delete={e => delete_reporter(e.detail)}>
-	</AbuseReporterTable>
+	</EmailReportersTable>
 
 	<h2>Rejected reporters</h2>
-	<AbuseReporterTable
+	<EmailReportersTable
 		reporters={reporters_rejected}
 		on:edit={e => edit_reporter(e.detail)}
 		on:approve={e => approve_reporter(e.detail)}
 		on:spam={e => spam_reporter(e.detail)}
 		on:delete={e => delete_reporter(e.detail)}>
-	</AbuseReporterTable>
+	</EmailReportersTable>
 </div>
 <br/>
 
