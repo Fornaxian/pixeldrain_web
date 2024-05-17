@@ -2,6 +2,7 @@
 import { createEventDispatcher } from "svelte";
 import { domain_url } from "../../util/Util.svelte";
 import CopyButton from "../../layout/CopyButton.svelte";
+import { formatDate } from "../../util/Formatting.svelte";
 
 let dispatch = createEventDispatcher()
 export let shared
@@ -41,6 +42,16 @@ const toggle_example = () => {
 </script>
 
 <h2>Share this file/directory</h2>
+
+{#if file.abuse_type !== undefined}
+	<div class="highlight_red">
+		This file or directory has received an abuse report. It cannot be
+		shared.<br/>
+		Type of abuse: {file.abuse_type}<br/>
+		Report time: {formatDate(file.abuse_report_time, true, true, true)}
+	</div>
+{/if}
+
 <p>
 	When a file or directory is shared it can be accessed through a
 	unique link. You can get the URL with the 'Copy link' button on

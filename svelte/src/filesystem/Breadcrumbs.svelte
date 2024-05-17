@@ -14,7 +14,9 @@ export let fs_navigator
 			class:button_highlight={state.base_index === i}
 			on:click|preventDefault={() => {fs_navigator.navigate(node.path, true)}}
 		>
-			{#if shared}
+			{#if node.abuse_type !== undefined}
+				<i class="icon small">block</i>
+			{:else if shared}
 				<i class="icon small">share</i>
 			{/if}
 			<div class="node_name" class:base={state.base_index === i}>

@@ -26,12 +26,12 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	if err != nil {
 		if err.Error() == "not_found" || err.Error() == "path_not_found" {
 			wc.serveNotFound(w, r)
-			return
 		} else if err.Error() == "forbidden" {
 			wc.serveForbidden(w, r)
-			return
 		} else if err.Error() == "authentication_required" {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
+		} else if err.Error() == "unavailable_for_legal_reasons" {
+			wc.serveUnavailableForLegalReasons(w, r)
 		} else {
 			log.Error("Failed to get path: %s", err)
 			wc.templates.Get().ExecuteTemplate(w, "500", td)

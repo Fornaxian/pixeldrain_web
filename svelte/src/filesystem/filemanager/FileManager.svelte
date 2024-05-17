@@ -6,6 +6,7 @@ import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
 import Button from '../../layout/Button.svelte';
 import FileImporter from './FileImporter.svelte';
+import { formatDate } from '../../util/Formatting.svelte';
 let dispatch = createEventDispatcher()
 
 export let fs_navigator
@@ -358,6 +359,16 @@ onMount(() => {
 			</div>
 		{/if}
 	</div>
+
+
+	{#if state.base.abuse_type !== undefined}
+		<div class="highlight_red">
+			This directory has received an abuse report. It cannot be
+			shared.<br/>
+			Type of abuse: {state.base.abuse_type}<br/>
+			Report time: {formatDate(state.base.abuse_report_time, true, true, true)}
+		</div>
+	{/if}
 
 	<slot></slot>
 

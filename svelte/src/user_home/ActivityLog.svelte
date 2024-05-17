@@ -98,12 +98,14 @@ onMount(() => {
 					<td>
 						{#if row.event === "file_instance_blocked"}
 							<a href="/u/{row.file_id}">{row.file_name}</a>
+						{:else if row.event === "filesystem_node_blocked"}
+							<a href="/d/{row.file_id}">{row.file_name}</a>
 						{:else}
 							{row.file_name}
 						{/if}
 					</td>
 					<td>
-						{#if row.event === "file_instance_blocked"}
+						{#if row.event === "file_instance_blocked" || row.event === "filesystem_node_blocked"}
 							Blocked for abuse
 						{:else if row.event === "file_instance_expired"}
 							Expired

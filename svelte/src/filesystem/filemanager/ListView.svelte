@@ -38,7 +38,10 @@ export let large_icons = false
 				{/if}
 			</td>
 			<td class="node_icons">
-				{#if child.id}
+
+				{#if child.abuse_type !== undefined}
+					<i class="icon" title="This file / directory has received an abuse report. It cannot be shared">block</i>
+				{:else if child.id}
 					<a
 						href="/d/{child.id}"
 						on:click|preventDefault|stopPropagation={() => {dispatch("node_share_click", index)}}

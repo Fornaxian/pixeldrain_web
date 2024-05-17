@@ -54,6 +54,9 @@ let block_form = {
 		jresp.files_blocked.forEach(file => {
 			message += "<li>pixeldrain.com/u/" + file + "</li>"
 		})
+		jresp.filesystem_nodes_blocked.forEach(file => {
+			message += "<li>pixeldrain.com/d/" + file + "</li>"
+		})
 		message += "</ul>"
 
 		return {success: true, message: message}
