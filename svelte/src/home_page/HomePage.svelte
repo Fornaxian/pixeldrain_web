@@ -3,17 +3,19 @@ import Footer from "../layout/Footer.svelte";
 import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
 import ForCreators from "./ForCreators.svelte";
+import PolicyChange from "./PolicyChange.svelte";
 import UploadWidget from "./UploadWidget.svelte";
 </script>
 
 <div class="page_content">
 	<header>
 		<div class="header_image_container"></div>
+		<PolicyChange/>
 	</header>
 
 	<AddressReputation/>
 
-	<UploadWidget></UploadWidget>
+	<UploadWidget/>
 </div>
 
 <div class="page_content">

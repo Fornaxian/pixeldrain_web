@@ -183,7 +183,7 @@ onMount(() => {
 		</button>
 	</div>
 
-	{#each reports as report (report.id)}
+	{#each reports.slice(0, 100) as report (report.id)}
 		<AbuseReport
 			report={report}
 			ip_report_count={ip_report_count}
