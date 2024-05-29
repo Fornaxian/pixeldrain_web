@@ -162,7 +162,7 @@ onMount(() => {
 					<li>€4 per TB per month for storage</li>
 					<li>
 						€2 per TB for data transfer (with <a
-						href="user/sharing/bandwidth">bandwidth sharing</a>
+						href="/user/sharing/bandwidth">bandwidth sharing</a>
 						enabled)
 					</li>
 					<li>Access to the <a href="/filesystem">filesystem</a></li>
@@ -200,7 +200,7 @@ onMount(() => {
 					<li>€0.50 per TB per month for storage</li>
 					<li>
 						€2 per TB for data transfer (with <a
-						href="user/sharing/bandwidth">bandwidth sharing</a>
+						href="/user/sharing/bandwidth">bandwidth sharing</a>
 						enabled)
 					</li>
 					<li>
