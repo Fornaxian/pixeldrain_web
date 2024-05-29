@@ -50,5 +50,6 @@ export const set_file = file => {
 	overflow: hidden;
 	border: none;
 	font-size: 0.9em;
+	word-break: break-word;
 }
 </style>

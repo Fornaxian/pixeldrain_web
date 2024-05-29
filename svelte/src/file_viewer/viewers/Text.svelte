@@ -119,6 +119,7 @@ const code = async file => {
 	overflow: hidden;
 	border: none;
 	font-size: 0.9em;
+	word-break: break-word;
 }
 .container > .md {
 	display: block;
