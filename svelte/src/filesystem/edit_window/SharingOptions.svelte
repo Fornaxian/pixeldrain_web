@@ -40,6 +40,16 @@ const toggle_example = () => {
 		}
 	}
 }
+
+const update_shared = e => {
+	// If sharing is enabled we automatically save the file so the user can copy
+	// the sharing link. But if the user disables sharing we don't automatically
+	// save so that the user can't accidentally discard a sharing link that's in
+	// use
+	if (shared) {
+		dispatch("save")
+	}
+}
 </script>
 
 <h2>Share this file/directory</h2>
@@ -60,13 +70,19 @@ const toggle_example = () => {
 	share a directory all the files within the directory are also
 	accessible from the link.
 </p>
-<div class="form_grid">
-	<div>
-		<input form="edit_form" bind:checked={shared} id="shared" type="checkbox" class="form_input"/>
-		<label for="shared">Share this file or directory</label>
-	</div>
-	<button on:click={() => dispatch("save")}><i class="icon">save</i> Save</button>
+<div>
+	<input
+		form="edit_form"
+		bind:checked={shared}
+		on:change={update_shared}
+		id="shared"
+		type="checkbox"
+		class="form_input"
+	/>
+	<label for="shared">Share this file or directory</label>
+</div>
 
+<div class="form_grid">
 	{#if is_shared}
 		<span>Your sharing link: <a href={share_link}>{share_link}</a></span>
 		<CopyButton text={share_link}>Copy</CopyButton>

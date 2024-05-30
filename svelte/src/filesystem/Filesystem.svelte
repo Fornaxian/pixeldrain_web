@@ -225,8 +225,13 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 	overflow: hidden;
 
 	/* Force some variable usage that is normally out of scope */
-	background: var(--body_background);
 	color: var(--body_text_color);
+
+	background-image: var(--background_image, var(--background_pattern));
+	background-color: var(--background_pattern_color);
+	background-size: var(--background_image_size, initial);
+	background-position: var(--background_image_position, initial);
+	background-repeat: var(--background_image_repeat, repeat);
 }
 
 /* Headerbar (row 1) */
@@ -236,6 +241,7 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 	flex-direction: row;
 	text-align: left;
 	box-shadow: none;
+	background-color: var(--shaded_background);
 }
 
 /* File preview area (row 2) */
@@ -256,13 +262,7 @@ Toolbar.svelte and the .label max-width in FileStats.svelte */
 
 .file_preview {
 	flex: 1 1 0;
-	border-radius: 8px;
 	overflow: auto;
-	border: 2px solid var(--separator);
-	background-image: var(--background_image, var(--background_pattern));
-	background-color: var(--background_pattern_color);
-	background-size: var(--background_image_size, initial);
-	background-position: var(--background_image_position, initial);
-	background-repeat: var(--background_image_repeat, repeat);
+	border: 1px solid var(--separator);
 }
 </style>

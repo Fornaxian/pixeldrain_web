@@ -65,7 +65,7 @@ const add_styles = (style, properties) => {
 		style.body_background = properties.brand_body_color
 		style.body_text_color = add_contrast(properties.brand_body_color, 75)
 		style.shaded_background = set_alpha(properties.brand_body_color, 0.8)
-		style.separator = add_contrast(properties.brand_body_color, 7)
+		style.separator = add_contrast(properties.brand_body_color, 8)
 		style.shadow_color = darken(properties.brand_body_color, 0.8)
 	}
 	if (properties.brand_card_color) {

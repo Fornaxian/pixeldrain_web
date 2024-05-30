@@ -74,7 +74,7 @@ export let large_icons = false
 	border-collapse: collapse;
 	border-radius: 8px;
 
-	max-width: 100%;
+	max-width: 99%;
 	width: 1000px;
 }
 .directory > * {

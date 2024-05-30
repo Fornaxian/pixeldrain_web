@@ -38,6 +38,7 @@ const click = e => {
 	<div class="menu">
 		{#if window.user.username !== ""}
 			<div class="menu_username">{window.user.username}</div>
+			<div class="separator"></div>
 			<div class="stats_table">
 				<div>Subscription</div>
 				<div>{window.user.subscription.name}</div>
@@ -52,14 +53,20 @@ const click = e => {
 				<div>Transfer used</div>
 				<div>{formatDataVolume(window.user.monthly_transfer_used, 3)}</div>
 			</div>
+			<div class="separator"></div>
 			<Button link_href="/d/me" icon="folder" label="My Filesystem"/>
 			<Button link_href="/filesystem" icon="description" label="Filesystem Guide"/>
+			<div class="separator"></div>
+			<Button link_href="/user/files" icon="image" label="My Files"/>
+			<Button link_href="/user/lists" icon="photo_library" label="My Albums"/>
+			<div class="separator"></div>
 			<Button link_href="/user" icon="person" label="Profile"/>
 			<Button link_href="/user/settings" icon="settings" label="Account Settings"/>
 			<Button link_href="/user/subscription" icon="shopping_cart" label="Subscription"/>
 			<Button link_href="/user/prepaid/transactions" icon="receipt" label="Transactions"/>
 
 			{#if window.user.is_admin}
+				<div class="separator"></div>
 				<Button link_href="/admin" icon="admin_panel_settings" label="Admin Panel"/>
 			{/if}
 		{:else}
@@ -99,11 +106,17 @@ dialog {
 .menu {
 	display: flex;
 	flex-direction: column;
+	max-width: 15em;
 }
 .menu_username {
 	text-align: center;
-	border-bottom: 2px solid var(--separator);
 	font-size: 1.1em;
+}
+.separator {
+	height: 1px;
+	margin: 2px 0;
+	width: 100%;
+	background-color: var(--separator);
 }
 .stats_table {
 	display: grid;

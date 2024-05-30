@@ -75,7 +75,7 @@ let expand = e => {
 </script>
 
 <div class="toolbar" class:expanded>
-	<div class="separator hidden_horizontal" style="margin-top: 6px;"></div>
+	<div class="separator hidden_horizontal" style="margin-top: 0;"></div>
 
 	<div class="stats_container" on:click={expand} on:keypress={expand} role="button" tabindex="0">
 		<button class="button_expand hidden_vertical" on:click={expand}>
@@ -166,14 +166,15 @@ let expand = e => {
 	overflow-x: hidden;
 	overflow-y: scroll;
 	transition: max-height 0.3s;
+	background-color: var(--shaded_background);
 }
 .grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(7.5em, 1fr));
 }
 .separator {
-	height: 2px;
-	margin: 4px 0;
+	height: 1px;
+	margin: 2px 0;
 	width: 100%;
 	background-color: var(--separator);
 }

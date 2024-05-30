@@ -190,8 +190,12 @@ input[type="color"] {
 	border-radius: 10px;
 }
 .example_background {
-	background: var(--background);
-	color: var(--background_text_color)
+	color: var(--background_text_color);
+	background-image: var(--background_image);
+	background-color: var(--background_pattern_color);
+	background-size: var(--background_image_size, initial);
+	background-position: var(--background_image_position, initial);
+	background-repeat: var(--background_image_repeat, repeat);
 }
 .example_body {
 	background: var(--body_background);

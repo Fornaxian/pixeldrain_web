@@ -65,7 +65,6 @@ const keydown = e => {
 		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<div
 			class="window"
-			class:small_radius={form !== ""}
 			on:click|stopPropagation
 			role="dialog"
 			aria-modal="true"
@@ -75,9 +74,9 @@ const keydown = e => {
 			<div class="header">
 				<slot name="title">
 					{#if form !== ""}
-						<Button click={hide} icon="close" label="Cancel"/>
+						<Button round click={hide} icon="close"/>
 						<span class="title">{title}</span>
-						<Button highlight type="submit" form={form} click={hide} icon="save" label="Save"/>
+						<Button round highlight type="submit" form={form} click={hide} icon="save" label="Save"/>
 					{:else}
 						<span class="title">{title}</span>
 						<Button round click={hide} icon="close" />
@@ -120,12 +119,9 @@ these padding divs to move it 25% up */
 	max-height: 100%;
 	max-width: 100%;
 	padding: 0;
-	border-radius: 16px 16px 8px 8px;
+	border-radius: 18px 18px 8px 8px;
 	overflow: hidden;
 	text-align: left;
-}
-.small_radius {
-	border-radius: 8px;
 }
 .header {
 	flex-grow: 0;

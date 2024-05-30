@@ -35,6 +35,8 @@ const update_links = (path) => {
 <style>
 .container {
 	text-align: center;
+	margin-top: 6px;
+	margin-bottom: 6px;
 }
 .link {
 	display: inline-block;
@@ -43,7 +45,7 @@ const update_links = (path) => {
 	display: inline-block;
 	margin: auto;
 	max-height: 90px;
-	max-width: 100%;
+	max-width: 99%;
 	border-radius: 6px;
 }
 </style>
