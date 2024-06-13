@@ -80,6 +80,15 @@ let active_uploads = 0
 let state = "idle"
 
 const start_upload = async () => {
+	// Count the number of active uploads so we can know how many new uploads we
+	// can start
+	active_uploads = upload_queue.reduce((acc, val) => {
+		if (val.status === "uploading") {
+			acc++
+		}
+		return acc
+	}, 0)
+
 	for (let i = 0; i < upload_queue.length && active_uploads < 3; i++) {
 		if (upload_queue[i]) {
 			if (upload_queue[i].status === "queued") {
@@ -92,17 +101,12 @@ const start_upload = async () => {
 
 	if (active_uploads === 0) {
 		state = "finished"
+		dispatch("uploads_finished")
 
-		let file_ids = []
-		upload_queue.forEach(job => {
-			if (job.status === "finished" && job.id !== "") {
-				file_ids.push(job.id)
-			}
-		})
-
-		dispatch("uploads_finished", file_ids)
-
+		// Empty the queue to free any references to lingering components
 		upload_queue = []
+
+		// In ten seconds we close the popup
 		setTimeout(() => {
 			if (state === "finished") {
 				visible = false
@@ -114,7 +118,7 @@ const start_upload = async () => {
 }
 
 const finish_upload = (e) => {
-	active_uploads--
+	// Update the queue so the status updates are properly rendered
 	upload_queue = upload_queue
 	start_upload()
 }

@@ -12,7 +12,7 @@
 import { fs_path_url } from "../FilesystemUtil"
 
 // code and an error message
-export const upload_file = async (file, path, on_progress, on_success, on_error) => {
+export const upload_file = (file, path, on_progress, on_success, on_error) => {
 	// Check the file size limit. For free accounts it's 20 GB
 	if (window.user.subscription.file_size_limit === 0) {
 		window.user.subscription.file_size_limit = 20e9
@@ -70,4 +70,6 @@ export const upload_file = async (file, path, on_progress, on_success, on_error)
 	};
 
 	xhr.send(file);
+
+	return xhr
 }
