@@ -11,7 +11,7 @@ export let center = false
 .block {
 	display: block;
 	text-align: initial;
-	max-width: 100%;
+	max-width: 99%;
 	overflow-wrap: anywhere;
 	margin: 8px auto;
 

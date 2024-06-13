@@ -36,13 +36,12 @@ const update_links = (path) => {
 .container {
 	text-align: center;
 	margin-top: 6px;
-	margin-bottom: 6px;
 }
 .link {
-	display: inline-block;
+	display: block;
 }
 .image {
-	display: inline-block;
+	display: block;
 	margin: auto;
 	max-height: 90px;
 	max-width: 99%;

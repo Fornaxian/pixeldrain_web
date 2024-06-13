@@ -57,8 +57,8 @@ const click = e => {
 			<Button link_href="/d/me" icon="folder" label="My Filesystem"/>
 			<Button link_href="/filesystem" icon="description" label="Filesystem Guide"/>
 			<div class="separator"></div>
-			<Button link_href="/user/files" icon="image" label="My Files"/>
-			<Button link_href="/user/lists" icon="photo_library" label="My Albums"/>
+			<Button link_href="/user/filemanager#files" icon="image" label="My Files"/>
+			<Button link_href="/user/filemanager#lists" icon="photo_library" label="My Albums"/>
 			<div class="separator"></div>
 			<Button link_href="/user" icon="person" label="Profile"/>
 			<Button link_href="/user/settings" icon="settings" label="Account Settings"/>

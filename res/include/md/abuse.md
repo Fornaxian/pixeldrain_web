@@ -13,9 +13,7 @@ will be removed when reported.
   order to comply with international regulations I have to prevent it from
   spreading too far. For this reason pornographic videos and images can be
   reported through the file reporting form. Once reported the file will be
-  removed from public viewing. The IP address of the uploader will not be
-  banned, and if the file was uploaded with an account, the owner of the file
-  will still be able to download their files.
+  removed from public viewing.
 * **Abuse of minors**: Videos, images or audio fragments depicting abuse or
   inappropriate touching of minors will be removed and reported to the National
   Center for Missing and Exploited Children when found.
@@ -52,7 +50,9 @@ formal DMCA take-down request to
 [abuse@pixeldrain.com](mailto:abuse@pixeldrain.com) and I will review it. In
 your e-mail you need to swear under penalty of perjury that you (or your
 company) own exclusive rights to the claimed content. Please state the name of
-your organisation so the report can be properly categorised.
+your organisation so the report can be properly categorised. Please put all
+relevant information in the e-mail body itself, **no attachments**! PDF files
+will not be reviewed.
 
 The abuse mailbox relies on e-mail forwarding to work. The mail is first
 processed by the pixeldrain server and then forwarded to my mailbox. If your
