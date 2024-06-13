@@ -135,7 +135,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		// General navigation
 		{GET, "" /*                */, wc.serveTemplate("home", handlerOpts{})},
 		{GET, "api" /*             */, wc.serveMarkdown("api.md", handlerOpts{})},
-		{GET, "history" /*         */, wc.serveTemplate("history_cookies", handlerOpts{})},
+		{GET, "history" /*         */, wc.serveTemplate("upload_history", handlerOpts{})},
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
 		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
 		{GET, "l/:id" /*           */, wc.serveListViewer},
@@ -399,6 +399,10 @@ func (wc *WebController) serveNotFound(w http.ResponseWriter, r *http.Request) {
 	log.Debug("Not Found: %s", r.URL)
 	w.WriteHeader(http.StatusNotFound)
 	wc.templates.Get().ExecuteTemplate(w, "404", wc.newTemplateData(w, r))
+}
+func (wc *WebController) serveUnavailableForLegalReasons(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusUnavailableForLegalReasons)
+	wc.templates.Get().ExecuteTemplate(w, "451", wc.newTemplateData(w, r))
 }
 
 func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {

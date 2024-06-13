@@ -1,0 +1,19 @@
+{{define "upload_history"}}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "Upload history"}}
+
+		<script>
+			window.api_endpoint = '{{.APIEndpoint}}';
+			window.server_hostname = "{{.Hostname}}";
+		</script>
+		<script defer src='/res/svelte/upload_history.js?v{{cacheID}}'></script>
+	</head>
+	<body>
+		{{template "menu" .}}
+		<div id="page_body" class="page_body"></div>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}
