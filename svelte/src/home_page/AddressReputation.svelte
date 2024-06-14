@@ -3,7 +3,7 @@ import { onMount } from "svelte";
 import Expandable from "../util/Expandable.svelte";
 import { formatDate } from "../util/Formatting.svelte";
 
-let result = false;
+let result = null;
 let offences = 0
 
 onMount(async () => {
@@ -13,24 +13,71 @@ onMount(async () => {
 			throw new Error(resp.text());
 		}
 		result = await resp.json()
-		offences = result.offences.length
 	} catch (err) {
 		console.error(err);
 	}
 })
 </script>
 
-{#if result !== false && offences > 0}
+
+{#if result !== null && result.user_banned}
 	<section>
 		<Expandable click_expand>
-			<div slot="header" class="header" class:red={result.banned === true} class:yellow={result.banned === false}>
-				{#if result.banned === true}
+			<div slot="header" class="header red">
+				Your account has been banned, click for details
+			</div>
+			<p>
+				Your user account has been banned from uploading to
+				pixeldrain due to violation of the
+				<a href="/abuse">content policy</a>. Below is a list of
+				files originating from your account which have been blocked:
+			</p>
+
+			<div class="table_scroll">
+				<table>
+					<tr>
+						<td>File</td>
+						<td>Reason</td>
+						<td>Ban date</td>
+						<td>Expiry date</td>
+					</tr>
+					{#each result.user_offences as offence (offence.ban_time)}
+						<tr>
+							<td>
+								{#if offence.file_link}
+									<a href={offence.file_link} target="_blank" rel="noreferrer">
+										{offence.file_name}
+									</a>
+								{/if}
+							</td>
+							<td>{offence.reason}</td>
+							<td>{formatDate(offence.ban_time, false, false, false)}</td>
+							<td>{formatDate(offence.expire_time, false, false, false)}</td>
+						</tr>
+					{/each}
+				</table>
+			</div>
+			<p>
+				If you would like to dispute your account you can mail me at
+				support@pixeldrain.com. Please do not mail unless you have a
+				good reason. If you do not provide a valid reason why the ban
+				should be reversed your e-mail will be ignored. And do not
+				forget to put your username ({window.user.username}) in the
+				e-mail.
+			</p>
+		</Expandable>
+	</section>
+{:else if result !== null && result.ip_offences.length > 0}
+	<section>
+		<Expandable click_expand>
+			<div slot="header" class="header" class:red={result.ip_banned} class:yellow={!result.ip_banned}>
+				{#if result.ip_banned}
 					Your IP address has been banned, click for details
 				{:else}
 					Your IP address has received a copyright strike, click for details
 				{/if}
 			</div>
-			{#if result.banned === true}
+			{#if result.ip_banned}
 				<p>
 					Your IP address ({result.address}) has been banned from
 					uploading to pixeldrain due to violation of the
@@ -56,11 +103,11 @@ onMount(async () => {
 						<td>Ban date</td>
 						<td>Expiry date</td>
 					</tr>
-					{#each result.offences as offence (offence.ban_time)}
+					{#each result.ip_offences as offence (offence.ban_time)}
 						<tr>
 							<td>
-								{#if offence.file_public_id}
-									<a href="/u/{offence.file_public_id}" target="_blank" rel="noreferrer">
+								{#if offence.file_link}
+									<a href={offence.file_link} target="_blank" rel="noreferrer">
 										{offence.file_name}
 									</a>
 								{/if}
@@ -101,6 +148,8 @@ onMount(async () => {
 		</Expandable>
 	</section>
 {/if}
+
+
 
 <style>
 

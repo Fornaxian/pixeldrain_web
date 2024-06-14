@@ -192,6 +192,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "admin/email_reporters" /*   */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/abuse_reports" /*     */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/ip_bans" /*           */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
+		{GET, "admin/user_bans" /*         */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/user_management" /*   */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/mollie_settlements" /**/, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/paypal_taxes" /*      */, wc.serveTemplate("admin", handlerOpts{Auth: true})},

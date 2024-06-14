@@ -7,16 +7,12 @@ import LoadingIndicator from "../util/LoadingIndicator.svelte";
 let loading = true
 let rows = []
 let total_offences = 0
-
 let expanded = false
-let creating = false
-let new_ban_address
-let new_ban_reason = "unknown"
 
 const get_bans = async () => {
 	loading = true;
 	try {
-		const resp = await fetch(window.api_endpoint+"/admin/ip_ban");
+		const resp = await fetch(window.api_endpoint+"/admin/user_ban");
 		if(resp.status >= 400) {
 			throw new Error(resp.text());
 		}
@@ -32,43 +28,14 @@ const get_bans = async () => {
 	}
 };
 
-const create_ban = async () => {
-	if (!new_ban_address.value) {
-		alert("Please enter an IP address!")
-		return
-	} else if (!new_ban_reason) {
-		alert("Please enter a reason!")
-		return
-	}
-
-	try {
-		const form = new FormData()
-		form.append("address", new_ban_address.value)
-		form.append("reason", new_ban_reason)
-
-		const resp = await fetch(
-			window.api_endpoint+"/admin/ip_ban",
-			{ method: "POST", body: form }
-		);
-		if(resp.status >= 400) {
-			throw new Error(await resp.text());
-		}
-	} catch (err) {
-		alert("Failed to add IP ban! "+err)
-	}
-
-	creating = false
-	get_bans();
-}
-
-const delete_ban = async (addr) => {
-	if (!confirm("Delete this banned address?\n\n"+addr)) {
+const delete_ban = async (userid) => {
+	if (!confirm("Delete this banned user?\n\n"+userid)) {
 		return
 	}
 
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/admin/ip_ban/"+encodeURI(addr),
+			window.api_endpoint+"/admin/user_ban/"+encodeURI(userid),
 			{ method: "DELETE" }
 		);
 		if(resp.status >= 400) {
@@ -102,48 +69,15 @@ onMount(get_bans);
 				<i class="icon">unfold_more</i> Expand all
 			{/if}
 		</button>
-		<button class:button_highlight={creating} on:click={() => {creating = !creating}}>
-			<i class="icon">create</i> Add IP ban
-		</button>
 	</div>
-	{#if creating}
-		<div class="highlight_shaded">
-			<form on:submit|preventDefault={create_ban}>
-				<div class="form">
-					<label for="field_address">IP address</label>
-					<input id="field_address" type="text" bind:this={new_ban_address}/>
-					<label for="field_reason">Reason</label>
-					<div id="field_reason">
-						<input id="reason_unknown" name="reporter_type" type="radio" bind:group={new_ban_reason} value="unknown" />
-						<label for="reason_unknown">unknown</label>
-						<br/>
-						<input id="reason_copyright" name="reporter_type" type="radio" bind:group={new_ban_reason} value="copyright" />
-						<label for="reason_copyright">copyright</label>
-						<br/>
-						<input id="reason_child_abuse" name="reporter_type" type="radio" bind:group={new_ban_reason} value="child_abuse" />
-						<label for="reason_child_abuse">child_abuse</label>
-						<br/>
-						<input id="reason_terrorism" name="reporter_type" type="radio" bind:group={new_ban_reason} value="terorrism" />
-						<label for="reason_terrorism">terrorism</label>
-						<br/>
-						<input id="reason_gore" name="reporter_type" type="radio" bind:group={new_ban_reason} value="gore" />
-						<label for="reason_gore">gore</label>
-						<br/>
-						<input id="reason_malware" name="reporter_type" type="radio" bind:group={new_ban_reason} value="malware" />
-						<label for="reason_malware">malware</label>
-					</div>
-					<button class="button_highlight" type="submit" style="float: right;">
-						<i class="icon">save</i> Save
-					</button>
-				</div>
-			</form>
-		</div>
-	{/if}
 
 	{#each rows as row (row.address)}
 		<Expandable expanded={expanded} click_expand>
 			<div slot="header" class="header">
-				<div class="title">{row.address}</div>
+				<div class="title">
+					{row.username}<br/>
+					{row.user_id}
+				</div>
 				<div class="stats">
 					Offences<br/>
 					{row.offences.length}
@@ -152,7 +86,7 @@ onMount(get_bans);
 					Date<br/>
 					{formatDate(row.offences[0].ban_time, false, false, false)}
 				</div>
-				<button on:click|stopPropagation={() => {delete_ban(row.address)}} class="button button_red" style="align-self: center;">
+				<button on:click|stopPropagation={() => {delete_ban(row.user_id)}} class="button button_red" style="align-self: center;">
 					<i class="icon">delete</i>
 				</button>
 			</div>

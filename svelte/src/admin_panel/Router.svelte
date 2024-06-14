@@ -8,6 +8,7 @@ import UserManagement from "./UserManagement.svelte";
 import EmailReporters from "./EmailReporters.svelte";
 import MollieSettlements from "./MollieSettlements.svelte";
 import PayPalTaxes from "./PayPalTaxes.svelte";
+import UserBans from "./UserBans.svelte";
 
 let pages = [
 	{
@@ -35,6 +36,11 @@ let pages = [
 		title: "IP Bans",
 		icon: "remove_circle",
 		component: IPBans,
+	}, {
+		path: "/admin/user_bans",
+		title: "User Bans",
+		icon: "person_remove",
+		component: UserBans,
 	}, {
 		path: "/admin/user_management",
 		title: "User Management",
