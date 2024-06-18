@@ -3,6 +3,7 @@ import { createEventDispatcher } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
 import IconBlock from "./IconBlock.svelte";
 import FileTitle from "./FileTitle.svelte";
+import { formatDataVolume } from "../../util/Formatting.svelte";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f
@@ -21,6 +22,7 @@ let file = {
 
 <IconBlock icon_href={file.icon_href}>
 	Type: {file.mime_type}<br/>
+	Size: {formatDataVolume(file.size, 3)}<br/>
 	No preview is available for this file type. Download to view it locally.
 	<br/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>

@@ -170,6 +170,9 @@ const fullscreen = () => {
 		<button on:click={download}>
 			<i class="icon">download</i> Download
 		</button>
+		<a href="/login" class="button">
+			<i class="icon">login</i> Log in
+		</a>
 		<a href="/register" class="button">
 			<i class="icon">how_to_reg</i> Sign up
 		</a>
