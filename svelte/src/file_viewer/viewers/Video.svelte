@@ -162,8 +162,9 @@ const fullscreen = () => {
 	<h1>{file.name}</h1>
 
 	<IconBlock icon_href={file.icon_href}>
-		The online video player on pixeldrain is only available for registered
-		users, or when the uploader of the video has a Pro account. You can
+
+		The online video player on pixeldrain is only available if the viewer or
+		the uploader of the video has a registered pixeldrain account. You can
 		still download the video and watch it locally on your computer without
 		an account.
 		<br/>
