@@ -1,8 +1,10 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "../util/Formatting.svelte";
+import { formatDataVolume, formatDate } from "../util/Formatting.svelte";
 import Expandable from "../util/Expandable.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
+import Button from "../layout/Button.svelte"
+import Euro from "../util/Euro.svelte"
 
 let loading = true
 let rows = []
@@ -48,6 +50,22 @@ const delete_ban = async (userid) => {
 	get_bans();
 }
 
+const impersonate = async user_id => {
+	const form = new FormData()
+	form.append("id", user_id)
+
+	const resp = await fetch(
+		window.api_endpoint+"/admin/impersonate",
+		{ method: "POST", body: form }
+	);
+	if(resp.status >= 400) {
+		alert(await resp.text())
+		return
+	}
+
+	window.open("/user", "_blank")
+}
+
 onMount(get_bans);
 </script>
 
@@ -71,15 +89,18 @@ onMount(get_bans);
 		</button>
 	</div>
 
-	{#each rows as row (row.address)}
+	{#each rows as row (row.user_id)}
 		<Expandable expanded={expanded} click_expand>
 			<div slot="header" class="header">
 				<div class="title">
-					{row.username}<br/>
-					{row.user_id}
+					{row.user.username}
 				</div>
 				<div class="stats">
-					Offences<br/>
+					Type<br/>
+					{row.offences[0].reason}
+				</div>
+				<div class="stats">
+					Count<br/>
 					{row.offences.length}
 				</div>
 				<div class="stats">
@@ -90,6 +111,39 @@ onMount(get_bans);
 					<i class="icon">delete</i>
 				</button>
 			</div>
+
+			<Button click={() => impersonate(row.user_id)} icon="login" label="Impersonate user"/>
+			<table>
+				<tr>
+					<td>Username</td>
+					<td>{row.user.username}</td>
+				</tr>
+				<tr>
+					<td>ID</td>
+					<td>{row.user_id}</td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td>{row.user.email}</td>
+				</tr>
+				<tr>
+					<td>Subscription</td>
+					<td>{row.user.subscription.name}</td>
+				</tr>
+				<tr>
+					<td>Credit balance</td>
+					<td><Euro amount={row.user.balance_micro_eur}/></td>
+				</tr>
+				<tr>
+					<td>Storage used</td>
+					<td>{formatDataVolume(row.user.storage_space_used, 3)}</td>
+				</tr>
+				<tr>
+					<td>FS Storage used</td>
+					<td>{formatDataVolume(row.user.filesystem_storage_used, 3)}</td>
+				</tr>
+			</table>
+			<br/>
 			<div class="table_scroll">
 				<table>
 					<tr>

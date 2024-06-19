@@ -22,12 +22,18 @@ let set_status = async (action, report_type) => {
 			<img class="file_icon" src={"/api/file/"+report.file.id+"/thumbnail"} alt="File thumbnail"/>
 		</div>
 
-		<div class="title">{report.file.name}</div>
-			<div class="stats">Type<br/>
-				{report.file.abuse_type === "" ? report.type : report.file.abuse_type}
-			</div>
+		<div class="title">
+			{report.file.name}
+		</div>
+		<div class="stats">
+			Type<br/>
+			{report.file.abuse_type === "" ? report.type : report.file.abuse_type}
+		</div>
 		{#if report.status !== "pending"}
-			<div class="stats">Status<br/>{report.status}</div>
+			<div class="stats">
+				Status<br/>
+				{report.status}
+			</div>
 		{/if}
 		<div class="stats">R<br/>{report.reports.length}</div>
 		<div class="stats">V<br/>{formatNumber(report.file.views, 3)}</div>
