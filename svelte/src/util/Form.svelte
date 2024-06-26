@@ -34,6 +34,8 @@ let submit_result = {
 	messages: null,
 }
 
+let form_elem
+
 let submit = async (event) => {
 	loading = true
 	event.preventDefault()
@@ -49,6 +51,8 @@ let submit = async (event) => {
 			}
 		} else if (field.type === "description") {
 			field_values[field.name] = ""
+		} else if (field.type === "captcha") {
+			field_values[field.name] = form_elem.getElementsByClassName("g-recaptcha-response")[0].value
 		} else {
 			field_values[field.name] = field.binding.value
 		}
@@ -107,7 +111,7 @@ let handle_errors = (response) => {
 }
 </script>
 
-<form method="POST" on:submit={submit}>
+<form method="POST" on:submit={submit} bind:this={form_elem}>
 	{#if submitted}
 		{#if submit_result.messages}
 			<div id="submit_result" class:highlight_green={submit_result.success} class:highlight_red={!submit_result.success}>

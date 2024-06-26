@@ -163,10 +163,11 @@ const fullscreen = () => {
 
 	<IconBlock icon_href={file.icon_href}>
 
-		The online video player on pixeldrain is only available if the viewer or
-		the uploader of the video has a registered pixeldrain account. You can
-		still download the video and watch it locally on your computer without
-		an account.
+		The online video player on pixeldrain is only available while logged in
+		to an account, or if the uploading user has verified their e-mail
+		address. You can still download the video and watch it locally on your
+		computer without an account.
+
 		<br/>
 		<button on:click={download}>
 			<i class="icon">download</i> Download

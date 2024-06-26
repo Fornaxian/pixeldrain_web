@@ -1,21 +1,23 @@
 <script>
+import Menu from "../filesystem/Menu.svelte";
 import Footer from "../layout/Footer.svelte";
 import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
 import ForCreators from "./ForCreators.svelte";
-import PolicyChange from "./PolicyChange.svelte";
-import UploadWidget from "./UploadWidget.svelte";
+import UploadLoginWall from "./UploadLoginWall.svelte";
 </script>
 
 <div class="page_content">
-	<header>
+	<header class="header" style="text-align: initial">
+		<div class="menu_button_container">
+			<Menu no_login_label="Not logged in" hide_name={false} hide_logo/>
+		</div>
 		<div class="header_image_container"></div>
-		<PolicyChange/>
 	</header>
 
 	<AddressReputation/>
 
-	<UploadWidget/>
+	<UploadLoginWall/>
 </div>
 
 <div class="page_content">
@@ -99,18 +101,19 @@ header > h1 {
 }
 
 .header_image_container {
+	text-align: initial;
 	margin: auto;
-	height: 200px;
-	width: 750px;
+	height: 150px;
+	width: 500px;
 	max-width: 100%;
-	background-image: url("/res/img/header_orbitron_wide.webp");
+	background-image: url("/res/img/header_orbitron.webp");
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: center;
 }
-@media (max-width: 600px) {
-	.header_image_container {
-		background-image: url("/res/img/header_orbitron.webp");
-	}
+.menu_button_container {
+	display: flex;
+	justify-content: end;
+	padding-right: 0.5em;
 }
 </style>
