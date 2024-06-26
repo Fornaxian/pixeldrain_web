@@ -21,7 +21,6 @@ let footer_image = ""
 let footer_link = ""
 let disable_download_button = false
 let disable_share_button = false
-let disable_menu = false
 
 let select_file = t => {
 	currently_selecting = t
@@ -60,7 +59,6 @@ let save = async () => {
 	form.append("footer_link", footer_link)
 	form.append("disable_download_button", disable_download_button)
 	form.append("disable_share_button", disable_share_button)
-	form.append("disable_menu", disable_menu)
 
 	try {
 		const resp = await fetch(
@@ -94,7 +92,6 @@ onMount(() => {
 		footer_link = b.footer_link ? b.footer_link : ""
 		disable_download_button = b.disable_download_button ? b.disable_download_button : false
 		disable_share_button = b.disable_share_button ? b.disable_share_button : false
-		disable_menu = b.disable_menu ? b.disable_menu : false
 	}
 })
 </script>
@@ -239,17 +236,6 @@ onMount(() => {
 	Disable share button:
 	<button on:click={() => {disable_share_button = !disable_share_button; save()}}>
 		{#if disable_share_button}
-			<i class="icon">check</i> ON (click to turn off)
-		{:else}
-			<i class="icon">close</i> OFF (click to turn on)
-		{/if}
-	</button>
-	<p>
-		You can also choose the hide the menu bar altogether
-	</p>
-	Disable menu:
-	<button on:click={() => {disable_menu = !disable_menu; save()}}>
-		{#if disable_menu}
 			<i class="icon">check</i> ON (click to turn off)
 		{:else}
 			<i class="icon">close</i> OFF (click to turn on)

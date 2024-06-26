@@ -239,7 +239,6 @@ let custom_footer = ""
 let custom_footer_link = ""
 let disable_download_button = false
 let disable_share_button = false
-let disable_menu = false
 const apply_customizations = file => {
 	if (!file.branding) {
 		return
@@ -261,12 +260,6 @@ const apply_customizations = file => {
 	}
 	if (file.branding.disable_share_button && !file.can_edit) {
 		disable_share_button = true
-	}
-	if (file.branding.disable_menu && !file.can_edit) {
-		disable_menu = true
-		if (toolbar_visible) {
-			toolbar_toggle()
-		}
 	}
 
 	if (file.branding.background_image) {
@@ -376,16 +369,14 @@ const keyboard_event = evt => {
 
 <div class="file_viewer" bind:this={file_viewer}>
 	<div class="headerbar">
-		{#if !disable_menu}
-			<button
-				on:click={toolbar_toggle}
-				class="round"
-				class:button_highlight={toolbar_visible}
-				style="line-height: 1em;"
-				title="Open or close the toolbar">
-				<i class="icon">menu</i>
-			</button>
-		{/if}
+		<button
+			on:click={toolbar_toggle}
+			class="round"
+			class:button_highlight={toolbar_visible}
+			style="line-height: 1em;"
+			title="Open or close the toolbar">
+			<i class="icon">menu</i>
+		</button>
 
 		<HomeButton embedded_viewer={embedded}/>
 
