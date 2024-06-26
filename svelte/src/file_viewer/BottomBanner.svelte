@@ -102,6 +102,15 @@ onMount(() => {
 			Get uBlock Origin
 		</a>
 	</div>
+
+{:else if ad_type === "overload"}
+
+	<div class="highlight_yellow" style="margin: 3px;">
+		Pixeldrain's server host is having network problems. In order to
+		ensure stability for our paying customers the free download limit
+		has been temporarily reduced to 3 GB
+	</div>
+
 {/if}
 
 <style>
