@@ -275,14 +275,14 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 
 		// Parse the markdown document and save the resulting HTML in a buffer
 		renderer := blackfriday.NewHTMLRenderer(blackfriday.HTMLRendererParameters{
-			Flags: blackfriday.CommonHTMLFlags,
+			Flags: blackfriday.CommonHTMLFlags | blackfriday.TOC,
 		})
 
 		// We parse the markdown document, walk through the nodes. Extract the
 		// title of the document, and the rest of the nodes are rendered like
 		// normal
 		var mdBuf bytes.Buffer
-		var inHeader = false
+
 		blackfriday.New(
 			blackfriday.WithRenderer(renderer),
 			blackfriday.WithExtensions(blackfriday.CommonExtensions|blackfriday.AutoHeadingIDs),
@@ -291,14 +291,22 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 		).Walk(func(node *blackfriday.Node, entering bool) blackfriday.WalkStatus {
 			// Capture the title of the document so we can put it at the top of
 			// the template and in the metadata. When entering a h1 node the
-			// next node will be the title of the document. Save that value
+			// first child will be the title of the document. Save that value
 			if node.Type == blackfriday.Heading && node.HeadingData.Level == 1 {
-				inHeader = entering
-				return blackfriday.GoToNext
+				tpld.Title = string(node.FirstChild.Literal)
+				return blackfriday.SkipChildren
 			}
-			if inHeader {
-				tpld.Title = string(node.Literal)
-				return blackfriday.GoToNext
+
+			// If this text node contains solely the text "[TOC]" then we render
+			// the table of contents
+			if node.Type == blackfriday.Text && bytes.Equal(node.Literal, []byte("[TOC]")) {
+				// Find the document node and render its TOC
+				for parent := node.Parent; ; parent = parent.Parent {
+					if parent.Type == blackfriday.Document {
+						renderer.RenderHeader(&mdBuf, parent)
+						return blackfriday.SkipChildren
+					}
+				}
 			}
 
 			return renderer.RenderNode(&mdBuf, node, entering)

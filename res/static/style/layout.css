@@ -325,7 +325,7 @@ h4,
 h5,
 h6 {
 	line-height: 1;
-	margin: 0.3em 0;
+	margin: 0.6em 0 0.3em 0;
 	font-weight: lighter;
 	font-family: 'Open Sans Light', sans-serif;
 }
@@ -336,7 +336,7 @@ h1 {
 }
 
 h2 {
-	font-size: 1.8em;
+	font-size: 2em;
 	border-bottom: 1px var(--separator) solid;
 }
 
@@ -375,10 +375,17 @@ a {
 	color: var(--link_color);
 }
 
-p,
+p {
+	margin: 0.6em 0;
+}
+
 ul,
 ol {
-	margin: 0.5em 0;
+	padding-left: 1.5em;
+}
+
+ul {
+	list-style: disc;
 }
 
 /* Forms*/

@@ -1,5 +1,9 @@
 # Content policy
 
+[TOC]
+
+## Disallowed contents
+
 The following types of content are not allowed to be shared on pixeldrain. They
 will be removed when reported.
 

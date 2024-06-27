@@ -11,15 +11,9 @@ account with a paid subscription (Patreon or Prepaid) by going to
  * If you experience any issues while using the filesystem, feel free to discuss
    them on [the Discord community](https://discord.gg/TWKGvYAFvX).
 
-Contents:
+Contents
 
- * [Pricing](#pricing)
- * [Directory sharing](#directory-sharing)
- * [Limits](#limits)
- * [Importing files](#importing-files)
- * [Client integrations](#client-integrations)
-   * [Rclone](#rclone)
-   * [FTPS](#ftps)
+[TOC]
 
 ## Pricing
 
