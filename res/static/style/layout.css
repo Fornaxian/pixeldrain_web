@@ -162,7 +162,7 @@ pre>code {
 	position: fixed;
 	backface-visibility: hidden;
 	background: var(--navigation_background);
-	width: 17em;
+	width: 300px;
 	height: 100%;
 	left: 0;
 	float: left;
@@ -178,7 +178,7 @@ pre>code {
 	right: 0;
 	height: auto;
 	left: 0;
-	margin-left: 17em;
+	margin-left: 300px;
 	min-width: 300px;
 	display: block;
 	text-align: center;
@@ -203,7 +203,7 @@ footer {
 
 @media (max-width: 1100px) {
 	.page_navigation {
-		left: -18em;
+		left: -300px;
 	}
 
 	.page_body {
