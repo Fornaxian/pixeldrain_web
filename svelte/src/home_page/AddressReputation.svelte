@@ -58,7 +58,7 @@ onMount(async () => {
 				</table>
 			</div>
 			<p>
-				If you would like to dispute your account you can mail me at
+				If you would like to dispute your account ban you can mail me at
 				support@pixeldrain.com. Please do not mail unless you have a
 				good reason. If you do not provide a valid reason why the ban
 				should be reversed your e-mail will be ignored. And do not

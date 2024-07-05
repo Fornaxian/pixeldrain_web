@@ -27,25 +27,12 @@ import UploadLoginWall from "./UploadLoginWall.svelte";
 
 	<section>
 		<p>
-			Pixeldrain is a file sharing website built for speed and ease of
+			Pixeldrain is a file hosting website built for speed and ease of
 			use. You can upload files you want to share online to our servers
-			and we will hold on to them for at least two months. During this
+			and we will hold on to them for at least four months. During this
 			time anyone with the link will be able to download your files.
 			Pixeldrain is built to be as fast as possible, so you don't have to
 			do any unnecessary waiting when downloading files.
-		</p>
-		<p>
-			Files can be uploaded by clicking the big green upload button, or by
-			dragging them onto this page from your file manager.
-		</p>
-		<h2>Accounts</h2>
-		<p>
-			An account is not required to use pixeldrain, but it enables some
-			useful features. With a pixeldrain account you can access your files
-			and albums on all your devices. You can also rename and delete files
-			you have uploaded. Sign up for a pixeldrain account on
-			<a href="/register">the registration page</a>. More about
-			pixeldrain's features below.
 		</p>
 		<h2>Privacy</h2>
 		<p>
