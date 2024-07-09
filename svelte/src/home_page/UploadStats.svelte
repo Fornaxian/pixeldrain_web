@@ -78,41 +78,49 @@ const stats_update = () => {
 
 <div class="stats_box">
 	<div>
-		Size {formatDataVolume(total_size, 3)}
+		<div>
+			Size {formatDataVolume(total_size, 3)}
+		</div>
+		<div>
+			Progress {(total_progress*100).toPrecision(3)}%
+		</div>
 	</div>
 	<div>
-		Progress {(total_progress*100).toPrecision(3)}%
+		{#if finished}
+			<div>
+				Time {formatDuration(elapsed_time, 0)}
+			</div>
+			<div>
+				Rate {formatDataVolume(total_loaded / (elapsed_time/1000), 3)}/s
+			</div>
+		{:else}
+			<div>
+				ETA {formatDuration(remaining_time, 0)}
+			</div>
+			<div>
+				Rate {formatDataVolume(total_rate, 3)}/s
+			</div>
+		{/if}
 	</div>
-	{#if finished}
-		<div>
-			Time {formatDuration(elapsed_time, 0)}
-		</div>
-		<div>
-			Rate {formatDataVolume(total_loaded / (elapsed_time/1000), 3)}/s
-		</div>
-	{:else}
-		<div>
-			ETA {formatDuration(remaining_time, 0)}
-		</div>
-		<div>
-			Rate {formatDataVolume(total_rate, 3)}/s
-		</div>
-	{/if}
 </div>
 
 <ProgressBar total={total_size} used={total_loaded} animation="linear" speed={stats_interval_ms}/>
 
 <style>
 .stats_box {
-	display: inline-grid;
-	grid-template-columns: 25% 25% 25% 25%;
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
 	width: 100%;
 	text-align: center;
-	font-family: sans-serif, monospace;
 }
-@media (max-width: 1000px) {
-	.stats_box {
-		grid-template-columns: 50% 50%;
-	}
+.stats_box > div {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: row;
+}
+.stats_box > div > div {
+	flex: 1 1 auto;
+	min-width: 150px;
 }
 </style>

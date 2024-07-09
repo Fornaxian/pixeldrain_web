@@ -1,5 +1,6 @@
 <script>
 import ProgressBar from "../util/ProgressBar.svelte";
+import { formatDataVolume } from "../util/Formatting.svelte"
 
 export let total = 0
 export let used = 0
@@ -8,6 +9,18 @@ $: frac = used / total
 </script>
 
 <ProgressBar total={total} used={used}></ProgressBar>
+<div class="gauge_labels">
+	<div>
+		{formatDataVolume(used, 3)}
+	</div>
+	<div>
+		{#if total <= 0}
+			No limit
+		{:else}
+			{formatDataVolume(total, 3)}
+		{/if}
+	</div>
+</div>
 
 {#if frac > 1}
 	<div class="highlight_yellow">
@@ -53,3 +66,13 @@ $: frac = used / total
 		</a>
 	</div>
 {/if}
+
+<style>
+.gauge_labels {
+	display: flex;
+	justify-content: space-between;
+}
+.gauge_labels > div {
+	flex: 0 0 auto;
+}
+</style>

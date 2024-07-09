@@ -7,12 +7,19 @@ export let used = 0
 $: frac = used / total
 </script>
 
-Storage:
-{formatDataVolume(used, 3)}
-out of
-{formatDataVolume(total, 3)}
-<br/>
 <ProgressBar total={total} used={used}></ProgressBar>
+<div class="gauge_labels">
+	<div>
+		{formatDataVolume(used, 3)}
+	</div>
+	<div>
+		{#if total <= 0}
+			No limit
+		{:else}
+			{formatDataVolume(total, 3)}
+		{/if}
+	</div>
+</div>
 
 {#if frac > 2.0}
 	<div class="highlight_red">
@@ -60,5 +67,14 @@ out of
 .warn_text {
 	font-weight: bold;
 	font-size: 1.5em;
+}
+
+.gauge_labels {
+	display: flex;
+	justify-content: space-between;
+	line-height: 1em;
+}
+.gauge_labels > div {
+	flex: 0 0 auto;
 }
 </style>

@@ -22,7 +22,7 @@ let form = {
 		const form = new FormData()
 		form.append("username", fields.username)
 		form.append("password", fields.password)
-		form.append("app_name", "website_login")
+		form.append("app_name", "website login")
 
 		const resp = await fetch(
 			window.api_endpoint+"/user/login",

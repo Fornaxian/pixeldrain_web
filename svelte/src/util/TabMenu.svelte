@@ -72,8 +72,8 @@ onMount(() => get_page())
 	</div>
 </header>
 
-<div id="page_content" class="page_content">
-	{#if current_page}
+{#if current_page}
+	<div id="page_content" class:page_content={current_page.hide_background !== true}>
 		{#if current_page.subpages}
 			<div class="tab_bar submenu">
 				{#each current_page.subpages as page}
@@ -95,8 +95,8 @@ onMount(() => get_page())
 		{:else}
 			<svelte:component this={current_page.component} />
 		{/if}
-	{/if}
-</div>
+	</div>
+{/if}
 
 <Footer/>
 

@@ -1,5 +1,4 @@
 <script>
-import Home from "./Home.svelte";
 import AccountSettings from "./AccountSettings.svelte";
 import APIKeys from "./APIKeys.svelte";
 import Transactions from "./Transactions.svelte";
@@ -11,13 +10,15 @@ import TabMenu from "../util/TabMenu.svelte";
 import BandwidthSharing from "./BandwidthSharing.svelte";
 import EmbeddingControls from "./EmbeddingControls.svelte";
 import PageBranding from "./PageBranding.svelte";
+import Dashboard from "./dashboard/Dashboard.svelte";
 
 let pages = [
 	{
-		path: "/user/home",
-		title: "My Home",
-		icon: "home",
-		component: Home,
+		path: "/user",
+		title: "Dashboard",
+		icon: "dashboard",
+		component: Dashboard,
+		hide_background: true,
 	}, {
 		path: "/user/settings",
 		title: "Settings",

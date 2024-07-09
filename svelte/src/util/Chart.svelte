@@ -29,6 +29,8 @@ let chart_object
 export let data_type = ""
 export let legend = true
 export let tooltips = true
+export let ticks = true
+export let height = "300px"
 
 export const chart = () => {
 	return chart_object
@@ -80,7 +82,7 @@ onMount(() => {
 				layout: {
 					padding: {
 						left: 4,
-						right: 10,
+						right: 4,
 					}
 				},
 				scales: {
@@ -106,6 +108,7 @@ onMount(() => {
 					x: {
 						display: true,
 						ticks: {
+							display: ticks,
 							sampleSize: 1,
 							padding: 4,
 							minRotation: 0,
@@ -123,7 +126,7 @@ onMount(() => {
 })
 </script>
 
-<div class="chart-container">
+<div class="chart-container" style="height: {height};">
 	<canvas bind:this={chart_element}></canvas>
 </div>
 
@@ -131,6 +134,5 @@ onMount(() => {
 .chart-container {
 	position: relative;
 	width: 100%;
-	height: 300px;
 }
 </style>
