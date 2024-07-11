@@ -3,11 +3,10 @@ import { onMount } from "svelte";
 import HotlinkProgressBar from "../HotlinkProgressBar.svelte";
 import StorageProgressBar from "../StorageProgressBar.svelte";
 
-
 let transfer_cap = 0
 let transfer_used = 0
-let storage_used = window.user.storage_space_used
 let storage_limit = window.user.subscription.storage_space
+let fs_storage_limit = window.user.subscription.filesystem_storage_limit
 let load_direct_bw = () => {
 	let today = new Date()
 	let start = new Date()
@@ -43,10 +42,19 @@ onMount(() => {
 
 </script>
 
-Storage space used:
-<StorageProgressBar used={storage_used} total={storage_limit}/>
-
+Total storage space used:
+<StorageProgressBar used={window.user.storage_space_used} total={storage_limit}/>
 <br/>
+
+{#if window.user.subscription.filesystem_access === true}
+	Filesystem storage space used:
+	<StorageProgressBar
+		used={window.user.filesystem_storage_used}
+		total={fs_storage_limit > 0 ? fs_storage_limit : storage_limit}
+		disable_warnings
+	/>
+	<br/>
+{/if}
 
 Premium data transfer:
 (<a href="/user/sharing/bandwidth">set custom limit</a>)
