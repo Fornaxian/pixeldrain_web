@@ -97,18 +97,18 @@ onMount(() => {
 	// Apply the view settings from localstorage
 	try {
 		const layout = JSON.parse(window.localStorage.getItem("dashboard_layout"))
-		if (layout === null) {
-			return
-		}
 
 		for (const card of cards) {
-			if (layout.size !== undefined && layout.size[card.id] !== undefined) {
+			if (
+				layout !== null &&
+				layout.size !== undefined &&
+				layout.size[card.id] !== undefined
+			) {
 				card.size = layout.size[card.id]
 			} else {
 				card.size = 1
 			}
 		}
-		console.log(cards)
 	} catch (err) {
 		console.warn("Failed to load dashboard settings", err)
 		return
