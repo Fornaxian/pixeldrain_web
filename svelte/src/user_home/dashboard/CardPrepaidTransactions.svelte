@@ -126,6 +126,9 @@ onMount(() => {
 </ul>
 
 <style>
+ul {
+	margin: 0;
+}
 .toolbar {
 	display: flex;
 	flex-direction: row;

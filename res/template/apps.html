@@ -17,11 +17,10 @@
 			<h1>Apps</h1>
 		</header>
 		<div id="page_content" class="page_content">
-			<section>
+			<section class="highlight_border" style="text-align: initial">
 				<h2>ShareX</h2>
 				<div class="specs">
-					Platform: Windows 7, 8.1 and 10 |
-					License: GPL-3.0 |
+					Platform: Windows | License: GPL-3.0 |
 					<a href="https://getsharex.com">Website</a> |
 					<a href="https://github.com/ShareX/ShareX">GitHub</a>
 				</div>
@@ -35,24 +34,10 @@
 					here</a>.
 				</p>
 				<p>
-					Here you can download our custom ShareX uploader which uses
-					pixeldrain to upload your files.
+					You can download a custom ShareX uploader profile which uses
+					your pixeldrain account for uploading files on the <a
+					href="/user/connect_app?app=sharex">account apps page</a>.
 				</p>
-
-				<div class="highlight_shaded" style="clear: right;">
-					<a href="/misc/sharex/pixeldrain.com.sxcu" class="button button_highlight">
-						<i class="icon small">save</i>
-						Download ShareX Uploader
-					</a><br/>
-
-					{{if .Authenticated}}
-					This uploader is configured to upload files to your personal
-					pixeldrain account. Do not share the configuration file with
-					anyone, it contains your account credentials.
-					{{else}}
-					<a href="/login">Log in</a> to use ShareX with your own
-					pixeldrain account. {{end}}
-				</div>
 
 				<h3>Setting pixeldrain as default uploader</h3>
 				<p>
@@ -61,7 +46,9 @@
 					Set pixeldrain.com as active uploader. Choose Yes<br/>
 					<img src="/res/img/sharex_default.png" style="max-width: 100%;" /><br/>
 				</p>
-
+			</section>
+			<br/>
+			<section class="highlight_border" style="text-align: initial">
 				<h2>Drainy</h2>
 				<div class="specs">
 					Platform: Windows, Linux, Android |
@@ -74,7 +61,9 @@
 					pixeldrain. Supports uploading to accounts, copying download
 					links to the clipboard and has an upload history screen.
 				</p>
-
+			</section>
+			<br/>
+			<section class="highlight_border" style="text-align: initial">
 				<h2 style="clear: both;">Pixeldrain Android</h2>
 				<div class="specs">
 					Platform: Android |
@@ -87,7 +76,9 @@
 					href="https://github.com/wimvdputten/Pixeldrain_android/releases">
 					GitHub releases page</a>.
 				</p>
-
+			</section>
+			<br/>
+			<section class="highlight_border" style="text-align: initial">
 				<h2>go-pd</h2>
 				<div class="specs">
 					Platform: Linux, Mac OS, Windows (CLI) |
@@ -104,7 +95,9 @@
 					href="https://github.com/ManuelReschke/go-pd/releases">
 					GitHub releases page</a>.
 				</p>
-
+			</section>
+			<br/>
+			<section class="highlight_border" style="text-align: initial">
 				<h2>go-pixeldrain</h2>
 				<div class="specs">
 					Platform: Linux, Mac OS, Windows (CLI) |
@@ -120,7 +113,9 @@
 					href="https://github.com/jkawamoto/go-pixeldrain/releases">
 					GitHub releases page</a>.
 				</p>
-
+			</section>
+			<br/>
+			<section class="highlight_border" style="text-align: initial">
 				<h2>pdup</h2>
 				<div class="specs">
 					Platform: Linux, BSD, Mac OS (CLI) |
@@ -133,7 +128,9 @@
 					href="https://github.com/Fornax96/pdup">from
 					GitHub</a>.
 				</p>
+			</section>
 
+			<section>
 				<h2>More apps</h2>
 				<p>
 					If you know more open source apps which work with pixeldrain

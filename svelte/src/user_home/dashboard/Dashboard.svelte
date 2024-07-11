@@ -8,13 +8,20 @@ import CardUsage from "./CardUsage.svelte";
 import CardActivity from "./CardActivity.svelte";
 import CardUpload from "./CardUpload.svelte";
 import CardPrepaidTransactions from "./CardPrepaidTransactions.svelte";
+import CardFsHome from "./CardFSHome.svelte";
 
 let cards = [
 	{
 		id: "upload",
 		elem: CardUpload,
 		title: "Quick upload",
-	},{
+	}, {
+		id: "filesystem_home",
+		elem: CardFsHome,
+		title: "Filesystem home",
+		link: "/d/me",
+		hidden: window.user.subscription.filesystem_access === false,
+	}, {
 		id: "account",
 		elem: CardAccount,
 		title: "Account",
@@ -35,14 +42,14 @@ let cards = [
 		elem: CardUsage,
 		title: "Usage",
 	}, {
+		id: "statistics",
+		elem: CardStatistics,
+		title: "Statistics",
+	}, {
 		id: "activiy",
 		elem: CardActivity,
 		title: "Activity",
 		link: "/user/activity",
-	}, {
-		id: "statistics",
-		elem: CardStatistics,
-		title: "Statistics",
 	},
 ]
 const save = () => {
@@ -110,7 +117,7 @@ onMount(() => {
 				/>
 			</div>
 			<div class="card_component">
-				<svelte:component this={card.elem}/>
+				<svelte:component this={card.elem} expanded={card.expanded}/>
 			</div>
 		</div>
 	{/if}{/each}
@@ -129,13 +136,13 @@ onMount(() => {
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
-	width: 25em;
+	width: 26em;
 	max-width: 100%;
 	background: var(--body_background);
 	border-radius: 8px;
 	padding: 8px;
 	text-align: initial;
-	max-height: 600px;
+	max-height: 500px;
 }
 .card_component {
 	flex: 1 1 auto;

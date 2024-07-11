@@ -4,6 +4,8 @@ import Chart from "../../util/Chart.svelte";
 import { color_by_name } from "../../util/Util.svelte";
 import { formatDataVolume, formatThousands } from "../../util/Formatting.svelte";
 
+export let expanded = false
+$: chart_height = expanded ? "250px" : "150px"
 let graph_views_downloads = null
 let graph_bandwidth = null
 
@@ -123,51 +125,52 @@ onMount(() => {
 })
 </script>
 
-<div style="text-align: center">
+<div class="time_buttons">
 	<button
 		on:click={() => update_graphs(1440, 1)}
-		class:button_highlight={graph_timespan == 1440}>
-		Day (1m)
+		class:button_highlight={graph_timespan == 1440}
+		class="group_first">
+		Day
 	</button>
 	<button
 		on:click={() => update_graphs(10080, 60)}
-		class:button_highlight={graph_timespan == 10080}>
-		Week (1h)
-	</button>
-	<button
-		on:click={() => update_graphs(20160, 60)}
-		class:button_highlight={graph_timespan == 20160}>
-		Two Weeks (1h)
+		class:button_highlight={graph_timespan == 10080}
+		class="group_middle">
+		Week
 	</button>
 	<button
 		on:click={() => update_graphs(43200, 1440)}
-		class:button_highlight={graph_timespan == 43200}>
-		Month (1d)
+		class:button_highlight={graph_timespan == 43200}
+		class="group_middle">
+		Month
 	</button>
 	<button
 		on:click={() => update_graphs(131400, 1440)}
-		class:button_highlight={graph_timespan == 131400}>
-		Quarter (1d)
+		class:button_highlight={graph_timespan == 131400}
+		class="group_middle">
+		Quarter
 	</button>
 	<button
 		on:click={() => update_graphs(525600, 1440)}
-		class:button_highlight={graph_timespan == 525600}>
-		Year (1d)
+		class:button_highlight={graph_timespan == 525600}
+		class="group_middle">
+		Year
 	</button>
 	<button
 		on:click={() => update_graphs(1051200, 1440)}
-		class:button_highlight={graph_timespan == 1051200}>
-		Two Years (1d)
+		class:button_highlight={graph_timespan == 1051200}
+		class="group_last">
+		Two Years
 	</button>
 </div>
 
-<Chart bind:this={graph_bandwidth} data_type="bytes" height="200px" ticks={false}/>
+<Chart bind:this={graph_bandwidth} data_type="bytes" height={chart_height} ticks={false}/>
 <div class="center">
 	{formatDataVolume(total_bandwidth, 3)} free downloads and
 	{formatDataVolume(total_transfer_paid, 3)} paid downloads
 </div>
 
-<Chart bind:this={graph_views_downloads} data_type="number" height="200px" ticks={false}/>
+<Chart bind:this={graph_views_downloads} data_type="number" height={chart_height} ticks={false}/>
 <div class="center">
 	{formatThousands(total_views)} views and
 	{formatThousands(total_downloads)} downloads
@@ -176,5 +179,16 @@ onMount(() => {
 <style>
 .center {
 	text-align: center;
+}
+.time_buttons {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 2px;
+}
+.time_buttons > button {
+	min-width: 3em;
+	justify-content: center;
 }
 </style>

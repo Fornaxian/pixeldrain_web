@@ -1,9 +1,11 @@
 <script>
 import UploadLib from "./UploadLib.svelte";
+import AddressReputation from "../../home_page/AddressReputation.svelte";
 
 let upload_widget
-
 </script>
+
+<AddressReputation/>
 
 <div class="upload_buttons">
 	<button on:click={() => upload_widget.pick_files() } class="big_button button_highlight">

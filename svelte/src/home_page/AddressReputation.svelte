@@ -4,7 +4,6 @@ import Expandable from "../util/Expandable.svelte";
 import { formatDate } from "../util/Formatting.svelte";
 
 let result = null;
-let offences = 0
 
 onMount(async () => {
 	try {
@@ -18,7 +17,6 @@ onMount(async () => {
 	}
 })
 </script>
-
 
 {#if result !== null && result.user_banned}
 	<section>
@@ -149,10 +147,7 @@ onMount(async () => {
 	</section>
 {/if}
 
-
-
 <style>
-
 .header {
 	display: flex;
 	align-items: center;

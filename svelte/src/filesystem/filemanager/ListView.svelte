@@ -8,6 +8,8 @@ let dispatch = createEventDispatcher()
 export let state
 export let show_hidden = false
 export let large_icons = false
+export let hide_edit = false
+export let hide_branding = false
 </script>
 
 <div class="directory">
@@ -20,8 +22,8 @@ export let large_icons = false
 	{#each state.children as child, index (child.path)}
 		<a
 			href={"/d"+fs_encode_path(child.path)}
-			on:click|preventDefault={() => {dispatch("node_click", index)}}
-			on:contextmenu={e => {dispatch("node_context", {event: e, index: index})}}
+			on:click|preventDefault={() => dispatch("node_click", index)}
+			on:contextmenu={e => dispatch("node_context", {event: e, index: index})}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
@@ -50,12 +52,12 @@ export let large_icons = false
 						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 					</a>
 				{/if}
-				{#if child.properties && child.properties.branding_enabled}
+				{#if child.properties && child.properties.branding_enabled && !hide_branding}
 					<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_branding", index)}>
 						<i class="icon">palette</i>
 					</button>
 				{/if}
-				{#if state.permissions.update}
+				{#if state.permissions.update && !hide_edit}
 					<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_settings", index)}>
 						<i class="icon">edit</i>
 					</button>
