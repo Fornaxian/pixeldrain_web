@@ -149,7 +149,7 @@ onMount(() => {
 <div class="cards">
 	{#each cards as card, i (card.id)}
 		{#if card.size === 0}
-			<div class="card">
+			<div class="card size_1">
 				<div class="title_box">
 					{#if card.link}
 						<Button link_href={card.link} icon="link" flat/>

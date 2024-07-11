@@ -19,6 +19,8 @@ let transactions = {
 	total_bandwidth_charge: 0,
 	total_deposited: 0,
 	total_deducted: 0,
+	balance_start: 0,
+	balance_end: 0,
 }
 
 const load_transactions = async () => {
@@ -45,6 +47,13 @@ const load_transactions = async () => {
 			total_bandwidth_charge: 0,
 			total_deposited: 0,
 			total_deducted: 0,
+			balance_start: 0,
+			balance_end: 0,
+		}
+
+		if (month.rows && month.rows.length > 0) {
+			month.balance_start = month.rows[0].new_balance
+			month.balance_end = month.rows[month.rows.length-1].new_balance
 		}
 
 		month.rows.forEach(row => {
@@ -105,30 +114,44 @@ onMount(() => {
 	<Button click={next_month} icon="chevron_right"/>
 </div>
 
-<ul>
-	<li>
-		Total charge: <Euro amount={transactions.total_deducted} precision="4"/>
-	</li>
-	<li>
-		Subscription charge: <Euro amount={transactions.total_subscription_charge} precision="4"/>
-	</li>
-	<li>
-		Storage charge: <Euro amount={transactions.total_storage_charge} precision="4"/>
-		(used {formatDataVolume(transactions.total_storage_used, 3)})
-	</li>
-	<li>
-		Bandwidth charge: <Euro amount={transactions.total_bandwidth_charge} precision="4"/>
-		(used {formatDataVolume(transactions.total_bandwidth_used, 3)})
-	</li>
-	<li>
-		Deposited: <Euro amount={transactions.total_deposited} precision="4"/>
-	</li>
-</ul>
+<table>
+	<tr>
+		<td>Opening balance</td>
+		<td><Euro amount={transactions.balance_start} precision="4"/></td>
+	</tr>
+	<tr>
+		<td>Closing balance</td>
+		<td><Euro amount={transactions.balance_end} precision="4"/></td>
+	</tr>
+	<tr>
+		<td>Total charge</td>
+		<td><Euro amount={transactions.total_deducted} precision="4"/></td>
+	</tr>
+	<tr>
+		<td>Subscription charge</td>
+		<td><Euro amount={transactions.total_subscription_charge} precision="4"/></td>
+	</tr>
+	<tr>
+		<td>Storage charge</td>
+		<td>
+			<Euro amount={transactions.total_storage_charge} precision="4"/>
+			(used {formatDataVolume(transactions.total_storage_used, 3)})
+		</td>
+	</tr>
+	<tr>
+		<td>Bandwidth charge</td>
+		<td>
+			<Euro amount={transactions.total_bandwidth_charge} precision="4"/>
+			(used {formatDataVolume(transactions.total_bandwidth_used, 3)})
+		</td>
+	</tr>
+	<tr>
+		<td>Deposited</td>
+		<td><Euro amount={transactions.total_deposited} precision="4"/></td>
+	</tr>
+</table>
 
 <style>
-ul {
-	margin: 0;
-}
 .toolbar {
 	display: flex;
 	flex-direction: row;
