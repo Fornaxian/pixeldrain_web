@@ -1,20 +1,12 @@
 <script>
 import { onMount } from "svelte";
 import Navigator from "../../filesystem/Navigator.svelte";
-import ListView from "../../filesystem/filemanager/ListView.svelte";
-import { fs_encode_path } from "../../filesystem/FilesystemUtil";
+import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemUtil";
 
 let nav;
 let state = {
 	children: [],
 };
-
-const node_click = e => {
-	window.location.href = "/d" + fs_encode_path(state.children[e.detail].path)
-}
-const node_share_click = e => {
-	window.location.href = "/d/" + state.children[e.detail].id
-}
 
 onMount(() => {
 	nav.navigate("/me", false)
@@ -23,10 +15,82 @@ onMount(() => {
 
 <Navigator bind:this={nav} bind:state={state} history_enabled={false}/>
 
-<ListView
-	state={state}
-	on:node_click={node_click}
-	on:node_share_click={node_share_click}
-	hide_edit
-	hide_branding
-/>
+<div class="directory">
+	{#each state.children as child, index (child.path)}
+		<a
+			href={"/d"+fs_encode_path(child.path)}
+			class="node"
+			class:node_selected={child.fm_selected}
+			class:hidden={child.name.startsWith(".")}
+		>
+			<img src={fs_node_icon(child, 64, 64)} class="node_icon" alt="icon"/>
+
+			<div class="node_name">
+				{child.name}
+			</div>
+
+			{#if child.id}
+				<a href="/d/{child.id}" class="button action_button">
+					<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
+				</a>
+			{/if}
+		</a>
+	{/each}
+</div>
+
+<style>
+
+.directory {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin-top: 8px;
+	gap: 8px;
+}
+.node {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: row;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	color: var(--body_text-color);
+	gap: 2px;
+	padding: 2px;
+	border-radius: 8px;
+	width: 300px;
+	max-width: 100%;
+	border: 1px solid var(--input_background);
+}
+.node:hover {
+	background: var(--input_hover_background);
+	color: var(--input_text);
+	text-decoration: none;
+}
+.node > * {
+	flex: 0 0 auto;
+}
+.node_icon {
+	height: 32px;
+	width: 32px;
+	vertical-align: middle;
+	border-radius: 4px;
+}
+.node_name {
+	flex: 1 1 auto;
+	display: flex;
+	align-items: center;
+	word-break: break-all;
+	line-height: 1.2em;
+}
+.action_button {
+	margin: 0;
+	background: none;
+	color: var(--body_text_color);
+	box-shadow: none;
+}
+.hidden {
+	display: none;
+}
+</style>

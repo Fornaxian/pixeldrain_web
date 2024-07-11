@@ -14,22 +14,39 @@ let cards = []
 
 const save = () => {
 	let storage = {
-		expanded: [],
-		hidden: [],
+		size: {},
 	}
 
 	for (const card of cards) {
-		if (card.expanded === true) {
-			storage.expanded.push(card.id)
-		}
-	}
-	for (const card of cards) {
-		if (card.hidden === true) {
-			storage.hidden.push(card.id)
+		if (card.size !== undefined && card.size !== 1) {
+			storage.size[card.id] = card.size
 		}
 	}
 
 	window.localStorage.setItem("dashboard_layout", JSON.stringify(storage))
+}
+
+const min_card_size = 0
+const def_card_size = 1
+const max_card_size = 3
+
+const expand = i => {
+	if (cards[i].size === undefined) {
+		cards[i].size = def_card_size
+	}
+	if (cards[i].size < max_card_size) {
+		cards[i].size++
+	}
+	save()
+}
+const shrink = i => {
+	if (cards[i].size === undefined) {
+		cards[i].size = def_card_size
+	}
+	if (cards[i].size > min_card_size) {
+		cards[i].size--
+	}
+	save()
 }
 
 onMount(() => {
@@ -38,12 +55,13 @@ onMount(() => {
 			id: "upload",
 			elem: CardUpload,
 			title: "Quick upload",
+			link: "/",
 		}, {
 			id: "filesystem_home",
 			elem: CardFsHome,
 			title: "Filesystem home",
 			link: "/d/me",
-			hidden_default: window.user.subscription.filesystem_access === false,
+			hidden: window.user.subscription.filesystem_access === false,
 		}, {
 			id: "account",
 			elem: CardAccount,
@@ -59,7 +77,7 @@ onMount(() => {
 			elem: CardPrepaidTransactions,
 			title: "Prepaid transactions",
 			link: "/user/prepaid/transactions",
-			hidden_default: window.user.subscription.type !== "prepaid"
+			hidden: window.user.subscription.type !== "prepaid"
 		}, {
 			id: "usage",
 			elem: CardUsage,
@@ -78,19 +96,19 @@ onMount(() => {
 
 	// Apply the view settings from localstorage
 	try {
-		const storage = JSON.parse(window.localStorage.getItem("dashboard_layout"))
-		if (storage === null) {
+		const layout = JSON.parse(window.localStorage.getItem("dashboard_layout"))
+		if (layout === null) {
 			return
 		}
 
 		for (const card of cards) {
-			if (storage.expanded && storage.expanded.includes(card.id)) {
-				card.expanded = true
-			}
-			if (storage.hidden && storage.hidden.includes(card.id)) {
-				card.hidden = true
+			if (layout.size !== undefined && layout.size[card.id] !== undefined) {
+				card.size = layout.size[card.id]
+			} else {
+				card.size = 1
 			}
 		}
+		console.log(cards)
 	} catch (err) {
 		console.warn("Failed to load dashboard settings", err)
 		return
@@ -99,43 +117,47 @@ onMount(() => {
 </script>
 
 <div class="cards">
-	{#each cards as card (card.id)}{#if !card.hidden && !card.hidden_default}
-		<div class="card" class:card_wide={card.expanded}>
-			<div class="title_box">
-				<h2>{card.title}</h2>
-
-				{#if card.link}
-					<Button link_href={card.link} icon="link" flat/>
-				{/if}
-
-				<Button
-					click={() => {card.expanded = !card.expanded; save()}}
-					icon={card.expanded ? "fullscreen_exit" : "fullscreen"}
-					flat/>
-				<Button
-					click={() => {card.hidden = !card.hidden; save()}}
-					icon="visibility_off"
-					flat/>
-			</div>
-			<div class="card_component">
-				<svelte:component this={card.elem} expanded={card.expanded}/>
-			</div>
-		</div>
-	{/if}{/each}
-</div>
-
-<div class="cards">
-	{#each cards as card (card.id)}
-		{#if card.hidden}
-			<div class="card">
+	{#each cards as card, i (card.id)}
+		{#if !card.hidden && card.size > 0}
+			<div
+				class="card"
+				class:size_1={card.size === 1}
+				class:size_2={card.size === 2}
+				class:size_3={card.size === 3}
+			>
 				<div class="title_box">
-					<h2>{card.title}</h2>
-
 					{#if card.link}
 						<Button link_href={card.link} icon="link" flat/>
 					{/if}
 
-					<Button click={() => {card.hidden = !card.hidden; save()}} icon="visibility" flat/>
+					<h2>{card.title}</h2>
+
+					<Button click={() => shrink(i)} icon="zoom_out" flat/>
+					<span>
+						{card.size === undefined ? 1 : card.size}
+					</span>
+					<Button click={() => expand(i)} icon="zoom_in" flat/>
+				</div>
+				<div class="card_component">
+					<svelte:component this={card.elem} card_size={card.size}/>
+				</div>
+			</div>
+		{/if}
+	{/each}
+</div>
+
+<div class="cards">
+	{#each cards as card, i (card.id)}
+		{#if card.size === 0}
+			<div class="card">
+				<div class="title_box">
+					{#if card.link}
+						<Button link_href={card.link} icon="link" flat/>
+					{/if}
+
+					<h2>{card.title}</h2>
+
+					<Button click={() => expand(i)} icon="visibility" flat/>
 				</div>
 			</div>
 		{/if}
@@ -155,29 +177,28 @@ onMount(() => {
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
-	width: 26em;
 	max-width: 100%;
 	background: var(--body_background);
 	border-radius: 8px;
 	padding: 8px;
 	text-align: initial;
-	max-height: 500px;
 }
 .card_component {
 	flex: 1 1 auto;
 	overflow: auto;
 }
-.card_wide {
-	flex-basis: auto;
-	width: 100%;
-	max-height: none;
-}
+.size_1 { width: 400px; }
+.size_1 > .card_component { max-height: 400px; }
+.size_2 { width: 800px; }
+.size_2 > .card_component { max-height: 500px; }
+.size_3 { width: 1200px; }
+.size_3 > .card_component { max-height: 600px; }
 
 .title_box {
 	flex: 0 0 auto;
 	display: flex;
 	flex-direction: row;
-	align-items: flex-start;
+	align-items: center;
 	border-bottom: 1px solid var(--separator);
 }
 .title_box > h2 {
