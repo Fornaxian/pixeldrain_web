@@ -9,6 +9,7 @@ import CardActivity from "./CardActivity.svelte";
 import CardUpload from "./CardUpload.svelte";
 import CardPrepaidTransactions from "./CardPrepaidTransactions.svelte";
 import CardFsHome from "./CardFSHome.svelte";
+import AddressReputation from "../../home_page/AddressReputation.svelte";
 
 let cards = []
 
@@ -116,6 +117,10 @@ onMount(() => {
 })
 </script>
 
+<div class="separator"></div>
+
+<AddressReputation/>
+
 <div class="cards">
 	{#each cards as card, i (card.id)}
 		{#if !card.hidden && card.size > 0}
@@ -165,13 +170,16 @@ onMount(() => {
 </div>
 
 <style>
+.separator {
+	border-top: 1px solid var(--separator);
+	margin: 0 8px;
+}
 .cards {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
 	padding: 8px 0;
 	margin: 0 8px;
-	border-top: 1px solid var(--separator);
 }
 .card {
 	flex: 1 0 auto;
