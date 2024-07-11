@@ -198,9 +198,9 @@ onMount(() => {
 .size_1 { width: 400px; }
 .size_1 > .card_component { max-height: 400px; }
 .size_2 { width: 800px; }
-.size_2 > .card_component { max-height: 500px; }
+.size_2 > .card_component { max-height: 600px; }
 .size_3 { width: 1200px; }
-.size_3 > .card_component { max-height: 600px; }
+.size_3 > .card_component { max-height: 800px; }
 
 .title_box {
 	flex: 0 0 auto;

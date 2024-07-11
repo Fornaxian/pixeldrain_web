@@ -5,7 +5,7 @@ import { color_by_name } from "../../util/Util.svelte";
 import { formatDataVolume, formatThousands } from "../../util/Formatting.svelte";
 
 export let card_size = 1
-$: chart_height = (100 + (card_size * 50)) + "px"
+$: chart_height = (80 + (card_size * 60)) + "px"
 let graph_views_downloads = null
 let graph_bandwidth = null
 
