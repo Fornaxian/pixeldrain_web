@@ -52,8 +52,10 @@ const load_transactions = async () => {
 		}
 
 		if (month.rows && month.rows.length > 0) {
-			month.balance_start = month.rows[0].new_balance
-			month.balance_end = month.rows[month.rows.length-1].new_balance
+			// Days are ordered from new to old, so the opening balance is the
+			// last row
+			month.balance_start = month.rows[month.rows.length-1].new_balance
+			month.balance_end = month.rows[0].new_balance
 		}
 
 		month.rows.forEach(row => {
