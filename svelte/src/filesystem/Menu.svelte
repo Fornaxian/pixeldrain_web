@@ -10,6 +10,7 @@ let dialog
 export let no_login_label = "Pixeldrain"
 export let hide_name = true
 export let hide_logo = false
+export let style = ""
 
 const open = () => {
 	// Show the window so we can get the location
@@ -43,7 +44,7 @@ const click = e => {
 </script>
 
 <div class="wrapper">
-	<button bind:this={button} on:click={open} href="/user" class="button round" title="Menu">
+	<button bind:this={button} on:click={open} href="/user" class="button round" title="Menu" style={style}>
 		{#if !hide_logo}
 			<PixeldrainLogo style="height: 1.8em; width: 1.8em; margin: 2px;"/>
 		{/if}
