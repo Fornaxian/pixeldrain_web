@@ -208,13 +208,23 @@ const report_description = () => {
 
 		{#if abuse_type === "copyright"}
 
+			<div class="highlight_yellow" style="text-align: initial;">
+				<p>
+					Copyright claims can only be submitted by the copyright
+					owner or an authorized agent. If you do not own the rights
+					to this file then you don't have the rights to file a
+					copyright claim.
+				</p>
+			</div>
+			<br/>
+
 			<div>Name rightsholder (can be a registered company name)</div>
 			<input type="text" bind:value={copyright_rightsholder} required/>
 
 			<div>Contact e-mail</div>
 			<input type="email" bind:value={copyright_email} required/>
 
-			<div>Source URLs (links to the places where this content was allegedly stolen from)</div>
+			<div>Source URLs (links to the places where the original content was sold/provided)</div>
 			<textarea bind:value={copyright_sources} placeholder="https://some.store.com" required></textarea>
 
 		{:else if abuse_type === "malware"}
@@ -229,8 +239,28 @@ const report_description = () => {
 
 		{:else if abuse_type === "child_abuse"}
 
+			<div class="highlight_yellow" style="text-align: initial;">
+				<p>
+					The child abuse category is only for cases where real
+					children were abused. This is not for fictional works. Use
+					the 'porn' category in case of animated porn.
+				</p>
+			</div>
+			<br/>
+
 			<div>If this file is an encrypted archive, please provide the password so we can verify the contents</div>
 			<input type="text" bind:value={child_abuse_password} placeholder="Password..."/>
+
+		{:else if abuse_type === "revenge_porn"}
+
+			<div class="highlight_yellow" style="text-align: initial;">
+				<p>
+					The revenge porn category is for blackmail content and
+					non-consensual deepfake porn. If you use this category for
+					copyright violations then your report will be ignored.
+				</p>
+			</div>
+			<br/>
 
 		{/if}
 
@@ -239,6 +269,10 @@ const report_description = () => {
 			file violates the content policy? ({description.length}/500)
 		</div>
 		<textarea bind:value={description} placeholder="Context here..." required></textarea>
+		<div>
+			This is not a contact form. You will not receive a reply to any
+			questions asked in this description field.
+		</div>
 
 		<h3>Send</h3>
 		{#if loading}
@@ -256,6 +290,10 @@ const report_description = () => {
 			Abuse reports are manually reviewed. Normally this shouldn't
 			take more than 24 hours. During busy periods it can take
 			longer.
+		</p>
+		<p>
+			Reports are sent for each file separately. Please wait until all
+			reports have been submitted after clicking submit.
 		</p>
 		<div style="text-align: center;">
 			<button class="button_highlight abuse_report_submit" type="submit" style="justify-content: center; width: 100%; max-width: 200px">
