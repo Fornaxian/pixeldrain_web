@@ -72,7 +72,7 @@ export const toggle_playback = () => {
 {:else if viewer_type === "pdf"}
 	<Pdf state={state}/>
 {:else if viewer_type === "text"}
-	<Text state={state}>
+	<Text state={state} bind:this={viewer}>
 		<CustomBanner path={state.path}/>
 	</Text>
 {:else if viewer_type === "torrent"}
