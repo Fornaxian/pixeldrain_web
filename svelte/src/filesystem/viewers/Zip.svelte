@@ -110,7 +110,8 @@ const recursive_size = (file) => {
 {:else if status === "parse_failed"}
 	<TextBlock>
 		<p>
-			Zip archive could not be parsed. It may be corrupted.
+			Zip archive could not be parsed. This usually means that the archive
+			is encrypted or that it uses an unsupported compression format.
 		</p>
 	</TextBlock>
 {/if}
