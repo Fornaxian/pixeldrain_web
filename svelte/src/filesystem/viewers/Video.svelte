@@ -3,7 +3,7 @@ import { onMount,  createEventDispatcher, tick } from "svelte";
 import { fs_path_url } from "../FilesystemUtil";
 let dispatch = createEventDispatcher()
 
-export let state
+export let nav
 
 // Used to detect when the file path changes
 let last_path = ""
@@ -17,20 +17,20 @@ let loop = false
 export const update = async () => {
 	if (media_session) {
 		navigator.mediaSession.metadata = new MediaMetadata({
-			title: state.base.name,
+			title: nav.base.name,
 			artist: "pixeldrain",
 			album: "unknown",
 		});
 		console.debug("Updating media session")
 	}
 
-	loop = state.base.name.includes(".loop.")
+	loop = nav.base.name.includes(".loop.")
 
 	// When the component receives a new ID the video track does not
 	// automatically start playing the new video. So we use this little hack to
 	// make sure that the video is unloaded and loaded when the ID changes
-	if (state.base.path != last_path) {
-		last_path = state.base.path
+	if (nav.base.path != last_path) {
+		last_path = nav.base.path
 		loaded = false
 		await tick()
 		loaded = true
@@ -75,9 +75,9 @@ const fullscreen = () => {
 
 <div class="container">
 	{#if
-		state.base.file_type === "video/x-matroska" ||
-		state.base.file_type === "video/quicktime" ||
-		state.base.file_type === "video/x-ms-asf"
+		$nav.base.file_type === "video/x-matroska" ||
+		$nav.base.file_type === "video/quicktime" ||
+		$nav.base.file_type === "video/x-ms-asf"
 	}
 		<div class="compatibility_warning">
 			This video file type is not compatible with every web
@@ -100,7 +100,7 @@ const fullscreen = () => {
 					on:play={() => playing = true }
 					on:ended={() => dispatch("open_sibling", 1)}
 				>
-					<source src={fs_path_url(state.base.path)} type={state.base.file_type} />
+					<source src={fs_path_url($nav.base.path)} type={$nav.base.file_type} />
 				</video>
 			{/if}
 		</div>

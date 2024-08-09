@@ -1,25 +1,24 @@
 <script>
 import { fs_encode_path } from "./FilesystemUtil";
 
-export let state = {}
-export let fs_navigator
+export let nav
 </script>
 
 <div class="breadcrumbs">
-	{#each state.path as node, i (node.path)}
+	{#each $nav.path as node, i (node.path)}
 		{@const shared = node.id !== undefined && node.id !== "me"}
 		<a
 			href={"/d"+fs_encode_path(node.path)}
 			class="breadcrumb button"
-			class:button_highlight={state.base_index === i}
-			on:click|preventDefault={() => {fs_navigator.navigate(node.path, true)}}
+			class:button_highlight={$nav.base_index === i}
+			on:click|preventDefault={() => {nav.navigate(node.path, true)}}
 		>
 			{#if node.abuse_type !== undefined}
 				<i class="icon small">block</i>
 			{:else if shared}
 				<i class="icon small">share</i>
 			{/if}
-			<div class="node_name" class:base={state.base_index === i}>
+			<div class="node_name" class:base={$nav.base_index === i}>
 				{node.name}
 			</div>
 		</a>

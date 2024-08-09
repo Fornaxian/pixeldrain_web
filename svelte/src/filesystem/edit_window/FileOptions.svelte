@@ -5,7 +5,7 @@ import { fs_delete_all } from "../FilesystemAPI";
 import PathLink from "../util/PathLink.svelte";
 
 let dispatch = createEventDispatcher()
-export let fs_navigator
+export let nav
 export let file = {}
 export let new_name
 export let visible
@@ -28,9 +28,9 @@ const delete_file = async e => {
 	}
 
 	if (open_after_edit) {
-		fs_navigator.navigate(file.path, false)
+		nav.navigate(file.path, false)
 	} else {
-		fs_navigator.reload()
+		nav.reload()
 	}
 	visible = false
 }
@@ -42,7 +42,7 @@ const delete_file = async e => {
 	<div class="highlight_yellow">
 		Filesystem root cannot be renamed. If this shared directory
 		is in
-		<PathLink nav={fs_navigator} path="/me">your filesystem</PathLink>
+		<PathLink nav={nav} path="/me">your filesystem</PathLink>
 		you can rename it from there
 	</div>
 {/if}

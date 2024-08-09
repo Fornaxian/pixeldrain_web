@@ -3,9 +3,8 @@ import { createEventDispatcher, tick } from "svelte";
 import { fade } from "svelte/transition";
 import DropUpload from "./DropUpload.svelte";
 import UploadProgress from "./UploadProgress.svelte";
-let dispatch = createEventDispatcher()
 
-export let fs_state
+export let nav
 
 let file_input_field;
 let file_input_change = e => {
@@ -27,7 +26,7 @@ let task_id_counter = 0
 export const upload_files = async files => {
 	if (files.length === 0) {
 		return
-	} else if (fs_state.base.type !== "dir") {
+	} else if (nav.base.type !== "dir") {
 		alert("Can only upload to directory")
 		return
 	}
@@ -39,14 +38,14 @@ export const upload_files = async files => {
 }
 
 export const upload_file = async file => {
-	if (fs_state.base.type !== "dir") {
+	if (nav.base.type !== "dir") {
 		alert("Can only upload to directory")
 		return
 	} else if (file.type === "" && file.size === 0) {
 		return
 	}
 
-	let path = fs_state.base.path + "/"
+	let path = nav.base.path + "/"
 	if (file.webkitRelativePath) {
 		path += file.webkitRelativePath
 	} else {
@@ -101,7 +100,7 @@ const start_upload = async () => {
 
 	if (active_uploads === 0) {
 		state = "finished"
-		dispatch("uploads_finished")
+		nav.reload()
 
 		// Empty the queue to free any references to lingering components
 		upload_queue = []

@@ -6,15 +6,7 @@ import FileStats from "./FileStats.svelte";
 
 let dispatch = createEventDispatcher()
 
-export let fs_navigator
-export let state = {
-	base: {
-		type: "",
-		path: "",
-	},
-	children: [],
-	shuffle: false
-}
+export let nav
 
 export let view = "file"
 export let details_visible = false
@@ -22,11 +14,11 @@ export let edit_window
 export let edit_visible = false
 export let file_viewer
 
-$: share_url = generate_share_url(state.path)
+$: share_url = generate_share_url($nav.path)
 let link_copied = false
 export const copy_link = () => {
 	if (share_url === "") {
-		edit_window.edit(state.base, true, "share")
+		edit_window.edit(nav.base, true, "share")
 		return
 	}
 
@@ -36,14 +28,14 @@ export const copy_link = () => {
 }
 let share = async () => {
 	if (share_url === "") {
-		edit_window.edit(state.base, true, "share")
+		edit_window.edit(nav.base, true, "share")
 		return
 	}
 
 	if (navigator.share) {
 		await navigator.share({
-			title: state.base.name,
-			text: "I would like to share '" + state.base.name + "' with you",
+			title: nav.base.name,
+			text: "I would like to share '" + nav.base.name + "' with you",
 			url: share_url
 		})
 	} else {
@@ -85,25 +77,25 @@ let expand = e => {
 				<i class="icon">expand_less</i>
 			{/if}
 		</button>
-		<FileStats state={state}/>
+		<FileStats nav={nav}/>
 	</div>
 
 	<div class="separator"></div>
 	<div class="grid">
 
 		<div class="button_row">
-			<button on:click={() => {fs_navigator.open_sibling(-1)}}>
+			<button on:click={() => {nav.open_sibling(-1)}}>
 				<i class="icon">skip_previous</i>
 			</button>
-			<button on:click={() => {state.shuffle = !state.shuffle}} class:button_highlight={state.shuffle}>
+			<button on:click={() => {nav.shuffle = !nav.shuffle}} class:button_highlight={nav.shuffle}>
 				<i class="icon">shuffle</i>
 			</button>
-			<button on:click={() => {fs_navigator.open_sibling(1)}}>
+			<button on:click={() => {nav.open_sibling(1)}}>
 				<i class="icon">skip_next</i>
 			</button>
 		</div>
 
-		{#if state.path[0].id === "me"}
+		{#if $nav.path[0] && $nav.path[0].id === "me"}
 			<button on:click={() => dispatch("search")} class:button_highlight={view === "search"}>
 				<i class="icon">search</i>
 				<span>Search</span>
@@ -124,7 +116,7 @@ let expand = e => {
 			</button>
 		{/if}
 
-		{#if state.base.id !== "me"}
+		{#if $nav.base.id !== "me"}
 			<button on:click={share}>
 				<i class="icon">share</i>
 				<span>Share</span>
@@ -151,8 +143,8 @@ let expand = e => {
 			<span>Deta<u>i</u>ls</span>
 		</button>
 
-		{#if state.base.id !== "me" && state.permissions.update === true}
-			<button on:click={() => edit_window.edit(state.base, true, "file")} class:button_highlight={edit_visible}>
+		{#if $nav.base.id !== "me" && $nav.permissions.update === true}
+			<button on:click={() => edit_window.edit(nav.base, true, "file")} class:button_highlight={edit_visible}>
 				<i class="icon">edit</i>
 				<span><u>E</u>dit</span>
 			</button>

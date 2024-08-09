@@ -1,12 +1,12 @@
 <script>
 import { fs_path_url } from "../FilesystemUtil";
 
-export let state
+export let nav
 </script>
 
 <iframe
 	class="container"
-	src={"/res/misc/pdf-viewer/web/viewer.html?file="+encodeURIComponent(fs_path_url(state.base.path))}
+	src={"/res/misc/pdf-viewer/web/viewer.html?file="+encodeURIComponent(fs_path_url($nav.base.path))}
 	title="PDF viewer">
 </iframe>
 

@@ -3,13 +3,13 @@ import { createEventDispatcher } from "svelte"
 import { fs_encode_path, fs_node_icon, fs_node_type } from "../FilesystemUtil";
 let dispatch = createEventDispatcher()
 
-export let state
+export let nav
 export let show_hidden = false
 export let large_icons = false
 </script>
 
 <div class="gallery">
-	{#each state.children as child, index (child.path)}
+	{#each $nav.children as child, index (child.path)}
 		<a class="file"
 			href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={() => dispatch("node_click", index)}

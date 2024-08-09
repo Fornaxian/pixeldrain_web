@@ -1,9 +1,9 @@
 <script>
-import { onDestroy } from "svelte";
+import { onMount } from "svelte";
 import { formatDataVolume, formatThousands } from "../util/Formatting.svelte"
 import { fs_path_url } from "./FilesystemUtil";
 
-export let state
+export let nav
 
 let loading = true
 let downloads = 0
@@ -13,17 +13,33 @@ let error_msg = ""
 
 let connected_to = ""
 
-$: update_base(state.base)
+onMount(() => {
+	const unsub = nav.subscribe(update_base)
+	return () => {
+		unsub()
+		close_socket()
+	}
+})
 
-const update_base = async base => {
-	if (connected_to === base.path) {
+let total_directories = 0
+let total_files = 0
+let total_file_size = 0
+
+const update_base = async () => {
+	if (!nav.initialized || connected_to === nav.base.path) {
 		return
 	}
-	if (base.type === "dir") {
+	connected_to = nav.base.path
+
+	// Tallys
+	total_directories = nav.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
+	total_files = nav.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
+	total_file_size = nav.children.reduce((acc, cur) => acc + cur.file_size, 0)
+
+	if (nav.base.type === "dir") {
 		console.debug("Not opening websocket for directory")
 		return
 	}
-	connected_to = base.path
 
 	// If the socket is already active we need to close it
 	close_socket()
@@ -31,10 +47,10 @@ const update_base = async base => {
 	loading = true
 
 	let ws_endpoint = location.origin.replace(/^http/, 'ws') +
-		fs_path_url(base.path).replace(/^http/, 'ws') +
+		fs_path_url(nav.base.path).replace(/^http/, 'ws') +
 		"?download_stats"
 
-	console.log("Opening socket to", ws_endpoint)
+	console.log("Opening socket to", ws_endpoint, "for path", nav.base.path)
 	socket = new WebSocket(ws_endpoint)
 	socket.onmessage = msg => {
 		let j = JSON.parse(msg.data)
@@ -53,7 +69,7 @@ const update_base = async base => {
 
 		window.setTimeout(() => {
 			if (socket === null) {
-				update_base(base)
+				update_base(nav.base)
 			}
 		}, 5000)
 	}
@@ -71,16 +87,9 @@ const close_socket = () => {
 		socket = null
 	}
 }
-
-// Tallys
-$: total_directories = state.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
-$: total_files = state.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
-$: total_file_size = state.children.reduce((acc, cur) => acc + cur.file_size, 0)
-
-onDestroy(close_socket)
 </script>
 
-{#if state.base.type === "file"}
+{#if $nav.base.type === "file"}
 	{#if error_msg !== ""}
 		{error_msg}
 	{:else}
@@ -101,10 +110,10 @@ onDestroy(close_socket)
 
 	<div class="group">
 		<div class="label">Size</div>
-		<div class="stat">{formatDataVolume(state.base.file_size, 3)}</div>
+		<div class="stat">{formatDataVolume($nav.base.file_size, 3)}</div>
 	</div>
 
-{:else if state.base.type === "dir" || state.base.type === "bucket"}
+{:else if $nav.base.type === "dir" || $nav.base.type === "bucket"}
 
 	<div class="group">
 		<div class="label">Directories</div>

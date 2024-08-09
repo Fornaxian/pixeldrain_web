@@ -8,7 +8,7 @@ import { fs_node_icon, fs_path_url } from "../FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
-export let state
+export let nav
 
 let status = "loading"
 
@@ -23,14 +23,14 @@ let archive_type = ""
 export const update = async () => {
 	dispatch("loading", true)
 
-	if (state.base.file_type === "application/zip") {
+	if (nav.base.file_type === "application/zip") {
 		archive_type = "zip"
-	} else if (state.base.file_type === "application/x-7z-compressed") {
+	} else if (nav.base.file_type === "application/x-7z-compressed") {
 		archive_type = "7z"
 	}
 
 	try {
-		let resp = await fetch(fs_path_url(state.base.path)+"?zip_info")
+		let resp = await fetch(fs_path_url(nav.base.path)+"?zip_info")
 
 		if (resp.status >= 400) {
 			status = "parse_failed"
@@ -43,11 +43,11 @@ export const update = async () => {
 		// downloaded. If so then we set the download URL for each file
 		if (zip.properties && zip.properties.includes("read_individual_files")) {
 			// Set the download URL for each file in the zip
-			recursive_set_url(fs_path_url(state.base.path)+"?zip_file=", zip)
+			recursive_set_url(fs_path_url(nav.base.path)+"?zip_file=", zip)
 		}
 
 		uncomp_size = recursive_size(zip)
-		comp_ratio = (uncomp_size / state.base.file_size)
+		comp_ratio = (uncomp_size / nav.base.file_size)
 	} catch (err) {
 		console.error(err)
 	} finally {
@@ -85,18 +85,18 @@ const recursive_size = (file) => {
 
 <slot></slot>
 
-<h1>{state.base.name}</h1>
+<h1>{$nav.base.name}</h1>
 
-<IconBlock icon_href={fs_node_icon(state.base, 256, 256)}>
+<IconBlock icon_href={fs_node_icon($nav.base, 256, 256)}>
 	{#if archive_type === "7z"}
 		This is a 7-zip archive. You will need
 		<a href="https://www.7-zip.org/">7-zip</a> or compatible software to
 		extract it<br/>
 	{/if}
 
-	Compressed size: {formatDataVolume(state.base.file_size, 3)}<br/>
+	Compressed size: {formatDataVolume($nav.base.file_size, 3)}<br/>
 	Uncompressed size: {formatDataVolume(zip.size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
-	Uploaded on: {formatDate(state.base.created, true, true, true)}
+	Uploaded on: {formatDate($nav.base.created, true, true, true)}
 	<br/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>
 		<i class="icon">download</i>

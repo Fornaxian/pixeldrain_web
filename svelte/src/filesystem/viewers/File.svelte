@@ -5,15 +5,15 @@ import { fs_thumbnail_url } from "../FilesystemUtil";
 import TextBlock from "../../file_viewer/viewers/TextBlock.svelte";
 let dispatch = createEventDispatcher()
 
-export let state
+export let nav
 </script>
 
 <slot></slot>
 
-<h1>{state.base.name}</h1>
+<h1>{$nav.base.name}</h1>
 
-<IconBlock icon_href={fs_thumbnail_url(state.base.path, 256, 256)}>
-	Type: {state.base.file_type}<br/>
+<IconBlock icon_href={fs_thumbnail_url($nav.base.path, 256, 256)}>
+	Type: {$nav.base.file_type}<br/>
 	No preview is available for this file type. Download to view it locally.
 	<br/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>
@@ -22,7 +22,7 @@ export let state
 	</button>
 </IconBlock>
 
-{#if state.base.path === "/me/.search_index.gz"}
+{#if $nav.base.path === "/me/.search_index.gz"}
 	<TextBlock>
 		<p>
 			Congratulations! You have found the search index. One of the

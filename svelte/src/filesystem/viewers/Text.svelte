@@ -2,26 +2,25 @@
 import { tick } from "svelte";
 import { fs_path_url } from "../FilesystemUtil";
 
-export let state
+export let nav
 let text_type = "text"
 
 export const update = () => {
-	const file = state.base
-	console.debug("Loading text file", file.name)
+	console.debug("Loading text file", nav.base.name)
 
-	if (file.size > 1 << 21) { // File larger than 2 MiB
+	if (nav.base.size > 1 << 21) { // File larger than 2 MiB
 		text_pre.innerText = "File is too large to view online.\nPlease download and view it locally."
 		return
 	}
 
 	if (
-		file.file_type.startsWith("text/markdown") ||
-		file.name.endsWith(".md") ||
-		file.name.endsWith(".markdown")
+		nav.base.file_type.startsWith("text/markdown") ||
+		nav.base.name.endsWith(".md") ||
+		nav.base.name.endsWith(".markdown")
 	) {
-		markdown(file)
+		markdown(nav.base)
 	} else {
-		text(file)
+		text(nav.base)
 	}
 }
 

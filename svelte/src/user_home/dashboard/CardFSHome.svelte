@@ -1,22 +1,16 @@
 <script>
 import { onMount } from "svelte";
-import Navigator from "../../filesystem/Navigator.svelte";
+import { Navigator } from "../../filesystem/Navigator"
 import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemUtil";
 
-let nav;
-let state = {
-	children: [],
-};
-
+const nav = new Navigator(false)
 onMount(() => {
 	nav.navigate("/me", false)
 })
 </script>
 
-<Navigator bind:this={nav} bind:state={state} history_enabled={false}/>
-
 <div class="directory">
-	{#each state.children as child, index (child.path)}
+	{#each $nav.children as child (child.path)}
 		<a
 			href={"/d"+fs_encode_path(child.path)}
 			class="node"

@@ -5,7 +5,7 @@ import { fs_encode_path, fs_node_icon } from "../FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
-export let state
+export let nav
 export let show_hidden = false
 export let large_icons = false
 export let hide_edit = false
@@ -19,7 +19,7 @@ export let hide_branding = false
 		<td>Size</td>
 		<td></td>
 	</tr>
-	{#each state.children as child, index (child.path)}
+	{#each $nav.children as child, index (child.path)}
 		<a
 			href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={() => dispatch("node_click", index)}
@@ -57,7 +57,7 @@ export let hide_branding = false
 						<i class="icon">palette</i>
 					</button>
 				{/if}
-				{#if state.permissions.update && !hide_edit}
+				{#if $nav.permissions.update && !hide_edit}
 					<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_settings", index)}>
 						<i class="icon">edit</i>
 					</button>

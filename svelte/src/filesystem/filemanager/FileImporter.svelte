@@ -5,7 +5,7 @@ import { fs_import } from "../FilesystemAPI";
 
 let dispatch = createEventDispatcher()
 
-export let state
+export let nav
 let file_picker
 
 export const open = () => file_picker.open()
@@ -21,7 +21,7 @@ const import_files = async files => {
 	})
 
 	try {
-		await fs_import(state.base.path, fileids)
+		await fs_import(nav.base.path, fileids)
 	} catch (err) {
 		if (err.message) {
 			alert(err.message)

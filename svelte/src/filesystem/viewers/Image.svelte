@@ -5,7 +5,7 @@ import { fs_path_url } from "../FilesystemUtil";
 
 let dispatch = createEventDispatcher()
 
-export let state
+export let nav
 let container
 let zoom = false
 let x, y = 0
@@ -64,8 +64,8 @@ const mouseup = (e) => {
 	class:zoom
 	use:swipe_nav={!zoom}
 	on:style={e => swipe_style = e.detail}
-	on:prev={() => dispatch("open_sibling", -1)}
-	on:next={() => dispatch("open_sibling", 1)}
+	on:prev={() => nav.open_sibling(-1)}
+	on:next={() => nav.open_sibling(1)}
 >
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img
@@ -77,7 +77,7 @@ const mouseup = (e) => {
 		class="image"
 		class:zoom
 		style={swipe_style}
-		src={fs_path_url(state.base.path)}
+		src={fs_path_url($nav.base.path)}
 		alt="no description available" />
 </div>
 

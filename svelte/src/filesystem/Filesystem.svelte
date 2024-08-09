@@ -5,13 +5,13 @@ import EditWindow from './edit_window/EditWindow.svelte';
 import Toolbar from './Toolbar.svelte';
 import Breadcrumbs from './Breadcrumbs.svelte';
 import DetailsWindow from './DetailsWindow.svelte';
-import Navigator from './Navigator.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 import SearchView from './SearchView.svelte';
 import UploadWidget from './upload_widget/UploadWidget.svelte';
 import { fs_path_url } from './FilesystemUtil.js';
 import { branding_from_path } from './edit_window/Branding.js'
 import Menu from './Menu.svelte';
+import { Navigator } from "./Navigator.js"
 
 let loading = true
 let file_viewer
@@ -24,20 +24,25 @@ let edit_window
 let edit_visible = false
 let view = "file"
 
-let fs_navigator
-let state = {
-	path: window.initial_node.path,
-	base_index: window.initial_node.base_index,
-	children: window.initial_node.children,
-	permissions: window.initial_node.permissions,
+const nav = new Navigator()
 
-	// Shortcuts
-	base: window.initial_node.path[window.initial_node.base_index],
+onMount(() => {
+	nav.open_node(window.initial_node, false)
 
-	shuffle: false,
-}
+	// Subscribe to navigation updates. This function returns a deconstructor
+	// which we can conveniently return from our mount function as well
+	return nav.subscribe(nav => {
+		if (!nav.initialized) {
+			return
+		}
 
-onMount(() => fs_navigator.open_node(window.initial_node, false))
+		// Custom CSS rules for the whole viewer
+		document.documentElement.style = branding_from_path(nav.path)
+
+		// Turn off loading spinner when the navigator is done
+		loading = false
+	})
+})
 
 const keydown = e => {
 	if (e.ctrlKey || e.altKey || e.metaKey) {
@@ -58,14 +63,14 @@ const keydown = e => {
 			if (edit_visible) {
 				edit_visible = false
 			} else {
-				edit_window.edit(state.base, true, "file")
+				edit_window.edit(nav.base, true, "file")
 			}
 			break;
 		case "s":
 			download()
 			break;
 		case "r":
-			state.shuffle = !state.shuffle
+			nav.shuffle = !nav.shuffle
 			break;
 		case "/":
 		case "f":
@@ -73,11 +78,11 @@ const keydown = e => {
 			break
 		case "a":
 		case "ArrowLeft":
-			fs_navigator.open_sibling(-1)
+			nav.open_sibling(-1)
 			break;
 		case "d":
 		case "ArrowRight":
-			fs_navigator.open_sibling(1)
+			nav.open_sibling(1)
 			break;
 		case " ": // Spacebar pauses / unpauses video and audio playback
 			if (file_preview) {
@@ -94,10 +99,10 @@ const keydown = e => {
 };
 
 const download = () => {
-	if (state.base.type === "file") {
-		download_frame.src = fs_path_url(state.base.path) + "?attach"
-	} else if (state.base.type === "dir") {
-		download_frame.src = fs_path_url(state.base.path) + "?bulk_download"
+	if (nav.base.type === "file") {
+		download_frame.src = fs_path_url(nav.base.path) + "?attach"
+	} else if (nav.base.type === "dir") {
+		download_frame.src = fs_path_url(nav.base.path) + "?bulk_download"
 	}
 }
 
@@ -107,40 +112,30 @@ const search = async () => {
 		return
 	}
 
-	if (state.base.type !== "dir") {
-		await fs_navigator.navigate(state.path[state.path.length-2].path)
+	// If we are not currently in a directory, then we navigate up to the parent
+	// directory
+	if (nav.base.type !== "dir") {
+		await nav.navigate_up()
 	}
 
 	view = "search"
 }
 
 const loading_evt = e => loading = e.detail
-
-// Custom CSS rules for the whole viewer. This is updated by either the
-// navigation_complete event or the style_change event
-$: update_css(state.path)
-const update_css = path => document.documentElement.style = branding_from_path(path)
 </script>
 
 <svelte:window on:keydown={keydown} />
 
-<Navigator
-	bind:this={fs_navigator}
-	bind:state
-	on:loading={loading_evt}
-/>
-
 <div bind:this={file_viewer} class="file_viewer">
 	<div class="headerbar">
 		<Menu/>
-		<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
+		<Breadcrumbs nav={nav}/>
 	</div>
 
 	<div class="viewer_area">
 		<Toolbar
 			bind:this={toolbar}
-			fs_navigator={fs_navigator}
-			state={state}
+			nav={nav}
 			file_viewer={file_viewer}
 			bind:details_visible={details_visible}
 			edit_window={edit_window}
@@ -154,18 +149,16 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 			{#if view === "file"}
 				<FilePreview
 					bind:this={file_preview}
-					fs_navigator={fs_navigator}
-					state={state}
+					nav={nav}
 					edit_window={edit_window}
 					on:loading={loading_evt}
-					on:open_sibling={e => fs_navigator.open_sibling(e.detail)}
+					on:open_sibling={e => nav.open_sibling(e.detail)}
 					on:download={download}
 					on:upload_picker={() => upload_widget.pick_files()}
 				/>
 			{:else if view === "search"}
 				<SearchView
-					state={state}
-					fs_navigator={fs_navigator}
+					nav={nav}
 					on:loading={loading_evt}
 					on:done={() => {view = "file"}}
 				/>
@@ -181,25 +174,24 @@ const update_css = path => document.documentElement.style = branding_from_path(p
 	</iframe>
 
 	<DetailsWindow
-		state={state}
+		nav={nav}
 		bind:visible={details_visible}
 	/>
 
 	<EditWindow
+		nav={nav}
 		bind:this={edit_window}
 		bind:visible={edit_visible}
-		fs_navigator={fs_navigator}
 		on:loading={loading_evt}
 	/>
 
 	<UploadWidget
+		nav={nav}
 		bind:this={upload_widget}
-		fs_state={state}
 		drop_upload
-		on:uploads_finished={() => fs_navigator.reload()}
 	/>
 
-	<LoadingIndicator loading={loading}/>
+	<LoadingIndicator loading={$nav.loading || loading}/>
 </div>
 
 <style>

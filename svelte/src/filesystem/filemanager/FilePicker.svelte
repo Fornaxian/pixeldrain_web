@@ -3,12 +3,11 @@ import { createEventDispatcher, onMount } from 'svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
 import Modal from '../../util/Modal.svelte';
-import Navigator from '../Navigator.svelte';
 import LoadingIndicator from '../../util/LoadingIndicator.svelte';
 import Breadcrumbs from '../Breadcrumbs.svelte'
+import { Navigator } from '../Navigator';
 
-let fs_navigator
-let state
+let nav = new Navigator(false)
 let modal
 let dispatch = createEventDispatcher()
 let directory_view = ""
@@ -20,10 +19,10 @@ export let select_multiple = false
 
 export const open = path => {
 	modal.show()
-	fs_navigator.navigate(path, false)
+	nav.navigate(path, false)
 }
 
-$: selected_files = state && state.children.reduce((acc, file) => {
+$: selected_files = $nav.children.reduce((acc, file) => {
 	if (file.fm_selected) {
 		acc++
 	}
@@ -35,8 +34,8 @@ $: selected_files = state && state.children.reduce((acc, file) => {
 const node_click = e => {
 	let index = e.detail
 
-	if (state.children[index].type === "dir") {
-		fs_navigator.navigate(state.children[index].path, true)
+	if (nav.children[index].type === "dir") {
+		nav.navigate(nav.children[index].path, true)
 	} else {
 		select_node(index)
 	}
@@ -51,13 +50,7 @@ let node_context = e => {
 const node_select = e => {
 	let index = e.detail
 	mode = "selecting"
-	state.children[index].fm_selected = !state.children[index].fm_selected
-}
-const navigate_up = () => {
-	// Go to the path of the last parent
-	if (state.path.length > 1) {
-		fs_navigator.navigate(state.path[state.path.length-2].path, true)
-	}
+	nav.children[index].fm_selected = !nav.children[index].fm_selected
 }
 const toggle_view = () => {
 	if (directory_view === "list") {
@@ -87,17 +80,17 @@ const select_node = index => {
 
 		for (let i = id_low; i <= id_high; i++) {
 			if (i != last_selected_node) {
-				state.children[i].fm_selected = !state.children[i].fm_selected
+				nav.children[i].fm_selected = !nav.children[i].fm_selected
 			}
 		}
 	} else {
 		// Deselect all other entries first
 		if (!select_multiple) {
-			for (let i = 0; i < state.children.length; i++) {
-				state.children[i].fm_selected = false
+			for (let i = 0; i < nav.children.length; i++) {
+				nav.children[i].fm_selected = false
 			}
 		}
-		state.children[index].fm_selected = !state.children[index].fm_selected
+		nav.children[index].fm_selected = !nav.children[index].fm_selected
 	}
 
 	last_selected_node = index
@@ -105,9 +98,9 @@ const select_node = index => {
 
 let done = () => {
 	let selected_files = []
-	for (let i = 0; i < state.children.length; i++) {
-		if (state.children[i].fm_selected) {
-			selected_files.push(state.children[i])
+	for (let i = 0; i < nav.children.length; i++) {
+		if (nav.children[i].fm_selected) {
+			selected_files.push(nav.children[i])
 		}
 	}
 
@@ -130,22 +123,15 @@ onMount(() => {
 
 <svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
 
-<Navigator
-	history_enabled={false}
-	bind:this={fs_navigator}
-	bind:state
-	on:loading={loading_evt}
-/>
-
 <Modal bind:this={modal} width="900px">
 	<div class="header" slot="title">
 		<button class="button round" on:click={modal.hide}>
 			<i class="icon">close</i>
 		</button>
-		<button on:click={navigate_up} disabled={state.path.length <= 1} title="Up">
+		<button on:click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
 			<i class="icon">north</i>
 		</button>
-		<button on:click={fs_navigator.reload()} title="Refresh directory listing">
+		<button on:click={() => nav.reload()} title="Refresh directory listing">
 			<i class="icon">refresh</i>
 		</button>
 
@@ -174,20 +160,22 @@ onMount(() => {
 		</button>
 	</div>
 
-	<Breadcrumbs state={state} fs_navigator={fs_navigator}/>
+	<Breadcrumbs nav={nav}/>
 
 	{#if directory_view === "list"}
 		<ListView
-			state={state}
+			nav={nav}
 			show_hidden={show_hidden}
 			large_icons={large_icons}
+			hide_edit
+			hide_branding
 			on:node_click={node_click}
 			on:node_context={node_context}
 			on:node_select={node_select}
 		/>
 	{:else if directory_view === "gallery"}
 		<GalleryView
-			state={state}
+			nav={nav}
 			show_hidden={show_hidden}
 			large_icons={large_icons}
 			on:node_click={node_click}

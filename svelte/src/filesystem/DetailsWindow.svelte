@@ -9,20 +9,20 @@ import { color_by_name } from "../util/Util.svelte";
 import { tick } from "svelte";
 import CopyButton from "../layout/CopyButton.svelte";
 
-export let state
+export let nav
 export let visible = false
 export const toggle = () => visible = !visible
 
 $: visibility_change(visible)
 const visibility_change = visible => {
 	if (visible) {
-		update_chart(state.base, 0, 0)
+		update_chart(nav.base, 0, 0)
 	}
 }
 
-$: direct_url = window.location.origin+fs_path_url(state.base.path)
-$: share_url = generate_share_url(state.path)
-$: direct_share_url = window.location.origin+fs_path_url(generate_share_path(state.path))
+$: direct_url = window.location.origin+fs_path_url($nav.base.path)
+$: share_url = generate_share_url($nav.path)
+$: direct_share_url = window.location.origin+fs_path_url(generate_share_path($nav.path))
 
 let chart
 let chart_timespan = 0
@@ -40,7 +40,7 @@ let chart_timespans = [
 let total_downloads = 0
 let total_transfer_paid = 0
 
-$: update_chart(state.base, chart_timespan, chart_interval)
+$: update_chart($nav.base, chart_timespan, chart_interval)
 let update_chart = async (base, timespan, interval) => {
 	if (chart === undefined) {
 		// Wait for the chart element to render, if it's not rendered already
@@ -121,42 +121,42 @@ let update_chart = async (base, timespan, interval) => {
 }
 </script>
 
-<Modal bind:visible={visible} title="Details" width={(state.base.type === "file" ? 1000 : 750) + "px"}>
+<Modal bind:visible={visible} title="Details" width={($nav.base.type === "file" ? 1000 : 750) + "px"}>
 	<table style="width: 100%;">
 		<tr>
 			<td>Name</td>
-			<td>{state.base.name}</td>
+			<td>{$nav.base.name}</td>
 		</tr>
 		<tr>
 			<td>Path</td>
-			<td>{state.base.path}</td>
+			<td>{$nav.base.path}</td>
 		</tr>
 		<tr>
 			<td>Created</td>
-			<td>{formatDate(state.base.created, true, true, true)}</td>
+			<td>{formatDate($nav.base.created, true, true, true)}</td>
 		</tr>
 		<tr>
 			<td>Modified</td>
-			<td>{formatDate(state.base.modified, true, true, true)}</td>
+			<td>{formatDate($nav.base.modified, true, true, true)}</td>
 		</tr>
 		<tr>
 			<td>Mode</td>
-			<td>{state.base.mode_string}</td>
+			<td>{$nav.base.mode_string}</td>
 		</tr>
-		{#if state.base.id}
+		{#if $nav.base.id}
 			<tr>
 				<td>Public ID</td>
-				<td><a href="/d/{state.base.id}">{state.base.id}</a></td>
+				<td><a href="/d/{$nav.base.id}">{$nav.base.id}</a></td>
 			</tr>
 		{/if}
-		{#if state.base.type === "file"}
+		{#if $nav.base.type === "file"}
 			<tr>
 				<td>File type</td>
-				<td>{state.base.file_type}</td>
+				<td>{$nav.base.file_type}</td>
 			</tr>
 			<tr>
 				<td>File size</td>
-				<td>{formatDataVolume(state.base.file_size, 4)} ( {formatThousands(state.base.file_size)} B )</td>
+				<td>{formatDataVolume($nav.base.file_size, 4)} ( {formatThousands($nav.base.file_size)} B )</td>
 			</tr>
 			<tr>
 				<td>Downloads</td>
@@ -167,10 +167,10 @@ let update_chart = async (base, timespan, interval) => {
 				<td>
 					{formatDataVolume(total_transfer_paid, 4)}
 					( {formatThousands(total_transfer_paid)} B ),
-					{(total_transfer_paid/state.base.file_size).toFixed(1)}x file size
+					{(total_transfer_paid/$nav.base.file_size).toFixed(1)}x file size
 				</td>
 			</tr>
-			<tr><td>SHA256 sum</td><td>{state.base.sha256_sum}</td></tr>
+			<tr><td>SHA256 sum</td><td>{$nav.base.sha256_sum}</td></tr>
 		{/if}
 		<tr>
 			<td>Direct link</td>
@@ -197,13 +197,13 @@ let update_chart = async (base, timespan, interval) => {
 		{/if}
 	</table>
 
-	{#if state.base.type === "file"}
+	{#if $nav.base.type === "file"}
 		<h3 class="indent">Download statistics</h3>
 
 		<div class="button_bar">
 			{#each chart_timespans as ts}
 				<button
-					on:click={() => { update_chart(state.base, ts.span, ts.interval) }}
+					on:click={() => update_chart($nav.base, ts.span, ts.interval)}
 					class:button_highlight={chart_timespan == ts.span}>
 					{ts.label}
 				</button>

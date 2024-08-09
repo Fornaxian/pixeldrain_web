@@ -10,7 +10,7 @@ import CopyButton from "../../layout/CopyButton.svelte";
 
 let dispatch = createEventDispatcher()
 
-export let state
+export let nav
 
 let status = "loading"
 
@@ -18,7 +18,7 @@ export const update = async () => {
 	dispatch("loading", true)
 
 	try {
-		let resp = await fetch(fs_path_url(state.base.path)+"?torrent_info")
+		let resp = await fetch(fs_path_url(nav.base.path)+"?torrent_info")
 
 		if (resp.status >= 400) {
 			let json = await resp.json()
@@ -63,9 +63,9 @@ let magnet = ""
 
 <slot></slot>
 
-<h1>{state.base.name}</h1>
+<h1>{$nav.base.name}</h1>
 
-<IconBlock icon_href={fs_node_icon(state.base, 256, 256)}>
+<IconBlock icon_href={fs_node_icon($nav.base, 256, 256)}>
 	{#if status === "finished"}
 		Created by: {torrent.created_by}<br/>
 		Comment: {torrent.comment}<br/>

@@ -9,8 +9,7 @@ import FileImporter from './FileImporter.svelte';
 import { formatDate } from '../../util/Formatting.svelte';
 let dispatch = createEventDispatcher()
 
-export let fs_navigator
-export let state
+export let nav
 export let edit_window
 export let directory_view = ""
 let large_icons = false
@@ -20,7 +19,7 @@ let creating_dir = false
 let show_hidden = false
 let file_importer
 
-$: selected_files = state.children.reduce((acc, file) => {
+$: selected_files = $nav.children.reduce((acc, file) => {
 	if (file.fm_selected) {
 		acc++
 	}
@@ -41,13 +40,13 @@ const node_click = e => {
 	// We prefix our custom state properties with fm_ to not interfere with
 	// other modules
 	if (mode === "viewing") {
-		fs_navigator.navigate(state.children[index].path, true)
+		nav.navigate(nav.children[index].path, true)
 	} else if (mode === "moving") {
 		// If we are moving files we can only enter directories, and only if
 		// they're not selected. That last requirement prevents people from
 		// moving a directory into itself
-		if (state.children[index].type === "dir" && !state.children[index].fm_selected) {
-			fs_navigator.navigate(state.children[index].path, true)
+		if (nav.children[index].type === "dir" && !nav.children[index].fm_selected) {
+			nav.navigate(nav.children[index].path, true)
 		}
 	} else if (mode === "selecting") {
 		select_node(index)
@@ -64,25 +63,17 @@ const node_share_click = e => {
 	let index = e.detail
 
 	creating_dir = false
-	fs_navigator.navigate(state.children[index].id, true)
+	nav.navigate(nav.children[index].id, true)
 }
 const node_select = e => {
 	let index = e.detail
 	mode = "selecting"
-	state.children[index].fm_selected = !state.children[index].fm_selected
+	nav.children[index].fm_selected = !nav.children[index].fm_selected
 }
 
-const node_settings = e => edit_window.edit(state.children[e.detail], false, "file")
-const node_branding = e => edit_window.edit(state.children[e.detail], false, "branding")
+const node_settings = e => edit_window.edit(nav.children[e.detail], false, "file")
+const node_branding = e => edit_window.edit(nav.children[e.detail], false, "branding")
 
-const navigate_up = () => {
-	creating_dir = false
-
-	// Go to the path of the last parent
-	if (state.path.length > 1) {
-		fs_navigator.navigate(state.path[state.path.length-2].path, true)
-	}
-}
 const navigate_back = () => {
 	creating_dir = false
 	history.back()
@@ -91,7 +82,7 @@ const navigate_back = () => {
 // Deletion function
 
 const delete_selected = async () => {
-	let count = state.children.reduce((acc, cur) => {
+	let count = nav.children.reduce((acc, cur) => {
 		if (cur.fm_selected) {
 			acc++
 		}
@@ -111,7 +102,7 @@ const delete_selected = async () => {
 	try {
 		// Save all promises with deletion requests in an array
 		let promises = []
-		state.children.forEach(child => {
+		nav.children.forEach(child => {
 			if (!child.fm_selected) { return }
 			promises.push(fs_delete_all(child.path))
 		})
@@ -123,7 +114,7 @@ const delete_selected = async () => {
 		alert("Delete failed: " + err.message + " ("+err.value+")")
 	} finally {
 		viewing_mode()
-		fs_navigator.reload()
+		nav.reload()
 	}
 }
 
@@ -137,9 +128,9 @@ const viewing_mode = () => {
 	moving_items = []
 
 	// Unmark all the selected files and return to viewing mode
-	state.children.forEach((child, i) => {
+	nav.children.forEach((child, i) => {
 	if (child.fm_selected) {
-		state.children[i].fm_selected = false
+		nav.children[i].fm_selected = false
 	}
 	})
 	mode = "viewing"
@@ -181,11 +172,11 @@ const select_node = index => {
 
 		for (let i = id_low; i <= id_high; i++) {
 			if (i != last_selected_node) {
-				state.children[i].fm_selected = !state.children[i].fm_selected
+				nav.children[i].fm_selected = !nav.children[i].fm_selected
 			}
 		}
 	} else {
-		state.children[index].fm_selected = !state.children[index].fm_selected
+		nav.children[index].fm_selected = !nav.children[index].fm_selected
 	}
 
 	last_selected_node = index
@@ -194,8 +185,10 @@ const select_node = index => {
 // When the directory is reloaded we want to keep our selection, so this
 // function watches the children array for changes and updates the selection
 // when it changes
-$: update(state.children)
+$: update($nav.children)
 const update = (children) => {
+	creating_dir = false
+
 	// Highlight the files which were previously selected
 	for (let i = 0; i < children.length; i++) {
 		for (let j = 0; j < moving_items.length; j++) {
@@ -211,7 +204,7 @@ let moving_directories = 0
 const move_start = () => {
 	moving_files = 0
 	moving_directories = 0
-	moving_items = state.children.reduce((acc, child) => {
+	moving_items = nav.children.reduce((acc, child) => {
 		if (child.fm_selected) {
 			if (child.type === "file") {
 				moving_files++
@@ -228,7 +221,7 @@ const move_start = () => {
 const move_here = async () => {
 	dispatch("loading", true)
 
-	let target_dir = state.base.path + "/"
+	let target_dir = nav.base.path + "/"
 
 	try {
 		let promises = []
@@ -244,7 +237,7 @@ const move_here = async () => {
 		alert("Move failed: " + err.message + " ("+err.value+")")
 	} finally {
 		viewing_mode()
-		fs_navigator.reload()
+		nav.reload()
 	}
 }
 
@@ -268,10 +261,10 @@ onMount(() => {
 				<button on:click={navigate_back} title="Back">
 					<i class="icon">arrow_back</i>
 				</button>
-				<button on:click={navigate_up} disabled={state.path.length <= 1} title="Up">
+				<button on:click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
 					<i class="icon">north</i>
 				</button>
-				<button on:click={fs_navigator.reload()} title="Refresh directory listing">
+				<button on:click={() => nav.reload()} title="Refresh directory listing">
 					<i class="icon">refresh</i>
 				</button>
 
@@ -300,7 +293,7 @@ onMount(() => {
 				</button>
 
 				<div class="toolbar_spacer"></div>
-				{#if state.permissions.update}
+				{#if $nav.permissions.update}
 					<button on:click={() => dispatch("upload_picker")} title="Upload files to this directory">
 						<i class="icon">cloud_upload</i>
 					</button>
@@ -335,7 +328,7 @@ onMount(() => {
 		{:else if mode === "moving"}
 			<div class="toolbar toolbar_edit">
 				<Button click={viewing_mode} icon="close"/>
-				<Button click={navigate_up} disabled={state.path.length <= 1} icon="north"/>
+				<Button click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} icon="north"/>
 				<div class="toolbar_spacer">
 					Moving {moving_files} files and {moving_directories} directories
 				</div>
@@ -345,14 +338,10 @@ onMount(() => {
 		{/if}
 
 		{#if creating_dir}
-			<CreateDirectory
-				state={state}
-				on:done={() => {fs_navigator.reload(); creating_dir = false;}}
-				on:loading
-			/>
+			<CreateDirectory nav={nav} on:done={() => nav.reload()} on:loading />
 		{/if}
 
-		{#if state.base.path === "/me"}
+		{#if $nav.base.path === "/me"}
 			<div class="highlight_shaded" style="background-color: rgba(255, 255, 0, 0.05); border-radius: 0;">
 				The filesystem is experimental!
 				<a href="/filesystem">Please read the guide</a>
@@ -361,12 +350,12 @@ onMount(() => {
 	</div>
 
 
-	{#if state.base.abuse_type !== undefined}
+	{#if $nav.base.abuse_type !== undefined}
 		<div class="highlight_red">
 			This directory has received an abuse report. It cannot be
 			shared.<br/>
-			Type of abuse: {state.base.abuse_type}<br/>
-			Report time: {formatDate(state.base.abuse_report_time, true, true, true)}
+			Type of abuse: {$nav.base.abuse_type}<br/>
+			Report time: {formatDate($nav.base.abuse_report_time, true, true, true)}
 		</div>
 	{/if}
 
@@ -374,7 +363,7 @@ onMount(() => {
 
 	{#if directory_view === "list"}
 		<ListView
-			state={state}
+			nav={nav}
 			show_hidden={show_hidden}
 			large_icons={large_icons}
 			on:node_click={node_click}
@@ -386,7 +375,7 @@ onMount(() => {
 		/>
 	{:else if directory_view === "gallery"}
 		<GalleryView
-			state={state}
+			nav={nav}
 			show_hidden={show_hidden}
 			large_icons={large_icons}
 			on:node_click={node_click}
@@ -398,10 +387,10 @@ onMount(() => {
 </div>
 
 <FileImporter
-	state={state}
+	nav={nav}
 	bind:this={file_importer}
 	on:loading
-	on:reload={() => fs_navigator.reload()}
+	on:reload={() => nav.reload()}
 />
 
 <style>

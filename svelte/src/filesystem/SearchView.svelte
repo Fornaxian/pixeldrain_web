@@ -3,8 +3,7 @@ import { createEventDispatcher } from "svelte";
 import { fs_search } from "./FilesystemAPI";
 import { fs_encode_path, fs_thumbnail_url } from "./FilesystemUtil";
 
-export let state
-export let fs_navigator
+export let nav
 
 let dispatch = createEventDispatcher()
 
@@ -37,7 +36,7 @@ const search = async (limit = 10) => {
 	dispatch("loading", true)
 
 	try {
-		search_results = await fs_search(state.base.path, search_term, limit)
+		search_results = await fs_search(nav.base.path, search_term, limit)
 	} catch (err) {
 		if (err.value) {
 			error = err.value
@@ -75,7 +74,7 @@ const submit_search = () => {
 }
 
 const open_result = index => {
-	fs_navigator.navigate(search_results[index], true)
+	nav.navigate(search_results[index], true)
 	dispatch("done")
 }
 </script>
@@ -101,7 +100,7 @@ const open_result = index => {
 		<input
 			class="term"
 			type="text"
-			placeholder="Type to search in {state.base.name}"
+			placeholder="Type to search in {$nav.base.name}"
 			style="width: 100%;"
 			bind:value={search_term}
 			on:keyup={keyup}
@@ -126,7 +125,7 @@ const open_result = index => {
 			</td>
 			<td class="node_name">
 				<!-- Remove the search directory from the result -->
-				{result.slice(state.base.path.length+1)}
+				{result.slice($nav.base.path.length+1)}
 			</td>
 		</a>
 	{/each}
