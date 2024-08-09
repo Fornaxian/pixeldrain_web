@@ -15,9 +15,8 @@ export let nav
 let status = "loading"
 
 export const update = async () => {
-	dispatch("loading", true)
-
 	try {
+		nav.set_loading(true)
 		let resp = await fetch(fs_path_url(nav.base.path)+"?torrent_info")
 
 		if (resp.status >= 400) {
@@ -44,9 +43,9 @@ export const update = async () => {
 	} catch (err) {
 		console.error(err)
 	} finally {
-		dispatch("loading", false)
+		nav.set_loading(false)
+		status = "finished"
 	}
-	status = "finished"
 }
 
 let torrent = {

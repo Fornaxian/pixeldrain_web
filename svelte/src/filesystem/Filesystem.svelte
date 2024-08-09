@@ -12,8 +12,8 @@ import { fs_path_url } from './FilesystemUtil.js';
 import { branding_from_path } from './edit_window/Branding.js'
 import Menu from './Menu.svelte';
 import { Navigator } from "./Navigator.js"
+import { writable } from 'svelte/store';
 
-let loading = true
 let file_viewer
 let file_preview
 let toolbar
@@ -24,9 +24,11 @@ let edit_window
 let edit_visible = false
 let view = "file"
 
-const nav = new Navigator()
+const loading = writable(true)
+const nav = new Navigator(true)
 
 onMount(() => {
+	nav.loading = loading
 	nav.open_node(window.initial_node, false)
 
 	// Subscribe to navigation updates. This function returns a deconstructor
@@ -39,8 +41,7 @@ onMount(() => {
 		// Custom CSS rules for the whole viewer
 		document.documentElement.style = branding_from_path(nav.path)
 
-		// Turn off loading spinner when the navigator is done
-		loading = false
+		loading.set(false)
 	})
 })
 
@@ -120,8 +121,6 @@ const search = async () => {
 
 	view = "search"
 }
-
-const loading_evt = e => loading = e.detail
 </script>
 
 <svelte:window on:keydown={keydown} />
@@ -151,17 +150,12 @@ const loading_evt = e => loading = e.detail
 					bind:this={file_preview}
 					nav={nav}
 					edit_window={edit_window}
-					on:loading={loading_evt}
 					on:open_sibling={e => nav.open_sibling(e.detail)}
 					on:download={download}
 					on:upload_picker={() => upload_widget.pick_files()}
 				/>
 			{:else if view === "search"}
-				<SearchView
-					nav={nav}
-					on:loading={loading_evt}
-					on:done={() => {view = "file"}}
-				/>
+				<SearchView nav={nav} on:done={() => {view = "file"}} />
 			{/if}
 		</div>
 	</div>
@@ -173,25 +167,13 @@ const loading_evt = e => loading = e.detail
 		style="display: none; width: 1px; height: 1px;">
 	</iframe>
 
-	<DetailsWindow
-		nav={nav}
-		bind:visible={details_visible}
-	/>
+	<DetailsWindow nav={nav} bind:visible={details_visible} />
 
-	<EditWindow
-		nav={nav}
-		bind:this={edit_window}
-		bind:visible={edit_visible}
-		on:loading={loading_evt}
-	/>
+	<EditWindow nav={nav} bind:this={edit_window} bind:visible={edit_visible} />
 
-	<UploadWidget
-		nav={nav}
-		bind:this={upload_widget}
-		drop_upload
-	/>
+	<UploadWidget nav={nav} bind:this={upload_widget} drop_upload />
 
-	<LoadingIndicator loading={$nav.loading || loading}/>
+	<LoadingIndicator loading={$loading}/>
 </div>
 
 <style>

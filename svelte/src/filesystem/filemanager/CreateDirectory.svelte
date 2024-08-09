@@ -1,8 +1,7 @@
 <script>
-import { onMount, createEventDispatcher } from "svelte";
+import { onMount } from "svelte";
 import { fs_mkdir } from "../FilesystemAPI.js";
 import Button from "../../layout/Button.svelte";
-let dispatch = createEventDispatcher()
 
 export let nav;
 
@@ -10,16 +9,15 @@ let name_input;
 let new_dir_name = ""
 let error_msg = ""
 let create_dir = async () => {
-	dispatch("loading", true)
-
 	let form = new FormData()
 	form.append("type", "dir")
 
 	try {
+		nav.set_loading(true)
 		await fs_mkdir(nav.base.path+"/"+new_dir_name)
 		new_dir_name = "" // Clear input field
 		error_msg = "" // Clear error msg
-		dispatch("done")
+		nav.reload()
 	} catch (err) {
 		if (err.value && err.value === "node_already_exists") {
 			error_msg = "A directory with this name already exists"
@@ -27,7 +25,7 @@ let create_dir = async () => {
 			error_msg = "Server returned an error: "+err
 		}
 	} finally {
-		dispatch("loading", false)
+		nav.set_loading(false)
 	}
 }
 

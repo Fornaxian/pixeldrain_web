@@ -32,8 +32,9 @@ const search = async (limit = 10) => {
 	error = ""
 	last_searched_term = search_term
 	last_limit = limit
+
 	searching = true
-	dispatch("loading", true)
+	nav.set_loading(true)
 
 	try {
 		search_results = await fs_search(nav.base.path, search_term, limit)
@@ -47,7 +48,7 @@ const search = async (limit = 10) => {
 	}
 
 	searching = false
-	dispatch("loading", false)
+	nav.set_loading(false)
 
 	// It's possible that the user entered another letter while we were
 	// performing the search reqeust. If this happens we run the search function

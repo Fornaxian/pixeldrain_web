@@ -21,8 +21,6 @@ let comp_ratio = 0
 let archive_type = ""
 
 export const update = async () => {
-	dispatch("loading", true)
-
 	if (nav.base.file_type === "application/zip") {
 		archive_type = "zip"
 	} else if (nav.base.file_type === "application/x-7z-compressed") {
@@ -30,6 +28,7 @@ export const update = async () => {
 	}
 
 	try {
+		nav.set_loading(true)
 		let resp = await fetch(fs_path_url(nav.base.path)+"?zip_info")
 
 		if (resp.status >= 400) {
@@ -51,10 +50,9 @@ export const update = async () => {
 	} catch (err) {
 		console.error(err)
 	} finally {
-		dispatch("loading", false)
+		nav.set_loading(false)
+		status = "finished"
 	}
-
-	status = "finished"
 }
 
 const recursive_set_url = (parent_path, file) => {

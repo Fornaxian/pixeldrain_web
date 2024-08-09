@@ -97,7 +97,7 @@ const delete_selected = async () => {
 		return
 	}
 
-	dispatch("loading", true)
+	nav.set_loading(true)
 
 	try {
 		// Save all promises with deletion requests in an array
@@ -219,7 +219,7 @@ const move_start = () => {
 }
 
 const move_here = async () => {
-	dispatch("loading", true)
+	nav.set_loading(true)
 
 	let target_dir = nav.base.path + "/"
 
@@ -338,7 +338,7 @@ onMount(() => {
 		{/if}
 
 		{#if creating_dir}
-			<CreateDirectory nav={nav} on:done={() => nav.reload()} on:loading />
+			<CreateDirectory nav={nav} />
 		{/if}
 
 		{#if $nav.base.path === "/me"}
@@ -386,12 +386,7 @@ onMount(() => {
 	{/if}
 </div>
 
-<FileImporter
-	nav={nav}
-	bind:this={file_importer}
-	on:loading
-	on:reload={() => nav.reload()}
-/>
+<FileImporter nav={nav} bind:this={file_importer} />
 
 <style>
 .container {

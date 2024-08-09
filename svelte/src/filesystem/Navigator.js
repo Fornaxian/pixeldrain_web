@@ -13,9 +13,7 @@ export class Navigator {
 
 	// Initialized will be set to true when the first file or directory is loaded
 	initialized = false
-
 	shuffle = false
-	loading = false
 
 	// Whether navigation events should update the browser history
 	history_enabled = true
@@ -33,6 +31,15 @@ export class Navigator {
 				const path = document.location.pathname.replace("/d/", "")
 				this.navigate(decodeURIComponent(path), false)
 			}
+		}
+	}
+
+	// If you set the loading property to a boolean writable store the navigator
+	// will use it to publish its loading states
+	loading = null
+	set_loading(b) {
+		if (this.loading !== null && this.loading.set !== undefined) {
+			this.loading.set(b)
 		}
 	}
 
@@ -57,10 +64,10 @@ export class Navigator {
 			path = "/" + path
 		}
 
-		this.loading = true
 		console.debug("Navigating to path", path, push_history)
 
 		try {
+			this.set_loading(true)
 			const resp = await fs_get_node(path)
 			this.open_node(resp, push_history)
 		} catch (err) {
@@ -77,7 +84,7 @@ export class Navigator {
 				alert("Error: " + err)
 			}
 		} finally {
-			this.loading = false
+			this.set_loading(false)
 		}
 	}
 
@@ -132,9 +139,6 @@ export class Navigator {
 		for (let i = 0; i < this.subscribers.length; i++) {
 			this.subscribers[i](this)
 		}
-
-		// Remove spinner
-		this.loading = false
 	}
 
 	// These are used to navigate forward and backward within a directory (using
@@ -174,16 +178,17 @@ export class Navigator {
 			return
 		}
 
-		this.loading = true
 
 		let siblings
 		try {
+			this.set_loading(true)
 			siblings = await this.get_siblings()
 		} catch (err) {
 			console.error(err)
 			alert(err)
-			this.loading = false
 			return
+		} finally {
+			this.set_loading(false)
 		}
 
 		let next_sibling = null
@@ -218,10 +223,9 @@ export class Navigator {
 		// If we found a sibling we open it
 		if (next_sibling !== null) {
 			console.debug("Opening sibling", next_sibling.path)
-			this.navigate(next_sibling.path, true)
+			await this.navigate(next_sibling.path, true)
 		} else {
 			console.debug("No siblings found")
-			this.loading = false
 		}
 	}
 }

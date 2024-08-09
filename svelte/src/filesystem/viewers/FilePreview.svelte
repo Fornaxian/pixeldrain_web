@@ -52,7 +52,7 @@ export const toggle_playback = () => {
 		<Spinner></Spinner>
 	</div>
 {:else if viewer_type === "dir"}
-	<FileManager nav={nav} edit_window={edit_window} on:loading on:upload_picker>
+	<FileManager nav={nav} edit_window={edit_window} on:upload_picker>
 		<CustomBanner path={$nav.path}/>
 	</FileManager>
 {:else if viewer_type === "audio"}
@@ -70,11 +70,11 @@ export const toggle_playback = () => {
 		<CustomBanner path={$nav.path}/>
 	</Text>
 {:else if viewer_type === "torrent"}
-	<Torrent nav={nav} bind:this={viewer} on:loading on:download>
+	<Torrent nav={nav} bind:this={viewer} on:download>
 		<CustomBanner path={$nav.path}/>
 	</Torrent>
 {:else if viewer_type === "zip"}
-	<Zip nav={nav} bind:this={viewer} on:loading on:download>
+	<Zip nav={nav} bind:this={viewer} on:download>
 		<CustomBanner path={$nav.path}/>
 	</Zip>
 {:else}

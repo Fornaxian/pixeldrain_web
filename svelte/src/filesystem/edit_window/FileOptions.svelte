@@ -1,10 +1,8 @@
 <script>
-import { createEventDispatcher } from "svelte";
 import Button from "../../layout/Button.svelte";
 import { fs_delete_all } from "../FilesystemAPI";
 import PathLink from "../util/PathLink.svelte";
 
-let dispatch = createEventDispatcher()
 export let nav
 export let file = {}
 export let new_name
@@ -17,14 +15,14 @@ const delete_file = async e => {
 	e.preventDefault()
 
 	try {
-		dispatch("loading", true)
+		nav.set_loading(true)
 		await fs_delete_all(file.path)
 	} catch (err) {
 		console.error(err)
 		alert(err)
 		return
 	} finally {
-		dispatch("loading", false)
+		nac.set_loading(false)
 	}
 
 	if (open_after_edit) {
