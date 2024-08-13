@@ -33,7 +33,6 @@ onMount(() => {
 </div>
 
 <style>
-
 .directory {
 	display: flex;
 	flex-direction: row;
@@ -53,7 +52,7 @@ onMount(() => {
 	gap: 2px;
 	padding: 2px;
 	border-radius: 8px;
-	width: 300px;
+	width: 250px;
 	max-width: 100%;
 	border: 1px solid var(--input_background);
 }

@@ -4,10 +4,10 @@ Pixeldrain has an experimental filesystem feature. It can be accessed from any
 account with a paid subscription (Patreon or Prepaid) by going to
 [pixeldrain.com/d/me](/d/me).
 
- * **IMPORTANT**: The filesystem is *experimental*. This means that it's not
-   finished yet. While the filesystem seems stable now and I am using it
+ * **IMPORTANT**: The filesystem is still in development. This means that it's
+   not finished yet. While the filesystem seems stable now and I am using it
    personally too, you are strongly advised to keep backups of anything you
-   upload there.
+   upload here.
  * If you experience any issues while using the filesystem, feel free to discuss
    them on [the Discord community](https://discord.gg/TWKGvYAFvX).
 
@@ -55,8 +55,8 @@ Here is a quick overview of the filesystem's limits:
 
  * Max 10000 files per directory
  * Max file size is 100 GB
- * File/directory names can be up to 255 characters long
- * Path names can be up to 4095 characters long
+ * File/directory names can be up to 255 bytes long
+ * Path names can be up to 4095 bytes long
  * You can have a maximum of 64 nested directories
  * The filesystem does not support hard or symbolic links, this might change
    later
@@ -80,12 +80,83 @@ There are two ways to access your filesystem from outside the web interface.
 
 ### Rclone
 
-I have built a custom rclone backend to integrate with the filesystem. It can be
-found [on my GitHub](https://github.com/Fornaxian/rclone). To use it you will
-have to compile the project yourself. I will keep this fork in sync until the
-changes are merged into the real rclone. I have a [pull
-request](https://github.com/rclone/rclone/pull/7460) open with the master repo,
-but it has not been accepted yet.
+Rclone has built in support for the pixeldrain filesystem starting with version
+1.68. Check out [the rclone website](https://rclone.org/pixeldrain/) for
+documentation. You can install rclone [from the
+site](https://rclone.org/downloads/). It's also available in most software
+repositories.
+
+A few example use cases of rclone are:
+
+ * Mount pixeldrain as a network drive with [rclone
+   mount](https://rclone.org/commands/rclone_mount/) (instructions below)
+ * Create a backup of your local storage with [rclone
+   sync](https://rclone.org/commands/rclone_sync/)
+ * Perform a two-way sync with [rclone
+   bisync](https://rclone.org/commands/rclone_bisync/) (bisync is experimental
+   tech, don't use with important data)
+
+#### Rclone mount systemd service example
+
+To automatically mount your pixeldrain when logging in to your Linux OS you can
+use a systemd user service.
+
+First you must configure an rclone remote with the name `Pixeldrain`. This will
+be the name of the network drive as well. You can choose a different name if you
+want to.
+
+ 1. Run `rclone config` to start the interactive configuration prompt.
+ 2. Press `n` to create a new remote.
+ 3. Enter the name `Pixeldrain`, or a different name if you want.
+ 4. When asked which storage provider you want to use enter `pixeldrain`.
+ 5. Follow the rest of the instructions.
+
+Create a text file with these contents at the path
+`$HOME/.config/systemd/user/rclone@.service`. You may have to create the parent
+directories yourself.
+
+```
+[Unit]
+Description=rclone: Remote FUSE filesystem for cloud storage config %i
+Documentation=man:rclone(1)
+After=network-online.target
+Wants=network-online.target
+AssertPathIsDirectory=%h/%i
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=rclone mount \
+    --config=%h/.config/rclone/rclone.conf \
+    --vfs-cache-mode full \
+    --vfs-cache-max-age 720h \
+    --vfs-cache-min-free-space 50G \
+    --vfs-write-back 10s \
+    --dir-cache-time 10m \
+    --log-level INFO \
+    --transfers 10 \
+    --file-perms 0700 \
+    --dir-perms 0700 \
+    %i: %h/%i
+
+KillSignal=SIGINT
+TimeoutStartSec=600
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+```
+
+Once the file is in place, reload your systemd config with `systemctl --user
+daemon-reload`. Then you can start your network drive with `systemctl --user
+enable rclone@Pixeldrain.service --now`, where `Pixeldrain` is the name of your
+rclone remote (replace with the name of your own remote if necessary). This will
+create a directory called `Pixeldrain` in your home which will contain your
+network drive. If it doesn't work, you can check the logs with `journalctl
+--user -u rclone@Pixeldrain`.
+
+If you can't get it to work you can always ask for help on our [Discord
+community](https://discord.gg/TWKGvYAFvX).
 
 ### FTPS
 
