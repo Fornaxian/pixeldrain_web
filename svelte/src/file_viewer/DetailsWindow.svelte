@@ -262,7 +262,7 @@ onMount(() => {
 	gap: 5px;
 }
 .shortcuts > div {
-	flex: 0 0 12em;
+	flex: 0 0 10em;
 	display: flex;
 	flex-direction: column;
 	text-align: center;

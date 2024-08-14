@@ -370,7 +370,7 @@ const keyboard_event = evt => {
 			embed_window.toggle()
 			break
 		case "g": // G to grab this file
-			this.grabFile()
+			grab_file()
 			break
 		case "q": // Q to close the window
 			window.close()
