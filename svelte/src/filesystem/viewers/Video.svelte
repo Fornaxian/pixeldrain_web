@@ -71,7 +71,34 @@ const mute = () => {
 const fullscreen = () => {
 	player.requestFullscreen()
 }
+
+const keypress = e => {
+	if (
+		(e.ctrlKey || e.altKey || e.metaKey) ||
+		(document.activeElement.type && (
+			document.activeElement.type === "text" ||
+			document.activeElement.type === "email" ||
+			document.activeElement.type === "textarea"))
+	) {
+		// The first check is to prevent our keybindings from triggering then
+		// the user uses a global keybind. The second check is to prevent the
+		// shortcuts from firing if the user is entering text in an input field
+		return
+	}
+
+	if (e.key === "h") {
+		seek_relative(-20)
+	} else if (e.key === "j") {
+		seek_relative(-5)
+	} else if (e.key === "k") {
+		seek_relative(5)
+	} else if (e.key === "l") {
+		seek_relative(20)
+	}
+}
 </script>
+
+<svelte:window on:keypress={keypress} />
 
 <div class="container">
 	{#if

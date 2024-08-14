@@ -224,6 +224,11 @@ onMount(() => {
 		<tr><td>d or &#8594;</td><td> = View next item in list</td></tr>
 		<tr><td>r</td><td> = Toggle shuffle (<b><u>r</u></b>andom)</td></tr>
 		<tr><td>SHIFT + s</td><td> = Download all the files in the list as a zip archive</td></tr>
+		<tr><td colspan="2">Video Shortcuts</td></tr>
+		<tr><td>h</td><td> = Skip 20 seconds backward</td></tr>
+		<tr><td>j</td><td> = Skip 5 seconds backward</td></tr>
+		<tr><td>k</td><td> = Skip 5 seconds forward</td></tr>
+		<tr><td>l</td><td> = Skip 20 seconds forward</td></tr>
 	</table>
 </div>
 
