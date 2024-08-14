@@ -326,6 +326,24 @@ const keyboard_event = evt => {
 		case " ": // Spacebar pauses / unpauses video and audio playback
 			file_preview.toggle_playback()
 			break
+		case "h":
+			file_preview.seek(-20)
+			break
+		case "j":
+			file_preview.seek(-5)
+			break
+		case "k":
+			file_preview.seek(5)
+			break
+		case "l":
+			file_preview.seek(20)
+			break
+		case ",":
+			file_preview.seek(-0.04) // Roughly a single frame.. assuming 25fps
+			break
+		case ".":
+			file_preview.seek(0.04)
+			break
 		case "s":
 		case "S":
 			if (evt.shiftKey) {

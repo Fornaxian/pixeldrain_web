@@ -213,23 +213,39 @@ onMount(() => {
 	</p>
 
 	<h3>Keyboard Controls</h3>
-	<table style="max-width: 100%;">
-		<tr><td colspan="2">File Shortcuts</td></tr>
-		<tr><td>c</td><td> = Copy URL of this page</td></tr>
-		<tr><td>i</td><td> = Toggle details window (this window) (<b><u>i</u></b>nfo)</td></tr>
-		<tr><td>s</td><td> = Download the file you are currently viewing (<b><u>s</u></b>ave)</td></tr>
-		<tr><td>q</td><td> = Close the window (<b><u>q</u></b>uit)</td></tr>
-		<tr><td colspan="2">List Shortcuts</td></tr>
-		<tr><td>a or &#8592;</td><td> = View previous item in list</td></tr>
-		<tr><td>d or &#8594;</td><td> = View next item in list</td></tr>
-		<tr><td>r</td><td> = Toggle shuffle (<b><u>r</u></b>andom)</td></tr>
-		<tr><td>SHIFT + s</td><td> = Download all the files in the list as a zip archive</td></tr>
-		<tr><td colspan="2">Video Shortcuts</td></tr>
-		<tr><td>h</td><td> = Skip 20 seconds backward</td></tr>
-		<tr><td>j</td><td> = Skip 5 seconds backward</td></tr>
-		<tr><td>k</td><td> = Skip 5 seconds forward</td></tr>
-		<tr><td>l</td><td> = Skip 20 seconds forward</td></tr>
-	</table>
+
+	<h4>Global</h4>
+	<div class="shortcuts">
+		<div><div>c</div><div>Copy page URL</div></div>
+		<div><div>s</div><div>Download current file</div></div>
+		<div><div>q</div><div>Close window</div></div>
+		<div><div>g</div><div>Grab file (copy to your account)</div></div>
+		<div><div>i</div><div>Show details window</div></div>
+		<div><div>e</div><div>Show edit window</div></div>
+		<div><div>m</div><div>Show embed window</div></div>
+		<div><div>r</div><div>Show abuse report window</div></div>
+	</div>
+
+	<h4>List</h4>
+	<div class="shortcuts">
+		<div><div>a or &#8592;</div><div>Previous file</div></div>
+		<div><div>d or &#8594;</div><div>Next file</div></div>
+		<div><div>shift + s</div><div>Download all files as zip</div></div>
+		<div><div>u</div><div>Upload files to album</div></div>
+	</div>
+
+	<h4>Video / audio</h4>
+	<div class="shortcuts">
+		<div><div>space</div><div>Pause / resume playback</div></div>
+		<div><div>f</div><div>Enter fullscreen</div></div>
+		<div><div>esc</div><div>Exit fullscreen</div></div>
+		<div><div>h</div><div>Skip 20 seconds backward</div></div>
+		<div><div>j</div><div>Skip 5 seconds backward</div></div>
+		<div><div>k</div><div>Skip 5 seconds forward</div></div>
+		<div><div>l</div><div>Skip 20 seconds forward</div></div>
+		<div><div>,</div><div>Skip 40ms backward</div></div>
+		<div><div>.</div><div>Skip 40ms forward</div></div>
+	</div>
 </div>
 
 <style>
@@ -237,5 +253,26 @@ onMount(() => {
 	display: block;
 	width: 100%;
 	text-align: center;
+}
+.shortcuts {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 5px;
+}
+.shortcuts > div {
+	flex: 0 0 12em;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	border-radius: 8px;
+	overflow: hidden;
+	border: 2px solid var(--card_color);
+}
+.shortcuts > div > div:first-child {
+	font-size: 1.4em;
+	padding: 4px;
+	background: var(--card_color);
 }
 </style>

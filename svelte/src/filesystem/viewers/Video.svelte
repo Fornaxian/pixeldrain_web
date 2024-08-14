@@ -41,6 +41,16 @@ export const toggle_playback = () => {
 	playing ? player.pause() : player.play()
 }
 
+export const seek = delta => {
+	// fastseek can be pretty imprecise, so we don't use it for small seeks
+	// below 5 seconds
+	if (player.fastSeek && delta > 5) {
+		player.fastSeek(player.currentTime + delta)
+	} else {
+		player.currentTime = player.currentTime + delta
+	}
+}
+
 onMount(() => {
 	if ('mediaSession' in navigator) {
 		media_session = true
@@ -51,14 +61,6 @@ onMount(() => {
 		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("open_sibling", 1));
 	}
 })
-
-const seek_relative = delta => {
-	if (player.fastSeek) {
-		player.fastSeek(player.currentTime + delta)
-	} else {
-		player.currentTime = player.currentTime + delta
-	}
-}
 
 const mute = () => {
 	if (player.muted) {
@@ -71,34 +73,7 @@ const mute = () => {
 const fullscreen = () => {
 	player.requestFullscreen()
 }
-
-const keypress = e => {
-	if (
-		(e.ctrlKey || e.altKey || e.metaKey) ||
-		(document.activeElement.type && (
-			document.activeElement.type === "text" ||
-			document.activeElement.type === "email" ||
-			document.activeElement.type === "textarea"))
-	) {
-		// The first check is to prevent our keybindings from triggering then
-		// the user uses a global keybind. The second check is to prevent the
-		// shortcuts from firing if the user is entering text in an input field
-		return
-	}
-
-	if (e.key === "h") {
-		seek_relative(-20)
-	} else if (e.key === "j") {
-		seek_relative(-5)
-	} else if (e.key === "k") {
-		seek_relative(5)
-	} else if (e.key === "l") {
-		seek_relative(20)
-	}
-}
 </script>
-
-<svelte:window on:keypress={keypress} />
 
 <div class="container">
 	{#if
@@ -137,7 +112,7 @@ const keypress = e => {
 			<button on:click={() => dispatch("open_sibling", -1) }>
 				<i class="icon">skip_previous</i>
 			</button>
-			<button on:click={() => seek_relative(-10)}>
+			<button on:click={() => seek(-10)}>
 				<i class="icon">replay_10</i>
 			</button>
 			<button on:click={toggle_playback} class="button_highlight">
@@ -147,7 +122,7 @@ const keypress = e => {
 					<i class="icon">play_arrow</i>
 				{/if}
 			</button>
-			<button on:click={() => seek_relative(10)}>
+			<button on:click={() => seek(10)}>
 				<i class="icon">forward_10</i>
 			</button>
 			<button on:click={() => dispatch("open_sibling", 1) }>

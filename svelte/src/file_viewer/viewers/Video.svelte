@@ -51,6 +51,16 @@ export const toggle_playback = () => {
 	playing ? player.pause() : player.play()
 }
 
+export const seek = delta => {
+	// fastseek can be pretty imprecise, so we don't use it for small seeks
+	// below 5 seconds
+	if (player.fastSeek && delta > 5) {
+		player.fastSeek(player.currentTime + delta)
+	} else {
+		player.currentTime = player.currentTime + delta
+	}
+}
+
 onMount(() => {
 	if ('mediaSession' in navigator) {
 		media_session = true
@@ -63,14 +73,6 @@ onMount(() => {
 })
 
 const download = () => { dispatch("download", {}) }
-
-const seek_relative = delta => {
-	if (player.fastSeek) {
-		player.fastSeek(player.currentTime + delta)
-	} else {
-		player.currentTime = player.currentTime + delta
-	}
-}
 
 const mute = () => {
 	if (player.muted) {
@@ -98,14 +100,8 @@ const keypress = e => {
 		return
 	}
 
-	if (e.key === "h") {
-		seek_relative(-20)
-	} else if (e.key === "j") {
-		seek_relative(-5)
-	} else if (e.key === "k") {
-		seek_relative(5)
-	} else if (e.key === "l") {
-		seek_relative(20)
+	if (e.key === "f") {
+		fullscreen()
 	}
 }
 </script>
@@ -150,7 +146,7 @@ const keypress = e => {
 							<i class="icon">skip_previous</i>
 						</button>
 					{/if}
-					<button on:click={() => seek_relative(-10)}>
+					<button on:click={() => seek(-10)}>
 						<i class="icon">replay_10</i>
 					</button>
 					<button on:click={toggle_playback} class="button_highlight">
@@ -160,7 +156,7 @@ const keypress = e => {
 							<i class="icon">play_arrow</i>
 						{/if}
 					</button>
-					<button on:click={() => seek_relative(10)}>
+					<button on:click={() => seek(10)}>
 						<i class="icon">forward_10</i>
 					</button>
 					{#if is_list}

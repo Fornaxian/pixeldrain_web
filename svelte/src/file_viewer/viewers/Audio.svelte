@@ -52,6 +52,15 @@ export const toggle_playback = () => {
 	playing ? player.pause() : player.play()
 }
 
+export const seek = delta => {
+	// fastseek can be pretty imprecise, so we don't use it for small seeks
+	// below 5 seconds
+	if (player.fastSeek && delta > 5) {
+		player.fastSeek(player.currentTime + delta)
+	} else {
+		player.currentTime = player.currentTime + delta
+	}
+}
 </script>
 
 <div class="container">

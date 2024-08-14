@@ -52,6 +52,11 @@ export const toggle_playback = () => {
 		viewer.toggle_playback()
 	}
 }
+export const seek = delta => {
+	if (viewer && viewer.seek) {
+		viewer.seek(delta)
+	}
+}
 </script>
 
 {#if viewer_type === "loading"}

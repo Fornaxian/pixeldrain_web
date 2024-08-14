@@ -14,6 +14,16 @@ export const toggle_playback = () => {
 	playing ? player.pause() : player.play()
 }
 
+export const seek = delta => {
+	// fastseek can be pretty imprecise, so we don't use it for small seeks
+	// below 5 seconds
+	if (player.fastSeek && delta > 5) {
+		player.fastSeek(player.currentTime + delta)
+	} else {
+		player.currentTime = player.currentTime + delta
+	}
+}
+
 export const update = async () => {
 	if (media_session) {
 		navigator.mediaSession.metadata = new MediaMetadata({
@@ -56,7 +66,7 @@ onMount(() => {
 	</audio>
 	<div style="text-align: center;">
 		<button on:click={() => nav.open_sibling(-1) }><i class="icon">skip_previous</i></button>
-		<button on:click={() => player.currentTime -= 10 }><i class="icon">replay_10</i></button>
+		<button on:click={() => seek(-10) }><i class="icon">replay_10</i></button>
 		<button on:click={toggle_playback}>
 			{#if playing}
 				<i class="icon">pause</i>
@@ -64,7 +74,7 @@ onMount(() => {
 				<i class="icon">play_arrow</i>
 			{/if}
 		</button>
-		<button on:click={() => player.currentTime += 10 }><i class="icon">forward_10</i></button>
+		<button on:click={() => seek(10) }><i class="icon">forward_10</i></button>
 		<button on:click={() => nav.open_sibling(1) }><i class="icon">skip_next</i></button>
 	</div>
 
