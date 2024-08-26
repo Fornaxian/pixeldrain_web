@@ -60,6 +60,9 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
+	// Prevent search engines from indexing this page for privacy reasons
+	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
+
 	var err error
 	var ids = strings.Split(p.ByName("id"), ",")
 	var templateData = wc.newTemplateData(w, r)
@@ -141,6 +144,9 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		http.Redirect(w, r, "/api/list/"+p.ByName("id")+"/zip", http.StatusSeeOther)
 		return
 	}
+
+	// Prevent search engines from indexing this page for privacy reasons
+	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
 
 	var templateData = wc.newTemplateData(w, r)
 	var list, err = templateData.PixelAPI.GetListID(p.ByName("id"))

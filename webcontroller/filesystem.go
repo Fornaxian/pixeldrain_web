@@ -17,6 +17,9 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	var td = wc.newTemplateData(w, r)
 	var path = strings.TrimPrefix(p.ByName("path"), "/")
 
+	// Prevent search engines from indexing this page for privacy reasons
+	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
+
 	if path == "" {
 		wc.templates.Get().ExecuteTemplate(w, "404", td)
 		return
