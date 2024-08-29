@@ -91,6 +91,8 @@ func userStyle(style string, hue int) template.CSS {
 		def = adwaitaDarkStyle
 	case "adwaita_light":
 		def = adwaitaLightStyle
+	case "pixeldrain98":
+		def = pixeldrain98Style
 	}
 
 	if hue >= 0 && hue <= 360 {
@@ -134,6 +136,8 @@ type styleSheet struct {
 	Chart1 HSL
 	Chart2 HSL
 	Chart3 HSL
+
+	StyleOverrides string
 }
 
 func (s styleSheet) withDefaults() styleSheet {
@@ -234,7 +238,10 @@ func (s styleSheet) String() string {
 	--chart_3_color: %s;
 
 	--shadow_color: %s;
-}`,
+}
+
+%s
+`,
 		s.Link.CSS(),
 		s.Input.CSS(),
 		s.InputHover.CSS(),
@@ -263,6 +270,7 @@ func (s styleSheet) String() string {
 		s.Chart2.CSS(),
 		s.Chart3.CSS(),
 		s.BodyColor.Darken(0.8).CSS(),
+		s.StyleOverrides,
 	)
 }
 
@@ -530,4 +538,97 @@ var solarizedLightStyle = styleSheet{
 	BodyText:        HSL{194, .14, .40}, // hsl(194, 14%, 40%)
 	Separator:       HSL{46, .42, .88},
 	CardColor:       HSL{44, .87, .92},
+}
+
+const override98 = `
+button, .button,
+dialog,
+.highlight_border,
+.page_content,
+footer, .footer_content,
+.card,
+.window,
+.block,
+.sharebar,
+.directory_sorters, .directory_area,
+.container > .directory,
+.directory > .node,
+.file, .file_button,
+.upload_task,
+.add_button,
+.expandable {
+	border: none !important;
+	border-radius: 0 !important;
+	box-shadow: inset -1px -1px #0a0a0a,
+		inset 1px 1px #dfdfdf,
+		inset -2px -2px grey,
+		inset 2px 2px #fff !important;
+}
+.flat {
+	margin: 2px !important;
+}
+.window, .page_content, .file_button, .expandable, pre {
+	padding: 3px !important;
+}
+.window > .header, .headerbar {
+	background: linear-gradient(90deg,navy,#1084d0) !important;
+	color: #fff !important;
+}
+.tab_bar > button, .tab_bar > .button {
+	border-top-left-radius: 3px !important;
+	border-top-right-radius: 3px !important;
+	box-shadow: inset -1px 0 #0a0a0a,inset 1px 1px #dfdfdf,inset -2px 0 grey,inset 2px 2px #fff !important;
+}
+.headerbar > .wrapper > .button {
+	color: #fff !important;
+}
+
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="text"],
+select, textarea, pre {
+	border-radius: 0 !important;
+	border: none !important;
+	background-color: #fff !important;
+	box-shadow: inset -1px -1px #fff,
+		inset 1px 1px grey,
+		inset -2px -2px #dfdfdf,
+		inset 2px 2px #0a0a0a !important;
+}
+code {
+	border-radius: 0 !important;
+	background-color: #fff !important;
+}
+
+.file_preview,
+hr,
+.toolbar > .separator,
+.highlight_shaded {
+	border-radius: 0 !important;
+	border: none !important;
+	box-shadow: inset -1px -1px #fff,
+		inset 1px 1px grey,
+		inset -2px -2px #dfdfdf,
+		inset 2px 2px #0a0a0a !important;
+}
+`
+
+var pixeldrain98Style = styleSheet{
+	Input:             RGB{190, 190, 190},
+	InputHover:        RGB{220, 220, 220},
+	InputText:         RGB{0, 0, 0},
+	InputDisabledText: RGB{128, 128, 128},
+	Highlight:         HSL{240, 1, .5}, // hsl(68, 100%, 30%)
+	HighlightText:     HSL{0, 1, 1},
+	Danger:            HSL{1, .71, .52}, // hsl(1, 71%, 52%)
+
+	BackgroundColor: HSL{180, 1, .25},
+	BackgroundText:  HSL{0, 1, 1},
+	BodyColor:       HSL{0, 0, .75},
+	BodyText:        HSL{0, 0, 0},
+	Separator:       HSL{0, 1, 1},
+	CardColor:       HSL{0, 0, .75},
+
+	StyleOverrides: override98,
 }
