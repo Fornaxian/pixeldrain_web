@@ -564,13 +564,11 @@ footer, .footer_content,
 		inset -2px -2px grey,
 		inset 2px 2px #fff !important;
 }
-.flat {
-	margin: 2px !important;
-}
 .window, .page_content, .file_button, .expandable, pre {
 	padding: 3px !important;
 }
-.window > .header, .headerbar {
+.window > .header,
+.headerbar {
 	background: linear-gradient(90deg,navy,#1084d0) !important;
 	color: #fff !important;
 }

@@ -37,8 +37,7 @@ onMount(() => {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	margin-top: 8px;
-	gap: 8px;
+	gap: 6px;
 }
 .node {
 	display: flex;

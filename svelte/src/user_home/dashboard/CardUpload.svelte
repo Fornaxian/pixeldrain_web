@@ -28,7 +28,6 @@ let upload_widget
 	flex-direction: row;
 	justify-content: space-around;
 	gap: 8px;
-	margin-top: 8px;
 }
 .upload_buttons > * {
 	flex: 1 1 auto;

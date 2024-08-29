@@ -121,7 +121,6 @@ onMount(() => {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
-	margin-top: 4px;
 }
 .toolbar > * {
 	flex: 0 0 auto;

@@ -80,7 +80,6 @@ let click_int = e => {
 }
 .flat {
 	background: none;
-	margin: 0;
 	color: var(--body_text_color);
 	box-shadow: none;
 }

@@ -188,12 +188,13 @@ onMount(() => {
 	max-width: 100%;
 	background: var(--body_background);
 	border-radius: 8px;
-	padding: 8px;
+	padding: 2px;
 	text-align: initial;
 }
 .card_component {
 	flex: 1 1 auto;
 	overflow: auto;
+	padding: 6px;
 }
 .size_1 { width: 400px; }
 .size_1 > .card_component { max-height: 400px; }
@@ -214,5 +215,6 @@ onMount(() => {
 	margin: 0;
 	font-size: 1.5em;
 	border-bottom: none;
+	text-align: center;
 }
 </style>
