@@ -13,6 +13,8 @@ export let no_login_label = "Pixeldrain"
 export let hide_name = true
 export let hide_logo = false
 export let style = ""
+export let embedded = false
+$: target = embedded ? "_blank" : "_self"
 
 const open = () => {
 	// Show the window so we can get the location
@@ -46,7 +48,7 @@ const click = e => {
 </script>
 
 <div class="wrapper">
-	<button bind:this={button} on:click={open} href="/user" class="button round" title="Menu" style={style}>
+	<button bind:this={button} on:click={open} class="button round" title="Menu" style={style}>
 		{#if !hide_logo}
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em;"/>
 		{/if}
@@ -62,7 +64,7 @@ const click = e => {
 	<div class="menu">
 		{#if window.user.username !== ""}
 
-			<Button link_href="/user" icon="person" label={window.user.username} />
+			<Button link_href="/user" link_target={target} icon="person" label={window.user.username} />
 			<div class="separator"></div>
 
 			<div class="stats_table">
@@ -82,33 +84,33 @@ const click = e => {
 			<div class="separator"></div>
 
 			{#if window.user.subscription.filesystem_access}
-				<Button link_href="/d/me" icon="folder" label="My Filesystem"/>
+				<Button link_href="/d/me" link_target={target} icon="folder" label="My Filesystem"/>
 			{:else}
-				<Button link_href="/#pro" icon="star" label="Get Premium"/>
+				<Button link_href="/#pro" link_target={target} icon="star" label="Get Premium"/>
 			{/if}
 
-			<Button link_href="/filesystem" icon="description" label="Filesystem Guide"/>
+			<Button link_href="/filesystem" link_target={target} icon="description" label="Filesystem Guide"/>
 
 			<div class="separator"></div>
 
-			<Button link_href="/user/filemanager#files" icon="image" label="My Files"/>
-			<Button link_href="/user/filemanager#lists" icon="photo_library" label="My Albums"/>
+			<Button link_href="/user/filemanager#files" link_target={target} icon="image" label="My Files"/>
+			<Button link_href="/user/filemanager#lists" link_target={target} icon="photo_library" label="My Albums"/>
 
 			<div class="separator"></div>
 
-			<Button link_href="/user/settings" icon="settings" label="Account Settings"/>
-			<Button link_href="/user/subscription" icon="shopping_cart" label="Subscription"/>
-			<Button link_href="/user/prepaid/transactions" icon="receipt" label="Transactions"/>
+			<Button link_href="/user/settings" link_target={target} icon="settings" label="Account Settings"/>
+			<Button link_href="/user/subscription" link_target={target} icon="shopping_cart" label="Subscription"/>
+			<Button link_href="/user/prepaid/transactions" link_target={target} icon="receipt" label="Transactions"/>
 
 			{#if window.user.is_admin}
 				<div class="separator"></div>
-				<Button link_href="/admin" icon="admin_panel_settings" label="Admin Panel"/>
+				<Button link_href="/admin" link_target={target} icon="admin_panel_settings" label="Admin Panel"/>
 			{/if}
 		{:else}
-			<Button link_href="/" icon="home" label="Home"/>
-			<Button link_href="/#pro" icon="star" label="Get Premium"/>
-			<Button link_href="/login" icon="person" label="Log in"/>
-			<Button link_href="/register" icon="person" label="Register"/>
+			<Button link_href="/" link_target={target} icon="home" label="Home"/>
+			<Button link_href="/#pro" link_target={target} icon="star" label="Get Premium"/>
+			<Button link_href="/login" link_target={target} icon="person" label="Log in"/>
+			<Button link_href="/register" link_target={target} icon="person" label="Register"/>
 		{/if}
 	</div>
 </dialog>

@@ -18,8 +18,8 @@ import LoadingIndicator from "../util/LoadingIndicator.svelte";
 import TransferLimit from "./TransferLimit.svelte";
 import ListStats from "./ListStats.svelte";
 import ListUpdater from "./ListUpdater.svelte";
-import HomeButton from "./HomeButton.svelte";
 import CopyButton from "../layout/CopyButton.svelte";
+import Menu from "../filesystem/Menu.svelte"
 
 let loading = true
 let embedded = false
@@ -396,7 +396,7 @@ const keyboard_event = evt => {
 			<i class="icon">menu</i>
 		</button>
 
-		<HomeButton embedded_viewer={embedded}/>
+		<Menu embedded={embedded}/>
 
 		<div class="file_viewer_headerbar_title">
 			{#if list.title !== ""}{list.title}<br/>{/if}
