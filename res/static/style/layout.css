@@ -440,7 +440,7 @@ tr {
 
 tr>td,
 tr>th {
-	padding: 0.2em 0.5em;
+	padding: 0.2em;
 }
 
 /* API documentation markup */

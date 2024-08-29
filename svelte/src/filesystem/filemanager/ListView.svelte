@@ -17,7 +17,7 @@ export let hide_branding = false
 		<td></td>
 		<td>Name</td>
 		<td>Size</td>
-		<td></td>
+		<td>Actions</td>
 	</tr>
 	{#each $nav.children as child, index (child.path)}
 		<a
@@ -40,28 +40,29 @@ export let hide_branding = false
 				{/if}
 			</td>
 			<td class="node_icons">
-
-				{#if child.abuse_type !== undefined}
-					<i class="icon" title="This file / directory has received an abuse report. It cannot be shared">block</i>
-				{:else if child.id}
-					<a
-						href="/d/{child.id}"
-						on:click|preventDefault|stopPropagation={() => {dispatch("node_share_click", index)}}
-						class="button action_button"
-					>
-						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
-					</a>
-				{/if}
-				{#if child.properties && child.properties.branding_enabled && !hide_branding}
-					<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_branding", index)}>
-						<i class="icon">palette</i>
-					</button>
-				{/if}
-				{#if $nav.permissions.update && !hide_edit}
-					<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_settings", index)}>
-						<i class="icon">edit</i>
-					</button>
-				{/if}
+				<div class="icons_wrap">
+					{#if child.abuse_type !== undefined}
+						<i class="icon" title="This file / directory has received an abuse report. It cannot be shared">block</i>
+					{:else if child.id}
+						<a
+							href="/d/{child.id}"
+							on:click|preventDefault|stopPropagation={() => {dispatch("node_share_click", index)}}
+							class="button action_button"
+						>
+							<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
+						</a>
+					{/if}
+					{#if child.properties && child.properties.branding_enabled && !hide_branding}
+						<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_branding", index)}>
+							<i class="icon">palette</i>
+						</button>
+					{/if}
+					{#if $nav.permissions.update && !hide_edit}
+						<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_settings", index)}>
+							<i class="icon">edit</i>
+						</button>
+					{/if}
+				</div>
 			</td>
 		</a>
 	{/each}
@@ -104,7 +105,6 @@ export let hide_branding = false
 	color: var(--highlight_text_color);
 }
 td {
-	padding: 4px;
 	vertical-align: middle;
 }
 .node_icon {
@@ -112,6 +112,7 @@ td {
 	width: 32px;
 	vertical-align: middle;
 	border-radius: 4px;
+	margin: 2px;
 }
 .node_name {
 	width: 100%;
@@ -122,16 +123,10 @@ td {
 	min-width: 50px;
 	white-space: nowrap;
 }
-.node_icons {
-	white-space: nowrap;
-	text-align: right;
-	padding: 0;
-}
-.action_button {
-	margin: 0;
-	background: none;
-	color: var(--body_text_color);
-	box-shadow: none;
+.icons_wrap {
+	display: flex;
+	flex-direction: row;
+	justify-content: end;
 }
 .hidden {
 	display: none;

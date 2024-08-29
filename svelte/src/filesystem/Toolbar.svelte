@@ -67,8 +67,6 @@ let expand = e => {
 </script>
 
 <div class="toolbar" class:expanded>
-	<div class="separator hidden_horizontal" style="margin-top: 0;"></div>
-
 	<div class="stats_container" on:click={expand} on:keypress={expand} role="button" tabindex="0">
 		<button class="button_expand hidden_vertical" on:click={expand}>
 			{#if expanded}

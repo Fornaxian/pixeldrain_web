@@ -552,6 +552,7 @@ footer, .footer_content,
 .sharebar,
 .directory_sorters, .directory_area,
 .container > .directory,
+.file_preview > .directory,
 .directory > .node,
 .file, .file_button,
 .upload_task,
@@ -577,14 +578,18 @@ footer, .footer_content,
 	border-top-right-radius: 3px !important;
 	box-shadow: inset -1px 0 #0a0a0a,inset 1px 1px #dfdfdf,inset -2px 0 grey,inset 2px 2px #fff !important;
 }
-.headerbar > .wrapper > .button {
-	color: #fff !important;
+.directory > tr {
+	border: none !important;
+}
+.button_toggle_navigation {
+	padding: 8px !important;
 }
 
 input[type="email"],
 input[type="number"],
 input[type="password"],
 input[type="text"],
+input[type="date"],
 select, textarea, pre {
 	border-radius: 0 !important;
 	border: none !important;
@@ -602,6 +607,7 @@ code {
 .file_preview,
 hr,
 .toolbar > .separator,
+.toolbar > .grid > .separator,
 .highlight_shaded {
 	border-radius: 0 !important;
 	border: none !important;

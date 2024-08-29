@@ -10,7 +10,7 @@ import UploadLoginWall from "./UploadLoginWall.svelte";
 <div class="page_content">
 	<header class="header" style="text-align: initial">
 		<div class="menu_button_container">
-			<Menu no_login_label="Not logged in" hide_name={false} hide_logo style="color: #eeeeee;"/>
+			<Menu no_login_label="Not logged in" hide_name={false} hide_logo style="border-radius: 0 0 0 8px; margin: 0"/>
 		</div>
 		<div class="header_image_container"></div>
 	</header>
@@ -101,6 +101,5 @@ header > h1 {
 .menu_button_container {
 	display: flex;
 	justify-content: end;
-	padding-right: 0.5em;
 }
 </style>

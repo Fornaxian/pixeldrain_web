@@ -8,6 +8,8 @@ let button
 let dialog
 
 export let no_login_label = "Pixeldrain"
+
+// Hide the label if the screen is smaller than 800px
 export let hide_name = true
 export let hide_logo = false
 export let style = ""
@@ -46,7 +48,7 @@ const click = e => {
 <div class="wrapper">
 	<button bind:this={button} on:click={open} href="/user" class="button round" title="Menu" style={style}>
 		{#if !hide_logo}
-			<PixeldrainLogo style="height: 1.8em; width: 1.8em; margin: 2px;"/>
+			<PixeldrainLogo style="height: 1.6em; width: 1.6em;"/>
 		{/if}
 		<span class="button_username" class:hide_name>
 			{window.user.username === "" ? no_login_label : window.user.username}
@@ -115,16 +117,16 @@ const click = e => {
 .wrapper {
 	flex-grow: 0;
 	flex-shrink: 0;
-	display: inline;
+	display: inline-flex;
 	align-self: center;
 }
 
 .button {
 	flex: 0 0 content;
-	background: none;
-	margin: 0;
-	color: var(--body_text_color);
 	box-shadow: none;
+}
+.button_username {
+	margin: 0 4px;
 }
 
 dialog {
