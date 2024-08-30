@@ -5,9 +5,9 @@ import GalleryView from './GalleryView.svelte'
 import Modal from '../../util/Modal.svelte';
 import LoadingIndicator from '../../util/LoadingIndicator.svelte';
 import Breadcrumbs from '../Breadcrumbs.svelte'
-import { Navigator } from '../Navigator';
+import { FSNavigator } from '../FSNavigator';
 
-let nav = new Navigator(false)
+let nav = new FSNavigator(false)
 let modal
 let dispatch = createEventDispatcher()
 let directory_view = ""

@@ -1,9 +1,9 @@
 <script>
 import { onMount } from "svelte";
-import { Navigator } from "../../filesystem/Navigator"
+import { FSNavigator } from "../../filesystem/FSNavigator"
 import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemUtil";
 
-const nav = new Navigator(false)
+const nav = new FSNavigator(false)
 onMount(() => {
 	nav.navigate("/me", false)
 })

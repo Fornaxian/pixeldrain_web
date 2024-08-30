@@ -11,7 +11,7 @@ import UploadWidget from './upload_widget/UploadWidget.svelte';
 import { fs_path_url } from './FilesystemUtil';
 import { branding_from_path } from './edit_window/Branding.js'
 import Menu from './Menu.svelte';
-import { Navigator } from "./Navigator"
+import { FSNavigator } from "./FSNavigator"
 import { writable } from 'svelte/store';
 
 let file_viewer
@@ -25,7 +25,7 @@ let edit_visible = false
 let view = "file"
 
 const loading = writable(true)
-const nav = new Navigator(true)
+const nav = new FSNavigator(true)
 
 onMount(() => {
 	nav.loading = loading

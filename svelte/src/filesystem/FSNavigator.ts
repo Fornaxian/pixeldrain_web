@@ -2,7 +2,7 @@ import { fs_get_node, FSNode, FSPath, FSPermissions } from "./FilesystemAPI";
 import { fs_encode_path, fs_split_path } from "./FilesystemUtil";
 import { Writable } from "svelte/store"
 
-export class Navigator {
+export class FSNavigator {
 	// Parts of the raw API response
 	path: Array<FSNode> = []
 	base_index: number = 0
@@ -44,11 +44,11 @@ export class Navigator {
 		}
 	}
 
-	// The Navigator acts as a svelte store. This allows for DOM reactivity.
+	// The FSNavigator acts as a svelte store. This allows for DOM reactivity.
 	// This works by implementing the store contract:
 	// https://svelte.dev/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values
-	subscribers: Array<(nav: Navigator) => void> = []
-	subscribe(sub_func: (nav: Navigator) => void) {
+	subscribers: Array<(nav: FSNavigator) => void> = []
+	subscribe(sub_func: (nav: FSNavigator) => void) {
 		// Immediately return the current value
 		sub_func(this)
 
