@@ -3,12 +3,12 @@ const swipe_inital_offset = 25
 // Amount of pixels after which the navigation triggers
 const swipe_trigger_offset = 75
 
-export const swipe_nav = (node: HTMLElement, props: { enabled: boolean, previous: boolean, next: boolean }) => {
+export const swipe_nav = (node: HTMLElement, props: { enabled: boolean, prev: boolean, next: boolean }) => {
 	let start_x = 0
 	let start_y = 0
 	let render_offset = 0
 	let enabled = props.enabled === undefined ? true : props.enabled
-	let previous = props.previous === undefined ? true : props.previous
+	let prev = props.prev === undefined ? true : props.prev
 	let next = props.next === undefined ? true : props.next
 
 	const touchstart = (e: TouchEvent) => {
@@ -19,7 +19,7 @@ export const swipe_nav = (node: HTMLElement, props: { enabled: boolean, previous
 
 	const touchmove = (e: TouchEvent) => {
 		const offset_x = e.touches[0].clientX - start_x
-		if (!enabled || (offset_x < 0 && !next) || (offset_x > 0 && !previous)) {
+		if (!enabled || (offset_x < 0 && !next) || (offset_x > 0 && !prev)) {
 			return
 		}
 
@@ -82,8 +82,10 @@ export const swipe_nav = (node: HTMLElement, props: { enabled: boolean, previous
 	}
 
 	return {
-		update(enabled: boolean) {
-			// enabled = swipe_enabled
+		update(props: { enabled: boolean, prev: boolean, next: boolean }) {
+			enabled = props.enabled === undefined ? true : props.enabled
+			prev = props.prev === undefined ? true : props.prev
+			next = props.next === undefined ? true : props.next
 			set_offset(0, false)
 		},
 		destroy() {

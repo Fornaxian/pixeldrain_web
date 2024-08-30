@@ -10,9 +10,22 @@ let container
 let zoom = false
 let x = 0, y = 0
 let dragging = false
+let swipe_prev = true
+let swipe_next = true
 
-export const update = () => {
+export const update = async () => {
 	dispatch("loading", true)
+
+	// Figure out if there are previous or next files. If not then we disable
+	// swiping controls in that direction
+	const siblings = await nav.get_siblings()
+	for (let i = 0; i < siblings.length; i++) {
+		if (siblings[i].name === nav.base.name) {
+			swipe_prev = i > 0
+			swipe_next = i < siblings.length-1
+			break
+		}
+	}
 }
 
 const on_load = () => dispatch("loading", false)
@@ -58,7 +71,7 @@ const mouseup = (e) => {
 	bind:this={container}
 	class="container"
 	class:zoom
-	use:swipe_nav={{enabled: !zoom, previous: false, next: true}}
+	use:swipe_nav={{enabled: !zoom, prev: swipe_prev, next: swipe_next}}
 	on:prev={() => nav.open_sibling(-1)}
 	on:next={() => nav.open_sibling(1)}
 >
