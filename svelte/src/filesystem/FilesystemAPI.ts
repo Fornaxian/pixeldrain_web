@@ -1,67 +1,9 @@
-import { fs_path_url } from './FilesystemUtil'
+// Response types
+// ==============
 
 export type GenericResponse = {
 	value: string,
 	message: string,
-}
-
-export const fs_check_response = async (resp: Response) => {
-	let text = await resp.text()
-	if (resp.status >= 400) {
-		let error: any
-		try {
-			error = JSON.parse(text) as GenericResponse
-		} catch (err) {
-			error = text
-		}
-		throw error
-	}
-	return JSON.parse(text)
-}
-
-export type NodeOptions = {
-	mode: number | undefined,
-	created: Date | undefined,
-	modified: Date | undefined,
-	shared: boolean | undefined,
-
-	branding_enabled: boolean | undefined,
-	brand_input_color: string | undefined,
-	brand_highlight_color: string | undefined,
-	brand_danger_color: string | undefined,
-	brand_background_color: string | undefined,
-	brand_body_color: string | undefined,
-	brand_card_color: string | undefined,
-	brand_header_image: string | undefined,
-	brand_header_link: string | undefined,
-	brand_background_image: string | undefined,
-}
-
-// mkdir only supports the "mode" option
-export const fs_mkdir = async (path: string, opts: NodeOptions) => {
-	const form = new FormData()
-	form.append("action", "mkdir")
-
-	if (opts && opts.mode) {
-		form.append("mode", opts.mode.toFixed(0))
-	}
-
-	return await fs_check_response(
-		await fetch(fs_path_url(path), { method: "POST", body: form })
-	)
-}
-
-export const fs_mkdirall = async (path: string, opts: NodeOptions) => {
-	const form = new FormData()
-	form.append("action", "mkdirall")
-
-	if (opts && opts.mode) {
-		form.append("mode", opts.mode.toFixed(0))
-	}
-
-	return await fs_check_response(
-		await fetch(fs_path_url(path), { method: "POST", body: form })
-	)
 }
 
 export type FSPath = {
@@ -99,6 +41,58 @@ export type FSPermissions = {
 	update: boolean,
 	delete: boolean,
 }
+
+// API parameters
+// ==============
+
+export type NodeOptions = {
+	mode: number | undefined,
+	created: Date | undefined,
+	modified: Date | undefined,
+	shared: boolean | undefined,
+
+	branding_enabled: boolean | undefined,
+	brand_input_color: string | undefined,
+	brand_highlight_color: string | undefined,
+	brand_danger_color: string | undefined,
+	brand_background_color: string | undefined,
+	brand_body_color: string | undefined,
+	brand_card_color: string | undefined,
+	brand_header_image: string | undefined,
+	brand_header_link: string | undefined,
+	brand_background_image: string | undefined,
+}
+
+// API methods
+// ===========
+
+// mkdir only supports the "mode" option
+export const fs_mkdir = async (path: string, opts: NodeOptions) => {
+	const form = new FormData()
+	form.append("action", "mkdir")
+
+	if (opts && opts.mode) {
+		form.append("mode", opts.mode.toFixed(0))
+	}
+
+	return await fs_check_response(
+		await fetch(fs_path_url(path), { method: "POST", body: form })
+	)
+}
+
+export const fs_mkdirall = async (path: string, opts: NodeOptions) => {
+	const form = new FormData()
+	form.append("action", "mkdirall")
+
+	if (opts && opts.mode) {
+		form.append("mode", opts.mode.toFixed(0))
+	}
+
+	return await fs_check_response(
+		await fetch(fs_path_url(path), { method: "POST", body: form })
+	)
+}
+
 
 export const fs_get_node = async (path: string) => {
 	return await fs_check_response(
@@ -181,4 +175,103 @@ export const fs_import = async (parent_dir_path = "", filelist: Array<string>) =
 	return await fs_check_response(
 		await fetch(fs_path_url(parent_dir_path), { method: "POST", body: form })
 	) as GenericResponse
+}
+
+// Utility functions
+// =================
+
+export const fs_check_response = async (resp: Response) => {
+	let text = await resp.text()
+	if (resp.status >= 400) {
+		let error: any
+		try {
+			error = JSON.parse(text) as GenericResponse
+		} catch (err) {
+			error = text
+		}
+		throw error
+	}
+	return JSON.parse(text)
+}
+
+export const fs_path_url = (path: string) => {
+	if (!path || path.length === 0) {
+		return ""
+	}
+	if (path[0] !== "/") {
+		path = "/" + path
+	}
+
+	if (window["api_endpoint"] !== undefined) {
+		return window["api_endpoint"] + "/filesystem" + fs_encode_path(path)
+	} else {
+		throw Error("api_endpoint is undefined")
+	}
+}
+
+export const fs_encode_path = (path: string) => {
+	// Encode all path elements separately to preserve forward slashes
+	let split = path.split("/")
+	for (let i = 0; i < split.length; i++) {
+		split[i] = encodeURIComponent(split[i])
+	}
+	return split.join("/")
+}
+
+export const fs_split_path = (path: string) => {
+	let patharr = path.split("/")
+	return { base: patharr.pop(), parent: patharr.join("/") }
+}
+
+export const fs_thumbnail_url = (path: string, width = 64, height = 64) => {
+	return fs_path_url(path) + "?thumbnail&width=" + width + "&height=" + height
+}
+
+export const fs_node_type = (node: FSNode) => {
+	if (node.type === "dir") {
+		return "dir"
+	} else if (node.file_type === "application/bittorrent" || node.file_type === "application/x-bittorrent") {
+		return "torrent"
+	} else if (node.file_type === "application/zip") {
+		return "zip"
+	} else if (node.file_type.startsWith("image")) {
+		return "image"
+	} else if (
+		node.file_type.startsWith("video") ||
+		node.file_type === "application/matroska" ||
+		node.file_type === "application/x-matroska"
+	) {
+		return "video"
+	} else if (
+		node.file_type.startsWith("audio") ||
+		node.file_type === "application/ogg" ||
+		node.name.endsWith(".mp3")
+	) {
+		return "audio"
+	} else if (
+		node.file_type === "application/pdf" ||
+		node.file_type === "application/x-pdf"
+	) {
+		return "pdf"
+	} else if (
+		node.file_type === "application/json" ||
+		node.file_type.startsWith("text")
+	) {
+		return "text"
+	} else {
+		return "file"
+	}
+}
+
+export const fs_node_icon = (node: FSNode, width = 64, height = 64) => {
+	if (node.type === "dir") {
+		// Folders with an ID are publically shared, use the shared folder icon
+		if (node.id) {
+			return "/res/img/mime/folder-remote.png"
+		} else {
+			return "/res/img/mime/folder.png"
+		}
+	}
+
+	return fs_thumbnail_url(node.path, width, height)
 }

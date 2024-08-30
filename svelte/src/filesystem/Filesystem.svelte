@@ -8,7 +8,7 @@ import DetailsWindow from './DetailsWindow.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 import SearchView from './SearchView.svelte';
 import UploadWidget from './upload_widget/UploadWidget.svelte';
-import { fs_path_url } from './FilesystemUtil';
+import { fs_path_url } from './FilesystemAPI';
 import { branding_from_path } from './edit_window/Branding.js'
 import Menu from './Menu.svelte';
 import { FSNavigator } from "./FSNavigator"

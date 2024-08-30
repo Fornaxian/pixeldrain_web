@@ -1,8 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import FilePicker from "../filemanager/FilePicker.svelte";
-import { fs_update } from "../FilesystemAPI";
-import { fs_node_type } from "../FilesystemUtil";
+import { fs_update, fs_node_type } from "../FilesystemAPI";
 import CustomBanner from "../viewers/CustomBanner.svelte";
 
 let dispatch = createEventDispatcher()

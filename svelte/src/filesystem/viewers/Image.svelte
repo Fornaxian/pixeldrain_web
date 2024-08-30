@@ -1,14 +1,14 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { swipe_nav } from "../../file_viewer/viewers/SwipeNavigate.ts";
-import { fs_path_url } from "../FilesystemUtil";
+import { swipe_nav } from "./../../file_viewer/viewers/SwipeNavigate";
+import { fs_path_url } from "./../FilesystemAPI";
 
-let dispatch = createEventDispatcher()
+let dispatch = createEventDispatcher();
 
 export let nav
 let container
 let zoom = false
-let x, y = 0
+let x = 0, y = 0
 let dragging = false
 
 export const update = () => {
@@ -65,7 +65,6 @@ const mouseup = (e) => {
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img
 		on:dblclick={() => {zoom = !zoom}}
-		on:doubletap={() => {zoom = !zoom}}
 		on:mousedown={mousedown}
 		on:load={on_load}
 		on:error={on_load}

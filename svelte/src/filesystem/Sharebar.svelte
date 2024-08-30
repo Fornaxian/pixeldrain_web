@@ -31,8 +31,7 @@ export const generate_share_path = path => {
 </script>
 
 <script>
-import { fs_update } from "./FilesystemAPI";
-import { fs_encode_path } from "./FilesystemUtil";
+import { fs_update, fs_encode_path } from "./FilesystemAPI";
 
 export let visible = false
 export let share_url = ""

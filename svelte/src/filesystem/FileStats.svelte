@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import { formatDataVolume, formatThousands } from "../util/Formatting.svelte"
-import { fs_path_url } from "./FilesystemUtil";
+import { fs_path_url } from "./FilesystemAPI";
 
 export let nav
 

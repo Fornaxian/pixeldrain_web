@@ -2,8 +2,7 @@
 import Chart from "../util/Chart.svelte";
 import { formatDataVolume, formatDate, formatThousands } from "../util/Formatting.svelte";
 import Modal from "../util/Modal.svelte";
-import { fs_timeseries } from "./FilesystemAPI";
-import { fs_path_url } from "./FilesystemUtil";
+import { fs_path_url, fs_timeseries } from "./FilesystemAPI";
 import { generate_share_path, generate_share_url } from "./Sharebar.svelte";
 import { color_by_name } from "../util/Util.svelte";
 import { tick } from "svelte";

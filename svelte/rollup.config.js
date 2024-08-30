@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import terser from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel'
 import typescript from '@rollup/plugin-typescript'
+import { sveltePreprocess } from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -29,14 +30,10 @@ export default [
 	},
 	plugins: [
 		svelte({
+			preprocess: sveltePreprocess(),
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production,
-				// we'll extract any component CSS out into
-				// a separate file - better for performance
-				// css: css => {
-				// 	css.write(`${name}.css`);
-				// },
 			},
 			emitCss: false,
 		}),
@@ -58,7 +55,10 @@ export default [
 		}),
 		commonjs(),
 		nodeResolve(),
-		typescript({ compilerOptions: { lib: ["es2015", "dom"] } }),
+		typescript({
+			compilerOptions: { lib: ["es2015", "dom"] },
+			verbatimModuleSyntax: true,
+		}),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated

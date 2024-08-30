@@ -1,6 +1,5 @@
-import { fs_get_node, FSNode, FSPath, FSPermissions } from "./FilesystemAPI";
-import { fs_encode_path, fs_split_path } from "./FilesystemUtil";
-import { Writable } from "svelte/store"
+import { fs_get_node, fs_encode_path, fs_split_path, type FSNode, type FSPath, type FSPermissions } from "./FilesystemAPI";
+import { type Writable } from "svelte/store"
 
 export class FSNavigator {
 	// Parts of the raw API response

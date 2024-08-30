@@ -5,7 +5,7 @@ import { formatDate } from "../../util/Formatting.svelte"
 import TorrentItem from "./TorrentItem.svelte"
 import IconBlock from "../../file_viewer/viewers/IconBlock.svelte";
 import TextBlock from "../../file_viewer/viewers/TextBlock.svelte";
-import { fs_node_icon, fs_path_url } from "../FilesystemUtil";
+import { fs_node_icon, fs_path_url } from "../FilesystemAPI";
 import CopyButton from "../../layout/CopyButton.svelte";
 
 let dispatch = createEventDispatcher()

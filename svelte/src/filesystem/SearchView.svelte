@@ -1,7 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { fs_search } from "./FilesystemAPI";
-import { fs_encode_path, fs_thumbnail_url } from "./FilesystemUtil";
+import { fs_search, fs_encode_path, fs_thumbnail_url } from "./FilesystemAPI";
 
 export let nav
 

@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { formatDataVolume } from "../../util/Formatting.svelte";
-import { fs_encode_path, fs_node_icon } from "../FilesystemUtil";
+import { formatDataVolume } from "./../../util/Formatting.svelte";
+import { fs_encode_path, fs_node_icon } from "./../FilesystemAPI"
 
 let dispatch = createEventDispatcher()
 

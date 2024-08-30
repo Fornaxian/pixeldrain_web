@@ -1,6 +1,6 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
-import { fs_path_url } from "../FilesystemUtil";
+import { fs_path_url } from "../FilesystemAPI";
 let dispatch = createEventDispatcher()
 
 export let nav

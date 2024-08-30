@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte"
-import { fs_encode_path, fs_node_icon, fs_node_type } from "../FilesystemUtil";
+import { fs_node_icon, fs_node_type, fs_encode_path } from "./../FilesystemAPI";
 let dispatch = createEventDispatcher()
 
 export let nav
@@ -11,7 +11,7 @@ export let large_icons = false
 <div class="gallery">
 	{#each $nav.children as child, index (child.path)}
 		<a class="file"
-			href={"/d"+fs_encode_path(child.path)}
+		href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={() => dispatch("node_click", index)}
 			on:contextmenu={e => dispatch("node_context", {event: e, index: index})}
 			class:selected={child.fm_selected}

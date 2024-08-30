@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import { FSNavigator } from "../../filesystem/FSNavigator"
-import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemUtil";
+import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemAPI";
 
 const nav = new FSNavigator(false)
 onMount(() => {

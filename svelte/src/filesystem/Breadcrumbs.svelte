@@ -1,7 +1,8 @@
-<script>
-import { fs_encode_path } from "./FilesystemUtil";
+<script lang="ts">
+import { fs_encode_path } from "./FilesystemAPI";
+import { FSNavigator } from "./FSNavigator";
 
-export let nav
+export let nav: FSNavigator
 </script>
 
 <div class="breadcrumbs">

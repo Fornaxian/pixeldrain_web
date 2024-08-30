@@ -9,7 +9,7 @@
 //
 // on_error is called when the upload has failed. The parameters are the error
 
-import { fs_path_url } from "../FilesystemUtil"
+import { fs_path_url } from "./../FilesystemAPI"
 
 // code and an error message
 export const upload_file = (file, path, on_progress, on_success, on_error) => {
