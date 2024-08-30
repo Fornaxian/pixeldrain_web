@@ -1,15 +1,16 @@
-import { fs_get_node } from "./FilesystemAPI";
+import { fs_get_node, FSNode, FSPath, FSPermissions } from "./FilesystemAPI";
 import { fs_encode_path, fs_split_path } from "./FilesystemUtil";
+import { Writable } from "svelte/store"
 
 export class Navigator {
 	// Parts of the raw API response
-	path = []
-	base_index = 0
-	children = []
-	permissions = {}
+	path: Array<FSNode> = []
+	base_index: number = 0
+	children: Array<FSNode> = []
+	permissions: FSPermissions = <FSPermissions>{}
 
 	// base equals path[base_index]. It's updated every time the path updates
-	base = {}
+	base: FSNode = <FSNode>{}
 
 	// Initialized will be set to true when the first file or directory is loaded
 	initialized = false
@@ -36,9 +37,9 @@ export class Navigator {
 
 	// If you set the loading property to a boolean writable store the navigator
 	// will use it to publish its loading states
-	loading = null
-	set_loading(b) {
-		if (this.loading !== null && this.loading.set !== undefined) {
+	loading: Writable<boolean> | null = null
+	set_loading(b: boolean) {
+		if (this.loading !== null) {
 			this.loading.set(b)
 		}
 	}
@@ -46,20 +47,18 @@ export class Navigator {
 	// The Navigator acts as a svelte store. This allows for DOM reactivity.
 	// This works by implementing the store contract:
 	// https://svelte.dev/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values
-	subscribers = []
-	subscribe(sub_func) {
+	subscribers: Array<(nav: Navigator) => void> = []
+	subscribe(sub_func: (nav: Navigator) => void) {
 		// Immediately return the current value
 		sub_func(this)
 
 		this.subscribers.push(sub_func)
 
 		// Return the unsubscribe function
-		return () => {
-			this.subscribers.splice(this.subscribers.indexOf(sub_func), 1)
-		}
+		return () => this.subscribers.splice(this.subscribers.indexOf(sub_func), 1)
 	}
 
-	async navigate(path, push_history) {
+	async navigate(path: string, push_history: boolean) {
 		if (path[0] !== "/") {
 			path = "/" + path
 		}
@@ -90,7 +89,7 @@ export class Navigator {
 
 	async navigate_up() {
 		if (this.path.length > 1) {
-			await this.navigate(this.path[this.path.length - 2].path)
+			await this.navigate(this.path[this.path.length - 2].path, false)
 		}
 	}
 
@@ -98,7 +97,7 @@ export class Navigator {
 		await this.navigate(this.base.path, false)
 	}
 
-	open_node(node, push_history) {
+	open_node(node: FSPath, push_history: boolean) {
 		// Update window title and navigation history. If push_history is false
 		// we still replace the URL with replaceState. This way the user is not
 		// greeted to a 404 page when refreshing after renaming a file
@@ -148,7 +147,7 @@ export class Navigator {
 	// directory is still the same. If it's different the siblings array is not
 	// used
 	cached_siblings_path = ""
-	cached_siblings = null
+	cached_siblings: Array<FSNode> | null = null
 
 	async get_siblings() {
 		// Check if we already have siblings cached
@@ -173,13 +172,12 @@ export class Navigator {
 	// Opens a sibling of the currently open file. The offset is relative to the
 	// file which is currently open. Give a positive number to move forward and
 	// a negative number to move backward
-	async open_sibling(offset) {
+	async open_sibling(offset: number) {
 		if (this.path.length <= 1) {
 			return
 		}
 
-
-		let siblings
+		let siblings: Array<FSNode>
 		try {
 			this.set_loading(true)
 			siblings = await this.get_siblings()
@@ -191,7 +189,7 @@ export class Navigator {
 			this.set_loading(false)
 		}
 
-		let next_sibling = null
+		let next_sibling: FSNode | null = null
 
 		if (this.shuffle) {
 			// Shuffle is on, pick a random sibling
@@ -230,7 +228,7 @@ export class Navigator {
 	}
 }
 
-const sort_children = (children) => {
+const sort_children = (children: Array<FSNode>) => {
 	children.sort((a, b) => {
 		// Sort directories before files
 		if (a.type !== b.type) {

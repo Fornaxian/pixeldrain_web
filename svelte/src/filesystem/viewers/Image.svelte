@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { swipe_nav } from "../../file_viewer/viewers/SwipeNavigate.svelte";
+import { swipe_nav } from "../../file_viewer/viewers/SwipeNavigate.ts";
 import { fs_path_url } from "../FilesystemUtil";
 
 let dispatch = createEventDispatcher()
@@ -15,11 +15,7 @@ export const update = () => {
 	dispatch("loading", true)
 }
 
-let swipe_style = ""
-const on_load = () => {
-	dispatch("loading", false)
-	swipe_style = ""
-}
+const on_load = () => dispatch("loading", false)
 
 const mousedown = (e) => {
 	if (!dragging && e.which === 1 && zoom) {
@@ -62,8 +58,7 @@ const mouseup = (e) => {
 	bind:this={container}
 	class="container"
 	class:zoom
-	use:swipe_nav={!zoom}
-	on:style={e => swipe_style = e.detail}
+	use:swipe_nav={{enabled: !zoom, previous: false, next: true}}
 	on:prev={() => nav.open_sibling(-1)}
 	on:next={() => nav.open_sibling(1)}
 >
@@ -76,9 +71,9 @@ const mouseup = (e) => {
 		on:error={on_load}
 		class="image"
 		class:zoom
-		style={swipe_style}
 		src={fs_path_url($nav.base.path)}
-		alt="no description available" />
+		alt="no description available"
+	/>
 </div>
 
 <style>

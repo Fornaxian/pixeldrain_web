@@ -1,9 +1,11 @@
-export const fs_split_path = path => {
+import { FSNode } from "./FilesystemAPI"
+
+export const fs_split_path = (path: string) => {
 	let patharr = path.split("/")
 	return { base: patharr.pop(), parent: patharr.join("/") }
 }
 
-export const fs_encode_path = path => {
+export const fs_encode_path = (path: string) => {
 	// Encode all path elements separately to preserve forward slashes
 	let split = path.split("/")
 	for (let i = 0; i < split.length; i++) {
@@ -12,21 +14,26 @@ export const fs_encode_path = path => {
 	return split.join("/")
 }
 
-export const fs_path_url = path => {
+export const fs_path_url = (path: string) => {
 	if (!path || path.length === 0) {
 		return ""
 	}
 	if (path[0] !== "/") {
 		path = "/" + path
 	}
-	return window.api_endpoint + "/filesystem" + fs_encode_path(path)
+
+	if (window["api_endpoint"] !== undefined) {
+		return window["api_endpoint"] + "/filesystem" + fs_encode_path(path)
+	} else {
+		throw Error("api_endpoint is undefined")
+	}
 }
 
-export const fs_thumbnail_url = (path, width = 64, height = 64) => {
+export const fs_thumbnail_url = (path: string, width = 64, height = 64) => {
 	return fs_path_url(path) + "?thumbnail&width=" + width + "&height=" + height
 }
 
-export const fs_node_type = node => {
+export const fs_node_type = (node: FSNode) => {
 	if (node.type === "dir") {
 		return "dir"
 	} else if (node.file_type === "application/bittorrent" || node.file_type === "application/x-bittorrent") {
@@ -62,7 +69,7 @@ export const fs_node_type = node => {
 	}
 }
 
-export const fs_node_icon = (node, width = 64, height = 64) => {
+export const fs_node_icon = (node: FSNode, width = 64, height = 64) => {
 	if (node.type === "dir") {
 		// Folders with an ID are publically shared, use the shared folder icon
 		if (node.id) {

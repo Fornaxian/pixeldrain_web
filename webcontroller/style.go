@@ -557,7 +557,8 @@ footer, .footer_content,
 .file, .file_button,
 .upload_task,
 .add_button,
-.expandable {
+.expandable,
+.upload_widget {
 	border: none !important;
 	border-radius: 0 !important;
 	box-shadow: inset -1px -1px #0a0a0a,
@@ -569,7 +570,8 @@ footer, .footer_content,
 	padding: 3px !important;
 }
 .window > .header,
-.headerbar {
+.headerbar,
+.upload_widget > .header {
 	background: linear-gradient(90deg,navy,#1084d0) !important;
 	color: #fff !important;
 }

@@ -1,5 +1,5 @@
 <script>
-import { fs_delete_all, fs_rename } from './../FilesystemAPI.js'
+import { fs_delete_all, fs_rename } from './../FilesystemAPI.ts'
 import { createEventDispatcher, onMount } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
 import ListView from './ListView.svelte'
@@ -103,7 +103,9 @@ const delete_selected = async () => {
 		// Save all promises with deletion requests in an array
 		let promises = []
 		nav.children.forEach(child => {
-			if (!child.fm_selected) { return }
+			if (!child.fm_selected) {
+				return
+			}
 			promises.push(fs_delete_all(child.path))
 		})
 

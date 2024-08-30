@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import terser from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel'
+import typescript from '@rollup/plugin-typescript'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -57,6 +58,7 @@ export default [
 		}),
 		commonjs(),
 		nodeResolve(),
+		typescript({ compilerOptions: { lib: ["es2015", "dom"] } }),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated

@@ -96,7 +96,7 @@ export let hide_branding = false
 	border-bottom: 1px solid var(--separator);
 }
 .node:hover:not(.node_selected) {
-	background: var(--input_background);
+	background: var(--input_hover_background);
 	color: var(--input_text);
 	text-decoration: none;
 }

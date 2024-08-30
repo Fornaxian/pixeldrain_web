@@ -13,12 +13,39 @@ const paste = (e) => {
 	}
 }
 
+const can_upload = e => {
+	if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+		return true
+	}
+
+	for (let i = 0; i < e.dataTransfer.items.length; i++) {
+		if (e.dataTransfer.items[i].kind === "file") {
+			return true
+		}
+	}
+
+	return false
+}
+
+const dragover = e => {
+	if (can_upload(e)) {
+		e.stopPropagation();
+		e.preventDefault();
+		dragging = true
+		console.log(e)
+	}
+}
+const dragleave = e => {
+	dragging = false
+}
 const drop = async e => {
 	dragging = false;
 
-	if (e.dataTransfer.files || e.dataTransfer.items) {
+	if (can_upload(e)) {
 		e.stopPropagation();
 		e.preventDefault();
+	} else {
+		return
 	}
 
 	// if directory support is available
@@ -26,7 +53,7 @@ const drop = async e => {
 		for (let i = 0; i < e.dataTransfer.items.length; i++) {
 			let entry = await e.dataTransfer.items[i].webkitGetAsEntry();
 			if (entry) {
-				await read_dir_recursive(entry);
+				read_dir_recursive(entry);
 			}
 		}
 	} else if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
@@ -50,9 +77,9 @@ const read_dir_recursive = item => {
 </script>
 
 <svelte:window
-	on:dragover|preventDefault|stopPropagation={() => { dragging = true }}
-	on:dragenter|preventDefault|stopPropagation={() => { dragging = true }}
-	on:dragleave|preventDefault|stopPropagation={() => { dragging = false }}
+	on:dragover={dragover}
+	on:dragenter={dragover}
+	on:dragleave={dragleave}
 	on:drop={drop}
 	on:paste={paste}
 />

@@ -90,6 +90,7 @@ header > h1 {
 .header_image_container {
 	text-align: initial;
 	margin: auto;
+	margin-bottom: 1.5em; /*Offset for menu button*/
 	height: 150px;
 	width: 500px;
 	max-width: 100%;

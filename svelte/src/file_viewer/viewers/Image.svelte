@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte"
-import { swipe_nav } from "./SwipeNavigate.svelte";
+import { swipe_nav } from "./SwipeNavigate";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => {
@@ -65,11 +65,7 @@ const mouseup = (e) => {
 	}
 }
 
-let swipe_style = ""
-const on_load = () => {
-	dispatch("loading", false)
-	swipe_style = ""
-}
+const on_load = () => dispatch("loading", false)
 </script>
 
 <svelte:window on:mousemove={mousemove} on:mouseup={mouseup} />
@@ -78,8 +74,7 @@ const on_load = () => {
 	bind:this={container}
 	class="container"
 	class:zoom
-	use:swipe_nav={!zoom && is_list}
-	on:style={e => swipe_style = e.detail}
+	use:swipe_nav={{enabled: !zoom && is_list}}
 	on:prev
 	on:next
 >
@@ -92,9 +87,9 @@ const on_load = () => {
 		on:mousedown={mousedown}
 		class="image"
 		class:zoom
-		style={swipe_style}
 		src={file.get_href}
-		alt={file.name} />
+		alt={file.name}
+	/>
 </div>
 
 <style>

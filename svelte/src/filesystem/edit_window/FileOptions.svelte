@@ -22,7 +22,7 @@ const delete_file = async e => {
 		alert(err)
 		return
 	} finally {
-		nac.set_loading(false)
+		nav.set_loading(false)
 	}
 
 	if (open_after_edit) {
@@ -32,7 +32,6 @@ const delete_file = async e => {
 	}
 	visible = false
 }
-
 </script>
 
 <h2>File settings</h2>
