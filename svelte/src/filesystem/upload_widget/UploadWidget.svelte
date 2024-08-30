@@ -1,13 +1,13 @@
 <script>
-import { createEventDispatcher, tick } from "svelte";
+import { tick } from "svelte";
 import { fade } from "svelte/transition";
 import DropUpload from "./DropUpload.svelte";
 import UploadProgress from "./UploadProgress.svelte";
 
 export let nav
 
-let file_input_field;
-let file_input_change = e => {
+let file_input_field
+let file_input_change = (e) => {
 	// Start uploading the files async
 	upload_files(e.target.files)
 
@@ -116,17 +116,16 @@ const start_upload = async () => {
 	}
 }
 
-const finish_upload = (e) => {
+const finish_upload = () => {
 	// Update the queue so the status updates are properly rendered
 	upload_queue = upload_queue
 	start_upload()
 }
 
-const leave_confirmation = e => {
+const leave_confirmation = (e) => {
 	if (state === "uploading") {
 		e.preventDefault()
-		e.returnValue = "If you close this page your files will stop uploading. Do you want to continue?"
-		return e.returnValue
+		return "If you close this page your files will stop uploading. Do you want to continue?"
 	} else {
 		return null
 	}
@@ -138,7 +137,7 @@ const leave_confirmation = e => {
 <input
 	bind:this={file_input_field}
 	on:change={file_input_change}
-	class="upload_input" type="file" name="file" multiple="multiple"
+	class="upload_input" type="file" name="file" multiple
 />
 
 {#if visible}

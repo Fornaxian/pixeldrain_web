@@ -9,17 +9,23 @@
 //
 // on_error is called when the upload has failed. The parameters are the error
 
-import { fs_path_url } from "./../FilesystemAPI"
+import { fs_path_url, type GenericResponse } from "./../FilesystemAPI"
 
 // code and an error message
-export const upload_file = (file, path, on_progress, on_success, on_error) => {
+export const upload_file = (
+	file: Blob,
+	path: string,
+	on_progress: (loaded: number, total: number) => void,
+	on_success: (id: string) => void,
+	on_error: (code: string, message: string) => void,
+) => {
 	// Check the file size limit. For free accounts it's 20 GB
-	if (window.user.subscription.file_size_limit === 0) {
-		window.user.subscription.file_size_limit = 20e9
+	if (window["user"].subscription.file_size_limit === 0) {
+		window["user"].subscription.file_size_limit = 20e9
 	}
 
-	if (file.size > window.user.subscription.file_size_limit) {
-		on_failure(
+	if (file.size > window["user"].subscription.file_size_limit) {
+		on_error(
 			"file_too_large",
 			"This file is too large. Check out the Pro subscription to increase the file size limit"
 		)
@@ -51,14 +57,14 @@ export const upload_file = (file, path, on_progress, on_success, on_error) => {
 			// Request failed
 			console.log("Upload error. status: " + xhr.status + " response: " + xhr.response);
 
-			let resp;
+			let resp: GenericResponse
 			if (xhr.status === 429) {
 				resp = {
 					value: "too_many_requests",
 					message: "Too many requests. Please wait a few seconds",
 				}
 			} else {
-				resp = JSON.parse(xhr.response)
+				resp = JSON.parse(xhr.response) as GenericResponse
 			}
 
 			on_error(resp.value, resp.message)

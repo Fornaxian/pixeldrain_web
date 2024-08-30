@@ -8,6 +8,7 @@ import Button from "../../layout/Button.svelte"
 let dispatch = createEventDispatcher()
 export let job = {
 	file: null,
+	path: "",
 	name: "",
 	status: "",
 }
