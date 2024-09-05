@@ -125,7 +125,7 @@ const save = async (keep_editing = false) => {
 }
 </script>
 
-<Modal bind:visible={visible} title="Edit {file.name}" width="700px" form="edit_form" style="color: var(--body_text_color); {custom_css}">
+<Modal bind:visible={visible} title="Edit {file.name}" width="800px" form="edit_form" style="color: var(--body_text_color); {custom_css}">
 	<div class="tab_bar">
 		<button class:button_highlight={tab === "file"} on:click={() => tab = "file"}>
 			<i class="icon">edit</i>

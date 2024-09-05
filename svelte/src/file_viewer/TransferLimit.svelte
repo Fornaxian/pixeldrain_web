@@ -50,8 +50,6 @@ $: {
 	background: var(--highlight_background);
 	height: 100%;
 	width: 0;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
 	transition: width 5s linear;
 
 	/* Welcome to Hacktown! What's happening here is that the text in the

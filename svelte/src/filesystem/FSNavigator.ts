@@ -149,6 +149,11 @@ export class FSNavigator {
 	cached_siblings: Array<FSNode> | null = null
 
 	async get_siblings() {
+		// If this node is a filesystem root then there are no siblings
+		if (this.path.length < 2) {
+			return []
+		}
+
 		// Check if we already have siblings cached
 		if (
 			this.cached_siblings === null ||

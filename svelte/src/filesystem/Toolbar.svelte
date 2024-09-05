@@ -27,7 +27,7 @@ export const copy_link = () => {
 	setTimeout(() => {link_copied = false}, 60000)
 }
 let share = async () => {
-	if (share_url === "") {
+	if (share_url === "" || navigator.share === undefined) {
 		edit_window.edit(nav.base, true, "share")
 		return
 	}
@@ -114,7 +114,8 @@ let expand = e => {
 			</button>
 		{/if}
 
-		{#if $nav.base.id !== "me"}
+		<!-- Share button is enabled when: The browser has a sharing API, or the user can edit the file (to enable sharing)-->
+		{#if $nav.base.id !== "me" && (navigator.share !== undefined || $nav.permissions.update === true)}
 			<button on:click={share}>
 				<i class="icon">share</i>
 				<span>Share</span>

@@ -3,7 +3,7 @@ import { createEventDispatcher } from "svelte";
 import FilePicker from "../filemanager/FilePicker.svelte";
 import { fs_update, fs_node_type } from "../FilesystemAPI";
 import CustomBanner from "../viewers/CustomBanner.svelte";
-
+import HelpButton from "../../layout/HelpButton.svelte";
 let dispatch = createEventDispatcher()
 
 export let file = {
@@ -52,6 +52,9 @@ const handle_picker = async e => {
 	if (fs_node_type(f) !== "image") {
 		alert("Please select an image file")
 		return
+	} else if (f.file_size > 5e6) {
+		alert("Please pick a file smaller than 5 MB. You can use WebP to achieve a better compression rate")
+		return
 	}
 
 	// If this image is not public, it will be made public
@@ -70,6 +73,8 @@ const handle_picker = async e => {
 		file.properties.brand_background_image = file_id
 	}
 }
+
+let highlight_info = false
 </script>
 
 <p>
@@ -86,13 +91,24 @@ const handle_picker = async e => {
 <hr/>
 
 <div class="grid" class:disabled={!enabled}>
-	<div>Button</div>
-	<input type="color" bind:value={file.properties.brand_input_color}/>
-	<input type="text" bind:value={file.properties.brand_input_color}/>
-	<div>Highlighted button</div>
+	<div>
+		<div style="display: inline-block">Highlight</div>
+		<HelpButton bind:toggle={highlight_info}/>
+	</div>
 	<input type="color" bind:value={file.properties.brand_highlight_color}/>
 	<input type="text" bind:value={file.properties.brand_highlight_color}/>
-	<div>Danger button</div>
+	{#if highlight_info}
+		<p class="span3">
+			The highlight colour is used for highlighting selected buttons and
+			other elements. It's also used as the page's theme colour, this
+			affects things like the embed colour in Discord and the colour of
+			the address bar in some web browsers.
+		</p>
+	{/if}
+	<div>Button and input</div>
+	<input type="color" bind:value={file.properties.brand_input_color}/>
+	<input type="text" bind:value={file.properties.brand_input_color}/>
+	<div>Delete button</div>
 	<input type="color" bind:value={file.properties.brand_danger_color}/>
 	<input type="text" bind:value={file.properties.brand_danger_color}/>
 	<div>Background</div>

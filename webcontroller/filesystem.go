@@ -12,6 +12,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+const defaultThemeColour = "#220735"
+
 func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	var err error
 	var td = wc.newTemplateData(w, r)
@@ -51,15 +53,35 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	}
 }
 
+func urlEncodePath(path string) string {
+	var split = strings.Split(path, "/")
+	for i := range split {
+		split[i] = url.PathEscape(split[i])
+	}
+	return strings.Join(split, "/")
+}
+
+func findThemeColour(f pixelapi.FilesystemPath) string {
+	// We walk the patch backward because lower entries can override the
+	// properties of higher entries
+	for i := len(f.Path) - 1; i >= 0; i-- {
+		if f.Path[i].Properties["branding_enabled"] != "true" &&
+			f.Path[i].Properties["brand_highlight_color"] != "" {
+			return f.Path[i].Properties["brand_highlight_color"]
+		}
+	}
+	return defaultThemeColour
+}
+
 func (wc *WebController) metadataFromFilesystem(f pixelapi.FilesystemPath) (og ogData) {
 	var (
 		base         = f.Path[f.BaseIndex]
 		name         = base.Name
-		filetype     = base.Type
-		filepath     = url.PathEscape(f.Path[0].ID + base.Path)
-		pageurl      = wc.config.WebsiteAddress + "/d/" + filepath
-		fileurl      = wc.config.WebsiteAddress + "/api/filesystem/" + filepath
-		thumbnailurl = wc.config.WebsiteAddress + "/api/filesystem/" + filepath + "?thumbnail"
+		filetype     = base.FileType
+		filepath     = urlEncodePath(base.Path)
+		pageurl      = wc.config.WebsiteAddress + "/d" + filepath
+		fileurl      = wc.config.WebsiteAddress + "/api/filesystem" + filepath
+		thumbnailurl = wc.config.WebsiteAddress + "/api/filesystem" + filepath + "?thumbnail"
 	)
 
 	og.addProp("og:title", name)
@@ -72,6 +94,7 @@ func (wc *WebController) metadataFromFilesystem(f pixelapi.FilesystemPath) (og o
 	og.addName("twitter:title", name)
 	og.addName("twitter:site", "@Fornax96")
 	og.addName("twitter:domain", "pixeldrain.com")
+	og.addName("theme-color", findThemeColour(f))
 
 	if strings.HasPrefix(filetype, "image") {
 		og.addProp("og:type", "article")

@@ -36,7 +36,8 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 	"Body": "MultipartFormData",
 	"FileFormName": "file",
 	"URL": "https://pixeldrain.com/u/$json:id$",
-	"ThumbnailURL": "https://pixeldrain.com/api/file/$json:id$/thumbnail"
+	"ThumbnailURL": "https://pixeldrain.com/api/file/$json:id$/thumbnail",
+	"DeletionURL": "https://pixeldrain.com/u/$json:id$"
 }
 `,
 			base64.StdEncoding.EncodeToString([]byte(
