@@ -1,11 +1,11 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { formatDataVolume, formatDate } from "../../util/Formatting.svelte"
-import IconBlock from "./IconBlock.svelte";
-import TextBlock from "./TextBlock.svelte";
+import IconBlock from "src/layout/IconBlock.svelte";
+import TextBlock from "src/layout/TextBlock.svelte"
 import ZipItem from "./ZipItem.svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
-import FileTitle from "./FileTitle.svelte";
+import FileTitle from "src/layout/FileTitle.svelte";
 
 let dispatch = createEventDispatcher()
 

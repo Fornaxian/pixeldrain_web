@@ -11,9 +11,9 @@ import Abuse from "./Abuse.svelte";
 import { file_type } from "../FileUtilities.svelte";
 import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
-import SpeedLimit from "./SpeedLimit.svelte";
-import { stats } from "../StatsSocket";
+import { stats } from "src/util/StatsSocket.js"
 import Zip from "./Zip.svelte";
+import SlowDown from "src/layout/SlowDown.svelte";
 
 let viewer
 let viewer_type = "loading"
@@ -66,7 +66,13 @@ export const seek = delta => {
 {:else if viewer_type === "abuse"}
 	<Abuse bind:this={viewer} on:download></Abuse>
 {:else if !premium_download && $stats.limits.transfer_limit_used > $stats.limits.transfer_limit}
-	<SpeedLimit file={current_file} on:download></SpeedLimit>
+	<SlowDown
+		on:download
+		file_size={current_file.size}
+		file_name={current_file.name}
+		file_type={current_file.mime_type}
+		icon_href={current_file.icon_href}
+	/>
 {:else if viewer_type === "rate_limit"}
 	<RateLimit bind:this={viewer} on:download></RateLimit>
 {:else if viewer_type === "image"}

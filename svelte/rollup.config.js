@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import terser from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel'
 import typescript from '@rollup/plugin-typescript'
+import includePaths from 'rollup-plugin-includepaths';
 import { sveltePreprocess } from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -39,7 +40,7 @@ export default [
 		}),
 
 		babel({
-			extensions: [".js", ".html", ".svelte"],
+			extensions: [".js", ".ts", ".html", ".svelte"],
 			babelHelpers: "bundled",
 		}),
 
@@ -58,6 +59,9 @@ export default [
 		typescript({
 			compilerOptions: { lib: ["es2015", "dom"] },
 			verbatimModuleSyntax: true,
+		}),
+		includePaths({
+			paths: ["."],
 		}),
 
 		// In dev mode, call `npm run start` once

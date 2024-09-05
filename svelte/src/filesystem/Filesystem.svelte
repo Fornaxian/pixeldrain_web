@@ -13,6 +13,8 @@ import { branding_from_path } from './edit_window/Branding.js'
 import Menu from './Menu.svelte';
 import { FSNavigator } from "./FSNavigator"
 import { writable } from 'svelte/store';
+import TransferLimit from '../file_viewer/TransferLimit.svelte';
+import { stats } from "src/util/StatsSocket.js"
 
 let file_viewer
 let file_preview
@@ -178,6 +180,21 @@ const search = async () => {
 		</div>
 	</div>
 
+	{#if $nav.context.premium_transfer === false}
+		<div class="download_limit">
+			{#if $stats.limits.transfer_limit_used > $stats.limits.transfer_limit}
+				<div class="highlight_yellow">
+					Your free download limit has been used up and your download
+					speed has been limited to 1 MiB/s. <a href="/#pro"
+					target="_blank">Upgrade to premium</a> to continue fast
+					downloading
+				</div>
+			{:else}
+				<TransferLimit/>
+			{/if}
+		</div>
+	{/if}
+
 	<!-- This frame will load the download URL when a download button is pressed -->
 	<iframe
 		bind:this={download_frame}
@@ -242,6 +259,15 @@ const search = async () => {
 	display: flex;
 	flex-direction: row;
 	overflow: hidden;
+}
+
+/* Download limit gauge (row 3) */
+.download_limit {
+	flex: 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	background-color: var(--shaded_background);
 }
 
 /* This max-width needs to be synced with the .toolbar max-width in

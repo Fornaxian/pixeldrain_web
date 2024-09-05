@@ -1,8 +1,8 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
-import IconBlock from "./IconBlock.svelte";
-import FileTitle from "./FileTitle.svelte";
+import IconBlock from "src/layout/IconBlock.svelte";
+import FileTitle from "src/layout/FileTitle.svelte";
 import { formatDataVolume } from "../../util/Formatting.svelte";
 let dispatch = createEventDispatcher()
 

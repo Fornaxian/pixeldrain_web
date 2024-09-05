@@ -1,5 +1,6 @@
-import { fs_get_node, fs_encode_path, fs_split_path, type FSNode, type FSPath, type FSPermissions } from "./FilesystemAPI";
-import { type Writable } from "svelte/store"
+import { fs_get_node, fs_encode_path, fs_split_path } from "./FilesystemAPI";
+import type { FSNode, FSPath, FSPermissions, FSContext } from "./FilesystemAPI";
+import type { Writable } from "svelte/store"
 
 export class FSNavigator {
 	// Parts of the raw API response
@@ -7,6 +8,7 @@ export class FSNavigator {
 	base_index: number = 0
 	children: Array<FSNode> = []
 	permissions: FSPermissions = <FSPermissions>{}
+	context: FSContext = <FSContext>{}
 
 	// base equals path[base_index]. It's updated every time the path updates
 	base: FSNode = <FSNode>{}
@@ -128,6 +130,7 @@ export class FSNavigator {
 		this.base = node.path[node.base_index]
 		this.children = node.children
 		this.permissions = node.permissions
+		this.context = node.context
 		this.initialized = true
 
 		console.debug("Opened node", node)

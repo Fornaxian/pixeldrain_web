@@ -11,6 +11,7 @@ export type FSPath = {
 	base_index: number,
 	children: Array<FSNode>,
 	permissions: FSPermissions,
+	context: FSContext,
 }
 
 export type FSNode = {
@@ -40,6 +41,10 @@ export type FSPermissions = {
 	read: boolean,
 	update: boolean,
 	delete: boolean,
+}
+
+export type FSContext = {
+	premium_transfer: boolean,
 }
 
 // API parameters

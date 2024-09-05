@@ -3,8 +3,8 @@ import { createEventDispatcher } from "svelte";
 import Magnet from "../../icons/Magnet.svelte";
 import { formatDate } from "../../util/Formatting.svelte"
 import TorrentItem from "./TorrentItem.svelte"
-import IconBlock from "../../file_viewer/viewers/IconBlock.svelte";
-import TextBlock from "../../file_viewer/viewers/TextBlock.svelte";
+import IconBlock from "src/layout/IconBlock.svelte";
+import TextBlock from "src/layout/TextBlock.svelte"
 import { fs_node_icon, fs_path_url } from "../FilesystemAPI";
 import CopyButton from "../../layout/CopyButton.svelte";
 

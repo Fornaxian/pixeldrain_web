@@ -1,6 +1,6 @@
 <script>
 import { formatDataVolume, formatThousands } from "../util/Formatting.svelte"
-import { set_file, stats } from "./StatsSocket"
+import { set_file, stats } from "src/util/StatsSocket"
 
 export let file = {
 	id: "",

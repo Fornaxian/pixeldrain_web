@@ -16,7 +16,7 @@ export let width = "750px"
 	flex-direction: row;
 	margin: 8px auto;
 }
-@media(max-width: 500px) {
+@media(max-width: 400px) {
 	.block {
 		flex-direction: column;
 	}

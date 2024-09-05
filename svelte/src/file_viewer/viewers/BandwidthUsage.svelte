@@ -1,8 +1,8 @@
 <script>
 import { formatDataVolume } from "../../util/Formatting.svelte";
-import TextBlock from "./TextBlock.svelte";
+import TextBlock from "src/layout/TextBlock.svelte"
 import ProgressBar from "../../util/ProgressBar.svelte";
-import { stats } from "../StatsSocket"
+import { stats } from "src/util/StatsSocket.js"
 
 export let file = {
 	size: 0,

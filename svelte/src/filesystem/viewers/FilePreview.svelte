@@ -1,7 +1,7 @@
 <script>
 import { onMount, tick } from "svelte";
 import Spinner from "../../util/Spinner.svelte";
-import { fs_node_type } from "./../FilesystemAPI";
+import { fs_node_type, fs_thumbnail_url } from "./../FilesystemAPI";
 import FileManager from "../filemanager/FileManager.svelte";
 import Audio from "./Audio.svelte";
 import File from "./File.svelte";
@@ -12,6 +12,8 @@ import Video from "./Video.svelte";
 import Torrent from "./Torrent.svelte";
 import Zip from "./Zip.svelte";
 import CustomBanner from "./CustomBanner.svelte";
+import { stats } from "src/util/StatsSocket.js"
+import SlowDown from "src/layout/SlowDown.svelte";
 
 export let nav
 export let edit_window
@@ -60,6 +62,14 @@ export const seek = delta => {
 	<FileManager nav={nav} edit_window={edit_window} on:upload_picker>
 		<CustomBanner path={$nav.path}/>
 	</FileManager>
+{:else if $nav.context.premium_transfer === false && $stats.limits.transfer_limit_used > $stats.limits.transfer_limit}
+	<SlowDown
+		on:download
+		file_size={$nav.base.file_size}
+		file_name={$nav.base.name}
+		file_type={$nav.base.file_type}
+		icon_href={fs_thumbnail_url($nav.base.path, 256, 256)}
+	/>
 {:else if viewer_type === "audio"}
 	<Audio nav={nav} bind:this={viewer}>
 		<CustomBanner path={$nav.path}/>
