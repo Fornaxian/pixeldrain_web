@@ -124,19 +124,20 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 
 	// Import template functions
 	tpl.Funcs(template.FuncMap{
-		"cacheID":    tm.cacheID,
-		"debugMode":  tm.debugMode,
-		"apiUrl":     tm.apiURL,
-		"pageNr":     tm.pageNr,
-		"add":        tm.add,
-		"sub":        tm.sub,
-		"mul":        tm.mul,
-		"div":        tm.div,
-		"formatData": tm.formatData,
-		"formatSC":   tm.formatSC,
-		"noescape":   tm.noEscape,
-		"noescapeJS": tm.noEscapeJS,
-		"slashes":    tm.slashes,
+		"cacheID":        tm.cacheID,
+		"debugMode":      tm.debugMode,
+		"apiUrl":         tm.apiURL,
+		"pageNr":         tm.pageNr,
+		"add":            tm.add,
+		"sub":            tm.sub,
+		"mul":            tm.mul,
+		"div":            tm.div,
+		"formatData":     tm.formatData,
+		"formatDataBits": tm.formatDataBits,
+		"formatSC":       tm.formatSC,
+		"noescape":       tm.noEscape,
+		"noescapeJS":     tm.noEscapeJS,
+		"slashes":        tm.slashes,
 	})
 
 	// Parse dynamic templates
@@ -238,6 +239,39 @@ func (tm *TemplateManager) div(a, b interface{}) float64 { return toFloat(a) / t
 func (tm *TemplateManager) formatData(i interface{}) string {
 	return util.FormatData(detectInt(i))
 }
+func (tm *TemplateManager) formatDataBits(i interface{}) string {
+	var size = detectInt(i) * 8
+	var sizef = float64(size)
+
+	var fmtSize = func(n float64, u string) string {
+		var f string
+		if n >= 100 {
+			f = "%.1f"
+		} else if n >= 10 {
+			f = "%.2f"
+		} else {
+			f = "%.3f"
+		}
+		return fmt.Sprintf(f+" "+u, n)
+	}
+
+	if size >= 1e18 {
+		// An exabyte is the largest volume of data you can express in a signed
+		// 64-bit integer
+		return fmtSize(sizef/1e18, "Eb")
+	} else if sizef >= 1e15 {
+		return fmtSize(sizef/1e15, "Pb")
+	} else if sizef >= 1e12 {
+		return fmtSize(sizef/1e12, "Tb")
+	} else if sizef >= 1e9 {
+		return fmtSize(sizef/1e9, "Gb")
+	} else if sizef >= 1e6 {
+		return fmtSize(sizef/1e6, "Mb")
+	} else if sizef >= 1e3 {
+		return fmtSize(sizef/1e3, "kb")
+	}
+	return fmt.Sprintf("%.0f b", sizef)
+}
 func (tm *TemplateManager) formatSC(amt float64) string {
 	var fmtSize = func(n float64, u string) string {
 		var f string
@@ -250,14 +284,6 @@ func (tm *TemplateManager) formatSC(amt float64) string {
 		}
 		return fmt.Sprintf(f+" "+u, n)
 	}
-	// if amt >= 1e12 {
-	// 	return fmtSize(amt/1e12, "TS")
-	// } else if amt >= 1e9 {
-	// 	return fmtSize(amt/1e9, "GS")
-	// } else if amt >= 1e6 {
-	// 	return fmtSize(amt/1e6, "MS")
-	// } else if amt >= 1e3 {
-	// 	return fmtSize(amt/1e3, "KS")
 	if amt >= 1 {
 		return fmtSize(amt, "SC")
 	} else if amt >= 1e-3 {
