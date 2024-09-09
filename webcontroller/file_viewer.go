@@ -91,7 +91,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	templateData.OGData = wc.metadataFromFile(files[0].FileInfo)
+	templateData.OGData = wc.metadataFromFile(r, files[0].FileInfo)
 
 	var vd = fileViewerData{
 		CaptchaKey:     wc.captchaKey(),
@@ -168,7 +168,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
-	templateData.OGData = wc.metadataFromList(list)
+	templateData.OGData = wc.metadataFromList(r, list)
 	var vd = fileViewerData{
 		Type:           "list",
 		CaptchaKey:     wc.captchaSiteKey,
