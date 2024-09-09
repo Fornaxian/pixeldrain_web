@@ -23,7 +23,6 @@ type Config struct {
 	APIURLExternal      string `toml:"api_url_external"`
 	APIURLInternal      string `toml:"api_url_internal"`
 	APISocketPath       string `toml:"api_socket_path"`
-	WebsiteAddress      string `toml:"website_address"`
 	SessionCookieDomain string `toml:"session_cookie_domain"`
 	ResourceDir         string `toml:"resource_dir"`
 	DebugMode           bool   `toml:"debug_mode"`

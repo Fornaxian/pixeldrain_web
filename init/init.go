@@ -24,7 +24,6 @@ api_url_internal      = "https://pixeldrain.com/api"
 # prefix will be derived from there
 api_socket_path       = ""
 
-website_address       = "https://pixeldrain.com"
 session_cookie_domain = ""
 resource_dir          = "res"
 

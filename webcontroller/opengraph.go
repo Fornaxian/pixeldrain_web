@@ -9,6 +9,7 @@ import (
 )
 
 const defaultThemeColour = "#220735"
+const defaultHost = "https://pixeldrain.com"
 
 type ogData struct {
 	MetaPropRules []ogProp
@@ -78,10 +79,12 @@ func generateOGData(name, filetype, pageurl, fileurl, thumbnailurl, themecolour 
 }
 
 func getRequestAddress(r *http.Request) (addr string) {
-	if r.TLS == nil {
-		return "http://" + r.Header.Get("Host")
+	if r.Host == "" {
+		return defaultHost
+	} else if r.TLS == nil {
+		return "http://" + r.Host
 	} else {
-		return "https://" + r.Header.Get("Host")
+		return "https://" + r.Host
 	}
 }
 
