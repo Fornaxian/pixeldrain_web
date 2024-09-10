@@ -173,7 +173,7 @@ const leave_confirmation = (e) => {
 	height: 0;
 }
 .upload_widget {
-	position: absolute;
+	position: fixed;
 	display: flex;
 	flex-direction: column;
 	width: 500px;

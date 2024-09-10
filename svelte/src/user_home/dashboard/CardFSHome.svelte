@@ -1,13 +1,54 @@
 <script>
 import { onMount } from "svelte";
-import { FSNavigator } from "../../filesystem/FSNavigator"
-import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemAPI";
+import { FSNavigator } from "src/filesystem/FSNavigator.ts"
+import { fs_encode_path, fs_node_icon } from "src/filesystem/FilesystemAPI.ts";
+import Button from "src/layout/Button.svelte";
+import CreateDirectory from "src/filesystem/filemanager/CreateDirectory.svelte";
+import UploadWidget from "src/filesystem/upload_widget/UploadWidget.svelte";
 
 const nav = new FSNavigator(false)
-onMount(() => {
-	nav.navigate("/me", false)
-})
+let upload_widget
+var show_hidden = false
+var creating_dir = false
+
+onMount(() => nav.navigate("/me", false))
 </script>
+
+<div class="toolbar">
+	{#if $nav.permissions.update}
+		<Button
+			click={() => upload_widget.pick_files()}
+			icon="cloud_upload"
+			title="Upload files to this directory"
+			label="Upload files"
+		/>
+		<Button
+			click={() => {creating_dir = !creating_dir}}
+			highlight={creating_dir}
+			icon="create_new_folder"
+			title="Create folder"
+			label="Create folder"
+		/>
+	{/if}
+
+	<div class="toolbar_spacer"></div>
+
+	<Button
+		click={() => {show_hidden = !show_hidden}}
+		highlight={show_hidden}
+		icon={show_hidden ? "visibility_off" : "visibility"}
+		title="Show hidden files and directories"
+	/>
+	<Button
+		click={() => nav.reload()}
+		icon="refresh"
+		title="Refresh directory listing"
+	/>
+</div>
+
+{#if creating_dir}
+	<CreateDirectory nav={nav} />
+{/if}
 
 <div class="directory">
 	{#each $nav.children as child (child.path)}
@@ -32,12 +73,27 @@ onMount(() => {
 	{/each}
 </div>
 
+<UploadWidget nav={nav} bind:this={upload_widget} drop_upload />
+
 <style>
+.toolbar {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+.toolbar > * { flex: 0 0 auto; }
+.toolbar_spacer {
+	flex: 1 1 auto;
+	text-align: center;
+}
 .directory {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	gap: 6px;
+	margin-top: 6px;
 }
 .node {
 	display: flex;
