@@ -1,7 +1,6 @@
 <script>
 import { tick } from "svelte";
 import { fade } from "svelte/transition";
-import DropUpload from "./DropUpload.svelte";
 import UploadProgress from "./UploadProgress.svelte";
 
 export let nav
@@ -18,7 +17,6 @@ export const pick_files = () => {
 	file_input_field.click()
 }
 
-export let drop_upload = false
 let visible = false
 let upload_queue = [];
 let task_id_counter = 0
@@ -159,10 +157,6 @@ const leave_confirmation = (e) => {
 			{/each}
 		</div>
 	</div>
-{/if}
-
-{#if drop_upload}
-	<DropUpload on:upload_files={e => upload_files(e.detail)} on:upload_file={e => upload_file(e.detail)}/>
 {/if}
 
 <style>

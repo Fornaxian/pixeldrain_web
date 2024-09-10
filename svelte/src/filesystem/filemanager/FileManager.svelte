@@ -1,15 +1,16 @@
 <script>
 import { fs_delete_all, fs_rename } from './../FilesystemAPI.ts'
-import { createEventDispatcher, onMount } from 'svelte'
+import { onMount } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
 import Button from '../../layout/Button.svelte';
 import FileImporter from './FileImporter.svelte';
 import { formatDate } from '../../util/Formatting.svelte';
-let dispatch = createEventDispatcher()
+import { drop_target } from "src/util/DropTarget.ts"
 
 export let nav
+export let upload_widget
 export let edit_window
 export let directory_view = ""
 let large_icons = false
@@ -256,7 +257,13 @@ onMount(() => {
 
 <svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
 
-<div class="container">
+<div
+	class="container"
+	use:drop_target={{
+		upload: (files) => upload_widget.upload_files(files),
+		shadow: "var(--highlight_color) 0 0 10px 2px inset",
+	}}
+>
 	<div class="width_container">
 		{#if mode === "viewing"}
 			<div class="toolbar">
@@ -296,7 +303,7 @@ onMount(() => {
 
 				<div class="toolbar_spacer"></div>
 				{#if $nav.permissions.update}
-					<button on:click={() => dispatch("upload_picker")} title="Upload files to this directory">
+					<button on:click={() => upload_widget.pick_files()} title="Upload files to this directory">
 						<i class="icon">cloud_upload</i>
 					</button>
 

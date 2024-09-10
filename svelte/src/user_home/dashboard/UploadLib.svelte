@@ -17,15 +17,6 @@ const file_input_change = (event) => {
 	// This resets the file input field
 	file_input_field.nodeValue = ""
 }
-let dragging = false
-const drop = (e) => {
-	dragging = false;
-	if (e.dataTransfer && e.dataTransfer.items.length > 0) {
-		e.preventDefault()
-		e.stopPropagation()
-		upload_files(e.dataTransfer.files)
-	}
-}
 const paste = (e) => {
 	if (e.clipboardData.files[0]) {
 		e.preventDefault();
@@ -39,7 +30,7 @@ let upload_queue = []
 let state = "idle" // idle, uploading, finished
 let upload_stats
 
-const upload_files = async (files) => {
+export const upload_files = async (files) => {
 	if (files.length === 0) {
 		return
 	}
@@ -88,7 +79,6 @@ const start_upload = () => {
 	if (active_uploads === 0 && finished_count != 0) {
 		state = "finished"
 		upload_stats.finish()
-		// uploads_finished()
 	} else {
 		state = "uploading"
 		upload_stats.start()
@@ -180,17 +170,9 @@ const keydown = (e) => {
 	case "m": share_tumblr();   break
 	}
 }
-
 </script>
 
-<svelte:window
-	on:dragover|preventDefault|stopPropagation={() => { dragging = true }}
-	on:dragenter|preventDefault|stopPropagation={() => { dragging = true }}
-	on:dragleave|preventDefault|stopPropagation={() => { dragging = false }}
-	on:drop={drop}
-	on:paste={paste}
-	on:keydown={keydown}
-	on:beforeunload={leave_confirmation} />
+<svelte:window on:paste={paste} on:keydown={keydown} on:beforeunload={leave_confirmation} />
 
 <input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple" class="hide"/>
 
@@ -208,10 +190,6 @@ const keydown = (e) => {
 		</form>
 	</div>
 {/if}
-
-<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
-	Drop your files to upload them
-</div>
 
 {#each upload_queue as file}
 	<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>

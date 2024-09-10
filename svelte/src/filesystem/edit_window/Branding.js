@@ -10,7 +10,7 @@ export const branding_from_path = path => {
 		add_styles(style, node.properties)
 	}
 	last_generated_style = style
-	return gen_css(style)
+	return style
 }
 
 // The last style which was generated is cached, when we don't have a complete
@@ -19,6 +19,10 @@ let last_generated_style = {}
 export const branding_from_node = node => {
 	add_styles(last_generated_style, node.properties)
 	return gen_css(last_generated_style)
+}
+
+export const css_from_path = path => {
+	return gen_css(branding_from_path(path))
 }
 
 const gen_css = style => {

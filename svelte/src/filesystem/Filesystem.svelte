@@ -7,14 +7,14 @@ import Breadcrumbs from './Breadcrumbs.svelte';
 import DetailsWindow from './DetailsWindow.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 import SearchView from './SearchView.svelte';
-import UploadWidget from './upload_widget/UploadWidget.svelte';
+import FSUploadWidget from './upload_widget/FSUploadWidget.svelte';
 import { fs_path_url } from './FilesystemAPI';
-import { branding_from_path } from './edit_window/Branding.js'
 import Menu from './Menu.svelte';
 import { FSNavigator } from "./FSNavigator"
 import { writable } from 'svelte/store';
 import TransferLimit from '../file_viewer/TransferLimit.svelte';
 import { stats } from "src/util/StatsSocket.js"
+import { css_from_path } from './edit_window/Branding';
 
 let file_viewer
 let file_preview
@@ -41,7 +41,7 @@ onMount(() => {
 		}
 
 		// Custom CSS rules for the whole viewer
-		document.documentElement.style = branding_from_path(nav.path)
+		document.documentElement.style = css_from_path(nav.path)
 
 		loading.set(false)
 	})
@@ -169,10 +169,10 @@ const search = async () => {
 				<FilePreview
 					bind:this={file_preview}
 					nav={nav}
+					upload_widget={upload_widget}
 					edit_window={edit_window}
 					on:open_sibling={e => nav.open_sibling(e.detail)}
 					on:download={download}
-					on:upload_picker={() => upload_widget.pick_files()}
 				/>
 			{:else if view === "search"}
 				<SearchView nav={nav} on:done={() => {view = "file"}} />
@@ -206,7 +206,9 @@ const search = async () => {
 
 	<EditWindow nav={nav} bind:this={edit_window} bind:visible={edit_visible} />
 
-	<UploadWidget nav={nav} bind:this={upload_widget} drop_upload />
+	<!-- This one is included at the highest level so uploads can keep running
+		even when the user navigates to a different directory -->
+	<FSUploadWidget nav={nav} bind:this={upload_widget} />
 
 	<LoadingIndicator loading={$loading}/>
 </div>

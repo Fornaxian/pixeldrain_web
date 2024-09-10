@@ -78,15 +78,19 @@ const cancel = () => {
 .prog {
 	display: flex;
 	flex-direction: row;
+	width: 100%;
+	overflow: hidden;
 }
 .bar {
 	flex: 1 1 auto;
 	padding: 2px 4px 1px 4px;
 	margin: 4px;
 	border-radius: 4px;
+	overflow: hidden;
+	line-break: anywhere;
 }
 .cancel {
-	flex: 0 0 auto;
+	flex: 0 0 content;
 	display: flex;
 	justify-content: center;
 	align-items: center; /* Stop stretching the button */

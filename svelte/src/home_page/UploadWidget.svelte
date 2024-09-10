@@ -21,15 +21,6 @@ const file_input_change = (event) => {
 	// This resets the file input field
 	file_input_field.nodeValue = ""
 }
-let dragging = false
-const drop = (e) => {
-	dragging = false;
-	if (e.dataTransfer && e.dataTransfer.items.length > 0) {
-		e.preventDefault()
-		e.stopPropagation()
-		upload_files(e.dataTransfer.files)
-	}
-}
 const paste = (e) => {
 	if (e.clipboardData.files[0]) {
 		e.preventDefault();
@@ -43,7 +34,7 @@ let upload_queue = []
 let state = "idle" // idle, uploading, finished
 let upload_stats
 
-const upload_files = async (files) => {
+export const upload_files = async (files) => {
 	if (files.length === 0) {
 		return
 	}
@@ -279,14 +270,7 @@ const keydown = (e) => {
 
 </script>
 
-<svelte:window
-	on:dragover|preventDefault|stopPropagation={() => { dragging = true }}
-	on:dragenter|preventDefault|stopPropagation={() => { dragging = true }}
-	on:dragleave|preventDefault|stopPropagation={() => { dragging = false }}
-	on:drop={drop}
-	on:paste={paste}
-	on:keydown={keydown}
-	on:beforeunload={leave_confirmation} />
+<svelte:window on:paste={paste} on:keydown={keydown} on:beforeunload={leave_confirmation} />
 
 <Konami/>
 
@@ -327,11 +311,6 @@ const keydown = (e) => {
 	<br/>
 
 	<UploadStats bind:this={upload_stats} upload_queue={upload_queue}/>
-
-	<div id="file_drop_highlight" class="highlight_green" class:hide={!dragging}>
-		Gimme gimme gimme!<br/>
-		Drop your files to upload them
-	</div>
 </section>
 
 {#each upload_queue as file}

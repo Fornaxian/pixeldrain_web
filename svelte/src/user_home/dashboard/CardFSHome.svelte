@@ -4,7 +4,8 @@ import { FSNavigator } from "src/filesystem/FSNavigator.ts"
 import { fs_encode_path, fs_node_icon } from "src/filesystem/FilesystemAPI.ts";
 import Button from "src/layout/Button.svelte";
 import CreateDirectory from "src/filesystem/filemanager/CreateDirectory.svelte";
-import UploadWidget from "src/filesystem/upload_widget/UploadWidget.svelte";
+import FSUploadWidget from "src/filesystem/upload_widget/FSUploadWidget.svelte";
+import { drop_target } from "src/util/DropTarget.ts"
 
 const nav = new FSNavigator(false)
 let upload_widget
@@ -14,68 +15,73 @@ var creating_dir = false
 onMount(() => nav.navigate("/me", false))
 </script>
 
-<div class="toolbar">
-	{#if $nav.permissions.update}
+<div class="wrapper" use:drop_target={{upload: (files) => upload_widget.upload_files(files)}}>
+	<div class="toolbar">
+		{#if $nav.permissions.update}
+			<Button
+				click={() => upload_widget.pick_files()}
+				icon="cloud_upload"
+				title="Upload files to this directory"
+				label="Upload files"
+			/>
+			<Button
+				click={() => {creating_dir = !creating_dir}}
+				highlight={creating_dir}
+				icon="create_new_folder"
+				title="Create folder"
+				label="Create folder"
+			/>
+		{/if}
+
+		<div class="toolbar_spacer"></div>
+
 		<Button
-			click={() => upload_widget.pick_files()}
-			icon="cloud_upload"
-			title="Upload files to this directory"
-			label="Upload files"
+			click={() => {show_hidden = !show_hidden}}
+			highlight={show_hidden}
+			icon={show_hidden ? "visibility_off" : "visibility"}
+			title="Show hidden files and directories"
 		/>
 		<Button
-			click={() => {creating_dir = !creating_dir}}
-			highlight={creating_dir}
-			icon="create_new_folder"
-			title="Create folder"
-			label="Create folder"
+			click={() => nav.reload()}
+			icon="refresh"
+			title="Refresh directory listing"
 		/>
+	</div>
+
+	{#if creating_dir}
+		<CreateDirectory nav={nav} />
 	{/if}
 
-	<div class="toolbar_spacer"></div>
+	<div class="directory">
+		{#each $nav.children as child (child.path)}
+			<a
+				href={"/d"+fs_encode_path(child.path)}
+				class="node"
+				class:node_selected={child.fm_selected}
+				class:hidden={child.name.startsWith(".")}
+			>
+				<img src={fs_node_icon(child, 64, 64)} class="node_icon" alt="icon"/>
 
-	<Button
-		click={() => {show_hidden = !show_hidden}}
-		highlight={show_hidden}
-		icon={show_hidden ? "visibility_off" : "visibility"}
-		title="Show hidden files and directories"
-	/>
-	<Button
-		click={() => nav.reload()}
-		icon="refresh"
-		title="Refresh directory listing"
-	/>
+				<div class="node_name">
+					{child.name}
+				</div>
+
+				{#if child.id}
+					<a href="/d/{child.id}" class="button action_button">
+						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
+					</a>
+				{/if}
+			</a>
+		{/each}
+	</div>
 </div>
 
-{#if creating_dir}
-	<CreateDirectory nav={nav} />
-{/if}
-
-<div class="directory">
-	{#each $nav.children as child (child.path)}
-		<a
-			href={"/d"+fs_encode_path(child.path)}
-			class="node"
-			class:node_selected={child.fm_selected}
-			class:hidden={child.name.startsWith(".")}
-		>
-			<img src={fs_node_icon(child, 64, 64)} class="node_icon" alt="icon"/>
-
-			<div class="node_name">
-				{child.name}
-			</div>
-
-			{#if child.id}
-				<a href="/d/{child.id}" class="button action_button">
-					<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
-				</a>
-			{/if}
-		</a>
-	{/each}
-</div>
-
-<UploadWidget nav={nav} bind:this={upload_widget} drop_upload />
+<FSUploadWidget nav={nav} bind:this={upload_widget} />
 
 <style>
+.wrapper {
+	border-radius: 4px;
+}
 .toolbar {
 	display: flex;
 	flex-direction: row;

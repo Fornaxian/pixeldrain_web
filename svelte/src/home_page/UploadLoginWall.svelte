@@ -2,16 +2,26 @@
 import Login from "../login/Login.svelte";
 import Register from "../login/Register.svelte";
 import UploadWidget from "./UploadWidget.svelte";
+import { drop_target } from "src/util/DropTarget.ts"
 
 const finish_login = async e => {
 	location.reload()
 }
 
+let upload_widget
 let page = "login"
 </script>
 
 {#if window.user && window.user.username && window.user.username !== ""}
-	<UploadWidget/>
+	<div
+		class="drop_target"
+		use:drop_target={{
+			upload: (files) => upload_widget.upload_files(files),
+			shadow: "var(--highlight_color) 0 0 10px 2px inset",
+		}}
+	>
+		<UploadWidget bind:this={upload_widget}/>
+	</div>
 {:else}
 	<section>
 		<p>
@@ -51,6 +61,9 @@ let page = "login"
 {/if}
 
 <style>
+.drop_target {
+	border-radius: 8px;
+}
 .tab_bar > button {
 	width: 40%;
 	max-width: 10em;

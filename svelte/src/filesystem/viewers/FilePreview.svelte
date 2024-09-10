@@ -16,6 +16,7 @@ import { stats } from "src/util/StatsSocket.js"
 import SlowDown from "src/layout/SlowDown.svelte";
 
 export let nav
+export let upload_widget
 export let edit_window
 
 let viewer
@@ -59,7 +60,7 @@ export const seek = delta => {
 		<Spinner></Spinner>
 	</div>
 {:else if viewer_type === "dir"}
-	<FileManager nav={nav} edit_window={edit_window} on:upload_picker>
+	<FileManager nav={nav} upload_widget={upload_widget} edit_window={edit_window}>
 		<CustomBanner path={$nav.path}/>
 	</FileManager>
 {:else if $nav.context.premium_transfer === false && $stats.limits.transfer_limit_used > $stats.limits.transfer_limit}
