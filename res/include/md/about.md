@@ -103,6 +103,12 @@ pixeldrain.com) into IP addresses that can be used to connect to a website.
 These servers are usually operated by your ISP and can be used to censor or
 monitor your browsing.
 
+Pixeldrain also has alternative domain names which might not be blocked. These
+are [pixeldrain.net](https://pixeldrain.net) and
+[pixeldra.in](https://pixeldra.in). Note that your session cookie is only valid
+for one domain name. If you use these alternative domains you will have to log
+in to them as well.
+
 ### DNS Providers which don't block pixeldrain
 
 You can find a guide for how to change your DNS server on Google. Just search
@@ -131,6 +137,14 @@ blocked in the following locations:
 If you live in any of these locations and are having trouble accessing
 pixeldrain **please contact your ISP**. I am ready to comply with whatever
 demands they have, I just want my website to be accessible again.
+
+## Why can't I find pixeldrain links on Google?
+
+Files on pixeldrain used to be searchable with search engines if they were
+indexed. People often accidentally got files indexed which were not supposed to
+be public. For that reason I disabled search indexing on all pixeldrain files.
+This protects the privacy of pixeldrain users and helps with preventing
+information leaks.
 
 ## Is there a clean pixeldrain logo I can use?
 

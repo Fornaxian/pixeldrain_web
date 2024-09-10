@@ -37,8 +37,7 @@ onMount(() => {
 			<span class="bold">Pro</span>
 		</div>
 		<div class="top_row prepaid_feat">
-			<span class="bold">Prepaid</span><br/>
-			Now available worldwide!
+			<span class="bold">Prepaid</span>
 		</div>
 
 		<div class="left_col">
@@ -136,14 +135,6 @@ onMount(() => {
 		</div>
 
 		<div class="left_col">
-			Online file previews
-		</div>
-		<div class="feature_cell span3 pro_feat">
-			<span class="bold">Image, audio, video, PDF and text files</span><br/>
-			Can all be viewed in the browser
-		</div>
-
-		<div class="left_col">
 			Payment processors
 		</div>
 		<div class="feature_cell free_feat">
@@ -153,8 +144,9 @@ onMount(() => {
 			<span class="bold">PayPal</span>, <span class="bold">Credit card</span>
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">PayPal</span>, <span class="bold">SEPA</span><br/>
-			And many EU regional providers
+			<span class="bold">PayPal</span>, <span class="bold">SEPA</span>,
+			<span class="bold">Credit card</span><br/>
+			And many more
 		</div>
 
 		<div></div>
@@ -236,14 +228,14 @@ onMount(() => {
 		quickly.
 	</p>
 	<p>
-		Unlike most other sharing sites pixeldrain uses a postponing system for
-		expiring files. When a file is freshly uploaded it gets 120 days by
-		default (240 days if you have the pro plan). After these 120 days we
-		will check when the file was last viewed. Files which are regularly
-		viewed could still bring new users to the platform, it would be rude to
-		show these people a File Not Found page. So if the file was viewed in
-		the last 120 days we will simply postpone the next check a month. If the
-		file was not viewed however it will immediately be removed.
+		Pixeldrain uses a postponing system for expiring files. When a file is
+		freshly uploaded it gets 120 days by default (240 days if you have the
+		pro plan). After these 120 days we will check when the file was last
+		viewed. Files which are regularly viewed could still bring new users to
+		the platform, it would be rude to show these people a File Not Found
+		page. So if the file was viewed in the last 120 days we will simply
+		postpone the next check a month. If the file was not viewed however, it
+		will be deleted.
 	</p>
 	<p>
 		Views are only counted when someone visits the download page in a web
@@ -368,17 +360,17 @@ header > h1 {
 }
 
 .left_col {
-	border-top-left-radius: 0.5em;
-	border-bottom-left-radius: 0.5em;
+	border-top-left-radius: 6px;
+	border-bottom-left-radius: 6px;
 	border: 1px solid var(--separator);
 }
 .top_row {
-	border-top-left-radius: 0.5em;
-	border-top-right-radius: 0.5em;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
 }
 .bottom_row {
-	border-bottom-left-radius: 0.5em;
-	border-bottom-right-radius: 0.5em;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
 	border: 1px solid var(--separator);
 	font-weight: bold;
 }
@@ -397,8 +389,5 @@ header > h1 {
 }
 .span2 {
 	grid-column: span 2;
-}
-.span3 {
-	grid-column: span 3;
 }
 </style>
