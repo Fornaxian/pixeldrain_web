@@ -1,11 +1,11 @@
 <script>
 import { onMount } from "svelte";
-import { FSNavigator } from "src/filesystem/FSNavigator.ts"
-import { fs_encode_path, fs_node_icon } from "src/filesystem/FilesystemAPI.ts";
-import Button from "src/layout/Button.svelte";
-import CreateDirectory from "src/filesystem/filemanager/CreateDirectory.svelte";
-import FSUploadWidget from "src/filesystem/upload_widget/FSUploadWidget.svelte";
-import { drop_target } from "src/util/DropTarget.ts"
+import { FSNavigator } from "../../filesystem/FSNavigator.ts"
+import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemAPI.ts";
+import Button from "../../layout/Button.svelte";
+import CreateDirectory from "../../filesystem/filemanager/CreateDirectory.svelte";
+import FSUploadWidget from "../../filesystem/upload_widget/FSUploadWidget.svelte";
+import { drop_target } from "../../util/DropTarget.ts"
 
 const nav = new FSNavigator(false)
 let upload_widget

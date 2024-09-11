@@ -7,7 +7,7 @@ import GalleryView from './GalleryView.svelte'
 import Button from '../../layout/Button.svelte';
 import FileImporter from './FileImporter.svelte';
 import { formatDate } from '../../util/Formatting.svelte';
-import { drop_target } from "src/util/DropTarget.ts"
+import { drop_target } from "../../util/DropTarget.ts"
 
 export let nav
 export let upload_widget

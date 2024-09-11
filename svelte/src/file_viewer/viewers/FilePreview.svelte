@@ -11,9 +11,9 @@ import Abuse from "./Abuse.svelte";
 import { file_type } from "../FileUtilities.svelte";
 import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
-import { stats } from "src/util/StatsSocket.js"
+import { stats } from "../../util/StatsSocket.js"
 import Zip from "./Zip.svelte";
-import SlowDown from "src/layout/SlowDown.svelte";
+import SlowDown from "../../layout/SlowDown.svelte";
 
 let viewer
 let viewer_type = "loading"

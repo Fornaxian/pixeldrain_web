@@ -1,6 +1,6 @@
 <script>
 import { formatDataVolume } from "../util/Formatting.svelte";
-import { stats } from "src/util/StatsSocket.js"
+import { stats } from "../util/StatsSocket.js"
 
 let percent = 0
 let title = ""

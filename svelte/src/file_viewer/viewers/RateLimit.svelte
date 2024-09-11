@@ -1,9 +1,9 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { formatDataVolume } from "../../util/Formatting.svelte";
-import { stats } from "src/util/StatsSocket.js"
-import IconBlock from "src/layout/IconBlock.svelte";
-import TextBlock from "src/layout/TextBlock.svelte"
+import { stats } from "../../util/StatsSocket.js"
+import IconBlock from "../../layout/IconBlock.svelte";
+import TextBlock from "../../layout/TextBlock.svelte"
 let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f

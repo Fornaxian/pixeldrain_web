@@ -1,9 +1,9 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { formatDataVolume, formatDuration } from "../util/Formatting.svelte";
-import { stats } from "src/util/StatsSocket.js"
-import TextBlock from "src/layout/TextBlock.svelte"
-import IconBlock from "src/layout/IconBlock.svelte";
+import { stats } from "../util/StatsSocket.js"
+import TextBlock from "./TextBlock.svelte"
+import IconBlock from "./IconBlock.svelte";
 let dispatch = createEventDispatcher()
 
 export let file_size = 0

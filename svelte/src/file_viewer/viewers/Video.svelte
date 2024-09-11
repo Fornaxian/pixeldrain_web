@@ -1,7 +1,7 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
-import IconBlock from "src/layout/IconBlock.svelte";
+import IconBlock from "../../layout/IconBlock.svelte";
 let dispatch = createEventDispatcher()
 
 export let is_list = false

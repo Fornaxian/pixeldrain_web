@@ -1,8 +1,8 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import IconBlock from "src/layout/IconBlock.svelte";
+import IconBlock from "../../layout/IconBlock.svelte";
 import { fs_thumbnail_url } from "../FilesystemAPI";
-import TextBlock from "src/layout/TextBlock.svelte"
+import TextBlock from "../../layout/TextBlock.svelte"
 let dispatch = createEventDispatcher()
 
 export let nav

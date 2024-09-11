@@ -70,7 +70,7 @@ export class FSNavigator {
 			this.set_loading(true)
 			const resp = await fs_get_node(path)
 			this.open_node(resp, push_history)
-		} catch (err) {
+		} catch (err: any) {
 			if (err.value && err.value === "path_not_found") {
 				if (path !== this.path[0].path && path !== "/" && path !== "") {
 					console.debug("Path", path, "was not found, trying to navigate to parent")

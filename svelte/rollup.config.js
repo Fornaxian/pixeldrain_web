@@ -5,7 +5,6 @@ import livereload from 'rollup-plugin-livereload';
 import terser from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel'
 import typescript from '@rollup/plugin-typescript'
-import includePaths from 'rollup-plugin-includepaths';
 import { sveltePreprocess } from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -40,14 +39,13 @@ export default [
 		}),
 
 		babel({
-			extensions: [".js", ".ts", ".html", ".svelte"],
+			extensions: [".js", ".ts", ".svelte"],
 			babelHelpers: "bundled",
 		}),
 
-		// If you have external dependencies installed from
-		// npm, you'll most likely need these plugins. In
-		// some cases you'll need additional configuration -
-		// consult the documentation for details:
+		// If you have external dependencies installed from npm, you'll most
+		// likely need these plugins. In some cases you'll need additional
+		// configuration - consult the documentation for details:
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
 		resolve({
 			browser: true,
@@ -60,23 +58,16 @@ export default [
 			compilerOptions: { lib: ["es2015", "dom"] },
 			verbatimModuleSyntax: true,
 		}),
-		includePaths({
-			paths: ["."],
-		}),
 
-		// In dev mode, call `npm run start` once
-		// the bundle has been generated
-		// !production && serve(),
-
-		// Watch the `public` directory and refresh the
-		// browser on changes when not in production
+		// Watch the `public` directory and refresh the browser on changes when
+		// not in production
 		!production && livereload({
 			watch: `${builddir}/${name}.*`,
 			port: 5000 + index,
 		}),
 
-		// If we're building for production (npm run build
-		// instead of npm run dev), minify
+		// If we're building for production (npm run build instead of npm run
+		// dev), minify
 		production && terser(),
 	],
 	watch: {

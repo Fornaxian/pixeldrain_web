@@ -1,8 +1,8 @@
 <script>
 import { onMount } from 'svelte'
-import { fs_path_url, fs_encode_path, fs_node_icon } from "src/filesystem/FilesystemAPI.ts"
-import FileTitle from "src/layout/FileTitle.svelte";
-import TextBlock from "src/layout/TextBlock.svelte"
+import { fs_path_url, fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemAPI.ts"
+import FileTitle from "../../layout/FileTitle.svelte";
+import TextBlock from "../../layout/TextBlock.svelte"
 
 export let nav
 let player
