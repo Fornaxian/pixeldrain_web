@@ -2,7 +2,7 @@
 import Login from "../login/Login.svelte";
 import Register from "../login/Register.svelte";
 import UploadWidget from "./UploadWidget.svelte";
-import { drop_target } from "../util/DropTarget.ts"
+import { drop_target } from "../lib/DropTarget.ts"
 
 const finish_login = async e => {
 	location.reload()

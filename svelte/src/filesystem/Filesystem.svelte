@@ -13,7 +13,7 @@ import Menu from './Menu.svelte';
 import { FSNavigator } from "./FSNavigator"
 import { writable } from 'svelte/store';
 import TransferLimit from '../file_viewer/TransferLimit.svelte';
-import { stats } from "../util/StatsSocket.js"
+import { stats } from "../lib/StatsSocket.js"
 import { css_from_path } from './edit_window/Branding';
 
 let file_viewer

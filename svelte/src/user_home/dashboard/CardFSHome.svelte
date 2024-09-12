@@ -5,7 +5,7 @@ import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemAPI.ts"
 import Button from "../../layout/Button.svelte";
 import CreateDirectory from "../../filesystem/filemanager/CreateDirectory.svelte";
 import FSUploadWidget from "../../filesystem/upload_widget/FSUploadWidget.svelte";
-import { drop_target } from "../../util/DropTarget.ts"
+import { drop_target } from "../../lib/DropTarget.ts"
 
 const nav = new FSNavigator(false)
 let upload_widget

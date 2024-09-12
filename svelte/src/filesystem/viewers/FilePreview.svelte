@@ -12,7 +12,7 @@ import Video from "./Video.svelte";
 import Torrent from "./Torrent.svelte";
 import Zip from "./Zip.svelte";
 import CustomBanner from "./CustomBanner.svelte";
-import { stats } from "../../util/StatsSocket.js"
+import { stats } from "../../lib/StatsSocket.js"
 import SlowDown from "../../layout/SlowDown.svelte";
 
 export let nav

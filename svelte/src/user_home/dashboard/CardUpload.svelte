@@ -1,6 +1,6 @@
 <script>
 import UploadLib from "./UploadLib.svelte";
-import { drop_target } from "../../util/DropTarget.ts"
+import { drop_target } from "../../lib/DropTarget.ts"
 
 let upload_widget
 </script>

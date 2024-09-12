@@ -98,7 +98,6 @@ export const fs_mkdirall = async (path: string, opts: NodeOptions) => {
 	)
 }
 
-
 export const fs_get_node = async (path: string) => {
 	return await fs_check_response(
 		await fetch(fs_path_url(path) + "?stat")
@@ -144,6 +143,7 @@ export const fs_delete = async (path: string) => {
 		await fetch(fs_path_url(path), { method: "DELETE" })
 	) as GenericResponse
 }
+
 export const fs_delete_all = async (path: string) => {
 	return await fs_check_response(
 		await fetch(fs_path_url(path) + "?recursive", { method: "DELETE" })
