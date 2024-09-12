@@ -269,10 +269,8 @@ section {
 .highlight_blue,
 .highlight_yellow,
 .highlight_red {
-	position: relative;
 	width: auto;
 	height: auto;
-	overflow: hidden;
 	text-align: center;
 	padding: 4px;
 	border-radius: 8px;

@@ -17,7 +17,7 @@ let update_peers = (peers) => {
 	sort("")
 }
 
-let sort_field = "address"
+let sort_field = "hostname"
 let asc = true
 let sort = (field) => {
 	if (field !== "" && field === sort_field) {
@@ -54,7 +54,8 @@ let sort = (field) => {
 	<table>
 		<thead>
 			<tr>
-				<td><SortButton field="address" active_field={sort_field} asc={asc} sort_func={sort}>Address</SortButton></td>
+				<td><SortButton field="hostname" active_field={sort_field} asc={asc} sort_func={sort}>Hostname</SortButton></td>
+				<td><SortButton field="ip" active_field={sort_field} asc={asc} sort_func={sort}>Address</SortButton></td>
 				<td><SortButton field="unreachable_count" active_field={sort_field} asc={asc} sort_func={sort}>Err</SortButton></td>
 				<td><SortButton field="load_15_min" active_field={sort_field} asc={asc} sort_func={sort}>Load</SortButton></td>
 				<td><SortButton field="latency" active_field={sort_field} asc={asc} sort_func={sort}>Ping</SortButton></td>
@@ -67,7 +68,7 @@ let sort = (field) => {
 			</tr>
 		</thead>
 		<tbody>
-			{#each peers as peer (peer.address)}
+			{#each peers as peer (peer.ip)}
 				<tr style="border: none;"
 					class:highlight_red={!peer.reachable}
 					class:highlight_yellow={peer.free_space < peer.min_free_space / 2}
@@ -75,7 +76,8 @@ let sort = (field) => {
 					class:highlight_green={peer.reachable}
 					animate:flip={{duration: 1000}}
 				>
-					<td>{peer.address}</td>
+					<td>{peer.hostname}</td>
+					<td>{peer.ip}</td>
 					<td>{peer.unreachable_count}</td>
 					<td>{peer.load_1_min.toFixed(1)} / {peer.load_5_min.toFixed(1)} / {peer.load_15_min.toFixed(1)}</td>
 					<td>{(peer.latency/1000).toFixed(3)}</td>

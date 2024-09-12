@@ -19,19 +19,10 @@ import Euro from "../util/Euro.svelte";
 
 	<img src="/res/img/misc/sunrise.webp" class="float_right" alt="Sunrise">
 	<h2>Simple and affordable pricing</h2>
-
-	No file expiry:
 	<ul>
-		<li><span class="keyword">€2.00 per month</span> base price<br/></li>
-		<li><span class="keyword">€4.00 per TB per month</span> for storage<br/></li>
-		<li><span class="keyword">€2.00 per TB</span> for data transfer<br/></li>
-	</ul>
-	<hr/>
-	240 day file expiry:
-	<ul>
-		<li><span class="keyword">€1.00 per month</span> base price<br/></li>
-		<li><span class="keyword">€0.50 per TB per month</span> for storage<br/></li>
-		<li><span class="keyword">€2.00 per TB</span> for data transfer<br/></li>
+		<li><span class="keyword">€1.00 per month</span> base price</li>
+		<li><span class="keyword">€4.00 per TB per month</span> for storage</li>
+		<li><span class="keyword">€2.00 per TB</span> for downloading and sharing files</li>
 	</ul>
 
 	<br style="clear: right;"/>

@@ -65,8 +65,7 @@ onMount(() => {
 			<h2>Payment successful!</h2>
 			<p>
 				Thank you for supporting pixeldrain! The credit has been added
-				to your account balance. Activate a subscription plan below to
-				finish upgrading your account.
+				to your account balance.
 			</p>
 			<p>
 				If your account credit has not been updated, please check the
@@ -74,7 +73,8 @@ onMount(() => {
 				href="/user/prepaid/deposit#invoices">the invoices page</a>.
 				Depending on the payment processor you used it can take a while
 				before your credit is deposited. SEPA transfers can take up to
-				two working days for example. If it takes too long contact
+				two working days for example. When the deposit is complete you
+				will receive an e-mail. If it takes too long, contact
 				support@pixeldrain.com.
 			</p>
 		</div>
@@ -92,7 +92,7 @@ onMount(() => {
 		Pixeldrain cannot modify your Patreon membership in any way.
 	</p>
 	<p>
-		Prepaid subscriptions are charged daily based on usage. When you reach
+		The Prepaid plan is charged daily based on usage. When you reach
 		negative balance the subscription will automatically end. You will need
 		a positive balance to activate the subscription again.
 	</p>
@@ -179,62 +179,13 @@ onMount(() => {
 			</div>
 		</div>
 		<div>
-			<div class="feat_label" class:feat_highlight={subscription === "prepaid_temp_storage_120d"}>
-				240 days storage<br/>
-				{#if subscription === "prepaid_temp_storage_120d"}
-					Currently active
-				{:else}
-					<button on:click={() => update("prepaid_temp_storage_120d")}>
-						<i class="icon">attach_money</i>
-						Activate
-					</button>
-				{/if}
-			</div>
-			<div class="feat_normal" class:feat_highlight={subscription === "prepaid_temp_storage_120d"}>
-				<p>
-					You will need a positive account balance to activate this
-					plan.
-				</p>
-				<ul>
-					<li>Base price of €1 per month</li>
-					<li>€0.50 per TB per month for storage</li>
-					<li>
-						€2 per TB for data transfer (with <a
-						href="/user/sharing/bandwidth">bandwidth sharing</a>
-						enabled)
-					</li>
-					<li>
-						Files expire 240 days after they are last viewed or
-						downloaded
-					</li>
-					<li>
-						Download page <a href="/user/sharing/branding">branding
-						options</a>
-					</li>
-					<li>
-						File <a href="/user/sharing/embedding">embedding
-						control</a> options
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div>
 			<div class="feat_label" class:feat_highlight={subscription === ""}>
 				Free<br/>
 				{#if subscription === ""}
 					Currently active
-				{:else}
-					<button on:click={() => update("")}>
-						<i class="icon">money_off</i>
-						Activate
-					</button>
 				{/if}
 			</div>
 			<div class="feat_normal round_br" class:feat_highlight={subscription === ""}>
-				<p>
-					Switching to the free plan with another subscription active
-					may cause your files to expire!
-				</p>
 				<ul>
 					<li>Standard free plan, files expire after 120 days.</li>
 					<li>Download limit of 5 GB per day</li>

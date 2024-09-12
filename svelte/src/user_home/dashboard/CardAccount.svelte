@@ -1,13 +1,16 @@
 <ul>
 	<li>Username: {window.user.username}</li>
-	<li>
-		{#if window.user.email === ""}
-			No e-mail address configured. You will not be able to recover
-			your account if you lose your password.
-		{:else}
+	{#if window.user.email === ""}
+		<li class="highlight_blue" style="text-align: initial;">
+			No e-mail address configured. You will not be able to recover your
+			account if you lose your password. Set an e-mail address on the <a
+			href="/user/settings">Settings</a> page.
+		</li>
+	{:else}
+		<li>
 			E-mail address: {window.user.email}
-		{/if}
-	</li>
+		</li>
+	{/if}
 	<li>
 		<i class="icon">settings</i>
 		<a href="/user/settings">Account settings</a>
