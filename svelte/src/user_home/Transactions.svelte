@@ -109,10 +109,7 @@ onMount(() => {
 
 		2 TB * € 4 = € 8<br/>
 
-		€ 8 / 30.4375 = € 0.2628 per day<br/>
-
-		Similarly the subscription charge of €2 per month is also charged at € 1
-		/ 30.4375 = € 0.032854 per day.
+		€ 8 / 30.4375 = € 0.2628 per day
 	</p>
 
 	<h3>{month_str}</h3>

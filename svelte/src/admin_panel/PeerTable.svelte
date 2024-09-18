@@ -91,7 +91,7 @@ let sort = (field) => {
 			{/each}
 
 			<tr>
-				<td>Total ({peers.length})</td>
+				<td colspan="2">Total ({peers.length})</td>
 				<td>{peers.reduce((acc, val) => acc += val.unreachable_count, 0)}</td>
 				<td>
 					{peers.reduce((acc, val) => acc += val.load_1_min, 0).toFixed(1)} /
@@ -107,7 +107,7 @@ let sort = (field) => {
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0), 3)}</td>
 			</tr>
 			<tr>
-				<td>Average</td>
+				<td colspan="2">Average</td>
 				<td></td>
 				<td>
 					{(peers.reduce((acc, val) => acc += val.load_1_min, 0) / peers.length).toFixed(1)} /

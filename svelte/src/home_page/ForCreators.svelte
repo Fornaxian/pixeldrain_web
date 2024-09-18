@@ -20,7 +20,6 @@ import Euro from "../util/Euro.svelte";
 	<img src="/res/img/misc/sunrise.webp" class="float_right" alt="Sunrise">
 	<h2>Simple and affordable pricing</h2>
 	<ul>
-		<li><span class="keyword">€1.00 per month</span> base price</li>
 		<li><span class="keyword">€4.00 per TB per month</span> for storage</li>
 		<li><span class="keyword">€2.00 per TB</span> for downloading and sharing files</li>
 	</ul>

@@ -84,12 +84,14 @@ onMount(() => {
 
 	<h2>Manage subscription</h2>
 	<p>
-		On pixeldrain you can freely switch between active subscription plans
-		when you want. When switching from Patreon to Prepaid/free you should
-		separately cancel your subscription <a
+		Here you can switch between different subscription plans.
+	</p>
+	<p>
+		The Patreon subscription is managed by Patreon. Pixeldrain cannot modify
+		or end your subsciption. If you would like to cancel your Patreon plan
+		you can do that <a
 		href="https://www.patreon.com/settings/memberships/pixeldrain"
-		target="_blank">on Patreon</a>. That does not happen automatically.
-		Pixeldrain cannot modify your Patreon membership in any way.
+		target="_blank">on Patreon</a>.
 	</p>
 	<p>
 		The Prepaid plan is charged daily based on usage. When you reach
@@ -158,7 +160,6 @@ onMount(() => {
 					target="_blank">on Patreon.com</a>.
 				</p>
 				<ul>
-					<li>Base price of €1 per month</li>
 					<li>€4 per TB per month for storage</li>
 					<li>
 						€2 per TB for data transfer (with <a

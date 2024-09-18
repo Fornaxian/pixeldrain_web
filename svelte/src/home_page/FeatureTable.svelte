@@ -52,8 +52,7 @@ onMount(() => {
 			Charged through Patreon
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">€1 / month</span><br/>
-			Base fee from account credit
+			<span class="bold">No monthly fee</span>
 		</div>
 
 		<div class="left_col">
