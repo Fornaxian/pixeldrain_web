@@ -58,16 +58,9 @@ your organisation so the report can be properly categorised. Please put all
 relevant information in the e-mail body itself, **no attachments**! PDF files
 will not be reviewed.
 
-The abuse mailbox relies on e-mail forwarding to work. The mail is first
-processed by the pixeldrain server and then forwarded to my mailbox. If your
-sending e-mail server has an
-[SPF policy](https://en.wikipedia.org/wiki/Sender_Policy_Framework#FAIL_and_forwarding)
-which restricts forwarding your message will not arrive in my inbox.
-
 Abuse mails from repeated senders are automatically processed. This only works
 if you send the reports to abuse@pixeldrain.com. Do **not** send abuse reports
-to support, sales or any other e-mail address, your report will be ignored or
-delayed.
+to support, sales or any other e-mail address, your report will be ignored.
 
 ## Disclaimer
 
