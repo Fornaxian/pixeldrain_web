@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -199,12 +200,15 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 	tm.tpl = tpl
 }
 
-// Get returns the templates, so they can be used to render views
-func (tm *TemplateManager) Get() *template.Template {
+// Run runs a template by name
+func (tm *TemplateManager) Run(w io.Writer, r *http.Request, name string, data any) (err error) {
 	if tm.debugModeEnabled {
 		tm.ParseTemplates(true)
 	}
-	return tm.tpl
+	if r.Method == "HEAD" {
+		return nil
+	}
+	return tm.tpl.ExecuteTemplate(w, name, data)
 }
 
 // Template functions. These can be called from within the template to execute

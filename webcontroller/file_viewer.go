@@ -72,7 +72,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		inf, err := templateData.PixelAPI.GetFileInfo(id)
 		if err != nil {
 			if pixelapi.ErrIsServerError(err) {
-				wc.templates.Get().ExecuteTemplate(w, "500", templateData)
+				wc.templates.Run(w, r, "500", templateData)
 				return
 			}
 			continue
@@ -82,7 +82,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 
 	if len(files) == 0 {
 		w.WriteHeader(http.StatusNotFound)
-		wc.templates.Get().ExecuteTemplate(w, "file_not_found", templateData)
+		wc.templates.Run(w, r, "file_not_found", templateData)
 		return
 	}
 
@@ -131,7 +131,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		templateName = "file_viewer_compat"
 	}
 
-	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
+	err = wc.templates.Run(w, r, templateName, templateData)
 	if err != nil && !util.IsNetError(err) {
 		log.Error("Error executing template file_viewer: %s", err)
 	}
@@ -153,17 +153,17 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	if err != nil {
 		if apiErr, ok := err.(pixelapi.Error); ok && apiErr.Status == http.StatusNotFound {
 			w.WriteHeader(http.StatusNotFound)
-			wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
+			wc.templates.Run(w, r, "list_not_found", templateData)
 		} else {
 			log.Error("API request error occurred: %s", err)
 			w.WriteHeader(http.StatusInternalServerError)
-			wc.templates.Get().ExecuteTemplate(w, "500", templateData)
+			wc.templates.Run(w, r, "500", templateData)
 		}
 		return
 	}
 	if len(list.Files) == 0 {
 		w.WriteHeader(http.StatusNotFound)
-		wc.templates.Get().ExecuteTemplate(w, "list_not_found", templateData)
+		wc.templates.Run(w, r, "list_not_found", templateData)
 		return
 	}
 
@@ -195,7 +195,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		templateName = "file_viewer_compat"
 	}
 
-	err = wc.templates.Get().ExecuteTemplate(w, templateName, templateData)
+	err = wc.templates.Run(w, r, templateName, templateData)
 	if err != nil && !util.IsNetError(err) {
 		log.Error("Error executing template file_viewer: %s", err)
 	}

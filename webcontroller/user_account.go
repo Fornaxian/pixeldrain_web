@@ -368,5 +368,5 @@ func (wc *WebController) serveEmailConfirm(
 	td := wc.newTemplateData(w, r)
 	td.Other = status
 
-	wc.templates.Get().ExecuteTemplate(w, "email_confirm", td)
+	wc.templates.Run(w, r, "email_confirm", td)
 }

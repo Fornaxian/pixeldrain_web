@@ -90,7 +90,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 	if conf.MaintenanceMode {
 		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusServiceUnavailable)
-			wc.templates.Get().ExecuteTemplate(w, "maintenance", wc.newTemplateData(w, r))
+			wc.templates.Run(w, r, "maintenance", wc.newTemplateData(w, r))
 		})
 		return wc
 	}
@@ -203,6 +203,11 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "theme.css", wc.themeHandler},
 	} {
 		r.Handle(h.method, prefix+"/"+h.path, middleware(h.handler))
+
+		// Also support HEAD requests
+		if h.method == GET {
+			r.HEAD(prefix+"/"+h.path, middleware(h.handler))
+		}
 	}
 
 	return wc
@@ -243,7 +248,8 @@ func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
-		err := wc.templates.Get().ExecuteTemplate(w, tpl, td)
+
+		err := wc.templates.Run(w, r, tpl, td)
 		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
@@ -265,7 +271,7 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 
 		// Execute the raw markdown template and save the result in a buffer
 		var tplBuf bytes.Buffer
-		err = wc.templates.Get().ExecuteTemplate(&tplBuf, tpl, tpld)
+		err = wc.templates.Run(&tplBuf, r, tpl, tpld)
 		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 			return
@@ -314,7 +320,7 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 		tpld.Other = template.HTML(mdBuf.Bytes())
 
 		// Execute the wrapper template
-		err = wc.templates.Get().ExecuteTemplate(w, "markdown_wrapper", tpld)
+		err = wc.templates.Run(w, r, "markdown_wrapper", tpld)
 		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
@@ -389,7 +395,7 @@ func (wc *WebController) serveForm(
 			w.WriteHeader(http.StatusBadRequest)
 		}
 
-		err := wc.templates.Get().ExecuteTemplate(w, "form_page", td)
+		err := wc.templates.Run(w, r, "form_page", td)
 		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing form page: %s", err)
 		}
@@ -399,17 +405,17 @@ func (wc *WebController) serveForm(
 func (wc *WebController) serveForbidden(w http.ResponseWriter, r *http.Request) {
 	log.Debug("Forbidden: %s", r.URL)
 	w.WriteHeader(http.StatusForbidden)
-	wc.templates.Get().ExecuteTemplate(w, "403", wc.newTemplateData(w, r))
+	wc.templates.Run(w, r, "403", wc.newTemplateData(w, r))
 }
 
 func (wc *WebController) serveNotFound(w http.ResponseWriter, r *http.Request) {
 	log.Debug("Not Found: %s", r.URL)
 	w.WriteHeader(http.StatusNotFound)
-	wc.templates.Get().ExecuteTemplate(w, "404", wc.newTemplateData(w, r))
+	wc.templates.Run(w, r, "404", wc.newTemplateData(w, r))
 }
 func (wc *WebController) serveUnavailableForLegalReasons(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusUnavailableForLegalReasons)
-	wc.templates.Get().ExecuteTemplate(w, "451", wc.newTemplateData(w, r))
+	wc.templates.Run(w, r, "451", wc.newTemplateData(w, r))
 }
 
 func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {

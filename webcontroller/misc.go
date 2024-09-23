@@ -20,7 +20,7 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 		sess, err := templateData.PixelAPI.PostUserSession("sharex")
 		if err != nil {
 			log.Error("Failed to create user session: %s", err)
-			wc.templates.Get().ExecuteTemplate(w, "500", templateData)
+			wc.templates.Run(w, r, "500", templateData)
 			return
 		}
 

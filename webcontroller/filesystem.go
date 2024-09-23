@@ -19,7 +19,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
 
 	if path == "" {
-		wc.templates.Get().ExecuteTemplate(w, "404", td)
+		wc.templates.Run(w, r, "404", td)
 		return
 	}
 
@@ -35,7 +35,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 			wc.serveUnavailableForLegalReasons(w, r)
 		} else {
 			log.Error("Failed to get path: %s", err)
-			wc.templates.Get().ExecuteTemplate(w, "500", td)
+			wc.templates.Run(w, r, "500", td)
 		}
 		return
 	}
@@ -43,7 +43,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	td.Title = fmt.Sprintf("%s ~ pixeldrain", node.Path[node.BaseIndex].Name)
 	td.Other = node
 	td.OGData = wc.metadataFromFilesystem(r, node)
-	err = wc.templates.Get().ExecuteTemplate(w, "filesystem", td)
+	err = wc.templates.Run(w, r, "filesystem", td)
 	if err != nil && !util.IsNetError(err) {
 		log.Error("Error executing template filesystem: %s", err)
 	}
