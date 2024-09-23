@@ -9,10 +9,8 @@ will be removed when reported.
 
 * **Copyright violation**: Works which are shared without permission from the
   copyright holder. For copyright reports we need a formal DMCA takedown request
-  originating from the copyright holder or a representative. If your request is
-  not valid it will be ignored. Takedown requests which are sent to any other
-  address than abuse@pixeldrain.com will also be ignored. See the chapter
-  [Copyright infringement](#copyright-infringement) below.
+  originating from the copyright holder or a representative. See the chapter
+  [E-Mail reporting rules](#toc_2) below.
 * **Porn**: Pornographic material is not strictly banned on pixeldrain. But in
   order to comply with international regulations I have to prevent it from
   spreading too far. For this reason pornographic videos and images can be
@@ -42,25 +40,46 @@ Violating these rules will result in your IP address being banned from uploading
 to pixeldrain.
 
 If you have found content which falls in any of these categories on pixeldrain
-please report it _using the report button on the download page_ of the file. Do
-not send an e-mail, it will be ignored. When a file has received enough reports
-of the same type it will automatically be blocked. I will also manually review
-reported files occasionally.
+please report it with the report button on the download page or by sending an
+e-mail. When reporting links through e-mail pay attention to the rules described
+below.
 
-## Copyright infringement
+## E-Mail reporting rules
 
-If you have found content which infringes on your copyright you can send a
-formal DMCA take-down request to
-[abuse@pixeldrain.com](mailto:abuse@pixeldrain.com) and I will review it. In
-your e-mail you need to swear under penalty of perjury that you (or your
-company) own exclusive rights to the claimed content. Please state the name of
-your organisation so the report can be properly categorised. Please put all
-relevant information in the e-mail body itself, **no attachments**! PDF files
-will not be reviewed.
+Due to the large number of abuse reports pixeldrain receives every day we were
+forced to automate the process. Messages sent to
+[abuse@pixeldrain.com](mailto:abuse@pixeldrain.com) are automatically scanned
+for pixeldrain links and processed. The first report we receive from a sender is
+manually reviewed. If the report is approved then your e-mail address will be
+added to our whitelist and all following messages are processed automatically.
+For this to work efficiently we have to set some requirements on the mails we
+receive:
 
-Abuse mails from repeated senders are automatically processed. This only works
-if you send the reports to abuse@pixeldrain.com. Do **not** send abuse reports
-to support, sales or any other e-mail address, your report will be ignored.
+* Messages are categorized based on their contents. Make sure the report
+  contains a description of the type of content and that it mentions one of the
+  abuse categories listed above.
+* Do not add attachments to your e-mail reports. Only the e-mail body is checked
+  for download links. The message scanning system will not check your
+  attachments and download links within the files are not detected.
+* Do not obfuscate the pixeldrain links. The reported download links need to be
+  complete and valid.
+* The e-mail must include a
+  [Message-ID](https://en.wikipedia.org/wiki/Message-ID) header. The Message-ID
+  is used to reference messages in our system, mails without a Message-ID are
+  not processed.
+* The e-mail must include either a valid [DKIM
+  signature](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) or a [SPF
+  header](https://en.wikipedia.org/wiki/Sender_Policy_Framework). Since the
+  sender address is used as a verification method we must use these methods to
+  combat message spoofing.
+* Only send abuse reports to
+  [abuse@pixeldrain.com](mailto:abuse@pixeldrain.com). Messages sent to any
+  other e-mail address are ignored.
+* Do not repeatedly send reports about files which have already been removed in
+  the past. We will block your e-mail address if this happens.
+
+If your abuse report is rejected for one of the above reasons then you will
+receive a reply with instructions on how to fix it.
 
 ## Disclaimer
 

@@ -17,11 +17,12 @@ const filter_visual = type => {
 		type.startsWith("video/") ||
 		type === "application/pdf"
 }
+const filter_audio = type => {
+	return type.startsWith("audio/")
+
+}
 const filter_audiovisual = type => {
-	return type.startsWith("image/") ||
-		type.startsWith("video/") ||
-		type.startsWith("audio/") ||
-		type === "application/pdf"
+	return filter_visual(type) || filter_audio(type)
 }
 const filter_app = type => {
 	return type.startsWith("application/") ||
@@ -30,10 +31,6 @@ const filter_app = type => {
 
 const abuse_categories = [
 	{
-		type: "copyright", name: "Copyright",
-		desc: `Protected content which is shared without constent from the
-			rightsholder`,
-	}, {
 		type: "porn", name: "Porn",
 		desc: `Sexually explicit videos or images`,
 		filter: filter_visual,
@@ -143,22 +140,10 @@ let submit = async e => {
 }
 
 let description = ""
-let copyright_rightsholder = ""
-let copyright_email =  ""
-let copyright_sources = ""
-let malware_proof = ""
 let child_abuse_password = ""
 
 const report_description = () => {
-	if (abuse_type === "copyright") {
-		return "Rightholder name: " + copyright_rightsholder + "\n" +
-			"Contact e-mail: " + copyright_email + "\n" +
-			"Sources:\n" + copyright_sources + "\n\n" +
-			"Description:\n" + description;
-	} else if (abuse_type === "malware") {
-		return "Proof: " + malware_proof + "\n" +
-			"Description:\n" + description;
-	} else if (abuse_type === "child_abuse") {
+	if (abuse_type === "child_abuse") {
 		return "Password: " + child_abuse_password + "\n" +
 			"Description:\n" + description;
 	} else {
@@ -171,7 +156,8 @@ const report_description = () => {
 	<p>
 		If you think this file violates pixeldrain's
 		<a href="/abuse">content policy</a> you can report it for moderation
-		with this form.
+		with this form. Please submit copyright infringement notices through our
+		<a href="/abuse#toc_2">abuse e-mail address</a>.
 	</p>
 	<form on:submit={submit} style="width: 100%" class="report_form">
 		<h3>Abuse type</h3>
@@ -206,38 +192,7 @@ const report_description = () => {
 
 		<h3>Description</h3>
 
-		{#if abuse_type === "copyright"}
-
-			<div class="highlight_yellow" style="text-align: initial;">
-				<p>
-					Copyright claims can only be submitted by the copyright
-					owner or an authorized agent. If you do not own the rights
-					to this file then you don't have the rights to file a
-					copyright claim.
-				</p>
-			</div>
-			<br/>
-
-			<div>Name rightsholder (can be a registered company name)</div>
-			<input type="text" bind:value={copyright_rightsholder} required/>
-
-			<div>Contact e-mail</div>
-			<input type="email" bind:value={copyright_email} required/>
-
-			<div>Source URLs (links to the places where the original content was sold/provided)</div>
-			<textarea bind:value={copyright_sources} placeholder="https://some.store.com" required></textarea>
-
-		{:else if abuse_type === "malware"}
-
-			<div>
-				Proof that this file is malware. This can be a link to
-				<a href="https://www.virustotal.com/"target="_blank">VirusTotal</a>
-				scan results, or some other security vendor which has
-				information about this file
-			</div>
-			<input type="text" bind:value={malware_proof} required/>
-
-		{:else if abuse_type === "child_abuse"}
+		{#if abuse_type === "child_abuse"}
 
 			<div class="highlight_yellow" style="text-align: initial;">
 				<p>
@@ -340,7 +295,6 @@ input[type="radio"]:checked+div {
 	width: 100%;
 }
 .report_form > input[type="text"],
-.report_form > input[type="email"],
 .report_form > textarea {
 	width: 100%;
 	margin: 0 0 0.5em 0;
