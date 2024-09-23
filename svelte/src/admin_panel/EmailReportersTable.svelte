@@ -2,9 +2,43 @@
 import { createEventDispatcher } from "svelte";
 import { formatDate } from "../util/Formatting.svelte";
 import Modal from "../util/Modal.svelte"
+import SortButton from "./SortButton.svelte";
+import { flip } from "svelte/animate";
 
-let dispatch = createEventDispatcher()
+const dispatch = createEventDispatcher()
+
 export let reporters = []
+
+$: update_table(reporters)
+const update_table = (reporters) => sort("")
+
+let sort_field = "last_used"
+let asc = false
+const sort = (field) => {
+	if (field !== "" && field === sort_field) asc = !asc
+	if (field === "") field = sort_field
+	sort_field = field
+
+	console.log("sorting by", field, "asc", asc)
+	reporters.sort((a, b) => {
+		if (typeof (a[field]) === "number") {
+			// Sort ints from high to low
+			if (asc) {
+				return a[field] - b[field]
+			} else {
+				return b[field] - a[field]
+			}
+		} else {
+			// Sort strings alphabetically
+			if (asc) {
+				return a[field].localeCompare(b[field])
+			} else {
+				return b[field].localeCompare(a[field])
+			}
+		}
+	})
+	reporters = reporters
+}
 
 let modal
 let preview_subject = ""
@@ -20,16 +54,16 @@ const toggle_preview = (rep) => {
 
 <table>
 	<tr>
-		<td>Address / Mail server</td>
-		<td>Name</td>
-		<td>Reports</td>
-		<td>Blocked</td>
-		<td>Last used</td>
-		<td>Created</td>
+		<td><SortButton field="from_address" active_field={sort_field} asc={asc} sort_func={sort}>Address</SortButton></td>
+		<td><SortButton field="name" active_field={sort_field} asc={asc} sort_func={sort}>Name</SortButton></td>
+		<td><SortButton field="reports_sent" active_field={sort_field} asc={asc} sort_func={sort}>Reports</SortButton></td>
+		<td><SortButton field="files_blocked" active_field={sort_field} asc={asc} sort_func={sort}>Blocked</SortButton></td>
+		<td><SortButton field="last_used" active_field={sort_field} asc={asc} sort_func={sort}>Last used</SortButton></td>
+		<td><SortButton field="created" active_field={sort_field} asc={asc} sort_func={sort}>Created</SortButton></td>
 		<td></td>
 	</tr>
-	{#each reporters as rep}
-		<tr>
+	{#each reporters as rep (rep.from_address)}
+		<tr animate:flip={{duration: 500}}>
 			<td>{rep.from_address}</td>
 			<td>{rep.name}</td>
 			<td>{rep.reports_sent}</td>
