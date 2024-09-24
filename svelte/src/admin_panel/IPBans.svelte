@@ -4,6 +4,18 @@ import { formatDate } from "../util/Formatting.svelte";
 import Expandable from "../util/Expandable.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
 
+const abuse_types = [
+	"copyright",
+	"child_abuse",
+	"terrorism",
+	"gore",
+	"zoophilia",
+	"malware",
+	"doxing",
+	"revenge_porn",
+	"porn",
+]
+
 let loading = true
 let rows = []
 let total_offences = 0
@@ -11,7 +23,7 @@ let total_offences = 0
 let expanded = false
 let creating = false
 let new_ban_address
-let new_ban_reason = "unknown"
+let new_ban_reason = abuse_types[0]
 
 const get_bans = async () => {
 	loading = true;
@@ -114,23 +126,11 @@ onMount(get_bans);
 					<input id="field_address" type="text" bind:this={new_ban_address}/>
 					<label for="field_reason">Reason</label>
 					<div id="field_reason">
-						<input id="reason_unknown" name="reporter_type" type="radio" bind:group={new_ban_reason} value="unknown" />
-						<label for="reason_unknown">unknown</label>
-						<br/>
-						<input id="reason_copyright" name="reporter_type" type="radio" bind:group={new_ban_reason} value="copyright" />
-						<label for="reason_copyright">copyright</label>
-						<br/>
-						<input id="reason_child_abuse" name="reporter_type" type="radio" bind:group={new_ban_reason} value="child_abuse" />
-						<label for="reason_child_abuse">child_abuse</label>
-						<br/>
-						<input id="reason_terrorism" name="reporter_type" type="radio" bind:group={new_ban_reason} value="terorrism" />
-						<label for="reason_terrorism">terrorism</label>
-						<br/>
-						<input id="reason_gore" name="reporter_type" type="radio" bind:group={new_ban_reason} value="gore" />
-						<label for="reason_gore">gore</label>
-						<br/>
-						<input id="reason_malware" name="reporter_type" type="radio" bind:group={new_ban_reason} value="malware" />
-						<label for="reason_malware">malware</label>
+						{#each abuse_types as t (t)}
+							<input id="reason_{t}" name="reporter_type" type="radio" bind:group={new_ban_reason} value="{t}" />
+							<label for="reason_{t}">{t}</label>
+							<br/>
+						{/each}
 					</div>
 					<button class="button_highlight" type="submit" style="float: right;">
 						<i class="icon">save</i> Save

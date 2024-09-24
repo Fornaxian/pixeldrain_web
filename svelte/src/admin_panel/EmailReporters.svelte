@@ -157,37 +157,33 @@ onMount(get_reporters);
 	{/if}
 </section>
 
-<br/>
-
-<div class="table_scroll">
-	<h2>Pending reporters</h2>
-	<EmailReportersTable
-		reporters={reporters_pending}
-		on:edit={e => edit_reporter(e.detail)}
-		on:approve={e => approve_reporter(e.detail)}
-		on:spam={e => spam_reporter(e.detail)}
-		on:delete={e => delete_reporter(e.detail)}>
-	</EmailReportersTable>
+<h2>Pending reporters</h2>
+<EmailReportersTable
+	reporters={reporters_pending}
+	on:edit={e => edit_reporter(e.detail)}
+	on:approve={e => approve_reporter(e.detail)}
+	on:spam={e => spam_reporter(e.detail)}
+	on:delete={e => delete_reporter(e.detail)}>
+</EmailReportersTable>
 
 
-	<h2>Trusted reporters</h2>
-	<EmailReportersTable
-		reporters={reporters_trusted}
-		on:edit={e => edit_reporter(e.detail)}
-		on:approve={e => approve_reporter(e.detail)}
-		on:spam={e => spam_reporter(e.detail)}
-		on:delete={e => delete_reporter(e.detail)}>
-	</EmailReportersTable>
+<h2>Trusted reporters</h2>
+<EmailReportersTable
+	reporters={reporters_trusted}
+	on:edit={e => edit_reporter(e.detail)}
+	on:approve={e => approve_reporter(e.detail)}
+	on:spam={e => spam_reporter(e.detail)}
+	on:delete={e => delete_reporter(e.detail)}>
+</EmailReportersTable>
 
-	<h2>Rejected reporters</h2>
-	<EmailReportersTable
-		reporters={reporters_rejected}
-		on:edit={e => edit_reporter(e.detail)}
-		on:approve={e => approve_reporter(e.detail)}
-		on:spam={e => spam_reporter(e.detail)}
-		on:delete={e => delete_reporter(e.detail)}>
-	</EmailReportersTable>
-</div>
+<h2>Rejected reporters</h2>
+<EmailReportersTable
+	reporters={reporters_rejected}
+	on:edit={e => edit_reporter(e.detail)}
+	on:approve={e => approve_reporter(e.detail)}
+	on:spam={e => spam_reporter(e.detail)}
+	on:delete={e => delete_reporter(e.detail)}>
+</EmailReportersTable>
 <br/>
 
 <style>
@@ -198,7 +194,4 @@ onMount(get_reporters);
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }
-.table_scroll {
-	text-align: left;
-}
 </style>

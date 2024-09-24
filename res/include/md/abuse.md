@@ -10,7 +10,10 @@ will be removed when reported.
 * **Copyright violation**: Works which are shared without permission from the
   copyright holder. For copyright reports we need a formal DMCA takedown request
   originating from the copyright holder or a representative. See the chapter
-  [E-Mail reporting rules](#toc_2) below.
+  [E-Mail reporting rules](#toc_2) below. When sending a copyright infringement
+  notice to our abuse address, please state clearly that it is a copyright
+  infringement notice so that we can properly detect the type of report. Using
+  words like 'theft' or 'stolen' won't work because piracy is not theft.
 * **Porn**: Pornographic material is not strictly banned on pixeldrain. But in
   order to comply with international regulations I have to prevent it from
   spreading too far. For this reason pornographic videos and images can be
@@ -67,11 +70,13 @@ receive:
   [Message-ID](https://en.wikipedia.org/wiki/Message-ID) header. The Message-ID
   is used to reference messages in our system, mails without a Message-ID are
   not processed.
-* The e-mail must include either a valid [DKIM
-  signature](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) or a [SPF
-  header](https://en.wikipedia.org/wiki/Sender_Policy_Framework). Since the
-  sender address is used as a verification method we must use these methods to
-  combat message spoofing.
+* The abuse system uses e-mail addresses for authenctication so we need to be
+  wary of [message spoofing](https://en.wikipedia.org/wiki/Email_spoofing). To
+  combat this we require both
+  [DKIM](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) and
+  [SPF](https://en.wikipedia.org/wiki/Sender_Policy_Framework) validation before
+  we can accept e-mails. If either of these checks fail we assume the message
+  was spoofed and it goes straight to the spambox.
 * Only send abuse reports to
   [abuse@pixeldrain.com](mailto:abuse@pixeldrain.com). Messages sent to any
   other e-mail address are ignored.

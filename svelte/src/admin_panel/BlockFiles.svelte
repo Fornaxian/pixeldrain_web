@@ -15,7 +15,6 @@ let block_form = {
 			label: "Type",
 			type: "radio",
 			radio_values: [
-				"unknown",
 				"copyright",
 				"porn",
 				"child_abuse",
