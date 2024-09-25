@@ -26,12 +26,11 @@ let total_files = 0
 let total_file_size = 0
 
 const update_base = async () => {
-	if (!nav.initialized || connected_to === nav.base.path) {
+	if (!nav.initialized) {
 		return
 	}
-	connected_to = nav.base.path
 
-	// Tallys
+	// Update counters with new info
 	total_directories = nav.children.reduce((acc, cur) => cur.type === "dir" ? acc + 1 : acc, 0)
 	total_files = nav.children.reduce((acc, cur) => cur.type === "file" ? acc + 1 : acc, 0)
 	total_file_size = nav.children.reduce((acc, cur) => acc + cur.file_size, 0)
@@ -39,7 +38,10 @@ const update_base = async () => {
 	if (nav.base.type === "dir") {
 		console.debug("Not opening websocket for directory")
 		return
+	} else if (connected_to === nav.base.path) {
+		return // If we're already connected to the same path, don't reconnect
 	}
+	connected_to = nav.base.path
 
 	// If the socket is already active we need to close it
 	close_socket()

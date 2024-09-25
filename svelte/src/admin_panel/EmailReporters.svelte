@@ -128,6 +128,9 @@ onMount(get_reporters);
 <section>
 	<div class="toolbar" style="text-align: left;">
 		<div class="toolbar_spacer"></div>
+		<button on:click={() => get_reporters()}>
+			<i class="icon">refresh</i>
+		</button>
 		<button bind:this={edit_button} class:button_highlight={creating} on:click={() => {creating = !creating}}>
 			<i class="icon">create</i> Add abuse reporter
 		</button>
