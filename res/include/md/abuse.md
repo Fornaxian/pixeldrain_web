@@ -14,11 +14,6 @@ will be removed when reported.
   notice to our abuse address, please state clearly that it is a copyright
   infringement notice so that we can properly detect the type of report. Using
   words like 'theft' or 'stolen' won't work because piracy is not theft.
-* **Porn**: Pornographic material is not strictly banned on pixeldrain. But in
-  order to comply with international regulations I have to prevent it from
-  spreading too far. For this reason pornographic videos and images can be
-  reported through the file reporting form. Once reported the file will be
-  removed from public viewing.
 * **Abuse of minors**: Videos, images or audio fragments depicting abuse or
   inappropriate touching of minors will be removed and reported to the National
   Center for Missing and Exploited Children when found.
@@ -60,7 +55,8 @@ receive:
 
 * Messages are categorized based on their contents. Make sure the report
   contains a description of the type of content and that it mentions one of the
-  abuse categories listed above.
+  abuse categories listed above. The abuse mailbox only accepts reports written
+  in English.
 * Do not add attachments to your e-mail reports. Only the e-mail body is checked
   for download links. The message scanning system will not check your
   attachments and download links within the files are not detected.
