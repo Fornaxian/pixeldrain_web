@@ -66,7 +66,7 @@ receive:
   [Message-ID](https://en.wikipedia.org/wiki/Message-ID) header. The Message-ID
   is used to reference messages in our system, mails without a Message-ID are
   not processed.
-* The abuse system uses e-mail addresses for authenctication so we need to be
+* The abuse system uses e-mail addresses for authentication so we need to be
   wary of [message spoofing](https://en.wikipedia.org/wiki/Email_spoofing). To
   combat this we require both
   [DKIM](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) and
