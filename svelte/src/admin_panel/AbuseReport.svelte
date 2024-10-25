@@ -61,7 +61,6 @@ let set_status = async (action, report_type) => {
 			</div>
 			<div class="type_list">
 				<button on:click={() => {set_status("grant", "copyright")}}>copyright</button>
-				<button on:click={() => {set_status("grant", "porn")}}>porn</button>
 				<button on:click={() => {set_status("grant", "terrorism")}}>terrorism</button>
 				<button on:click={() => {set_status("grant", "gore")}}>gore</button>
 				<button on:click={() => {set_status("grant", "child_abuse")}}>child_abuse</button>

@@ -8,6 +8,7 @@ $: update_peers(peers)
 let update_peers = (peers) => {
 	for (let peer of peers) {
 		peer.avg_network_total = peer.avg_network_tx + peer.avg_network_rx
+		peer.usage_percent = (peer.avg_network_tx / peer.port_speed) * 100
 		peer.network_ratio = Math.max(peer.avg_network_tx, peer.avg_network_rx) / Math.min(peer.avg_network_tx, peer.avg_network_rx)
 		if (peer.network_ratio === NaN) {
 			peer.network_ratio = 1
@@ -55,7 +56,6 @@ let sort = (field) => {
 		<thead>
 			<tr>
 				<td><SortButton field="hostname" active_field={sort_field} asc={asc} sort_func={sort}>Hostname</SortButton></td>
-				<td><SortButton field="ip" active_field={sort_field} asc={asc} sort_func={sort}>Address</SortButton></td>
 				<td><SortButton field="unreachable_count" active_field={sort_field} asc={asc} sort_func={sort}>Err</SortButton></td>
 				<td><SortButton field="load_15_min" active_field={sort_field} asc={asc} sort_func={sort}>Load</SortButton></td>
 				<td><SortButton field="latency" active_field={sort_field} asc={asc} sort_func={sort}>Ping</SortButton></td>
@@ -63,6 +63,7 @@ let sort = (field) => {
 				<td><SortButton field="avg_network_rx" active_field={sort_field} asc={asc} sort_func={sort}>RX</SortButton></td>
 				<td><SortButton field="network_ratio" active_field={sort_field} asc={asc} sort_func={sort}>Rat</SortButton></td>
 				<td><SortButton field="avg_network_total" active_field={sort_field} asc={asc} sort_func={sort}>Tot</SortButton></td>
+				<td><SortButton field="usage_percent" active_field={sort_field} asc={asc} sort_func={sort}>Use%</SortButton></td>
 				<td><SortButton field="free_space" active_field={sort_field} asc={asc} sort_func={sort}>Free</SortButton></td>
 				<td><SortButton field="min_free_space" active_field={sort_field} asc={asc} sort_func={sort}>Min free</SortButton></td>
 			</tr>
@@ -77,7 +78,6 @@ let sort = (field) => {
 					animate:flip={{duration: 1000}}
 				>
 					<td>{peer.hostname}</td>
-					<td>{peer.ip}</td>
 					<td>{peer.unreachable_count}</td>
 					<td>{peer.load_1_min.toFixed(1)} / {peer.load_5_min.toFixed(1)} / {peer.load_15_min.toFixed(1)}</td>
 					<td>{(peer.latency/1000).toFixed(3)}</td>
@@ -85,13 +85,14 @@ let sort = (field) => {
 					<td>{formatDataVolume(peer.avg_network_rx, 3)}/s</td>
 					<td>{peer.network_ratio.toFixed(2)}</td>
 					<td>{formatDataVolume(peer.avg_network_total, 3)}/s</td>
+					<td>{Math.round(peer.usage_percent)}%</td>
 					<td>{formatDataVolume(peer.free_space, 4)}</td>
 					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
 				</tr>
 			{/each}
 
 			<tr>
-				<td colspan="2">Total ({peers.length})</td>
+				<td>Total ({peers.length})</td>
 				<td>{peers.reduce((acc, val) => acc += val.unreachable_count, 0)}</td>
 				<td>
 					{peers.reduce((acc, val) => acc += val.load_1_min, 0).toFixed(1)} /
@@ -103,11 +104,12 @@ let sort = (field) => {
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_rx, 0), 3)}/s</td>
 				<td>{peers.reduce((acc, val) => acc += val.network_ratio, 0).toFixed(2)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_total, 0), 3)}/s</td>
+				<td>{Math.round(peers.reduce((acc, val) => acc += val.usage_percent, 0))}%</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.free_space, 0), 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0), 3)}</td>
 			</tr>
 			<tr>
-				<td colspan="2">Average</td>
+				<td>Average</td>
 				<td></td>
 				<td>
 					{(peers.reduce((acc, val) => acc += val.load_1_min, 0) / peers.length).toFixed(1)} /
@@ -119,6 +121,7 @@ let sort = (field) => {
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_rx, 0) / peers.length, 3)}/s</td>
 				<td>{(peers.reduce((acc, val) => acc += val.network_ratio, 0) / peers.length).toFixed(2)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_total, 3) / peers.length, 4)}/s</td>
+				<td>{Math.round(peers.reduce((acc, val) => acc += val.usage_percent, 0) / peers.length)}%</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.free_space, 0) / peers.length, 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0) / peers.length, 3)}</td>
 			</tr>

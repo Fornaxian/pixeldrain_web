@@ -13,7 +13,6 @@ const abuse_types = [
 	"malware",
 	"doxing",
 	"revenge_porn",
-	"porn",
 ]
 
 let loading = true

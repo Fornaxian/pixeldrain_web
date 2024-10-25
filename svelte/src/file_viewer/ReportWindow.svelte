@@ -31,38 +31,41 @@ const filter_app = type => {
 
 const abuse_categories = [
 	{
-		type: "porn", name: "Porn",
-		desc: `Sexually explicit videos or images`,
-		filter: filter_visual,
-	}, {
-		type: "terrorism", name: "Terrorism",
+		type: "terrorism",
+		name: "Terrorism",
 		desc: `Videos, images or audio fragments showing or promoting the use
 			of intentional violence to achieve political aims`,
 		filter: filter_audiovisual,
 	}, {
-		type: "gore", name: "Gore",
+		type: "gore",
+		name: "Gore",
 		desc: `Graphic and shocking videos or images depicting severe harm to
 			humans (or animals)`,
 		filter: filter_visual,
 	}, {
-		type: "child_abuse", name: "Child abuse",
+		type: "child_abuse",
+		name: "Child abuse",
 		desc: `Videos or images depicting inappropriate touching or nudity of
 			children under 18 years old`,
 	}, {
-		type: "zoophilia", name: "Zoophilia",
+		type: "zoophilia",
+		name: "Zoophilia",
 		desc: `Videos or images depicting of sexual acts being performed on
 			animals`,
 	}, {
-		type: "revenge_porn", name: "Revenge porn",
-		desc: `The distribution of sexually explicit images or videos of
-			individuals without their consent`,
+		type: "revenge_porn",
+		name: "Revenge porn",
+		desc: `Sexually explicit images or videos of individuals without their
+			consent and blackmail content`,
 	}, {
-		type: "doxing", name: "Doxing",
+		type: "doxing",
+		name: "Doxing",
 		desc: `Personally identifiable information being shared without the
 			consent of the owner. This includes things like passport scans,
 			e-mail addresses, telephone numbers and passwords`,
 	}, {
-		type: "malware", name: "Malware",
+		type: "malware",
+		name: "Malware",
 		desc: `Software programs designed to cause harm to computer systems`,
 		filter: filter_app,
 	},
@@ -197,8 +200,7 @@ const report_description = () => {
 			<div class="highlight_yellow" style="text-align: initial;">
 				<p>
 					The child abuse category is only for cases where real
-					children were abused. This is not for fictional works. Use
-					the 'porn' category in case of animated porn.
+					children were abused. This is not for fictional works.
 				</p>
 			</div>
 			<br/>

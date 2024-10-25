@@ -16,7 +16,6 @@ let block_form = {
 			type: "radio",
 			radio_values: [
 				"copyright",
-				"porn",
 				"child_abuse",
 				"zoophilia",
 				"terrorism",
