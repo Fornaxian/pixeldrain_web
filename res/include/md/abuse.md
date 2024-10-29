@@ -34,15 +34,17 @@ will be removed when reported.
   unsuspecting viewers. For that reason I will remove it when it gets reported.
 
 * **Malware and computer viruses** - Software programs designed to cause harm to
-  computer systems.
+  computer systems. Please attach some proof that the file actually contains
+  malware, like a VirusTotal scan result. If no proof is provided then we will
+  assume the report is invalid.
 
-* **Doxing** - Publishing private information about a individuals or
-  organisations. This includes publicly sharing private photos, videos or
-  documents. Shaming and extortion are not accepted. This category _does not
-  apply_ for material which is sold online for money. In that case you should
-  file a copyright claim. Please [read about what doxing really
-  means](https://en.wikipedia.org/wiki/Doxing) before filing a report in this
-  category.
+* **Doxing** - Publishing private information about individuals or
+  organisations. This includes publicly sharing address information, ID scans or
+  login credentials which are not supposed to be public. Please [read about what
+  doxing really means](https://en.wikipedia.org/wiki/Doxing) before filing a
+  report in this category. If the file is content that you produce and sell,
+  then it does not fall under the doxing category. In that case you should file
+  a copyright claim.
 
 * **Revenge porn** - The distribution of sexually explicit images or videos of
   individuals without their consent. This category _does not apply_ for material
