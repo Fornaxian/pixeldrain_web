@@ -400,9 +400,9 @@ performance.
 
 Most apps have no way to effectively use hundreds of CPU threads. At some point
 adding more threads will only consume more memory and CPU cycles just because
-they kernel scheduler, memory controller and your language runtime have to
-manage all those threads. This can cause huge amounts of overhead. My rule of
-thumb: If you have 64 or more cores: `SMT OFF`
+the kernel scheduler, memory controller and your language runtime have to manage
+all those threads. This can cause huge amounts of overhead. My rule of thumb: If
+you have 64 or more cores: `SMT OFF`
 
 ### IOMMU
 
