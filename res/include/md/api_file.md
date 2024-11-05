@@ -12,11 +12,10 @@ performance issues in certain environments.
 
 ### Parameters
 
-Param     | Type           | Required | Maximum Size                 | Default             | Description
-----------|----------------|----------|------------------------------|---------------------|-----------------------------------
-name      | string         | false    | 255 characters               | multipart file name | Name of the file to upload
-anonymous | boolean        | false    | N/A                          | false               | File is not linked to user if true
-file      | multipart file | true     | Depends on user subscription | none                | File to upload
+Param | Type           | Required | Maximum Size                 | Default             | Description
+------|----------------|----------|------------------------------|---------------------|----------------------------
+name  | string         | false    | 255 characters               | multipart file name | Name of the file to upload
+file  | multipart file | true     | Depends on user subscription | none                | File to upload
 
 ### Returns
 
@@ -85,11 +84,10 @@ Upload a file.
 
 ### Parameters
 
-Param     | Type    | Required | Location      | Maximum Size                 | Default | Description
-----------|---------|----------|---------------|------------------------------|---------|-----------------------------------
-name      | string  | true     | URL           | 255 characters               | none    | Name of the file to upload
-anonymous | boolean | false    | URL parameter | N/A                          | false   | File is not linked to user if true
-file      | file    | true     | request body  | Depends on user subscription | none    | File to upload
+Param | Type   | Required | Location     | Maximum Size                 | Default | Description
+------|--------|----------|--------------|------------------------------|---------|----------------------------
+name  | string | true     | URL          | 255 characters               | none    | Name of the file to upload
+file  | file   | true     | request body | Depends on user subscription | none    | File to upload
 
 ### Returns
 

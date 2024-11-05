@@ -4,12 +4,8 @@ Methods for using pixeldrain programmatically.
 
 ## Authentication
 
-The methods for uploading and retrieving files don't require an API key. The
-methods for creating and retrieving lists also don't require an API key. All
-methods which delete or modify a resource **do** require an API key.
-
-API keys can be obtained from your user account's [API keys
-page](/user/api_keys).
+All methods which create, modify or delete a resource require an API key. API
+keys can be obtained from your user account's [API keys page](/user/api_keys).
 
 To use the API key you need to enter it in the password field of [HTTP Basic
 Access
@@ -43,13 +39,9 @@ URL.
 
 ## curl example
 
-Here's how to anonymously upload a file using curl:
-
-`curl -T "file_name.txt" https://pixeldrain.com/api/file/`
-
-You can also upload a file to your pixeldrain account using curl. Get an API key
-from the [API keys page](/user/api_keys) and enter it in the command. Replace
-the example API key here with your own:
+To upload files to pixeldrain you will need an API key. Get an API key from the
+[API keys page](/user/api_keys) and enter it in the command. Replace the example
+API key here with your own:
 
 `curl -T "file_name.txt" -u :5f45f184-64bb-4eaa-be19-4a5f0459db49
 https://pixeldrain.com/api/file/`
