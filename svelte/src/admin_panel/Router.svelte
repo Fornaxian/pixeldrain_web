@@ -8,7 +8,7 @@ import UserManagement from "./UserManagement.svelte";
 import EmailReporters from "./EmailReporters.svelte";
 import MollieSettlements from "./MollieSettlements.svelte";
 import PayPalTaxes from "./PayPalTaxes.svelte";
-import UserBans from "./UserBans.svelte";
+import UserBans from "./user_bans/UserBans.svelte";
 
 let pages = [
 	{

@@ -1,10 +1,12 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume, formatDate } from "../util/Formatting.svelte";
-import Expandable from "../util/Expandable.svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
-import Button from "../layout/Button.svelte"
-import Euro from "../util/Euro.svelte"
+import { formatDate } from "../../util/Formatting.svelte";
+import Expandable from "../../util/Expandable.svelte";
+import LoadingIndicator from "../../util/LoadingIndicator.svelte";
+import Button from "../../layout/Button.svelte"
+import UserFiles from "./UserFiles.svelte";
+import BanDetails from "./BanDetails.svelte";
+import UserLists from "./UserLists.svelte";
 
 let loading = true
 let rows = []
@@ -66,6 +68,40 @@ const impersonate = async user_id => {
 	window.open("/user", "_blank")
 }
 
+const block_all_files = async (row, reason) => {
+	const form = new FormData()
+	form.append("user_id", row.user_id)
+	form.append("abuse_type", reason)
+
+	loading = true;
+	try {
+		const req = await fetch(
+			window.api_endpoint+"/admin/block_user_files",
+			{ method: "POST", body: form }
+		);
+		if(req.status >= 400) {
+			alert(await req.text())
+			return
+		}
+
+		const resp = await req.json()
+
+		if (reason === "none") {
+			alert("Restored "+resp.files_blocked.length+" files")
+		} else {
+			alert("Blocked "+resp.files_blocked.length+" files")
+		}
+
+		if (row.tab_element && row.tab_element.reload) {
+			row.tab_element.reload()
+		}
+	} catch (err) {
+		alert(err);
+	} finally {
+		loading = false;
+	}
+}
+
 onMount(get_bans);
 </script>
 
@@ -112,64 +148,63 @@ onMount(get_bans);
 				</button>
 			</div>
 
-			<Button click={() => impersonate(row.user_id)} icon="login" label="Impersonate user"/>
-			<table>
-				<tr>
-					<td>Username</td>
-					<td>{row.user.username}</td>
-				</tr>
-				<tr>
-					<td>ID</td>
-					<td>{row.user_id}</td>
-				</tr>
-				<tr>
-					<td>Email</td>
-					<td>{row.user.email}</td>
-				</tr>
-				<tr>
-					<td>Subscription</td>
-					<td>{row.user.subscription.name}</td>
-				</tr>
-				<tr>
-					<td>Credit balance</td>
-					<td><Euro amount={row.user.balance_micro_eur}/></td>
-				</tr>
-				<tr>
-					<td>Storage used</td>
-					<td>{formatDataVolume(row.user.storage_space_used, 3)}</td>
-				</tr>
-				<tr>
-					<td>FS Storage used</td>
-					<td>{formatDataVolume(row.user.filesystem_storage_used, 3)}</td>
-				</tr>
-			</table>
-			<br/>
-			<div class="table_scroll">
-				<table>
-					<tr>
-						<td>Reason</td>
-						<td>Reporter</td>
-						<td>Ban time</td>
-						<td>Expire time</td>
-						<td>File</td>
-					</tr>
-					{#each row.offences as offence (offence.ban_time)}
-						<tr>
-							<td>{offence.reason}</td>
-							<td>{offence.reporter}</td>
-							<td>{formatDate(offence.ban_time, true, true, false)}</td>
-							<td>{formatDate(offence.expire_time, true, true, false)}</td>
-							<td>
-								{#if offence.file_link}
-									<a href={offence.file_link} target="_blank" rel="noreferrer">
-										{offence.file_name}
-									</a>
-								{/if}
-							</td>
-						</tr>
-					{/each}
-				</table>
+			<div class="toolbar">
+				<Button click={() => impersonate(row.user_id)} icon="login" label="Impersonate user"/>
+				<div class="toolbar_spacer"></div>
+				<div class="toolbar_label">
+					<i class="icon">block</i> Block all files
+					<select bind:value={row.select_abuse_type}>
+						<option>copyright</option>
+						<option>child_abuse</option>
+						<option>zoophilia</option>
+						<option>terrorism</option>
+						<option>gore</option>
+						<option>malware</option>
+						<option>doxing</option>
+						<option>revenge_porn</option>
+					</select>
+					<Button
+						click={() => block_all_files(row, row.select_abuse_type)}
+						label="Go"
+					/>
+				</div>
+				<div class="toolbar_spacer"></div>
+				<Button
+					click={() => block_all_files(row, "none")}
+					icon="undo"
+					label="Restore all files"
+				/>
 			</div>
+
+			<div class="tab_bar">
+				<Button
+					icon="person"
+					label="User details"
+					highlight={row.tab === undefined || row.tab === "user"}
+					click={() => row.tab = "user"}
+				/>
+				<Button
+					icon="image"
+					label="Files"
+					highlight={row.tab === "files"}
+					click={() => row.tab = "files"}
+				/>
+				<Button
+					icon="photo_library"
+					label="Lists"
+					highlight={row.tab === "lists"}
+					click={() => row.tab = "lists"}
+				/>
+			</div>
+
+			{#if row.tab === undefined || row.tab === "user"}
+				<BanDetails row={row} />
+			{:else if row.tab === "files"}
+				<UserFiles bind:this={row.tab_element} user_id={row.user_id} />
+			{:else if row.tab === "lists"}
+				<UserLists bind:this={row.tab_element}  user_id={row.user_id} />
+			{/if}
+
 		</Expandable>
 	{/each}
 </section>
@@ -177,6 +212,7 @@ onMount(get_bans);
 <style>
 .toolbar {
 	display: flex;
+	flex-wrap: wrap;
 	flex-direction: row;
 	width: 100%;
 	text-align: left;
@@ -184,7 +220,10 @@ onMount(get_bans);
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }
-.toolbar_label { margin: 5px; }
+.toolbar_label {
+	display: block;
+	margin: 5px;
+}
 
 
 .header {
@@ -203,5 +242,8 @@ onMount(get_bans);
 	padding: 0 4px;
 	border-left: 1px solid var(--separator);
 	text-align: center;
+}
+.tab_bar {
+	border-bottom: 2px solid var(--separator);
 }
 </style>

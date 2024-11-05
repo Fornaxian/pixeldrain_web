@@ -28,10 +28,7 @@ will be removed when reported.
   under the _gore_ category.
 
 * **Gore** - Graphic and shocking videos or images depicting severe harm to
-  humans (or animals). I will clarify that I am not strictly against shocking
-  content, and it is also not illegal in most places. When a shocking video goes
-  viral it often ends up in the wrong places and it can cause mental issues for
-  unsuspecting viewers. For that reason I will remove it when it gets reported.
+  humans (or animals).
 
 * **Malware and computer viruses** - Software programs designed to cause harm to
   computer systems. Please attach some proof that the file actually contains
