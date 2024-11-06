@@ -140,30 +140,34 @@ onMount(() => {
 	{#if per_country.NL}
 		<h2>Accounting information</h2>
 		<table>
-			<tr>
-				<td>Bedrag</td>
-				<td>BTW-code</td>
-				<td>BTW</td>
-				<td>Tegenrekening</td>
-			</tr>
-			<tr>
-				<td><Euro amount={per_country.NL.amount + per_country.NL.vat}/></td>
-				<td>BTW hoog 21%</td>
-				<td><Euro amount={per_country.NL.vat}/></td>
-				<td>8040 - Omzet PayPal inkomsten</td>
-			</tr>
-			<tr>
-				<td><Euro amount={totals.vat-per_country.NL.vat}/></td>
-				<td>Geen BTW</td>
-				<td><Euro amount={0}/></td>
-				<td>1651 - BTW OSS</td>
-			</tr>
-			<tr>
-				<td><Euro amount={totals.amount-totals.fee-per_country.NL.amount}/></td>
-				<td>Geen BTW</td>
-				<td><Euro amount={0}/></td>
-				<td>8040 - Omzet PayPal inkomsten</td>
-			</tr>
+			<thead>
+				<tr>
+					<td>Bedrag</td>
+					<td>BTW-code</td>
+					<td>BTW</td>
+					<td>Tegenrekening</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><Euro amount={per_country.NL.amount + per_country.NL.vat}/></td>
+					<td>BTW hoog 21%</td>
+					<td><Euro amount={per_country.NL.vat}/></td>
+					<td>8040 - Omzet PayPal inkomsten</td>
+				</tr>
+				<tr>
+					<td><Euro amount={totals.vat-per_country.NL.vat}/></td>
+					<td>Geen BTW</td>
+					<td><Euro amount={0}/></td>
+					<td>1651 - BTW OSS</td>
+				</tr>
+				<tr>
+					<td><Euro amount={totals.amount-totals.fee-per_country.NL.amount}/></td>
+					<td>Geen BTW</td>
+					<td><Euro amount={0}/></td>
+					<td>8040 - Omzet PayPal inkomsten</td>
+				</tr>
+			</tbody>
 		</table>
 	{/if}
 
@@ -171,51 +175,55 @@ onMount(() => {
 
 	<div class="table_scroll">
 		<table>
-			<tr>
-				<td>Country</td>
-				<td>Payments</td>
-				<td>Amount</td>
-				<td>VAT</td>
-				<td>VAT%</td>
-				<td>Total</td>
-				<td>Fee</td>
-				<td>Total</td>
-			</tr>
-			{#each Object.entries(per_country) as [country, row]}
+			<thead>
 				<tr>
-					<td>{country}</td>
-					<td>{row.count}</td>
-					<td><Euro amount={row.amount}/></td>
-					<td><Euro amount={row.vat}/></td>
-					<td>{row.vat_fraction*100}%</td>
-					<td><Euro amount={row.vat+row.amount}/></td>
-					<td><Euro amount={-row.fee}/></td>
-					<td><Euro amount={row.vat+row.amount-row.fee}/></td>
+					<td>Country</td>
+					<td>Payments</td>
+					<td>Amount</td>
+					<td>VAT</td>
+					<td>VAT%</td>
+					<td>Total</td>
+					<td>Fee</td>
+					<td>Total</td>
 				</tr>
-			{/each}
+			</thead>
+			<tbody>
+				{#each Object.entries(per_country) as [country, row]}
+					<tr>
+						<td>{country}</td>
+						<td>{row.count}</td>
+						<td><Euro amount={row.amount}/></td>
+						<td><Euro amount={row.vat}/></td>
+						<td>{row.vat_fraction*100}%</td>
+						<td><Euro amount={row.vat+row.amount}/></td>
+						<td><Euro amount={-row.fee}/></td>
+						<td><Euro amount={row.vat+row.amount-row.fee}/></td>
+					</tr>
+				{/each}
 
-			<tr>
-				<td>Total</td>
-				<td>{totals.count}</td>
-				<td><Euro amount={totals.amount}/></td>
-				<td><Euro amount={totals.vat}/></td>
-				<td></td>
-				<td><Euro amount={totals.vat+totals.amount}/></td>
-				<td><Euro amount={-totals.fee}/></td>
-				<td><Euro amount={(totals.vat+totals.amount)-totals.fee}/></td>
-			</tr>
-			{#if per_country.NL}
 				<tr>
-					<td>Total ex NL</td>
-					<td>{totals.count - per_country.NL.count}</td>
-					<td><Euro amount={totals.amount-per_country.NL.amount}/></td>
-					<td><Euro amount={totals.vat-per_country.NL.vat}/></td>
+					<td>Total</td>
+					<td>{totals.count}</td>
+					<td><Euro amount={totals.amount}/></td>
+					<td><Euro amount={totals.vat}/></td>
 					<td></td>
-					<td><Euro amount={(totals.vat-per_country.NL.vat)+(totals.amount-per_country.NL.amount)}/></td>
-					<td><Euro amount={-(totals.fee-per_country.NL.fee)}/></td>
-					<td><Euro amount={(totals.vat-per_country.NL.vat)+(totals.amount-per_country.NL.amount)-(totals.fee-per_country.NL.fee)}/></td>
+					<td><Euro amount={totals.vat+totals.amount}/></td>
+					<td><Euro amount={-totals.fee}/></td>
+					<td><Euro amount={(totals.vat+totals.amount)-totals.fee}/></td>
 				</tr>
-			{/if}
+				{#if per_country.NL}
+					<tr>
+						<td>Total ex NL</td>
+						<td>{totals.count - per_country.NL.count}</td>
+						<td><Euro amount={totals.amount-per_country.NL.amount}/></td>
+						<td><Euro amount={totals.vat-per_country.NL.vat}/></td>
+						<td></td>
+						<td><Euro amount={(totals.vat-per_country.NL.vat)+(totals.amount-per_country.NL.amount)}/></td>
+						<td><Euro amount={-(totals.fee-per_country.NL.fee)}/></td>
+						<td><Euro amount={(totals.vat-per_country.NL.vat)+(totals.amount-per_country.NL.amount)-(totals.fee-per_country.NL.fee)}/></td>
+					</tr>
+				{/if}
+			</tbody>
 		</table>
 	</div>
 

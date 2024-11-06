@@ -33,26 +33,30 @@ onMount(async () => {
 
 			<div class="table_scroll">
 				<table>
-					<tr>
-						<td>File</td>
-						<td>Reason</td>
-						<td>Ban date</td>
-						<td>Expiry date</td>
-					</tr>
-					{#each result.user_offences as offence (offence.ban_time)}
+					<thead>
 						<tr>
-							<td>
-								{#if offence.file_link}
-									<a href={offence.file_link} target="_blank" rel="noreferrer">
-										{offence.file_name}
-									</a>
-								{/if}
-							</td>
-							<td>{offence.reason}</td>
-							<td>{formatDate(offence.ban_time, false, false, false)}</td>
-							<td>{formatDate(offence.expire_time, false, false, false)}</td>
+							<td>File</td>
+							<td>Reason</td>
+							<td>Ban date</td>
+							<td>Expiry date</td>
 						</tr>
-					{/each}
+					</thead>
+					<tbody>
+						{#each result.user_offences as offence (offence.ban_time)}
+							<tr>
+								<td>
+									{#if offence.file_link}
+										<a href={offence.file_link} target="_blank" rel="noreferrer">
+											{offence.file_name}
+										</a>
+									{/if}
+								</td>
+								<td>{offence.reason}</td>
+								<td>{formatDate(offence.ban_time, false, false, false)}</td>
+								<td>{formatDate(offence.expire_time, false, false, false)}</td>
+							</tr>
+						{/each}
+					</tbody>
 				</table>
 			</div>
 			<p>
@@ -95,26 +99,30 @@ onMount(async () => {
 
 			<div class="table_scroll">
 				<table>
-					<tr>
-						<td>File</td>
-						<td>Reason</td>
-						<td>Ban date</td>
-						<td>Expiry date</td>
-					</tr>
-					{#each result.ip_offences as offence (offence.ban_time)}
+					<thead>
 						<tr>
-							<td>
-								{#if offence.file_link}
-									<a href={offence.file_link} target="_blank" rel="noreferrer">
-										{offence.file_name}
-									</a>
-								{/if}
-							</td>
-							<td>{offence.reason}</td>
-							<td>{formatDate(offence.ban_time, false, false, false)}</td>
-							<td>{formatDate(offence.expire_time, false, false, false)}</td>
+							<td>File</td>
+							<td>Reason</td>
+							<td>Ban date</td>
+							<td>Expiry date</td>
 						</tr>
-					{/each}
+					</thead>
+					<tbody>
+						{#each result.ip_offences as offence (offence.ban_time)}
+							<tr>
+								<td>
+									{#if offence.file_link}
+										<a href={offence.file_link} target="_blank" rel="noreferrer">
+											{offence.file_name}
+										</a>
+									{/if}
+								</td>
+								<td>{offence.reason}</td>
+								<td>{formatDate(offence.ban_time, false, false, false)}</td>
+								<td>{formatDate(offence.expire_time, false, false, false)}</td>
+							</tr>
+						{/each}
+					</tbody>
 				</table>
 			</div>
 

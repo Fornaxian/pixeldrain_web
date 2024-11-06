@@ -117,81 +117,83 @@ onMount(() => {
 
 <div class="indent">
 	<table>
-		<tr>
-			<td>Name</td>
-			<td>{file.name}</td>
-		</tr>
-		<tr>
-			<td>URL</td>
-			<td><a href="/u/{file.id}">{domain_url()}/u/{file.id}</a></td>
-		</tr>
-		<tr>
-			<td>Mime Type</td>
-			<td>{file.mime_type}</td>
-		</tr>
-		<tr>
-			<td>ID</td>
-			<td>{file.id}</td>
-		</tr>
-		<tr>
-			<td>Size</td>
-			<td>{formatDataVolume(file.size, 4)} ( {formatThousands(file.size)} B )</td>
-		</tr>
-		<tr>
-			<td>Free bandwidth used</td>
-			<td>
-				{formatDataVolume(file.bandwidth_used, 4)}
-				( {formatThousands(file.bandwidth_used)} B ),
-				{(file.bandwidth_used/file.size).toFixed(1)}x file size
-			</td>
-		</tr>
-		<tr>
-			<td>Premium bandwidth used</td>
-			<td>
-				{formatDataVolume(file.bandwidth_used_paid, 4)}
-				( {formatThousands(file.bandwidth_used_paid)} B ),
-				{(file.bandwidth_used_paid/file.size).toFixed(1)}x file size
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Unique downloads
-				<button class="button small_button round"
-					class:button_highlight={download_info}
-					style="margin: 0;"
-					on:click={() => download_info = !download_info}
-				>
-					<i class="icon">help</i>
-				</button>
-			</td>
-			<td>{formatThousands(file.downloads)}</td>
-		</tr>
-		{#if download_info}
+		<tbody>
 			<tr>
-				<td colspan="2">
-					The unique download counter only counts downloads once per IP
-					address. So this number shows how many individual people have
-					attempted to download the file. The download counter on the
-					toolbar on the other hand shows how many real downloads the file
-					has had. Real downloads are counted by dividing the total
-					bandwidth usage by the size of the file.
+				<td>Name</td>
+				<td>{file.name}</td>
+			</tr>
+			<tr>
+				<td>URL</td>
+				<td><a href="/u/{file.id}">{domain_url()}/u/{file.id}</a></td>
+			</tr>
+			<tr>
+				<td>Mime Type</td>
+				<td>{file.mime_type}</td>
+			</tr>
+			<tr>
+				<td>ID</td>
+				<td>{file.id}</td>
+			</tr>
+			<tr>
+				<td>Size</td>
+				<td>{formatDataVolume(file.size, 4)} ( {formatThousands(file.size)} B )</td>
+			</tr>
+			<tr>
+				<td>Free bandwidth used</td>
+				<td>
+					{formatDataVolume(file.bandwidth_used, 4)}
+					( {formatThousands(file.bandwidth_used)} B ),
+					{(file.bandwidth_used/file.size).toFixed(1)}x file size
 				</td>
 			</tr>
-		{/if}
-		<tr>
-			<td>Upload Date</td>
-			<td>{formatDate(file.date_upload, true, true, true)}</td>
-		</tr>
-		{#if file.description}
 			<tr>
-				<td>Description</td>
-				<td>{file.description}</td>
+				<td>Premium bandwidth used</td>
+				<td>
+					{formatDataVolume(file.bandwidth_used_paid, 4)}
+					( {formatThousands(file.bandwidth_used_paid)} B ),
+					{(file.bandwidth_used_paid/file.size).toFixed(1)}x file size
+				</td>
 			</tr>
-		{/if}
-		<tr>
-			<td>SHA256 hash</td>
-			<td style="word-break: break-all;">{file.hash_sha256}</td>
-		</tr>
+			<tr>
+				<td>
+					Unique downloads
+					<button class="button small_button round"
+						class:button_highlight={download_info}
+						style="margin: 0;"
+						on:click={() => download_info = !download_info}
+					>
+						<i class="icon">help</i>
+					</button>
+				</td>
+				<td>{formatThousands(file.downloads)}</td>
+			</tr>
+			{#if download_info}
+				<tr>
+					<td colspan="2">
+						The unique download counter only counts downloads once per IP
+						address. So this number shows how many individual people have
+						attempted to download the file. The download counter on the
+						toolbar on the other hand shows how many real downloads the file
+						has had. Real downloads are counted by dividing the total
+						bandwidth usage by the size of the file.
+					</td>
+				</tr>
+			{/if}
+			<tr>
+				<td>Upload Date</td>
+				<td>{formatDate(file.date_upload, true, true, true)}</td>
+			</tr>
+			{#if file.description}
+				<tr>
+					<td>Description</td>
+					<td>{file.description}</td>
+				</tr>
+			{/if}
+			<tr>
+				<td>SHA256 hash</td>
+				<td style="word-break: break-all;">{file.hash_sha256}</td>
+			</tr>
+		</tbody>
 	</table>
 
 	<h2>Views and downloads</h2>

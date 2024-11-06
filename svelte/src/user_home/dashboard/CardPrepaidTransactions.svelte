@@ -117,40 +117,42 @@ onMount(() => {
 </div>
 
 <table>
-	<tr>
-		<td>Opening balance</td>
-		<td><Euro amount={transactions.balance_start} precision="4"/></td>
-	</tr>
-	<tr>
-		<td>Closing balance</td>
-		<td><Euro amount={transactions.balance_end} precision="4"/></td>
-	</tr>
-	<tr>
-		<td>Total charge</td>
-		<td><Euro amount={transactions.total_deducted} precision="4"/></td>
-	</tr>
-	<tr>
-		<td>Subscription charge</td>
-		<td><Euro amount={transactions.total_subscription_charge} precision="4"/></td>
-	</tr>
-	<tr>
-		<td>Storage charge</td>
-		<td>
-			<Euro amount={transactions.total_storage_charge} precision="4"/>
-			(used {formatDataVolume(transactions.total_storage_used, 3)})
-		</td>
-	</tr>
-	<tr>
-		<td>Bandwidth charge</td>
-		<td>
-			<Euro amount={transactions.total_bandwidth_charge} precision="4"/>
-			(used {formatDataVolume(transactions.total_bandwidth_used, 3)})
-		</td>
-	</tr>
-	<tr>
-		<td>Deposited</td>
-		<td><Euro amount={transactions.total_deposited} precision="4"/></td>
-	</tr>
+	<tbody>
+		<tr>
+			<td>Opening balance</td>
+			<td><Euro amount={transactions.balance_start} precision="4"/></td>
+		</tr>
+		<tr>
+			<td>Closing balance</td>
+			<td><Euro amount={transactions.balance_end} precision="4"/></td>
+		</tr>
+		<tr>
+			<td>Total charge</td>
+			<td><Euro amount={transactions.total_deducted} precision="4"/></td>
+		</tr>
+		<tr>
+			<td>Subscription charge</td>
+			<td><Euro amount={transactions.total_subscription_charge} precision="4"/></td>
+		</tr>
+		<tr>
+			<td>Storage charge</td>
+			<td>
+				<Euro amount={transactions.total_storage_charge} precision="4"/>
+				(used {formatDataVolume(transactions.total_storage_used, 3)})
+			</td>
+		</tr>
+		<tr>
+			<td>Bandwidth charge</td>
+			<td>
+				<Euro amount={transactions.total_bandwidth_charge} precision="4"/>
+				(used {formatDataVolume(transactions.total_bandwidth_used, 3)})
+			</td>
+		</tr>
+		<tr>
+			<td>Deposited</td>
+			<td><Euro amount={transactions.total_deposited} precision="4"/></td>
+		</tr>
+	</tbody>
 </table>
 
 <style>

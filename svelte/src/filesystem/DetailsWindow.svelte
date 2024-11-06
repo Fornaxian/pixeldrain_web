@@ -122,78 +122,80 @@ let update_chart = async (base, timespan, interval) => {
 
 <Modal bind:visible={visible} title="Details" width={($nav.base.type === "file" ? 1000 : 750) + "px"}>
 	<table style="width: 100%;">
-		<tr>
-			<td>Name</td>
-			<td>{$nav.base.name}</td>
-		</tr>
-		<tr>
-			<td>Path</td>
-			<td>{$nav.base.path}</td>
-		</tr>
-		<tr>
-			<td>Created</td>
-			<td>{formatDate($nav.base.created, true, true, true)}</td>
-		</tr>
-		<tr>
-			<td>Modified</td>
-			<td>{formatDate($nav.base.modified, true, true, true)}</td>
-		</tr>
-		<tr>
-			<td>Mode</td>
-			<td>{$nav.base.mode_string}</td>
-		</tr>
-		{#if $nav.base.id}
+		<tbody>
 			<tr>
-				<td>Public ID</td>
-				<td><a href="/d/{$nav.base.id}">{$nav.base.id}</a></td>
-			</tr>
-		{/if}
-		{#if $nav.base.type === "file"}
-			<tr>
-				<td>File type</td>
-				<td>{$nav.base.file_type}</td>
+				<td>Name</td>
+				<td>{$nav.base.name}</td>
 			</tr>
 			<tr>
-				<td>File size</td>
-				<td>{formatDataVolume($nav.base.file_size, 4)} ( {formatThousands($nav.base.file_size)} B )</td>
+				<td>Path</td>
+				<td>{$nav.base.path}</td>
 			</tr>
 			<tr>
-				<td>Downloads</td>
-				<td>{formatThousands(total_downloads)} (unique, counted once per IP)</td>
+				<td>Created</td>
+				<td>{formatDate($nav.base.created, true, true, true)}</td>
 			</tr>
 			<tr>
-				<td>Transfer used</td>
+				<td>Modified</td>
+				<td>{formatDate($nav.base.modified, true, true, true)}</td>
+			</tr>
+			<tr>
+				<td>Mode</td>
+				<td>{$nav.base.mode_string}</td>
+			</tr>
+			{#if $nav.base.id}
+				<tr>
+					<td>Public ID</td>
+					<td><a href="/d/{$nav.base.id}">{$nav.base.id}</a></td>
+				</tr>
+			{/if}
+			{#if $nav.base.type === "file"}
+				<tr>
+					<td>File type</td>
+					<td>{$nav.base.file_type}</td>
+				</tr>
+				<tr>
+					<td>File size</td>
+					<td>{formatDataVolume($nav.base.file_size, 4)} ( {formatThousands($nav.base.file_size)} B )</td>
+				</tr>
+				<tr>
+					<td>Downloads</td>
+					<td>{formatThousands(total_downloads)} (unique, counted once per IP)</td>
+				</tr>
+				<tr>
+					<td>Transfer used</td>
+					<td>
+						{formatDataVolume(total_transfer_paid, 4)}
+						( {formatThousands(total_transfer_paid)} B ),
+						{(total_transfer_paid/$nav.base.file_size).toFixed(1)}x file size
+					</td>
+				</tr>
+				<tr><td>SHA256 sum</td><td>{$nav.base.sha256_sum}</td></tr>
+			{/if}
+			<tr>
+				<td>Direct link</td>
 				<td>
-					{formatDataVolume(total_transfer_paid, 4)}
-					( {formatThousands(total_transfer_paid)} B ),
-					{(total_transfer_paid/$nav.base.file_size).toFixed(1)}x file size
+					<CopyButton text={direct_url}>Copy</CopyButton>
+					<a href="{direct_url}">{direct_url}</a>
 				</td>
 			</tr>
-			<tr><td>SHA256 sum</td><td>{$nav.base.sha256_sum}</td></tr>
-		{/if}
-		<tr>
-			<td>Direct link</td>
-			<td>
-				<CopyButton text={direct_url}>Copy</CopyButton>
-				<a href="{direct_url}">{direct_url}</a>
-			</td>
-		</tr>
-		{#if share_url !== ""}
-			<tr>
-				<td>Sharing link</td>
-				<td>
-					<CopyButton text={share_url}>Copy</CopyButton>
-					<a href="{share_url}">{share_url}</a>
-				</td>
-			</tr>
-			<tr>
-				<td>Direct sharing link</td>
-				<td>
-					<CopyButton text={direct_share_url}>Copy</CopyButton>
-					<a href="{direct_share_url}">{direct_share_url}</a>
-				</td>
-			</tr>
-		{/if}
+			{#if share_url !== ""}
+				<tr>
+					<td>Sharing link</td>
+					<td>
+						<CopyButton text={share_url}>Copy</CopyButton>
+						<a href="{share_url}">{share_url}</a>
+					</td>
+				</tr>
+				<tr>
+					<td>Direct sharing link</td>
+					<td>
+						<CopyButton text={direct_share_url}>Copy</CopyButton>
+						<a href="{direct_share_url}">{direct_share_url}</a>
+					</td>
+				</tr>
+			{/if}
+		</tbody>
 	</table>
 
 	{#if $nav.base.type === "file"}

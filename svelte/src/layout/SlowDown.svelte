@@ -51,9 +51,11 @@ export let icon_href = ""
 
 <IconBlock icon_href={icon_href}>
 	<table>
-		<tr><td colspan="2">{file_name}</td></tr>
-		<tr><td>Type</td><td>{file_type}</td></tr>
-		<tr><td>Size</td><td>{formatDataVolume(file_size, 3)}</td></tr>
+		<tbody>
+			<tr><td colspan="2">{file_name}</td></tr>
+			<tr><td>Type</td><td>{file_type}</td></tr>
+			<tr><td>Size</td><td>{formatDataVolume(file_size, 3)}</td></tr>
+		</tbody>
 	</table>
 	<button on:click={() => {dispatch("download")}}>
 		<i class="icon">download</i> Download

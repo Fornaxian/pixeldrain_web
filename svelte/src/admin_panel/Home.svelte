@@ -209,14 +209,16 @@ onDestroy(() => {
 <section>
 	<h3>Process stats</h3>
 	<table>
-		<tr>
-			<td>DB Time</td>
-			<td>{formatDate(new Date(status.db_time), true, true, true)}</td>
-			<td>DB Latency</td>
-			<td>{formatNumber(status.db_latency / 1000, 3)} ms</td>
-			<td>PID</td>
-			<td>{status.pid}</td>
-		</tr>
+		<tbody>
+			<tr>
+				<td>DB Time</td>
+				<td>{formatDate(new Date(status.db_time), true, true, true)}</td>
+				<td>DB Latency</td>
+				<td>{formatNumber(status.db_latency / 1000, 3)} ms</td>
+				<td>PID</td>
+				<td>{status.pid}</td>
+			</tr>
+		</tbody>
 	</table>
 
 	<h3>Pixelstore stats</h3>

@@ -117,46 +117,50 @@ const logout = async (key) => {
 </section>
 <div class="table_scroll">
 	<table style="text-align: left;">
-		<tr>
-			<td>Key</td>
-			<td>Created</td>
-			<td>Last used ▼</td>
-			<td>IP address</td>
-			<td></td>
-		</tr>
-		{#each rows as row (row.auth_key)}
-			<tr style="border-bottom: none;">
-				<td>{row.auth_key}</td>
-				<td>{formatDate(row.creation_time, true, true, false)}</td>
-				<td>{formatDate(row.last_used_time, true, true, false)}</td>
-				<td>{row.creation_ip_address}</td>
-				<td>
-					<button on:click|preventDefault={() => {logout(row.auth_key)}} class="button button_red round">
-						<i class="icon">delete</i>
-					</button>
-				</td>
-			</tr>
+		<thead>
 			<tr>
-				<td colspan="1">
-					{#if row.app_name === "website login"}
-						<img src="/res/img/pixeldrain_32.png" alt="Pixeldrain logo" class="app_icon"/>
-						Pixeldrain website
-					{:else if row.app_name === "website keys page"}
-						<i class="icon">vpn_key</i>
-						Pixeldrain keys page
-					{:else if row.app_name === "sharex"}
-						<img src="/res/img/sharex.png" alt="ShareX logo" class="app_icon"/>
-						ShareX
-					{:else if row.app_name === "jdownloader"}
-						<img src="/res/img/jdownloader.png" alt="JDownloader logo" class="app_icon"/>
-						JDownloader
-					{:else}
-						Unknown app: {row.app_name}
-					{/if}
-				</td>
-				<td colspan="4">User-Agent: {row.user_agent}</td>
+				<td>Key</td>
+				<td>Created</td>
+				<td>Last used ▼</td>
+				<td>IP address</td>
+				<td></td>
 			</tr>
-		{/each}
+		</thead>
+		<tbody>
+			{#each rows as row (row.auth_key)}
+				<tr style="border-bottom: none;">
+					<td>{row.auth_key}</td>
+					<td>{formatDate(row.creation_time, true, true, false)}</td>
+					<td>{formatDate(row.last_used_time, true, true, false)}</td>
+					<td>{row.creation_ip_address}</td>
+					<td>
+						<button on:click|preventDefault={() => {logout(row.auth_key)}} class="button button_red round">
+							<i class="icon">delete</i>
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="1">
+						{#if row.app_name === "website login"}
+							<img src="/res/img/pixeldrain_32.png" alt="Pixeldrain logo" class="app_icon"/>
+							Pixeldrain website
+						{:else if row.app_name === "website keys page"}
+							<i class="icon">vpn_key</i>
+							Pixeldrain keys page
+						{:else if row.app_name === "sharex"}
+							<img src="/res/img/sharex.png" alt="ShareX logo" class="app_icon"/>
+							ShareX
+						{:else if row.app_name === "jdownloader"}
+							<img src="/res/img/jdownloader.png" alt="JDownloader logo" class="app_icon"/>
+							JDownloader
+						{:else}
+							Unknown app: {row.app_name}
+						{/if}
+					</td>
+					<td colspan="4">User-Agent: {row.user_agent}</td>
+				</tr>
+			{/each}
+		</tbody>
 	</table>
 	<br/>
 </div>

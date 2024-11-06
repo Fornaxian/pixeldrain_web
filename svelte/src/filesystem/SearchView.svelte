@@ -109,36 +109,29 @@ const open_result = index => {
 	</form>
 </div>
 
-<div class="directory center">
-	<tr>
-		<td></td>
-		<td>Name</td>
-	</tr>
+<div class="results center">
 	{#each search_results as result, index}
 		<a
 			href={"/d"+fs_encode_path(result)}
 			on:click|preventDefault={() => open_result(index)}
 			class="node"
 		>
-			<td>
-				<img src={fs_thumbnail_url(result, 32, 32)} class="node_icon" alt="icon"/>
-			</td>
-			<td class="node_name">
+			<img src={fs_thumbnail_url(result, 32, 32)} class="node_icon" alt="icon"/>
+			<span class="node_name">
 				<!-- Remove the search directory from the result -->
 				{result.slice($nav.base.path.length+1)}
-			</td>
+			</span>
 		</a>
 	{/each}
 
 	{#if search_results.length === last_limit}
 		<div class="node">
-			<td></td>
-			<td class="node_name">
+			<div class="node_name" style="text-align: center;">
 				<button on:click={() => {search(last_limit + 100)}}>
 					<i class="icon">expand_more</i>
 					More results
 				</button>
-			</td>
+			</div>
 		</div>
 	{/if}
 </div>
@@ -164,8 +157,9 @@ const open_result = index => {
 	flex: 1 1 auto;
 }
 
-.directory {
-	display: table;
+.results {
+	display: flex;
+	flex-direction: column;
 	position: relative;
 	overflow: hidden;
 	margin: 8px auto 16px auto;
@@ -174,17 +168,18 @@ const open_result = index => {
 	border-collapse: collapse;
 	border-radius: 8px;
 }
-.directory > * {
-	display: table-row;
-}
-.directory > * > * {
-	display: table-cell;
+.results > * {
+	display: flex;
+	flex-direction: row;
 }
 .node {
-	display: table-row;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
 	text-decoration: none;
 	color: var(--text-color);
-	padding: 6px;
+	padding: 4px;
 }
 .node:not(:last-child) {
 	border-bottom: 1px solid var(--separator);
@@ -194,17 +189,15 @@ const open_result = index => {
 	color: var(--input_text);
 	text-decoration: none;
 }
-td {
-	padding: 4px;
-	vertical-align: middle;
-}
 .node_icon {
+	flex: 0 0 auto;
 	height: 32px;
 	width: 32px;
 	vertical-align: middle;
 	border-radius: 4px;
 }
 .node_name {
+	flex: 1 1 auto;
 	width: 100%;
 	overflow: hidden;
 	line-height: 1.2em;

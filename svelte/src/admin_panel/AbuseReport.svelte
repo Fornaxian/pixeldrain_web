@@ -82,42 +82,46 @@ let set_status = async (action, report_type) => {
 		</div>
 		<div class="table_scroll">
 			<table>
-				<tr>
-					<td>Time</td>
-					<td>IP</td>
-					<td>Type</td>
-					<td>Status</td>
-					<td colspan="2">Reports from this IP</td>
-				</tr>
-				{#each report.reports as user_report}
+				<thead>
 					<tr>
-						<td>{formatDate(user_report.time, true, true, false)}</td>
-						<td>{user_report.ip_address}</td>
-						<td>{user_report.type}</td>
-						<td>{user_report.status}</td>
-						<td>{ip_report_count[user_report.ip_address]}</td>
-						<td>
-							{#if can_grant}
-								<button on:click={() => dispatch("resolve_by_ip", {ip: user_report.ip_address, action: "grant"})}>
-									Accept all
-								</button>
-							{/if}
-							{#if can_reject}
-								<button on:click={() => dispatch("resolve_by_ip", {ip: user_report.ip_address, action: "reject"})}>
-									Ignore all
-								</button>
-							{/if}
-						</td>
+						<td>Time</td>
+						<td>IP</td>
+						<td>Type</td>
+						<td>Status</td>
+						<td colspan="2">Reports from this IP</td>
 					</tr>
-					{#if user_report.description !== ""}
+				</thead>
+				<tbody>
+					{#each report.reports as user_report}
 						<tr>
-							<td>Description</td>
-							<td colspan="5" style="white-space: pre-wrap; word-wrap: break-word;">
-								{user_report.description}
+							<td>{formatDate(user_report.time, true, true, false)}</td>
+							<td>{user_report.ip_address}</td>
+							<td>{user_report.type}</td>
+							<td>{user_report.status}</td>
+							<td>{ip_report_count[user_report.ip_address]}</td>
+							<td>
+								{#if can_grant}
+									<button on:click={() => dispatch("resolve_by_ip", {ip: user_report.ip_address, action: "grant"})}>
+										Accept all
+									</button>
+								{/if}
+								{#if can_reject}
+									<button on:click={() => dispatch("resolve_by_ip", {ip: user_report.ip_address, action: "reject"})}>
+										Ignore all
+									</button>
+								{/if}
 							</td>
 						</tr>
-					{/if}
-				{/each}
+						{#if user_report.description !== ""}
+							<tr>
+								<td>Description</td>
+								<td colspan="5" style="white-space: pre-wrap; word-wrap: break-word;">
+									{user_report.description}
+								</td>
+							</tr>
+						{/if}
+					{/each}
+				</tbody>
 			</table>
 		</div>
 	</div>
