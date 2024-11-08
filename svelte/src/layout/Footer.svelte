@@ -5,7 +5,6 @@ import Github from "../icons/Github.svelte";
 import Mastodon from "../icons/Mastodon.svelte";
 import Patreon from "../icons/Patreon.svelte";
 import Reddit from "../icons/Reddit.svelte";
-import Twitter from "../icons/Twitter.svelte";
 import { formatDataVolumeBits } from "../util/Formatting.svelte";
 
 let server_tx = 0
@@ -40,9 +39,6 @@ onMount(async () => {
 			</a> |
 			<a href="https://discord.gg/TWKGvYAFvX" target="_blank" rel="noreferrer">
 				<Discord style="color: var(--body_text_color);"/> Discord
-			</a> |
-			<a href="https://twitter.com/Fornax96" target="_blank" rel="noreferrer">
-				<Twitter style="color: var(--body_text_color);"/> Twitter
 			</a> |
 			<a href="https://reddit.com/r/pixeldrain" target="_blank" rel="noreferrer">
 				<Reddit style="color: var(--body_text_color);"/> Reddit

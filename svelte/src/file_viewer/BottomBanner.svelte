@@ -56,10 +56,6 @@ onMount(() => {
 				<i class="icon small">people</i>
 				Discord
 			</a>
-			<a href="https://twitter.com/Fornax96" rel="noreferrer" class="button" target="_blank" style="background-color: #1a8cd8; color: #ffffff;">
-				<i class="icon small">people</i>
-				Twitter
-			</a>
 			<a href="https://www.reddit.com/r/PixelDrain"
 				rel="noreferrer" class="button" target="_blank" style="background-color: #ff4500; color: #ffffff;"
 			>
