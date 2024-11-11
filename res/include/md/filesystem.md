@@ -106,6 +106,14 @@ A few example use cases of rclone are:
    bisync](https://rclone.org/commands/rclone_bisync/) (bisync is experimental
    tech, don't use with important data)
 
+#### Rclone upload performance issue
+
+Under some circumstances rclone has trouble with reaching full upload speed when
+using the HTTP2 protocol (which is enabled by default). This is due to a [bug in
+the Go runtime](https://github.com/golang/go/issues/37373). If you are
+experiencing this then it might help to add the `--disable-http2` flag to your
+rclone commands.
+
 #### Rclone mount systemd service example
 
 To automatically mount your pixeldrain when logging in to your Linux OS you can
