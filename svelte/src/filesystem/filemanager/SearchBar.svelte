@@ -89,14 +89,15 @@ const clear_search = (blur) => {
 
 // Cursor navigation events can only be prevented with keydown. But we want to
 // use keyup for searching, so we use two listeners here
-const keydown = e => {
+const input_keydown = e => {
 	if (e.key === "Escape" || e.key === "ArrowUp" || e.key === "ArrowDown") {
 		e.preventDefault()
 	}
 }
-const keyup = e => {
+const input_keyup = e => {
 	if (e.key === "Escape") {
 		clear_search(true)
+		e.preventDefault()
 	} else if (e.key === "ArrowUp") {
 		if (selected_result > 0) {
 			selected_result--
@@ -123,6 +124,12 @@ const open_result = index => {
 }
 
 const window_keydown = (e) => {
+	if (e.ctrlKey || e.altKey || e.metaKey) {
+		return // prevent custom shortcuts from interfering with system shortcuts
+	} else if (document.activeElement.type && document.activeElement.type === "text") {
+		return // Prevent shortcuts from interfering with input fields
+	}
+
 	if (e.key === "Escape" && search_term !== "") {
 		clear_search(true)
 		e.preventDefault()
@@ -160,12 +167,16 @@ const window_keydown = (e) => {
 			placeholder="Type to search in {$nav.base.name}"
 			style="width: 100%;"
 			bind:value={search_term}
-			on:keydown={keydown}
-			on:keyup={keyup}
+			on:keydown={input_keydown}
+			on:keyup={input_keyup}
 		/>
 	</form>
 
 	<div class="results">
+		{#if search_term !== "" && search_results.length === 0}
+			No results found
+		{/if}
+
 		{#each search_results as result, index}
 			<a
 				href={"/d"+fs_encode_path(result)}
@@ -256,7 +267,6 @@ const window_keydown = (e) => {
 .node_name {
 	flex: 1 1 auto;
 	width: 100%;
-	overflow: hidden;
 	line-height: 1.2em;
 	word-break: break-all;
 }

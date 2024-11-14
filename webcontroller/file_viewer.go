@@ -154,6 +154,9 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		if apiErr, ok := err.(pixelapi.Error); ok && apiErr.Status == http.StatusNotFound {
 			w.WriteHeader(http.StatusNotFound)
 			wc.templates.Run(w, r, "list_not_found", templateData)
+		} else if strings.HasSuffix(err.Error(), "invalid control character in URL") {
+			w.WriteHeader(http.StatusNotFound)
+			wc.templates.Run(w, r, "list_not_found", templateData)
 		} else {
 			log.Error("API request error occurred: %s", err)
 			w.WriteHeader(http.StatusInternalServerError)

@@ -260,6 +260,8 @@ export const fs_node_type = (node: FSNode) => {
 		return "pdf"
 	} else if (
 		node.file_type === "application/json" ||
+		node.file_type === "application/x-yaml" ||
+		node.file_type === "application/x-shellscript" ||
 		node.file_type.startsWith("text")
 	) {
 		return "text"
