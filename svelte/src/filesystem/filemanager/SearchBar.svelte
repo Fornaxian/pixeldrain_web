@@ -97,7 +97,6 @@ const input_keydown = e => {
 const input_keyup = e => {
 	if (e.key === "Escape") {
 		clear_search(true)
-		e.preventDefault()
 	} else if (e.key === "ArrowUp") {
 		if (selected_result > 0) {
 			selected_result--
@@ -170,6 +169,12 @@ const window_keydown = (e) => {
 			on:keydown={input_keydown}
 			on:keyup={input_keyup}
 		/>
+		{#if search_term !== ""}
+			<!-- Button needs to be of button type in order to not submit the form -->
+			<button on:click={clear_search} type="button">
+				<i class="icon">close</i>
+			</button>
+		{/if}
 	</form>
 
 	<div class="results">

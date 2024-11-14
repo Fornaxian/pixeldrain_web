@@ -260,10 +260,7 @@ onMount(() => {
 >
 	<div class="width_container">
 		{#if mode === "viewing"}
-			<!-- Search only works in the user's home directory -->
-			{#if $nav.path[0] && $nav.path[0].id === "me"}
-				<SearchBar nav={nav}/>
-			{/if}
+			<SearchBar nav={nav}/>
 
 			<div class="toolbar">
 				<button on:click={navigate_back} title="Back">
