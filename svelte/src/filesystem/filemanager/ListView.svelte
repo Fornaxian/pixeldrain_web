@@ -17,7 +17,7 @@ export let hide_branding = false
 		<td></td>
 		<td>Name</td>
 		<td>Size</td>
-		<td>Actions</td>
+		<td></td>
 	</tr>
 	{#each $nav.children as child, index (child.path)}
 		<a

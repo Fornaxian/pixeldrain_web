@@ -237,7 +237,10 @@ export const fs_node_type = (node: FSNode) => {
 		return "dir"
 	} else if (node.file_type === "application/bittorrent" || node.file_type === "application/x-bittorrent") {
 		return "torrent"
-	} else if (node.file_type === "application/zip") {
+	} else if (
+		node.file_type === "application/zip" ||
+		node.file_type === "application/x-7z-compressed"
+	) {
 		return "zip"
 	} else if (node.file_type.startsWith("image")) {
 		return "image"
