@@ -8,7 +8,7 @@ import Button from '../../layout/Button.svelte';
 import FileImporter from './FileImporter.svelte';
 import { formatDate } from '../../util/Formatting.svelte';
 import { drop_target } from "../../lib/DropTarget.ts"
-import SearchBar from '../SearchBar.svelte';
+import SearchBar from './SearchBar.svelte';
 
 export let nav
 export let upload_widget
@@ -20,13 +20,6 @@ let mode = "viewing"
 let creating_dir = false
 let show_hidden = false
 let file_importer
-
-$: selected_files = $nav.children.reduce((acc, file) => {
-	if (file.fm_selected) {
-		acc++
-	}
-	return acc
-}, 0)
 
 export const upload = files => {
 	return uploader.upload(files)
@@ -331,9 +324,7 @@ onMount(() => {
 		{:else if mode === "selecting"}
 			<div class="toolbar toolbar_edit">
 				<Button click={viewing_mode} icon="close"/>
-				<div class="toolbar_spacer">
-					Selected {selected_files} files
-				</div>
+				<div class="toolbar_spacer"></div>
 				<Button click={move_start} icon="drive_file_move" label="Move"/>
 				<button on:click={delete_selected} class="button_red">
 					<i class="icon">delete</i>

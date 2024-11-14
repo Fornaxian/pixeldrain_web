@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { fs_search, fs_encode_path, fs_thumbnail_url } from "./FilesystemAPI";
+import { fs_search, fs_encode_path, fs_thumbnail_url } from "../FilesystemAPI";
 
 export let nav
 
@@ -219,7 +219,7 @@ const window_keydown = (e) => {
 	position: relative;
 	overflow-x: hidden;
 	overflow-y: auto;
-	max-height: 90vh;
+	max-height: 80vh;
 	text-align: left;
 	background: var(--body_color);
 	border-radius: 8px;
