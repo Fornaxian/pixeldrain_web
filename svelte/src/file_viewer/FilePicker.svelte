@@ -64,12 +64,12 @@ let done = () => {
 	modal.hide()
 }
 
-
 const keydown = (e) => {
-	if (e.ctrlKey || e.altKey || e.metaKey) {
+	if (!modal.is_visible()) {
+		return // Prevent a closed window from catching key events
+	} else if (e.ctrlKey || e.altKey || e.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
-	}
-	if (document.activeElement.type && document.activeElement.type === "text") {
+	} else if (document.activeElement.type && document.activeElement.type === "text") {
 		return // Prevent shortcuts from interfering with input fields
 	}
 	if (e.key === "/") {
@@ -77,7 +77,6 @@ const keydown = (e) => {
 		input_search.focus()
 	}
 }
-
 </script>
 
 <svelte:window on:keydown={keydown} />

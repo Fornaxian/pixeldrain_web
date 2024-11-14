@@ -28,11 +28,11 @@ export class FSNavigator {
 		// Instead of reloading the page we use the navigator to navigate to the
 		// new page
 		if (history_enabled) {
-			window.onpopstate = () => {
+			window.addEventListener("popstate", () => {
 				// Get the part of the URL after the fs root and navigate to it
 				const path = document.location.pathname.replace("/d/", "")
 				this.navigate(decodeURIComponent(path), false)
-			}
+			})
 		}
 	}
 
@@ -104,7 +104,7 @@ export class FSNavigator {
 		// greeted to a 404 page when refreshing after renaming a file
 		if (this.history_enabled) {
 			window.document.title = node.path[node.base_index].name + " ~ pixeldrain"
-			const url = "/d" + fs_encode_path(node.path[node.base_index].path)
+			const url = "/d" + fs_encode_path(node.path[node.base_index].path) + window.location.hash
 			if (push_history) {
 				window.history.pushState({}, window.document.title, url)
 			} else {

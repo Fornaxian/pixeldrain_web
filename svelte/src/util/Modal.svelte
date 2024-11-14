@@ -30,6 +30,7 @@ const dispatch = createEventDispatcher();
 export const show = () => { set_visible(true) }
 export const hide = () => { set_visible(false) }
 export const toggle = () => { set_visible(!visible) }
+export const is_visible = () => { return visible }
 export const set_visible = vis => {
 	visible = vis
 	dispatch("is_visible", visible)

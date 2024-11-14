@@ -6,7 +6,6 @@ import Toolbar from './Toolbar.svelte';
 import Breadcrumbs from './Breadcrumbs.svelte';
 import DetailsWindow from './DetailsWindow.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
-import SearchView from './SearchView.svelte';
 import FSUploadWidget from './upload_widget/FSUploadWidget.svelte';
 import { fs_path_url } from './FilesystemAPI';
 import Menu from './Menu.svelte';
@@ -24,7 +23,6 @@ let download_frame
 let details_visible = false
 let edit_window
 let edit_visible = false
-let view = "file"
 
 const loading = writable(true)
 const nav = new FSNavigator(true)
@@ -75,10 +73,6 @@ const keydown = e => {
 		case "r":
 			nav.shuffle = !nav.shuffle
 			break;
-		case "/":
-		case "f":
-			search()
-			break
 		case "a":
 		case "ArrowLeft":
 			nav.open_sibling(-1)
@@ -126,21 +120,6 @@ const download = () => {
 		download_frame.src = fs_path_url(nav.base.path) + "?bulk_download"
 	}
 }
-
-const search = async () => {
-	if (view === "search") {
-		view = "file"
-		return
-	}
-
-	// If we are not currently in a directory, then we navigate up to the parent
-	// directory
-	if (nav.base.type !== "dir") {
-		await nav.navigate_up()
-	}
-
-	view = "search"
-}
 </script>
 
 <svelte:window on:keydown={keydown} />
@@ -159,24 +138,18 @@ const search = async () => {
 			bind:details_visible={details_visible}
 			edit_window={edit_window}
 			bind:edit_visible={edit_visible}
-			bind:view={view}
 			on:download={download}
-			on:search={search}
 		/>
 
 		<div class="file_preview">
-			{#if view === "file"}
-				<FilePreview
-					bind:this={file_preview}
-					nav={nav}
-					upload_widget={upload_widget}
-					edit_window={edit_window}
-					on:open_sibling={e => nav.open_sibling(e.detail)}
-					on:download={download}
-				/>
-			{:else if view === "search"}
-				<SearchView nav={nav} on:done={() => {view = "file"}} />
-			{/if}
+			<FilePreview
+				bind:this={file_preview}
+				nav={nav}
+				upload_widget={upload_widget}
+				edit_window={edit_window}
+				on:open_sibling={e => nav.open_sibling(e.detail)}
+				on:download={download}
+			/>
 		</div>
 	</div>
 
@@ -215,13 +188,13 @@ const search = async () => {
 
 <style>
 :global(*) {
-	transition: background-color 0.5s,
-		border 0.5s,
-		border-top 0.5s,
-		border-right 0.5s,
-		border-bottom 0.5s,
-		border-left 0.5s,
-		color 0.5s;
+	transition: background-color 0.2s,
+		border 0.2s,
+		border-top 0.2s,
+		border-right 0.2s,
+		border-bottom 0.2s,
+		border-left 0.2s,
+		color 0.2s;
 }
 
 /* Viewer container */

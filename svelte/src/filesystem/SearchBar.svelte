@@ -1,17 +1,26 @@
 <script>
-import { createEventDispatcher } from "svelte";
+import { onMount } from "svelte";
 import { fs_search, fs_encode_path, fs_thumbnail_url } from "./FilesystemAPI";
 
 export let nav
 
-let dispatch = createEventDispatcher()
-
+let search_bar
 let error = ""
 let search_term = ""
 let search_results = []
+let selected_result = 0
 let searching = false
 let last_searched_term = ""
 let last_limit = 10
+
+onMount(() => {
+	// Clear results when the user moves to a new directory
+	return nav.subscribe(nav => {
+		if (nav.initialized) {
+			clear_search(false)
+		}
+	})
+})
 
 const search = async (limit = 10) => {
 	if (search_term.length < 2 || search_term.length > 100) {
@@ -46,6 +55,10 @@ const search = async (limit = 10) => {
 		}
 	}
 
+	if (search_results.length > 0 && selected_result > search_results.length-1) {
+		selected_result = search_results.length-1
+	}
+
 	searching = false
 	nav.set_loading(false)
 
@@ -58,26 +71,71 @@ const search = async (limit = 10) => {
 	}
 }
 
+const clear_search = (blur) => {
+	error = ""
+	search_term = ""
+	search_results = []
+	selected_result = 0
+	searching = false
+	last_searched_term = ""
+	last_limit = 10
+
+	// If blur is true we unfocus the search field. This should only happen when
+	// the user presses escape
+	if (blur) {
+		search_bar.blur()
+	}
+}
+
+// Cursor navigation events can only be prevented with keydown. But we want to
+// use keyup for searching, so we use two listeners here
+const keydown = e => {
+	if (e.key === "Escape" || e.key === "ArrowUp" || e.key === "ArrowDown") {
+		e.preventDefault()
+	}
+}
 const keyup = e => {
 	if (e.key === "Escape") {
-		dispatch("done")
+		clear_search(true)
+	} else if (e.key === "ArrowUp") {
+		if (selected_result > 0) {
+			selected_result--
+		}
+	} else if (e.key === "ArrowDown") {
+		if (selected_result+1 < search_results.length) {
+			selected_result++
+		}
 	} else {
 		search()
 	}
 }
 
-// Submitting opens the first result
+// Submitting opens the selected result
 const submit_search = () => {
 	if (search_results.length !== 0) {
-		open_result(0)
+		open_result(selected_result)
 	}
 }
 
 const open_result = index => {
 	nav.navigate(search_results[index], true)
-	dispatch("done")
+	clear_search(false)
+}
+
+const window_keydown = (e) => {
+	if (e.key === "Escape" && search_term !== "") {
+		clear_search(true)
+		e.preventDefault()
+	} else if (e.key === "/" || e.key === "f") {
+		e.preventDefault()
+		e.stopPropagation()
+		search_bar.focus()
+		return
+	}
 }
 </script>
+
+<svelte:window on:keydown={window_keydown} />
 
 {#if error === "path_not_found" || error === "node_is_a_directory"}
 	<div class="highlight_yellow center">
@@ -92,48 +150,48 @@ const open_result = index => {
 	</div>
 {/if}
 
-
-<div class="search_bar highlight_shaded center">
+<div class="center">
 	<form class="search_form" on:submit|preventDefault={submit_search}>
 		<i class="icon">search</i>
-		<!-- svelte-ignore a11y-autofocus -->
 		<input
+			bind:this={search_bar}
 			class="term"
 			type="text"
 			placeholder="Type to search in {$nav.base.name}"
 			style="width: 100%;"
 			bind:value={search_term}
+			on:keydown={keydown}
 			on:keyup={keyup}
-			autofocus
 		/>
 	</form>
-</div>
 
-<div class="results center">
-	{#each search_results as result, index}
-		<a
-			href={"/d"+fs_encode_path(result)}
-			on:click|preventDefault={() => open_result(index)}
-			class="node"
-		>
-			<img src={fs_thumbnail_url(result, 32, 32)} class="node_icon" alt="icon"/>
-			<span class="node_name">
-				<!-- Remove the search directory from the result -->
-				{result.slice($nav.base.path.length+1)}
-			</span>
-		</a>
-	{/each}
+	<div class="results">
+		{#each search_results as result, index}
+			<a
+				href={"/d"+fs_encode_path(result)}
+				on:click|preventDefault={() => open_result(index)}
+				class="node"
+				class:node_selected={selected_result === index}
+			>
+				<img src={fs_thumbnail_url(result, 32, 32)} class="node_icon" alt="icon"/>
+				<span class="node_name">
+					<!-- Remove the search directory from the result -->
+					{result.slice($nav.base.path.length+1)}
+				</span>
+			</a>
+		{/each}
 
-	{#if search_results.length === last_limit}
-		<div class="node">
-			<div class="node_name" style="text-align: center;">
-				<button on:click={() => {search(last_limit + 100)}}>
-					<i class="icon">expand_more</i>
-					More results
-				</button>
+		{#if search_results.length === last_limit}
+			<div class="node">
+				<div class="node_name" style="text-align: center;">
+					<button on:click={() => {search(last_limit + 100)}}>
+						<i class="icon">expand_more</i>
+						More results
+					</button>
+				</div>
 			</div>
-		</div>
-	{/if}
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -141,13 +199,11 @@ const open_result = index => {
 	margin: auto;
 	width: 1000px;
 	max-width: 100%;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid var(--separator);
 }
 
-.search_bar {
-	display: flex;
-	flex-direction: column;
-	margin-top: 10px;
-}
 .search_form {
 	display: flex;
 	flex-direction: row;
@@ -161,11 +217,11 @@ const open_result = index => {
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	overflow: hidden;
-	margin: 8px auto 16px auto;
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 90vh;
 	text-align: left;
 	background: var(--body_color);
-	border-collapse: collapse;
 	border-radius: 8px;
 }
 .results > * {
@@ -176,13 +232,14 @@ const open_result = index => {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: 6px;
+	gap: 4px;
 	text-decoration: none;
 	color: var(--text-color);
-	padding: 4px;
+	padding: 2px;
 }
-.node:not(:last-child) {
-	border-bottom: 1px solid var(--separator);
+.node_selected {
+	background: var(--highlight_background);
+	color: var(--highlight_text_color);
 }
 .node:hover:not(.node_selected) {
 	background: var(--input_background);

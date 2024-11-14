@@ -7,8 +7,6 @@ import FileStats from "./FileStats.svelte";
 let dispatch = createEventDispatcher()
 
 export let nav
-
-export let view = "file"
 export let details_visible = false
 export let edit_window
 export let edit_visible = false
@@ -92,13 +90,6 @@ let expand = e => {
 				<i class="icon">skip_next</i>
 			</button>
 		</div>
-
-		{#if $nav.path[0] && $nav.path[0].id === "me"}
-			<button on:click={() => dispatch("search")} class:button_highlight={view === "search"}>
-				<i class="icon">search</i>
-				<span>Search</span>
-			</button>
-		{/if}
 
 		<div class="separator hidden_horizontal"></div>
 

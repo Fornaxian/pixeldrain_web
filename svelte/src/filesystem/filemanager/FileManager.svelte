@@ -8,6 +8,7 @@ import Button from '../../layout/Button.svelte';
 import FileImporter from './FileImporter.svelte';
 import { formatDate } from '../../util/Formatting.svelte';
 import { drop_target } from "../../lib/DropTarget.ts"
+import SearchBar from '../SearchBar.svelte';
 
 export let nav
 export let upload_widget
@@ -266,6 +267,11 @@ onMount(() => {
 >
 	<div class="width_container">
 		{#if mode === "viewing"}
+			<!-- Search only works in the user's home directory -->
+			{#if $nav.path[0] && $nav.path[0].id === "me"}
+				<SearchBar nav={nav}/>
+			{/if}
+
 			<div class="toolbar">
 				<button on:click={navigate_back} title="Back">
 					<i class="icon">arrow_back</i>
@@ -420,7 +426,8 @@ onMount(() => {
 	width: 100%;
 	max-width: 1000px;
 	margin: auto;
-	padding: 0;
+	padding-top: 4px;
+	padding-bottom: 4px;
 	justify-content: center;
 	align-items: center;
 }
