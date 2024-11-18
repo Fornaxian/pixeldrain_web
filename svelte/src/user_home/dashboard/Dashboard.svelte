@@ -66,7 +66,7 @@ onMount(() => {
 		id: "upload",
 		elem: CardUpload,
 		title: "Quick upload",
-		link: "/",
+		link: "/home",
 	})
 	if (window.user.subscription.filesystem_access === true) {
 		cards.push({
