@@ -14,16 +14,12 @@ onMount(() => {
 })
 </script>
 
-<header id="pro">
-	<h1>Getting more out of pixeldrain</h1>
-</header>
-
 <section>
 	<p>
-		By purchasing a subscription you support pixeldrain on its mission
-		to make content sharing easier, safer and faster for everyone. If
-		you're on mobile the feature table might be easier to read
-		horizontally.
+		Pixeldrain features two different payment modes. We offer a monthly
+		subscription which is managed by Patreon, and a prepaid service which
+		supports a dozen different payment providers. For low usage Prepaid is
+		usually better as there's no monthly fee.
 	</p>
 </section>
 
@@ -101,7 +97,7 @@ onMount(() => {
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">€4 / TB / month</span><br/>
-			There is no limit. You only pay for what you use
+			No limit, you only pay for what you use
 		</div>
 
 		<div class="left_col">
@@ -111,16 +107,15 @@ onMount(() => {
 			</button>
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">120 days</span> (4 months)<br/>
-			After last download or view
+			<span class="bold">120 days</span> (4 months)
 		</div>
 		<div class="feature_cell pro_feat">
 			<span class="bold">240 days</span> (8 months)<br/>
-			After last download or view. Plans without expiry are available on Patreon
+			Plans without expiry are available
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">Never</span><br/>
-			While subscription is active
+			<span class="bold">Files do not expire</span><br/>
+			While prepaid plan is active
 		</div>
 
 		<div class="left_col">
@@ -209,15 +204,8 @@ onMount(() => {
 </div>
 
 <section>
-	<br/>
-	<br/>
-	<br/>
-	<div style="text-align: center;">
-		These plans can also be subscribed to through Patreon:
-	</div>
-	<br/>
+	<h2>Other plans available on Patreon</h2>
 	<OtherPlans/>
-	<br/>
 </section>
 
 <Modal bind:this={file_expiry} title="File Expiry Postponing" padding>
@@ -316,21 +304,6 @@ onMount(() => {
 </Modal>
 
 <style>
-header {
-	background-image: url("/res/img/inflating_star.webp");
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: center;
-	background-size: cover;
-	background-blend-mode: normal;
-}
-header > h1 {
-	margin-top: 60px;
-	margin-bottom: 60px;
-	color: #ffffff;
-	text-shadow: 0 0 3px #000000;
-}
-
 .bold {
 	font-weight: bold;
 }

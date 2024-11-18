@@ -16,7 +16,7 @@ let form = {
 			name: "email",
 			label: "E-mail address",
 			type: "email",
-			description: "Your e-mail address is only used for recovering lost passwords",
+			description: "Your e-mail address is only used for recovering lost passwords and billing notifications",
 		}, {
 			name: "password",
 			label: "Password",

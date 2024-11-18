@@ -414,8 +414,8 @@ onMount(() => {
 	width: 100%;
 	max-width: 1000px;
 	margin: auto;
-	padding-top: 4px;
-	padding-bottom: 4px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 	justify-content: center;
 	align-items: center;
 }

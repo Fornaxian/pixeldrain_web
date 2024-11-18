@@ -87,4 +87,4 @@ let pages = [
 ]
 </script>
 
-<TabMenu pages={pages} title="Welcome home, {window.user.username}!"/>
+<TabMenu pages={pages} title="Welcome, {window.user.username}!"/>

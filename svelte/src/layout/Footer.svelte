@@ -7,6 +7,7 @@ import Patreon from "../icons/Patreon.svelte";
 import Reddit from "../icons/Reddit.svelte";
 import { formatDataVolumeBits } from "../util/Formatting.svelte";
 
+export let nobg = false
 let server_tx = 0
 let cache_tx = 0
 let storage_tx = 0
@@ -26,7 +27,7 @@ onMount(async () => {
 })
 </script>
 
-<footer>
+<footer class:nobg>
 	<div class="footer_content">
 		<div style="display: inline-block; margin: 0 8px;">
 			Pixeldrain is a product by
@@ -62,3 +63,11 @@ onMount(async () => {
 		</span>
 	</div>
 </footer>
+
+<style>
+.nobg {
+	background-image: none;
+	background-color: unset;
+	box-shadow: none;
+}
+</style>

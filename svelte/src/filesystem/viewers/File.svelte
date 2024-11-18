@@ -22,7 +22,7 @@ export let nav
 	</button>
 </IconBlock>
 
-{#if $nav.base.path === "/me/.search_index.gz"}
+{#if $nav.base.name === ".search_index.gz"}
 	<TextBlock>
 		<p>
 			Congratulations! You have found the search index. One of the

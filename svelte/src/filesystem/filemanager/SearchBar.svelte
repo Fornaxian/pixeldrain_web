@@ -220,8 +220,8 @@ const window_keydown = (e) => {
 	margin: auto;
 	width: 1000px;
 	max-width: 100%;
-	padding-top: 4px;
-	padding-bottom: 4px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 	border-bottom: 1px solid var(--separator);
 }
 
@@ -230,7 +230,10 @@ const window_keydown = (e) => {
 	flex-direction: row;
 	align-items: center;
 }
-.term {
+.search_form > * {
+	flex: 0 0 auto;
+}
+.search_form > .term {
 	flex: 1 1 auto;
 }
 

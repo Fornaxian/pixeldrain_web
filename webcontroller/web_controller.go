@@ -132,7 +132,8 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		handler httprouter.Handle // The function to run when this API is called
 	}{
 		// General navigation
-		{GET, "" /*                */, wc.serveTemplate("home", handlerOpts{})},
+		{GET, "" /*                */, wc.serveLandingPage()},
+		{GET, "home" /*            */, wc.serveTemplate("home", handlerOpts{})},
 		{GET, "api" /*             */, wc.serveMarkdown("api.md", handlerOpts{})},
 		{GET, "history" /*         */, wc.serveTemplate("upload_history", handlerOpts{})},
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
@@ -235,6 +236,22 @@ type handlerOpts struct {
 	Auth    bool
 	NoEmbed bool
 	NoExec  bool
+}
+
+func (wc *WebController) serveLandingPage() httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		var td = wc.newTemplateData(w, r)
+		var template = "home"
+
+		// If the user is logged in, run user home template
+		if td.Authenticated {
+			template = "user_home"
+		}
+
+		if err := wc.templates.Run(w, r, template, td); err != nil && !util.IsNetError(err) {
+			log.Error("Error executing template '%s': %s", template, err)
+		}
+	}
 }
 
 func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.Handle {

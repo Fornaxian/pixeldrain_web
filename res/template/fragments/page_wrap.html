@@ -3,9 +3,8 @@
 	menu
 </button>
 <nav id="page_navigation" class="page_navigation">
-	<a href="/#">Home</a>
-	<a href="/#pro">Subscriptions</a>
-	<a href="/#prepaid">For creators</a>
+	<a href="/home#">Home</a>
+	<a href="/home#pro">Get Premium</a>
 	<hr />
 	{{if .Authenticated}}
 		<a href="/user">{{.User.Username}}</a>
@@ -21,7 +20,6 @@
 	{{else}}
 		<a href="/login">Login</a>
 		<a href="/register">Register</a>
-		<a href="/history">Upload History</a>
 	{{end}}
 	<hr />
 	<a href="/about">Questions & Answers</a>
