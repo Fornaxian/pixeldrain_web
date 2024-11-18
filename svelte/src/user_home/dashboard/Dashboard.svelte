@@ -10,18 +10,21 @@ import CardUpload from "./CardUpload.svelte";
 import CardPrepaidTransactions from "./CardPrepaidTransactions.svelte";
 import CardFsHome from "./CardFSHome.svelte";
 import AddressReputation from "../../home_page/AddressReputation.svelte";
+import { flip } from "svelte/animate";
 
 let cards = []
 
 const save = () => {
 	let storage = {
 		size: {},
+		order: [],
 	}
 
 	for (const card of cards) {
 		if (card.size !== undefined && card.size !== 1) {
 			storage.size[card.id] = card.size
 		}
+		storage.order.push(card.id)
 	}
 
 	window.localStorage.setItem("dashboard_layout", JSON.stringify(storage))
@@ -50,50 +53,65 @@ const shrink = i => {
 	save()
 }
 
+const swap_card = (idx1, idx2) => {
+	const card1 = cards[idx1]
+	cards[idx1] = cards[idx2]
+	cards[idx2] = card1
+	save()
+}
+
 onMount(() => {
-	cards = [
-		{
-			id: "upload",
-			elem: CardUpload,
-			title: "Quick upload",
-			link: "/",
-		}, {
+	cards = []
+	cards.push({
+		id: "upload",
+		elem: CardUpload,
+		title: "Quick upload",
+		link: "/",
+	})
+	if (window.user.subscription.filesystem_access === true) {
+		cards.push({
 			id: "filesystem_home",
 			elem: CardFsHome,
 			title: "Filesystem home",
 			link: "/d/me",
-			hidden: window.user.subscription.filesystem_access === false,
-		}, {
-			id: "account",
-			elem: CardAccount,
-			title: "Account",
-			link: "/user/settings",
-		}, {
-			id: "subscription",
-			elem: CardSubscription,
-			title: "Subscription",
-			link: "/user/subscription",
-		}, {
+		})
+	}
+	cards.push({
+		id: "account",
+		elem: CardAccount,
+		title: "Account",
+		link: "/user/settings",
+	})
+	cards.push({
+		id: "subscription",
+		elem: CardSubscription,
+		title: "Subscription",
+		link: "/user/subscription",
+	})
+	if (window.user.subscription.type === "prepaid") {
+		cards.push({
 			id: "prepaid_transactions",
 			elem: CardPrepaidTransactions,
 			title: "Prepaid transactions",
 			link: "/user/prepaid/transactions",
-			hidden: window.user.subscription.type !== "prepaid"
-		}, {
-			id: "usage",
-			elem: CardUsage,
-			title: "Usage",
-		}, {
-			id: "statistics",
-			elem: CardStatistics,
-			title: "Statistics",
-		}, {
-			id: "activiy",
-			elem: CardActivity,
-			title: "Activity",
-			link: "/user/activity",
-		},
-	]
+		})
+	}
+	cards.push({
+		id: "usage",
+		elem: CardUsage,
+		title: "Usage",
+	})
+	cards.push({
+		id: "statistics",
+		elem: CardStatistics,
+		title: "Statistics",
+	})
+	cards.push({
+		id: "activity",
+		elem: CardActivity,
+		title: "Activity",
+		link: "/user/activity",
+	})
 
 	// Apply the view settings from localstorage
 	try {
@@ -110,6 +128,12 @@ onMount(() => {
 				card.size = 1
 			}
 		}
+
+		if (layout.order !== undefined && layout.order instanceof Array) {
+			cards.sort((card1, card2) => {
+				return layout.order.indexOf(card1.id) - layout.order.indexOf(card2.id)
+			})
+		}
 	} catch (err) {
 		console.warn("Failed to load dashboard settings", err)
 		return
@@ -123,49 +147,44 @@ onMount(() => {
 
 <div class="cards">
 	{#each cards as card, i (card.id)}
-		{#if !card.hidden && card.size > 0}
-			<div
-				class="card"
-				class:size_1={card.size === 1}
-				class:size_2={card.size === 2}
-				class:size_3={card.size === 3}
-			>
-				<div class="title_box">
-					{#if card.link}
-						<Button link_href={card.link} icon="link" flat/>
-					{/if}
-
+		<div
+			animate:flip={{duration: 250}}
+			class="card"
+			class:size_1={card.size === 1}
+			class:size_2={card.size === 2}
+			class:size_3={card.size === 3}
+		>
+			<div class="title_box">
+				{#if card.link}
+					<h2>
+						<a href={card.link}>
+							{card.title}
+						</a>
+					</h2>
+				{:else}
 					<h2>{card.title}</h2>
+				{/if}
 
-					<Button click={() => shrink(i)} icon="zoom_out" flat/>
-					<span>
-						{card.size === undefined ? 1 : card.size}
-					</span>
-					<Button click={() => expand(i)} icon="zoom_in" flat/>
-				</div>
+				{#if i > 0}
+					<Button click={() => swap_card(i, i-1)} icon="chevron_left" flat/>
+				{/if}
+				{#if i < cards.length-1}
+					<Button click={() => swap_card(i, i+1)} icon="chevron_right" flat/>
+				{/if}
+
+				<Button click={() => shrink(i)} icon="zoom_out" flat/>
+				<span>
+					{card.size === undefined ? 1 : card.size}
+				</span>
+				<Button click={() => expand(i)} icon="zoom_in" flat/>
+			</div>
+
+			{#if !card.hidden && card.size > 0}
 				<div class="card_component">
 					<svelte:component this={card.elem} card_size={card.size}/>
 				</div>
-			</div>
-		{/if}
-	{/each}
-</div>
-
-<div class="cards">
-	{#each cards as card, i (card.id)}
-		{#if card.size === 0}
-			<div class="card size_1">
-				<div class="title_box">
-					{#if card.link}
-						<Button link_href={card.link} icon="link" flat/>
-					{/if}
-
-					<h2>{card.title}</h2>
-
-					<Button click={() => expand(i)} icon="visibility" flat/>
-				</div>
-			</div>
-		{/if}
+			{/if}
+		</div>
 	{/each}
 </div>
 
@@ -215,6 +234,10 @@ onMount(() => {
 	margin: 0;
 	font-size: 1.5em;
 	border-bottom: none;
-	text-align: center;
+	padding-left: 0.2em;
+}
+.title_box > h2 > a {
+	border-bottom: none;
+	text-decoration: none;
 }
 </style>
