@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import IconBlock from "../../layout/IconBlock.svelte";
-import { fs_thumbnail_url } from "../FilesystemAPI";
+import { fs_thumbnail_url } from "../FilesystemAPI.mjs";
 import TextBlock from "../../layout/TextBlock.svelte"
 let dispatch = createEventDispatcher()
 

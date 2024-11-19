@@ -7,7 +7,7 @@ import Breadcrumbs from './Breadcrumbs.svelte';
 import DetailsWindow from './DetailsWindow.svelte';
 import FilePreview from './viewers/FilePreview.svelte';
 import FSUploadWidget from './upload_widget/FSUploadWidget.svelte';
-import { fs_path_url } from './FilesystemAPI';
+import { fs_path_url } from './FilesystemAPI.mjs';
 import Menu from './Menu.svelte';
 import { FSNavigator } from "./FSNavigator"
 import { writable } from 'svelte/store';
@@ -226,6 +226,7 @@ const download = () => {
 	text-align: left;
 	box-shadow: none;
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 }
 
 /* File preview area (row 2) */
@@ -243,6 +244,7 @@ const download = () => {
 	flex-direction: column;
 	text-align: center;
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 }
 
 /* This max-width needs to be synced with the .toolbar max-width in

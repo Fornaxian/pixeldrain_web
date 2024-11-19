@@ -1,7 +1,7 @@
 <script>
 import { onMount, tick } from "svelte";
 import Spinner from "../../util/Spinner.svelte";
-import { fs_node_type, fs_thumbnail_url } from "./../FilesystemAPI";
+import { fs_node_type, fs_thumbnail_url } from "../FilesystemAPI.mjs";
 import FileManager from "../filemanager/FileManager.svelte";
 import Audio from "./Audio.svelte";
 import File from "./File.svelte";

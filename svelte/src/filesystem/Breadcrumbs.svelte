@@ -1,5 +1,5 @@
 <script>
-import { fs_encode_path } from "./FilesystemAPI";
+import { fs_encode_path } from "./FilesystemAPI.mjs";
 
 export let nav
 </script>

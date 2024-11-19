@@ -4,7 +4,7 @@ import { formatDataVolume, formatDate } from "../../util/Formatting.svelte"
 import ZipItem from "../../file_viewer/viewers/ZipItem.svelte";
 import IconBlock from "../../layout/IconBlock.svelte";
 import TextBlock from "../../layout/TextBlock.svelte"
-import { fs_node_icon, fs_path_url } from "../FilesystemAPI";
+import { fs_node_icon, fs_path_url } from "../FilesystemAPI.mjs";
 
 let dispatch = createEventDispatcher()
 

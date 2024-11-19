@@ -2,7 +2,7 @@
 import Chart from "../util/Chart.svelte";
 import { formatDataVolume, formatDate, formatThousands } from "../util/Formatting.svelte";
 import Modal from "../util/Modal.svelte";
-import { fs_path_url, fs_timeseries } from "./FilesystemAPI";
+import { fs_path_url, fs_timeseries } from "./FilesystemAPI.mjs";
 import { generate_share_path, generate_share_url } from "./Sharebar.svelte";
 import { color_by_name } from "../util/Util.svelte";
 import { tick } from "svelte";
@@ -121,7 +121,7 @@ let update_chart = async (base, timespan, interval) => {
 </script>
 
 <Modal bind:visible={visible} title="Details" width={($nav.base.type === "file" ? 1000 : 750) + "px"}>
-	<table style="width: 100%;">
+	<table>
 		<tbody>
 			<tr>
 				<td>Name</td>
@@ -132,11 +132,15 @@ let update_chart = async (base, timespan, interval) => {
 				<td>{$nav.base.path}</td>
 			</tr>
 			<tr>
-				<td>Created</td>
+				<td>Created by user</td>
+				<td>{$nav.base.created_by}</td>
+			</tr>
+			<tr>
+				<td>Creation date</td>
 				<td>{formatDate($nav.base.created, true, true, true)}</td>
 			</tr>
 			<tr>
-				<td>Modified</td>
+				<td>Modification date</td>
 				<td>{formatDate($nav.base.modified, true, true, true)}</td>
 			</tr>
 			<tr>
@@ -216,6 +220,11 @@ let update_chart = async (base, timespan, interval) => {
 </Modal>
 
 <style>
+table {
+	/* yes this sucks, sue me */
+	width: 98%;
+	margin: auto;
+}
 td:first-child {
 	word-break: keep-all;
 }

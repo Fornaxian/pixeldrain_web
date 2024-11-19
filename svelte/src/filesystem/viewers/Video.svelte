@@ -1,6 +1,6 @@
 <script>
 import { onMount,  createEventDispatcher, tick } from "svelte";
-import { fs_path_url } from "../FilesystemAPI";
+import { fs_path_url } from "../FilesystemAPI.mjs";
 let dispatch = createEventDispatcher()
 
 export let nav
@@ -169,6 +169,7 @@ const fullscreen = () => {
 	display: flex;
 	flex-direction: row;
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	padding: 0 2px 2px 2px;
 	align-items: center;
 }
@@ -195,6 +196,7 @@ const fullscreen = () => {
 }
 .compatibility_warning {
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	border-bottom: 2px solid #6666FF;
 	padding: 4px;
 }

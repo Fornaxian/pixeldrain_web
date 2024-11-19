@@ -240,6 +240,7 @@ h1 {
 	flex-direction: row;
 	overflow: auto;
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	padding: 0 2px 2px 2px;
 	align-items: center;
 }
@@ -259,6 +260,7 @@ h1 {
 }
 .compatibility_warning {
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	border-bottom: 2px solid #6666FF;
 	padding: 4px;
 }

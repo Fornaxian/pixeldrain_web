@@ -38,6 +38,7 @@ export let width = "750px"
 	vertical-align: middle;
 	overflow-wrap: anywhere;
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	border-radius: 8px;
 	padding: 8px;
 }

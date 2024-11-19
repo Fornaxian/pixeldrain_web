@@ -66,6 +66,7 @@ const share_tumblr = () => {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	background: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	border-top-left-radius: 16px;
 	border-bottom-left-radius: 16px;
 	text-align: center;

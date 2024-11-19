@@ -1,0 +1,6 @@
+{
+	"compilerOptions": {
+		"verbatimModuleSyntax": true,
+		"target": "ES2017",
+	}
+}

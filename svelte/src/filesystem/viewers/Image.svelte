@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { swipe_nav } from "../../lib/SwipeNavigate.ts";
-import { fs_path_url } from "./../FilesystemAPI.ts";
+import { fs_path_url } from "../FilesystemAPI.mjs";
 
 let dispatch = createEventDispatcher();
 

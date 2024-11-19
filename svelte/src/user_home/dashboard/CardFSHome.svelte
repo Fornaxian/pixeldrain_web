@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import { FSNavigator } from "../../filesystem/FSNavigator.ts"
-import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemAPI.ts";
+import { fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemAPI.mjs";
 import Button from "../../layout/Button.svelte";
 import CreateDirectory from "../../filesystem/filemanager/CreateDirectory.svelte";
 import FSUploadWidget from "../../filesystem/upload_widget/FSUploadWidget.svelte";
@@ -17,7 +17,7 @@ onMount(() => nav.navigate("/me", false))
 
 <div class="wrapper" use:drop_target={{upload: (files) => upload_widget.upload_files(files)}}>
 	<div class="toolbar">
-		{#if $nav.permissions.update}
+		{#if $nav.permissions.write}
 			<Button
 				click={() => upload_widget.pick_files()}
 				icon="cloud_upload"

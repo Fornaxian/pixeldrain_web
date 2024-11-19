@@ -33,6 +33,8 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 		} else if err.Error() == "unavailable_for_legal_reasons" {
 			wc.serveUnavailableForLegalReasons(w, r)
+		} else if err.Error() == "permission_denied" {
+			wc.serveForbidden(w, r)
 		} else {
 			log.Error("Failed to get path: %s", err)
 			wc.templates.Run(w, r, "500", td)

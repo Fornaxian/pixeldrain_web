@@ -1,6 +1,6 @@
 <script>
 import Button from "../../layout/Button.svelte";
-import { fs_delete_all } from "../FilesystemAPI";
+import { fs_delete_all } from "../FilesystemAPI.mjs";
 import PathLink from "../util/PathLink.svelte";
 
 export let nav
@@ -47,12 +47,14 @@ const delete_file = async e => {
 	<label for="file_name">Name</label>
 	<input form="edit_form" bind:value={new_name} id="file_name" type="text" class="form_input" disabled={is_root_dir}/>
 </div>
-<h2>Delete</h2>
-<p>
-	Delete this file or directory. If this is a directory then all
-	subfiles will be deleted as well. This action cannot be undone.
-</p>
-<Button click={delete_file} red icon="delete" label="Delete" style="align-self: flex-start;"/>
+{#if $nav.permissions.delete === true}
+	<h2>Delete</h2>
+	<p>
+		Delete this file or directory. If this is a directory then all
+		subfiles will be deleted as well. This action cannot be undone.
+	</p>
+	<Button click={delete_file} red icon="delete" label="Delete" style="align-self: flex-start;"/>
+{/if}
 
 <style>
 .form_grid {

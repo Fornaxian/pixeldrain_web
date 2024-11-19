@@ -1,5 +1,5 @@
 <script>
-import { fs_path_url } from "../FilesystemAPI";
+import { fs_path_url } from "../FilesystemAPI.mjs";
 
 export let nav
 </script>

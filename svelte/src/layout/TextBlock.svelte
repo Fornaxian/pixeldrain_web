@@ -16,6 +16,7 @@ export let center = false
 	margin: 8px auto;
 
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	border-radius: 8px;
 	padding: 8px;
 }

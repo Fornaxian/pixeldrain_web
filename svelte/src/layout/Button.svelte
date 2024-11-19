@@ -8,13 +8,13 @@ export let disabled = false;
 export let icon = ""
 export let icon_small = false;
 export let label = ""
-export let title = ""
+export let title = null
 export let link_href = ""
 export let link_target = "_self"
 export let click = e => {}
-export let style = ""
-export let type = ""
-export let form = ""
+export let style = null
+export let type = null
+export let form = null
 
 let click_int = e => {
 	if (highlight_on_click) {
@@ -43,7 +43,7 @@ let click_int = e => {
 		style={style}
 		type={type}
 		form={form}
-		disabled={disabled ? "disabled":""}
+		disabled={disabled ? "disabled":null}
 	>
 		{#if icon !== ""}
 			<i class="icon" class:small={icon_small}>{icon}</i>
@@ -63,7 +63,7 @@ let click_int = e => {
 		class:flat
 		title={title}
 		style={style}
-		disabled={disabled ? "disabled":""}
+		disabled={disabled ? "disabled":null}
 	>
 		{#if icon !== ""}
 			<i class="icon" class:small={icon_small}>{icon}</i>

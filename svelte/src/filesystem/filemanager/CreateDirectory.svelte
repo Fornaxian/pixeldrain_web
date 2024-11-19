@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { fs_mkdir } from "../FilesystemAPI.js";
+import { fs_mkdir } from "../FilesystemAPI.mjs";
 import Button from "../../layout/Button.svelte";
 
 export let nav;
@@ -22,7 +22,7 @@ let create_dir = async () => {
 		if (err.value && err.value === "node_already_exists") {
 			error_msg = "A directory with this name already exists"
 		} else {
-			error_msg = "Server returned an error: "+err
+			error_msg = "Server returned an error: code: '"+err.value+"' message: "+err.message
 		}
 	} finally {
 		nav.set_loading(false)

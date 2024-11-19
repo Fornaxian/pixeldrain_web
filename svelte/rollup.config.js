@@ -29,6 +29,8 @@ export default [
 		file: `${builddir}/${name}.js`,
 	},
 	plugins: [
+		sveltePreprocess(),
+
 		svelte({
 			preprocess: sveltePreprocess(),
 			compilerOptions: {

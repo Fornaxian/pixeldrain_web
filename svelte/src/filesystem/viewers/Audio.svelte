@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte'
-import { fs_path_url, fs_encode_path, fs_node_icon } from "../../filesystem/FilesystemAPI.ts"
+import { fs_path_url, fs_encode_path, fs_node_icon } from "../FilesystemAPI.mjs"
 import FileTitle from "../../layout/FileTitle.svelte";
 import TextBlock from "../../layout/TextBlock.svelte"
 

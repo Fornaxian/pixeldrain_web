@@ -22,6 +22,7 @@ export type FSNode = {
 	modified: Date,
 	mode_string: string,
 	mode_octal: string,
+	created_by: string,
 
 	abuse_type: string | undefined,
 	abuse_report_time: Date | undefined,
@@ -31,15 +32,16 @@ export type FSNode = {
 	sha256_sum: string,
 
 	id: string | undefined,
-	read_password: string | undefined,
-	write_password: string | undefined,
 	properties: {} | undefined,
+	link_permissions: FSPermissions | undefined,
+	user_permissions: [string: FSPermissions] | undefined,
+	password_permissions: [string: FSPermissions] | undefined,
 }
 
 export type FSPermissions = {
-	create: boolean,
+	owner: boolean,
 	read: boolean,
-	update: boolean,
+	write: boolean,
 	delete: boolean,
 }
 
@@ -56,6 +58,12 @@ export type NodeOptions = {
 	modified: Date | undefined,
 	shared: boolean | undefined,
 
+	// Permissions
+	link_permissions: FSPermissions | undefined,
+	user_permissions: FSPermissions | undefined,
+	password_permissions: FSPermissions | undefined,
+
+	// Branding
 	branding_enabled: boolean | undefined,
 	brand_input_color: string | undefined,
 	brand_highlight_color: string | undefined,
@@ -116,8 +124,12 @@ export const fs_update = async (path: string, opts: NodeOptions) => {
 	form.append("action", "update")
 
 	for (let key of Object.keys(opts)) {
-		if ((key === "created" || key === "modified") && opts[key] !== undefined) {
+		if (opts[key] === undefined) {
+			continue
+		} else if ((key === "created" || key === "modified")) {
 			form.append(key, opts[key].toISOString())
+		} else if (typeof opts[key] === "object") {
+			form.append(key, JSON.stringify(opts[key]))
 		} else {
 			form.append(key, opts[key])
 		}

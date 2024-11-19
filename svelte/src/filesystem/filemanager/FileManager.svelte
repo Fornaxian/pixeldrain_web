@@ -1,5 +1,5 @@
 <script>
-import { fs_delete_all, fs_rename } from './../FilesystemAPI.ts'
+import { fs_delete_all, fs_rename } from '../FilesystemAPI.mjs'
 import { onMount } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
 import ListView from './ListView.svelte'
@@ -298,7 +298,7 @@ onMount(() => {
 				</button>
 
 				<div class="toolbar_spacer"></div>
-				{#if $nav.permissions.update}
+				{#if $nav.permissions.write}
 					<button on:click={() => upload_widget.pick_files()} title="Upload files to this directory">
 						<i class="icon">cloud_upload</i>
 					</button>
@@ -407,6 +407,7 @@ onMount(() => {
 	margin: auto;
 	padding: 0;
 	background: var(--shaded_background);
+	backdrop-filter: blur(4px);
 }
 .toolbar {
 	display: flex;

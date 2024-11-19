@@ -1,10 +1,11 @@
 <script>
-import { fs_rename, fs_update } from "../FilesystemAPI";
+import { fs_rename, fs_update } from "../FilesystemAPI.mjs";
 import Modal from "../../util/Modal.svelte";
 import BrandingOptions from "./BrandingOptions.svelte";
 import { branding_from_node } from "./Branding";
 import FileOptions from "./FileOptions.svelte";
 import SharingOptions from "./SharingOptions.svelte";
+import AccessControl from "./AccessControl.svelte";
 
 export let nav
 let file = {
@@ -38,6 +39,11 @@ export const edit = (f, oae = false, open_tab = "") => {
 
 	if (file.properties === undefined) {
 		file.properties = {}
+	}
+
+	if (shared && file.link_permissions === undefined) {
+		// Default to read-only for public links
+		file.link_permissions = {read: true, write: false, delete: false}
 	}
 
 	branding_enabled = file.properties.branding_enabled === "true"
@@ -76,7 +82,9 @@ const save = async (keep_editing = false) => {
 	let new_file
 	try {
 		nav.set_loading(true)
-		let opts = {shared: shared}
+		let opts = {
+			shared: shared,
+		}
 
 		opts.branding_enabled = branding_enabled ? "true" : ""
 
@@ -87,6 +95,16 @@ const save = async (keep_editing = false) => {
 					opts[field] = file.properties[field]
 				}
 			}
+		}
+
+		if (shared && file.link_permissions !== undefined) {
+			opts.link_permissions = file.link_permissions
+		}
+		if (shared && file.user_permissions !== undefined) {
+			opts.user_permissions = file.user_permissions
+		}
+		if (shared && file.password_permissions !== undefined) {
+			opts.password_permissions = file.password_permissions
 		}
 
 		new_file = await fs_update(file.path, opts)
@@ -135,6 +153,12 @@ const save = async (keep_editing = false) => {
 			<i class="icon">share</i>
 			Sharing
 		</button>
+		{#if shared && $nav.permissions.owner}
+			<button class:button_highlight={tab === "access"} on:click={() => tab = "access"}>
+				<i class="icon">key</i>
+				Access control
+			</button>
+		{/if}
 		<button class:button_highlight={tab === "branding"} on:click={() => tab = "branding"}>
 			<i class="icon">palette</i>
 			Branding
@@ -153,11 +177,9 @@ const save = async (keep_editing = false) => {
 				bind:open_after_edit
 			/>
 		{:else if tab === "share"}
-			<SharingOptions
-				bind:file
-				bind:shared
-				on:save={() => save(true)}
-			/>
+			<SharingOptions bind:file bind:shared on:save={() => save(true)} />
+		{:else if tab === "access"}
+			<AccessControl bind:file bind:shared />
 		{:else if tab === "branding"}
 			<BrandingOptions
 				bind:enabled={branding_enabled}

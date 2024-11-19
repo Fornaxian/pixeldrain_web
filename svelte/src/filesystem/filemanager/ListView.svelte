@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { formatDataVolume } from "./../../util/Formatting.svelte";
-import { fs_encode_path, fs_node_icon } from "./../FilesystemAPI"
+import { fs_encode_path, fs_node_icon } from "../FilesystemAPI.mjs"
 
 let dispatch = createEventDispatcher()
 
@@ -57,7 +57,7 @@ export let hide_branding = false
 							<i class="icon">palette</i>
 						</button>
 					{/if}
-					{#if $nav.permissions.update && !hide_edit}
+					{#if $nav.permissions.write && !hide_edit}
 						<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_settings", index)}>
 							<i class="icon">edit</i>
 						</button>
@@ -69,11 +69,11 @@ export let hide_branding = false
 </div>
 
 <style>
-
 .directory {
 	display: table;
 	margin: 8px auto 16px auto;
-	background: var(--body_color);
+	background: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	border-collapse: collapse;
 	border-radius: 8px;
 

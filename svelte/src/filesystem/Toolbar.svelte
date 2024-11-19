@@ -106,7 +106,7 @@ let expand = e => {
 		{/if}
 
 		<!-- Share button is enabled when: The browser has a sharing API, or the user can edit the file (to enable sharing)-->
-		{#if $nav.base.id !== "me" && (navigator.share !== undefined || $nav.permissions.update === true)}
+		{#if $nav.base.id !== "me" && (navigator.share !== undefined || $nav.permissions.write === true)}
 			<button on:click={share}>
 				<i class="icon">share</i>
 				<span>Share</span>
@@ -133,7 +133,7 @@ let expand = e => {
 			<span>Deta<u>i</u>ls</span>
 		</button>
 
-		{#if $nav.base.id !== "me" && $nav.permissions.update === true}
+		{#if $nav.base.id !== "me" && $nav.permissions.write === true}
 			<button on:click={() => edit_window.edit(nav.base, true, "file")} class:button_highlight={edit_visible}>
 				<i class="icon">edit</i>
 				<span><u>E</u>dit</span>
@@ -149,6 +149,7 @@ let expand = e => {
 	overflow-y: scroll;
 	transition: max-height 0.3s;
 	background-color: var(--shaded_background);
+	backdrop-filter: blur(4px);
 }
 .grid {
 	display: grid;

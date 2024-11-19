@@ -31,7 +31,7 @@ export const generate_share_path = path => {
 </script>
 
 <script>
-import { fs_update, fs_encode_path } from "./FilesystemAPI";
+import { fs_update, fs_encode_path } from "./FilesystemAPI.mjs";
 
 export let visible = false
 export let share_url = ""
@@ -134,6 +134,7 @@ const share_tumblr = () => {
 	overflow-x: hidden;
 	float: left;
 	background: var(--shaded_background);
+	backdrop-filter: blur(4px);
 	text-align: center;
 	overflow: hidden;
 	opacity: 0;
