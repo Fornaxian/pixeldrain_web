@@ -4,7 +4,9 @@
 </button>
 <nav id="page_navigation" class="page_navigation">
 	<a href="/home#">Home</a>
-	<a href="/home#pro">Get Premium</a>
+	{{if eq .User.Subscription.ID ""}}
+		<a href="/home#pro">Get Premium</a>
+	{{end}}
 	<hr />
 	{{if .Authenticated}}
 		<a href="/user">{{.User.Username}}</a>
