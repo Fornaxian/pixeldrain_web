@@ -11,11 +11,15 @@ export let item = {
 <!-- First get directories and render them as details collapsibles -->
 {#each Object.entries(item.children) as [name, child]}
 	{#if child.children}
-		<details>
+		<details bind:open={child.details_open}>
 			<summary>
 				{name} ({formatDataVolume(child.size, 3)})
 			</summary>
-			<svelte:self item={child}></svelte:self>
+
+			<!-- Performance optimization, only render children if details is expanded -->
+			{#if child.details_open}
+				<svelte:self item={child}></svelte:self>
+			{/if}
 		</details>
 	{/if}
 {/each}

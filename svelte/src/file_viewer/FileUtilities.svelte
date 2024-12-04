@@ -38,7 +38,14 @@ export const file_set_href = file => {
 export const file_type = file => {
 	if (file.mime_type === "application/bittorrent" || file.mime_type === "application/x-bittorrent") {
 		return "torrent"
-	} else if (file.mime_type === "application/zip" || file.mime_type === "application/x-7z-compressed") {
+	} else if (
+		file.mime_type === "application/zip" ||
+		file.mime_type === "application/x-7z-compressed" ||
+		file.mime_type === "application/x-tar" ||
+		(file.mime_type === "application/gzip" && file.name.endsWith(".tar.gz")) ||
+		(file.mime_type === "application/x-xz" && file.name.endsWith(".tar.xz")) ||
+		(file.mime_type === "application/zstd" && file.name.endsWith(".tar.zst"))
+	) {
 		return "zip"
 	} else if (file.mime_type.startsWith("image")) {
 		return "image"

@@ -25,6 +25,7 @@ let zip = {
 }
 let comp_ratio = 0
 let archive_type = ""
+let truncated = false
 
 export const set_file = async f => {
 	file = f
@@ -49,9 +50,12 @@ export const set_file = async f => {
 
 		// Check if the zip has the property which allows separate files to be
 		// downloaded. If so then we set the download URL for each file
-		if (zip.properties && zip.properties.includes("read_individual_files")) {
-			// Set the download URL for each file in the zip
-			recursive_set_url(f.info_href+"/zip", zip)
+		if (zip.properties !== undefined) {
+			if (zip.properties.includes("read_individual_files")) {
+				// Set the download URL for each file in the zip
+				recursive_set_url(fs_path_url(nav.base.path)+"?zip_file=", zip)
+			}
+			truncated = zip.properties.includes("truncated")
 		}
 
 		comp_ratio = (zip.size / file.size)
@@ -85,7 +89,9 @@ const recursive_set_url = (parent_path, file) => {
 	{/if}
 
 	Compressed size: {formatDataVolume(file.size, 3)}<br/>
-	Uncompressed size: {formatDataVolume(zip.size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
+	{#if !truncated}
+		Uncompressed size: {formatDataVolume(zip.size, 3)} (Ratio: {comp_ratio.toFixed(2)}x)<br/>
+	{/if}
 	Uploaded on: {formatDate(file.date_upload, true, true, true)}
 	<br/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>
@@ -101,6 +107,13 @@ const recursive_set_url = (parent_path, file) => {
 {#if status === "finished"}
 	<TextBlock>
 		<h2>Files in this archive</h2>
+		{#if truncated}
+			<div class="highlight_yellow">
+				Due to the large size of this archive, the results have been
+				truncated. The list below is incomplete!
+			</div>
+		{/if}
+
 		<ZipItem item={zip} />
 	</TextBlock>
 {:else if status === "parse_failed"}

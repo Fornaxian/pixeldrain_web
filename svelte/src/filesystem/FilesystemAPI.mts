@@ -251,7 +251,11 @@ export const fs_node_type = (node: FSNode) => {
 		return "torrent"
 	} else if (
 		node.file_type === "application/zip" ||
-		node.file_type === "application/x-7z-compressed"
+		node.file_type === "application/x-7z-compressed" ||
+		node.file_type === "application/x-tar" ||
+		(node.file_type === "application/gzip" && node.name.endsWith(".tar.gz")) ||
+		(node.file_type === "application/x-xz" && node.name.endsWith(".tar.xz")) ||
+		(node.file_type === "application/zstd" && node.name.endsWith(".tar.zst"))
 	) {
 		return "zip"
 	} else if (node.file_type.startsWith("image")) {
