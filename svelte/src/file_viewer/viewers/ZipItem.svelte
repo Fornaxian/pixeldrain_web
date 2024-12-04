@@ -13,7 +13,15 @@ export let item = {
 	{#if child.children}
 		<details bind:open={child.details_open}>
 			<summary>
-				{name} ({formatDataVolume(child.size, 3)})
+				<div class="filename">
+					{name}
+					(
+						{formatDataVolume(child.size, 3)}
+						{#if child.download_url}
+							<a href={child.download_url}>download</a>
+						{/if}
+					)
+				</div>
 			</summary>
 
 			<!-- Performance optimization, only render children if details is expanded -->
@@ -29,12 +37,15 @@ export let item = {
 	{#each Object.entries(item.children) as [name, child]}
 		{#if !child.children}
 			<li>
-				{#if child.download_url}
-					<a href={child.download_url}>{name}</a>
-				{:else}
+				<div class="filename">
 					{name}
-				{/if}
-				({formatDataVolume(child.size, 3)})<br/>
+					(
+						{formatDataVolume(child.size, 3)}
+						{#if child.download_url}
+							<a href={child.download_url}>download</a>
+						{/if}
+					)
+				</div>
 			</li>
 		{/if}
 	{/each}
@@ -42,13 +53,34 @@ export let item = {
 
 <style>
 details {
-	padding-left: 12px;
+	padding-left: 0.5em;
 	border: none;
 	border-left: 2px solid var(--separator);
 }
+details > summary {
+	list-style-type: none;
+	display: flex;
+}
+details > summary::before {
+	font-family: 'Material Icons';
+	content: 'folder';
+}
+details[open] > summary::before {
+	font-family: 'Material Icons';
+	content: 'folder_open';
+}
+li::before {
+	font-family: 'Material Icons';
+	content: 'description';
+}
 ul {
+	list-style-type: none;
+	padding-left: 0.5em;
 	margin: 0;
-	padding-left: 30px;
 	border-left: 2px solid var(--separator);
+}
+.filename {
+	display: inline;
+	margin-left: 0.5em;
 }
 </style>

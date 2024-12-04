@@ -53,7 +53,7 @@ export const set_file = async f => {
 		if (zip.properties !== undefined) {
 			if (zip.properties.includes("read_individual_files")) {
 				// Set the download URL for each file in the zip
-				recursive_set_url(fs_path_url(nav.base.path)+"?zip_file=", zip)
+				recursive_set_url(f.info_href+"/zip", zip)
 			}
 			truncated = zip.properties.includes("truncated")
 		}
