@@ -14,7 +14,7 @@ let status = "loading"
 
 let zip = {
 	size: 0,
-	children: null,
+	children: [],
 }
 let uncomp_size = 0
 let comp_ratio = 0
@@ -28,6 +28,7 @@ export const update = async () => {
 	}
 
 	try {
+		status = "loading"
 		nav.set_loading(true)
 		let resp = await fetch(fs_path_url(nav.base.path)+"?zip_info")
 
@@ -47,11 +48,12 @@ export const update = async () => {
 
 		uncomp_size = recursive_size(zip)
 		comp_ratio = (uncomp_size / nav.base.file_size)
+		status = "finished"
 	} catch (err) {
 		console.error(err)
+		status = "parse_failed"
 	} finally {
 		nav.set_loading(false)
-		status = "finished"
 	}
 }
 
