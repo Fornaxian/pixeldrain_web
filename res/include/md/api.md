@@ -15,20 +15,16 @@ username field does not matter, it can be empty or anything else.
 Example usage in JavaScript:
 
 ```js
-const resp = await fetch(
-	"https://pixeldrain.com/api/user/files",
-	headers: {
-		"Authorization": "Basic "+btoa(":"+api_key),
-		// The btoa function encodes the key to Base64
-	},
-)
-if(resp.status >= 400) {
-	throw new Error(await resp.json())
-}
-result = await resp.json()
+const API_KEY = "YOUR API KEY";
+const resp = await fetch("https://pixeldrain.com/api/user/files", {
+  // The btoa function encodes the key to Base64
+  headers: { Authorization: "Basic " + btoa(":" + API_KEY) },
+});
+
+const result = resp.ok ? resp.json() : null;
 ```
 
-Some JSON responses include fields which end in "_href" (some people don't know
+Some JSON responses include fields which end in "\_href" (some people don't know
 this, but "href" stands for "Hypertext Reference", the more you know). These
 point to different places in the API, which you can retrieve with a GET request.
 The path is to be appended to the API URL, so "/file/someid/thumbnail" becomes
@@ -54,7 +50,6 @@ finishes and this may save you a lot of time and bandwidth when uploading large
 files. Make sure your HTTP client has support for premature responses,
 pixeldrain uses them a lot. If the server responds before your request is
 finished it will always indicate an error and you may abort the connection.
-
 
 {{template "api_file.md"}}
 {{template "api_list.md"}}
