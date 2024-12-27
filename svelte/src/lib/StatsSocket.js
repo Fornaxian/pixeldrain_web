@@ -11,6 +11,8 @@ let results = {
 	},
 	limits_init: false,
 	limits: {
+		server_overload: false,
+		speed_limit: 0,
 		download_limit: 0,
 		download_limit_used: 0,
 		transfer_limit: 0,

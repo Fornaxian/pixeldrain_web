@@ -35,9 +35,9 @@ will use your account's transfer limit.
 ## Free download limit
 
 The pixeldrain filesystem uses the same download limit as the regular files on
-pixeldrain. The only difference is that the limit is 2 GB higher. So while you
-can freely download up to 6 GB per day from regular pixeldrain files, you can
-download up to 8 GB per day from the filesystem. When the limit is exceeded the
+pixeldrain. The only difference is that the limit is 1 GB higher. So while you
+can freely download up to 5 GB per day from regular pixeldrain files, you can
+download up to 6 GB per day from the filesystem. When the limit is exceeded the
 speed is limited to 1 MiB/s like usual.
 
 If you want to embed pixeldrain files on your own website, distribute direct

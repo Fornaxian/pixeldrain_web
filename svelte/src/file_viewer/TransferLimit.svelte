@@ -39,9 +39,9 @@ $: {
 	width: 100%;
 	/* the font-size is two pixels smaller than the progress bar, this leaves
 	one px margin top and bottom */
-	height: 16px;
-	font-size: 14px;
-	line-height: 15px;
+	height: 18px;
+	font-size: 15px;
+	line-height: 18px;
 	overflow: hidden;
 }
 .progress_bar_inner {

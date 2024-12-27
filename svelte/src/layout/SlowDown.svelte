@@ -33,8 +33,8 @@ export let icon_href = ""
 			Come back tomorrow when your free transfer limit resets
 		</li>
 		<li>
-			Download the file at a limited rate of 1 MiB/s. This will take at
-			least {formatDuration((file_size/(1<<20))*1000, 0)}
+			Download the file at a limited rate of {formatDataVolume($stats.limits.speed_limit, 3)}/s. This will take at
+			least {formatDuration((file_size/($stats.limits.speed_limit))*1000, 0)}
 		</li>
 		<li>
 			<a href="/#pro" target="_blank" class="button button_highlight">

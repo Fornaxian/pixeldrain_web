@@ -1,5 +1,7 @@
 <script>
 import { onMount } from "svelte"
+import { formatDataVolume } from "../util/Formatting.svelte";
+import { stats } from "../lib/StatsSocket.js"
 
 let ad_type = ""
 
@@ -8,18 +10,28 @@ onMount(() => {
 	// 10% reviews
 	// 50% patreon
 
-	let rand = Math.random()
-	if (rand < 0.4) {
-		ad_type = "socials"
-	} else if (rand < 0.5) {
-		ad_type = "reviews"
-	} else {
-		ad_type = "patreon_support"
-	}
+	// let rand = Math.random()
+	// if (rand < 0.4) {
+	// 	ad_type = "socials"
+	// } else if (rand < 0.5) {
+	// 	ad_type = "reviews"
+	// } else {
+	// 	ad_type = "patreon_support"
+	// }
 })
 </script>
 
-{#if ad_type === "patreon_support"}
+{#if $stats.limits_init && $stats.limits.server_overload}
+
+	<div class="highlight_yellow" style="margin: 3px;">
+		Pixeldrain's servers are currently overloaded. In order to ensure
+		stability for our paying customers the free download limit has been
+		temporarily reduced to {formatDataVolume($stats.limits.transfer_limit,
+		3)}. If you want fast downloads, please return later when peak hours are
+		over.
+	</div>
+
+{:else if ad_type === "patreon_support"}
 
 	<div class="banner support_banner">
 		<span style="display: block; margin-bottom: 2px;">
@@ -35,23 +47,18 @@ onMount(() => {
 
 	<div class="banner center">
 		<div class="socials">
-			Pixeldrain is on the fediverse!<br/>
+			Pixeldrain on social media<br/>
 
 			<a href="https://mastodon.social/@fornax" rel="noreferrer" class="button" target="_blank" style="background-color: #595aff; color: #ffffff;">
 				<i class="icon small">people</i>
 				Mastodon
 			</a>
-			<a href="https://lemmy.fornaxian.tech/c/pixeldrain"
-				rel="noreferrer" class="button" target="_blank" style="background-color: #14854f; color: #ffffff;"
+			<a href="https://bsky.app/profile/fornax.bsky.social"
+				rel="noreferrer" class="button" target="_blank" style="background-color: #208bfe; color: #ffffff;"
 			>
 				<i class="icon small">people</i>
-				Lemmy
+				Bluesky
 			</a>
-		</div>
-
-		<div class="socials">
-			And on other media too<br/>
-
 			<a href="https://discord.gg/TWKGvYAFvX" rel="noreferrer" class="button" target="_blank" style="background-color: #5b5eee; color: #ffffff;">
 				<i class="icon small">people</i>
 				Discord
@@ -97,14 +104,6 @@ onMount(() => {
 			<i class="icon">security</i>
 			Get uBlock Origin
 		</a>
-	</div>
-
-{:else if ad_type === "overload"}
-
-	<div class="highlight_yellow" style="margin: 3px;">
-		Pixeldrain's server host is having network problems. In order to
-		ensure stability for our paying customers the free download limit
-		has been temporarily reduced to 3 GB
 	</div>
 
 {/if}
