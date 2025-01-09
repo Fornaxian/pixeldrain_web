@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte"
-import { swipe_nav } from "../../lib/SwipeNavigate.ts";
+import { swipe_nav } from "../../lib/SwipeNavigate.mjs";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => {
@@ -74,7 +74,7 @@ const on_load = () => dispatch("loading", false)
 	bind:this={container}
 	class="container"
 	class:zoom
-	use:swipe_nav={{enabled: !zoom && is_list}}
+	use:swipe_nav={{enabled: !zoom && is_list, prev: true, next: true}}
 	on:prev
 	on:next
 >
