@@ -18,14 +18,14 @@ export type FSNode = {
 	type: string,
 	path: string,
 	name: string,
-	created: Date,
-	modified: Date,
+	created: string,
+	modified: string,
 	mode_string: string,
 	mode_octal: string,
 	created_by: string,
 
 	abuse_type: string | undefined,
-	abuse_report_time: Date | undefined,
+	abuse_report_time: string | undefined,
 
 	file_size: number,
 	file_type: string,
@@ -54,8 +54,8 @@ export type FSContext = {
 
 export type NodeOptions = {
 	mode: number | undefined,
-	created: Date | undefined,
-	modified: Date | undefined,
+	created: string | undefined,
+	modified: string | undefined,
 	shared: boolean | undefined,
 
 	// Permissions
@@ -127,7 +127,7 @@ export const fs_update = async (path: string, opts: NodeOptions) => {
 		if (opts[key] === undefined) {
 			continue
 		} else if ((key === "created" || key === "modified")) {
-			form.append(key, opts[key].toISOString())
+			form.append(key, new Date(opts[key]).toISOString())
 		} else if (typeof opts[key] === "object") {
 			form.append(key, JSON.stringify(opts[key]))
 		} else {
@@ -222,7 +222,7 @@ export const fs_path_url = (path: string) => {
 	if (window["api_endpoint"] !== undefined) {
 		return window["api_endpoint"] + "/filesystem" + fs_encode_path(path)
 	} else {
-		throw Error("api_endpoint is undefined")
+		throw Error("fs_path_url: api_endpoint is undefined")
 	}
 }
 
@@ -238,10 +238,6 @@ export const fs_encode_path = (path: string) => {
 export const fs_split_path = (path: string) => {
 	let patharr = path.split("/")
 	return { base: patharr.pop(), parent: patharr.join("/") }
-}
-
-export const fs_thumbnail_url = (path: string, width = 64, height = 64) => {
-	return fs_path_url(path) + "?thumbnail&width=" + width + "&height=" + height
 }
 
 export const fs_node_type = (node: FSNode) => {
@@ -299,5 +295,9 @@ export const fs_node_icon = (node: FSNode, width = 64, height = 64) => {
 		}
 	}
 
-	return fs_thumbnail_url(node.path, width, height)
+	return fs_thumbnail_url(node.path, width, height) + "&mod=" + new Date(node.modified).getTime()
+}
+
+export const fs_thumbnail_url = (path: string, width = 64, height = 64) => {
+	return fs_path_url(path) + "?thumbnail&width=" + width + "&height=" + height
 }
