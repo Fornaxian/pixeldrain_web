@@ -58,7 +58,7 @@ onMount(() => nav.navigate("/me", false))
 				href={"/d"+fs_encode_path(child.path)}
 				class="node"
 				class:node_selected={child.fm_selected}
-				class:hidden={child.name.startsWith(".")}
+				class:hidden={child.name.startsWith(".") && show_hidden === false}
 			>
 				<img src={fs_node_icon(child, 64, 64)} class="node_icon" alt="icon"/>
 
