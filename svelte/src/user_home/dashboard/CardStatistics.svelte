@@ -106,14 +106,14 @@ onMount(() => {
 	];
 	graph_bandwidth.data().datasets = [
 		{
-			label: "Total bandwidth",
+			label: "Free transfer",
 			borderWidth: 2,
 			pointRadius: 0,
 			borderColor: color_by_name("highlight_color"),
 			backgroundColor: color_by_name("highlight_color"),
 		},
 		{
-			label: "Premium bandwidth",
+			label: "Premium transfer",
 			borderWidth: 2,
 			pointRadius: 0,
 			borderColor: color_by_name("danger_color"),

@@ -1,6 +1,6 @@
 <script>
 import Chart from "../util/Chart.svelte";
-import { formatDataVolume, formatDate, formatThousands } from "../util/Formatting.svelte";
+import { formatDataVolume, formatDate, formatNumber, formatThousands } from "../util/Formatting.svelte";
 import Modal from "../util/Modal.svelte";
 import { fs_path_url, fs_timeseries } from "./FilesystemAPI.mjs";
 import { generate_share_path, generate_share_url } from "./Sharebar.svelte";
@@ -19,9 +19,9 @@ const visibility_change = visible => {
 	}
 }
 
-$: direct_url = window.location.origin+fs_path_url($nav.base.path)
+$: direct_url = $nav.base.path ? window.location.origin+fs_path_url($nav.base.path) : ""
 $: share_url = generate_share_url($nav.path)
-$: direct_share_url = window.location.origin+fs_path_url(generate_share_path($nav.path))
+$: direct_share_url = $nav.base.path ? window.location.origin+fs_path_url(generate_share_path($nav.path)) : ""
 
 let chart
 let chart_timespan = 0
@@ -37,7 +37,7 @@ let chart_timespans = [
 ]
 
 let total_downloads = 0
-let total_transfer_paid = 0
+let total_transfer = 0
 
 $: update_chart($nav.base, chart_timespan, chart_interval)
 let update_chart = async (base, timespan, interval) => {
@@ -77,21 +77,23 @@ let update_chart = async (base, timespan, interval) => {
 	try {
 		let resp = await fs_timeseries(base.path, start, end, interval)
 
-		chart.data().datasets = [
-			{
-				label: "Unique Downloads",
-				borderWidth: 2,
-				pointRadius: 0,
-				borderColor: color_by_name("chart_1_color"),
-				backgroundColor: color_by_name("chart_1_color"),
-			}, {
-				label: "Total Downloads",
-				borderWidth: 2,
-				pointRadius: 0,
-				borderColor: color_by_name("chart_3_color"),
-				backgroundColor: color_by_name("chart_3_color"),
+		let c = chart.chart()
+
+		c.options.scales.y1 = {
+			type: "linear",
+			display: true,
+			position: "right",
+			ticks: {
+				callback: function (value, index, values) {
+					return formatDataVolume(value, 3);
+				},
 			},
-		];
+			beginAtZero: true,
+			grid: {
+				drawOnChartArea: false,
+			},
+		}
+
 
 		resp.downloads.timestamps.forEach((val, idx) => {
 			let date = new Date(val);
@@ -103,16 +105,38 @@ let update_chart = async (base, timespan, interval) => {
 		});
 
 		total_downloads = 0
-		total_transfer_paid = 0
-
+		total_transfer = 0
 		resp.downloads.amounts.forEach(val => total_downloads += val);
-		resp.transfer_paid.amounts.forEach((val, idx) => {
-			resp.transfer_paid.amounts[idx] = val / base.file_size;
-			total_transfer_paid += val
-		});
-		chart.data().labels = resp.downloads.timestamps
-		chart.data().datasets[0].data = resp.downloads.amounts
-		chart.data().datasets[1].data = resp.transfer_paid.amounts
+		resp.transfer_free.amounts.forEach((val) => total_transfer += val);
+		resp.transfer_paid.amounts.forEach((val) => total_transfer += val);
+
+		c.data.labels = resp.downloads.timestamps
+		c.data.datasets = [
+			{
+				label: "Downloads",
+				borderWidth: 2,
+				pointRadius: 0,
+				borderColor: color_by_name("chart_1_color"),
+				backgroundColor: color_by_name("chart_1_color"),
+				data: resp.downloads.amounts,
+			}, {
+				label: "Free transfer",
+				borderWidth: 2,
+				pointRadius: 0,
+				borderColor: color_by_name("chart_2_color"),
+				backgroundColor: color_by_name("chart_2_color"),
+				yAxisID: "y1",
+				data: resp.transfer_free.amounts,
+			}, {
+				label: "Premium transfer",
+				borderWidth: 2,
+				pointRadius: 0,
+				borderColor: color_by_name("chart_3_color"),
+				backgroundColor: color_by_name("chart_3_color"),
+				yAxisID: "y1",
+				data: resp.transfer_paid.amounts,
+			},
+		];
 		chart.update()
 	} catch (err) {
 		console.error("Failed to get time series data:", err)
@@ -169,9 +193,9 @@ let update_chart = async (base, timespan, interval) => {
 				<tr>
 					<td>Transfer used</td>
 					<td>
-						{formatDataVolume(total_transfer_paid, 4)}
-						( {formatThousands(total_transfer_paid)} B ),
-						{(total_transfer_paid/$nav.base.file_size).toFixed(1)}x file size
+						{formatDataVolume(total_transfer, 4)}
+						( {formatThousands(total_transfer)} B ),
+						{(total_transfer/$nav.base.file_size).toFixed(1)}x file size
 					</td>
 				</tr>
 				<tr><td>SHA256 sum</td><td>{$nav.base.sha256_sum}</td></tr>
