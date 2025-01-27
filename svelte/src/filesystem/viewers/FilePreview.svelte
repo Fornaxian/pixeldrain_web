@@ -46,7 +46,9 @@ const state_update = async () => {
 export const toggle_playback = () => {
 	if (viewer && viewer.toggle_playback) {
 		viewer.toggle_playback()
+		return true
 	}
+	return false
 }
 export const seek = delta => {
 	if (viewer && viewer.seek) {

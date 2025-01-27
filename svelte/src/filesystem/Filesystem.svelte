@@ -83,7 +83,10 @@ const keydown = e => {
 			break;
 		case " ": // Spacebar pauses / unpauses video and audio playback
 			if (file_preview) {
-				file_preview.toggle_playback()
+				if (file_preview.toggle_playback()) {
+					evt.preventDefault()
+					evt.stopPropagation()
+				}
 			}
 			break
 		case "h":

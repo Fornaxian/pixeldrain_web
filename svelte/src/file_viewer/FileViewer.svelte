@@ -324,7 +324,10 @@ const keyboard_event = evt => {
 			}
 			break
 		case " ": // Spacebar pauses / unpauses video and audio playback
-			file_preview.toggle_playback()
+			if (file_preview.toggle_playback()) {
+				evt.preventDefault()
+				evt.stopPropagation()
+			}
 			break
 		case "h":
 			file_preview.seek(-20)
