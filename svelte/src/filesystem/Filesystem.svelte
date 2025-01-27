@@ -252,7 +252,7 @@ const download = () => {
 
 /* This max-width needs to be synced with the .toolbar max-width in
 Toolbar.svelte and the .label max-width in FileStats.svelte */
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
 	.viewer_area {
 		flex-direction: column-reverse;
 	}

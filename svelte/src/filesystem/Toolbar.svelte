@@ -56,7 +56,7 @@ const toggle_fullscreen = () => {
 	}
 }
 
-let expanded = false
+let expanded = true
 let expand = e => {
 	e.preventDefault()
 	e.stopPropagation()
@@ -188,14 +188,14 @@ let expand = e => {
 
 /* This max-width needs to be synced with the .viewer_area max-width in
 Toolbar.svelte and the .label max-width in FileStats.svelte */
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
 	.toolbar {
 		overflow-y: hidden;
 		max-height: 2.1em;
 	}
 	.toolbar.expanded {
 		overflow-y: scroll;
-		max-height: 30vh;
+		max-height: 25vh;
 	}
 	.stats_container {
 		flex-direction: row;
@@ -203,7 +203,6 @@ Toolbar.svelte and the .label max-width in FileStats.svelte */
 	.separator {
 		margin: 2px 0;
 	}
-
 
 	.hidden_vertical {
 		display: block;

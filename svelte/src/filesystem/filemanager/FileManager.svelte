@@ -408,7 +408,6 @@ onMount(() => {
 	padding: 0;
 	background: var(--shaded_background);
 	backdrop-filter: blur(4px);
-	z-index: 1;
 }
 .toolbar {
 	display: flex;

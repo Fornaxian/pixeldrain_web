@@ -34,26 +34,31 @@ const delete_file = async e => {
 }
 </script>
 
-<h2>File settings</h2>
-{#if is_root_dir}
-	<div class="highlight_yellow">
-		Filesystem root cannot be renamed. If this shared directory
-		is in
-		<PathLink nav={nav} path="/me">your filesystem</PathLink>
-		you can rename it from there
+<fieldset>
+	<legend>File settings</legend>
+	{#if is_root_dir}
+		<div class="highlight_yellow">
+			Filesystem root cannot be renamed. If this shared directory
+			is in
+			<PathLink nav={nav} path="/me">your filesystem</PathLink>
+			you can rename it from there
+		</div>
+	{/if}
+	<div class="form_grid">
+		<label for="file_name">Name</label>
+		<input form="edit_form" bind:value={new_name} id="file_name" type="text" class="form_input" disabled={is_root_dir}/>
 	</div>
-{/if}
-<div class="form_grid">
-	<label for="file_name">Name</label>
-	<input form="edit_form" bind:value={new_name} id="file_name" type="text" class="form_input" disabled={is_root_dir}/>
-</div>
+</fieldset>
+
 {#if $nav.permissions.delete === true}
-	<h2>Delete</h2>
-	<p>
-		Delete this file or directory. If this is a directory then all
-		subfiles will be deleted as well. This action cannot be undone.
-	</p>
-	<Button click={delete_file} red icon="delete" label="Delete" style="align-self: flex-start;"/>
+	<fieldset>
+		<legend>Delete</legend>
+		<p>
+			Delete this file or directory. If this is a directory then all
+			subfiles will be deleted as well. This action cannot be undone.
+		</p>
+		<Button click={delete_file} red icon="delete" label="Delete" style="align-self: flex-start;"/>
+	</fieldset>
 {/if}
 
 <style>

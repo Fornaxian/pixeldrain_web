@@ -77,20 +77,23 @@ const handle_picker = async e => {
 let highlight_info = false
 </script>
 
-<p>
-	You can customize how your filesystem looks. The colours chosen here apply
-	to the directory you're currently in and all files and directories in this
-	directory. Colours which you do not want to modify can be left empty. Then
-	the default theme colour will be used.
-</p>
+<fieldset>
+	<legend>Enable page branding</legend>
+	<p>
+		You can customize how your filesystem looks. The colours chosen here apply
+		to the directory you're currently in and all files and directories in this
+		directory. Colours which you do not want to modify can be left empty. Then
+		the default theme colours will be used.
+	</p>
 
-<div>
-	<input bind:checked={enabled} id="enable_branding" type="checkbox" class="form_input"/>
-	<label for="enable_branding">Enable custom branding options</label>
-</div>
-<hr/>
+	<div>
+		<input bind:checked={enabled} id="enable_branding" type="checkbox" class="form_input"/>
+		<label for="enable_branding">Enable custom page branding</label>
+	</div>
+</fieldset>
 
-<div class="grid" class:disabled={!enabled}>
+<fieldset class="grid" disabled={!enabled}>
+	<legend>Colours</legend>
 	<div>
 		<div style="display: inline-block">Highlight</div>
 		<HelpButton bind:toggle={highlight_info}/>
@@ -120,6 +123,10 @@ let highlight_info = false
 	<div>Card</div>
 	<input type="color" bind:value={file.properties.brand_card_color}/>
 	<input type="text" bind:value={file.properties.brand_card_color}/>
+</fieldset>
+
+<fieldset class="grid" disabled={!enabled}>
+	<legend>Image customization</legend>
 	<p class="span3">
 		You can choose an image to show above or behind the files in this
 		directory. The image will be picked from your filesystem. The image will
@@ -141,40 +148,42 @@ let highlight_info = false
 		Pick
 	</button>
 	<input type="text" bind:value={file.properties.brand_background_image}/>
-</div>
+</fieldset>
 
-<hr/>
-<p>
-	Below is an example of what the site looks like with these colours:
-</p>
+<fieldset disabled={!enabled}>
+	<legend>Page preview</legend>
+	<p>
+		Below is an example of what the site looks like with these colours:
+	</p>
 
-<div class="example example_background">
-	<div>The background</div>
+	<div class="example example_background">
+		<div>The background</div>
 
-	<div class="example example_body">
-		<div>The content body. <a href="/">A link</a>!</div>
-		<hr/>
-		<div>Below is your custom header image, if you chose one.</div>
-		<CustomBanner path={[file]}/>
-		<hr/>
+		<div class="example example_body">
+			<div>The content body. <a href="/">A link</a>!</div>
+			<hr/>
+			<div>Below is your custom header image, if you chose one.</div>
+			<CustomBanner path={[file]}/>
+			<hr/>
 
-		<div class="example_button_row">
-			<button type="button"><i class="icon">touch_app</i>Normal</button>
-			<button type="button" class="button_highlight"><i class="icon">priority_high</i>Important</button>
-			<button type="button" class="button_red"><i class="icon">warning</i>Dangerous</button>
-		</div>
+			<div class="example_button_row">
+				<button type="button"><i class="icon">touch_app</i>Normal</button>
+				<button type="button" class="button_highlight"><i class="icon">priority_high</i>Important</button>
+				<button type="button" class="button_red"><i class="icon">warning</i>Dangerous</button>
+			</div>
 
-		<div class="example_button_row">
-			<input type="text" value="A text field"/>
-		</div>
+			<div class="example_button_row">
+				<input type="text" value="A text field"/>
+			</div>
 
-		<hr/>
+			<hr/>
 
-		<div class="example example_card">
-			<div>The top layer, for highlighted things</div>
+			<div class="example example_card">
+				<div>The top layer, for highlighted things</div>
+			</div>
 		</div>
 	</div>
-</div>
+</fieldset>
 
 <FilePicker bind:this={picker} on:files={handle_picker}/>
 
@@ -195,7 +204,7 @@ input[type="color"] {
 .span3 {
 	grid-column: span 3;
 }
-.disabled {
+fieldset:disabled {
 	filter: opacity(40%);
 }
 

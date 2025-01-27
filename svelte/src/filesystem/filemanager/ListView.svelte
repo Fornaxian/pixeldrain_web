@@ -16,7 +16,7 @@ export let hide_branding = false
 	<tr>
 		<td></td>
 		<td>Name</td>
-		<td>Size</td>
+		<td class="hide_small">Size</td>
 		<td></td>
 	</tr>
 	{#each $nav.children as child, index (child.path)}
@@ -34,7 +34,7 @@ export let hide_branding = false
 			<td class="node_name">
 				{child.name}
 			</td>
-			<td class="node_size">
+			<td class="node_size hide_small">
 				{#if child.type === "file"}
 					{formatDataVolume(child.file_size, 3)}
 				{/if}
@@ -73,7 +73,6 @@ export let hide_branding = false
 	display: table;
 	margin: 8px auto 16px auto;
 	background: var(--shaded_background);
-	backdrop-filter: blur(4px);
 	border-collapse: collapse;
 	border-radius: 8px;
 
@@ -137,6 +136,11 @@ td {
 	.node_icon.large_icons {
 		height: 64px;
 		width: 64px;
+	}
+}
+@media (max-width: 500px) {
+	.hide_small {
+		display: none;
 	}
 }
 </style>

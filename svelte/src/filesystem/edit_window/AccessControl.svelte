@@ -44,77 +44,83 @@ const del_password = (pass: string) => {
 	have delete permissions. You can see who the owner of a file is in the
 	Details window.
 </p>
-<h2>Link permissions</h2>
-<div class="row">
-	<div class="grow id">
-		Anyone with the link can...
-	</div>
-	<div class="perms">
-		<PermissionButton bind:permissions={file.link_permissions}/>
-	</div>
-</div>
-
-<h2>User permissions</h2>
-<p>
-	Enter a username here to give them access to this directory. The user will
-	not receive an e-mail invite. Giving write access to a user without giving
-	read access as well does not actually allow them to write anything.
-</p>
-<form on:submit={add_user} class="row">
-	<input type="text" bind:value={new_user_id} placeholder="Username" class="grow" size="1">
-	<Button type="submit" icon="add" label="Add"/>
-	<div class="perms">
-		<PermissionButton bind:permissions={new_user_perms}/>
-	</div>
-</form>
-{#if file.user_permissions !== undefined}
-	{#each Object.keys(file.user_permissions) as id (id)}
-		<div class="row">
-			<Button click={() => del_user(id)} icon="delete"/>
-			<div class="grow id">
-				{id}
-			</div>
-			<div class="perms">
-				<PermissionButton bind:permissions={file.user_permissions[id]}/>
-			</div>
+<fieldset>
+	<legend>Link permissions</legend>
+	<div class="row">
+		<div class="grow id">
+			Anyone with the link can...
 		</div>
-	{/each}
-{/if}
-
-<h2>Password permissions</h2>
-<p>
-	Allow users to enter a password to give them access to this directory.
-</p>
-<p>
-	<b>This feature is not implemented currently!</b>
-</p>
-<form on:submit={add_password} class="row">
-	<input type="text" bind:value={new_password} placeholder="Password" class="grow" size="1">
-	<Button type="submit" icon="add" label="Add"/>
-	<div class="perms">
-		<PermissionButton bind:permissions={new_password_perms}/>
-	</div>
-</form>
-{#if file.password_permissions !== undefined}
-	{#each Object.keys(file.password_permissions) as password (password)}
-		<div class="row">
-			<Button click={() => del_password(password)} icon="delete"/>
-			<div class="grow id">
-				{password}
-			</div>
-			<div class="perms">
-				<PermissionButton bind:permissions={file.password_permissions[password]}/>
-			</div>
+		<div class="perms">
+			<PermissionButton bind:permissions={file.link_permissions}/>
 		</div>
-	{/each}
-{/if}
+	</div>
+</fieldset>
+
+
+<fieldset>
+	<legend>User permissions</legend>
+	<p>
+		Enter a username here to give them access to this directory. The user will
+		not receive an e-mail invite. Giving write access to a user without giving
+		read access as well does not actually allow them to write anything.
+	</p>
+	<form on:submit={add_user} class="row">
+		<input type="text" bind:value={new_user_id} placeholder="Username" class="grow" size="1">
+		<Button type="submit" icon="add" label="Add"/>
+		<div class="perms">
+			<PermissionButton bind:permissions={new_user_perms}/>
+		</div>
+	</form>
+	{#if file.user_permissions !== undefined}
+		{#each Object.keys(file.user_permissions) as id (id)}
+			<div class="row">
+				<Button click={() => del_user(id)} icon="delete"/>
+				<div class="grow id">
+					{id}
+				</div>
+				<div class="perms">
+					<PermissionButton bind:permissions={file.user_permissions[id]}/>
+				</div>
+			</div>
+		{/each}
+	{/if}
+</fieldset>
+
+<fieldset>
+	<legend>Password permissions</legend>
+	<p>
+		Allow users to enter a password to give them access to this directory.
+	</p>
+	<p>
+		<b>This feature is not implemented currently!</b>
+	</p>
+	<form on:submit={add_password} class="row">
+		<input type="text" bind:value={new_password} placeholder="Password" class="grow" size="1">
+		<Button type="submit" icon="add" label="Add"/>
+		<div class="perms">
+			<PermissionButton bind:permissions={new_password_perms}/>
+		</div>
+	</form>
+	{#if file.password_permissions !== undefined}
+		{#each Object.keys(file.password_permissions) as password (password)}
+			<div class="row">
+				<Button click={() => del_password(password)} icon="delete"/>
+				<div class="grow id">
+					{password}
+				</div>
+				<div class="perms">
+					<PermissionButton bind:permissions={file.password_permissions[password]}/>
+				</div>
+			</div>
+		{/each}
+	{/if}
+</fieldset>
 
 <style>
 .row {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	border-bottom: 1px solid var(--separator);
 	margin-bottom: 2px;
 	padding-bottom: 2px;
 }

@@ -147,7 +147,7 @@ const close_socket = () => {
 .stat {
 	line-height: 1.2em;
 }
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
 	.label {
 		text-align: center;
 		padding-left: 0;
