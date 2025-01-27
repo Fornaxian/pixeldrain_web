@@ -105,11 +105,6 @@ const input_keyup = e => {
 		if (selected_result+1 < search_results.length) {
 			selected_result++
 		}
-	} else if (e.key === "Backspace" && search_term === "") {
-		// You can use backspace to go back to the previous page, handy if you
-		// searched for the wrong thing and want to go back
-		history.back()
-		e.preventDefault()
 	} else {
 		search()
 	}
