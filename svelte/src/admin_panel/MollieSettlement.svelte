@@ -7,7 +7,6 @@ import Euro from "../util/Euro.svelte";
 
 export let settlement = {}
 let loading = true
-let response = {}
 let payments = []
 
 let per_country = {}
@@ -17,15 +16,42 @@ let totals = {
 	amount: 0,
 }
 
+const load_all_payments = async (settlement_id) => {
+	let payments = []
+
+	while (true) {
+		let from = ""
+		if (payments.length !== 0) {
+			from = "&from="+payments[payments.length-1].id
+		}
+
+		const req = await mollie_proxy_call("settlements/"+settlement_id+"/payments?limit=250"+from)
+		if (req.status >= 400) {
+			throw new Error(req.text());
+		}
+
+		const response = await req.json()
+
+		// If the first payment in the response is the same as the last payment
+		// in the saved list, then we remove it
+		if (payments.length !== 0 && response._embedded.payments[0].id === payments[payments.length-1].id) {
+			payments.splice(-1, 1)
+		}
+
+		payments = payments.concat(response._embedded.payments)
+
+		if (response.count < 250) {
+			break
+		}
+	}
+
+	return payments
+}
+
 const get_payments = async () => {
 	loading = true;
 	try {
-		const req = await mollie_proxy_call("settlements/"+settlement.id+"/payments?limit=250")
-		if(req.status >= 400) {
-			throw new Error(req.text());
-		}
-		response = await req.json()
-		payments = response._embedded.payments
+		payments = await load_all_payments(settlement.id)
 
 		payments.forEach(row => {
 			if (!per_country[row.metadata.country]) {
