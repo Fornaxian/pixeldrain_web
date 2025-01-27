@@ -142,7 +142,7 @@ export const start = () => {
 				setTimeout(start, 5000)
 			}
 		} else if (xhr.status === 0) {
-			on_failure("request_failed", "Your request did not arrive, or the server blocked the request")
+			on_failure("request_failed", "The connection was interrupted")
 		} else {
 			// Request did not arrive
 			if (tries < 3) {
