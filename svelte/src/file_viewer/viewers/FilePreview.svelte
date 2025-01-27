@@ -32,8 +32,6 @@ export const set_file = async file => {
 		file.availability === "ip_download_limited_captcha_required"
 	) {
 		viewer_type = "rate_limit"
-	} else if (!premium_download && $stats.limits.transfer_limit_used > $stats.limits.transfer_limit) {
-		viewer_type = "slow_down"
 	} else {
 		viewer_type = file_type(file)
 	}
@@ -67,7 +65,7 @@ export const seek = delta => {
 	</div>
 {:else if viewer_type === "abuse"}
 	<Abuse bind:this={viewer} on:download></Abuse>
-{:else if viewer_type === "slow_down"}
+{:else if !premium_download && $stats.limits.transfer_limit_used > $stats.limits.transfer_limit}
 	<SlowDown
 		on:download
 		file_size={current_file.size}

@@ -83,7 +83,11 @@ const mute = () => {
 }
 
 const fullscreen = () => {
-	player.requestFullscreen()
+	if (document.fullscreenElement === null) {
+		player.requestFullscreen()
+	} else {
+		document.exitFullscreen()
+	}
 }
 
 const keypress = e => {
@@ -102,6 +106,14 @@ const keypress = e => {
 
 	if (e.key === "f") {
 		fullscreen()
+	}
+}
+const video_keydown = e => {
+	if (e.key === " ") {
+		// Prevent spacebar from pausing playback in Chromium. This conflicts
+		// with our own global key handler, causing the video to immediately
+		// pause again after unpausing.
+		e.stopPropagation()
 	}
 }
 </script>
@@ -135,6 +147,7 @@ const keypress = e => {
 					on:pause={() => playing = false }
 					on:play={() => playing = true }
 					on:ended={() => dispatch("next", {})}
+					on:keydown={video_keydown}
 				>
 					<source src={file.get_href} type={file.mime_type} />
 				</video>
