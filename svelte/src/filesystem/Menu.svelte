@@ -64,7 +64,7 @@ const click = e => {
 	<div class="menu">
 		{#if window.user.username !== ""}
 
-			<Button link_href="/user" link_target={target} icon="person" label={window.user.username} />
+			<Button link_href="/user" link_target={target} icon="dashboard" label="Dashboard" />
 			<div class="separator"></div>
 
 			<div class="stats_table">
