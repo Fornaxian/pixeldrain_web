@@ -4,6 +4,7 @@ import { onMount } from 'svelte'
 import CreateDirectory from './CreateDirectory.svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
+import CompactView from './CompactView.svelte'
 import Button from '../../layout/Button.svelte';
 import FileImporter from './FileImporter.svelte';
 import { formatDate } from '../../util/Formatting.svelte';
@@ -136,6 +137,8 @@ const viewing_mode = () => {
 const toggle_view = () => {
 	if (directory_view === "list") {
 		directory_view = "gallery"
+	} else if (directory_view === "gallery") {
+		directory_view = "compact"
 	} else {
 		directory_view = "list"
 	}
@@ -154,9 +157,21 @@ let moving_items = []
 // We need to detect if shift is pressed so we can select multiple items
 let shift_pressed = false
 let last_selected_node = -1
-const detect_shift = (e) => {
+const keypress = e => {
 	if (e.key === "Shift") {
 		shift_pressed = e.type === "keydown"
+	} else if (e.type === "keydown" && e.key === "a" && e.ctrlKey) {
+		// CTRL + A selects all files
+		selecting_mode()
+		for (let i = 0; i < nav.children.length; i++) {
+			nav.children[i].fm_selected = true
+		}
+		e.preventDefault()
+	} else if (e.type === "keydown" && e.key === "Escape" && mode !== "viewing") {
+		// When escape is pressed we return to viewing mode
+		viewing_mode()
+		e.preventDefault()
+		e.stopPropagation()
 	}
 }
 
@@ -249,7 +264,7 @@ onMount(() => {
 })
 </script>
 
-<svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
+<svelte:window on:keydown={keypress} on:keyup={keypress} />
 
 <div
 	class="container"
@@ -263,65 +278,68 @@ onMount(() => {
 			<SearchBar nav={nav}/>
 
 			<div class="toolbar">
-				<button on:click={navigate_back} title="Back">
-					<i class="icon">arrow_back</i>
-				</button>
-				<button on:click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
-					<i class="icon">north</i>
-				</button>
-				<button on:click={() => nav.reload()} title="Refresh directory listing">
-					<i class="icon">refresh</i>
-				</button>
+				<div class="toolbar_left">
+					<button on:click={navigate_back} title="Back">
+						<i class="icon">arrow_back</i>
+					</button>
+					<button on:click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
+						<i class="icon">north</i>
+					</button>
+					<button on:click={() => nav.reload()} title="Refresh directory listing">
+						<i class="icon">refresh</i>
+					</button>
+				</div>
 
-				<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
-					{#if show_hidden}
-						<i class="icon">visibility_off</i>
-					{:else}
-						<i class="icon">visibility</i>
-					{/if}
-				</button>
-
-				<button on:click={() => toggle_view()} title="Switch between gallery view and list view">
-					{#if directory_view === "list"}
-						<i class="icon">collections</i>
-					{:else if directory_view === "gallery"}
-						<i class="icon">list</i>
-					{/if}
-				</button>
-
-				<button class="button_large_icons" on:click={() => toggle_large_icons()} title="Switch between large and small icons">
-					{#if large_icons}
-						<i class="icon">zoom_out</i>
-					{:else}
-						<i class="icon">zoom_in</i>
-					{/if}
-				</button>
-
-				<div class="toolbar_spacer"></div>
-				{#if $nav.permissions.write}
-					<button on:click={() => upload_widget.pick_files()} title="Upload files to this directory">
-						<i class="icon">cloud_upload</i>
+				<div class="toolbar_middle">
+					<button on:click={() => toggle_view()} title="Switch between gallery, list and compact view">
+						<i class="icon" class:button_highlight={directory_view === "list"}>list</i>
+						<i class="icon" class:button_highlight={directory_view === "gallery"}>collections</i>
+						<i class="icon" class:button_highlight={directory_view === "compact"}>view_compact</i>
 					</button>
 
-					<Button click={() => {creating_dir = !creating_dir}} highlight={creating_dir} icon="create_new_folder" title="Make folder"/>
-
-					<button on:click={() => file_importer.open()} title="Import files from list">
-						<i class="icon">move_to_inbox</i>
+					<button class="button_large_icons" on:click={() => toggle_large_icons()} title="Switch between large and small icons">
+						{#if large_icons}
+							<i class="icon">zoom_out</i>
+						{:else}
+							<i class="icon">zoom_in</i>
+						{/if}
 					</button>
 
-					<button
-						on:click={selecting_mode}
-						class:button_highlight={mode === "selecting"}
-						title="Select and delete files"
-					>
-						<i class="icon">edit</i>
+					<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
+						{#if show_hidden}
+							<i class="icon">visibility_off</i>
+						{:else}
+							<i class="icon">visibility</i>
+						{/if}
 					</button>
-				{/if}
+				</div>
+
+				<div class="toolbar_right">
+					{#if $nav.permissions.write}
+						<button on:click={() => upload_widget.pick_files()} title="Upload files to this directory">
+							<i class="icon">cloud_upload</i>
+						</button>
+
+						<Button click={() => {creating_dir = !creating_dir}} highlight={creating_dir} icon="create_new_folder" title="Make folder"/>
+
+						<button on:click={() => file_importer.open()} title="Import files from list">
+							<i class="icon">move_to_inbox</i>
+						</button>
+
+						<button
+							on:click={selecting_mode}
+							class:button_highlight={mode === "selecting"}
+							title="Select and delete files"
+						>
+							<i class="icon">select_all</i>
+						</button>
+					{/if}
+				</div>
 			</div>
 		{:else if mode === "selecting"}
 			<div class="toolbar toolbar_edit">
 				<Button click={viewing_mode} icon="close"/>
-				<div class="toolbar_spacer"></div>
+				<div class="toolbar_spacer">Selecting files</div>
 				<Button click={move_start} icon="drive_file_move" label="Move"/>
 				<button on:click={delete_selected} class="button_red">
 					<i class="icon">delete</i>
@@ -386,6 +404,16 @@ onMount(() => {
 			on:node_settings={node_settings}
 			on:node_select={node_select}
 		/>
+	{:else if directory_view === "compact"}
+		<CompactView
+			nav={nav}
+			show_hidden={show_hidden}
+			large_icons={large_icons}
+			on:node_click={node_click}
+			on:node_context={node_context}
+			on:node_settings={node_settings}
+			on:node_select={node_select}
+		/>
 	{/if}
 </div>
 
@@ -412,21 +440,29 @@ onMount(() => {
 .toolbar {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 	width: 100%;
 	max-width: 1000px;
 	margin: auto;
 	padding-top: 2px;
 	padding-bottom: 2px;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 }
-.toolbar > * { flex: 0 0 auto; }
+.toolbar > * {
+	flex: 0 0 content;
+	display: flex;
+	flex-direction: row;
+}
 .toolbar_spacer {
 	flex: 1 1 auto;
 	text-align: center;
 }
 .toolbar_edit {
 	background-color: rgba(0, 255, 0, 0.05);
+}
+.icon.button_highlight {
+	border-radius: 4px;
 }
 
 /* Large icon mode only supported on wide screens. Hide the button on small screen */

@@ -5,6 +5,8 @@ import UploadProgress from "./UploadProgress.svelte";
 
 export let nav
 
+const max_concurrent_uploads = 5
+
 let file_input_field
 let file_input_change = (e) => {
 	// Start uploading the files async
@@ -86,7 +88,7 @@ const start_upload = async () => {
 		return acc
 	}, 0)
 
-	for (let i = 0; i < upload_queue.length && active_uploads < 3; i++) {
+	for (let i = 0; i < upload_queue.length && active_uploads < max_concurrent_uploads; i++) {
 		if (upload_queue[i]) {
 			if (upload_queue[i].status === "queued") {
 				active_uploads++
