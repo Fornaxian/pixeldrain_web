@@ -2,6 +2,7 @@
 import { createEventDispatcher, onMount } from 'svelte'
 import ListView from './ListView.svelte'
 import GalleryView from './GalleryView.svelte'
+import CompactView from './CompactView.svelte'
 import Modal from '../../util/Modal.svelte';
 import LoadingIndicator from '../../util/LoadingIndicator.svelte';
 import Breadcrumbs from '../Breadcrumbs.svelte'
@@ -52,9 +53,12 @@ const node_select = e => {
 	mode = "selecting"
 	nav.children[index].fm_selected = !nav.children[index].fm_selected
 }
+
 const toggle_view = () => {
 	if (directory_view === "list") {
 		directory_view = "gallery"
+	} else if (directory_view === "gallery") {
+		directory_view = "compact"
 	} else {
 		directory_view = "list"
 	}
@@ -147,12 +151,10 @@ onMount(() => {
 			{/if}
 		</button>
 
-		<button on:click={() => toggle_view()} title="Switch between gallery view and list view">
-			{#if directory_view === "list"}
-				<i class="icon">collections</i>
-			{:else if directory_view === "gallery"}
-				<i class="icon">list</i>
-			{/if}
+		<button on:click={() => toggle_view()} title="Switch between gallery, list and compact view">
+			<i class="icon" class:button_highlight={directory_view === "list"}>list</i>
+			<i class="icon" class:button_highlight={directory_view === "gallery"}>collections</i>
+			<i class="icon" class:button_highlight={directory_view === "compact"}>view_compact</i>
 		</button>
 
 		<button class="button button_highlight round" on:click={done}>
@@ -175,6 +177,15 @@ onMount(() => {
 		/>
 	{:else if directory_view === "gallery"}
 		<GalleryView
+			nav={nav}
+			show_hidden={show_hidden}
+			large_icons={large_icons}
+			on:node_click={node_click}
+			on:node_context={node_context}
+			on:node_select={node_select}
+		/>
+	{:else if directory_view === "compact"}
+		<CompactView
 			nav={nav}
 			show_hidden={show_hidden}
 			large_icons={large_icons}
@@ -205,5 +216,8 @@ onMount(() => {
 	flex-shrink: 1;
 	text-align: center;
 	font-size: 1.2em;
+}
+.icon.button_highlight {
+	border-radius: 4px;
 }
 </style>
