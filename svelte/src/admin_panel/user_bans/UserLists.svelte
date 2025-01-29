@@ -48,8 +48,8 @@ export const reload = async () => {
 		<tbody>
 			{#each lists as list (list.id)}
 				<tr>
-					<td style="padding: 0;">
-						<img src="{window.api_endpoint}/list/{list.id}/thumbnail?height=32&width=32" alt="thumbnail" class="thumbnail" />
+					<td style="padding: 0; line-height: 1em;">
+						<img src="{window.api_endpoint}/list/{list.id}/thumbnail?height=48&width=48" alt="icon" class="thumbnail" />
 					</td>
 					<td>
 						<a href="/l/{list.id}" target="_blank">{list.title}</a>
@@ -68,7 +68,7 @@ export const reload = async () => {
 
 <style>
 .thumbnail {
-	width: 32px;
-	height: 32px;
+	width: 48px;
+	height: 48px;
 }
 </style>

@@ -85,8 +85,8 @@ const sort = (field) => {
 		<tbody>
 			{#each files as file (file.id)}
 				<tr>
-					<td style="padding: 0;">
-						<img src="{window.api_endpoint+file.thumbnail_href}?height=32&width=32" alt="thumbnail" class="thumbnail" />
+					<td style="padding: 0; line-height: 1em;">
+						<img src="{window.api_endpoint+file.thumbnail_href}?height=48&width=48" alt="icon" class="thumbnail" />
 					</td>
 					<td>
 						<a href="/u/{file.id}" target="_blank">{file.name}</a>
@@ -114,7 +114,7 @@ const sort = (field) => {
 
 <style>
 .thumbnail {
-	width: 32px;
-	height: 32px;
+	width: 48px;
+	height: 48px;
 }
 </style>
