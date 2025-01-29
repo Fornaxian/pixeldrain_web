@@ -1,6 +1,5 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { formatDataVolume } from "./../../util/Formatting.svelte";
 import { fs_encode_path, fs_node_icon } from "../FilesystemAPI.mjs"
 
 let dispatch = createEventDispatcher()
@@ -24,6 +23,15 @@ export let large_icons = false
 			<div class="node_name">
 				{child.name}
 			</div>
+			{#if child.id}
+				<a
+					href="/d/{child.id}"
+					on:click|preventDefault|stopPropagation={() => {dispatch("node_share_click", index)}}
+					class="button action_button"
+				>
+					<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
+				</a>
+			{/if}
 		</a>
 	{/each}
 </div>
@@ -57,8 +65,10 @@ export let large_icons = false
 	background-color: var(--highlight_color) !important;
 	color: var(--highlight_text_color);
 }
-.node_icon {
+.node>* {
 	flex: 0 0 content;
+}
+.node_icon {
 	height: 2em;
 	width: 2em;
 	vertical-align: middle;
