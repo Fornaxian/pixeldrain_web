@@ -167,9 +167,10 @@ const keypress = e => {
 			nav.children[i].fm_selected = true
 		}
 		e.preventDefault()
-	} else if (e.type === "keydown" && e.key === "Escape" && mode !== "viewing") {
+	} else if (e.type === "keydown" && e.key === "Escape" && (mode !== "viewing" || creating_dir)) {
 		// When escape is pressed we return to viewing mode
 		viewing_mode()
+		creating_dir = false
 		e.preventDefault()
 		e.stopPropagation()
 	}
@@ -411,6 +412,7 @@ onMount(() => {
 			large_icons={large_icons}
 			on:node_click={node_click}
 			on:node_context={node_context}
+			on:node_share_click={node_share_click}
 			on:node_settings={node_settings}
 			on:node_select={node_select}
 		/>
