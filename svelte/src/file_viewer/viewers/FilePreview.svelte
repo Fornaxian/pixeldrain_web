@@ -14,6 +14,7 @@ import Torrent from "./Torrent.svelte";
 import { stats } from "../../lib/StatsSocket.js"
 import Zip from "./Zip.svelte";
 import SlowDown from "../../layout/SlowDown.svelte";
+import TextBlock from "../../layout/TextBlock.svelte";
 
 let viewer
 let viewer_type = "loading"
@@ -32,6 +33,8 @@ export const set_file = async file => {
 		file.availability === "ip_download_limited_captcha_required"
 	) {
 		viewer_type = "rate_limit"
+	} else if (file.availability === "server_overload_captcha_required") {
+		viewer_type = "overload"
 	} else {
 		viewer_type = file_type(file)
 	}
@@ -75,6 +78,17 @@ export const seek = delta => {
 		file_type={current_file.mime_type}
 		icon_href={current_file.icon_href}
 	/>
+{:else if viewer_type === "overload"}
+	<File bind:this={viewer} on:download on:reload>
+		<TextBlock><div class="highlight_yellow">
+			<p>
+				Pixeldrain's servers are currently overloaded. There are too
+				many people downloading too many things. In order to ensure
+				stability for our paying customers, free users are asked to
+				complete a CAPTCHA before starting a new download.
+			</p>
+		</div></TextBlock>
+	</File>
 {:else if viewer_type === "rate_limit"}
 	<RateLimit bind:this={viewer} on:download></RateLimit>
 {:else if viewer_type === "image"}

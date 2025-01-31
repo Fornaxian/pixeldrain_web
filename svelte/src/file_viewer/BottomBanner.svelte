@@ -1,7 +1,5 @@
 <script>
 import { onMount } from "svelte"
-import { formatDataVolume } from "../util/Formatting.svelte";
-import { stats } from "../lib/StatsSocket.js"
 
 let ad_type = ""
 
@@ -21,17 +19,7 @@ onMount(() => {
 })
 </script>
 
-{#if $stats.limits_init && $stats.limits.server_overload}
-
-	<div class="highlight_yellow" style="margin: 3px;">
-		Pixeldrain's servers are currently overloaded. In order to ensure
-		stability for our paying customers the free download limit has been
-		temporarily reduced to {formatDataVolume($stats.limits.transfer_limit,
-		3)}. If you want fast downloads, please return later when peak hours are
-		over.
-	</div>
-
-{:else if ad_type === "patreon_support"}
+{#if ad_type === "patreon_support"}
 
 	<div class="banner support_banner">
 		<span style="display: block; margin-bottom: 2px;">

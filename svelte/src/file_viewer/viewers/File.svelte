@@ -20,6 +20,8 @@ let file = {
 
 <FileTitle title={file.name}/>
 
+<slot></slot>
+
 <IconBlock icon_href={file.icon_href}>
 	Type: {file.mime_type}<br/>
 	Size: {formatDataVolume(file.size, 3)}<br/>
