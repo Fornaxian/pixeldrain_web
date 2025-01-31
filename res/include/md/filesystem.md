@@ -184,6 +184,13 @@ server is hosted at `pixeldrain.com` on port `990`. The encryption mode used is
 
 ![FTP configuration](/res/img/misc/ftp_login.webp)
 
+When using FileZilla please make sure you have the "Data transfer mode" set to
+Binary. If you do not do this FileZilla will corrupt your files if it does not
+detect the file type correctly. This can happen if you have files without a file
+extension. Data transfer mode can be found in the Settings screen under
+Transfers > FTP: File Types. Set to "Binary" to prevent FileZilla from
+corrupting your data.
+
 There are two different ways to log in to the FTP server:
 
 #### Read-write personal directory
@@ -201,3 +208,10 @@ ID as username in your FTP client. The directory ID can be found at the end of a
 shared directory URL. Example: `https://pixeldrain.com/d/abcd1234`, in this case
 `abcd1234` is the directory ID. The ID will always be 8 characters long and is
 case-sensitive. The password must be left empty
+
+## Filesystem API
+
+There is a public filesystem REST API, but it is not documented currently. The
+best reference for how to use the API would be the TypeScript client which the
+website uses as well. That can be found [on
+GitHub](https://github.com/Fornaxian/pixeldrain_web/blob/master/svelte/src/filesystem/FilesystemAPI.mts).
