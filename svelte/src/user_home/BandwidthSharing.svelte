@@ -81,7 +81,7 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h2><Pro/>Bandwidth sharing (hotlinking)</h2>
+	<h2><Pro/>Hotlinking (bandwidth sharing)</h2>
 	<SuccessMessage bind:this={success_message}></SuccessMessage>
 
 	<button on:click={toggle_hotlinking}>
@@ -92,13 +92,12 @@ onMount(() => {
 		{/if}
 	</button>
 	<p>
-		When bandwidth sharing is enabled all the bandwidth that your files
-		use will be subtracted from your data cap. Advertisements will be
-		disabled on the download pages for your files and download speed
-		will be unlimited. The rate limiting captcha for files is also
-		disabled when bandwidth sharing is on. You can directly embed your
-		file's download link anywhere, you don't need to use the file viewer
-		page.
+		When hotlinking is enabled all the bandwidth that your files use will be
+		subtracted from your data cap. Advertisements will be disabled on the
+		download pages for your files and download speed will be unlimited. The
+		rate limiting captcha for files is also disabled when bandwidth sharing
+		is on. You can directly embed your file's download link anywhere, you
+		don't need to use the file viewer page.
 	</p>
 
 	<h2><Pro/>Bill shock limit</h2>
