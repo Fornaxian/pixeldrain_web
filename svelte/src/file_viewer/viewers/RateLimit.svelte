@@ -53,9 +53,9 @@ let file = {
 			premium account
 		</a>
 		or when the uploader of the file enables
-		<a href="/user/subscription">bandwidth sharing</a> on their Pro account
-		(and their data cap has not been used up). Using a download manager with
-		a Pro account is allowed, it will not trigger this warning for other
+		<a href="/user/subscription">hotlinking</a> on their Pro account (and
+		their data cap has not been used up). Using a download manager with a
+		Pro account is allowed, it will not trigger this warning for other
 		files.
 	</p>
 	<h2>

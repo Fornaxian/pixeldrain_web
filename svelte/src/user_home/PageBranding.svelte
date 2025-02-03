@@ -107,9 +107,9 @@ onMount(() => {
 		</div>
 	{:else if !window.user.hotlinking_enabled}
 		<div class="highlight_yellow">
-			To use custom file viewer branding bandwidth sharing needs to be
-			enabled. Enable bandwidth sharing on the
-			<a href="/user/sharing/bandwidth">bandwidth sharing page</a>.
+			To use custom file viewer branding hotlinking needs to be
+			enabled. Enable hotlinking on the
+			<a href="/user/sharing/bandwidth">sharing settings page</a>.
 		</div>
 	{/if}
 	<SuccessMessage bind:this={success_message}></SuccessMessage>

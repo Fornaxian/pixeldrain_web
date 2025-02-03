@@ -53,7 +53,7 @@ let pages = [
 		subpages: [
 			{
 				path: "/user/sharing/bandwidth",
-				title: "Bandwidth Sharing",
+				title: "Sharing settings",
 				icon: "share",
 				component: BandwidthSharing,
 			}, {

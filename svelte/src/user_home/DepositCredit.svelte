@@ -83,7 +83,7 @@ onMount(() => {
 	<p>
 		Pixeldrain credit can be used for our prepaid plans, which are different
 		from the Patreon plans. With prepaid you only pay for what you use, at a
-		rate of €4 per TB per month for storage and €2 per TB for data transfer.
+		rate of €4 per TB per month for storage and €1 per TB for data transfer.
 		See the Subscriptions tab for more information about the perks.
 	</p>
 	<p>

@@ -27,10 +27,10 @@ page because it's calculated differently from the other plans, but it is there.
 For Prepaid plans the storage is charged at €4 per TB per month. You can view
 your usage in the [transaction log](/user/prepaid/transactions).
 
-Downloads from the filesystem are charged at €2 / TB for prepaid. With Patreon
-plans there's a monthly limit. If you turn bandwidth sharing off in the account
-settings then other people will use the daily download limit. Otherwise they
-will use your account's transfer limit.
+Downloads from the filesystem are charged at €1 / TB for prepaid. With Patreon
+plans there's a monthly limit. If you turn hotlinking off in the account
+settings then other people will use their own daily download limit. Otherwise
+they will use your account's transfer limit.
 
 ## Free download limit
 
@@ -42,8 +42,8 @@ speed is limited to 1 MiB/s like usual.
 
 If you want to embed pixeldrain files on your own website, distribute direct
 download links or share files that are larger than the download limit then you
-should turn the 'Bandwidth sharing' option on. Otherwise people will have
-trouble downloading your files.
+should turn the 'Hotlinking' option on. Otherwise people will have trouble
+downloading your files.
 
 ## Directory sharing
 

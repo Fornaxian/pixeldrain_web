@@ -48,7 +48,8 @@ onMount(() => {
 			Charged through Patreon
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">No monthly fee</span>
+			<span class="bold">€1 / month minimum</span><br/>
+			Only charged when total usage is below €1
 		</div>
 
 		<div class="left_col">
@@ -67,7 +68,7 @@ onMount(() => {
 			connection limit
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">€2 per TB transferred</span><br/>
+			<span class="bold">€1 per TB transferred</span><br/>
 
 			Used for downloading, sharing and hotlinking. You only pay for what
 			you use. No connection limit
@@ -268,7 +269,7 @@ onMount(() => {
 		When you have a Pro subscription you will get a monthly data transfer
 		limit for all the files on your account combined. Files you download
 		from pixeldrain are subtracted from the data cap. If you have <a
-		href="/user/subscription">Bandwidth sharing</a>
+		href="/user/subscription">hotlinking</a>
 		enabled your data cap is also used when other people download
 		your files.
 	</p>
@@ -283,8 +284,8 @@ onMount(() => {
 		</li>
 		<li>
 			If the person who uploaded the file has a Pro subscription and
-			Bandwidth sharing is enabled on their account, then the uploader's
-			data cap is used.
+			hotlinking is enabled on their account, then the uploader's data cap
+			is used.
 		</li>
 		<li>
 			If neither the uploader nor the downloader has a Pro subscription

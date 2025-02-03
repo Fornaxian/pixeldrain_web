@@ -12,7 +12,7 @@ place on pixeldrain.
 | File size             | 10 GB        | 10 GB           | 20 GB         | 20 GB               |
 | File downloads        | 1000 / day   | Unlimited       | Unlimited     | Unlimited           |
 | Free data transfer    | 100 GB / day | Unlimited       | Unlimited     | Unlimited           |
-| Premium data transfer | No           | 10 GB / month   | 1 TB / month  | Unlimited (€2 / TB) |
+| Premium data transfer | No           | 10 GB / month   | 1 TB / month  | Unlimited (€1 / TB) |
 | Video streaming       | No           | Within data cap | Yes           | Yes                 |
 | Ad-free file viewing  | No           | No              | Yes           | Yes                 |
 | File viewer branding  | No           | No              | From €8/month | Yes                 |

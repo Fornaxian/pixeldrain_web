@@ -21,7 +21,7 @@ import Euro from "../util/Euro.svelte";
 	<h2>Simple and affordable pricing</h2>
 	<ul>
 		<li><span class="keyword">€4.00 per TB per month</span> for storage</li>
-		<li><span class="keyword">€2.00 per TB</span> for downloading and sharing files</li>
+		<li><span class="keyword">€1.00 per TB</span> for downloading and sharing files</li>
 	</ul>
 
 	<br style="clear: right;"/>

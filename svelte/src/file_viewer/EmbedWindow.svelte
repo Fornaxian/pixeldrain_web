@@ -120,7 +120,7 @@ const update_example = () => {
 			The hotlink embed option only works for single files uploaded with a
 			Pro account. You can use this to directly embed a video player,
 			audio player, photo element or a download button in your site. Make
-			sure you have bandwidth sharing enabled on your
+			sure you have hotlinking enabled on your
 			<a href="/user/sharing/bandwidth">sharing settings page</a> or the
 			embed will not work.
 		</p>

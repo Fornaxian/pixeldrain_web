@@ -80,7 +80,7 @@ let upload_widget
 			</div>
 			<div>
 				<div>Egress pricing</div>
-				<div>€ 2 / TB</div>
+				<div>€ 1 / TB</div>
 			</div>
 			<div>
 				<div>That's it!</div>
