@@ -83,7 +83,7 @@ onMount(() => {
 			<span class="bold">Hotlinking not supported</span><br/>
 			Hotlinked files get blocked
 		</div>
-		<div class="feature_cell span2 pro_feat">
+		<div class="feature_cell span2 right pro_feat">
 			<span class="bold">Hotlinking supported</span><br/>
 			Hotlinking uses your transfer limit
 		</div>
@@ -91,7 +91,7 @@ onMount(() => {
 		<div class="left_col">
 			Storage
 		</div>
-		<div class="feature_cell span2 pro_feat">
+		<div class="feature_cell span2 left pro_feat">
 			<span class="bold">No limit</span><br/>
 			Files expire when they are not downloaded
 		</div>
@@ -124,7 +124,7 @@ onMount(() => {
 		<div class="feature_cell free_feat">
 			<span class="bold">20 GB</span> per file
 		</div>
-		<div class="feature_cell span2 pro_feat">
+		<div class="feature_cell span2 right pro_feat">
 			<span class="bold">100 GB</span> per file
 		</div>
 
@@ -361,5 +361,11 @@ onMount(() => {
 }
 .span2 {
 	grid-column: span 2;
+}
+.span2.left {
+	border-image: linear-gradient(to right, #ebcb8b 0%, var(--highlight_color) 100%) 1;
+}
+.span2.right {
+	border-image: linear-gradient(to right, var(--highlight_color) 0%, #ec2cfa 100%) 1;
 }
 </style>

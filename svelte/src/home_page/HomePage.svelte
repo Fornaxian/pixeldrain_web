@@ -68,26 +68,27 @@ let upload_widget
 </div>
 
 <header>
-	<h1>Our pricing!</h1>
-	<span>We're not afraid to say it</span>
+	<h1>Pricing</h1>
+	<span>(Prepaid plan. For monthly subscriptions, look further below)</span>
 </header>
 <div class="page_content">
 	<section>
-		<h2>Prepaid plan</h2>
-		<ul>
-			<li>
-				Storage<br/>
-				<span class="bold">€ 4 per TB per month</span>
-			</li>
-			<li>
-				Data egress (downloading and sharing files)<br/>
-				<span class="bold">€ 2 per TB</span>
-			</li>
-			<li>
-				No other charges!
-			</li>
-		</ul>
-		<h3>What you get</h3>
+		<div class="prices">
+			<div>
+				<div>Storage pricing</div>
+				<div>€ 4 / TB / month</div>
+			</div>
+			<div>
+				<div>Egress pricing</div>
+				<div>€ 2 / TB</div>
+			</div>
+			<div>
+				<div>That's it!</div>
+				<div>No other charges</div>
+			</div>
+		</div>
+
+		<h2>What you get</h2>
 		<ul>
 			<li>
 				<span class="bold">Unlimited</span> storage space
@@ -212,5 +213,30 @@ header > span {
 	font-weight: bold;
 	color: var(--highlight_color);
 	text-shadow: 1px 1px 3px var(--shadow_color);
+}
+
+.prices {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+}
+.prices > div {
+	flex: 1 0 200px;
+	min-width: 200px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	border-radius: 6px;
+	overflow: hidden;
+	border: 2px solid var(--card_color);
+}
+.prices > div > div {
+	padding: 4px;
+}
+.prices > div > div:nth-child(2) {
+	background: var(--card_color);
+	font-size: 1.3em;
 }
 </style>
