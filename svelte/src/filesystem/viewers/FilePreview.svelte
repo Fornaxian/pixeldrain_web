@@ -57,6 +57,13 @@ export const toggle_mute = () => {
 	}
 	return false
 }
+export const toggle_fullscreen = () => {
+	if (viewer && viewer.toggle_fullscreen) {
+		viewer.toggle_fullscreen()
+		return true
+	}
+	return false
+}
 export const seek = delta => {
 	if (viewer && viewer.seek) {
 		viewer.seek(delta)
@@ -103,7 +110,7 @@ export const seek = delta => {
 		<CustomBanner path={$nav.path}/>
 	</Zip>
 {:else}
-	<File nav={nav} on:download>
+	<File nav={nav} on:download on:details>
 		<CustomBanner path={$nav.path}/>
 	</File>
 {/if}

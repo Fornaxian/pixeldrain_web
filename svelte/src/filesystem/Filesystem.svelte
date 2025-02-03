@@ -73,6 +73,11 @@ const keydown = e => {
 		case "r":
 			nav.shuffle = !nav.shuffle
 			break;
+		case "f": // F fullscreen
+			if (toolbar) {
+				toolbar.toggle_fullscreen()
+			}
+			break
 		case "a":
 		case "ArrowLeft":
 			nav.open_sibling(-1)
@@ -84,8 +89,8 @@ const keydown = e => {
 		case " ": // Spacebar pauses / unpauses video and audio playback
 			if (file_preview) {
 				if (file_preview.toggle_playback()) {
-					evt.preventDefault()
-					evt.stopPropagation()
+					e.preventDefault()
+					e.stopPropagation()
 				}
 			}
 			break
@@ -143,6 +148,7 @@ const download = () => {
 			bind:this={toolbar}
 			nav={nav}
 			file_viewer={file_viewer}
+			file_preview={file_preview}
 			bind:details_visible={details_visible}
 			edit_window={edit_window}
 			bind:edit_visible={edit_visible}
@@ -157,6 +163,7 @@ const download = () => {
 				edit_window={edit_window}
 				on:open_sibling={e => nav.open_sibling(e.detail)}
 				on:download={download}
+				on:details={() => details_visible = !details_visible}
 			/>
 		</div>
 	</div>

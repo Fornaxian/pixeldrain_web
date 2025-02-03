@@ -3,6 +3,8 @@ import { createEventDispatcher } from "svelte";
 import IconBlock from "../../layout/IconBlock.svelte";
 import { fs_thumbnail_url } from "../FilesystemAPI.mjs";
 import TextBlock from "../../layout/TextBlock.svelte"
+import { formatDataVolume, formatDate } from "../../util/Formatting.svelte";
+
 let dispatch = createEventDispatcher()
 
 export let nav
@@ -14,11 +16,16 @@ export let nav
 
 <IconBlock icon_href={fs_thumbnail_url($nav.base.path, 256, 256)}>
 	Type: {$nav.base.file_type}<br/>
-	No preview is available for this file type. Download to view it locally.
-	<br/>
+	Size: {formatDataVolume($nav.base.file_size, 3)}<br/>
+	Upload date: {formatDate($nav.base.created, true, true, false)}
+	<hr/>
 	<button class="button_highlight" on:click={() => {dispatch("download")}}>
 		<i class="icon">download</i>
 		<span>Download</span>
+	</button>
+	<button on:click={() => {dispatch("details")}}>
+		<i class="icon">help</i>
+		<span>Details</span>
 	</button>
 </IconBlock>
 

@@ -39,6 +39,14 @@ export const update = async () => {
 
 export const toggle_playback = () => playing ? player.pause() : player.play()
 export const toggle_mute = () => player.muted = !player.muted
+export const toggle_fullscreen = () => {
+	if (document.fullscreenElement === null) {
+		player.requestFullscreen()
+	} else {
+		document.exitFullscreen()
+	}
+}
+
 
 export const seek = delta => {
 	// fastseek can be pretty imprecise, so we don't use it for small seeks
@@ -60,14 +68,6 @@ onMount(() => {
 		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("open_sibling", 1));
 	}
 })
-
-const fullscreen = () => {
-	if (document.fullscreenElement === null) {
-		player.requestFullscreen()
-	} else {
-		document.exitFullscreen()
-	}
-}
 
 const video_keydown = e => {
 	if (e.key === " ") {
@@ -142,7 +142,7 @@ const video_keydown = e => {
 					<i class="icon">volume_up</i>
 				{/if}
 			</button>
-			<button on:click={fullscreen}>
+			<button on:click={toggle_fullscreen}>
 				<i class="icon">fullscreen</i>
 			</button>
 			<div class="spacer"></div>

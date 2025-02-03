@@ -11,6 +11,7 @@ export let details_visible = false
 export let edit_window
 export let edit_visible = false
 export let file_viewer
+export let file_preview
 
 $: share_url = generate_share_url($nav.path)
 let link_copied = false
@@ -42,8 +43,8 @@ let share = async () => {
 }
 
 let fullscreen = false
-const toggle_fullscreen = () => {
-	if (fullscreen || document.fullscreenElement) {
+export const toggle_fullscreen = () => {
+	if (document.fullscreenElement !== null) {
 		try {
 			document.exitFullscreen()
 		} catch (err) {
@@ -51,7 +52,9 @@ const toggle_fullscreen = () => {
 		}
 		fullscreen = false
 	} else {
-		file_viewer.requestFullscreen()
+		if (!file_preview.toggle_fullscreen()) {
+			file_viewer.requestFullscreen()
+		}
 		fullscreen = true
 	}
 }
