@@ -10,9 +10,8 @@ let playing = false
 let media_session = false
 let siblings = []
 
-export const toggle_playback = () => {
-	playing ? player.pause() : player.play()
-}
+export const toggle_playback = () => playing ? player.pause() : player.play()
+export const toggle_mute = () => player.muted = !player.muted
 
 export const seek = delta => {
 	// fastseek can be pretty imprecise, so we don't use it for small seeks

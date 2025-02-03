@@ -89,6 +89,11 @@ const keydown = e => {
 				}
 			}
 			break
+		case "m": // M mutes / unmutes audio
+			if (file_preview) {
+				file_preview.toggle_mute()
+			}
+			break
 		case "h":
 			file_preview.seek(-20)
 			break

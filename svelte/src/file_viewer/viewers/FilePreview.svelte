@@ -57,6 +57,13 @@ export const toggle_playback = () => {
 	}
 	return false
 }
+export const toggle_mute = () => {
+	if (viewer && viewer.toggle_mute) {
+		viewer.toggle_mute()
+		return true
+	}
+	return false
+}
 export const seek = delta => {
 	if (viewer && viewer.seek) {
 		viewer.seek(delta)

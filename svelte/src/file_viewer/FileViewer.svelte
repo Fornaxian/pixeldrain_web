@@ -329,6 +329,9 @@ const keyboard_event = evt => {
 				evt.stopPropagation()
 			}
 			break
+		case "m": // M to mute video / audio
+			file_preview.toggle_mute()
+			break
 		case "h":
 			file_preview.seek(-20)
 			break
@@ -368,9 +371,6 @@ const keyboard_event = evt => {
 			if (file.can_edit || list.can_edit) {
 				edit_window.toggle()
 			}
-			break
-		case "m": // M to open the embed window
-			embed_window.toggle()
 			break
 		case "g": // G to grab this file
 			grab_file()
@@ -542,7 +542,7 @@ const keyboard_event = evt => {
 					on:click={embed_window.toggle}
 					class:button_highlight={embed_visible}>
 					<i class="icon">code</i>
-					<span>E<u>m</u>bed</span>
+					<span>Embed</span>
 				</button>
 			{/if}
 		</div>

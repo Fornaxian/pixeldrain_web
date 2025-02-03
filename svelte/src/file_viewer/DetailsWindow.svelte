@@ -224,7 +224,6 @@ onMount(() => {
 		<div><div>g</div><div>Grab file (copy to your account)</div></div>
 		<div><div>i</div><div>Show details window</div></div>
 		<div><div>e</div><div>Show edit window</div></div>
-		<div><div>m</div><div>Show embed window</div></div>
 		<div><div>r</div><div>Show abuse report window</div></div>
 	</div>
 
@@ -239,8 +238,9 @@ onMount(() => {
 	<h4>Video / audio</h4>
 	<div class="shortcuts">
 		<div><div>space</div><div>Pause / resume playback</div></div>
-		<div><div>f</div><div>Enter fullscreen</div></div>
+		<div><div>f</div><div>Toggle fullscreen</div></div>
 		<div><div>esc</div><div>Exit fullscreen</div></div>
+		<div><div>m</div><div>Mute / unmute playback</div></div>
 		<div><div>h</div><div>Skip 20 seconds backward</div></div>
 		<div><div>j</div><div>Skip 5 seconds backward</div></div>
 		<div><div>k</div><div>Skip 5 seconds forward</div></div>

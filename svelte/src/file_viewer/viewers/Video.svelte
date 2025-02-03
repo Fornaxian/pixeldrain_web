@@ -47,9 +47,8 @@ export const set_file = async f => {
 	}
 }
 
-export const toggle_playback = () => {
-	playing ? player.pause() : player.play()
-}
+export const toggle_playback = () => playing ? player.pause() : player.play()
+export const toggle_mute = () => player.muted = !player.muted
 
 export const seek = delta => {
 	// fastseek can be pretty imprecise, so we don't use it for small seeks
@@ -74,13 +73,6 @@ onMount(() => {
 
 const download = () => { dispatch("download", {}) }
 
-const mute = () => {
-	if (player.muted) {
-		player.muted = false
-	} else {
-		player.muted = true
-	}
-}
 
 const fullscreen = () => {
 	if (document.fullscreenElement === null) {
@@ -178,7 +170,7 @@ const video_keydown = e => {
 						</button>
 					{/if}
 					<div style="width: 16px; height: 8px;"></div>
-					<button on:click={mute} class:button_red={player && player.muted}>
+					<button on:click={toggle_mute} class:button_red={player && player.muted}>
 						{#if player && player.muted}
 							<i class="icon">volume_off</i>
 						{:else}

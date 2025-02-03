@@ -48,9 +48,8 @@ export const set_file = async f => {
 	}
 }
 
-export const toggle_playback = () => {
-	playing ? player.pause() : player.play()
-}
+export const toggle_playback = () => playing ? player.pause() : player.play()
+export const toggle_mute = () => player.muted = !player.muted
 
 export const seek = delta => {
 	// fastseek can be pretty imprecise, so we don't use it for small seeks
