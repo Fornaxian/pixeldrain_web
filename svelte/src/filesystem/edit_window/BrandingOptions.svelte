@@ -1,5 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
+import ThemePresets from "./ThemePresets.svelte";
 import FilePicker from "../filemanager/FilePicker.svelte";
 import { fs_update, fs_node_type } from "../FilesystemAPI.mjs";
 import CustomBanner from "../viewers/CustomBanner.svelte";
@@ -92,8 +93,13 @@ let highlight_info = false
 	</div>
 </fieldset>
 
+<fieldset disabled={!enabled} style="text-align: center;">
+	<legend>Theme presets</legend>
+	<ThemePresets bind:properties={file.properties}/>
+</fieldset>
+
 <fieldset class="grid" disabled={!enabled}>
-	<legend>Colours</legend>
+	<legend>Custom colours</legend>
 	<div>
 		<div style="display: inline-block">Highlight</div>
 		<HelpButton bind:toggle={highlight_info}/>
