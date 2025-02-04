@@ -160,7 +160,13 @@ onMount(() => {
 					target="_blank">on Patreon.com</a>.
 				</p>
 				<ul>
-					<li>€4 per TB per month for storage</li>
+					<li>
+						€1 / month minimum price (only charged when monthly
+						total is below €1)
+					</li>
+					<li>
+						€4 per TB per month for storage
+					</li>
 					<li>
 						€1 per TB for data transfer (with <a
 						href="/user/sharing/bandwidth">hotlinking</a>
