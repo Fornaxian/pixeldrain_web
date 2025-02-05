@@ -83,10 +83,14 @@ let upload_widget
 				<div>€ 1 / TB</div>
 			</div>
 			<div>
-				<div>That's it!</div>
-				<div>No other charges</div>
+				<div>Inactivity</div>
+				<div>€1 / month</div>
 			</div>
 		</div>
+		<p style="text-align: center;">
+			Inactivity pricing is only applied when monthly usage is less than
+			€1
+		</p>
 
 		<h2>What you get</h2>
 		<ul>
@@ -106,18 +110,18 @@ let upload_widget
 				server failures
 			</li>
 			<li>
-				Total bandwidth capacity of <span class="bold">900
-				Gigabits</span> per second
+				Over <span class="bold">1 Terabit</span> of bandwidth capacity
 			</li>
 			<li>
-				Nine high-performance caching servers optimized for data
+				Eleven high-performance caching servers optimized for data
 				transfer over long distances
 			</li>
 			<li>
 				File caching in
-				<span class="bold">Frankfurt</span>,
-				<span class="bold">Singapore</span> and
-				<span class="bold">Portland</span>
+				<span class="bold">Portland</span>,
+				<span class="bold">São Paulo</span>,
+				<span class="bold">Frankfurt</span> and
+				<span class="bold">Singapore</span>
 			</li>
 		</ul>
 		<img class="image" src="/res/img/map.webp" alt="A globe showing datacenter locations"/>
