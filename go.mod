@@ -1,8 +1,6 @@
 module fornaxian.tech/pixeldrain_web
 
-go 1.22
-
-toolchain go1.22.4
+go 1.24
 
 replace (
 	fornaxian.tech/pixeldrain_api_client => ../pixeldrain_api_client
@@ -26,7 +24,7 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/hailocab/go-hostpool v0.0.0-20160125115350-e80d13ce29ed // indirect
-	golang.org/x/crypto v0.32.0 // indirect
-	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/crypto v0.33.0 // indirect
+	golang.org/x/net v0.35.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 )
