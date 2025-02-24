@@ -4,16 +4,27 @@
 
 ## For how long will my files be stored?
 
-Files will be removed if they have not been viewed for 120 days. A view is
-counted when someone visits the file's download page (pixeldrain.com/u/somefile)
-or views the file through a list the file is included in
-(pixeldrain.com/l/somelist).
+Files will be removed if they have not been accessed for 120 days. When a file
+is downloaded the expiry time is reset to 120 days from the current day. This
+only happens when someone downloads more than 1% of the whole file in a single
+request. So if you have a 5 GB file the timer is only extended when you download
+at least 50 MB. The expiry timer is not updated when it was already updated
+within the last 24 hours.
 
-If you upload a file while logged into your pixeldrain account you will be able
-to delete the file yourself from the download page of the file. If you are not
-logged in and you accidentally upload something you shouldn't have, just don't
-share the link. The file will expire eventually. File links are not indexed or
-published anywhere. As long as you don't share it nobody will see it.
+File expiry is often seen as a downside of pixeldrain. But keep in mind that 120
+days is a very long time. Roughly four months. This means that you can keep a
+file active for an entire year by only downloading it three times. Files which
+are only very sporadically downloaded can stay online indefinitely. All this
+time the file is using storage space and processing power on our servers, which
+costs real money.
+
+If you would like to use pixeldrain for backups or long term storage, then the
+free plan is _not the way to go_. It is only meant for publicly sharing files.
+For real storage you should use the [pixeldrain filesystem](/filesystem).
+
+If you are (ab)using pixeldrain for free storage, you should not be surprised
+when the rules change at some point and all your stuff suddenly disappears. That
+would never happen when using pixeldrain's filesystem.
 
 ## What cookies does pixeldrain use?
 
@@ -25,9 +36,9 @@ When you use the style selector on the [Appearance](/appearance) page a cookie
 called 'style' will be set. This cookie controls the appearance of the website
 for you.
 
-When uploading a file pixeldrain will save a list of file links on your
-browser's local storage. This data is **only** used for viewing your upload
-history on the [history page](/history).
+Pixeldrain does not use tracking cookies. We also don't use fingerprinting to
+track our users. The only information that is saved is the information that you
+manually enter or upload.
 
 ## How does the transfer limit work?
 
@@ -62,6 +73,34 @@ Whenever someone downloads a file from your account it counts toward your
 transfer limit. If you want to limit how much of your transfer cap others can
 use then you can configure a limit on the [sharing settings
 page](/user/sharing).
+
+If the person who downloads the file also has a premium account then their own
+data cap will be used first.
+
+## How does hotlinking work?
+
+Hotlinking happens when someone downloads a file from pixeldrain without
+visiting the pixeldrain website. This can be through embedding media files on
+third party websites, or using download managers to download files directly.
+
+Pixeldrain has a "hotlink protection mode". This activates when we detect that a
+file is being hotlinked while neither the downloader nor the uploader of the
+file has a premium subscription. When this happens a CAPTCHA test will appear on
+the file's download page, and the file can only be downloaded once the CAPTCHA
+is solved. When enough people complete the test the hotlink protection will be
+removed and the file can be downloaded normally again.
+
+There are two reasons why we implemented hotlink protection:
+
+File hosting services are often used to spread malware and other nefarious data,
+hotlink protection makes it significantly harder for people to abuse the service
+in this way. This was the original motivation for implementing hotlink
+protection, it has been very effective at preventing digital attacks.
+
+Hotlinking also uses pixeldrain's bandwidth and processing power without letting
+the user know that they are using pixeldrain. People who don't know that they
+are using pixeldrain are less likely to purchase a premium plan. The download
+page is our primary source of new customers, we need to make sure it is seen.
 
 ## Will premium improve my download speed?
 
