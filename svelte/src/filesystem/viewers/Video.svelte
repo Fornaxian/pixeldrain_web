@@ -1,5 +1,6 @@
 <script>
-import { onMount,  createEventDispatcher, tick } from "svelte";
+import { onMount, createEventDispatcher, tick } from "svelte";
+import { video_position } from "../../lib/VideoPosition.mjs";
 import { fs_path_url } from "../FilesystemAPI.mjs";
 let dispatch = createEventDispatcher()
 
@@ -107,6 +108,7 @@ const video_keydown = e => {
 					on:play={() => playing = true }
 					on:ended={() => dispatch("open_sibling", 1)}
 					on:keydown={video_keydown}
+					use:video_position={() => $nav.base.sha256_sum.substring(0, 8)}
 				>
 					<source src={fs_path_url($nav.base.path)} type={$nav.base.file_type} />
 				</video>

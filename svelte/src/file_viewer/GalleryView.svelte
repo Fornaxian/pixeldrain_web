@@ -3,6 +3,8 @@ import { createEventDispatcher } from "svelte"
 import { flip } from "svelte/animate"
 import FilePicker from "./FilePicker.svelte"
 import { file_type } from "./FileUtilities.svelte";
+import { get_video_position } from "./../lib/VideoPosition.mjs"
+import ProgressBar from "./../util/ProgressBar.svelte"
 let dispatch = createEventDispatcher()
 
 export let list = {
@@ -112,6 +114,7 @@ const drop = (e, index) => {
 	{/if}
 
 	{#each list.files as file, index (file)}
+		{@const vp = get_video_position(file.id)}
 		<a
 			href="#item={index}"
 			class="file"
@@ -145,7 +148,13 @@ const drop = (e, index) => {
 						</button>
 					</div>
 				{/if}
+
+				{#if vp !== null}
+					<div class="grow"></div>
+					<ProgressBar no_margin used={vp.pos} total={vp.dur}/>
+				{/if}
 			</div>
+
 			{file.name}
 		</a>
 	{/each}
@@ -195,6 +204,8 @@ const drop = (e, index) => {
 	text-decoration: none;
 }
 .icon_container {
+	display: flex;
+	flex-direction: column;
 	margin: 3px;
 	height: 148px;
 	border-radius: 6px;
@@ -247,5 +258,8 @@ const drop = (e, index) => {
 	cursor: pointer;
 	flex-direction: column;
 	justify-content: center;
+}
+.grow {
+	flex: 1 1 auto;
 }
 </style>

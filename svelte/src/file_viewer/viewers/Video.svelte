@@ -1,5 +1,6 @@
 <script>
-import { onMount,  createEventDispatcher, tick } from "svelte";
+import { onMount, createEventDispatcher, tick } from "svelte";
+import { video_position } from "../../lib/VideoPosition.mjs";
 import BandwidthUsage from "./BandwidthUsage.svelte";
 import IconBlock from "../../layout/IconBlock.svelte";
 let dispatch = createEventDispatcher()
@@ -140,6 +141,7 @@ const video_keydown = e => {
 					on:play={() => playing = true }
 					on:ended={() => dispatch("next", {})}
 					on:keydown={video_keydown}
+					use:video_position={() => file.id}
 				>
 					<source src={file.get_href} type={file.mime_type} />
 				</video>

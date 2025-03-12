@@ -4,6 +4,7 @@ export let used = 0
 export let animation = "ease"
 export let speed = 1000
 export let no_animation = false
+export let no_margin = false
 export let style = ""
 let percent = 0
 $: {
@@ -21,7 +22,7 @@ $: {
 }
 </script>
 
-<div class="progress_bar_outer" style={style}>
+<div class="progress_bar_outer" style={style} class:no_margin>
 	<div
 		class="progress_bar_inner"
 		class:no_animation
@@ -48,5 +49,8 @@ $: {
 }
 .no_animation {
 	transition-property: none;
+}
+.no_margin {
+	margin: 0;
 }
 </style>
