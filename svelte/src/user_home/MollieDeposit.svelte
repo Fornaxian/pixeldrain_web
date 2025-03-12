@@ -1,4 +1,5 @@
 <script>
+import { onMount } from 'svelte';
 import Euro from '../util/Euro.svelte';
 import LoadingIndicator from '../util/LoadingIndicator.svelte';
 
@@ -42,6 +43,20 @@ let countries = [
 
 let amounts = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
 
+const set_country = (c) => {
+	country = c
+	window.localStorage.setItem("checkout_country", c.name)
+}
+
+onMount(() => {
+	const country_name = window.localStorage.getItem("checkout_country")
+	for (let i = 0; i < countries.length; i++) {
+		if (countries[i].name === country_name) {
+			country = countries[i]
+		}
+	}
+})
+
 const checkout = async () => {
 	loading = true
 
@@ -72,7 +87,6 @@ const checkout = async () => {
 		loading = false
 	}
 }
-
 </script>
 
 <div class="highlight_border">
@@ -85,7 +99,7 @@ const checkout = async () => {
 		</div>
 		<div class="countries">
 			{#each countries as c}
-				<button on:click={() => country = c}>
+				<button on:click={() => set_country(c)}>
 					<span class="icon_unicode">{c.flag}</span>
 					<span>{c.name}</span>
 				</button>
@@ -146,7 +160,7 @@ const checkout = async () => {
 		<div style="display: flex;">
 			<button on:click={() => country = null} style="flex: 0 0 auto;">
 				<i class="icon">chevron_left</i>
-				Back
+				Change country
 			</button>
 			<div style="flex: 1 1 auto;"></div>
 			<div style="flex: 0 0 auto; display: flex; gap: 0.25em; align-items: center;">

@@ -95,8 +95,11 @@ onMount(() => {
 	</p>
 	<p>
 		The Prepaid plan is charged daily based on usage. When you reach
-		negative balance the subscription will automatically end. You will need
-		a positive balance to activate the subscription again.
+		negative balance the subscription will automatically end. Need at least
+		<Euro amount="1e6"/> account credit to activate prepaid. Your current
+		prepaid credit is <Euro amount={window.user.balance_micro_eur}/>. You
+		can deposit credit on the <a href="/user/prepaid/deposit">credit deposit
+		page</a>.
 	</p>
 
 	<h3>Available subscription plans</h3>
@@ -140,7 +143,7 @@ onMount(() => {
 		</div>
 		<div>
 			<div class="feat_label" class:feat_highlight={subscription === "prepaid"}>
-				Prepaid (credit <Euro amount={window.user.balance_micro_eur}/>)<br/>
+				Prepaid<br/>
 				{#if subscription === "prepaid"}
 					Currently active
 				{:else}
