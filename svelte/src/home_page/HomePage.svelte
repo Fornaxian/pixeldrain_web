@@ -83,7 +83,7 @@ let upload_widget
 				<div>€ 1 / TB</div>
 			</div>
 			<div>
-				<div>Inactivity</div>
+				<div>Account inactivity</div>
 				<div>€1 / month</div>
 			</div>
 		</div>
@@ -110,15 +110,18 @@ let upload_widget
 				server failures
 			</li>
 			<li>
-				Over <span class="bold">1 Terabit</span> of bandwidth capacity
+				<span class="bold">1.8 Terabits per second</span> of total bandwidth
+				capacity
 			</li>
 			<li>
-				Eleven high-performance caching servers optimized for data
+				Twenty-three high-performance caching servers optimized for data
 				transfer over long distances
 			</li>
 			<li>
 				File caching in
 				<span class="bold">Portland</span>,
+				<span class="bold">Querétaro</span>,
+				<span class="bold">New York</span>,
 				<span class="bold">São Paulo</span>,
 				<span class="bold">Frankfurt</span> and
 				<span class="bold">Singapore</span>

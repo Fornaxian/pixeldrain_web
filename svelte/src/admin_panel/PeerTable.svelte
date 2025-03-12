@@ -64,6 +64,7 @@ let sort = (field) => {
 				<td><SortButton field="network_ratio" active_field={sort_field} asc={asc} sort_func={sort}>Rat</SortButton></td>
 				<td><SortButton field="avg_network_total" active_field={sort_field} asc={asc} sort_func={sort}>Tot</SortButton></td>
 				<td><SortButton field="usage_percent" active_field={sort_field} asc={asc} sort_func={sort}>Use%</SortButton></td>
+				<td><SortButton field="cache_threshold" active_field={sort_field} asc={asc} sort_func={sort}>CThresh</SortButton></td>
 				<td><SortButton field="free_space" active_field={sort_field} asc={asc} sort_func={sort}>Free</SortButton></td>
 				<td><SortButton field="min_free_space" active_field={sort_field} asc={asc} sort_func={sort}>Min free</SortButton></td>
 			</tr>
@@ -86,7 +87,8 @@ let sort = (field) => {
 					<td>{peer.network_ratio.toFixed(2)}</td>
 					<td>{formatDataVolume(peer.avg_network_total, 3)}/s</td>
 					<td>{Math.round(peer.usage_percent)}%</td>
-					<td>{formatDataVolume(peer.free_space, 4)}</td>
+					<td>{formatDataVolume(peer.cache_threshold, 3)}</td>
+					<td>{formatDataVolume(peer.free_space, 3)}</td>
 					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
 				</tr>
 			{/each}
@@ -105,6 +107,7 @@ let sort = (field) => {
 				<td>{peers.reduce((acc, val) => acc += val.network_ratio, 0).toFixed(2)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_total, 0), 3)}/s</td>
 				<td>{Math.round(peers.reduce((acc, val) => acc += val.usage_percent, 0))}%</td>
+				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.cache_threshold, 0), 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.free_space, 0), 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0), 3)}</td>
 			</tr>
@@ -122,6 +125,7 @@ let sort = (field) => {
 				<td>{(peers.reduce((acc, val) => acc += val.network_ratio, 0) / peers.length).toFixed(2)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_total, 3) / peers.length, 4)}/s</td>
 				<td>{Math.round(peers.reduce((acc, val) => acc += val.usage_percent, 0) / peers.length)}%</td>
+				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.cache_threshold, 0) / peers.length, 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.free_space, 0) / peers.length, 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0) / peers.length, 3)}</td>
 			</tr>
