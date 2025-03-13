@@ -26,6 +26,10 @@ export const get_video_positions = () => {
 }
 
 export const save_video_position = (id: string, position: number, duration: number) => {
+	if (duration < 300) {
+		return // Don't bother saving videos less than 5 minutes long
+	}
+
 	const video_positions = get_video_positions()
 
 	// Add our new entry
