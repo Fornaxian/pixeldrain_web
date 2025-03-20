@@ -118,15 +118,6 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 					"can verify that no typing errors were made, which would " +
 					"prevent you from logging into your new account",
 				Type: FieldTypeNewPassword,
-			}, {
-				Name:  "recaptcha_response",
-				Label: "reCaptcha",
-				Description: "the reCaptcha turing test verifies that you " +
-					"are not an evil robot that is trying to flood the " +
-					"website with fake accounts. Please click the white box " +
-					"to prove that you're not a robot",
-				Type:           FieldTypeCaptcha,
-				CaptchaSiteKey: wc.captchaKey(),
 			},
 		},
 		SubmitLabel: "Register",
@@ -139,14 +130,12 @@ func (wc *WebController) registerForm(td *TemplateData, r *http.Request) (f Form
 					"password in both password fields"}
 			return f
 		}
-		log.Debug("capt: %s", f.FieldVal("recaptcha_response"))
 
 		// Register the user
 		if err = td.PixelAPI.UserRegister(
 			f.FieldVal("username"),
 			f.FieldVal("email"),
 			f.FieldVal("password"),
-			f.FieldVal("recaptcha_response"),
 		); err != nil {
 			formAPIError(err, &f)
 			return f

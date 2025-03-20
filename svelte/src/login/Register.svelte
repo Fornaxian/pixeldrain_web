@@ -46,11 +46,6 @@ let form = {
 		form.append("username", fields.username)
 		form.append("email", fields.email)
 		form.append("password", fields.password)
-		if (fields.recaptcha_response) {
-			console.log("resp", fields.recaptcha_response)
-			form.append("recaptcha_response", fields.recaptcha_response)
-		}
-
 
 		const resp = await fetch(
 			window.api_endpoint+"/user/register",
@@ -82,28 +77,6 @@ let form = {
 		return {success: true, message: "Successfully registered a new account"}
 	},
 }
-
-onMount(async () => {
-	const resp = await fetch(window.api_endpoint+"/misc/recaptcha");
-	if(resp.status >= 400) {
-		alert("Failed to get captcha key: " + await resp.text())
-		return
-	}
-	let jresp = await resp.json()
-
-	form.fields.push({
-		name: "recaptcha_response",
-		label: "Captcha",
-		type: "captcha",
-		captcha_site_key: jresp.site_key,
-		description: "The reCaptcha test verifies that you " +
-			"are not an evil robot that is trying to flood the " +
-			"website with fake accounts. Please click the white box " +
-			"to prove that you're not a robot"
-	})
-	form.fields = form.fields
-})
-
 </script>
 
 <Form config={form}></Form>
