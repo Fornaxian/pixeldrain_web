@@ -20,6 +20,7 @@ import ListStats from "./ListStats.svelte";
 import ListUpdater from "./ListUpdater.svelte";
 import CopyButton from "../layout/CopyButton.svelte";
 import Menu from "../filesystem/Menu.svelte"
+import AffiliatePrompt from "../user_home/AffiliatePrompt.svelte";
 
 let loading = true
 let embedded = false
@@ -617,6 +618,8 @@ const keyboard_event = evt => {
 
 	<!-- At the bottom so it renders over everything else -->
 	<LoadingIndicator loading={loading}/>
+
+	<AffiliatePrompt/>
 </div>
 
 <style>

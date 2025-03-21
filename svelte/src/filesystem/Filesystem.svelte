@@ -14,6 +14,7 @@ import { writable } from 'svelte/store';
 import TransferLimit from '../file_viewer/TransferLimit.svelte';
 import { stats } from "../lib/StatsSocket.js"
 import { css_from_path } from './edit_window/Branding';
+import AffiliatePrompt from '../user_home/AffiliatePrompt.svelte';
 
 let file_viewer
 let file_preview
@@ -197,6 +198,8 @@ const download = () => {
 	<!-- This one is included at the highest level so uploads can keep running
 		even when the user navigates to a different directory -->
 	<FSUploadWidget nav={nav} bind:this={upload_widget} />
+
+	<AffiliatePrompt/>
 
 	<LoadingIndicator loading={$loading}/>
 </div>

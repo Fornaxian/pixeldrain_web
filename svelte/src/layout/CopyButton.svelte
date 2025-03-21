@@ -4,6 +4,7 @@ import { copy_text } from "../util/Util.svelte";
 export let text = ""
 export let style = ""
 export let large_icon = false
+export let small_icon = false
 let failed = false
 let success = false
 
@@ -31,6 +32,7 @@ export const copy = () => {
 	class:button_highlight={success}
 	class:button_red={failed}
 	class:large_icon
+	class:small_icon
 	title="Copy text to clipboard"
 	disabled={text === ""}
 >
@@ -53,6 +55,10 @@ export const copy = () => {
 }
 .large_icon>.icon {
 	font-size: 40px;
+	display: block;
+}
+.small_icon>.icon {
+	font-size: 1.2em;
 	display: block;
 }
 </style>

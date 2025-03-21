@@ -1,5 +1,8 @@
 <script>
+import CopyButton from "../layout/CopyButton.svelte";
 import Form from "./../util/Form.svelte";
+
+let affiliate_link = window.location.protocol+"//"+window.location.host + "?ref=" + window.user.username
 
 let account_settings = {
 	name: "account_settings",
@@ -40,6 +43,7 @@ let account_settings = {
 			description: `Changing your username also changes the name used to
 				log in. If you forget your username you can still log in using
 				your e-mail address if you have one configured`,
+			separator: true,
 		},
 	],
 	submit_label: `<i class="icon">save</i> Save`,
@@ -57,10 +61,35 @@ let account_settings = {
 		form.append("password_new", fields.password_new1)
 		form.append("username", fields.username)
 
-		const resp = await fetch(
-			window.api_endpoint+"/user",
-			{ method: "PUT", body: form }
-		);
+		const resp = await fetch(window.api_endpoint+"/user", { method: "PUT", body: form });
+		if(resp.status >= 400) {
+			return {error_json: await resp.json()}
+		}
+		return {success: true, message: "Success! Your changes have been saved"}
+	},
+}
+
+const affiliate_settings = {
+	name: "affiliate_settings",
+	fields: [
+		{
+			name: "affiliate_user_name",
+			label: "Affiliate user name",
+			type: "text",
+			default_value: window.user.affiliate_user_name,
+			description: `The affiliate user name can be the name of a
+				pixeldrain account you wish to support with your subscription.
+				The account will receive a fee of €0.50 for every month that
+				your premium plan is active. This does not cost you anything
+				extra.`,
+		},
+	],
+	submit_label: `<i class="icon">save</i> Save`,
+	on_submit: async fields => {
+		const form = new FormData()
+		form.append("affiliate_user_name", fields.affiliate_user_name)
+
+		const resp = await fetch(window.api_endpoint+"/user", { method: "PUT", body: form });
 		if(resp.status >= 400) {
 			return {error_json: await resp.json()}
 		}
@@ -102,15 +131,33 @@ let delete_account = {
 </script>
 
 <section>
-	<br/>
-	<div class="highlight_border">
-		<h3>Account settings</h3>
+	<fieldset>
+		<legend>Account settings</legend>
 		<Form config={account_settings}></Form>
-	</div>
-	<br/>
-	<div class="highlight_border">
-		<h3>Delete account</h3>
+	</fieldset>
+
+	<fieldset>
+		<legend>Affiliate settings</legend>
+		<Form config={affiliate_settings}></Form>
+		<div class="form">
+			<p>
+				Your own affiliate link is
+				<a href="{affiliate_link}">{affiliate_link}</a>
+				<CopyButton small_icon text={affiliate_link}/>. Share this link
+				with premium pixeldrain users to gain commissions. For a
+				detailed description of the affiliate program please check out
+				the <a href="/about#toc_12">Q&A page</a>.
+			</p>
+			<p>
+				Note that the link includes the name of your pixeldrain
+				account. If you change your account name the link will stop
+				working and you might stop receiving commissions.
+			</p>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>Delete account</legend>
 		<Form config={delete_account}></Form>
-	</div>
-	<br/>
+	</fieldset>
 </section>

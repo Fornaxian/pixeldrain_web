@@ -11,6 +11,7 @@ import BandwidthSharing from "./BandwidthSharing.svelte";
 import EmbeddingControls from "./EmbeddingControls.svelte";
 import PageBranding from "./PageBranding.svelte";
 import Dashboard from "./dashboard/Dashboard.svelte";
+import AffiliatePrompt from "./AffiliatePrompt.svelte";
 
 let pages = [
 	{
@@ -88,3 +89,5 @@ let pages = [
 </script>
 
 <TabMenu pages={pages} title="Welcome, {window.user.username}!"/>
+
+<AffiliatePrompt always/>

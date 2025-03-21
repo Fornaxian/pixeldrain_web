@@ -17,6 +17,7 @@ let transactions = {
 	total_storage_charge: 0,
 	total_bandwidth_used: 0,
 	total_bandwidth_charge: 0,
+	total_affiliate_amount: 0,
 	total_deposited: 0,
 	total_deducted: 0,
 	balance_start: 0,
@@ -45,6 +46,7 @@ const load_transactions = async () => {
 			total_storage_charge: 0,
 			total_bandwidth_used: 0,
 			total_bandwidth_charge: 0,
+			total_affiliate_amount: 0,
 			total_deposited: 0,
 			total_deducted: 0,
 			balance_start: 0,
@@ -66,6 +68,7 @@ const load_transactions = async () => {
 			month.total_storage_charge += row.storage_charge
 			month.total_bandwidth_used += row.bandwidth_used
 			month.total_bandwidth_charge += row.bandwidth_charge
+			month.total_affiliate_amount += row.affiliate_amount
 			month.total_deducted += row.subscription_charge + row.storage_charge + row.bandwidth_charge
 		})
 
@@ -146,6 +149,12 @@ onMount(() => {
 			<td>
 				<Euro amount={transactions.total_bandwidth_charge} precision="4"/>
 				(used {formatDataVolume(transactions.total_bandwidth_used, 3)})
+			</td>
+		</tr>
+		<tr>
+			<td>Affiliate rewards</td>
+			<td>
+				<Euro amount={transactions.total_affiliate_amount} precision="4"/>
 			</td>
 		</tr>
 		<tr>

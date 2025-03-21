@@ -185,6 +185,38 @@ be public. For that reason I disabled search indexing on all pixeldrain files.
 This protects the privacy of pixeldrain users and helps with preventing
 information leaks.
 
+## How does the affiliate program work?
+
+Pixeldrain's affiliate program is a way to earn pixeldrain credit by driving
+traffic to pixeldrain. The way it works is that you send people your affiliate
+link, if someone accepts to be your affiliate then their active subscription
+will earn you pixeldrain credit. The affiliate program is opt-in and fully
+transparent. Users will always be notified when their affiliate account is
+updated. You can update who you are sponsoring by editing the affiliate name on
+your [user settings page](/user/settings).
+
+Here is a summary of all the rules and limitations:
+
+* Each paying customer using your affiliate code will earn you €0.50 in prepaid
+  credit every month. The credit is added to your account on a daily basis, as
+  you can see on the [transactions page](/user/prepaid/transactions).
+* Sponsoring someone with an affiliate code does not cost you any extra money.
+  The resulting fee comes out of pixeldrain's pockets.
+* You can only earn pixeldrain credit with the affiliate program. There is no
+  cash out feature.
+* When someone who is using your affiliate code cancels their plan, you will
+  also stop receiving rewards.
+* You don't need an active subscription to gain credit through the affiliate
+  program. You need a positive balance of at least €1 to activate the prepaid
+  plan.
+
+Some fun facts:
+
+* You only need two affiliates to offset pixeldrain's base subscription fee.
+* Each sponsoring user is effectively equal to 125 GB of storage space or 500 GB
+  of bandwidth usage per month.
+* You cannot sponsor yourself.
+
 ## Is there a clean pixeldrain logo I can use?
 
 Yes, here's a high resolution pixeldrain logo with text. The font is called
