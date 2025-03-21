@@ -1,8 +1,18 @@
 <script>
+import { onMount } from "svelte";
 import CopyButton from "../layout/CopyButton.svelte";
 import Form from "./../util/Form.svelte";
+import Button from "../layout/Button.svelte";
 
-let affiliate_link = window.location.protocol+"//"+window.location.host + "?ref=" + window.user.username
+let affiliate_link = window.location.protocol+"//"+window.location.host + "?ref=" + encodeURIComponent(window.user.username)
+let affiliate_deny = false
+onMount(() => {
+	affiliate_deny = localStorage.getItem("affiliate_deny") === "1"
+})
+const enable_affiliate_prompt = () => {
+	affiliate_deny = false
+	localStorage.removeItem("affiliate_deny")
+}
 
 let account_settings = {
 	name: "account_settings",
@@ -144,15 +154,27 @@ let delete_account = {
 				Your own affiliate link is
 				<a href="{affiliate_link}">{affiliate_link}</a>
 				<CopyButton small_icon text={affiliate_link}/>. Share this link
-				with premium pixeldrain users to gain commissions. For a
-				detailed description of the affiliate program please check out
-				the <a href="/about#toc_12">Q&A page</a>.
+				with premium pixeldrain users to gain commissions. You can use
+				the "?ref={encodeURIComponent(window.user.username)}" referral
+				code on download pages too. For a detailed description of the
+				affiliate program please check out the <a
+				href="/about#toc_12">Q&A page</a>.
 			</p>
 			<p>
 				Note that the link includes the name of your pixeldrain
 				account. If you change your account name the link will stop
 				working and you might stop receiving commissions.
 			</p>
+
+			{#if affiliate_deny}
+				<div class="highlight_blue">
+					You currently have affiliate prompts disabled. You will not
+					see affiliate requests from other users. If you wish to
+					enable it again, click here:
+					<br/>
+					<Button click={enable_affiliate_prompt} label="Enable affiliate prompts"/>
+				</div>
+			{/if}
 		</div>
 	</fieldset>
 

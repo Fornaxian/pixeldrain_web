@@ -141,6 +141,7 @@ onMount(() => {
 				</ul>
 			</div>
 		</div>
+
 		<div>
 			<div class="feat_label" class:feat_highlight={subscription === "prepaid"}>
 				Prepaid<br/>
@@ -188,6 +189,7 @@ onMount(() => {
 				</ul>
 			</div>
 		</div>
+
 		<div>
 			<div class="feat_label" class:feat_highlight={subscription === ""}>
 				Free<br/>

@@ -70,6 +70,7 @@ let toolbar_toggle = () => {
 let downloader
 let list_updater
 let details_window
+let affiliate_prompt
 let details_visible = false
 let qr_window
 let qr_visible = false
@@ -255,6 +256,9 @@ const apply_customizations = file => {
 	}
 	if (file.branding.footer_link) {
 		custom_footer_link = file.branding.footer_link
+	}
+	if (file.branding.affiliate_prompt) {
+		affiliate_prompt.prompt(file.branding.affiliate_prompt)
 	}
 	if (file.branding.disable_download_button && !file.can_edit) {
 		disable_download_button = true
@@ -619,7 +623,7 @@ const keyboard_event = evt => {
 	<!-- At the bottom so it renders over everything else -->
 	<LoadingIndicator loading={loading}/>
 
-	<AffiliatePrompt/>
+	<AffiliatePrompt bind:this={affiliate_prompt}/>
 </div>
 
 <style>

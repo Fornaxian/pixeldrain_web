@@ -1,22 +1,35 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import Modal from "../util/Modal.svelte";
 import LoadingIndicator from "../util/LoadingIndicator.svelte";
+import { get_user, put_user } from "../lib/PixeldrainAPI.mjs";
 
 // When the always flag is set then the pop-up will also show if the user
 // already has an affiliate ID set
 export let always = false
-let modal
-let loading
-let ref
+let modal: Modal
+let loading: boolean
+let referral: string
+let shown = false
 
-onMount(() => {
+export const prompt = async (ref: string) => {
+	referral = ref
+	const user = await get_user()
+
+	if (referral === null) {
+		return
+	} else if (referral === user.affiliate_user_name) {
+		return // User is already supporting this affiliate ID
+	} else if (referral === user.username) {
+		return // This is your own referral link
+	}
+
 	if (!always) {
-		if (window.user.subscription.id === "") {
+		if (user.subscription.id === "") {
 			// User does not have an active subscription, setting referral will
 			// not have effect
 			return
-		} else if (window.user.affiliate_user_name !== "") {
+		} else if (user.affiliate_user_name !== "") {
 			// User is already sponsoring someone
 			return
 		} else if (localStorage.getItem("affiliate_deny") === "1") {
@@ -25,28 +38,21 @@ onMount(() => {
 		}
 	}
 
-	ref = new URLSearchParams(document.location.search).get("ref")
-	if (ref === null) {
+	// The prompt can only be shown once per page. This should prevent it from
+	// showing up every time someone loads a new file.
+	if (shown === true) {
 		return
-	} else if (ref === window.user.affiliate_user_name) {
-		return // User is already supporting this affiliate ID
 	}
-
+	shown = true
 	modal.show()
-})
+}
+
+onMount(() => prompt(new URLSearchParams(document.location.search).get("ref")))
 
 const allow = async () => {
 	loading = true
 	try {
-		const form = new FormData()
-		form.append("affiliate_user_name", ref)
-		const resp = await fetch(window.api_endpoint+"/user", { method: "PUT", body: form });
-		if(resp.status >= 400) {
-			throw (await resp.json()).message
-		}
-
-		// Update the window.user variable
-		window.user.affiliate_user_name = ref
+		await put_user({affiliate_user_name: referral})
 
 		// Close the popup
 		modal.hide()
@@ -67,10 +73,10 @@ const deny = () => {
 	<LoadingIndicator bind:loading={loading} />
 	<section>
 		<p>
-			Hi! {ref} wants you to sponsor their pixeldrain account. This will
-			give them €0.50 every month in pixeldrain prepaid credit. They can
-			use this credit to get a discount on their file sharing and storage
-			efforts. Here is a short summary of what this entails:
+			Hi! {referral} wants you to sponsor their pixeldrain account. This
+			will give them €0.50 every month in pixeldrain prepaid credit. They
+			can use this credit to get a discount on their file storage and
+			sharing costs. Here is a short summary of what this entails:
 		</p>
 		<ul>
 			<li>

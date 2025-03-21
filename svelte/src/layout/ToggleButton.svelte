@@ -3,10 +3,18 @@ export let on = false
 export let group_first = false
 export let group_middle = false
 export let group_last = false
+export let action = (e: MouseEvent) => {}
+
+const click = (e: MouseEvent) => {
+	on = !on
+	if (typeof action === "function") {
+		action(e)
+	}
+}
 </script>
 
 <button
-	on:click={() => on = !on}
+	on:click={click}
 	type="button"
 	class="button"
 	class:button_highlight={on}
