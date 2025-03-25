@@ -1,0 +1,20 @@
+{{define "login"}}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "Login" }}
+
+		<script>
+		window.api_endpoint = '{{.APIEndpoint}}';
+		window.user = {{.User}};
+		window.server_hostname = "{{.Hostname}}";
+		</script>
+		<script defer src='/res/svelte/login.js?v{{cacheID}}'></script>
+	</head>
+
+	<body>
+		{{template "menu" .}}
+		<div id="page_body" class="page_body"></div>
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

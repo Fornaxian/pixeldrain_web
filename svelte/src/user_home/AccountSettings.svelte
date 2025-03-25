@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import CopyButton from "../layout/CopyButton.svelte";
 import Form from "./../util/Form.svelte";
 import Button from "../layout/Button.svelte";
+import OtpSetup from "./OTPSetup.svelte";
 
 let affiliate_link = window.location.protocol+"//"+window.location.host + "?ref=" + encodeURIComponent(window.user.username)
 let affiliate_deny = false
@@ -29,15 +30,12 @@ let account_settings = {
 				your current e-mail address from your account`,
 			separator: true
 		}, {
-			name: "password_old",
-			label: "Current password",
-			type: "current_password",
-			discription: `Enter your password here if you would like to change
-				your password.`
-		}, {
 			name: "password_new1",
 			label: "New password",
 			type: "new_password",
+			description: `Enter a new password here to change your account
+				password. If you do not wish to change your password, leave the
+				field empty`
 		}, {
 			name: "password_new2",
 			label: "New password again",
@@ -67,7 +65,6 @@ let account_settings = {
 
 		const form = new FormData()
 		form.append("email", fields.email)
-		form.append("password_old", fields.password_old)
 		form.append("password_new", fields.password_new1)
 		form.append("username", fields.username)
 
@@ -114,14 +111,29 @@ let delete_account = {
 			name: "description",
 			label: "Description",
 			type: "description",
-			description: `When you delete your pixeldrain account you will be
+			description: `
+			<p>
+				When you delete your pixeldrain account you will be
 				logged out on all of your devices. Your account will be
 				scheduled for deletion in seven days. If you log back in to your
 				account during those seven days the deletion will be canceled.
-				<br/><br/>
+			</p>
+			<p>
+				The files uploaded to your account are not deleted. You need to
+				do that manually before deleting the account. If you do not
+				delete your files then they will stay available as anonymously
+				uploaded files and they will follow the regular file expiry
+				rules.
+			</p>
+			<p>
+				Any prepaid credit on your account will also be deleted. This is
+				not recoverable. We don't offer refunds on prepaid credit.
+			</p>
+			<p>
 				If you have an active Pro subscription you need to end that
 				separately through your Patreon account. Deleting your
-				pixeldrain account will not cancel the subscription.`,
+				pixeldrain account will not cancel the subscription.
+			</p>`,
 		},
 	],
 	submit_red: true,
@@ -144,6 +156,11 @@ let delete_account = {
 	<fieldset>
 		<legend>Account settings</legend>
 		<Form config={account_settings}></Form>
+	</fieldset>
+
+	<fieldset>
+		<legend>Two-factor authentication</legend>
+		<OtpSetup/>
 	</fieldset>
 
 	<fieldset>

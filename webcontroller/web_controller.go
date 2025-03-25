@@ -156,10 +156,9 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "speedtest" /*       */, wc.serveTemplate("speedtest", handlerOpts{})},
 
 		// User account pages
-		{GET, "register" /*         */, wc.serveForm(wc.registerForm, handlerOpts{NoEmbed: true})},
-		{PST, "register" /*         */, wc.serveForm(wc.registerForm, handlerOpts{NoEmbed: true})},
-		{GET, "login" /*            */, wc.serveForm(wc.loginForm, handlerOpts{NoEmbed: true})},
-		{PST, "login" /*            */, wc.serveForm(wc.loginForm, handlerOpts{NoEmbed: true})},
+		{GET, "login" /*             */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
+		{GET, "register" /*          */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
+
 		{GET, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
 		{PST, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
 		{GET, "logout" /*           */, wc.serveTemplate("logout", handlerOpts{Auth: true, NoEmbed: true})},

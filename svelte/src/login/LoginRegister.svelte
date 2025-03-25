@@ -22,13 +22,9 @@ let page = "login"
 
 <div class="page_content">
 	{#if page === "login"}
-			<Login on:login={finish_login}/>
-			<p>
-				If you have lost your password, you can <a
-				href="password_reset">request a new password here</a>.
-			</p>
+		<Login on:login={finish_login}/>
 	{:else if page === "register"}
-			<Register on:login={finish_login}/>
+		<Register on:login={finish_login}/>
 	{/if}
 </div>
 

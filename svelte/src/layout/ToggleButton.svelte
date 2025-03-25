@@ -1,5 +1,7 @@
 <script lang="ts">
 export let on = false
+export let icon_on = "check"
+export let icon_off = "close"
 export let group_first = false
 export let group_middle = false
 export let group_last = false
@@ -23,11 +25,10 @@ const click = (e: MouseEvent) => {
 	class:group_last
 >
 	{#if on}
-		<i class="icon">check</i>
+		<i class="icon">{icon_on}</i>
 	{:else}
-		<i class="icon">close</i>
+		<i class="icon">{icon_off}</i>
 	{/if}
-
 	<slot></slot>
 </button>
 

@@ -37,7 +37,6 @@ const save_embed = async () => {
 onMount(() => {
 	embed_domains = window.user.file_embed_domains
 })
-
 </script>
 
 <LoadingIndicator loading={loading}/>

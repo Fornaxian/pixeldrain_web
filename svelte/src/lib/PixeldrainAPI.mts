@@ -4,11 +4,14 @@
 export type GenericResponse = {
 	value: string,
 	message: string,
+	errors?: GenericResponse[],
+	extra?: { [index: string]: Object },
 }
 
 export type User = {
 	username: string,
 	email: string,
+	otp_enabled: boolean,
 	subscription: Subscription,
 	storage_space_used: number,
 	filesystem_storage_used: number,

@@ -1,11 +1,8 @@
-<script>
-import { createEventDispatcher, onMount } from "svelte";
-import Form from "../util/Form.svelte"
+<script lang="ts">
+import Form, { type FormConfig } from "../util/Form.svelte"
+import { get_endpoint } from "../lib/PixeldrainAPI.mjs";
 
-let dispatch = createEventDispatcher()
-
-let form = {
-	name: "register",
+let form: FormConfig = {
 	fields: [
 		{
 			name: "username",
@@ -34,6 +31,7 @@ let form = {
 	on_submit: async fields => {
 		if (fields.password !== fields.password2) {
 			return {
+				success: false,
 				error_json: {
 					value: "password_verification_failed",
 					message: "Password verification failed. Please enter the same " +
@@ -48,33 +46,17 @@ let form = {
 		form.append("password", fields.password)
 
 		const resp = await fetch(
-			window.api_endpoint+"/user/register",
+			get_endpoint()+"/user/register",
 			{ method: "POST", body: form }
 		);
 		if(resp.status >= 400) {
-			return {error_json: await resp.json()}
+			return {success: false, error_json: await resp.json()}
 		}
 
-		// Register successful, now we will try logging in with the same
-		// credentials
-
-		const login_form = new FormData()
-		login_form.append("username", fields.username)
-		login_form.append("password", fields.password)
-		login_form.append("app_name", "website login")
-
-		const login_resp = await fetch(
-			window.api_endpoint+"/user/login",
-			{ method: "POST", body: form }
-		);
-		if(login_resp.status >= 400) {
-			return {error_json: await login_resp.json()}
+		return {
+			success: true,
+			message: "Account registration successful. Please check your inbox for an e-mail verification link"
 		}
-		let jresp = await login_resp.json()
-
-		dispatch("login", {key: jresp.auth_key})
-
-		return {success: true, message: "Successfully registered a new account"}
 	},
 }
 </script>
