@@ -14,7 +14,6 @@ export default [
 	"file_viewer",
 	"filesystem",
 	"user_home",
-	"user_file_manager",
 	"admin_panel",
 	"home_page",
 	"text_upload",

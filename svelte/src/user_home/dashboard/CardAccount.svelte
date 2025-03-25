@@ -43,11 +43,11 @@
 <h3>Exports</h3>
 
 <div class="button_row">
-	<a href="/user/export/files" class="button">
+	<a href="/api/user/files?format=csv" class="button">
 		<i class="icon">list</i>
 		Export files to CSV
 	</a>
-	<a href="/user/export/lists" class="button">
+	<a href="/api/user/lists?format=csv" class="button">
 		<i class="icon">list</i>
 		Export albums to CSV
 	</a>

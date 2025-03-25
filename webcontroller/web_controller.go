@@ -156,33 +156,13 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "speedtest" /*       */, wc.serveTemplate("speedtest", handlerOpts{})},
 
 		// User account pages
-		{GET, "login" /*             */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
-		{GET, "register" /*          */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
-
-		{GET, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
-		{PST, "password_reset" /*   */, wc.serveForm(wc.passwordResetForm, handlerOpts{NoEmbed: true})},
+		{GET, "login" /*            */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
+		{GET, "register" /*         */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
 		{GET, "logout" /*           */, wc.serveTemplate("logout", handlerOpts{Auth: true, NoEmbed: true})},
 		{PST, "logout" /*           */, wc.serveLogout},
-		{GET, "user/filemanager" /* */, wc.serveTemplate("file_manager", handlerOpts{Auth: true})},
-		{GET, "user/export/files" /**/, wc.serveUserExportFiles},
-		{GET, "user/export/lists" /**/, wc.serveUserExportLists},
 
 		// User account settings
-		{GET, "user" /*                       */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/home" /*                  */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/settings" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/sharing" /*               */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/sharing/*p" /*            */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/api_keys" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/activity" /*              */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/connect_app" /*           */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/transactions" /*          */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/subscription" /*          */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/prepaid" /*               */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/prepaid/*p" /*            */, wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
-		{GET, "user/confirm_email" /*         */, wc.serveEmailConfirm},
-		{GET, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
-		{PST, "user/password_reset_confirm" /**/, wc.serveForm(wc.passwordResetConfirmForm, handlerOpts{NoEmbed: true})},
+		{GET, "user/*p", wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
 
 		// Admin settings
 		{GET, "admin" /*                   */, wc.serveTemplate("admin", handlerOpts{Auth: true})},

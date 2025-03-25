@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"baseUrl": "./",
 		"verbatimModuleSyntax": true,
 		"target": "ES2017",
 	},

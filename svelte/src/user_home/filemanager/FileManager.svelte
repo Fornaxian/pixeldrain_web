@@ -1,9 +1,9 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume } from "../util/Formatting.svelte";
-import Modal from "../util/Modal.svelte";
-import Spinner from "../util/Spinner.svelte";
-import UploadWidget from "../util/upload_widget/UploadWidget.svelte";
+import { formatDataVolume } from "../../util/Formatting.svelte";
+import Modal from "../../util/Modal.svelte";
+import Spinner from "../../util/Spinner.svelte";
+import UploadWidget from "../../util/upload_widget/UploadWidget.svelte";
 import DirectoryElement from "./DirectoryElement.svelte"
 
 let loading = true
@@ -97,7 +97,7 @@ let hashChange = () => {
 	}
 	if (window.location.hash === "#lists") {
 		contentType = "lists"
-		document.title = "My Lists"
+		document.title = "My Albums"
 		getUserLists()
 		resetMenu()
 	} else {
@@ -286,7 +286,7 @@ onMount(() => {
 	{#if selecting}
 		<div class="nav_bar">
 			{#if contentType === "files"}
-				<button on:click={createList}><i class="icon">list</i> Make list</button>
+				<button on:click={createList}><i class="icon">list</i> Make album</button>
 				<button on:click={downloadFiles}><i class="icon">download</i> Download</button>
 			{/if}
 			<button on:click={bulkDelete}><i class="icon">delete</i> Delete</button>

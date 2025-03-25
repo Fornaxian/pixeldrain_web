@@ -1,11 +1,23 @@
-<script>
-import { onMount } from "svelte";
+<script lang="ts" context="module">
+export type Tab = {
+	path: string,
+	title: string,
+	icon: string,
+	component?: ComponentType,
+	hidden?: boolean,
+	hide_background?: boolean,
+	hide_frame?: boolean,
+	subpages?: Tab[],
+}
+</script>
+<script lang="ts">
+import { onMount, type ComponentType } from "svelte";
 import Footer from "../layout/Footer.svelte";
 
 export let title = ""
-export let pages = []
+export let pages: Tab[] = []
 
-let navigate = (path, title) => {
+let navigate = (path: string, title: string) => {
 	window.document.title = title+" ~ pixeldrain"
 	window.history.pushState({}, window.document.title, path)
 
@@ -46,33 +58,35 @@ let get_page = () => {
 	pages = pages
 }
 
-let current_page = null
-let current_subpage = null
+let current_page: Tab = null
+let current_subpage: Tab = null
 
 onMount(() => get_page())
 </script>
 
 <svelte:window on:popstate={get_page} />
 
-<header>
-	<h1>{title}</h1>
+{#if current_page !== null && current_page.hide_frame !== true}
+	<header>
+		<h1>{title}</h1>
 
-	<div class="tab_bar">
-		{#each pages as page}
-			{#if !page.hidden}
-				<a class="button"
-					href="{page.path}"
-					class:button_highlight={current_page && page.path === current_page.path}
-					on:click|preventDefault={() => {navigate(page.path, page.title)}}>
-					<i class="icon">{page.icon}</i>
-					<span>{page.title}</span>
-				</a>
-			{/if}
-		{/each}
-	</div>
-</header>
+		<div class="tab_bar">
+			{#each pages as page}
+				{#if !page.hidden}
+					<a class="button"
+						href="{page.path}"
+						class:button_highlight={current_page && page.path === current_page.path}
+						on:click|preventDefault={() => {navigate(page.path, page.title)}}>
+						<i class="icon">{page.icon}</i>
+						<span>{page.title}</span>
+					</a>
+				{/if}
+			{/each}
+		</div>
+	</header>
+{/if}
 
-{#if current_page}
+{#if current_page !== null}
 	<div id="page_content" class:page_content={current_page.hide_background !== true}>
 		{#if current_page.subpages}
 			<div class="tab_bar submenu">
@@ -98,7 +112,9 @@ onMount(() => get_page())
 	</div>
 {/if}
 
-<Footer/>
+{#if current_page !== null && current_page.hide_frame !== true}
+	<Footer/>
+{/if}
 
 <style>
 .submenu {

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import AccountSettings from "./AccountSettings.svelte";
 import APIKeys from "./APIKeys.svelte";
 import Transactions from "./Transactions.svelte";
@@ -6,20 +6,30 @@ import Subscription from "./Subscription.svelte";
 import ConnectApp from "./ConnectApp.svelte";
 import ActivityLog from "./ActivityLog.svelte";
 import DepositCredit from "./DepositCredit.svelte";
-import TabMenu from "../util/TabMenu.svelte";
+import TabMenu, { type Tab } from "../util/TabMenu.svelte";
 import BandwidthSharing from "./BandwidthSharing.svelte";
 import EmbeddingControls from "./EmbeddingControls.svelte";
 import PageBranding from "./PageBranding.svelte";
 import Dashboard from "./dashboard/Dashboard.svelte";
 import AffiliatePrompt from "./AffiliatePrompt.svelte";
+import FileManager from "./filemanager/FileManager.svelte";
+import { onMount } from "svelte";
+import { get_user, type User } from "../lib/PixeldrainAPI.mjs";
 
-let pages = [
+let pages: Tab[] = [
 	{
 		path: "/user",
 		title: "Dashboard",
 		icon: "dashboard",
 		component: Dashboard,
 		hide_background: true,
+	}, {
+		path: "/user/filemanager",
+		title: "My Files",
+		icon: "",
+		component: FileManager,
+		hidden: true,
+		hide_frame: true,
 	}, {
 		path: "/user/settings",
 		title: "Settings",
@@ -86,8 +96,13 @@ let pages = [
 		component: ActivityLog,
 	},
 ]
+
+let user = {} as User
+onMount(async () => {
+	user = await get_user()
+})
 </script>
 
-<TabMenu pages={pages} title="Welcome, {window.user.username}!"/>
+<TabMenu pages={pages} title="Welcome, {user.username}!"/>
 
 <AffiliatePrompt always/>
