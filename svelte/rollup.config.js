@@ -55,11 +55,11 @@ export default [
 			extensions: ['.svelte'],
 		}),
 		commonjs(),
-		nodeResolve(),
-		typescript({
-			compilerOptions: { lib: ["es2015", "dom"] },
-			verbatimModuleSyntax: true,
+		nodeResolve({
+			modulePaths: [process.cwd() + "/src"],
+			extensions: [".svelte", ".mjs", ".js", ".json"]
 		}),
+		typescript(),
 
 		// Watch the `public` directory and refresh the browser on changes when
 		// not in production

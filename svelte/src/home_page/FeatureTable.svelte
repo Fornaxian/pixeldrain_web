@@ -1,4 +1,5 @@
 <script>
+import Tooltip from "layout/Tooltip.svelte";
 import Euro from "../util/Euro.svelte";
 import OtherPlans from "./OtherPlans.svelte";
 </script>
@@ -34,45 +35,76 @@ import OtherPlans from "./OtherPlans.svelte";
 			<span class="bold">None</span>
 		</div>
 		<div class="feature_cell pro_feat">
-			<span class="bold">€4 / month</span> or
-			<span class="bold">€40 / year</span><br/>
-			Charged through Patreon
+			<Tooltip>
+				<span slot="label">
+					<span class="bold">€4 / month</span> or
+					<span class="bold">€40 / year</span>
+				</span>
+				The Pro subscription is managed by Patreon. Patreon's own fees
+				and sales tax will be added to this price. After paying you need
+				to link your pixeldrain account to Patreon to activate the plan.
+			</Tooltip>
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">€1 / month minimum</span><br/>
-			Only charged when usage is less than €1
+			<Tooltip>
+				<span slot="label" class="bold">€1 / month minimum</span>
+				<p>
+					The minimum fee is only charged when usage is less than €1.
+					This calculation is per day, the €1 amount is divided by the
+					number of days in the month and if your usage is lower than
+					that, you will be charged the minimum fee.
+				</p>
+			</Tooltip>
 		</div>
 
 		<div class="left_col">
-			<a class="round button" href="/about#toc_3">
-				<i class="icon">info</i>
-				Transfer limit
-			</a>
+			<a href="/about#toc_3">Transfer limit</a>
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">6 GB per day</span><br/>
-
-			Download speed is reduced to 1 MiB/s when exceeded. Max 3 concurrent
-			downloads
+			<Tooltip>
+				<span slot="label" class="bold">6 GB per day</span>
+				<p>
+					Free users are limited to downloading 6 GB per day, this
+					limit is linked to your IP address, even if you are logged
+					in to an account.
+				</p>
+				<p>
+					When the download limit is exceeded the download speed is
+					reduced to 1 MiB/s. You can have at most three concurrent
+					downloads running.
+				</p>
+			</Tooltip>
 		</div>
 		<div class="feature_cell pro_feat">
-			<span class="bold">4 TB per 30 days</span><br/>
-
-			Transfer limit is used for downloading, sharing and hotlinking. No
-			connection limit
+			<Tooltip>
+				<span slot="label" class="bold">4 TB per 30 days</span>
+				<p>
+					The transfer limit is used for downloading, sharing and
+					hotlinking files.
+				</p>
+				<p>
+					Paid plans do not have a concurrent connection limit.
+				</p>
+			</Tooltip>
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">€1 per TB transferred</span><br/>
-
-			Used for downloading, sharing and hotlinking. You only pay for what
-			you use. No connection limit
+			<Tooltip>
+				<span slot="label" class="bold">€1 per TB transferred</span>
+				<p>
+					Prepaid does not have a transfer limit, instead you are
+					charged for what you use at a rate of €1 per terabyte
+					downloaded. This applies to downloading your own files,
+					other people's files and others downloading your files (if
+					you have hotlinking enabled in your account settings).
+				</p>
+				<p>
+					Paid plans do not have a concurrent connection limit.
+				</p>
+			</Tooltip>
 		</div>
 
 		<div class="left_col">
-			<a class="round button" href="/about#toc_6">
-				<i class="icon">info</i>
-				Hotlinking
-			</a>
+			<a href="/about#toc_6">Hotlinking</a>
 		</div>
 		<div class="feature_cell free_feat">
 			<span class="bold">Hotlinking not supported</span><br/>
@@ -92,25 +124,55 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">€4 / TB / month</span><br/>
-			No limit, you only pay for what you use
+			No limit, you pay for what you use
 		</div>
 
 		<div class="left_col">
-			<a class="round button" href="/about#toc_1">
-				<i class="icon">info</i>
-				File expiry
-			</a>
+			<a href="/about#toc_1">File expiry</a>
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">120 days</span> (4 months)
+			<Tooltip>
+				<span slot="label" class="bold">120 days (4 months)</span>
+				<p>
+					Files expire when they have not been downloaded in the last
+					120 days. A download is counted when more than 10% of the
+					whole file was downloaded in a single request.
+				</p>
+			</Tooltip>
 		</div>
 		<div class="feature_cell pro_feat">
-			<span class="bold">240 days</span> (8 months)<br/>
-			Plans without expiry are available
+			<Tooltip>
+				<span slot="label" class="bold">240 days (8 months)</span>
+				<p>
+					The Pro plan has 240 day file expiry. The same rules apply
+					as the free plan. Higher Patreon subscription plans are
+					available where files do not expire at all.
+				</p>
+			</Tooltip>
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">Files do not expire</span><br/>
-			While prepaid subscription plan is active
+			<Tooltip>
+				<span slot="label" class="bold">Files do not expire</span>
+				<p>
+					Files don't expire while your Prepaid plan is active. If
+					your credit runs out you have one week to top up your
+					balance. If you fail to do so your files will revert to the
+					regular file expiry rules.
+				</p>
+			</Tooltip>
+		</div>
+
+		<div class="left_col">
+			Download page customization
+		</div>
+		<div class="feature_cell free_feat">
+			<span class="bold">None</span>
+		</div>
+		<div class="feature_cell pro_feat">
+			None
+		</div>
+		<div class="feature_cell prepaid_feat">
+			Theme, background, header and footer image can be customized
 		</div>
 
 		<div class="left_col">

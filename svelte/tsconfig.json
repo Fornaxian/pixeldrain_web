@@ -1,6 +1,10 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./",
+		"lib": [
+			"es2015",
+			"dom"
+		],
+		"baseUrl": "./src",
 		"verbatimModuleSyntax": true,
 		"target": "ES2017",
 	},
