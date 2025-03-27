@@ -46,6 +46,27 @@ API key here with your own:
 `curl -T "file_name.txt" -u :5f45f184-64bb-4eaa-be19-4a5f0459db49
 https://pixeldrain.com/api/file/`
 
+## PowerShell example
+**PowerShell 7+ required**
+```powershell
+$FilePath = ".\file_name.txt"
+$PIXELDRAIN_API_KEY=5f45f184-64bb-4eaa-be19-4a5f0459db49
+$EncodedKey = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(":PIXELDRAIN_API_KEY"))
+
+$Headers = @{
+  Authorization = "Basic $EncodedKey"
+}
+
+$File = Get-Item($FilePath)
+
+$Form = @{
+  name = $File.Name;
+  file = $File
+}
+
+Invoke-WebRequest -Uri "https://pixeldrain.com/api/file" -Headers $Headers -Method "Post" -Form $Form
+```
+
 ## Form value order
 
 I recommend you put files at the end of every file upload form. By doing this
