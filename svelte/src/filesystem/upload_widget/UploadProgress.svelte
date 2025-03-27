@@ -2,8 +2,8 @@
 import { createEventDispatcher } from "svelte";
 import { fade } from "svelte/transition";
 import { upload_file } from "./UploadFunc";
-import ProgressBar from "../../util/ProgressBar.svelte";
-import Button from "../../layout/Button.svelte"
+import ProgressBar from "util/ProgressBar.svelte";
+import Button from "layout/Button.svelte"
 
 let dispatch = createEventDispatcher()
 export let job = {

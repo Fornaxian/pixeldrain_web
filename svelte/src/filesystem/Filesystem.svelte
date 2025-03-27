@@ -1,20 +1,20 @@
 <script>
-import { onMount } from 'svelte';
-import LoadingIndicator from '../util/LoadingIndicator.svelte';
-import EditWindow from './edit_window/EditWindow.svelte';
-import Toolbar from './Toolbar.svelte';
-import Breadcrumbs from './Breadcrumbs.svelte';
-import DetailsWindow from './DetailsWindow.svelte';
-import FilePreview from './viewers/FilePreview.svelte';
-import FSUploadWidget from './upload_widget/FSUploadWidget.svelte';
-import { fs_path_url } from './FilesystemAPI.mjs';
-import Menu from './Menu.svelte';
+import { onMount } from "svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import EditWindow from "./edit_window/EditWindow.svelte";
+import Toolbar from "./Toolbar.svelte";
+import Breadcrumbs from "./Breadcrumbs.svelte";
+import DetailsWindow from "./DetailsWindow.svelte";
+import FilePreview from "./viewers/FilePreview.svelte";
+import FSUploadWidget from "./upload_widget/FSUploadWidget.svelte";
+import { fs_path_url } from "./FilesystemAPI.mjs";
+import Menu from "./Menu.svelte";
 import { FSNavigator } from "./FSNavigator"
-import { writable } from 'svelte/store';
-import TransferLimit from '../file_viewer/TransferLimit.svelte';
-import { stats } from "../lib/StatsSocket.mjs"
-import { css_from_path } from './edit_window/Branding';
-import AffiliatePrompt from '../user_home/AffiliatePrompt.svelte';
+import { writable } from "svelte/store";
+import TransferLimit from "file_viewer/TransferLimit.svelte";
+import { stats } from "lib/StatsSocket.mjs"
+import { css_from_path } from "filesystem/edit_window/Branding.js";
+import AffiliatePrompt from "user_home/AffiliatePrompt.svelte";
 
 let file_viewer
 let file_preview

@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import UploadWidget from "../util/upload_widget/UploadWidget.svelte";
+import UploadWidget from "util/upload_widget/UploadWidget.svelte";
 
 let dispatch = createEventDispatcher()
 

@@ -1,7 +1,7 @@
 <script>
-import UploadProgressBar from "../../home_page/UploadProgressBar.svelte"
+import UploadProgressBar from "home_page/UploadProgressBar.svelte"
 import { tick } from "svelte"
-import UploadStats from "../../home_page/UploadStats.svelte";
+import UploadStats from "home_page/UploadStats.svelte";
 
 export const pick_files = () => {
 	file_input_field.click()

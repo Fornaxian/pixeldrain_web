@@ -1,6 +1,6 @@
 <script>
 import { tick } from "svelte";
-import { fs_path_url } from "../FilesystemAPI.mjs";
+import { fs_path_url } from "filesystem/FilesystemAPI.mjs";
 
 export let nav
 let text_type = "text"

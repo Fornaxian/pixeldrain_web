@@ -1,8 +1,8 @@
 <script>
 import { createEventDispatcher, tick } from "svelte";
-import { formatDataVolume } from "../util/Formatting.svelte";
-import DirectoryElement from "../user_home/filemanager/DirectoryElement.svelte";
-import Modal from "../util/Modal.svelte";
+import { formatDataVolume } from "util/Formatting.svelte";
+import DirectoryElement from "user_home/filemanager/DirectoryElement.svelte";
+import Modal from "util/Modal.svelte";
 let dispatch = createEventDispatcher()
 
 export let multi_select = true

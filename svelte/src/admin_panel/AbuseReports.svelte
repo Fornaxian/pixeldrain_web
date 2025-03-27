@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
 import AbuseReport from "./AbuseReport.svelte";
 
 let loading = true

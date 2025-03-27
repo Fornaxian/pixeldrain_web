@@ -1,7 +1,7 @@
 <script lang="ts">
 import { createEventDispatcher, onMount } from "svelte";
-import Form, { type FormConfig } from "./../util/Form.svelte"
-import { check_response, get_endpoint } from "../lib/PixeldrainAPI.mjs";
+import Form, { type FormConfig } from "util/Form.svelte"
+import { check_response, get_endpoint } from "lib/PixeldrainAPI.mjs";
 
 let dispatch = createEventDispatcher()
 

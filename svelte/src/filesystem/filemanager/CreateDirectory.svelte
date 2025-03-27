@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
-import { fs_mkdir } from "../FilesystemAPI.mjs";
-import Button from "../../layout/Button.svelte";
+import { fs_mkdir } from "filesystem/FilesystemAPI.mjs";
+import Button from "layout/Button.svelte";
 
 export let nav;
 

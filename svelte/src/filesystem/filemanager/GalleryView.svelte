@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte"
-import { fs_node_icon, fs_node_type, fs_encode_path } from "../FilesystemAPI.mjs";
+import { fs_node_icon, fs_node_type, fs_encode_path } from "filesystem/FilesystemAPI.mjs";
 let dispatch = createEventDispatcher()
 
 export let nav

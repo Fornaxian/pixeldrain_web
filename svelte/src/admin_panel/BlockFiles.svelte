@@ -1,7 +1,6 @@
 <script>
 import { onMount } from "svelte";
-
-import Form from "./../util/Form.svelte";
+import Form from "util/Form.svelte";
 
 let block_form = {
 	name: "block_files",

@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
-import Persistence from "../icons/Persistence.svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
-import SuccessMessage from "../util/SuccessMessage.svelte";
+import Persistence from "icons/Persistence.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import SuccessMessage from "util/SuccessMessage.svelte";
 
 let loading = false
 let success_message

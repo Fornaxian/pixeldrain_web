@@ -1,12 +1,12 @@
 <script>
-import FilePicker from "../file_viewer/FilePicker.svelte";
-import CustomBanner from "../file_viewer/CustomBanner.svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
-import SuccessMessage from "../util/SuccessMessage.svelte";
-import ThemePicker from "../util/ThemePicker.svelte";
+import FilePicker from "file_viewer/FilePicker.svelte";
+import CustomBanner from "file_viewer/CustomBanner.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import SuccessMessage from "util/SuccessMessage.svelte";
+import ThemePicker from "util/ThemePicker.svelte";
 import { onMount } from "svelte";
-import Persistence from "../icons/Persistence.svelte";
-import ToggleButton from "../layout/ToggleButton.svelte";
+import Persistence from "icons/Persistence.svelte";
+import ToggleButton from "layout/ToggleButton.svelte";
 
 let loading = false
 let success_message

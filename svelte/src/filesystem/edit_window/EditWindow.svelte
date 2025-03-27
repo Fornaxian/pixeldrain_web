@@ -1,6 +1,6 @@
 <script>
-import { fs_rename, fs_update } from "../FilesystemAPI.mjs";
-import Modal from "../../util/Modal.svelte";
+import { fs_rename, fs_update } from "filesystem/FilesystemAPI.mjs";
+import Modal from "util/Modal.svelte";
 import BrandingOptions from "./BrandingOptions.svelte";
 import { branding_from_node } from "./Branding";
 import FileOptions from "./FileOptions.svelte";

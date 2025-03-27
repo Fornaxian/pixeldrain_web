@@ -1,5 +1,5 @@
 <script>
-import Form from "../util/Form.svelte";
+import Form from "util/Form.svelte";
 
 let credit_form = {
 	name: "give_credit",

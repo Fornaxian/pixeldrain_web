@@ -1,6 +1,6 @@
 <script lang="ts">
-import Button from "../../layout/Button.svelte";
-import type { FSNode, FSPermissions } from "../FilesystemAPI.mjs";
+import Button from "layout/Button.svelte";
+import type { FSNode, FSPermissions } from "filesystem/FilesystemAPI.mjs";
 import PermissionButton from "./PermissionButton.svelte";
 
 export let file: FSNode

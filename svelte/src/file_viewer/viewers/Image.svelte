@@ -1,6 +1,6 @@
 <script lang="ts">
 import { createEventDispatcher } from "svelte"
-import { swipe_nav } from "../../lib/SwipeNavigate.mjs";
+import { swipe_nav } from "lib/SwipeNavigate.mjs";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => {

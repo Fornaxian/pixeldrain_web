@@ -1,7 +1,7 @@
 <script>
-import Button from "../../layout/Button.svelte";
-import { fs_delete_all } from "../FilesystemAPI.mjs";
-import PathLink from "../util/PathLink.svelte";
+import Button from "layout/Button.svelte";
+import { fs_delete_all } from "filesystem/FilesystemAPI.mjs";
+import PathLink from "filesystem/util/PathLink.svelte";
 
 export let nav
 export let file = {}

@@ -1,6 +1,6 @@
 <script>
 import { flip } from "svelte/animate";
-import { formatDataVolume } from "../util/Formatting.svelte";
+import { formatDataVolume } from "util/Formatting.svelte";
 import SortButton from "./SortButton.svelte";
 
 export let peers = [];

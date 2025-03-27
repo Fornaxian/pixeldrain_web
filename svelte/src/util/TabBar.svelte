@@ -1,5 +1,5 @@
 <script>
-import Button from "../layout/Button.svelte";
+import Button from "layout/Button.svelte";
 
 // {icon: "", label: ""}
 export let tabs = []

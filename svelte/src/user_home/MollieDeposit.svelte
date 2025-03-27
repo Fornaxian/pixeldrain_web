@@ -1,7 +1,7 @@
 <script>
-import { onMount } from 'svelte';
-import Euro from '../util/Euro.svelte';
-import LoadingIndicator from '../util/LoadingIndicator.svelte';
+import { onMount } from "svelte";
+import Euro from "util/Euro.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
 
 let loading = false
 let amount = 20

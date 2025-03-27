@@ -1,7 +1,7 @@
 <script>
-import Menu from "../filesystem/Menu.svelte";
-import Footer from "../layout/Footer.svelte";
-import { drop_target } from "../lib/DropTarget";
+import Menu from "filesystem/Menu.svelte";
+import Footer from "layout/Footer.svelte";
+import { drop_target } from "lib/DropTarget";
 import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
 import GetStarted from "./GetStarted.svelte";

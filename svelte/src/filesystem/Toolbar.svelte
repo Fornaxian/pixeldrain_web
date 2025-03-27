@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import { generate_share_url } from "./Sharebar.svelte";
-import { copy_text } from "../util/Util.svelte";
+import { copy_text } from "util/Util.svelte";
 import FileStats from "./FileStats.svelte";
 
 let dispatch = createEventDispatcher()

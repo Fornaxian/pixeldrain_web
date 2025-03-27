@@ -1,9 +1,9 @@
 <script>
-import TabMenu from "../util/TabMenu.svelte";
+import TabMenu from "util/TabMenu.svelte";
 import Register from "./Register.svelte";
 import Login from "./Login.svelte";
 import { onMount } from "svelte";
-import { get_user } from "../lib/PixeldrainAPI.mjs";
+import { get_user } from "lib/PixeldrainAPI.mjs";
 
 let pages = [
 	{

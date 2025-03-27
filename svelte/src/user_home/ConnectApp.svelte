@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
-import CopyButton from "../layout/CopyButton.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import CopyButton from "layout/CopyButton.svelte";
 
 let loading = false
 let app_name = ""

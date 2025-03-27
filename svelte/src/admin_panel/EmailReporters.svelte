@@ -1,6 +1,6 @@
 <script>
 import { onMount, tick } from "svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
 import EmailReportersTable from "./EmailReportersTable.svelte";
 
 let loading = true

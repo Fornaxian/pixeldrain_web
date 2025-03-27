@@ -1,7 +1,7 @@
 <script>
 import { onMount, createEventDispatcher, tick } from "svelte";
-import { video_position } from "../../lib/VideoPosition.mjs";
-import { fs_path_url } from "../FilesystemAPI.mjs";
+import { video_position } from "lib/VideoPosition.mjs";
+import { fs_path_url } from "filesystem/FilesystemAPI.mjs";
 let dispatch = createEventDispatcher()
 
 export let nav

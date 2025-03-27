@@ -1,11 +1,11 @@
 <script>
 import { onMount } from "svelte";
-import Discord from "../icons/Discord.svelte";
-import Github from "../icons/Github.svelte";
-import Mastodon from "../icons/Mastodon.svelte";
-import Patreon from "../icons/Patreon.svelte";
-import Reddit from "../icons/Reddit.svelte";
-import { formatDataVolumeBits } from "../util/Formatting.svelte";
+import Discord from "icons/Discord.svelte";
+import Github from "icons/Github.svelte";
+import Mastodon from "icons/Mastodon.svelte";
+import Patreon from "icons/Patreon.svelte";
+import Reddit from "icons/Reddit.svelte";
+import { formatDataVolumeBits } from "util/Formatting.svelte";
 
 export let nobg = false
 let server_tx = 0

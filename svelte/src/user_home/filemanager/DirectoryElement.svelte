@@ -1,5 +1,5 @@
 <script>
-import { formatDataVolume, formatDate } from "../../util/Formatting.svelte";
+import { formatDataVolume, formatDate } from "util/Formatting.svelte";
 
 // Main elements
 let directoryArea

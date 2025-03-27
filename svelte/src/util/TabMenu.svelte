@@ -12,7 +12,7 @@ export type Tab = {
 </script>
 <script lang="ts">
 import { onMount, type ComponentType } from "svelte";
-import Footer from "../layout/Footer.svelte";
+import Footer from "layout/Footer.svelte";
 
 export let title = ""
 export let pages: Tab[] = []

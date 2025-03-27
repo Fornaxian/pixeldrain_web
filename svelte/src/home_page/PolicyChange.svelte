@@ -1,5 +1,5 @@
 <script>
-import Expandable from "../util/Expandable.svelte";
+import Expandable from "util/Expandable.svelte";
 </script>
 
 <section>

@@ -1,5 +1,5 @@
 <script>
-import Button from "../../layout/Button.svelte"
+import Button from "layout/Button.svelte"
 import { onMount } from "svelte";
 import CardAccount from "./CardAccount.svelte";
 import CardStatistics from "./CardStatistics.svelte";
@@ -9,7 +9,7 @@ import CardActivity from "./CardActivity.svelte";
 import CardUpload from "./CardUpload.svelte";
 import CardPrepaidTransactions from "./CardPrepaidTransactions.svelte";
 import CardFsHome from "./CardFSHome.svelte";
-import AddressReputation from "../../home_page/AddressReputation.svelte";
+import AddressReputation from "home_page/AddressReputation.svelte";
 import { flip } from "svelte/animate";
 
 let cards = []

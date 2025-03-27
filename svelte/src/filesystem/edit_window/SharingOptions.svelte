@@ -1,8 +1,8 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { domain_url } from "../../util/Util.svelte";
-import CopyButton from "../../layout/CopyButton.svelte";
-import { formatDate } from "../../util/Formatting.svelte";
+import { domain_url } from "util/Util.svelte";
+import CopyButton from "layout/CopyButton.svelte";
+import { formatDate } from "util/Formatting.svelte";
 
 let dispatch = createEventDispatcher()
 export let shared

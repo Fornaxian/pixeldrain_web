@@ -1,9 +1,9 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "../util/Formatting.svelte";
-import Footer from "../layout/Footer.svelte"
-import Button from "../layout/Button.svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte"
+import { formatDate } from "util/Formatting.svelte";
+import Footer from "layout/Footer.svelte"
+import Button from "layout/Button.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte"
 
 let files = []
 let loading = true

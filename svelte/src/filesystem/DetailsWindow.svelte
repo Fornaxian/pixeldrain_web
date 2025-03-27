@@ -1,12 +1,12 @@
 <script>
-import Chart from "../util/Chart.svelte";
-import { formatDataVolume, formatDate, formatNumber, formatThousands } from "../util/Formatting.svelte";
-import Modal from "../util/Modal.svelte";
+import Chart from "util/Chart.svelte";
+import { formatDataVolume, formatDate, formatNumber, formatThousands } from "util/Formatting.svelte";
+import Modal from "util/Modal.svelte";
 import { fs_path_url, fs_timeseries } from "./FilesystemAPI.mjs";
 import { generate_share_path, generate_share_url } from "./Sharebar.svelte";
-import { color_by_name } from "../util/Util.svelte";
+import { color_by_name } from "util/Util.svelte";
 import { tick } from "svelte";
-import CopyButton from "../layout/CopyButton.svelte";
+import CopyButton from "layout/CopyButton.svelte";
 
 export let nav
 export let visible = false

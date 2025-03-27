@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
-import CopyButton from "../layout/CopyButton.svelte";
-import Form from "./../util/Form.svelte";
-import Button from "../layout/Button.svelte";
+import CopyButton from "layout/CopyButton.svelte";
+import Form from "util/Form.svelte";
+import Button from "layout/Button.svelte";
 import OtpSetup from "./OTPSetup.svelte";
 
 let affiliate_link = window.location.protocol+"//"+window.location.host + "?ref=" + encodeURIComponent(window.user.username)

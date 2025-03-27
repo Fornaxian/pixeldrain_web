@@ -1,5 +1,5 @@
 <script>
-import { copy_text } from "../util/Util.svelte";
+import { copy_text } from "util/Util.svelte";
 
 export let text = ""
 export let style = ""

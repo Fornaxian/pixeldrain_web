@@ -6,7 +6,7 @@ import Subscription from "./Subscription.svelte";
 import ConnectApp from "./ConnectApp.svelte";
 import ActivityLog from "./ActivityLog.svelte";
 import DepositCredit from "./DepositCredit.svelte";
-import TabMenu, { type Tab } from "../util/TabMenu.svelte";
+import TabMenu, { type Tab } from "util/TabMenu.svelte";
 import BandwidthSharing from "./BandwidthSharing.svelte";
 import EmbeddingControls from "./EmbeddingControls.svelte";
 import PageBranding from "./PageBranding.svelte";
@@ -14,7 +14,7 @@ import Dashboard from "./dashboard/Dashboard.svelte";
 import AffiliatePrompt from "./AffiliatePrompt.svelte";
 import FileManager from "./filemanager/FileManager.svelte";
 import { onMount } from "svelte";
-import { get_user, type User } from "../lib/PixeldrainAPI.mjs";
+import { get_user, type User } from "lib/PixeldrainAPI.mjs";
 
 let pages: Tab[] = [
 	{

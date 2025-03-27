@@ -1,8 +1,8 @@
 <script>
 import { onMount, createEventDispatcher, tick } from "svelte";
-import { video_position } from "../../lib/VideoPosition.mjs";
+import { video_position } from "lib/VideoPosition.mjs";
 import BandwidthUsage from "./BandwidthUsage.svelte";
-import IconBlock from "../../layout/IconBlock.svelte";
+import IconBlock from "layout/IconBlock.svelte";
 let dispatch = createEventDispatcher()
 
 export let is_list = false

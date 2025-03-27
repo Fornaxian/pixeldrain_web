@@ -7,6 +7,7 @@
 		"baseUrl": "./src",
 		"verbatimModuleSyntax": true,
 		"target": "ES2017",
+		"noUnusedLocals": true,
 	},
 	"exclude": [
 		"./node_modules/**"

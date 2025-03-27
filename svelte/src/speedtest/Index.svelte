@@ -1,5 +1,5 @@
 <script>
-import Footer from "../layout/Footer.svelte";
+import Footer from "layout/Footer.svelte";
 import Speedtest from "./Speedtest.svelte";
 
 </script>

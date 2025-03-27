@@ -1,8 +1,8 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import IconBlock from "../../layout/IconBlock.svelte";
-import TextBlock from "../../layout/TextBlock.svelte"
-import FileTitle from "../../layout/FileTitle.svelte";
+import IconBlock from "layout/IconBlock.svelte";
+import TextBlock from "layout/TextBlock.svelte"
+import FileTitle from "layout/FileTitle.svelte";
 
 let dispatch = createEventDispatcher()
 

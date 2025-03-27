@@ -1,8 +1,8 @@
 <script>
 import { onMount, tick } from "svelte";
-import Spinner from "../../util/Spinner.svelte";
-import { fs_node_type, fs_thumbnail_url } from "../FilesystemAPI.mjs";
-import FileManager from "../filemanager/FileManager.svelte";
+import Spinner from "util/Spinner.svelte";
+import { fs_node_type, fs_thumbnail_url } from "filesystem/FilesystemAPI.mjs";
+import FileManager from "filesystem/filemanager/FileManager.svelte";
 import Audio from "./Audio.svelte";
 import File from "./File.svelte";
 import Image from "./Image.svelte";
@@ -12,8 +12,8 @@ import Video from "./Video.svelte";
 import Torrent from "./Torrent.svelte";
 import Zip from "./Zip.svelte";
 import CustomBanner from "./CustomBanner.svelte";
-import { stats } from "../../lib/StatsSocket.mjs"
-import SlowDown from "../../layout/SlowDown.svelte";
+import { stats } from "lib/StatsSocket.mjs"
+import SlowDown from "layout/SlowDown.svelte";
 
 export let nav
 export let upload_widget

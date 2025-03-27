@@ -1,6 +1,6 @@
 <script>
-import { formatDataVolume, formatThousands } from "../util/Formatting.svelte"
-import { set_file, stats } from "../lib/StatsSocket.mjs"
+import { formatDataVolume, formatThousands } from "util/Formatting.svelte"
+import { set_file, stats } from "lib/StatsSocket.mjs"
 
 export let file = {
 	id: "",

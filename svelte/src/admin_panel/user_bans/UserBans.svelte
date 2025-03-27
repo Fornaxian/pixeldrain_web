@@ -1,9 +1,9 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "../../util/Formatting.svelte";
-import Expandable from "../../util/Expandable.svelte";
-import LoadingIndicator from "../../util/LoadingIndicator.svelte";
-import Button from "../../layout/Button.svelte"
+import { formatDate } from "util/Formatting.svelte";
+import Expandable from "util/Expandable.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import Button from "layout/Button.svelte"
 import UserFiles from "./UserFiles.svelte";
 import BanDetails from "./BanDetails.svelte";
 import UserLists from "./UserLists.svelte";

@@ -1,6 +1,6 @@
 <script>
-import FilePicker from "../../file_viewer/FilePicker.svelte";
-import { fs_import } from "../FilesystemAPI.mjs";
+import FilePicker from "file_viewer/FilePicker.svelte";
+import { fs_import } from "filesystem/FilesystemAPI.mjs";
 
 export let nav
 let file_picker

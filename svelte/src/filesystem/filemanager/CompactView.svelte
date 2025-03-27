@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { fs_encode_path, fs_node_icon } from "../FilesystemAPI.mjs"
+import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI.mjs"
 
 let dispatch = createEventDispatcher()
 

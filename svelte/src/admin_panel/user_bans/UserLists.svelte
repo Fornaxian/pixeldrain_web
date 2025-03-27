@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
-import LoadingIndicator from "../../util/LoadingIndicator.svelte";
-import { formatDataVolume, formatDate } from "../../util/Formatting.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import { formatDate } from "util/Formatting.svelte";
 
 export let user_id = ""
 let lists = []

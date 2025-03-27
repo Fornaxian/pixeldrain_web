@@ -5,9 +5,9 @@ let global_index = 10000;
 </script>
 
 <script>
-import { createEventDispatcher } from 'svelte';
-import { fade } from 'svelte/transition';
-import Button from '../layout/Button.svelte';
+import { createEventDispatcher } from "svelte";
+import { fade } from "svelte/transition";
+import Button from "layout/Button.svelte";
 
 // Form can be used to turn the modal into a save dialog. Enter the ID of a form
 // inside the modal and the modal will provide a submit button for that form
@@ -40,7 +40,7 @@ const keydown = e => {
 	if (document.activeElement.type && document.activeElement.type === "text") {
 		return // Prevent shortcuts from interfering with input fields
 	}
-	if (e.key === 'Escape' && visible) {
+	if (e.key === "Escape" && visible) {
 		set_visible(false);
 		e.preventDefault()
 		e.stopPropagation()

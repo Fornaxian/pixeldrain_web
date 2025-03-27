@@ -1,6 +1,6 @@
 <script lang="ts">
-import ToggleButton from "../../layout/ToggleButton.svelte";
-import type { FSPermissions } from "../FilesystemAPI.mjs";
+import ToggleButton from "layout/ToggleButton.svelte";
+import type { FSPermissions } from "filesystem/FilesystemAPI.mjs";
 
 export let permissions = <FSPermissions>{}
 </script>

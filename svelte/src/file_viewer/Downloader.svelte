@@ -1,6 +1,6 @@
 <script>
 import { tick } from "svelte"
-import Modal from "../util/Modal.svelte"
+import Modal from "util/Modal.svelte"
 
 export let file = {
 	id: "",

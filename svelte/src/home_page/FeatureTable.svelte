@@ -1,6 +1,6 @@
 <script>
 import Tooltip from "layout/Tooltip.svelte";
-import Euro from "../util/Euro.svelte";
+import Euro from "util/Euro.svelte";
 import OtherPlans from "./OtherPlans.svelte";
 </script>
 

@@ -1,15 +1,15 @@
 <script>
-import { fs_delete_all, fs_rename } from '../FilesystemAPI.mjs'
-import { onMount } from 'svelte'
-import CreateDirectory from './CreateDirectory.svelte'
-import ListView from './ListView.svelte'
-import GalleryView from './GalleryView.svelte'
-import CompactView from './CompactView.svelte'
-import Button from '../../layout/Button.svelte';
-import FileImporter from './FileImporter.svelte';
-import { formatDate } from '../../util/Formatting.svelte';
-import { drop_target } from "../../lib/DropTarget.ts"
-import SearchBar from './SearchBar.svelte';
+import { fs_delete_all, fs_rename } from "filesystem/FilesystemAPI.mjs"
+import { onMount } from "svelte"
+import CreateDirectory from "./CreateDirectory.svelte"
+import ListView from "./ListView.svelte"
+import GalleryView from "./GalleryView.svelte"
+import CompactView from "./CompactView.svelte"
+import Button from "layout/Button.svelte";
+import FileImporter from "./FileImporter.svelte";
+import { formatDate } from "util/Formatting.svelte";
+import { drop_target } from "lib/DropTarget.ts"
+import SearchBar from "./SearchBar.svelte";
 
 export let nav
 export let upload_widget

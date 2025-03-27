@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
-import Euro from "../util/Euro.svelte"
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
-import SuccessMessage from "../util/SuccessMessage.svelte";
+import Euro from "util/Euro.svelte"
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import SuccessMessage from "util/SuccessMessage.svelte";
 import PatreonActivationResult from "./PatreonActivationResult.svelte";
 
 let loading = false

@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher, tick } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
-import FileTitle from "../../layout/FileTitle.svelte";
+import FileTitle from "layout/FileTitle.svelte";
 let dispatch = createEventDispatcher()
 
 export let is_list = false

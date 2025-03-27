@@ -1,9 +1,9 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import IconBlock from "../../layout/IconBlock.svelte";
-import { fs_thumbnail_url } from "../FilesystemAPI.mjs";
-import TextBlock from "../../layout/TextBlock.svelte"
-import { formatDataVolume, formatDate } from "../../util/Formatting.svelte";
+import IconBlock from "layout/IconBlock.svelte";
+import { fs_thumbnail_url } from "filesystem/FilesystemAPI.mjs";
+import TextBlock from "layout/TextBlock.svelte"
+import { formatDataVolume, formatDate } from "util/Formatting.svelte";
 
 let dispatch = createEventDispatcher()
 

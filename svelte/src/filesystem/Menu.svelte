@@ -1,8 +1,8 @@
 <script>
-import PixeldrainLogo from "../util/PixeldrainLogo.svelte";
-import Button from "../layout/Button.svelte";
-import Euro from "../util/Euro.svelte";
-import { formatDataVolume } from "../util/Formatting.svelte";
+import PixeldrainLogo from "util/PixeldrainLogo.svelte";
+import Button from "layout/Button.svelte";
+import Euro from "util/Euro.svelte";
+import { formatDataVolume } from "util/Formatting.svelte";
 
 let button
 let dialog

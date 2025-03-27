@@ -1,7 +1,7 @@
 <script>
-import LoginRegister from "../login/LoginRegister.svelte";
-import MollieDeposit from "../user_home/MollieDeposit.svelte";
-import Euro from "../util/Euro.svelte";
+import LoginRegister from "login/LoginRegister.svelte";
+import MollieDeposit from "user_home/MollieDeposit.svelte";
+import Euro from "util/Euro.svelte";
 </script>
 
 {#if window.user.username !== ""}

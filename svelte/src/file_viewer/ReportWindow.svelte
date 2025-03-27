@@ -1,5 +1,5 @@
 <script>
-import Spinner from "../util/Spinner.svelte"
+import Spinner from "util/Spinner.svelte"
 
 export let file = {
 	id: "",

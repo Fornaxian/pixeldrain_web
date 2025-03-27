@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "../util/Formatting.svelte";
-import Expandable from "../util/Expandable.svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
+import { formatDate } from "util/Formatting.svelte";
+import Expandable from "util/Expandable.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
 
 const abuse_types = [
 	"copyright",

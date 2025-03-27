@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
-import Modal from "../util/Modal.svelte";
+import Modal from "util/Modal.svelte";
 import Behave from "behave-js";
-import { add_upload_history } from "../util/Util.svelte";
+import { add_upload_history } from "util/Util.svelte";
 
 let textarea
 let help

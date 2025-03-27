@@ -1,9 +1,9 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "../util/Formatting.svelte";
-import Expandable from "../util/Expandable.svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
-import Euro from "../util/Euro.svelte";
+import { formatDate } from "util/Formatting.svelte";
+import Expandable from "util/Expandable.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import Euro from "util/Euro.svelte";
 
 let loading = true
 let response = {}

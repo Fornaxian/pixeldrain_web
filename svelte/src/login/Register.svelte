@@ -1,6 +1,6 @@
 <script lang="ts">
-import Form, { type FormConfig } from "../util/Form.svelte"
-import { get_endpoint } from "../lib/PixeldrainAPI.mjs";
+import Form, { type FormConfig } from "util/Form.svelte"
+import { get_endpoint } from "lib/PixeldrainAPI.mjs";
 
 let form: FormConfig = {
 	fields: [

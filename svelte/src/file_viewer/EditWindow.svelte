@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import Spinner from "../util/Spinner.svelte"
+import Spinner from "util/Spinner.svelte"
 let dispatch = createEventDispatcher()
 
 export let file = {

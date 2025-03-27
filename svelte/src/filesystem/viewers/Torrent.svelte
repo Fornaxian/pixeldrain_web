@@ -1,12 +1,12 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import Magnet from "../../icons/Magnet.svelte";
-import { formatDate } from "../../util/Formatting.svelte"
+import Magnet from "icons/Magnet.svelte";
+import { formatDate } from "util/Formatting.svelte"
 import TorrentItem from "./TorrentItem.svelte"
-import IconBlock from "../../layout/IconBlock.svelte";
-import TextBlock from "../../layout/TextBlock.svelte"
-import { fs_node_icon, fs_path_url } from "../FilesystemAPI.mjs";
-import CopyButton from "../../layout/CopyButton.svelte";
+import IconBlock from "layout/IconBlock.svelte";
+import TextBlock from "layout/TextBlock.svelte"
+import { fs_node_icon, fs_path_url } from "filesystem/FilesystemAPI.mjs";
+import CopyButton from "layout/CopyButton.svelte";
 
 let dispatch = createEventDispatcher()
 

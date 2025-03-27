@@ -1,9 +1,9 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume } from "../../util/Formatting.svelte";
-import Modal from "../../util/Modal.svelte";
-import Spinner from "../../util/Spinner.svelte";
-import UploadWidget from "../../util/upload_widget/UploadWidget.svelte";
+import { formatDataVolume } from "util/Formatting.svelte";
+import Modal from "util/Modal.svelte";
+import Spinner from "util/Spinner.svelte";
+import UploadWidget from "util/upload_widget/UploadWidget.svelte";
 import DirectoryElement from "./DirectoryElement.svelte"
 
 let loading = true

@@ -1,6 +1,6 @@
 <script>
 import { tick } from "svelte";
-import Spinner from "../../util/Spinner.svelte";
+import Spinner from "util/Spinner.svelte";
 import Video from "./Video.svelte";
 import Audio from "./Audio.svelte";
 import Image from "./Image.svelte";
@@ -8,13 +8,13 @@ import PDF from "./PDF.svelte";
 import Text from "./Text.svelte";
 import File from "./File.svelte";
 import Abuse from "./Abuse.svelte";
-import { file_type } from "../FileUtilities.svelte";
+import { file_type } from "file_viewer/FileUtilities.svelte";
 import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
-import { stats } from "../../lib/StatsSocket.mjs"
+import { stats } from "lib/StatsSocket.mjs"
 import Zip from "./Zip.svelte";
-import SlowDown from "../../layout/SlowDown.svelte";
-import TextBlock from "../../layout/TextBlock.svelte";
+import SlowDown from "layout/SlowDown.svelte";
+import TextBlock from "layout/TextBlock.svelte";
 
 let viewer
 let viewer_type = "loading"

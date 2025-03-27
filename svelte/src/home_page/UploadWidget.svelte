@@ -1,15 +1,15 @@
 <script>
 import UploadProgressBar from "./UploadProgressBar.svelte"
-import { domain_url } from "../util/Util.svelte"
+import { domain_url } from "util/Util.svelte"
 import { tick } from "svelte"
-import Facebook from "../icons/Facebook.svelte"
-import Reddit from "../icons/Reddit.svelte"
-import Twitter from "../icons/Twitter.svelte"
-import Tumblr from "../icons/Tumblr.svelte"
-import StorageProgressBar from "../user_home/StorageProgressBar.svelte"
-import Konami from "../util/Konami.svelte"
+import Facebook from "icons/Facebook.svelte"
+import Reddit from "icons/Reddit.svelte"
+import Twitter from "icons/Twitter.svelte"
+import Tumblr from "icons/Tumblr.svelte"
+import StorageProgressBar from "user_home/StorageProgressBar.svelte"
+import Konami from "util/Konami.svelte"
 import UploadStats from "./UploadStats.svelte";
-import CopyButton from "../layout/CopyButton.svelte";
+import CopyButton from "layout/CopyButton.svelte";
 
 // === UPLOAD LOGIC ===
 

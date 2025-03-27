@@ -1,10 +1,10 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import ThemePresets from "./ThemePresets.svelte";
-import FilePicker from "../filemanager/FilePicker.svelte";
-import { fs_update, fs_node_type } from "../FilesystemAPI.mjs";
-import CustomBanner from "../viewers/CustomBanner.svelte";
-import HelpButton from "../../layout/HelpButton.svelte";
+import FilePicker from "file_viewer/FilePicker.svelte";
+import { fs_update, fs_node_type } from "filesystem/FilesystemAPI.mjs";
+import CustomBanner from "filesystem/viewers/CustomBanner.svelte";
+import HelpButton from "layout/HelpButton.svelte";
 let dispatch = createEventDispatcher()
 
 export let file = {

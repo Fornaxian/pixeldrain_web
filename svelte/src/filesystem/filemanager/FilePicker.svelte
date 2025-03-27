@@ -1,12 +1,12 @@
 <script>
-import { createEventDispatcher, onMount } from 'svelte'
-import ListView from './ListView.svelte'
-import GalleryView from './GalleryView.svelte'
-import CompactView from './CompactView.svelte'
-import Modal from '../../util/Modal.svelte';
-import LoadingIndicator from '../../util/LoadingIndicator.svelte';
-import Breadcrumbs from '../Breadcrumbs.svelte'
-import { FSNavigator } from '../FSNavigator';
+import { createEventDispatcher, onMount } from "svelte"
+import ListView from "./ListView.svelte"
+import GalleryView from "./GalleryView.svelte"
+import CompactView from "./CompactView.svelte"
+import Modal from "util/Modal.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import Breadcrumbs from "filesystem/Breadcrumbs.svelte"
+import { FSNavigator } from "filesystem/FSNavigator.js";
 
 let nav = new FSNavigator(false)
 let modal

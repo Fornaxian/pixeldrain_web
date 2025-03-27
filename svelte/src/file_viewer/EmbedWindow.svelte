@@ -1,7 +1,7 @@
 <script>
-import CopyButton from "../layout/CopyButton.svelte";
-import ThemePicker from "../util/ThemePicker.svelte";
-import { domain_url } from "../util/Util.svelte";
+import CopyButton from "layout/CopyButton.svelte";
+import ThemePicker from "util/ThemePicker.svelte";
+import { domain_url } from "util/Util.svelte";
 import { file_type } from "./FileUtilities.svelte";
 
 export let file = {

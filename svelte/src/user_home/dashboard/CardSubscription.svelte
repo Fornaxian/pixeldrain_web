@@ -1,6 +1,6 @@
 <script>
-import Euro from "../../util/Euro.svelte";
-import { formatDataVolume } from "../../util/Formatting.svelte";
+import Euro from "util/Euro.svelte";
+import { formatDataVolume } from "util/Formatting.svelte";
 </script>
 
 <ul>

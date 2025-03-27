@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { fs_search, fs_encode_path, fs_thumbnail_url } from "../FilesystemAPI.mjs";
+import { fs_search, fs_encode_path, fs_thumbnail_url } from "filesystem/FilesystemAPI.mjs";
 
 export let nav
 

@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume, formatDate, formatThousands } from "../util/Formatting.svelte"
-import { color_by_name, domain_url } from "../util/Util.svelte";
-import Chart from "../util/Chart.svelte";
+import { formatDataVolume, formatDate, formatThousands } from "util/Formatting.svelte"
+import { color_by_name, domain_url } from "util/Util.svelte";
+import Chart from "util/Chart.svelte";
 
 export let file = {
 	id: "",

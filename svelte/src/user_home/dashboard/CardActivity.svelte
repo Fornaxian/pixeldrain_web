@@ -1,8 +1,8 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "../../util/Formatting.svelte";
-import LoadingIndicator from "../../util/LoadingIndicator.svelte";
-import Button from "../../layout/Button.svelte";
+import { formatDate } from "util/Formatting.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
+import Button from "layout/Button.svelte";
 
 let loading = false
 

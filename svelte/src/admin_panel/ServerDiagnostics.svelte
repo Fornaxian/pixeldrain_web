@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher, onMount } from "svelte";
-import { formatDuration } from "../util/Formatting.svelte";
+import { formatDuration } from "util/Formatting.svelte";
 let dispatch = createEventDispatcher()
 
 export let running_since = ""

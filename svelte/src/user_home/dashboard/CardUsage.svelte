@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
-import HotlinkProgressBar from "../HotlinkProgressBar.svelte";
-import StorageProgressBar from "../StorageProgressBar.svelte";
+import HotlinkProgressBar from "user_home/HotlinkProgressBar.svelte";
+import StorageProgressBar from "user_home/StorageProgressBar.svelte";
 
 let transfer_cap = 0
 let transfer_used = 0

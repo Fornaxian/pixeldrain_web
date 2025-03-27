@@ -3,7 +3,7 @@ import AbuseReports from "./AbuseReports.svelte"
 import IPBans from "./IPBans.svelte"
 import Home from "./Home.svelte"
 import BlockFiles from "./BlockFiles.svelte";
-import TabMenu from "../util/TabMenu.svelte";
+import TabMenu from "util/TabMenu.svelte";
 import UserManagement from "./UserManagement.svelte";
 import EmailReporters from "./EmailReporters.svelte";
 import MollieSettlements from "./MollieSettlements.svelte";

@@ -1,7 +1,7 @@
 <script>
 import { onMount, tick } from "svelte";
 import { file_struct, list_struct, file_set_href } from "./FileUtilities.svelte";
-import Modal from "../util/Modal.svelte";
+import Modal from "util/Modal.svelte";
 import DetailsWindow from "./DetailsWindow.svelte";
 import FilePreview from "./viewers/FilePreview.svelte";
 import ListNavigator from "./ListNavigator.svelte";
@@ -14,13 +14,13 @@ import Sharebar from "./Sharebar.svelte";
 import GalleryView from "./GalleryView.svelte";
 import Downloader from "./Downloader.svelte";
 import CustomBanner from "./CustomBanner.svelte";
-import LoadingIndicator from "../util/LoadingIndicator.svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
 import TransferLimit from "./TransferLimit.svelte";
 import ListStats from "./ListStats.svelte";
 import ListUpdater from "./ListUpdater.svelte";
-import CopyButton from "../layout/CopyButton.svelte";
-import Menu from "../filesystem/Menu.svelte"
-import AffiliatePrompt from "../user_home/AffiliatePrompt.svelte";
+import CopyButton from "layout/CopyButton.svelte";
+import Menu from "filesystem/Menu.svelte"
+import AffiliatePrompt from "user_home/AffiliatePrompt.svelte";
 
 let loading = true
 let embedded = false
