@@ -6,9 +6,11 @@ import OtherPlans from "./OtherPlans.svelte";
 <section>
 	<p>
 		Pixeldrain features two different payment modes. We offer a monthly
-		subscription which is managed by Patreon, and a prepaid service which
-		supports a dozen different payment providers. For low usage Prepaid is
-		usually better as there's no monthly fee.
+		subscription which is managed by Patreon, and a Prepaid subscription
+		which supports a dozen different payment providers. With Prepaid you pay
+		in advance to charge your credit, then usage will be subtracted from
+		your account credit. For low usage Prepaid is usually better as the
+		monthly fee is much lower.
 	</p>
 </section>
 
@@ -26,10 +28,10 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 
 		<div class="left_col">
-			Price
+			Recurring price
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">Free</span>
+			<span class="bold">None</span>
 		</div>
 		<div class="feature_cell pro_feat">
 			<span class="bold">€4 / month</span> or
@@ -38,7 +40,7 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">€1 / month minimum</span><br/>
-			Only charged when total usage is below €1
+			Only charged when usage is less than €1
 		</div>
 
 		<div class="left_col">
@@ -50,7 +52,7 @@ import OtherPlans from "./OtherPlans.svelte";
 		<div class="feature_cell free_feat">
 			<span class="bold">6 GB per day</span><br/>
 
-			Download speed is reduced to 1 MiB/s when exceeded. Max 5 concurrent
+			Download speed is reduced to 1 MiB/s when exceeded. Max 3 concurrent
 			downloads
 		</div>
 		<div class="feature_cell pro_feat">
@@ -108,7 +110,7 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">Files do not expire</span><br/>
-			While prepaid plan is active
+			While prepaid subscription plan is active
 		</div>
 
 		<div class="left_col">
@@ -128,12 +130,13 @@ import OtherPlans from "./OtherPlans.svelte";
 			<span class="bold">None</span>
 		</div>
 		<div class="feature_cell pro_feat">
-			<span class="bold">PayPal</span>, <span class="bold">Credit card</span>
+			<span class="bold">PayPal</span>, <span class="bold">Credit/debit</span>
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">PayPal</span>, <span class="bold">SEPA</span>,
-			<span class="bold">Credit card</span><br/>
-			And many more
+			<span class="bold">PayPal</span>,
+			<span class="bold">Credit/debit</span>,
+			<span class="bold">iDEAL</span><br/>
+			And many regional providers
 		</div>
 
 		<div></div>
@@ -162,12 +165,12 @@ import OtherPlans from "./OtherPlans.svelte";
 			{#if window.user.username === ""}
 				<!-- User is not logged in -->
 				Account required<br/>
-				<a href="/login?redirect=checkout" class="button button_highlight round">
+				<a href="/login?redirect=/user/prepaid/deposit" class="button button_highlight round">
 					<i class="icon">login</i>
 					Log in
 				</a>
 				or
-				<a href="/register?redirect=checkout" class="button button_highlight round">
+				<a href="/register?redirect=/user/prepaid/deposit" class="button button_highlight round">
 					<i class="icon">how_to_reg</i>
 					Register
 				</a>
@@ -184,7 +187,7 @@ import OtherPlans from "./OtherPlans.svelte";
 				{:else if window.user.subscription.type === "patreon"}
 					Patreon subscription active. Prepaid cannot be activated
 				{:else if window.user.subscription.type === "prepaid"}
-					Prepaid plan is active.<br/>
+					Prepaid subscription is active<br/>
 					Current balance <Euro amount={window.user.balance_micro_eur}/>
 					<br/>
 					<a href="/user/prepaid/deposit#deposit" class="button button_highlight round">
@@ -224,6 +227,7 @@ import OtherPlans from "./OtherPlans.svelte";
 .grid > div {
 	justify-content: center;
 	align-items: center;
+	align-content: center;
 	text-align: center;
 	padding: 0.25em;
 	min-height: 3em;

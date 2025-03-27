@@ -83,13 +83,12 @@ let upload_widget
 				<div>€ 1 / TB</div>
 			</div>
 			<div>
-				<div>Account inactivity</div>
+				<div>Minimum fee *</div>
 				<div>€1 / month</div>
 			</div>
 		</div>
 		<p style="text-align: center;">
-			Inactivity pricing is only applied when monthly usage is less than
-			€1
+			* The minimum fee is only charged when usage is less than €1
 		</p>
 
 		<h2>What you get</h2>
@@ -150,7 +149,7 @@ let upload_widget
 <GetStarted/>
 
 <header id="pro">
-	<h1>Premium plans</h1>
+	<h1>Subscription plans</h1>
 </header>
 <div class="page_content">
 	<FeatureTable/>

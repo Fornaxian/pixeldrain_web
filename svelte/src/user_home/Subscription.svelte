@@ -94,12 +94,12 @@ onMount(() => {
 		target="_blank">on Patreon</a>.
 	</p>
 	<p>
-		The Prepaid plan is charged daily based on usage. When you reach
-		negative balance the subscription will automatically end. Need at least
-		<Euro amount="1e6"/> account credit to activate prepaid. Your current
-		prepaid credit is <Euro amount={window.user.balance_micro_eur}/>. You
-		can deposit credit on the <a href="/user/prepaid/deposit">credit deposit
-		page</a>.
+		The Prepaid subscription is charged daily based on usage. When you reach
+		negative balance the subscription will automatically end. You need at
+		least <Euro amount="1e6"/> account credit to activate prepaid. Your
+		current credit amount is <Euro
+		amount={window.user.balance_micro_eur}/>. You can deposit credit on the
+		<a href="/user/prepaid/deposit">credit deposit page</a>.
 	</p>
 
 	<h3>Available subscription plans</h3>
@@ -165,8 +165,8 @@ onMount(() => {
 				</p>
 				<ul>
 					<li>
-						€1 / month minimum price (only charged when monthly
-						total is below €1)
+						€1 / month minimum price (only charged when usage is
+						below €1)
 					</li>
 					<li>
 						€4 per TB per month for storage

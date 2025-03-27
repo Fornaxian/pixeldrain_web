@@ -42,12 +42,12 @@ let pages: Tab[] = [
 		subpages: [
 			{
 				path: "/user/subscription",
-				title: "Manage subscription",
+				title: "Manage",
 				icon: "shopping_cart",
 				component: Subscription,
 			}, {
 				path: "/user/prepaid/deposit",
-				title: "Prepaid",
+				title: "Deposit Credit",
 				icon: "account_balance_wallet",
 				component: DepositCredit,
 			}, {

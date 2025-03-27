@@ -11,17 +11,21 @@ let uri = ""
 let qr = ""
 let reveal_key = false
 const generate_key = async () => {
-	let form = new FormData()
-	form.set("action", "generate")
-	const resp = await check_response(await fetch(
-		get_endpoint() + "/user/totp",
-		{method: "POST", body: form},
-	))
+	try {
+		let form = new FormData()
+		form.set("action", "generate")
+		const resp = await check_response(await fetch(
+			get_endpoint() + "/user/totp",
+			{method: "POST", body: form},
+		))
 
-	secret = resp.secret
-	uri = resp.uri
-	qr = get_endpoint()+"/misc/qr?text=" +encodeURIComponent(resp.uri)
-	console.log(resp)
+		secret = resp.secret
+		uri = resp.uri
+		qr = get_endpoint()+"/misc/qr?text=" +encodeURIComponent(resp.uri)
+		console.log(resp)
+	} catch (err) {
+		alert("Verification failed: "+err.value+"\n"+err.message)
+	}
 }
 
 let otp = ""
@@ -34,7 +38,7 @@ const verify = async (e: SubmitEvent) => {
 	form.set("secret", secret)
 
 	try {
-		const resp = await check_response(await fetch(
+		await check_response(await fetch(
 			get_endpoint() + "/user/totp",
 			{method: "POST", body: form},
 		))
@@ -51,6 +55,8 @@ const verify = async (e: SubmitEvent) => {
 				"might be incorrect. Please enable time synchronization in "+
 				"your operating system."
 			)
+		} else {
+			alert("Verification failed: "+err.value+"\n"+err.message)
 		}
 	}
 }

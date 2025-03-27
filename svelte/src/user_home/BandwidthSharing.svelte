@@ -118,10 +118,10 @@ onMount(() => {
 	</p>
 	<ProgressBar used={transfer_used} total={transfer_cap*1e9}></ProgressBar>
 	<p>
-		The billshock limit limits how much bandwidth your account can use
-		in a 30 day window. When this limit is reached files will show ads
-		again and can only be downloaded from the file viewer page. This is
-		mostly useful for prepaid plans, but it works for patreon plans too.
+		The billshock limit limits how much bandwidth your account can use in a
+		30 day window. When this limit is reached hotlinking will be disabled
+		and you will no longer be charged for bandwidth usage. This is mostly
+		useful for the Prepaid subscription, but it works for Patreon plans too.
 		Set to 0 to disable the limit.
 	</p>
 
