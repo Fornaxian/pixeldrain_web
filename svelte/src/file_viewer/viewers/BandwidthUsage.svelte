@@ -2,7 +2,7 @@
 import { formatDataVolume } from "../../util/Formatting.svelte";
 import TextBlock from "../../layout/TextBlock.svelte"
 import ProgressBar from "../../util/ProgressBar.svelte";
-import { stats } from "../../lib/StatsSocket.js"
+import { stats } from "../../lib/StatsSocket.mjs"
 
 export let file = {
 	size: 0,

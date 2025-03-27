@@ -1,22 +1,24 @@
 <script>
 import { formatDataVolume } from "../util/Formatting.svelte";
-import { stats } from "../lib/StatsSocket.js"
+import { stats } from "../lib/StatsSocket.mjs"
 
 let percent = 0
 let title = ""
 $: {
-	if ($stats.limits.transfer_limit === 0) {
-		percent = 0 // Avoid division by 0
-	} else if ($stats.limits.transfer_limit_used / $stats.limits.transfer_limit > 1) {
-		percent = 100
-	} else {
-		percent = ($stats.limits.transfer_limit_used / $stats.limits.transfer_limit) * 100
-	}
+	if ($stats.limits_init === true) {
+		if ($stats.limits.transfer_limit === 0) {
+			percent = 0 // Avoid division by 0
+		} else if ($stats.limits.transfer_limit_used / $stats.limits.transfer_limit > 1) {
+			percent = 100
+		} else {
+			percent = ($stats.limits.transfer_limit_used / $stats.limits.transfer_limit) * 100
+		}
 
-	title = "Download limit used: " +
-		formatDataVolume($stats.limits.transfer_limit_used, 3) +
-		" of " +
-		formatDataVolume($stats.limits.transfer_limit, 3);
+		title = "Download limit used: " +
+			formatDataVolume($stats.limits.transfer_limit_used, 3) +
+			" of " +
+			formatDataVolume($stats.limits.transfer_limit, 3);
+	}
 }
 </script>
 

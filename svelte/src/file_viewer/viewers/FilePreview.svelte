@@ -11,7 +11,7 @@ import Abuse from "./Abuse.svelte";
 import { file_type } from "../FileUtilities.svelte";
 import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
-import { stats } from "../../lib/StatsSocket.js"
+import { stats } from "../../lib/StatsSocket.mjs"
 import Zip from "./Zip.svelte";
 import SlowDown from "../../layout/SlowDown.svelte";
 import TextBlock from "../../layout/TextBlock.svelte";

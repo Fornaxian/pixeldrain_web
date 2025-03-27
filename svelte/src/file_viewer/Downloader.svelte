@@ -4,15 +4,16 @@ import Modal from "../util/Modal.svelte"
 
 export let file = {
 	id: "",
+	name: "",
 	availability: "",
 	download_href: "",
 }
 export let list = {
 	id: "",
+	title: "",
 	download_href: "",
 }
 
-let download_frame
 let load_captcha_script = false
 let download_captcha_window
 let captcha_type = "" // rate_limit or malware
@@ -24,13 +25,13 @@ let error_code = ""
 let error_message = ""
 export const download_file = () => {
 	if (!window.viewer_data.captcha_key) {
-		console.debug("Server doesn't support captcha, starting download")
-		download_frame.src = file.download_href
+		console.debug("Server doesn't support captcha, starting download", file.download_href)
+		download(file.download_href, file.name)
 		return
 	}
 	if (file.availability === "") {
-		console.debug("File is available, starting download")
-		download_frame.src = file.download_href
+		console.debug("File is available, starting download", file.download_href)
+		download(file.download_href, file.name)
 		return
 	}
 	if (!file.availability.endsWith("_captcha_required")) {
@@ -47,7 +48,8 @@ export const download_file = () => {
 	// we trigger the download using the captcha token Google provided us with
 	let captcha_complete_callback = token => {
 		// Download the file using the recaptcha token
-		download_frame.src = file.download_href + "&recaptcha_response=" + token
+		console.debug("Captcha validation successful, starting download", file.download_href)
+		download(file.download_href + "&recaptcha_response=" + token, file.name)
 		download_captcha_window.hide()
 	}
 
@@ -91,8 +93,16 @@ export const download_file = () => {
 }
 export const download_list = () => {
 	if (list.id !== "") {
-		download_frame.src = list.download_href
+		download(list.download_href, list.title+".zip")
 	}
+}
+
+const download = (href, file_name) => {
+	let a = document.createElement("a")
+	a.href = href
+	a.download = file_name
+	a.click()
+	a.remove()
 }
 </script>
 
@@ -102,7 +112,6 @@ export const download_list = () => {
 	{/if}
 </svelte:head>
 
-<iframe class="download_frame" bind:this={download_frame} title="File download frame"></iframe>
 <Modal bind:this={download_captcha_window} title={captcha_window_title} width="500px">
 	{#if captcha_type === "rate_limit"}
 		<p class="indent">
@@ -143,12 +152,6 @@ export const download_list = () => {
 </Modal>
 
 <style>
-.download_frame {
-	position: absolute;
-	display: none;
-	width: 1px;
-	height: 1px;
-}
 .captcha_container {
 	text-align: center;
 }

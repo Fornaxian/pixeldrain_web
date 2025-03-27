@@ -1,24 +1,38 @@
 import { readable } from "svelte/store";
 
-let results = {
-	connected: false,
-	file_stats_init: false,
-	file_stats: {
-		views: 0,
-		downloads: 0,
-		bandwidth: 0,
-		bandwidth_paid: 0,
-	},
-	limits_init: false,
-	limits: {
-		server_overload: false,
-		speed_limit: 0,
-		download_limit: 0,
-		download_limit_used: 0,
-		transfer_limit: 0,
-		transfer_limit_used: 0,
-	},
+type SocketResults = {
+	connected: boolean,
+	file_stats_init: boolean,
+	file_stats: FileStats
+	limits_init: boolean,
+	limits: Limits,
 }
+
+type FileStats = {
+	views: number,
+	downloads: number,
+	bandwidth: number,
+	bandwidth_paid: number,
+}
+
+type Limits = {
+	server_overload: boolean,
+	speed_limit: number,
+	download_limit: number,
+	download_limit_used: number,
+	transfer_limit: number,
+	transfer_limit_used: number,
+}
+
+type SocketCommand = {
+	type: string,
+	data?: Object,
+}
+
+let results: SocketResults = {
+	file_stats: {} as FileStats,
+	limits: {} as Limits,
+} as SocketResults
 
 export const stats = readable(
 	results,
@@ -28,24 +42,24 @@ export const stats = readable(
 	},
 );
 
-let socket = null
-const start_sock = (set_func) => {
+let socket: WebSocket = null
+const start_sock = (set_func: (value: SocketResults) => void) => {
 	if (socket !== null) {
 		return
 	}
 
-	console.log("initializing stats socket")
+	console.log("Initializing stats socket")
 	socket = new WebSocket(location.origin.replace(/^http/, 'ws') + "/api/file_stats")
 
 	socket.onopen = () => {
 		results.connected = true
-		set_func(results)
+		// set_func(results)
 
 		// Subscribe to the rate limit feed. This will also process any queued
 		// commands built up while the socket was down
 		send_cmd({ type: "limits" })
 	}
-	socket.onmessage = msg => {
+	socket.onmessage = (msg: MessageEvent) => {
 		let j = JSON.parse(msg.data)
 		console.debug("WS update", j)
 
@@ -61,18 +75,19 @@ const start_sock = (set_func) => {
 			console.error("Unknown ws message type", j.type, "data", msg.data)
 		}
 	}
-	socket.onerror = err => {
-		console.error("socket error", err)
+	socket.onerror = (err: Event) => {
+		console.error("Stats socket error", err)
 		stop_sock(set_func)
 		window.setTimeout(() => start_sock(set_func), 2000)
 	}
-	socket.onclose = () => {
+	socket.onclose = (e: CloseEvent) => {
+		console.debug("Stats socket close", e)
 		stop_sock(set_func)
 		window.setTimeout(() => start_sock(set_func), 2000)
 	}
 }
 
-const stop_sock = (set_func) => {
+const stop_sock = (set_func: (value: SocketResults) => void) => {
 	if (socket === null) {
 		return
 	}
@@ -92,7 +107,8 @@ const stop_sock = (set_func) => {
 	set_func(results)
 }
 
-export const set_file = file_id => {
+
+export const set_file = (file_id: string) => {
 	send_cmd({
 		type: "file_stats",
 		data: { file_id: file_id },
@@ -100,7 +116,7 @@ export const set_file = file_id => {
 }
 
 let queued_commands = []
-const send_cmd = cmd => {
+const send_cmd = (cmd: SocketCommand) => {
 	if (socket !== null && socket.readyState === WebSocket.OPEN) {
 
 		// First empty the queue

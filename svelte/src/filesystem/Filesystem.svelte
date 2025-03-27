@@ -12,7 +12,7 @@ import Menu from './Menu.svelte';
 import { FSNavigator } from "./FSNavigator"
 import { writable } from 'svelte/store';
 import TransferLimit from '../file_viewer/TransferLimit.svelte';
-import { stats } from "../lib/StatsSocket.js"
+import { stats } from "../lib/StatsSocket.mjs"
 import { css_from_path } from './edit_window/Branding';
 import AffiliatePrompt from '../user_home/AffiliatePrompt.svelte';
 
@@ -20,7 +20,6 @@ let file_viewer
 let file_preview
 let toolbar
 let upload_widget
-let download_frame
 let details_visible = false
 let edit_window
 let edit_visible = false
@@ -128,11 +127,18 @@ const keydown = e => {
 };
 
 const download = () => {
+	let a = document.createElement("a")
+
 	if (nav.base.type === "file") {
-		download_frame.src = fs_path_url(nav.base.path) + "?attach"
+		a.href = fs_path_url(nav.base.path) + "?attach"
+		a.download = nav.base.name
 	} else if (nav.base.type === "dir") {
-		download_frame.src = fs_path_url(nav.base.path) + "?bulk_download"
+		a.href = fs_path_url(nav.base.path) + "?bulk_download"
+		a.download = nav.base.name+".zip"
 	}
+
+	a.click()
+	a.remove()
 }
 </script>
 
@@ -183,13 +189,6 @@ const download = () => {
 			{/if}
 		</div>
 	{/if}
-
-	<!-- This frame will load the download URL when a download button is pressed -->
-	<iframe
-		bind:this={download_frame}
-		title="Frame for downloading files"
-		style="display: none; width: 1px; height: 1px;">
-	</iframe>
 
 	<DetailsWindow nav={nav} bind:visible={details_visible} />
 
