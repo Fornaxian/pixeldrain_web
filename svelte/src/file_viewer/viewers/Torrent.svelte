@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from "svelte";
 import Magnet from "icons/Magnet.svelte";
-import { formatDate } from "util/Formatting.svelte"
+import { formatDate } from "util/Formatting"
 import IconBlock from "layout/IconBlock.svelte";
 import TextBlock from "layout/TextBlock.svelte";
 import TorrentItem from "./TorrentItem.svelte"

@@ -1,5 +1,5 @@
 <script>
-import { formatDataVolume, formatThousands } from "util/Formatting.svelte"
+import { formatDataVolume, formatThousands } from "util/Formatting"
 
 export let list = {
 	files: [],

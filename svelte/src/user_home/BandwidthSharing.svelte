@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import Pro from "icons/Pro.svelte";
-import { formatDataVolume } from "util/Formatting.svelte";
+import { formatDataVolume } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import ProgressBar from "util/ProgressBar.svelte";
 import SuccessMessage from "util/SuccessMessage.svelte";

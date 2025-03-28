@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { copy_text } from "util/Util.svelte";
 
 export let text = ""

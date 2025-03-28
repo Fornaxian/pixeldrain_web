@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import Euro from "util/Euro.svelte";
-import { formatDate } from "util/Formatting.svelte";
+import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import MollieDeposit from "./MollieDeposit.svelte";
 

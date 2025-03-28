@@ -1,5 +1,5 @@
 <script>
-import { formatDataVolume } from "util/Formatting.svelte";
+import { formatDataVolume } from "util/Formatting";
 
 export let item = {
 	size: 0,

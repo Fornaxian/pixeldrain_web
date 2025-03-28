@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte"
-import { fs_node_icon, fs_node_type, fs_encode_path } from "filesystem/FilesystemAPI.mjs";
+import { fs_node_icon, fs_node_type, fs_encode_path } from "filesystem/FilesystemAPI";
+import type { FSNavigator } from "filesystem/FSNavigator";
 let dispatch = createEventDispatcher()
 
-export let nav
+export let nav: FSNavigator
 export let show_hidden = false
 export let large_icons = false
 </script>
@@ -12,8 +13,8 @@ export let large_icons = false
 	{#each $nav.children as child, index (child.path)}
 		<a class="file"
 		href={"/d"+fs_encode_path(child.path)}
-			on:click|preventDefault={() => dispatch("node_click", index)}
-			on:contextmenu={e => dispatch("node_context", {event: e, index: index})}
+			on:click|preventDefault={e => dispatch("node_click", {index: index, original: e})}
+			on:contextmenu={e => dispatch("node_context", {index: index, original: e})}
 			class:selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
 			class:large_icons

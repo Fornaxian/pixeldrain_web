@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import Button from "layout/Button.svelte";
-import { formatDataVolume, formatDataVolumeBits } from "util/Formatting.svelte";
+import { formatDataVolume, formatDataVolumeBits } from "util/Formatting";
 import ProgressBar from "util/ProgressBar.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 

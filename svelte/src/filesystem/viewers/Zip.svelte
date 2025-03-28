@@ -1,21 +1,28 @@
-<script>
+<script lang="ts" context="module">
+export type ZipEntry = {
+	size: number,
+	children?: {[index: string]: ZipEntry},
+	properties?: string[],
+	download_url?: string, // Added by us
+	details_open?: boolean, // Added by us
+};
+</script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte";
-import { formatDataVolume, formatDate } from "util/Formatting.svelte"
+import { formatDataVolume, formatDate } from "util/Formatting"
 import ZipItem from "file_viewer/viewers/ZipItem.svelte";
 import IconBlock from "layout/IconBlock.svelte";
 import TextBlock from "layout/TextBlock.svelte"
-import { fs_node_icon, fs_path_url } from "filesystem/FilesystemAPI.mjs";
+import { fs_node_icon, fs_path_url } from "filesystem/FilesystemAPI";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
 let dispatch = createEventDispatcher()
 
-export let nav
+export let nav: FSNavigator
 
 let status = "loading"
 
-let zip = {
-	size: 0,
-	children: [],
-}
+let zip: ZipEntry = {size: 0} as ZipEntry
 let uncomp_size = 0
 let comp_ratio = 0
 let archive_type = ""
@@ -38,7 +45,7 @@ export const update = async () => {
 			return
 		}
 
-		zip = await resp.json()
+		zip = await resp.json() as ZipEntry
 
 		// Check if the zip has the property which allows separate files to be
 		// downloaded. If so then we set the download URL for each file
@@ -61,25 +68,23 @@ export const update = async () => {
 	}
 }
 
-const recursive_set_url = (parent_path, file) => {
+const recursive_set_url = (parent_path: string, file: ZipEntry) => {
 	file.download_url = parent_path
 
-	if (file.children) {
-		Object.entries(file.children).forEach(child => {
-			recursive_set_url(file.download_url + "/" + child[0], child[1])
-		});
+	if (file.children !== undefined) {
+		for (const [name, child] of Object.entries(file.children)) {
+			recursive_set_url(file.download_url + "/" + name, child)
+		}
 	}
 }
 
-const recursive_size = (file) => {
+const recursive_size = (file: ZipEntry) => {
 	let size = file.size
 
-	// If the file has children (array is iterable) we call this function on all
-	// the children and add the size to our size accumulator
-	if (file.children.forEach) {
-		file.children.forEach(child => {
-			size += recursive_size(child)
-		});
+	if (file.children !== undefined) {
+		for (const v of Object.values(file.children)) {
+			size += recursive_size(v)
+		}
 	}
 
 	// Return the total size of this file and all its children

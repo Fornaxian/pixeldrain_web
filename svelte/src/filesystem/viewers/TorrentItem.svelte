@@ -1,10 +1,8 @@
-<script>
-import { formatDataVolume } from "util/Formatting.svelte";
+<script lang="ts">
+import { formatDataVolume } from "util/Formatting";
+import type { TorrentFile } from "./Torrent.svelte";
 
-export let item = {
-	size: 0,
-	children: null,
-}
+export let item: TorrentFile = {} as TorrentFile
 </script>
 
 <ul class="list_open">

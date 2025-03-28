@@ -3,7 +3,7 @@ import { onMount } from "svelte";
 import Button from "layout/Button.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 import ToggleButton from "layout/ToggleButton.svelte";
-import { check_response, get_endpoint, get_user, type User } from "lib/PixeldrainAPI.mjs";
+import { check_response, get_endpoint, get_user, type User } from "lib/PixeldrainAPI";
 
 let user: User = null
 let secret = ""

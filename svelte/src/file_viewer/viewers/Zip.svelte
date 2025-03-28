@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { formatDataVolume, formatDate } from "util/Formatting.svelte"
+import { formatDataVolume, formatDate } from "util/Formatting"
 import IconBlock from "layout/IconBlock.svelte";
 import TextBlock from "layout/TextBlock.svelte"
 import ZipItem from "./ZipItem.svelte";

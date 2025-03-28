@@ -1,6 +1,6 @@
 <script>
 import { add_upload_history, domain_url } from "util/Util.svelte"
-import { formatDataVolume, formatDuration } from "util/Formatting.svelte"
+import { formatDataVolume, formatDuration } from "util/Formatting"
 import Spinner from "util/Spinner.svelte";
 
 export let job = {}

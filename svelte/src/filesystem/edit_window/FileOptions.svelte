@@ -1,17 +1,18 @@
-<script>
+<script lang="ts">
 import Button from "layout/Button.svelte";
-import { fs_delete_all } from "filesystem/FilesystemAPI.mjs";
+import { fs_delete_all, type FSNode } from "filesystem/FilesystemAPI";
 import PathLink from "filesystem/util/PathLink.svelte";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav
-export let file = {}
-export let new_name
-export let visible
-export let open_after_edit
+export let nav: FSNavigator
+export let file: FSNode = {} as FSNode
+export let new_name: string
+export let visible: boolean
+export let open_after_edit: boolean
 
 $: is_root_dir = file.path === "/"+file.id
 
-const delete_file = async e => {
+const delete_file = async (e: MouseEvent) => {
 	e.preventDefault()
 
 	try {

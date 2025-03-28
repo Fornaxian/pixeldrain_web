@@ -1,5 +1,11 @@
-<script>
-import { fs_delete_all, fs_rename } from "filesystem/FilesystemAPI.mjs"
+<script lang="ts" context="module">
+export type FMNodeEvent = {
+	index: number,
+	original: MouseEvent,
+}
+</script>
+<script lang="ts">
+import { fs_delete_all, fs_rename, type FSNode } from "filesystem/FilesystemAPI"
 import { onMount } from "svelte"
 import CreateDirectory from "./CreateDirectory.svelte"
 import ListView from "./ListView.svelte"
@@ -7,29 +13,32 @@ import GalleryView from "./GalleryView.svelte"
 import CompactView from "./CompactView.svelte"
 import Button from "layout/Button.svelte";
 import FileImporter from "./FileImporter.svelte";
-import { formatDate } from "util/Formatting.svelte";
-import { drop_target } from "lib/DropTarget.ts"
+import { formatDate } from "util/Formatting";
+import { drop_target } from "lib/DropTarget"
 import SearchBar from "./SearchBar.svelte";
+import type { FSNavigator } from "filesystem/FSNavigator";
+import FsUploadWidget from "filesystem/upload_widget/FSUploadWidget.svelte";
+import EditWindow from "filesystem/edit_window/EditWindow.svelte";
 
-export let nav
-export let upload_widget
-export let edit_window
+export let nav: FSNavigator
+export let upload_widget: FsUploadWidget
+export let edit_window: EditWindow
 export let directory_view = ""
 let large_icons = false
-let uploader
+let uploader: FsUploadWidget
 let mode = "viewing"
 let creating_dir = false
 let show_hidden = false
-let file_importer
+let file_importer: FileImporter
 
-export const upload = files => {
+export const upload = (files: File[]) => {
 	return uploader.upload(files)
 }
 
 // Navigation functions
 
-const node_click = e => {
-	let index = e.detail
+const node_click = (e: CustomEvent<FMNodeEvent>) => {
+	const index = e.detail.index
 
 	creating_dir = false
 
@@ -48,27 +57,29 @@ const node_click = e => {
 		select_node(index)
 	}
 }
-let node_context = e => {
+let node_context = (e: CustomEvent<FMNodeEvent>) => {
 	// If this is a touch event we will select the item
 	if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
-		e.detail.event.preventDefault()
-		node_select({detail: e.detail.index})
+		e.detail.original.preventDefault()
+		node_select(e)
 	}
 }
-const node_share_click = e => {
-	let index = e.detail
-
+const node_share_click = (e: CustomEvent<FMNodeEvent>) => {
 	creating_dir = false
-	nav.navigate(nav.children[index].id, true)
+	nav.navigate(nav.children[e.detail.index].id, true)
 }
-const node_select = e => {
-	let index = e.detail
+const node_select = (e: CustomEvent<FMNodeEvent>) => {
+	const index = e.detail.index
 	mode = "selecting"
 	nav.children[index].fm_selected = !nav.children[index].fm_selected
 }
 
-const node_settings = e => edit_window.edit(nav.children[e.detail], false, "file")
-const node_branding = e => edit_window.edit(nav.children[e.detail], false, "branding")
+const node_settings = (e: CustomEvent<FMNodeEvent>)  => {
+	edit_window.edit(nav.children[e.detail.index], false, "file")
+}
+const node_branding = (e: CustomEvent<FMNodeEvent>) => {
+	edit_window.edit(nav.children[e.detail.index], false, "branding")
+}
 
 const navigate_back = () => {
 	creating_dir = false
@@ -147,7 +158,7 @@ const toggle_view = () => {
 }
 const toggle_large_icons = () => {
 	large_icons = !large_icons
-	localStorage.setItem("large_icons", large_icons)
+	localStorage.setItem("large_icons", JSON.stringify(large_icons))
 }
 
 // Moving functions
@@ -157,7 +168,7 @@ let moving_items = []
 // We need to detect if shift is pressed so we can select multiple items
 let shift_pressed = false
 let last_selected_node = -1
-const keypress = e => {
+const keypress = (e: KeyboardEvent) => {
 	if (e.key === "Shift") {
 		shift_pressed = e.type === "keydown"
 	} else if (e.type === "keydown" && e.key === "a" && e.ctrlKey) {
@@ -176,7 +187,7 @@ const keypress = e => {
 	}
 }
 
-const select_node = index => {
+const select_node = (index: number) => {
 	if (shift_pressed) {
 		// If shift is pressed we do a range select. We select all files between
 		// the last selected file and the file that is being selected now
@@ -199,7 +210,7 @@ const select_node = index => {
 // function watches the children array for changes and updates the selection
 // when it changes
 $: update($nav.children)
-const update = (children) => {
+const update = (children: FSNode[]) => {
 	creating_dir = false
 
 	// Highlight the files which were previously selected
@@ -327,11 +338,7 @@ onMount(() => {
 							<i class="icon">move_to_inbox</i>
 						</button>
 
-						<button
-							on:click={selecting_mode}
-							class:button_highlight={mode === "selecting"}
-							title="Select and delete files"
-						>
+						<button on:click={selecting_mode} title="Select and delete files">
 							<i class="icon">select_all</i>
 						</button>
 					{/if}

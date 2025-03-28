@@ -48,10 +48,16 @@ export const get_endpoint = () => {
 	if ((window as any).api_endpoint !== undefined) {
 		return (window as any).api_endpoint as string
 	}
-
 	console.warn("api_endpoint property is not defined on window")
-
 	return "/api"
+}
+
+export const get_hostname = () => {
+	if ((window as any).server_hostname !== undefined) {
+		return (window as any).server_hostname as string
+	}
+	console.warn("server_hostname property is not defined on window")
+	return "undefined"
 }
 
 export const check_response = async (resp: Response) => {

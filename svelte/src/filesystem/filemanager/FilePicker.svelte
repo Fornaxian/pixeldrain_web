@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher, onMount } from "svelte"
 import ListView from "./ListView.svelte"
 import GalleryView from "./GalleryView.svelte"
@@ -6,19 +6,20 @@ import CompactView from "./CompactView.svelte"
 import Modal from "util/Modal.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import Breadcrumbs from "filesystem/Breadcrumbs.svelte"
-import { FSNavigator } from "filesystem/FSNavigator.js";
+import { FSNavigator } from "filesystem/FSNavigator";
+import type { FMNodeEvent } from "./FileManager.svelte";
+import type { FSNode } from "filesystem/FilesystemAPI";
 
 let nav = new FSNavigator(false)
-let modal
+let modal: Modal
 let dispatch = createEventDispatcher()
 let directory_view = ""
 let loading = false
-const loading_evt = e => loading = e.detail
 let large_icons = false
 let show_hidden = false
 export let select_multiple = false
 
-export const open = path => {
+export const open = (path: string) => {
 	modal.show()
 	nav.navigate(path, false)
 }
@@ -32,8 +33,8 @@ $: selected_files = $nav.children.reduce((acc, file) => {
 
 // Navigation functions
 
-const node_click = e => {
-	let index = e.detail
+const node_click = (e: CustomEvent<FMNodeEvent>) => {
+	const index = e.detail.index
 
 	if (nav.children[index].type === "dir") {
 		nav.navigate(nav.children[index].path, true)
@@ -41,16 +42,15 @@ const node_click = e => {
 		select_node(index)
 	}
 }
-let node_context = e => {
+let node_context = (e: CustomEvent<FMNodeEvent>) => {
 	// If this is a touch event we will select the item
 	if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
-		e.detail.event.preventDefault()
-		node_select({detail: e.detail.index})
+		e.detail.original.preventDefault()
+		node_select(e)
 	}
 }
-const node_select = e => {
-	let index = e.detail
-	mode = "selecting"
+const node_select = (e: CustomEvent<FMNodeEvent>) => {
+	const index = e.detail.index
 	nav.children[index].fm_selected = !nav.children[index].fm_selected
 }
 
@@ -69,13 +69,13 @@ const toggle_view = () => {
 // We need to detect if shift is pressed so we can select multiple items
 let shift_pressed = false
 let last_selected_node = -1
-const detect_shift = (e) => {
+const detect_shift = (e: KeyboardEvent) => {
 	if (e.key === "Shift") {
 		shift_pressed = e.type === "keydown"
 	}
 }
 
-const select_node = index => {
+const select_node = (index: number) => {
 	if (select_multiple && shift_pressed) {
 		// If shift is pressed we do a range select. We select all files between
 		// the last selected file and the file that is being selected now
@@ -101,7 +101,7 @@ const select_node = index => {
 }
 
 let done = () => {
-	let selected_files = []
+	let selected_files: FSNode[] = []
 	for (let i = 0; i < nav.children.length; i++) {
 		if (nav.children[i].fm_selected) {
 			selected_files.push(nav.children[i])

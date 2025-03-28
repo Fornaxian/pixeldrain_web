@@ -1,16 +1,28 @@
-<script>
+<script lang="ts" context="module">
+export type UploadJob = {
+	task_id: number,
+	file: File,
+	path: string,
+	component: UploadProgress,
+	status: string,
+	total_size: number,
+	loaded_size: number,
+};
+</script>
+<script lang="ts">
 import { tick } from "svelte";
 import { fade } from "svelte/transition";
 import UploadProgress from "./UploadProgress.svelte";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav
+export let nav: FSNavigator
 
 const max_concurrent_uploads = 5
 
-let file_input_field
-let file_input_change = (e) => {
+let file_input_field: HTMLInputElement
+let file_input_change = (e: Event) => {
 	// Start uploading the files async
-	upload_files(e.target.files)
+	upload_files((e.target as HTMLInputElement).files)
 
 	// This resets the file input field
 	file_input_field.nodeValue = ""
@@ -20,10 +32,10 @@ export const pick_files = () => {
 }
 
 let visible = false
-let upload_queue = [];
+let upload_queue: UploadJob[] = [];
 let task_id_counter = 0
 
-export const upload_files = async files => {
+export const upload_files = async (files: File[]|FileList) => {
 	if (files.length === 0) {
 		return
 	} else if (nav.base.type !== "dir") {
@@ -37,7 +49,7 @@ export const upload_files = async files => {
 	}
 }
 
-export const upload_file = async file => {
+export const upload_file = async (file: File) => {
 	if (nav.base.type !== "dir") {
 		alert("Can only upload to directory")
 		return
@@ -122,7 +134,7 @@ const finish_upload = () => {
 	start_upload()
 }
 
-const leave_confirmation = (e) => {
+const leave_confirmation = (e: BeforeUnloadEvent) => {
 	if (state === "uploading") {
 		e.preventDefault()
 		return "If you close this page your files will stop uploading. Do you want to continue?"

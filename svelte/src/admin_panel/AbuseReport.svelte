@@ -1,5 +1,5 @@
 <script>
-import { formatDate, formatNumber } from "util/Formatting.svelte";
+import { formatDate, formatNumber } from "util/Formatting";
 import Expandable from "util/Expandable.svelte";
 import { createEventDispatcher } from "svelte";
 let dispatch = createEventDispatcher()

@@ -1,5 +1,7 @@
-<script>
-export let nav
+<script lang="ts">
+import type { FSNavigator } from "filesystem/FSNavigator";
+
+export let nav: FSNavigator
 export let path = ""
 </script>
 

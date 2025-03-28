@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 import { onMount, tick } from "svelte";
 import Spinner from "util/Spinner.svelte";
-import { fs_node_type, fs_thumbnail_url } from "filesystem/FilesystemAPI.mjs";
+import { fs_node_type, fs_thumbnail_url } from "filesystem/FilesystemAPI";
 import FileManager from "filesystem/filemanager/FileManager.svelte";
 import Audio from "./Audio.svelte";
 import File from "./File.svelte";
@@ -12,14 +12,17 @@ import Video from "./Video.svelte";
 import Torrent from "./Torrent.svelte";
 import Zip from "./Zip.svelte";
 import CustomBanner from "./CustomBanner.svelte";
-import { stats } from "lib/StatsSocket.mjs"
+import { stats } from "lib/StatsSocket"
 import SlowDown from "layout/SlowDown.svelte";
+import type { FSNavigator } from "filesystem/FSNavigator";
+import FsUploadWidget from "filesystem/upload_widget/FSUploadWidget.svelte";
+import EditWindow from "filesystem/edit_window/EditWindow.svelte";
 
-export let nav
-export let upload_widget
-export let edit_window
+export let nav: FSNavigator
+export let upload_widget: FsUploadWidget
+export let edit_window: EditWindow
 
-let viewer
+let viewer: any
 let viewer_type = ""
 let last_path = ""
 
@@ -64,7 +67,7 @@ export const toggle_fullscreen = () => {
 	}
 	return false
 }
-export const seek = delta => {
+export const seek = (delta: number) => {
 	if (viewer && viewer.seek) {
 		viewer.seek(delta)
 	}

@@ -1,33 +1,17 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte";
 import ThemePresets from "./ThemePresets.svelte";
-import FilePicker from "file_viewer/FilePicker.svelte";
-import { fs_update, fs_node_type } from "filesystem/FilesystemAPI.mjs";
+import { fs_update, fs_node_type, type FSNode } from "filesystem/FilesystemAPI";
 import CustomBanner from "filesystem/viewers/CustomBanner.svelte";
 import HelpButton from "layout/HelpButton.svelte";
+import FilePicker from "filesystem/filemanager/FilePicker.svelte";
 let dispatch = createEventDispatcher()
 
-export let file = {
-	properties: {
-		branding_enabled: "",
-		brand_input_color: "",
-		brand_highlight_color: "",
-		brand_danger_color: "",
-		brand_background_color: "",
-		brand_body_color: "",
-		brand_card_color: "",
-		brand_header_image: "",
-		brand_header_link: "",
-		brand_footer_image: "",
-		brand_footer_link: "",
-		brand_background_image: "",
-	},
-}
-
+export let file: FSNode
 export let enabled = false
 
 $: update_colors(file)
-const update_colors = file => {
+const update_colors = (file: FSNode) => {
 	if (enabled) {
 		file.properties.branding_enabled = "true"
 		dispatch("style_change")
@@ -36,13 +20,13 @@ const update_colors = file => {
 	}
 }
 
-let picker
+let picker: FilePicker
 let picking = ""
-const pick_image = type => {
+const pick_image = (type: string) => {
 	picking = type
 	picker.open(file.path)
 }
-const handle_picker = async e => {
+const handle_picker = async (e: CustomEvent<FSNode[]>) => {
 	if (e.detail.length !== 1) {
 		alert("Please select one file")
 		return

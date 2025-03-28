@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
-import { formatDataVolume, formatThousands } from "util/Formatting.svelte"
-import { fs_path_url } from "./FilesystemAPI.mjs";
+import { formatDataVolume, formatThousands } from "util/Formatting"
+import { fs_path_url } from "./FilesystemAPI";
+import type { FSNavigator } from "./FSNavigator";
 
-export let nav
+export let nav: FSNavigator
 
 let loading = true
 let downloads = 0
@@ -71,7 +72,7 @@ const update_base = async () => {
 
 		window.setTimeout(() => {
 			if (socket === null) {
-				update_base(nav.base)
+				update_base()
 			}
 		}, 5000)
 	}
@@ -119,12 +120,12 @@ const close_socket = () => {
 
 	<div class="group">
 		<div class="label">Directories</div>
-		<div class="stat">{formatThousands(total_directories, 3)}</div>
+		<div class="stat">{formatThousands(total_directories)}</div>
 	</div>
 
 	<div class="group">
 		<div class="label">Files</div>
-		<div class="stat">{formatThousands(total_files, 3)}</div>
+		<div class="stat">{formatThousands(total_files)}</div>
 	</div>
 
 	<div class="group">

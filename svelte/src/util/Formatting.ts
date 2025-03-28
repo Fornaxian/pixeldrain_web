@@ -1,5 +1,4 @@
-<script context="module">
-export const formatNumber = (amt, precision) => {
+export const formatNumber = (amt: number, precision: number) => {
 	if (precision < 3) { precision = 3; }
 	if (amt >= 1e6) {
 		return (amt/1e6).toPrecision(precision) + "M";
@@ -9,11 +8,11 @@ export const formatNumber = (amt, precision) => {
 	return amt.toPrecision(precision)
 }
 
-export const formatThousands = (x) => {
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+export const formatThousands = (amt: number) => {
+	return amt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-export const formatDataVolume = (amt, precision) => {
+export const formatDataVolume = (amt: number, precision: number) => {
 	if (precision < 3) { precision = 3; }
 	if (amt >= 1e18-1e15) {
 		return (amt/1e18).toPrecision(precision) + " EB";
@@ -30,7 +29,7 @@ export const formatDataVolume = (amt, precision) => {
 	}
 	return amt.toPrecision(precision) + " B"
 }
-export const formatDataVolumeBits = (amt, precision) => {
+export const formatDataVolumeBits = (amt: number, precision: number) => {
 	amt = amt*8
 	if (precision < 3) { precision = 3; }
 	if (amt >= 1e18-1e15) {
@@ -54,7 +53,7 @@ const minute = second*60
 const hour = minute*60
 const day = hour*24
 
-export const formatDuration = (ms, decimals) => {
+export const formatDuration = (ms: number, decimals: number) => {
 	let res = ""
 	if (ms >= day)    { res += Math.floor(ms/day) + "d " }
 	if (ms >= hour)   { res += Math.floor((ms%day)/hour) + "h " }
@@ -62,7 +61,12 @@ export const formatDuration = (ms, decimals) => {
 	return res + ((ms%minute)/second).toFixed(decimals) + "s"
 }
 
-export const formatDate = (date, hours, minutes, seconds) => {
+export const formatDate = (
+	date: Date|string,
+	hours: boolean = true,
+	minutes: boolean = true,
+	seconds: boolean = true,
+) => {
 	if (!(date instanceof Date)) {
 		date = new Date(date)
 	}
@@ -77,7 +81,6 @@ export const formatDate = (date, hours, minutes, seconds) => {
 	return dateStr
 }
 
-export const formatEuros = (amt, precision) => {
+export const formatEuros = (amt: number, precision: number) => {
 	return "€ "+ (amt / 1000000).toFixed(precision)
 }
-</script>

@@ -3,7 +3,7 @@ import { createEventDispatcher } from "svelte"
 import { flip } from "svelte/animate"
 import FilePicker from "./FilePicker.svelte"
 import { file_type } from "./FileUtilities.svelte";
-import { get_video_position } from "lib/VideoPosition.mjs"
+import { get_video_position } from "lib/VideoPosition"
 import ProgressBar from "util/ProgressBar.svelte"
 let dispatch = createEventDispatcher()
 

@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import { FSNavigator } from "filesystem/FSNavigator.ts"
-import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI.mjs";
+import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI";
 import Button from "layout/Button.svelte";
 import CreateDirectory from "filesystem/filemanager/CreateDirectory.svelte";
 import FSUploadWidget from "filesystem/upload_widget/FSUploadWidget.svelte";

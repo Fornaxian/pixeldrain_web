@@ -1,6 +1,6 @@
 <script>
 import Euro from "util/Euro.svelte";
-import { formatDataVolume, formatDate } from "util/Formatting.svelte";
+import { formatDataVolume, formatDate } from "util/Formatting";
 
 export let row = {}
 </script>

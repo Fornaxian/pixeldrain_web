@@ -1,7 +1,8 @@
-<script>
-import { fs_encode_path } from "./FilesystemAPI.mjs";
+<script lang="ts">
+import { fs_encode_path } from "./FilesystemAPI";
+import type { FSNavigator } from "./FSNavigator";
 
-export let nav
+export let nav: FSNavigator
 </script>
 
 <div class="breadcrumbs">

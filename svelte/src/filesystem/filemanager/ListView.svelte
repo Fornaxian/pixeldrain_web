@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte";
-import { formatDataVolume } from "util/Formatting.svelte";
-import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI.mjs"
+import { formatDataVolume } from "util/Formatting";
+import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI"
+import type { FSNavigator } from "filesystem/FSNavigator";
 
 let dispatch = createEventDispatcher()
 
-export let nav
+export let nav: FSNavigator
 export let show_hidden = false
 export let large_icons = false
 export let hide_edit = false
@@ -22,8 +23,8 @@ export let hide_branding = false
 	{#each $nav.children as child, index (child.path)}
 		<a
 			href={"/d"+fs_encode_path(child.path)}
-			on:click|preventDefault={() => dispatch("node_click", index)}
-			on:contextmenu={e => dispatch("node_context", {event: e, index: index})}
+			on:click|preventDefault={e => dispatch("node_click", {index: index, original: e})}
+			on:contextmenu={e => dispatch("node_context", {index: index, original: e})}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
@@ -46,19 +47,19 @@ export let hide_branding = false
 					{:else if child.id}
 						<a
 							href="/d/{child.id}"
-							on:click|preventDefault|stopPropagation={() => {dispatch("node_share_click", index)}}
+							on:click|preventDefault|stopPropagation={e => {dispatch("node_share_click", {index: index, original: e})}}
 							class="button action_button"
 						>
 							<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 						</a>
 					{/if}
-					{#if child.properties && child.properties.branding_enabled && !hide_branding}
-						<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_branding", index)}>
+					{#if child.properties !== undefined && child.properties.branding_enabled !== undefined && !hide_branding}
+						<button class="action_button" on:click|preventDefault|stopPropagation={e => dispatch("node_branding", {index: index, original: e})}>
 							<i class="icon">palette</i>
 						</button>
 					{/if}
 					{#if $nav.permissions.write && !hide_edit}
-						<button class="action_button" on:click|preventDefault|stopPropagation={() => dispatch("node_settings", index)}>
+						<button class="action_button" on:click|preventDefault|stopPropagation={e => dispatch("node_settings", {index: index, original: e})}>
 							<i class="icon">edit</i>
 						</button>
 					{/if}

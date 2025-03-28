@@ -1,5 +1,5 @@
 <script>
-import { formatDate } from "util/Formatting.svelte";
+import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 
 let loading = false

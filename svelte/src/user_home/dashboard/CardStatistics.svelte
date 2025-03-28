@@ -2,7 +2,7 @@
 import { onMount } from "svelte";
 import Chart from "util/Chart.svelte";
 import { color_by_name } from "util/Util.svelte";
-import { formatDataVolume, formatThousands } from "util/Formatting.svelte";
+import { formatDataVolume, formatThousands } from "util/Formatting";
 
 export let card_size = 1
 $: chart_height = (80 + (card_size * 60)) + "px"

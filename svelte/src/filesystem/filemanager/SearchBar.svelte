@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
-import { fs_search, fs_encode_path, fs_thumbnail_url } from "filesystem/FilesystemAPI.mjs";
+import { fs_search, fs_encode_path, fs_thumbnail_url } from "filesystem/FilesystemAPI";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav
+export let nav: FSNavigator
 
-let search_bar
+let search_bar: HTMLInputElement
 let error = ""
 let search_term = ""
-let search_results = []
+let search_results: string[] = []
 let selected_result = 0
 let searching = false
 let last_searched_term = ""
@@ -71,7 +72,7 @@ const search = async (limit = 10) => {
 	}
 }
 
-const clear_search = (blur) => {
+const clear_search = (blur: boolean) => {
 	error = ""
 	search_term = ""
 	search_results = []
@@ -89,12 +90,12 @@ const clear_search = (blur) => {
 
 // Cursor navigation events can only be prevented with keydown. But we want to
 // use keyup for searching, so we use two listeners here
-const input_keydown = e => {
+const input_keydown = (e: KeyboardEvent) => {
 	if (e.key === "Escape" || e.key === "ArrowUp" || e.key === "ArrowDown") {
 		e.preventDefault()
 	}
 }
-const input_keyup = e => {
+const input_keyup = (e: KeyboardEvent) => {
 	if (e.key === "Escape") {
 		clear_search(true)
 	} else if (e.key === "ArrowUp") {
@@ -117,15 +118,15 @@ const submit_search = () => {
 	}
 }
 
-const open_result = index => {
+const open_result = (index: number) => {
 	nav.navigate(search_results[index], true)
 	clear_search(false)
 }
 
-const window_keydown = (e) => {
+const window_keydown = (e: KeyboardEvent) => {
 	if (e.ctrlKey || e.altKey || e.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
-	} else if (document.activeElement.type && document.activeElement.type === "text") {
+	} else if ((document.activeElement as any).type !== undefined && (document.activeElement as any).type === "text") {
 		return // Prevent shortcuts from interfering with input fields
 	}
 
@@ -171,7 +172,7 @@ const window_keydown = (e) => {
 		/>
 		{#if search_term !== ""}
 			<!-- Button needs to be of button type in order to not submit the form -->
-			<button on:click={clear_search} type="button">
+			<button on:click={() => clear_search(false)} type="button">
 				<i class="icon">close</i>
 			</button>
 		{/if}

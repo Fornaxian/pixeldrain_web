@@ -1,29 +1,24 @@
-<script>
-import { fs_rename, fs_update } from "filesystem/FilesystemAPI.mjs";
+<script lang="ts">
+import { fs_rename, fs_update, type FSNode, type FSNodeProperties, type NodeOptions } from "filesystem/FilesystemAPI";
 import Modal from "util/Modal.svelte";
 import BrandingOptions from "./BrandingOptions.svelte";
 import { branding_from_node } from "./Branding";
 import FileOptions from "./FileOptions.svelte";
 import SharingOptions from "./SharingOptions.svelte";
 import AccessControl from "./AccessControl.svelte";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav
-let file = {
-	path: "",
-	name: "",
-	id: "",
-	mode_octal: "",
-	properties: {},
-};
+export let nav: FSNavigator
+let file: FSNode = {} as FSNode
 
 let custom_css = ""
 
-export let visible
+export let visible: boolean
 
 // Open the edit window. Argument 1 is the file to edit, 2 is whether the file
 // should be opened after the user finishes editing and 3 is the default tab
 // that should be open when the window shows
-export const edit = (f, oae = false, open_tab = "") => {
+export const edit = (f: FSNode, oae = false, open_tab = "") => {
 	file = f
 	open_after_edit = oae
 	if (open_tab !== "") {
@@ -38,12 +33,12 @@ export const edit = (f, oae = false, open_tab = "") => {
 	shared = !(file.id === undefined || file.id === "")
 
 	if (file.properties === undefined) {
-		file.properties = {}
+		file.properties = {} as FSNodeProperties
 	}
 
 	if (shared && file.link_permissions === undefined) {
 		// Default to read-only for public links
-		file.link_permissions = {read: true, write: false, delete: false}
+		file.link_permissions = { owner: false, read: true, write: false, delete: false}
 	}
 
 	branding_enabled = file.properties.branding_enabled === "true"
@@ -59,51 +54,31 @@ export const edit = (f, oae = false, open_tab = "") => {
 let tab = "file"
 let open_after_edit = false
 
-let shared = false
 let new_name = ""
-
+let shared = false
 let branding_enabled = false
-let branding_colors
-let branding_fields = [
-	"brand_input_color",
-	"brand_highlight_color",
-	"brand_danger_color",
-	"brand_background_color",
-	"brand_body_color",
-	"brand_card_color",
-	"brand_header_image",
-	"brand_header_link",
-	"brand_background_image",
-]
 
 const save = async (keep_editing = false) => {
 	console.debug("Saving file", file.path)
 
-	let new_file
+	let new_file: FSNode
 	try {
 		nav.set_loading(true)
 		let opts = {
 			shared: shared,
-		}
+			branding_enabled: JSON.stringify(branding_enabled)
+		} as NodeOptions
 
-		opts.branding_enabled = branding_enabled ? "true" : ""
-
-		if (branding_enabled && file.properties) {
-			for (let field of branding_fields) {
-				if (file.properties[field] !== undefined) {
-					console.log("setting", field, "to", file.properties[field])
-					opts[field] = file.properties[field]
-				}
+		if (branding_enabled && file.properties !== undefined) {
+			for (let field of Object.keys(file.properties)) {
+				console.log("setting", field, "to", file.properties[field])
+				opts[field] = file.properties[field]
 			}
 		}
 
-		if (shared && file.link_permissions !== undefined) {
+		if (shared) {
 			opts.link_permissions = file.link_permissions
-		}
-		if (shared && file.user_permissions !== undefined) {
 			opts.user_permissions = file.user_permissions
-		}
-		if (shared && file.password_permissions !== undefined) {
 			opts.password_permissions = file.password_permissions
 		}
 
@@ -179,11 +154,10 @@ const save = async (keep_editing = false) => {
 		{:else if tab === "share"}
 			<SharingOptions bind:file bind:shared on:save={() => save(true)} />
 		{:else if tab === "access"}
-			<AccessControl bind:file bind:shared />
+			<AccessControl bind:file />
 		{:else if tab === "branding"}
 			<BrandingOptions
 				bind:enabled={branding_enabled}
-				bind:colors={branding_colors}
 				bind:file
 				on:style_change={e => custom_css = branding_from_node(file)}
 			/>

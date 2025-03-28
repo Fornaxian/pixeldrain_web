@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 export let path = []
 
-let image_uri
-let image_link
+let image_uri: string
+let image_link: string
 $: update_links(path)
 const update_links = (path) => {
 	image_uri = null

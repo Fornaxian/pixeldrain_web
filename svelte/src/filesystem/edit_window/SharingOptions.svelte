@@ -1,20 +1,21 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte";
 import { domain_url } from "util/Util.svelte";
 import CopyButton from "layout/CopyButton.svelte";
-import { formatDate } from "util/Formatting.svelte";
+import { formatDate } from "util/Formatting";
+import type { FSNode } from "filesystem/FilesystemAPI";
 
 let dispatch = createEventDispatcher()
-export let shared
-export let file
+export let shared: boolean
+export let file: FSNode = {} as FSNode
 
-let embed_html
-let preview_area
+let embed_html: string
+let preview_area: HTMLDivElement
 
 $: is_shared = file.id !== undefined && file.id !== ""
 $: share_link = window.location.protocol+"//"+window.location.host+"/d/"+file.id
 $: embed_iframe(file)
-let embed_iframe = file => {
+let embed_iframe = (file: FSNode) => {
 	if (!is_shared) {
 		example = false
 		embed_html = "File is not shared, can't generate embed code"
@@ -41,7 +42,7 @@ const toggle_example = () => {
 	}
 }
 
-const update_shared = e => {
+const update_shared = () => {
 	// If sharing is enabled we automatically save the file so the user can copy
 	// the sharing link. But if the user disables sharing we don't automatically
 	// save so that the user can't accidentally discard a sharing link that's in

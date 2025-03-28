@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 import TabMenu from "util/TabMenu.svelte";
 import Register from "./Register.svelte";
 import Login from "./Login.svelte";
 import { onMount } from "svelte";
-import { get_user } from "lib/PixeldrainAPI.mjs";
+import { get_user } from "lib/PixeldrainAPI";
 
 let pages = [
 	{
@@ -33,4 +33,4 @@ onMount(async () => {
 })
 </script>
 
-<TabMenu pages={pages} title="Login" large_tabs />
+<TabMenu pages={pages} title="Login" />

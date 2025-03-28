@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "util/Formatting.svelte";
+import { formatDate } from "util/Formatting";
 import Footer from "layout/Footer.svelte"
 import Button from "layout/Button.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte"

@@ -26,7 +26,7 @@ export type SubmitResult = {
 <script lang="ts">
 import { onMount } from "svelte";
 import Spinner from "./Spinner.svelte";
-import type { GenericResponse } from "lib/PixeldrainAPI.mjs";
+import type { GenericResponse } from "lib/PixeldrainAPI";
 
 export let config: FormConfig
 

@@ -1,5 +1,7 @@
-<script>
-let nav;
+<script lang="ts">
+import { user } from "lib/UserStore";
+
+let nav: HTMLElement;
 
 export const toggle = () => {
 	var body = document.getElementById("page_body");
@@ -24,11 +26,11 @@ export const reset = () => {
 	<a href="/#">Home</a>
 	<a href="/#prepaid">For Creators</a>
 	<hr />
-	{#if window.user !== ""}
-		<a href="/user">{window.user.username}</a>
+	{#if $user.username !== ""}
+		<a href="/user">{$user.username}</a>
 		<a href="/user/filemanager#files">My Files</a>
 		<a href="/user/filemanager#lists">My Albums</a>
-		{#if window.user.is_admin}
+		{#if $user.is_admin}
 			<a href="/user/buckets">Buckets</a>
 			<a href="/admin">Admin Panel</a>
 		{/if}

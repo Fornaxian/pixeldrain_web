@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
 import Expandable from "util/Expandable.svelte";
-import { formatDate } from "util/Formatting.svelte";
+import { formatDate } from "util/Formatting";
 
 let result = null;
 

@@ -1,5 +1,5 @@
 <script>
-import { formatDataVolume, formatDuration } from "util/Formatting.svelte";
+import { formatDataVolume, formatDuration } from "util/Formatting";
 import ProgressBar from "util/ProgressBar.svelte";
 
 export let upload_queue = []

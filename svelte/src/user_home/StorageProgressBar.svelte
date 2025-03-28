@@ -1,5 +1,5 @@
 <script>
-import { formatDataVolume } from "util/Formatting.svelte"
+import { formatDataVolume } from "util/Formatting"
 import ProgressBar from "util/ProgressBar.svelte";
 
 export let total = 0

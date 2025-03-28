@@ -1,14 +1,14 @@
-<script>
+<script lang="ts">
 import Chart from "util/Chart.svelte";
-import { formatDataVolume, formatDate, formatNumber, formatThousands } from "util/Formatting.svelte";
+import { formatDataVolume, formatDate, formatThousands } from "util/Formatting";
 import Modal from "util/Modal.svelte";
-import { fs_path_url, fs_timeseries } from "./FilesystemAPI.mjs";
-import { generate_share_path, generate_share_url } from "./Sharebar.svelte";
+import { fs_path_url, fs_share_path, fs_share_url, fs_timeseries, type FSNode } from "./FilesystemAPI";
 import { color_by_name } from "util/Util.svelte";
 import { tick } from "svelte";
 import CopyButton from "layout/CopyButton.svelte";
+import type { FSNavigator } from "./FSNavigator";
 
-export let nav
+export let nav: FSNavigator
 export let visible = false
 export const toggle = () => visible = !visible
 
@@ -20,8 +20,8 @@ const visibility_change = visible => {
 }
 
 $: direct_url = $nav.base.path ? window.location.origin+fs_path_url($nav.base.path) : ""
-$: share_url = generate_share_url($nav.path)
-$: direct_share_url = $nav.base.path ? window.location.origin+fs_path_url(generate_share_path($nav.path)) : ""
+$: share_url = fs_share_url($nav.path)
+$: direct_share_url = $nav.base.path ? window.location.origin+fs_path_url(fs_share_path($nav.path)) : ""
 
 let chart
 let chart_timespan = 0
@@ -40,7 +40,7 @@ let total_downloads = 0
 let total_transfer = 0
 
 $: update_chart($nav.base, chart_timespan, chart_interval)
-let update_chart = async (base, timespan, interval) => {
+let update_chart = async (base: FSNode, timespan: number, interval: number) => {
 	if (chart === undefined) {
 		// Wait for the chart element to render, if it's not rendered already
 		await tick()
@@ -93,7 +93,6 @@ let update_chart = async (base, timespan, interval) => {
 				drawOnChartArea: false,
 			},
 		}
-
 
 		resp.downloads.timestamps.forEach((val, idx) => {
 			let date = new Date(val);

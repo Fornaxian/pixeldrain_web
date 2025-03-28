@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 import Login from "./Login.svelte";
 import Register from "./Register.svelte";
 
-const finish_login = async e => {
+const finish_login = async () => {
 	location.reload()
 }
 

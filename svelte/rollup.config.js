@@ -1,5 +1,5 @@
 import svelte from 'rollup-plugin-svelte';
-import resolve, { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import terser from '@rollup/plugin-terser';
@@ -52,13 +52,10 @@ export default [
 		resolve({
 			browser: true,
 			exportConditions: ['svelte'],
-			extensions: ['.svelte'],
+			modulePaths: [process.cwd() + "/src", process.cwd() + "/node_modules"],
+			extensions: [".svelte", ".mjs", ".js", ".json", ".mts", ".ts"],
 		}),
 		commonjs(),
-		nodeResolve({
-			modulePaths: [process.cwd() + "/src"],
-			extensions: [".svelte", ".mjs", ".js", ".json"]
-		}),
 		typescript(),
 
 		// Watch the `public` directory and refresh the browser on changes when

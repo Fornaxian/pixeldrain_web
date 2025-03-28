@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte";
-import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI.mjs"
+import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI"
+import type { FSNavigator } from "filesystem/FSNavigator";
 
 let dispatch = createEventDispatcher()
 
-export let nav
+export let nav: FSNavigator
 export let show_hidden = false
 export let large_icons = false
 </script>
@@ -13,8 +14,8 @@ export let large_icons = false
 	{#each $nav.children as child, index (child.path)}
 		<a
 			href={"/d"+fs_encode_path(child.path)}
-			on:click|preventDefault={() => dispatch("node_click", index)}
-			on:contextmenu={e => dispatch("node_context", {event: e, index: index})}
+			on:click|preventDefault={e => dispatch("node_click", {index: index, original: e})}
+			on:contextmenu={e => dispatch("node_context", {index: index, original: e})}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
@@ -26,7 +27,7 @@ export let large_icons = false
 			{#if child.id}
 				<a
 					href="/d/{child.id}"
-					on:click|preventDefault|stopPropagation={() => {dispatch("node_share_click", index)}}
+					on:click|preventDefault|stopPropagation={e => {dispatch("node_share_click", {index: index, original: e})}}
 					class="button action_button"
 				>
 					<i class="icon" title="This file / directory is shared. Click to open public link">share</i>

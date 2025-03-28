@@ -1,11 +1,11 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "util/Formatting.svelte";
+import { formatDate } from "util/Formatting";
 import Expandable from "util/Expandable.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import Euro from "util/Euro.svelte";
 import MollieSettlement from "./MollieSettlement.svelte";
-import { mollie_proxy_call } from "./MollieAPI.js";
+import { mollie_proxy_call } from "./MollieAPI";
 
 let loading = true
 let response = {}

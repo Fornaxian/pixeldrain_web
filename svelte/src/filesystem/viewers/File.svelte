@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte";
 import IconBlock from "layout/IconBlock.svelte";
-import { fs_thumbnail_url } from "filesystem/FilesystemAPI.mjs";
+import { fs_thumbnail_url } from "filesystem/FilesystemAPI";
 import TextBlock from "layout/TextBlock.svelte"
-import { formatDataVolume, formatDate } from "util/Formatting.svelte";
+import { formatDataVolume, formatDate } from "util/Formatting";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
 let dispatch = createEventDispatcher()
 
-export let nav
+export let nav: FSNavigator
 </script>
 
 <slot></slot>

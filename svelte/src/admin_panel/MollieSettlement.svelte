@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte";
-import { formatDate } from "util/Formatting.svelte";
-import { mollie_proxy_call } from "./MollieAPI.js";
+import { formatDate } from "util/Formatting";
+import { mollie_proxy_call } from "./MollieAPI";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import Euro from "util/Euro.svelte";
 

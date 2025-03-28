@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import Discord from "icons/Discord.svelte";
 import Github from "icons/Github.svelte";
 import Mastodon from "icons/Mastodon.svelte";
 import Patreon from "icons/Patreon.svelte";
 import Reddit from "icons/Reddit.svelte";
-import { formatDataVolumeBits } from "util/Formatting.svelte";
+import { formatDataVolumeBits } from "util/Formatting";
+import { get_endpoint, get_hostname } from "lib/PixeldrainAPI";
 
 export let nobg = false
 let server_tx = 0
@@ -13,7 +14,7 @@ let cache_tx = 0
 let storage_tx = 0
 onMount(async () => {
 	try {
-		const resp = await fetch(window.api_endpoint+"/misc/cluster_speed")
+		const resp = await fetch(get_endpoint()+"/misc/cluster_speed")
 		if (resp.status >= 400) {
 			throw Error(await resp.text())
 		}
@@ -59,7 +60,7 @@ onMount(async () => {
 		</div>
 		<br/>
 		<span class="small_footer_text" style="font-size: .75em; line-height: .75em;">
-			page rendered by {window.server_hostname}
+			page rendered by {get_hostname()}
 		</span>
 	</div>
 </footer>

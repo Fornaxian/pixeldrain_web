@@ -1,6 +1,6 @@
 <script lang="ts">
 import Button from "layout/Button.svelte";
-import type { FSNode, FSPermissions } from "filesystem/FilesystemAPI.mjs";
+import type { FSNode, FSPermissions } from "filesystem/FilesystemAPI";
 import PermissionButton from "./PermissionButton.svelte";
 
 export let file: FSNode
@@ -10,7 +10,7 @@ let new_user_perms = <FSPermissions>{read: true}
 const add_user = (e: SubmitEvent) => {
 	e.preventDefault()
 	if (file.user_permissions === undefined) {
-		file.user_permissions = <[string: FSPermissions]>{}
+		file.user_permissions = {} as {[index: string]: FSPermissions}
 	}
 	file.user_permissions[new_user_id] = structuredClone(new_user_perms)
 }
@@ -24,7 +24,7 @@ let new_password_perms = <FSPermissions>{read: true}
 const add_password = (e: SubmitEvent) => {
 	e.preventDefault()
 	if (file.password_permissions === undefined) {
-		file.password_permissions = <[string: FSPermissions]>{}
+		file.password_permissions = {} as {[index: string]: FSPermissions}
 	}
 	file.password_permissions[new_password] = structuredClone(new_password_perms)
 }

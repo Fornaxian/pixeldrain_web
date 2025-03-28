@@ -1,6 +1,6 @@
 <script>
 import { onDestroy, onMount } from "svelte";
-import { formatDataVolume, formatThousands, formatDate, formatNumber, formatDuration } from "util/Formatting.svelte";
+import { formatDataVolume, formatThousands, formatDate, formatNumber, formatDuration } from "util/Formatting";
 import Chart from "util/Chart.svelte";
 import { color_by_name } from "util/Util.svelte";
 import ServerDiagnostics from "./ServerDiagnostics.svelte";

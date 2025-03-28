@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 import { onMount } from 'svelte'
-import { fs_path_url, fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI.mjs"
+import { fs_path_url, fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI"
 import FileTitle from "layout/FileTitle.svelte";
 import TextBlock from "layout/TextBlock.svelte"
+import type { FSNavigator } from 'filesystem/FSNavigator';
 
-export let nav
-let player
+export let nav: FSNavigator
+let player: HTMLAudioElement
 let playing = false
 let media_session = false
 let siblings = []
@@ -13,7 +14,7 @@ let siblings = []
 export const toggle_playback = () => playing ? player.pause() : player.play()
 export const toggle_mute = () => player.muted = !player.muted
 
-export const seek = delta => {
+export const seek = (delta: number) => {
 	// fastseek can be pretty imprecise, so we don't use it for small seeks
 	// below 5 seconds
 	if (player.fastSeek && delta > 5) {
@@ -40,7 +41,7 @@ onMount(() => {
 		media_session = true
 		navigator.mediaSession.setActionHandler('play', () => player.play());
 		navigator.mediaSession.setActionHandler('pause', () => player.pause());
-		navigator.mediaSession.setActionHandler('stop', () => player.stop());
+		navigator.mediaSession.setActionHandler('stop', () => player.pause());
 		navigator.mediaSession.setActionHandler('previoustrack', () => nav.open_sibling(-1));
 		navigator.mediaSession.setActionHandler('nexttrack', () => nav.open_sibling(1));
 	}
@@ -56,8 +57,8 @@ onMount(() => {
 		bind:this={player}
 		class="player"
 		src={fs_path_url($nav.base.path)}
-		autoplay="autoplay"
-		controls="controls"
+		autoplay
+		controls
 		on:pause={() => playing = false }
 		on:play={() => playing = true }
 		on:ended={() => nav.open_sibling(1) }>

@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from "svelte";
-import { formatDate } from "util/Formatting.svelte";
+import { formatDate } from "util/Formatting";
 import Modal from "util/Modal.svelte"
 import SortButton from "./SortButton.svelte";
 import { flip } from "svelte/animate";

@@ -14,7 +14,7 @@ import Dashboard from "./dashboard/Dashboard.svelte";
 import AffiliatePrompt from "./AffiliatePrompt.svelte";
 import FileManager from "./filemanager/FileManager.svelte";
 import { onMount } from "svelte";
-import { get_user, type User } from "lib/PixeldrainAPI.mjs";
+import { get_user, type User } from "lib/PixeldrainAPI";
 
 let pages: Tab[] = [
 	{

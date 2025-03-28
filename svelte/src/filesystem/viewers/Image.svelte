@@ -1,12 +1,13 @@
 <script lang="ts">
 import { createEventDispatcher } from "svelte";
-import { swipe_nav } from "lib/SwipeNavigate.mjs";
-import { fs_path_url } from "filesystem/FilesystemAPI.mjs";
+import { swipe_nav } from "lib/SwipeNavigate";
+import { fs_path_url } from "filesystem/FilesystemAPI";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
 let dispatch = createEventDispatcher();
 
-export let nav
-let container
+export let nav: FSNavigator
+let container: HTMLDivElement
 let zoom = false
 let x = 0, y = 0
 let dragging = false
@@ -30,7 +31,7 @@ export const update = async () => {
 
 const on_load = () => dispatch("loading", false)
 
-const mousedown = (e) => {
+const mousedown = (e: MouseEvent) => {
 	if (!dragging && e.which === 1 && zoom) {
 		x = e.pageX
 		y = e.pageY
@@ -41,7 +42,7 @@ const mousedown = (e) => {
 		return false
 	}
 }
-const mousemove = (e) => {
+const mousemove = (e: MouseEvent) => {
 	if (dragging) {
 		container.scrollLeft = container.scrollLeft - (e.pageX - x)
 		container.scrollTop  = container.scrollTop  - (e.pageY - y)
@@ -54,7 +55,7 @@ const mousemove = (e) => {
 		return false
 	}
 }
-const mouseup = (e) => {
+const mouseup = (e: MouseEvent) => {
 	if (dragging) {
 		dragging = false
 
@@ -71,9 +72,13 @@ const mouseup = (e) => {
 	bind:this={container}
 	class="container"
 	class:zoom
-	use:swipe_nav={{enabled: !zoom, prev: swipe_prev, next: swipe_next}}
-	on:prev={() => nav.open_sibling(-1)}
-	on:next={() => nav.open_sibling(1)}
+	use:swipe_nav={{
+		enabled: !zoom,
+		prev: swipe_prev,
+		next: swipe_next,
+		on_prev: () => nav.open_sibling(-1),
+		on_next: () => nav.open_sibling(1),
+	}}
 >
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img

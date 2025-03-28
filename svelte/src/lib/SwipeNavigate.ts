@@ -3,7 +3,16 @@ const swipe_inital_offset = 25
 // Amount of pixels after which the navigation triggers
 const swipe_trigger_offset = 75
 
-export const swipe_nav = (node: HTMLElement, props: { enabled: boolean, prev: boolean, next: boolean }) => {
+export const swipe_nav = (
+	node: HTMLElement,
+	props: {
+		enabled: boolean,
+		prev: boolean,
+		next: boolean,
+		on_prev: () => void,
+		on_next: () => void,
+	},
+) => {
 	let start_x = 0
 	let start_y = 0
 	let render_offset = 0
@@ -43,10 +52,10 @@ export const swipe_nav = (node: HTMLElement, props: { enabled: boolean, prev: bo
 
 		if (render_offset > swipe_trigger_offset) {
 			set_offset(1000, true)
-			node.dispatchEvent(new CustomEvent("prev"))
+			props.on_prev()
 		} else if (render_offset < -swipe_trigger_offset) {
 			set_offset(-1000, true)
-			node.dispatchEvent(new CustomEvent("next"))
+			props.on_next()
 		} else {
 			set_offset(0, true)
 		}

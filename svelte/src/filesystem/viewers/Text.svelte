@@ -1,14 +1,15 @@
-<script>
+<script lang="ts">
 import { tick } from "svelte";
-import { fs_path_url } from "filesystem/FilesystemAPI.mjs";
+import { fs_path_url, type FSNode } from "filesystem/FilesystemAPI";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav
+export let nav: FSNavigator
 let text_type = "text"
 
 export const update = () => {
 	console.debug("Loading text file", nav.base.name)
 
-	if (nav.base.size > 1 << 21) { // File larger than 2 MiB
+	if (nav.base.file_size > 1 << 21) { // File larger than 2 MiB
 		text_pre.innerText = "File is too large to view online.\nPlease download and view it locally."
 		return
 	}
@@ -24,8 +25,8 @@ export const update = () => {
 	}
 }
 
-let text_pre
-const text = async file => {
+let text_pre: HTMLPreElement
+const text = async (file: FSNode) => {
 	text_type = "text"
 	await tick()
 
@@ -41,8 +42,8 @@ const text = async file => {
 	})
 }
 
-let md_container
-const markdown = async file => {
+let md_container: HTMLElement
+const markdown = async (file: FSNode) => {
 	text_type = "markdown"
 	await tick()
 

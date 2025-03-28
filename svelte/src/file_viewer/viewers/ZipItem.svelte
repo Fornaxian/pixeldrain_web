@@ -1,11 +1,8 @@
-<script>
-import { formatDataVolume } from "util/Formatting.svelte";
+<script lang="ts">
+import type { ZipEntry } from "filesystem/viewers/Zip.svelte";
+import { formatDataVolume } from "util/Formatting";
 
-export let item = {
-	download_url: "",
-	size: 0,
-	children: null,
-}
+export let item: ZipEntry = {} as ZipEntry
 </script>
 
 <!-- First get directories and render them as details collapsibles -->

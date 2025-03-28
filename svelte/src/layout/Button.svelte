@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export let highlight = false;
 export let highlight_on_click = false
 export let red = false;
@@ -11,12 +11,12 @@ export let label = ""
 export let title = null
 export let link_href = ""
 export let link_target = "_self"
-export let click = e => {}
+export let click: (e?: MouseEvent) => void = null
 export let style = null
 export let type = null
 export let form = null
 
-let click_int = e => {
+let click_int = (e: MouseEvent) => {
 	if (highlight_on_click) {
 		try {
 			click(e)
@@ -25,7 +25,7 @@ let click_int = e => {
 			red = true
 			throw err
 		}
-	} else {
+	} else if (click !== null) {
 		click(e)
 	}
 }
@@ -43,7 +43,7 @@ let click_int = e => {
 		style={style}
 		type={type}
 		form={form}
-		disabled={disabled ? "disabled":null}
+		disabled={disabled ? true:null}
 	>
 		{#if icon !== ""}
 			<i class="icon" class:small={icon_small}>{icon}</i>
@@ -63,7 +63,6 @@ let click_int = e => {
 		class:flat
 		title={title}
 		style={style}
-		disabled={disabled ? "disabled":null}
 	>
 		{#if icon !== ""}
 			<i class="icon" class:small={icon_small}>{icon}</i>

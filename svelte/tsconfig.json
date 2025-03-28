@@ -1,15 +1,14 @@
 {
 	"compilerOptions": {
 		"lib": [
-			"es2015",
+			"es2017",
 			"dom"
 		],
 		"baseUrl": "./src",
 		"verbatimModuleSyntax": true,
 		"target": "ES2017",
 		"noUnusedLocals": true,
-	},
-	"exclude": [
-		"./node_modules/**"
-	]
+		"module": "preserve",
+		"moduleResolution": "bundler",
+	}
 }

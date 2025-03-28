@@ -1,6 +1,6 @@
 <script lang="ts">
 import { createEventDispatcher } from "svelte"
-import { swipe_nav } from "lib/SwipeNavigate.mjs";
+import { swipe_nav } from "lib/SwipeNavigate";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => {
@@ -74,16 +74,19 @@ const on_load = () => dispatch("loading", false)
 	bind:this={container}
 	class="container"
 	class:zoom
-	use:swipe_nav={{enabled: !zoom && is_list, prev: true, next: true}}
-	on:prev
-	on:next
+	use:swipe_nav={{
+		enabled: !zoom && is_list,
+		prev: true,
+		next: true,
+		on_prev: () => dispatch("prev"),
+		on_next: () => dispatch("prev"),
+	}}
 >
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<img
 		on:load={on_load}
 		on:error={on_load}
 		on:dblclick={double_click}
-		on:doubletap={double_click}
 		on:mousedown={mousedown}
 		class="image"
 		class:zoom

@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume, formatDate, formatThousands } from "util/Formatting.svelte"
+import { formatDataVolume, formatDate, formatThousands } from "util/Formatting"
 import { color_by_name, domain_url } from "util/Util.svelte";
 import Chart from "util/Chart.svelte";
 

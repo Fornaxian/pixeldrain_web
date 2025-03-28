@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume } from "util/Formatting.svelte";
+import { formatDataVolume } from "util/Formatting";
 import Modal from "util/Modal.svelte";
 import Spinner from "util/Spinner.svelte";
 import UploadWidget from "util/upload_widget/UploadWidget.svelte";

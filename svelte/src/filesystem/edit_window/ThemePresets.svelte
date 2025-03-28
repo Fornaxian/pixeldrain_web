@@ -1,17 +1,15 @@
-<script>
-export let properties = {
-	brand_input_color: "",
-	brand_highlight_color: "",
-	brand_danger_color: "",
-	brand_background_color: "",
-	brand_body_color: "",
-	brand_card_color: ""
-}
+<script lang="ts">
+import type { FSNodeProperties } from "filesystem/FilesystemAPI";
+
+export let properties: FSNodeProperties = {} as FSNodeProperties
 
 let current_theme = -1
 
-const set_theme = index => {
+const set_theme = (index: number) => {
 	current_theme = index
+
+	// Copy all the properties of the theme to the file, except for the theme
+	// name
 	Object.keys(themes[index]).forEach(key => {
 		if (key !== "name") {
 			properties[key] = themes[index][key]

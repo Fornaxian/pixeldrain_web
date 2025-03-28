@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume, formatDate } from "util/Formatting.svelte";
+import { formatDataVolume, formatDate } from "util/Formatting";
 import Euro from "util/Euro.svelte"
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 

@@ -1,7 +1,8 @@
-<script>
-import { fs_path_url } from "filesystem/FilesystemAPI.mjs";
+<script lang="ts">
+import { fs_path_url } from "filesystem/FilesystemAPI";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav
+export let nav: FSNavigator
 </script>
 
 <iframe

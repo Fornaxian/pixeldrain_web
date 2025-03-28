@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
-import { fs_mkdir } from "filesystem/FilesystemAPI.mjs";
+import { fs_mkdir } from "filesystem/FilesystemAPI";
 import Button from "layout/Button.svelte";
+import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav;
+export let nav: FSNavigator
 
-let name_input;
+let name_input: HTMLInputElement;
 let new_dir_name = ""
 let error_msg = ""
 let create_dir = async () => {

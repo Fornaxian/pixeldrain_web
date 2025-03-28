@@ -24,18 +24,38 @@ export type FSNode = {
 	mode_octal: string,
 	created_by: string,
 
-	abuse_type: string | undefined,
-	abuse_report_time: string | undefined,
+	abuse_type?: string,
+	abuse_report_time?: string,
 
 	file_size: number,
 	file_type: string,
 	sha256_sum: string,
 
-	id: string | undefined,
-	properties: {} | undefined,
-	link_permissions: FSPermissions | undefined,
-	user_permissions: [string: FSPermissions] | undefined,
-	password_permissions: [string: FSPermissions] | undefined,
+	id?: string,
+	properties?: FSNodeProperties,
+	link_permissions?: FSPermissions,
+	user_permissions?: { [index: string]: FSPermissions },
+	password_permissions?: { [index: string]: FSPermissions },
+
+	// Added by us
+
+	// Indicates whether the file is selected in the file manager
+	fm_selected?: boolean,
+}
+
+export type FSNodeProperties = {
+	branding_enabled?: string,
+	brand_input_color?: string,
+	brand_highlight_color?: string,
+	brand_danger_color?: string,
+	brand_background_color?: string,
+	brand_body_color?: string,
+	brand_card_color?: string,
+	brand_header_image?: string,
+	brand_header_link?: string,
+	brand_footer_image?: string,
+	brand_footer_link?: string,
+	brand_background_image?: string,
 }
 
 export type FSPermissions = {
@@ -53,38 +73,26 @@ export type FSContext = {
 // ==============
 
 export type NodeOptions = {
-	mode: number | undefined,
-	created: string | undefined,
-	modified: string | undefined,
-	shared: boolean | undefined,
+	mode?: number,
+	created?: string,
+	modified?: string,
+	shared?: boolean,
 
 	// Permissions
-	link_permissions: FSPermissions | undefined,
-	user_permissions: FSPermissions | undefined,
-	password_permissions: FSPermissions | undefined,
-
-	// Branding
-	branding_enabled: boolean | undefined,
-	brand_input_color: string | undefined,
-	brand_highlight_color: string | undefined,
-	brand_danger_color: string | undefined,
-	brand_background_color: string | undefined,
-	brand_body_color: string | undefined,
-	brand_card_color: string | undefined,
-	brand_header_image: string | undefined,
-	brand_header_link: string | undefined,
-	brand_background_image: string | undefined,
-}
+	link_permissions?: FSPermissions,
+	user_permissions?: { [index: string]: FSPermissions },
+	password_permissions?: { [index: string]: FSPermissions },
+} & FSNodeProperties
 
 // API methods
 // ===========
 
 // mkdir only supports the "mode" option
-export const fs_mkdir = async (path: string, opts: NodeOptions) => {
+export const fs_mkdir = async (path: string, opts?: NodeOptions) => {
 	const form = new FormData()
 	form.append("action", "mkdir")
 
-	if (opts && opts.mode) {
+	if (opts !== undefined && opts.mode !== undefined) {
 		form.append("mode", opts.mode.toFixed(0))
 	}
 
@@ -169,7 +177,17 @@ export const fs_search = async (path: string, term: string, limit = 10) => {
 			"?search=" + encodeURIComponent(term) +
 			"&limit=" + limit
 		)
-	) as Array<string>
+	) as string[]
+}
+
+export type TimeSeries = {
+	timestamps: string[],
+	amounts: number[],
+}
+export type NodeTimeSeries = {
+	downloads: TimeSeries,
+	transfer_free: TimeSeries,
+	transfer_paid: TimeSeries,
 }
 
 export const fs_timeseries = async (path: string, start: Date, end: Date, interval = 60) => {
@@ -181,7 +199,7 @@ export const fs_timeseries = async (path: string, start: Date, end: Date, interv
 			"&end=" + end.toISOString() +
 			"&interval=" + interval
 		)
-	)
+	) as NodeTimeSeries
 }
 
 export const fs_import = async (parent_dir_path = "", filelist: Array<string>) => {
@@ -300,4 +318,36 @@ export const fs_node_icon = (node: FSNode, width = 64, height = 64) => {
 
 export const fs_thumbnail_url = (path: string, width = 64, height = 64) => {
 	return fs_path_url(path) + "?thumbnail&width=" + width + "&height=" + height
+}
+
+
+export const fs_share_url = (path: FSNode[]): string => {
+	let share_path = fs_share_path(path)
+	if (share_path !== "") {
+		share_path = window.location.protocol + "//" + window.location.host + "/d/" + fs_encode_path(share_path)
+	}
+	return share_path
+}
+
+export const fs_share_path = (path: FSNode[]): string => {
+	let share_url = ""
+	let bucket_idx = -1
+
+	// Find the last node in the path that has a public ID
+	for (let i = path.length - 1; i >= 0; i--) {
+		if (path[i].id !== undefined && path[i].id !== "me") {
+			bucket_idx = i
+			break
+		}
+	}
+	if (bucket_idx !== -1) {
+		share_url = path[bucket_idx].id
+
+		// Construct the path starting from the bucket
+		for (let i = bucket_idx + 1; i < path.length; i++) {
+			share_url += "/" + path[i].name
+		}
+	}
+
+	return share_url
 }

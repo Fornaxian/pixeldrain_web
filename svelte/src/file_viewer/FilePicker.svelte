@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher, tick } from "svelte";
-import { formatDataVolume } from "util/Formatting.svelte";
+import { formatDataVolume } from "util/Formatting";
 import DirectoryElement from "user_home/filemanager/DirectoryElement.svelte";
 import Modal from "util/Modal.svelte";
 let dispatch = createEventDispatcher()

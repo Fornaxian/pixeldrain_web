@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 import PixeldrainLogo from "util/PixeldrainLogo.svelte";
 import Button from "layout/Button.svelte";
 import Euro from "util/Euro.svelte";
-import { formatDataVolume } from "util/Formatting.svelte";
+import { formatDataVolume } from "util/Formatting";
+import { user } from "lib/UserStore";
 
-let button
-let dialog
+let button: HTMLButtonElement
+let dialog: HTMLDialogElement
 
 export let no_login_label = "Pixeldrain"
 
@@ -40,7 +41,7 @@ const open = () => {
 }
 
 // Close the dialog when the user clicks the background
-const click = e => {
+const click = (e: MouseEvent) => {
 	if (e.target === dialog) {
 		dialog.close()
 	}
@@ -53,7 +54,7 @@ const click = e => {
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em;"/>
 		{/if}
 		<span class="button_username" class:hide_name>
-			{window.user.username === "" ? no_login_label : window.user.username}
+			{$user.username === "" ? no_login_label : $user.username}
 		</span>
 	</button>
 </div>
@@ -62,28 +63,28 @@ const click = e => {
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <dialog bind:this={dialog} on:click={click}>
 	<div class="menu">
-		{#if window.user.username !== ""}
+		{#if $user.username !== undefined && $user.username !== ""}
 
 			<Button link_href="/user" link_target={target} icon="dashboard" label="Dashboard" />
 			<div class="separator"></div>
 
 			<div class="stats_table">
 				<div>Subscription</div>
-				<div>{window.user.subscription.name}</div>
+				<div>{$user.subscription.name}</div>
 
-				{#if window.user.subscription.type === "prepaid"}
+				{#if $user.subscription.type === "prepaid"}
 					<div>Credit</div>
-					<div><Euro amount={window.user.balance_micro_eur}/></div>
+					<div><Euro amount={$user.balance_micro_eur}/></div>
 				{/if}
 
 				<div>Storage used</div>
-				<div>{formatDataVolume(window.user.filesystem_storage_used, 3)}</div>
+				<div>{formatDataVolume($user.filesystem_storage_used, 3)}</div>
 				<div>Transfer used</div>
-				<div>{formatDataVolume(window.user.monthly_transfer_used, 3)}</div>
+				<div>{formatDataVolume($user.monthly_transfer_used, 3)}</div>
 			</div>
 			<div class="separator"></div>
 
-			{#if window.user.subscription.filesystem_access}
+			{#if $user.subscription.filesystem_access}
 				<Button link_href="/d/me" link_target={target} icon="folder" label="My Filesystem"/>
 			{:else}
 				<Button link_href="/#pro" link_target={target} icon="star" label="Get Premium"/>
@@ -102,7 +103,7 @@ const click = e => {
 			<Button link_href="/user/subscription" link_target={target} icon="shopping_cart" label="Subscription"/>
 			<Button link_href="/user/prepaid/transactions" link_target={target} icon="receipt" label="Transactions"/>
 
-			{#if window.user.is_admin}
+			{#if $user.is_admin}
 				<div class="separator"></div>
 				<Button link_href="/admin" link_target={target} icon="admin_panel_settings" label="Admin Panel"/>
 			{/if}

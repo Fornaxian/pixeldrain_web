@@ -9,7 +9,7 @@
 //
 // on_error is called when the upload has failed. The parameters are the error
 
-import { fs_path_url, type GenericResponse } from "filesystem/FilesystemAPI.mjs"
+import { fs_path_url, type GenericResponse } from "filesystem/FilesystemAPI"
 
 // code and an error message
 export const upload_file = (

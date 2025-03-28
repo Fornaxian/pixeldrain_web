@@ -3,7 +3,7 @@ import { createEventDispatcher } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
 import IconBlock from "layout/IconBlock.svelte";
 import FileTitle from "layout/FileTitle.svelte";
-import { formatDataVolume } from "util/Formatting.svelte";
+import { formatDataVolume } from "util/Formatting";
 let dispatch = createEventDispatcher()
 
 export const set_file = f => file = f

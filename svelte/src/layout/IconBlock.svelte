@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export let icon_href = ""
 export let width = "750px"
 </script>

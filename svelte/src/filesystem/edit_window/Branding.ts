@@ -1,4 +1,4 @@
-import parse from "pure-color/parse"
+import parse from "pure-color/parse";
 import rgb2hsl from "pure-color/convert/rgb2hsl";
 import hsl2rgb from "pure-color/convert/hsl2rgb";
 import rgb2hex from "pure-color/convert/rgb2hex";

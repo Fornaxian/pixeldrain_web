@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import EditWindow from "./edit_window/EditWindow.svelte";
@@ -7,21 +7,21 @@ import Breadcrumbs from "./Breadcrumbs.svelte";
 import DetailsWindow from "./DetailsWindow.svelte";
 import FilePreview from "./viewers/FilePreview.svelte";
 import FSUploadWidget from "./upload_widget/FSUploadWidget.svelte";
-import { fs_path_url } from "./FilesystemAPI.mjs";
+import { fs_path_url, type FSPath } from "./FilesystemAPI";
 import Menu from "./Menu.svelte";
 import { FSNavigator } from "./FSNavigator"
 import { writable } from "svelte/store";
 import TransferLimit from "file_viewer/TransferLimit.svelte";
-import { stats } from "lib/StatsSocket.mjs"
-import { css_from_path } from "filesystem/edit_window/Branding.js";
+import { stats } from "lib/StatsSocket"
+import { css_from_path } from "filesystem/edit_window/Branding";
 import AffiliatePrompt from "user_home/AffiliatePrompt.svelte";
 
-let file_viewer
-let file_preview
-let toolbar
-let upload_widget
+let file_viewer: HTMLDivElement
+let file_preview: FilePreview
+let toolbar: Toolbar
+let upload_widget: FSUploadWidget
 let details_visible = false
-let edit_window
+let edit_window: EditWindow
 let edit_visible = false
 
 const loading = writable(true)
@@ -29,7 +29,7 @@ const nav = new FSNavigator(true)
 
 onMount(() => {
 	nav.loading = loading
-	nav.open_node(window.initial_node, false)
+	nav.open_node((window as any).initial_node as FSPath, false)
 
 	// Subscribe to navigation updates. This function returns a deconstructor
 	// which we can conveniently return from our mount function as well
@@ -45,10 +45,10 @@ onMount(() => {
 	})
 })
 
-const keydown = e => {
+const keydown = (e: KeyboardEvent) => {
 	if (e.ctrlKey || e.altKey || e.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
-	} else if (document.activeElement.type && document.activeElement.type === "text") {
+	} else if ((document.activeElement as any).type !== undefined && (document.activeElement as any).type === "text") {
 		return // Prevent shortcuts from interfering with input fields
 	}
 
@@ -127,7 +127,7 @@ const keydown = e => {
 };
 
 const download = () => {
-	let a = document.createElement("a")
+	const a = document.createElement("a")
 
 	if (nav.base.type === "file") {
 		a.href = fs_path_url(nav.base.path) + "?attach"

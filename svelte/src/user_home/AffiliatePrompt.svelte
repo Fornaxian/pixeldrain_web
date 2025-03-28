@@ -2,7 +2,7 @@
 import { onMount } from "svelte";
 import Modal from "util/Modal.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
-import { get_user, put_user } from "lib/PixeldrainAPI.mjs";
+import { get_user, put_user } from "lib/PixeldrainAPI";
 
 // When the always flag is set then the pop-up will also show if the user
 // already has an affiliate ID set

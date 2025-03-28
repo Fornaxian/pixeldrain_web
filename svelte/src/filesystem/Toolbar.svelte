@@ -1,19 +1,22 @@
-<script>
+<script lang="ts">
 import { createEventDispatcher } from "svelte";
-import { generate_share_url } from "./Sharebar.svelte";
 import { copy_text } from "util/Util.svelte";
 import FileStats from "./FileStats.svelte";
+import type { FSNavigator } from "./FSNavigator";
+import EditWindow from "./edit_window/EditWindow.svelte";
+import FilePreview from "./viewers/FilePreview.svelte";
+import { fs_share_url } from "./FilesystemAPI";
 
 let dispatch = createEventDispatcher()
 
-export let nav
+export let nav: FSNavigator
 export let details_visible = false
-export let edit_window
+export let edit_window: EditWindow
 export let edit_visible = false
-export let file_viewer
-export let file_preview
+export let file_viewer: HTMLDivElement
+export let file_preview: FilePreview
 
-$: share_url = generate_share_url($nav.path)
+$: share_url = fs_share_url($nav.path)
 let link_copied = false
 export const copy_link = () => {
 	if (share_url === "") {
@@ -60,7 +63,7 @@ export const toggle_fullscreen = () => {
 }
 
 let expanded = true
-let expand = e => {
+let expand = (e: Event) => {
 	e.preventDefault()
 	e.stopPropagation()
 	expanded = !expanded

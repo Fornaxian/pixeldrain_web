@@ -1,16 +1,17 @@
-<script>
+<script lang="ts">
 import { onMount, createEventDispatcher, tick } from "svelte";
-import { video_position } from "lib/VideoPosition.mjs";
-import { fs_path_url } from "filesystem/FilesystemAPI.mjs";
+import { video_position } from "lib/VideoPosition";
+import { fs_path_url } from "filesystem/FilesystemAPI";
+import type { FSNavigator } from "filesystem/FSNavigator";
 let dispatch = createEventDispatcher()
 
-export let nav
+export let nav: FSNavigator
 
 // Used to detect when the file path changes
 let last_path = ""
 let loaded = false
 
-let player
+let player: HTMLVideoElement
 let playing = false
 let media_session = false
 let loop = false
@@ -64,13 +65,13 @@ onMount(() => {
 		media_session = true
 		navigator.mediaSession.setActionHandler('play', () => player.play());
 		navigator.mediaSession.setActionHandler('pause', () => player.pause());
-		navigator.mediaSession.setActionHandler('stop', () => player.stop());
+		navigator.mediaSession.setActionHandler('stop', () => player.pause());
 		navigator.mediaSession.setActionHandler('previoustrack', () => dispatch("open_sibling", -1));
 		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("open_sibling", 1));
 	}
 })
 
-const video_keydown = e => {
+const video_keydown = (e: KeyboardEvent) => {
 	if (e.key === " ") {
 		// Prevent spacebar from pausing playback in Chromium. This conflicts
 		// with our own global key handler, causing the video to immediately
@@ -78,7 +79,6 @@ const video_keydown = e => {
 		e.stopPropagation()
 	}
 }
-
 </script>
 
 <div class="container">
