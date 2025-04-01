@@ -1,10 +1,24 @@
-<script>
+<script lang="ts">
 import { onMount, tick } from "svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import EmailReportersTable from "./EmailReportersTable.svelte";
+import { get_endpoint } from "lib/PixeldrainAPI";
+
+type Reporter = {
+	from_address: string,
+	name: string,
+	status: string,
+	created: string,
+	reports_sent: number,
+	files_blocked: number,
+	last_used: string,
+	last_message_subject: string,
+	last_message_text: string,
+	last_message_html: string,
+}
 
 let loading = true
-let reporters = []
+let reporters: Reporter[] = []
 $: reporters_pending = reporters.reduce((acc, val) => {
 	if (val.status === "pending") {
 		acc.push(val)
@@ -27,11 +41,11 @@ $: reporters_rejected = reporters.reduce((acc, val) => {
 const get_reporters = async () => {
 	loading = true;
 	try {
-		const resp = await fetch(window.api_endpoint+"/admin/abuse_reporter");
+		const resp = await fetch(get_endpoint()+"/admin/abuse_reporter");
 		if(resp.status >= 400) {
 			throw new Error(await resp.text());
 		}
-		reporters = await resp.json();
+		reporters = await resp.json() as Reporter[];
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -39,10 +53,10 @@ const get_reporters = async () => {
 	}
 };
 
-let edit_button
+let edit_button: HTMLButtonElement
 let creating = false
-let new_reporter_from_address
-let new_reporter_name
+let new_reporter_from_address: HTMLInputElement
+let new_reporter_name: HTMLInputElement
 let new_reporter_status = "trusted"
 
 const create_reporter = async () => {
@@ -66,10 +80,10 @@ const create_reporter = async () => {
 	creating = false
 }
 
-const approve_reporter = reporter => save_reporter(reporter.from_address, reporter.name, "trusted")
-const spam_reporter = reporter => save_reporter(reporter.from_address, reporter.name, "rejected")
+const approve_reporter = (reporter: Reporter) => save_reporter(reporter.from_address, reporter.name, "trusted")
+const spam_reporter = (reporter: Reporter) => save_reporter(reporter.from_address, reporter.name, "rejected")
 
-const save_reporter = async (from, name, status) => {
+const save_reporter = async (from: string, name: string, status: string) => {
 	try {
 		const form = new FormData()
 		form.append("from_address", from)
@@ -77,7 +91,7 @@ const save_reporter = async (from, name, status) => {
 		form.append("status", status)
 
 		const resp = await fetch(
-			window.api_endpoint+"/admin/abuse_reporter",
+			get_endpoint()+"/admin/abuse_reporter",
 			{ method: "POST", body: form }
 		);
 		if(resp.status >= 400) {
@@ -89,7 +103,7 @@ const save_reporter = async (from, name, status) => {
 	await get_reporters();
 }
 
-const edit_reporter = async reporter => {
+const edit_reporter = async (reporter: Reporter) => {
 	edit_button.scrollIntoView()
 	creating = true
 	await tick()
@@ -98,7 +112,7 @@ const edit_reporter = async reporter => {
 	new_reporter_status = reporter.status
 }
 
-const delete_reporter = async reporter => {
+const delete_reporter = async (reporter: Reporter) => {
 	const index = reporters.indexOf(reporter)
 	if (index > -1) {
 		reporters.splice(index, 1)
@@ -107,7 +121,7 @@ const delete_reporter = async reporter => {
 
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/admin/abuse_reporter/"+encodeURI(reporter.from_address),
+			get_endpoint()+"/admin/abuse_reporter/"+encodeURI(reporter.from_address),
 			{ method: "DELETE" }
 		);
 		if(resp.status >= 400) {
@@ -160,7 +174,7 @@ onMount(get_reporters);
 	{/if}
 </section>
 
-<h2>Pending reporters</h2>
+<h2>Pending reporters ({reporters_pending.length})</h2>
 <EmailReportersTable
 	reporters={reporters_pending}
 	on:edit={e => edit_reporter(e.detail)}
@@ -170,7 +184,7 @@ onMount(get_reporters);
 </EmailReportersTable>
 
 
-<h2>Trusted reporters</h2>
+<h2>Trusted reporters ({reporters_trusted.length})</h2>
 <EmailReportersTable
 	reporters={reporters_trusted}
 	on:edit={e => edit_reporter(e.detail)}
@@ -179,7 +193,7 @@ onMount(get_reporters);
 	on:delete={e => delete_reporter(e.detail)}>
 </EmailReportersTable>
 
-<h2>Rejected reporters</h2>
+<h2>Rejected reporters ({reporters_rejected.length})</h2>
 <EmailReportersTable
 	reporters={reporters_rejected}
 	on:edit={e => edit_reporter(e.detail)}
