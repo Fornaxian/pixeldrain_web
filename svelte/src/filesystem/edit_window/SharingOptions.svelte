@@ -65,13 +65,6 @@ const update_shared = () => {
 		</div>
 	{/if}
 
-	<p>
-		When a file or directory is shared it can be accessed through a
-		unique link. You can get the URL with the 'Copy link' button on
-		the toolbar, or share the link with the 'Share' button. If you
-		share a directory all the files within the directory are also
-		accessible from the link.
-	</p>
 	<div>
 		<input
 			form="edit_form"
@@ -83,13 +76,21 @@ const update_shared = () => {
 		/>
 		<label for="shared">Share this file or directory</label>
 	</div>
-
 	<div class="form_grid">
 		{#if is_shared}
-			<span>Your sharing link: <a href={share_link}>{share_link}</a></span>
+			<span>Public link: <a href={share_link}>{share_link}</a></span>
 			<CopyButton text={share_link}>Copy</CopyButton>
 		{/if}
 	</div>
+
+	<p>
+		When a file or directory is shared it can be accessed through a
+		unique link. You can get the URL with the 'Copy link' button on
+		the toolbar, or share the link with the 'Share' button. If you
+		share a directory all the files within the directory are also
+		accessible from the link.
+	</p>
+
 </fieldset>
 
 <fieldset>

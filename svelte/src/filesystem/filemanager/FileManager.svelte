@@ -66,7 +66,7 @@ let node_context = (e: CustomEvent<FMNodeEvent>) => {
 }
 const node_share_click = (e: CustomEvent<FMNodeEvent>) => {
 	creating_dir = false
-	nav.navigate(nav.children[e.detail.index].id, true)
+	edit_window.edit(nav.children[e.detail.index], false, "share")
 }
 const node_select = (e: CustomEvent<FMNodeEvent>) => {
 	const index = e.detail.index

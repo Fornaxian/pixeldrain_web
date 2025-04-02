@@ -39,7 +39,7 @@ export class FSNavigator {
 	// If you set the loading property to a boolean writable store the navigator
 	// will use it to publish its loading states
 	loading: Writable<boolean> | null = null
-	set_loading(b: boolean) {
+	set_loading = (b: boolean) => {
 		if (this.loading !== null) {
 			this.loading.set(b)
 		}
@@ -49,7 +49,7 @@ export class FSNavigator {
 	// This works by implementing the store contract:
 	// https://svelte.dev/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values
 	subscribers: Array<(nav: FSNavigator) => void> = []
-	subscribe(sub_func: (nav: FSNavigator) => void) {
+	subscribe = (sub_func: (nav: FSNavigator) => void) => {
 		// Immediately return the current value
 		sub_func(this)
 
@@ -58,8 +58,13 @@ export class FSNavigator {
 		// Return the unsubscribe function
 		return () => this.subscribers.splice(this.subscribers.indexOf(sub_func), 1)
 	}
+	notify_subscribers = () => {
+		for (let i = 0; i < this.subscribers.length; i++) {
+			this.subscribers[i](this)
+		}
+	}
 
-	async navigate(path: string, push_history: boolean) {
+	navigate = async (path: string, push_history: boolean) => {
 		if (path[0] !== "/") {
 			path = "/" + path
 		}
@@ -88,17 +93,17 @@ export class FSNavigator {
 		}
 	}
 
-	async navigate_up() {
+	navigate_up = async () => {
 		if (this.path.length > 1) {
 			await this.navigate(this.path[this.path.length - 2].path, false)
 		}
 	}
 
-	async reload() {
+	reload = async () => {
 		await this.navigate(this.base.path, false)
 	}
 
-	open_node(node: FSPath, push_history: boolean) {
+	open_node = (node: FSPath, push_history: boolean) => {
 		// Update window title and navigation history. If push_history is false
 		// we still replace the URL with replaceState. This way the user is not
 		// greeted to a 404 page when refreshing after renaming a file
@@ -122,7 +127,7 @@ export class FSNavigator {
 		}
 
 		// Sort directory children
-		sort_children(node.children)
+		sort_children(node.children, this.sort_last_field, this.sort_asc)
 
 		// Update shared state
 		this.path = node.path
@@ -137,9 +142,7 @@ export class FSNavigator {
 
 		// Signal to our subscribers that the new node is loaded. This triggers
 		// the reactivity
-		for (let i = 0; i < this.subscribers.length; i++) {
-			this.subscribers[i](this)
-		}
+		this.notify_subscribers()
 	}
 
 	// These are used to navigate forward and backward within a directory (using
@@ -151,7 +154,7 @@ export class FSNavigator {
 	cached_siblings_path = ""
 	cached_siblings: Array<FSNode> | null = null
 
-	async get_siblings() {
+	get_siblings = async () => {
 		// If this node is a filesystem root then there are no siblings
 		if (this.path.length < 2) {
 			return []
@@ -166,7 +169,7 @@ export class FSNavigator {
 			const resp = await fs_get_node(this.path[this.path.length - 2].path)
 
 			// Sort directory children to make sure the order is consistent
-			sort_children(resp.children)
+			sort_children(resp.children, this.sort_last_field, this.sort_asc)
 
 			// Save new siblings in navigator state
 			this.cached_siblings_path = this.path[this.path.length - 2].path
@@ -179,7 +182,7 @@ export class FSNavigator {
 	// Opens a sibling of the currently open file. The offset is relative to the
 	// file which is currently open. Give a positive number to move forward and
 	// a negative number to move backward
-	async open_sibling(offset: number) {
+	open_sibling = async (offset: number) => {
 		if (this.path.length <= 1) {
 			return
 		}
@@ -233,14 +236,51 @@ export class FSNavigator {
 			console.debug("No siblings found")
 		}
 	}
+
+	sort_last_field: string = "name"
+	sort_asc: boolean = true
+	sort_children = (field: string) => {
+		// If the field is the same as last time we invert the direction
+		if (field !== "" && field === this.sort_last_field) {
+			this.sort_asc = !this.sort_asc
+		}
+		// If the field is empty we reuse the last field
+		if (field === "") {
+			field = this.sort_last_field
+		}
+		this.sort_last_field = field
+
+		sort_children(this.children, field, this.sort_asc)
+
+		// Signal to our subscribers that the order has changed. This triggers
+		// the reactivity
+		this.notify_subscribers()
+	}
 }
 
-const sort_children = (children: Array<FSNode>) => {
+const sort_children = (children: FSNode[], field: string, asc: boolean) => {
+	console.log("Sorting directory children by", field, "asc", asc)
 	children.sort((a, b) => {
 		// Sort directories before files
 		if (a.type !== b.type) {
 			return a.type === "dir" ? -1 : 1
 		}
-		return a.name.localeCompare(b.name, undefined, { numeric: true })
+
+		// If sort is descending we swap the arguments
+		if (asc === false) {
+			[a, b] = [b, a]
+		}
+
+		// If the two values are equal then we force sort by name, since names
+		// are always unique
+		if (a[field] === b[field]) {
+			return a.name.localeCompare(b.name, undefined, { numeric: true })
+		} else if (typeof (a[field]) === "number") {
+			// Sort ints from high to low
+			return a[field] - b[field]
+		} else {
+			// Sort strings alphabetically
+			return a[field].localeCompare(b[field], undefined, { numeric: true })
+		}
 	})
 }

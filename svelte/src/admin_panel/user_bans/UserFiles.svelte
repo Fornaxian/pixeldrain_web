@@ -2,7 +2,7 @@
 import { onMount } from "svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import { formatDataVolume, formatDate } from "util/Formatting";
-import SortButton from "admin_panel/SortButton.svelte";
+import SortButton from "layout/SortButton.svelte";
 
 export let user_id = ""
 let files = []

@@ -9,7 +9,7 @@ import SuccessMessage from "util/SuccessMessage.svelte";
 let loading = false
 let success_message
 let hotlinking = window.user.hotlinking_enabled
-let transfer_cap = window.user.monthly_transfer_cap / 1e9
+let transfer_cap = window.user.monthly_transfer_cap / 1e12
 let skip_viewer = window.user.skip_file_viewer
 
 const update = async () => {
@@ -17,7 +17,7 @@ const update = async () => {
 
 	const form = new FormData()
 	form.append("hotlinking_enabled", hotlinking)
-	form.append("transfer_cap", transfer_cap*1e9)
+	form.append("transfer_cap", transfer_cap*1e12)
 	form.append("skip_file_viewer", skip_viewer)
 
 	try {
@@ -31,7 +31,7 @@ const update = async () => {
 		}
 
 		window.user.hotlinking_enabled = hotlinking
-		window.user.monthly_transfer_cap = transfer_cap*1e9
+		window.user.monthly_transfer_cap = transfer_cap*1e12
 
 		success_message.set(true, "Sharing settings updated")
 	} catch (err) {
@@ -102,11 +102,12 @@ onMount(() => {
 
 	<h2><Pro/>Bill shock limit</h2>
 	<p>
-		Billshock limit in gigabytes per month (1 TB = 1000 GB). Set to 0 to disable.
+		Billshock limit in terabytes per month (1 TB = 1000 GB). Set to 0 to
+		disable.
 	</p>
 	<form on:submit|preventDefault={update} class="billshock_container">
-		<input type="number" bind:value={transfer_cap} step="100" min="0"/>
-		<div style="margin: 0.5em;">GB</div>
+		<input type="number" bind:value={transfer_cap} step="0.1" min="0" style="width: 5em;"/>
+		<div style="margin: 0.5em;">TB</div>
 		<button type="submit">
 			<i class="icon">save</i> Save
 		</button>
@@ -114,9 +115,9 @@ onMount(() => {
 
 	<p>
 		Bandwidth used in the last 30 days: {formatDataVolume(transfer_used, 3)},
-		new limit: {formatDataVolume(transfer_cap*1e9, 3)}
+		new limit: {formatDataVolume(transfer_cap*1e12, 3)}
 	</p>
-	<ProgressBar used={transfer_used} total={transfer_cap*1e9}></ProgressBar>
+	<ProgressBar used={transfer_used} total={transfer_cap*1e12}></ProgressBar>
 	<p>
 		The billshock limit limits how much bandwidth your account can use in a
 		30 day window. When this limit is reached hotlinking will be disabled

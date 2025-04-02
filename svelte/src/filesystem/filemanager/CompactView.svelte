@@ -8,6 +8,7 @@ let dispatch = createEventDispatcher()
 export let nav: FSNavigator
 export let show_hidden = false
 export let large_icons = false
+export let hide_edit = false
 </script>
 
 <div class="directory">
@@ -28,10 +29,16 @@ export let large_icons = false
 				<a
 					href="/d/{child.id}"
 					on:click|preventDefault|stopPropagation={e => {dispatch("node_share_click", {index: index, original: e})}}
-					class="button action_button"
+					class="button flat action_button"
 				>
 					<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 				</a>
+			{/if}
+
+			{#if $nav.permissions.write && !hide_edit}
+				<button class="action_button flat" on:click|preventDefault|stopPropagation={e => dispatch("node_settings", {index: index, original: e})}>
+					<i class="icon">edit</i>
+				</button>
 			{/if}
 		</a>
 	{/each}
@@ -42,7 +49,7 @@ export let large_icons = false
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
 	gap: 8px;
-	margin: 8px;
+	padding: 8px;
 	max-width: 100%;
 	overflow: hidden;
 }
@@ -55,6 +62,7 @@ export let large_icons = false
 	align-items: center;
 	background: var(--input_background);
 	border-radius: 4px;
+	box-shadow: 1px 1px 8px 0px var(--shadow_color);
 	gap: 6px;
 }
 .node:hover:not(.node_selected) {
@@ -82,6 +90,12 @@ export let large_icons = false
 }
 .hidden {
 	display: none;
+}
+.flat {
+	background: none;
+	color: var(--body_text_color);
+	box-shadow: none;
+	margin: 0;
 }
 
 /* Large icon mode only supported on wide screens */

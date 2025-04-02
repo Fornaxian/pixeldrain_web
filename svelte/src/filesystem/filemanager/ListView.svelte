@@ -3,6 +3,8 @@ import { createEventDispatcher } from "svelte";
 import { formatDataVolume } from "util/Formatting";
 import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI"
 import type { FSNavigator } from "filesystem/FSNavigator";
+import SortButton from "layout/SortButton.svelte";
+import { flip } from "svelte/animate";
 
 let dispatch = createEventDispatcher()
 
@@ -16,8 +18,8 @@ export let hide_branding = false
 <div class="directory">
 	<tr>
 		<td></td>
-		<td>Name</td>
-		<td class="hide_small">Size</td>
+		<td><SortButton active_field={$nav.sort_last_field} asc={$nav.sort_asc} sort_func={nav.sort_children} field="name">Name</SortButton></td>
+		<td><SortButton active_field={$nav.sort_last_field} asc={$nav.sort_asc} sort_func={nav.sort_children} field="file_size">Size</SortButton></td>
 		<td></td>
 	</tr>
 	{#each $nav.children as child, index (child.path)}
@@ -25,6 +27,7 @@ export let hide_branding = false
 			href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={e => dispatch("node_click", {index: index, original: e})}
 			on:contextmenu={e => dispatch("node_context", {index: index, original: e})}
+			animate:flip={{duration: 500}}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
@@ -53,7 +56,7 @@ export let hide_branding = false
 							<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 						</a>
 					{/if}
-					{#if child.properties !== undefined && child.properties.branding_enabled !== undefined && !hide_branding}
+					{#if child.properties !== undefined && child.properties.branding_enabled === "true" && !hide_branding}
 						<button class="action_button" on:click|preventDefault|stopPropagation={e => dispatch("node_branding", {index: index, original: e})}>
 							<i class="icon">palette</i>
 						</button>
@@ -78,7 +81,7 @@ export let hide_branding = false
 	border-radius: 8px;
 
 	max-width: 99%;
-	width: 1000px;
+	width: 1200px;
 }
 .directory > * {
 	display: table-row;
@@ -120,7 +123,7 @@ td {
 	word-break: break-all;
 }
 .node_size {
-	min-width: 50px;
+	min-width: 5em;
 	white-space: nowrap;
 }
 .icons_wrap {

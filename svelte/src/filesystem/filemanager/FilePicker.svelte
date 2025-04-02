@@ -189,6 +189,7 @@ onMount(() => {
 			nav={nav}
 			show_hidden={show_hidden}
 			large_icons={large_icons}
+			hide_edit
 			on:node_click={node_click}
 			on:node_context={node_context}
 			on:node_select={node_select}
