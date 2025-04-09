@@ -4,7 +4,6 @@ import { formatDataVolume } from "util/Formatting";
 import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI"
 import type { FSNavigator } from "filesystem/FSNavigator";
 import SortButton from "layout/SortButton.svelte";
-import { flip } from "svelte/animate";
 
 let dispatch = createEventDispatcher()
 
@@ -27,7 +26,6 @@ export let hide_branding = false
 			href={"/d"+fs_encode_path(child.path)}
 			on:click|preventDefault={e => dispatch("node_click", {index: index, original: e})}
 			on:contextmenu={e => dispatch("node_context", {index: index, original: e})}
-			animate:flip={{duration: 500}}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
