@@ -1,0 +1,25 @@
+{{ define "status" }}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "Server status"}}
+	</head>
+
+	<body>
+		{{template "page_top" .}}
+		<div id="page_content" class="page_content">
+			<script type="text/javascript" src="https://static.hetrix.io/iframeResizer/iframeResizer.min.js"></script>
+			<iframe
+				class="htframe"
+				src="https://wl.hetrixtools.com/r/3e1b7bf5ddf9858527cbf209d3d9ef60/"
+				width="100%"
+				scrolling="no"
+				style="border: none; display: block;"
+				sandbox="allow-scripts allow-same-origin allow-popups"
+				onload="iFrameResize([{log:false}],'.htframe')"
+			></iframe>
+		</div>
+		{{template "page_bottom" .}}
+		{{template "analytics"}}
+	</body>
+</html>
+{{ end }}

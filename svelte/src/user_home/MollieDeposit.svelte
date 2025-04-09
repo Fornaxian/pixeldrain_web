@@ -1,61 +1,73 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import Euro from "util/Euro.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
+import { countries } from "country-data-list";
+import { get_endpoint, get_misc_vat_rate } from "lib/PixeldrainAPI";
 
 let loading = false
 let amount = 20
-let country = null
+let country: typeof countries.all[0] = null
+let country_input = ""
+let vat = 0
 
-$: credit_micro = amount*1e6
-$: vat_micro = country === null ? 0 : (amount*1e6)*(country.vat/100)
-
-let countries = [
-	{name: "Austria", flag: "🇦🇹", vat: 20},
-	{name: "Belgium", flag: "🇧🇪", vat: 21},
-	{name: "Bulgaria", flag: "🇧🇬", vat: 20},
-	{name: "Croatia", flag: "🇭🇷", vat: 25},
-	{name: "Cyprus", flag: "🇨🇾", vat: 19},
-	{name: "Czechia", flag: "🇨🇿", vat: 21},
-	{name: "Denmark", flag: "🇩🇰", vat: 25},
-	{name: "Estonia", flag: "🇪🇪", vat: 20},
-	{name: "Finland", flag: "🇫🇮", vat: 24},
-	{name: "France", flag: "🇫🇷", vat: 20},
-	{name: "Germany", flag: "🇩🇪", vat: 19},
-	{name: "Greece", flag: "🇬🇷", vat: 24},
-	{name: "Hungary", flag: "🇭🇺", vat: 27},
-	{name: "Ireland", flag: "🇮🇪", vat: 23},
-	{name: "Italy", flag: "🇮🇹", vat: 22},
-	{name: "Latvia", flag: "🇱🇻", vat: 21},
-	{name: "Lithuania", flag: "🇱🇹", vat: 21},
-	{name: "Luxembourg", flag: "🇱🇺", vat: 16},
-	{name: "Malta", flag: "🇲🇹", vat: 18},
-	{name: "Netherlands", flag: "🇳🇱", vat: 21},
-	{name: "Poland", flag: "🇵🇱", vat: 23},
-	{name: "Portugal", flag: "🇵🇹", vat: 23},
-	{name: "Romania", flag: "🇷🇴", vat: 19},
-	{name: "Slovakia", flag: "🇸🇰", vat: 20},
-	{name: "Slovenia", flag: "🇸🇮", vat: 22},
-	{name: "Spain", flag: "🇪🇸", vat: 21},
-	{name: "Sweden", flag: "🇸🇪", vat: 25},
-	{name: "Other", flag: "🌐", vat: 0},
-]
-
-let amounts = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
-
-const set_country = (c) => {
-	country = c
-	window.localStorage.setItem("checkout_country", c.name)
-}
+const amounts = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
 
 onMount(() => {
-	const country_name = window.localStorage.getItem("checkout_country")
-	for (let i = 0; i < countries.length; i++) {
-		if (countries[i].name === country_name) {
-			country = countries[i]
-		}
+	const checkout_country = window.localStorage.getItem("checkout_country")
+	if (countries[checkout_country] !== undefined) {
+		country_input = checkout_country
+		set_country()
 	}
 })
+
+const payment_providers = [
+	{icon: "paypal", name: "PayPal"},
+	{icon: "creditcard", name: "Credit/debit"},
+	{icon: "apple_pay", name: "Apple Pay"},
+	{icon: "google_pay", name: "Google Pay"},
+	{icon: "bancomat", name: "Bancomat"},
+	{icon: "bancontact", name: "Bancontact"},
+	{icon: "belfius", name: "Belfius"},
+	{icon: "blik", name: "Blik"},
+	{icon: "eps", name: "EPS"},
+	{icon: "ideal", name: "iDEAL"},
+	{icon: "ideal_in3", name: "iDeal in3"},
+	{icon: "kbc", name: "KBC"},
+	{icon: "mb_way", name: "MB Way"},
+	{icon: "multibanco", name: "Multibanco"},
+	{icon: "p24", name: "Przelewy24"},
+	{icon: "riverty", name: "Riverty"},
+	{icon: "satispay", name: "Satispay"},
+	{icon: "sepa", name: "SEPA Transfer"},
+	{icon: "twint", name: "Twint"},
+]
+
+const set_country = async (e?: Event) => {
+	loading = true
+	if (e !== undefined) {
+		e.preventDefault()
+	}
+
+	if (countries[country_input] === undefined) {
+		alert("Please enter a valid country code")
+		return
+	}
+	const c = countries[country_input]
+
+	// Cache the value for next checkout
+	window.localStorage.setItem("checkout_country", c.alpha3)
+
+	try {
+		const vat_rate = await get_misc_vat_rate(c.alpha3)
+		vat = vat_rate.vat*100
+		country = c
+	} catch (err) {
+		alert(err)
+	} finally {
+		loading = false
+	}
+}
 
 const checkout = async () => {
 	loading = true
@@ -66,13 +78,13 @@ const checkout = async () => {
 	}
 
 	const form = new FormData()
-	form.set("amount", amount*1e6)
+	form.set("amount", String(amount*1e6))
 	form.set("network", "mollie")
-	form.set("country", country.name)
+	form.set("country", country.alpha2)
 
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/user/invoice",
+			get_endpoint()+"/user/invoice",
 			{method: "POST", body: form},
 		)
 		if(resp.status >= 400) {
@@ -87,6 +99,19 @@ const checkout = async () => {
 		loading = false
 	}
 }
+
+const format_country = (c: typeof countries.all[0]) => {
+	let str = ""
+	if (c.emoji !== undefined) {
+		str += c.emoji + " "
+	} else {
+		str += "🌐 "
+	}
+	str += c.name+" "
+	str += "("+c.alpha2+", "
+	str += c.alpha3+")"
+	return str
+}
 </script>
 
 <div class="highlight_border">
@@ -97,62 +122,43 @@ const checkout = async () => {
 		<div>
 			Please pick your country of residence
 		</div>
-		<div class="countries">
-			{#each countries as c}
-				<button on:click={() => set_country(c)}>
-					<span class="icon_unicode">{c.flag}</span>
-					<span>{c.name}</span>
-				</button>
-			{/each}
+		<div>
+			<form on:submit|preventDefault={set_country} class="country_form">
+				<div class="country_search">
+					<datalist id="country_picker">
+						{#each countries.all.filter(c => c.status === "assigned") as c}
+							<option value={c.alpha2}>{format_country(c)}</option>
+						{/each}
+					</datalist>
+					<input
+						bind:value={country_input}
+						type="text"
+						list="country_picker"
+						placeholder="Search for country"
+						style="flex: 1 1 auto;">
+					<button type="submit" class="button_highlight" style="flex: 0 0 auto;">
+						<i class="icon">send</i>
+						Continue
+					</button>
+				</div>
+				<select bind:value={country_input} on:dblclick={set_country} style="padding: 0;" size="10">
+					{#each countries.all.filter(c => c.status === "assigned") as c}
+						<option value={c.alpha2}>{format_country(c)}</option>
+					{/each}
+				</select>
+			</form>
 		</div>
+		<hr/>
 		<div>
 			We support the following payment processors
 		</div>
 		<div class="processors">
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/paypal.svg" alt="PayPal" title="PayPal"/>
-				PayPal
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/ideal.svg" alt="iDEAL" title="iDEAL"/>
-				iDEAL
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/klarna.svg" alt="Klarna" title="Klarna"/>
-				Klarna
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/bancontact.svg" alt="Bancontact" title="Bancontact"/>
-				Bancontact
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/banktransfer.svg" alt="SEPA" title="SEPA"/>
-				SEPA
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/sofort.svg" alt="SOFORT" title="SOFORT"/>
-				SOFORT
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/kbc.svg" alt="KBC/CBC" title="CBC"/>
-				KBC/CBC
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/belfius.svg" alt="Belfius" title="Belfius"/>
-				Belfius
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/giropay.svg" alt="Giropay" title="Giropay"/>
-				Giropay
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/eps.svg" alt="EPS" title="EPS"/>
-				EPS
-			</div>
-			<div>
-				<img class="bankicon" src="/res/img/payment_providers/przelewy24.svg" alt="Przelewy24" title="Przelewy24"/>
-				Przelewy24
-			</div>
+			{#each payment_providers as p (p.name)}
+				<div>
+					<img class="bankicon" src="/res/img/payment_providers/{p.icon}.svg" alt={p.name} title={p.name}/>
+					{p.name}
+				</div>
+			{/each}
 		</div>
 
 	{:else}
@@ -165,8 +171,8 @@ const checkout = async () => {
 			<div style="flex: 1 1 auto;"></div>
 			<div style="flex: 0 0 auto; display: flex; gap: 0.25em; align-items: center;">
 				<span>Paying from</span>
-				<span style="font-size: 1.5em; line-height: 1em;">{country.flag}</span>
-				<span>{country.name} ({country.vat}% VAT)</span>
+				<span style="font-size: 1.5em; line-height: 1em;">{country.emoji}</span>
+				<span>{country.name} ({vat}% VAT)</span>
 			</div>
 		</div>
 
@@ -189,25 +195,40 @@ const checkout = async () => {
 
 			<div class="span2" style="text-align: initial;">
 				Total including VAT:
-				<Euro amount={credit_micro + vat_micro}/>
+				<Euro amount={(amount*1e6) + (amount*1e6)*(vat/100)}/>
 			</div>
 
 			<button type="submit" class="button_highlight">
 				<i class="icon">paid</i> Checkout
 			</button>
 		</form>
+		<hr/>
+		<p style="text-align: initial;">
+			This Pixeldrain premium plan costs €1 per month, but due to
+			processing fees we can't accept payments less than €10. So your
+			deposit will give roughly 10 months of premium service depending on
+			usage. You can track your spending on the <a
+			href="/user/prepaid/transactions">transactions page</a>.
+		</p>
 	{/if}
 </div>
 
 <style>
-.countries {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+.country_form {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	width: 600px;
+	max-width: 100%;
+}
+.country_search {
+	display: flex;
+	flex-direction: row;
 }
 
 .processors {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 .processors > div {
 	display: flex;

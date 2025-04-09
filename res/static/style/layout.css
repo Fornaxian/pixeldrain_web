@@ -509,8 +509,7 @@ button,
 .button,
 input[type="submit"],
 input[type="button"],
-input[type="color"],
-select {
+input[type="color"] {
 	display: inline-flex;
 	flex-direction: row;
 	border-radius: 6px;
@@ -544,13 +543,11 @@ button:hover,
 input[type="submit"]:hover,
 input[type="button"]:hover,
 input[type="color"]:hover,
-select:hover,
 button:focus,
 .button:focus,
 input[type="submit"]:focus,
 input[type="button"]:focus,
-input[type="color"]:focus,
-select:focus {
+input[type="color"]:focus {
 	color: var(--input_text);
 	text-decoration: none;
 	background: var(--input_hover_background);
@@ -560,8 +557,7 @@ button:active,
 .button:active,
 input[type="submit"]:active,
 input[type="button"]:active,
-input[type="color"]:active,
-select:active {
+input[type="color"]:active {
 	box-shadow: inset 4px 4px 6px var(--shadow_color);
 	/* Exactly 3px offset compared to the inactive padding to give a depth effect */
 	padding: 6px 0px 0px 6px;
@@ -586,9 +582,7 @@ input[type="submit"].disabled,
 input[type="button"]:disabled,
 input[type="button"].disabled,
 input[type="color"]:disabled,
-input[type="color"].disabled,
-select:disabled,
-select.disabled {
+input[type="color"].disabled {
 	color: var(--input_disabled_text);
 	box-shadow: none;
 	transition: none;
@@ -662,6 +656,7 @@ option {
 
 /* TEXT FIELDS */
 textarea,
+select,
 .groove,
 input[type="text"],
 input[type="password"],
@@ -686,6 +681,7 @@ input[type="datetime-local"] {
 }
 
 textarea:active,
+select:active,
 input[type="text"]:active,
 input[type="password"]:active,
 input[type="email"]:active,
@@ -693,6 +689,7 @@ input[type="number"]:active,
 input[type="date"]:active,
 input[type="datetime-local"]:active,
 textarea:focus,
+select:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
@@ -703,6 +700,7 @@ input[type="datetime-local"]:focus {
 }
 
 textarea:disabled,
+select:disabled,
 input[type="text"]:disabled,
 input[type="password"]:disabled,
 input[type="email"]:disabled,
@@ -720,6 +718,12 @@ input[type=file] {
 	position: static;
 	width: 0;
 	height: 0;
+}
+
+/* The selected option in multi select */
+option:checked {
+	background-color: var(--highlight_background);
+	color: var(--highlight_text_color);
 }
 
 /* Webkit Scrollbars */

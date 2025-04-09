@@ -154,6 +154,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "100_gigabit_ethernet", wc.serveMarkdown("100_gigabit_ethernet.md", handlerOpts{NoExec: true})},
 		{GET, "apps" /*            */, wc.serveTemplate("apps", handlerOpts{})},
 		{GET, "speedtest" /*       */, wc.serveTemplate("speedtest", handlerOpts{})},
+		{GET, "status" /*          */, wc.serveTemplate("status", handlerOpts{})},
 
 		// User account pages
 		{GET, "login" /*            */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
@@ -241,7 +242,7 @@ func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.
 
 		var td = wc.newTemplateData(w, r)
 		if opts.Auth && !td.Authenticated {
-			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			http.Redirect(w, r, "/login?redirect="+url.QueryEscape(r.URL.Path), http.StatusSeeOther)
 			return
 		}
 

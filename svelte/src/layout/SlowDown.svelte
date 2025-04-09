@@ -37,8 +37,8 @@ export let icon_href = ""
 			least {formatDuration((file_size/($stats.limits.speed_limit))*1000, 0)}
 		</li>
 		<li>
-			<a href="/#pro" target="_blank" class="button button_highlight">
-				<i class="icon">bolt</i> Upgrade your account
+			<a href="/user/prepaid/deposit" target="_blank" class="button button_highlight">
+				<i class="icon">bolt</i> Get Premium
 			</a>
 			and earn my eternal gratitude
 			{#if !window.user_authenticated}

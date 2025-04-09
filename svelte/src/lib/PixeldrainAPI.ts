@@ -114,3 +114,14 @@ export const put_user = async (data: Object) => {
 		((window as any).user as User)[key] = data[key]
 	}
 }
+
+
+export type VATRate = {
+	name: string,
+	vat: number,
+	alpha2: string,
+	alpha3: string,
+}
+export const get_misc_vat_rate = async (country_code: string) => {
+	return await check_response(await fetch(get_endpoint() + "/misc/vat_rate/" + country_code)) as VATRate
+}

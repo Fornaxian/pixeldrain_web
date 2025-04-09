@@ -71,7 +71,7 @@ let file = {
 	<button on:click={() => {dispatch("download")}}>
 		<i class="icon">download</i> Download
 	</button>
-	<a href="/#pro" target="_blank" class="button button_highlight">
+	<a href="/user/prepaid/deposit" target="_blank" class="button button_highlight">
 		<i class="icon">bolt</i> Upgrade your account
 	</a>
 </IconBlock>

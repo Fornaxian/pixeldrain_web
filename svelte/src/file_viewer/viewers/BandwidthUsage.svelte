@@ -32,7 +32,7 @@ $: transfer_left = $stats.limits.transfer_limit - $stats.limits.transfer_limit_u
 
 		<p>
 			<strong>
-				<a href="/#pro" target="_blank" class="button button_highlight" rel="noreferrer">
+				<a href="/user/prepaid/deposit" target="_blank" class="button button_highlight" rel="noreferrer">
 					<i class="icon">bolt</i> Upgrade your account
 				</a>
 				to disable the transfer limit
