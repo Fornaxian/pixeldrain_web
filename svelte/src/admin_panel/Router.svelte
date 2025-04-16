@@ -9,6 +9,7 @@ import EmailReporters from "./EmailReporters.svelte";
 import MollieSettlements from "./MollieSettlements.svelte";
 import PayPalTaxes from "./PayPalTaxes.svelte";
 import UserBans from "./user_bans/UserBans.svelte";
+import InvoiceVat from "./InvoiceVAT.svelte";
 
 let pages = [
 	{
@@ -62,6 +63,11 @@ let pages = [
 				title: "Paypal Taxes",
 				icon: "paypal",
 				component: PayPalTaxes,
+			}, {
+				path: "/admin/invoices",
+				title: "Invoices",
+				icon: "receipt",
+				component: InvoiceVat,
 			},
 		],
 	},

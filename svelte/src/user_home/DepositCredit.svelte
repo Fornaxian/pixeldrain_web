@@ -1,13 +1,12 @@
 <script>
+import CreditDeposit from "layout/CreditDeposit.svelte";
 import { onMount } from "svelte";
 import Euro from "util/Euro.svelte";
 import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
-import MollieDeposit from "./MollieDeposit.svelte";
 
 let loading = false
 let credit_amount = 10
-let tab = "mollie"
 
 const checkout = async (network = "", amount = 0, country = "") => {
 	loading = true
@@ -55,7 +54,7 @@ const load_invoices = async () => {
 		invoices_tmp.forEach(row => {
 			row.time = new Date(row.time)
 
-			if (row.payment_method === "mollie" && row.status === "open") {
+			if (row.status === "open") {
 				unpaid_invoice = true
 			}
 		})
@@ -89,61 +88,18 @@ onMount(() => {
 		amount={window.user.balance_micro_eur}/>
 	</p>
 
-	<div class="tab_bar">
-		<button on:click={() => tab = "mollie"} class:button_highlight={tab === "mollie"}>
-			<i class="icon">euro</i>
-			Mollie
-		</button>
-		<button on:click={() => tab = "btcpay"} class:button_highlight={tab === "btcpay"}>
-			<i class="icon">currency_bitcoin</i>
-			Crypto
-		</button>
-	</div>
-	{#if tab === "mollie"}
-		{#if unpaid_invoice}
-			<div class="highlight_yellow">
-				<p>
-					You still have an unpaid invoice open. Please pay that one
-					before requesting a new invoice. You can find unpaid
-					invoices at the bottom of this page. You can cancel an
-					invoice by clicking Pay, and then clicking the Back link at
-					the bottom of the page.
-				</p>
-			</div>
-		{:else}
-			<MollieDeposit/>
-		{/if}
-	{:else if tab === "btcpay"}
-		<div class="highlight_border">
-			<p style="text-align: initial">
-				Alternatively you can use Bitcoin, Lightning network (<a
-				href="https://btcpay.pixeldrain.com/embed/uS2mbWjXUuaAqMh8XLjkjwi8oehFuxeBZxekMxv68LN/BTC/ln"
-				target="_blank" rel="noreferrer">node info</a>) and Dogecoin to deposit
-				credits on your pixeldrain account. You must pay the full amount as
-				stated on the invoice, else your payment will fail.
+	{#if unpaid_invoice}
+		<div class="highlight_yellow">
+			<p>
+				You still have an unpaid invoice open. Please pay that one
+				before requesting a new invoice. You can find unpaid
+				invoices at the bottom of this page. You can cancel an
+				invoice by clicking Pay, and then clicking the Back link at
+				the bottom of the page.
 			</p>
-			<p style="text-align: initial">
-				Do note that it is not possible to withdraw coins from your
-				pixeldrain account. It's not a wallet. Any amount of money you
-				deposit has to be used up.
-			</p>
-			Deposit amount €
-			<input type="number" bind:value={credit_amount} min="10"/>
-			<br/>
-			Choose payment method:<br/>
-			<button on:click={() => {checkout("btc", credit_amount)}}>
-				<i class="icon">currency_bitcoin</i> Bitcoin
-			</button>
-			<button on:click={() => {checkout("btc_lightning", credit_amount)}}>
-				<i class="icon">bolt</i> Lightning network
-			</button>
-			<button on:click={() => {checkout("doge", credit_amount)}}>
-				<span class="icon_unicode">Ð</span> Dogecoin
-			</button>
-			<button on:click={() => {checkout("xmr", credit_amount)}}>
-				<span class="icon_unicode">M</span> Monero
-			</button>
 		</div>
+	{:else}
+		<CreditDeposit/>
 	{/if}
 
 	<h3 id="invoices">Past invoices</h3>
@@ -174,7 +130,7 @@ onMount(() => {
 						<td>{row.country}</td>
 						<td>{row.payment_method}</td>
 						<td>
-							{#if row.status === "InvoiceCreated" || row.status === "open"}
+							{#if row.status === "InvoiceCreated" || row.status === "open" || row.status === "CREATED" || row.status === "PAYER_ACTION_REQUIRED"}
 								Waiting for payment
 							{:else if row.status === "InvoiceProcessing"}
 								Payment received, waiting for confirmations
@@ -189,7 +145,12 @@ onMount(() => {
 							{/if}
 						</td>
 						<td>
-							{#if row.status === "New" || row.status === "InvoiceCreated" || row.status === "open"}
+							{#if row.status === "New" ||
+								row.status === "InvoiceCreated" ||
+								row.status === "open" ||
+								row.status === "CREATED" ||
+								row.status === "PAYER_ACTION_REQUIRED"
+							}
 								<a href="/api/user/pay_invoice/{row.id}" class="button button_highlight">
 									<i class="icon">paid</i> Pay
 								</a>

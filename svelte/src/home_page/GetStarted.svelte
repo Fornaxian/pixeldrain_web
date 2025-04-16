@@ -1,6 +1,6 @@
 <script>
+import CreditDeposit from "layout/CreditDeposit.svelte";
 import LoginRegister from "login/LoginRegister.svelte";
-import MollieDeposit from "user_home/MollieDeposit.svelte";
 import Euro from "util/Euro.svelte";
 </script>
 
@@ -19,13 +19,13 @@ import Euro from "util/Euro.svelte";
 					balance is <Euro amount={window.user.balance_micro_eur}/>. Use
 					the form below to top up your balance.
 				</p>
-				<MollieDeposit/>
+				<CreditDeposit/>
 			{:else}
 				<p>
 					You are currently logged in as '{window.user.username}'. Use the
 					form below to activate prepaid on this account.
 				</p>
-				<MollieDeposit/>
+				<CreditDeposit/>
 			{/if}
 		</section>
 	</div>

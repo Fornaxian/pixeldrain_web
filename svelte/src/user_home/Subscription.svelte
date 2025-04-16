@@ -1,5 +1,4 @@
 <script>
-import { onMount } from "svelte";
 import Euro from "util/Euro.svelte"
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import SuccessMessage from "util/SuccessMessage.svelte";
@@ -47,20 +46,12 @@ const update = async (plan) => {
 		loading = false
 	}
 }
-
-let checkout_success = false
-
-onMount(() => {
-	if (window.location.hash === "#checkout_complete") {
-		checkout_success = true
-	}
-})
 </script>
 
 <LoadingIndicator loading={loading}/>
 
 <section>
-	{#if checkout_success}
+	{#if window.location.hash === "#checkout_complete"}
 		<div class="highlight_green">
 			<h2>Payment successful!</h2>
 			<p>
@@ -76,6 +67,24 @@ onMount(() => {
 				two working days for example. When the deposit is complete you
 				will receive an e-mail. If it takes too long, contact
 				support@pixeldrain.com.
+			</p>
+		</div>
+	{:else if window.location.hash === "#order_expired"}
+		<div class="highlight_yellow">
+			<h2>Order expired</h2>
+			<p>
+				This order has expired. Please create a new order on the <a
+				href="/user/prepaid/deposit">credit deposit page</a>.
+			</p>
+		</div>
+	{:else if window.location.hash === "#order_canceled"}
+		<div class="highlight_yellow">
+			<h2>Order canceled</h2>
+			<p>
+				You have chosen to cancel the order. If you still want to
+				proceed with the order you can initiate payment again from the
+				<a href="/user/prepaid/deposit">deposit page</a>. If not then
+				you can let the invoice expire.
 			</p>
 		</div>
 	{/if}

@@ -176,6 +176,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "admin/user_management" /*   */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/mollie_settlements" /**/, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/paypal_taxes" /*      */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
+		{GET, "admin/invoices" /*          */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
 		{GET, "admin/globals" /*           */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
 		{PST, "admin/globals" /*           */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
 

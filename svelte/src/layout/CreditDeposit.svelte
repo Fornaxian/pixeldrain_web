@@ -4,11 +4,13 @@ import Euro from "util/Euro.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import { countries } from "country-data-list";
 import { get_endpoint, get_misc_vat_rate } from "lib/PixeldrainAPI";
+import CreditDepositNav from "./CreditDepositNav.svelte";
 
 let loading = false
 let amount = 20
 let country: typeof countries.all[0] = null
 let country_input = ""
+let provider: PaymentProvider = null
 let vat = 0
 
 const amounts = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
@@ -19,7 +21,29 @@ onMount(() => {
 		country_input = checkout_country
 		set_country()
 	}
+
+	const checkout_provider = window.localStorage.getItem("checkout_provider")
+	for (const p of providers) {
+		if (p.name === checkout_provider) {
+			set_provider(p)
+			break
+		}
+	}
 })
+
+type PaymentProvider = {
+	icon: string,
+	name: string,
+	label: string,
+	crypto?: boolean,
+};
+const providers: PaymentProvider[] = [
+	{icon: "paypal_full", name: "paypal", label: "PayPal"},
+	{icon: "mollie", name: "mollie", label: "Mollie"},
+	{icon: "bitcoin", name: "btc", label: "Bitcoin", crypto: true},
+	{icon: "dogecoin", name: "doge", label: "Dogecoin", crypto: true},
+	{icon: "monero", name: "xmr", label: "Monero", crypto: true},
+]
 
 const payment_providers = [
 	{icon: "paypal", name: "PayPal"},
@@ -69,6 +93,13 @@ const set_country = async (e?: Event) => {
 	}
 }
 
+const set_provider = (p: PaymentProvider) => {
+	provider = p
+
+	// Cache the value for next checkout
+	window.localStorage.setItem("checkout_provider", p.name)
+}
+
 const checkout = async () => {
 	loading = true
 
@@ -79,7 +110,7 @@ const checkout = async () => {
 
 	const form = new FormData()
 	form.set("amount", String(amount*1e6))
-	form.set("network", "mollie")
+	form.set("network", provider.name)
 	form.set("country", country.alpha2)
 
 	try {
@@ -161,20 +192,31 @@ const format_country = (c: typeof countries.all[0]) => {
 			{/each}
 		</div>
 
-	{:else}
+	{:else if provider === null}
+		<CreditDepositNav bind:country={country} bind:provider={provider} bind:vat={vat}/>
 
-		<div style="display: flex;">
-			<button on:click={() => country = null} style="flex: 0 0 auto;">
-				<i class="icon">chevron_left</i>
-				Change country
-			</button>
-			<div style="flex: 1 1 auto;"></div>
-			<div style="flex: 0 0 auto; display: flex; gap: 0.25em; align-items: center;">
-				<span>Paying from</span>
-				<span style="font-size: 1.5em; line-height: 1em;">{country.emoji}</span>
-				<span>{country.name} ({vat}% VAT)</span>
-			</div>
+		<h2>Please select a payment provider</h2>
+
+		<div class="providers">
+			{#each providers as p (p.name)}
+				<button on:click={() => set_provider(p)}>
+					<img src="/res/img/payment_providers/{p.icon}.svg" alt={p.label} title={p.label}/>
+					{p.label}
+				</button>
+			{/each}
 		</div>
+
+	{:else}
+		<CreditDepositNav bind:country={country} bind:provider={provider} bind:vat={vat}/>
+
+		<p style="text-align: initial;" class="highlight_blue">
+			When paying with cryptocurrencies it is important that you pay the
+			<b>exact amount</b> stated on the order. If you pay too little, the
+			order fails. If you pay too much then the remaining credit will not
+			be added to your account. Pay close attention when sending a payment
+			from an online exchange, sometimes they will subtract the fees from
+			the amount sent which will cause the payment to fail.
+		</p>
 
 		<form class="amount_grid" on:submit|preventDefault={checkout}>
 			<div class="span3">Please choose an amount</div>
@@ -235,6 +277,19 @@ const format_country = (c: typeof countries.all[0]) => {
 	align-items: center;
 	gap: 5px;
 	margin: 3px;
+}
+
+.providers {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+}
+.providers > button {
+	flex-direction: column;
+	justify-content: space-around;
+}
+.providers > button > img {
+	max-width: 3em;
+	max-height: 3em;
 }
 
 .amount_grid {
