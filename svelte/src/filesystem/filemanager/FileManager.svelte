@@ -169,6 +169,13 @@ let moving_items = []
 let shift_pressed = false
 let last_selected_node = -1
 const keypress = (e: KeyboardEvent) => {
+	if (
+		(document.activeElement as any).type !== undefined &&
+		(document.activeElement as any).type === "text"
+	) {
+		return // Prevent shortcuts from interfering with input fields
+	}
+
 	if (e.key === "Shift") {
 		shift_pressed = e.type === "keydown"
 	} else if (e.type === "keydown" && e.key === "a" && e.ctrlKey) {

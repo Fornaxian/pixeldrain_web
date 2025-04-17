@@ -106,7 +106,6 @@ const video_keydown = (e: KeyboardEvent) => {
 					class="video"
 					on:pause={() => playing = false }
 					on:play={() => playing = true }
-					on:ended={() => dispatch("open_sibling", 1)}
 					on:keydown={video_keydown}
 					use:video_position={() => $nav.base.sha256_sum.substring(0, 8)}
 				>
