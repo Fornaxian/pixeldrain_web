@@ -40,7 +40,7 @@ const checkout = async (network = "", amount = 0, country = "") => {
 }
 
 let invoices = []
-let unpaid_invoice = false
+let unpaid_invoice = 0
 const load_invoices = async () => {
 	loading = true
 	try {
@@ -50,12 +50,12 @@ const load_invoices = async () => {
 		}
 
 		let invoices_tmp = await resp.json()
-		unpaid_invoice = false
+		unpaid_invoice = 0
 		invoices_tmp.forEach(row => {
 			row.time = new Date(row.time)
 
 			if (row.status === "open") {
-				unpaid_invoice = true
+				unpaid_invoice++
 			}
 		})
 		invoices_tmp.sort((a, b) => {
@@ -88,7 +88,7 @@ onMount(() => {
 		amount={window.user.balance_micro_eur}/>
 	</p>
 
-	{#if unpaid_invoice}
+	{#if unpaid_invoice > 1}
 		<div class="highlight_yellow">
 			<p>
 				You still have an unpaid invoice open. Please pay that one

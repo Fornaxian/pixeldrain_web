@@ -209,14 +209,16 @@ const format_country = (c: typeof countries.all[0]) => {
 	{:else}
 		<CreditDepositNav bind:country={country} bind:provider={provider} bind:vat={vat}/>
 
-		<p style="text-align: initial;" class="highlight_blue">
-			When paying with cryptocurrencies it is important that you pay the
-			<b>exact amount</b> stated on the order. If you pay too little, the
-			order fails. If you pay too much then the remaining credit will not
-			be added to your account. Pay close attention when sending a payment
-			from an online exchange, sometimes they will subtract the fees from
-			the amount sent which will cause the payment to fail.
-		</p>
+		{#if provider.crypto === true}
+			<p style="text-align: initial;" class="highlight_blue">
+				When paying with cryptocurrencies it is important that you pay the
+				<b>exact amount</b> stated on the order. If you pay too little, the
+				order fails. If you pay too much then the remaining credit will not
+				be added to your account. Pay close attention when sending a payment
+				from an online exchange, sometimes they will subtract the fees from
+				the amount sent which will cause the payment to fail.
+			</p>
+		{/if}
 
 		<form class="amount_grid" on:submit|preventDefault={checkout}>
 			<div class="span3">Please choose an amount</div>
