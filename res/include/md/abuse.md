@@ -54,9 +54,11 @@ Violating these rules will result in your IP address being banned from uploading
 to pixeldrain.
 
 If you have found content which falls in any of these categories on pixeldrain
-please report it with the report button on the download page or by sending an
-e-mail. When reporting links through e-mail pay attention to the rules described
-below.
+please report it by sending an e-mail to
+[abuse@pixeldrain.com](mailto:abuse@pixeldrain.com). Please state clearly in
+which category the content falls, and don't forget to include a link to the
+content itself in the e-mail. When reporting links through e-mail pay attention
+to the rules described below.
 
 ## E-Mail reporting rules
 
