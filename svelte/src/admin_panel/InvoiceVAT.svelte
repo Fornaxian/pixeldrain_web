@@ -125,35 +125,36 @@ onMount(() => {
 		Amount:<Euro amount={tot.amount}/><br/>
 		VAT: <Euro amount={tot.vat}/><br/>
 	{/each}
-
-	<div class="table_scroll">
-		<table>
-			<thead>
-				<tr>
-					<td>Time</td>
-					<td>Amount</td>
-					<td>VAT</td>
-					<td>Country</td>
-					<td>Method</td>
-					<td>Status</td>
-				</tr>
-			</thead>
-			<tbody>
-				{#each invoices as row (row.id)}
-					<tr>
-						<td>{formatDate(row.time)}</td>
-						<td><Euro amount={row.amount}/></td>
-						<td><Euro amount={row.vat}/></td>
-						<td>{row.country}</td>
-						<td>{row.payment_method}</td>
-						<td>{row.status}</td>
-					</tr>
-				{/each}
-
-			</tbody>
-		</table>
-	</div>
 </section>
+
+<div class="table_scroll" style="text-align: initial;">
+	<table>
+		<thead>
+			<tr>
+				<td>Time</td>
+				<td>ID</td>
+				<td>Amount</td>
+				<td>VAT</td>
+				<td>Country</td>
+				<td>Method</td>
+				<td>Status</td>
+			</tr>
+		</thead>
+		<tbody>
+			{#each invoices as row (row.id)}
+				<tr>
+					<td>{formatDate(row.time)}</td>
+					<td>{row.id}</td>
+					<td><Euro amount={row.amount}/></td>
+					<td><Euro amount={row.vat}/></td>
+					<td>{row.country}</td>
+					<td>{row.payment_method}</td>
+					<td>{row.status}</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+</div>
 
 <style>
 .toolbar {

@@ -130,13 +130,13 @@ onMount(() => {
 						<td>{row.country}</td>
 						<td>{row.payment_method}</td>
 						<td>
-							{#if row.status === "InvoiceCreated" || row.status === "open" || row.status === "CREATED" || row.status === "PAYER_ACTION_REQUIRED"}
+							{#if row.status === "open"}
 								Waiting for payment
-							{:else if row.status === "InvoiceProcessing"}
+							{:else if row.status === "processing"}
 								Payment received, waiting for confirmations
-							{:else if row.status === "InvoiceSettled" || row.status === "paid"}
+							{:else if row.status === "paid"}
 								Paid
-							{:else if row.status === "InvoiceExpired"}
+							{:else if row.status === "expired"}
 								Expired
 							{:else if row.status === "canceled"}
 								Canceled
@@ -145,12 +145,7 @@ onMount(() => {
 							{/if}
 						</td>
 						<td>
-							{#if row.status === "New" ||
-								row.status === "InvoiceCreated" ||
-								row.status === "open" ||
-								row.status === "CREATED" ||
-								row.status === "PAYER_ACTION_REQUIRED"
-							}
+							{#if row.status === "open"}
 								<a href="/api/user/pay_invoice/{row.id}" class="button button_highlight">
 									<i class="icon">paid</i> Pay
 								</a>
