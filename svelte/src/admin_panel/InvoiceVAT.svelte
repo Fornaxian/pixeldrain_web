@@ -10,6 +10,7 @@ type Invoice = {
 	time: string
 	amount: number
 	vat: number
+	processing_fee: number
 	country: string
 	payment_method: string
 	status: string
@@ -26,16 +27,26 @@ type Total = {
 	count: number
 	amount: number
 	vat: number
+	fee: number
 }
-let totals: { [id: string]: Total } = {}
+let totals_provider: { [id: string]: Total } = {}
+let totals_country: { [id: string]: Total } = {}
 const add_total = (i: Invoice) => {
-	if (totals[i.payment_method] === undefined) {
-		totals[i.payment_method] = {count: 0, amount: 0, vat: 0}
+	if (totals_provider[i.payment_method] === undefined) {
+		totals_provider[i.payment_method] = {count: 0, amount: 0, vat: 0, fee: 0}
+	}
+	if (totals_country[i.country] === undefined) {
+		totals_country[i.country] = {count: 0, amount: 0, vat: 0, fee: 0}
 	}
 
-	totals[i.payment_method].count++
-	totals[i.payment_method].amount += i.amount
-	totals[i.payment_method].vat += i.vat
+	totals_provider[i.payment_method].count++
+	totals_provider[i.payment_method].amount += i.amount
+	totals_provider[i.payment_method].vat += i.vat
+	totals_provider[i.payment_method].fee += i.processing_fee
+	totals_country[i.country].count++
+	totals_country[i.country].amount += i.amount
+	totals_country[i.country].vat += i.vat
+	totals_country[i.country].fee += i.processing_fee
 }
 
 const get_invoices = async () => {
@@ -59,7 +70,8 @@ const get_invoices = async () => {
 			return date_a.getTime() - date_b.getTime()
 		})
 
-		totals = {}
+		totals_provider = {}
+		totals_country = {}
 		resp_json.forEach(row => {
 			if (row.status === "paid") {
 				add_total(row)
@@ -120,11 +132,59 @@ onMount(() => {
 		</button>
 	</div>
 
-	{#each Object.entries(totals) as [key, tot]}
-		{key} ({tot.count})<br/>
-		Amount:<Euro amount={tot.amount}/><br/>
-		VAT: <Euro amount={tot.vat}/><br/>
-	{/each}
+	<h4>Invoices per payment processor</h4>
+	<div class="table_scroll" style="text-align: initial;">
+		<table>
+			<thead>
+				<tr>
+					<td>Provider</td>
+					<td>Count</td>
+					<td>Amount</td>
+					<td>VAT</td>
+					<td>Fee</td>
+				</tr>
+			</thead>
+			<tbody>
+				{#each Object.entries(totals_provider) as [key, tot]}
+					<tr>
+						<td>{key}</td>
+						<td>{tot.count}</td>
+						<td><Euro amount={tot.amount}/></td>
+						<td><Euro amount={tot.vat}/></td>
+						<td><Euro amount={tot.fee}/></td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	</div>
+
+	<h4>Invoices per country</h4>
+	<div class="table_scroll" style="text-align: initial;">
+		<table>
+			<thead>
+				<tr>
+					<td>Country</td>
+					<td>Count</td>
+					<td>Amount</td>
+					<td>VAT</td>
+					<td>Fee</td>
+				</tr>
+			</thead>
+			<tbody>
+				{#each Object.entries(totals_country) as [key, tot]}
+					<tr>
+						<td>{key}</td>
+						<td>{tot.count}</td>
+						<td><Euro amount={tot.amount}/></td>
+						<td><Euro amount={tot.vat}/></td>
+						<td><Euro amount={tot.fee}/></td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	</div>
+
+	<h4>All invoices</h4>
 </section>
 
 <div class="table_scroll" style="text-align: initial;">
@@ -135,6 +195,7 @@ onMount(() => {
 				<td>ID</td>
 				<td>Amount</td>
 				<td>VAT</td>
+				<td>Fee</td>
 				<td>Country</td>
 				<td>Method</td>
 				<td>Status</td>
@@ -147,6 +208,7 @@ onMount(() => {
 					<td>{row.id}</td>
 					<td><Euro amount={row.amount}/></td>
 					<td><Euro amount={row.vat}/></td>
+					<td><Euro amount={row.processing_fee}/></td>
 					<td>{row.country}</td>
 					<td>{row.payment_method}</td>
 					<td>{row.status}</td>
