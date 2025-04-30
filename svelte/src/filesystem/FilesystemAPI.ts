@@ -351,3 +351,18 @@ export const fs_share_path = (path: FSNode[]): string => {
 
 	return share_url
 }
+
+export const fs_download = (node: FSNode) => {
+	const a = document.createElement("a")
+
+	if (node.type === "file") {
+		a.href = fs_path_url(node.path) + "?attach"
+		a.download = node.name
+	} else if (node.type === "dir") {
+		a.href = fs_path_url(node.path) + "?bulk_download"
+		a.download = node.name + ".zip"
+	}
+
+	a.click()
+	a.remove()
+}

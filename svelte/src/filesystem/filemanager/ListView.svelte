@@ -4,6 +4,7 @@ import { formatDataVolume } from "util/Formatting";
 import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI"
 import type { FSNavigator } from "filesystem/FSNavigator";
 import SortButton from "layout/SortButton.svelte";
+import { FileAction } from "./FileManagerLib";
 
 let dispatch = createEventDispatcher()
 
@@ -24,8 +25,8 @@ export let hide_branding = false
 	{#each $nav.children as child, index (child.path)}
 		<a
 			href={"/d"+fs_encode_path(child.path)}
-			on:click|preventDefault={e => dispatch("node_click", {index: index, original: e})}
-			on:contextmenu={e => dispatch("node_context", {index: index, original: e})}
+			on:click={e => dispatch("file", {index: index, action: FileAction.Click, original: e})}
+			on:contextmenu={e => dispatch("file", {index: index, action: FileAction.Context, original: e})}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
@@ -48,22 +49,25 @@ export let hide_branding = false
 					{:else if child.id}
 						<a
 							href="/d/{child.id}"
-							on:click|preventDefault|stopPropagation={e => {dispatch("node_share_click", {index: index, original: e})}}
+							on:click={e => dispatch("file", {index: index, action: FileAction.Share, original: e})}
 							class="button action_button"
 						>
 							<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 						</a>
 					{/if}
 					{#if child.properties !== undefined && child.properties.branding_enabled === "true" && !hide_branding}
-						<button class="action_button" on:click|preventDefault|stopPropagation={e => dispatch("node_branding", {index: index, original: e})}>
+						<button class="action_button" on:click={e => dispatch("file", {index: index, action: FileAction.Branding, original: e})}>
 							<i class="icon">palette</i>
 						</button>
 					{/if}
 					{#if $nav.permissions.write && !hide_edit}
-						<button class="action_button" on:click|preventDefault|stopPropagation={e => dispatch("node_settings", {index: index, original: e})}>
+						<button class="action_button" on:click={e => dispatch("file", {index: index, action: FileAction.Edit, original: e})}>
 							<i class="icon">edit</i>
 						</button>
 					{/if}
+					<button class="action_button" on:click={e => dispatch("file", {index: index, action: FileAction.Download, original: e})}>
+						<i class="icon">save</i>
+					</button>
 				</div>
 			</td>
 		</a>

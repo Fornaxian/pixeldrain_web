@@ -7,7 +7,7 @@ import Breadcrumbs from "./Breadcrumbs.svelte";
 import DetailsWindow from "./DetailsWindow.svelte";
 import FilePreview from "./viewers/FilePreview.svelte";
 import FSUploadWidget from "./upload_widget/FSUploadWidget.svelte";
-import { fs_path_url, type FSPath } from "./FilesystemAPI";
+import { fs_download, type FSPath } from "./FilesystemAPI";
 import Menu from "./Menu.svelte";
 import { FSNavigator } from "./FSNavigator"
 import { writable } from "svelte/store";
@@ -68,7 +68,7 @@ const keydown = (e: KeyboardEvent) => {
 			}
 			break;
 		case "s":
-			download()
+			fs_download(nav.base)
 			break;
 		case "r":
 			nav.shuffle = !nav.shuffle
@@ -125,21 +125,6 @@ const keydown = (e: KeyboardEvent) => {
 		e.preventDefault()
 	}
 };
-
-const download = () => {
-	const a = document.createElement("a")
-
-	if (nav.base.type === "file") {
-		a.href = fs_path_url(nav.base.path) + "?attach"
-		a.download = nav.base.name
-	} else if (nav.base.type === "dir") {
-		a.href = fs_path_url(nav.base.path) + "?bulk_download"
-		a.download = nav.base.name+".zip"
-	}
-
-	a.click()
-	a.remove()
-}
 </script>
 
 <svelte:window on:keydown={keydown} />
@@ -159,7 +144,7 @@ const download = () => {
 			bind:details_visible={details_visible}
 			edit_window={edit_window}
 			bind:edit_visible={edit_visible}
-			on:download={download}
+			on:download={() => fs_download(nav.base)}
 		/>
 
 		<div class="file_preview">
@@ -169,7 +154,7 @@ const download = () => {
 				upload_widget={upload_widget}
 				edit_window={edit_window}
 				on:open_sibling={e => nav.open_sibling(e.detail)}
-				on:download={download}
+				on:download={() => fs_download(nav.base)}
 				on:details={() => details_visible = !details_visible}
 			/>
 		</div>

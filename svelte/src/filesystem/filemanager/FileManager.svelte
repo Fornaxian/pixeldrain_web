@@ -1,11 +1,5 @@
-<script lang="ts" context="module">
-export type FMNodeEvent = {
-	index: number,
-	original: MouseEvent,
-}
-</script>
 <script lang="ts">
-import { fs_delete_all, fs_rename, type FSNode } from "filesystem/FilesystemAPI"
+import { fs_delete_all, fs_download, fs_rename, type FSNode } from "filesystem/FilesystemAPI"
 import { onMount } from "svelte"
 import CreateDirectory from "./CreateDirectory.svelte"
 import ListView from "./ListView.svelte"
@@ -19,6 +13,7 @@ import SearchBar from "./SearchBar.svelte";
 import type { FSNavigator } from "filesystem/FSNavigator";
 import FsUploadWidget from "filesystem/upload_widget/FSUploadWidget.svelte";
 import EditWindow from "filesystem/edit_window/EditWindow.svelte";
+import { FileAction, type FileEvent } from "./FileManagerLib";
 
 export let nav: FSNavigator
 export let upload_widget: FsUploadWidget
@@ -36,49 +31,62 @@ export const upload = (files: File[]) => {
 }
 
 // Navigation functions
-
-const node_click = (e: CustomEvent<FMNodeEvent>) => {
+const file_event = (e: CustomEvent<FileEvent>) => {
 	const index = e.detail.index
 
-	creating_dir = false
-
-	// We prefix our custom state properties with fm_ to not interfere with
-	// other modules
-	if (mode === "viewing") {
-		nav.navigate(nav.children[index].path, true)
-	} else if (mode === "moving") {
-		// If we are moving files we can only enter directories, and only if
-		// they're not selected. That last requirement prevents people from
-		// moving a directory into itself
-		if (nav.children[index].type === "dir" && !nav.children[index].fm_selected) {
-			nav.navigate(nav.children[index].path, true)
-		}
-	} else if (mode === "selecting") {
-		select_node(index)
-	}
-}
-let node_context = (e: CustomEvent<FMNodeEvent>) => {
-	// If this is a touch event we will select the item
-	if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
+	switch (e.detail.action) {
+	case FileAction.Click:
 		e.detail.original.preventDefault()
-		node_select(e)
-	}
-}
-const node_share_click = (e: CustomEvent<FMNodeEvent>) => {
-	creating_dir = false
-	edit_window.edit(nav.children[e.detail.index], false, "share")
-}
-const node_select = (e: CustomEvent<FMNodeEvent>) => {
-	const index = e.detail.index
-	mode = "selecting"
-	nav.children[index].fm_selected = !nav.children[index].fm_selected
-}
+		e.detail.original.stopPropagation()
+		creating_dir = false
 
-const node_settings = (e: CustomEvent<FMNodeEvent>)  => {
-	edit_window.edit(nav.children[e.detail.index], false, "file")
-}
-const node_branding = (e: CustomEvent<FMNodeEvent>) => {
-	edit_window.edit(nav.children[e.detail.index], false, "branding")
+		if (mode === "viewing") {
+			nav.navigate(nav.children[index].path, true)
+		} else if (mode === "moving") {
+			// If we are moving files we can only enter directories, and only if
+			// they're not selected. That last requirement prevents people from
+			// moving a directory into itself
+			if (nav.children[index].type === "dir" && !nav.children[index].fm_selected) {
+				nav.navigate(nav.children[index].path, true)
+			}
+		} else if (mode === "selecting") {
+			select_node(index)
+		}
+		break
+	case FileAction.Context:
+		// If this is a touch event we will select the item
+		if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
+			e.detail.original.preventDefault()
+			select_node(index)
+		}
+		break
+	case FileAction.Edit:
+		e.detail.original.preventDefault()
+		e.detail.original.stopPropagation()
+		edit_window.edit(nav.children[index], false, "file")
+		break
+	case FileAction.Share:
+		e.detail.original.preventDefault()
+		e.detail.original.stopPropagation()
+		creating_dir = false
+		edit_window.edit(nav.children[index], false, "share")
+		break
+	case FileAction.Branding:
+		e.detail.original.preventDefault()
+		e.detail.original.stopPropagation()
+		edit_window.edit(nav.children[index], false, "branding")
+		break
+	case FileAction.Select:
+		e.detail.original.preventDefault()
+		e.detail.original.stopPropagation()
+		select_node(index)
+		break
+	case FileAction.Download:
+		e.detail.original.preventDefault()
+		e.detail.original.stopPropagation()
+		fs_download(nav.children[index])
+		break
+	}
 }
 
 const navigate_back = () => {
@@ -195,6 +203,7 @@ const keypress = (e: KeyboardEvent) => {
 }
 
 const select_node = (index: number) => {
+	mode = "selecting"
 	if (shift_pressed) {
 		// If shift is pressed we do a range select. We select all files between
 		// the last selected file and the file that is being selected now
@@ -398,38 +407,11 @@ onMount(() => {
 	<slot></slot>
 
 	{#if directory_view === "list"}
-		<ListView
-			nav={nav}
-			show_hidden={show_hidden}
-			large_icons={large_icons}
-			on:node_click={node_click}
-			on:node_context={node_context}
-			on:node_share_click={node_share_click}
-			on:node_settings={node_settings}
-			on:node_branding={node_branding}
-			on:node_select={node_select}
-		/>
+		<ListView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on:file={file_event} />
 	{:else if directory_view === "gallery"}
-		<GalleryView
-			nav={nav}
-			show_hidden={show_hidden}
-			large_icons={large_icons}
-			on:node_click={node_click}
-			on:node_context={node_context}
-			on:node_settings={node_settings}
-			on:node_select={node_select}
-		/>
+		<GalleryView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on:file={file_event} />
 	{:else if directory_view === "compact"}
-		<CompactView
-			nav={nav}
-			show_hidden={show_hidden}
-			large_icons={large_icons}
-			on:node_click={node_click}
-			on:node_context={node_context}
-			on:node_share_click={node_share_click}
-			on:node_settings={node_settings}
-			on:node_select={node_select}
-		/>
+		<CompactView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on:file={file_event} />
 	{/if}
 </div>
 

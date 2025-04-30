@@ -117,6 +117,15 @@ const login = async (e?: SubmitEvent) => {
 					only have one login link at a time. Login links stay active
 					for 15 minutes.`
 			}
+		} else if (err.value === "password_incorrect") {
+			return {
+				success: false,
+				message: `The entered password is not correct for this user. If
+					you have an e-mail address configured on your account you
+					can try logging in with only your e-mail address to get a
+					login link. If you have forgotten your password you can
+					change it from the account settings page after logging in.`
+			}
 		}
 
 		return {success: false, message: undefined, error_json: err}
