@@ -126,7 +126,6 @@ const click = (e: MouseEvent) => {
 
 .button {
 	flex: 0 0 content;
-	box-shadow: none;
 }
 .button_username {
 	margin: 0 4px;
