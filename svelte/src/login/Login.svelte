@@ -83,6 +83,10 @@ const login = async (e?: SubmitEvent) => {
 	}
 
 	try {
+		// Delete any existing auth cookie to prevent it from interfering with
+		// the request
+		document.cookie = "pd_auth_key=; Max-Age=0;"
+
 		const resp = await check_response(await fetch(
 			get_endpoint() + "/user/login",
 			{method: "POST", body: fd},
@@ -94,6 +98,9 @@ const login = async (e?: SubmitEvent) => {
 				message: "A login link was sent to your e-mail address. Click it to continue logging in",
 			}
 		}
+
+		// Save the session cookie
+		document.cookie = "pd_auth_key="+resp.auth_key+"; Max-Age=31536000;"
 
 		dispatch("login", {key: resp.auth_key})
 
