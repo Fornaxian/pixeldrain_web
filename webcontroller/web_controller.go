@@ -166,19 +166,8 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "user/*p", wc.serveTemplate("user_home", handlerOpts{Auth: true, NoEmbed: true})},
 
 		// Admin settings
-		{GET, "admin" /*                   */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/status" /*            */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/block_files" /*       */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/email_reporters" /*   */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/abuse_reports" /*     */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/ip_bans" /*           */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/user_bans" /*         */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/user_management" /*   */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/mollie_settlements" /**/, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/paypal_taxes" /*      */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/invoices" /*          */, wc.serveTemplate("admin", handlerOpts{Auth: true})},
-		{GET, "admin/globals" /*           */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
-		{PST, "admin/globals" /*           */, wc.serveForm(wc.adminGlobalsForm, handlerOpts{Auth: true})},
+		{GET, "admin", wc.serveTemplate("admin", handlerOpts{Auth: true})},
+		{GET, "admin/*p", wc.serveTemplate("admin", handlerOpts{Auth: true})},
 
 		// Misc
 		{GET, "misc/sharex/pixeldrain.com.sxcu", wc.serveShareXConfig},

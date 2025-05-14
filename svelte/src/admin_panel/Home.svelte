@@ -200,11 +200,6 @@ onDestroy(() => {
 
 <br/>
 <ServerDiagnostics running_since={status.cpu_profile_running_since} on:refresh={() => getStats(lastOrder)}/>
-<br/>
-<a class="button" href="/admin/globals">
-	<i class="icon">edit</i>
-	Global settings
-</a>
 
 <section>
 	<h3>Process stats</h3>
