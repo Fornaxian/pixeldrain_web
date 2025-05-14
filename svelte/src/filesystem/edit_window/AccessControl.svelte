@@ -1,36 +1,36 @@
 <script lang="ts">
 import Button from "layout/Button.svelte";
-import type { FSNode, FSPermissions } from "filesystem/FilesystemAPI";
+import type { FSPermissions, NodeOptions } from "filesystem/FilesystemAPI";
 import PermissionButton from "./PermissionButton.svelte";
 
-export let file: FSNode
+export let options: NodeOptions
 
 let new_user_id = ""
 let new_user_perms = <FSPermissions>{read: true}
 const add_user = (e: SubmitEvent) => {
 	e.preventDefault()
-	if (file.user_permissions === undefined) {
-		file.user_permissions = {} as {[index: string]: FSPermissions}
+	if (options.user_permissions === undefined) {
+		options.user_permissions = {} as {[index: string]: FSPermissions}
 	}
-	file.user_permissions[new_user_id] = structuredClone(new_user_perms)
+	options.user_permissions[new_user_id] = structuredClone(new_user_perms)
 }
 const del_user = (id: string) => {
-	delete file.user_permissions[id]
-	file.user_permissions = file.user_permissions
+	delete options.user_permissions[id]
+	options.user_permissions = options.user_permissions
 }
 
 let new_password = ""
 let new_password_perms = <FSPermissions>{read: true}
 const add_password = (e: SubmitEvent) => {
 	e.preventDefault()
-	if (file.password_permissions === undefined) {
-		file.password_permissions = {} as {[index: string]: FSPermissions}
+	if (options.password_permissions === undefined) {
+		options.password_permissions = {} as {[index: string]: FSPermissions}
 	}
-	file.password_permissions[new_password] = structuredClone(new_password_perms)
+	options.password_permissions[new_password] = structuredClone(new_password_perms)
 }
 const del_password = (pass: string) => {
-	delete file.password_permissions[pass]
-	file.password_permissions = file.password_permissions
+	delete options.password_permissions[pass]
+	options.password_permissions = options.password_permissions
 }
 </script>
 
@@ -51,7 +51,7 @@ const del_password = (pass: string) => {
 			Anyone with the link can...
 		</div>
 		<div class="perms">
-			<PermissionButton bind:permissions={file.link_permissions}/>
+			<PermissionButton bind:permissions={options.link_permissions}/>
 		</div>
 	</div>
 </fieldset>
@@ -71,15 +71,15 @@ const del_password = (pass: string) => {
 			<PermissionButton bind:permissions={new_user_perms}/>
 		</div>
 	</form>
-	{#if file.user_permissions !== undefined}
-		{#each Object.keys(file.user_permissions) as id (id)}
+	{#if options.user_permissions !== undefined}
+		{#each Object.keys(options.user_permissions) as id (id)}
 			<div class="row">
 				<Button click={() => del_user(id)} icon="delete"/>
 				<div class="grow id">
 					{id}
 				</div>
 				<div class="perms">
-					<PermissionButton bind:permissions={file.user_permissions[id]}/>
+					<PermissionButton bind:permissions={options.user_permissions[id]}/>
 				</div>
 			</div>
 		{/each}
@@ -101,15 +101,15 @@ const del_password = (pass: string) => {
 			<PermissionButton bind:permissions={new_password_perms}/>
 		</div>
 	</form>
-	{#if file.password_permissions !== undefined}
-		{#each Object.keys(file.password_permissions) as password (password)}
+	{#if options.password_permissions !== undefined}
+		{#each Object.keys(options.password_permissions) as password (password)}
 			<div class="row">
 				<Button click={() => del_password(password)} icon="delete"/>
 				<div class="grow id">
 					{password}
 				</div>
 				<div class="perms">
-					<PermissionButton bind:permissions={file.password_permissions[password]}/>
+					<PermissionButton bind:permissions={options.password_permissions[password]}/>
 				</div>
 			</div>
 		{/each}

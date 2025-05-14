@@ -7,8 +7,8 @@ import Modal from "util/Modal.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import Breadcrumbs from "filesystem/Breadcrumbs.svelte"
 import { FSNavigator } from "filesystem/FSNavigator";
-import type { FMNodeEvent } from "./FileManager.svelte";
 import type { FSNode } from "filesystem/FilesystemAPI";
+import { FileAction, type FileEvent } from "./FileManagerLib";
 
 let nav = new FSNavigator(false)
 let modal: Modal
@@ -33,25 +33,30 @@ $: selected_files = $nav.children.reduce((acc, file) => {
 
 // Navigation functions
 
-const node_click = (e: CustomEvent<FMNodeEvent>) => {
+const file_event = (e: CustomEvent<FileEvent>) => {
 	const index = e.detail.index
 
-	if (nav.children[index].type === "dir") {
-		nav.navigate(nav.children[index].path, true)
-	} else {
-		select_node(index)
-	}
-}
-let node_context = (e: CustomEvent<FMNodeEvent>) => {
-	// If this is a touch event we will select the item
-	if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
+	switch (e.detail.action) {
+	case FileAction.Click:
 		e.detail.original.preventDefault()
-		node_select(e)
+		if (nav.children[index].type === "dir") {
+			nav.navigate(nav.children[index].path, true)
+		} else {
+			select_node(index)
+		}
+		break
+	case FileAction.Context:
+		// If this is a touch event we will select the item
+		if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
+			e.detail.original.preventDefault()
+			select_node(index)
+		}
+		break
+	case FileAction.Select:
+		e.detail.original.preventDefault()
+		nav.children[index].fm_selected = !nav.children[index].fm_selected
+		break
 	}
-}
-const node_select = (e: CustomEvent<FMNodeEvent>) => {
-	const index = e.detail.index
-	nav.children[index].fm_selected = !nav.children[index].fm_selected
 }
 
 const toggle_view = () => {
@@ -171,18 +176,14 @@ onMount(() => {
 			large_icons={large_icons}
 			hide_edit
 			hide_branding
-			on:node_click={node_click}
-			on:node_context={node_context}
-			on:node_select={node_select}
+			on:file={file_event}
 		/>
 	{:else if directory_view === "gallery"}
 		<GalleryView
 			nav={nav}
 			show_hidden={show_hidden}
 			large_icons={large_icons}
-			on:node_click={node_click}
-			on:node_context={node_context}
-			on:node_select={node_select}
+			on:file={file_event}
 		/>
 	{:else if directory_view === "compact"}
 		<CompactView
@@ -190,9 +191,7 @@ onMount(() => {
 			show_hidden={show_hidden}
 			large_icons={large_icons}
 			hide_edit
-			on:node_click={node_click}
-			on:node_context={node_context}
-			on:node_select={node_select}
+			on:file={file_event}
 		/>
 	{/if}
 

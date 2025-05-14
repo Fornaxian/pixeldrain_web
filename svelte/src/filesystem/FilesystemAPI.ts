@@ -27,6 +27,8 @@ export type FSNode = {
 	abuse_type?: string,
 	abuse_report_time?: string,
 
+	custom_domain_name?: string,
+
 	file_size: number,
 	file_type: string,
 	sha256_sum: string,
@@ -72,6 +74,9 @@ export type FSContext = {
 // API parameters
 // ==============
 
+// NodeOptions are options which can be applied by sending a PUT request to a
+// filesystem node. This includes all values which can be set in
+// FSNode.properties
 export type NodeOptions = {
 	mode?: number,
 	created?: string,
@@ -82,6 +87,11 @@ export type NodeOptions = {
 	link_permissions?: FSPermissions,
 	user_permissions?: { [index: string]: FSPermissions },
 	password_permissions?: { [index: string]: FSPermissions },
+
+	// Custom domain name options
+	custom_domain_name?: string,
+	custom_domain_cert?: string,
+	custom_domain_key?: string,
 } & FSNodeProperties
 
 // API methods

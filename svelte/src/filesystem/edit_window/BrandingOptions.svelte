@@ -1,22 +1,23 @@
 <script lang="ts">
 import { createEventDispatcher } from "svelte";
 import ThemePresets from "./ThemePresets.svelte";
-import { fs_update, fs_node_type, type FSNode } from "filesystem/FilesystemAPI";
+import { fs_update, fs_node_type, type FSNode, type NodeOptions } from "filesystem/FilesystemAPI";
 import CustomBanner from "filesystem/viewers/CustomBanner.svelte";
 import HelpButton from "layout/HelpButton.svelte";
 import FilePicker from "filesystem/filemanager/FilePicker.svelte";
 let dispatch = createEventDispatcher()
 
 export let file: FSNode
-export let enabled = false
+export let options: NodeOptions
+export let enabled: boolean
 
-$: update_colors(file)
-const update_colors = (file: FSNode) => {
+$: update_colors(options)
+const update_colors = (options: NodeOptions) => {
 	if (enabled) {
-		file.properties.branding_enabled = "true"
+		options.branding_enabled = "true"
 		dispatch("style_change")
 	} else {
-		file.properties.branding_enabled = ""
+		options.branding_enabled = ""
 	}
 }
 
@@ -31,7 +32,7 @@ const handle_picker = async (e: CustomEvent<FSNode[]>) => {
 		alert("Please select one file")
 		return
 	}
-	let f = e.detail[0]
+	const f = e.detail[0]
 	let file_id = f.id
 
 	if (fs_node_type(f) !== "image") {
@@ -53,9 +54,9 @@ const handle_picker = async (e: CustomEvent<FSNode[]>) => {
 	}
 
 	if (picking === "brand_header_image") {
-		file.properties.brand_header_image = file_id
+		options.brand_header_image = file_id
 	} else if (picking === "brand_background_image") {
-		file.properties.brand_background_image = file_id
+		options.brand_background_image = file_id
 	}
 }
 
@@ -79,7 +80,7 @@ let highlight_info = false
 
 <fieldset disabled={!enabled} style="text-align: center;">
 	<legend>Theme presets</legend>
-	<ThemePresets bind:properties={file.properties}/>
+	<ThemePresets bind:properties={options}/>
 </fieldset>
 
 <fieldset class="grid" disabled={!enabled}>
@@ -88,8 +89,8 @@ let highlight_info = false
 		<div style="display: inline-block">Highlight</div>
 		<HelpButton bind:toggle={highlight_info}/>
 	</div>
-	<input type="color" bind:value={file.properties.brand_highlight_color}/>
-	<input type="text" bind:value={file.properties.brand_highlight_color}/>
+	<input type="color" bind:value={options.brand_highlight_color}/>
+	<input type="text" bind:value={options.brand_highlight_color}/>
 	{#if highlight_info}
 		<p class="span3">
 			The highlight colour is used for highlighting selected buttons and
@@ -99,20 +100,20 @@ let highlight_info = false
 		</p>
 	{/if}
 	<div>Button and input</div>
-	<input type="color" bind:value={file.properties.brand_input_color}/>
-	<input type="text" bind:value={file.properties.brand_input_color}/>
+	<input type="color" bind:value={options.brand_input_color}/>
+	<input type="text" bind:value={options.brand_input_color}/>
 	<div>Delete button</div>
-	<input type="color" bind:value={file.properties.brand_danger_color}/>
-	<input type="text" bind:value={file.properties.brand_danger_color}/>
+	<input type="color" bind:value={options.brand_danger_color}/>
+	<input type="text" bind:value={options.brand_danger_color}/>
 	<div>Background</div>
-	<input type="color" bind:value={file.properties.brand_background_color}/>
-	<input type="text" bind:value={file.properties.brand_background_color}/>
+	<input type="color" bind:value={options.brand_background_color}/>
+	<input type="text" bind:value={options.brand_background_color}/>
 	<div>Body</div>
-	<input type="color" bind:value={file.properties.brand_body_color}/>
-	<input type="text" bind:value={file.properties.brand_body_color}/>
+	<input type="color" bind:value={options.brand_body_color}/>
+	<input type="text" bind:value={options.brand_body_color}/>
 	<div>Card</div>
-	<input type="color" bind:value={file.properties.brand_card_color}/>
-	<input type="text" bind:value={file.properties.brand_card_color}/>
+	<input type="color" bind:value={options.brand_card_color}/>
+	<input type="text" bind:value={options.brand_card_color}/>
 </fieldset>
 
 <fieldset class="grid" disabled={!enabled}>
@@ -129,15 +130,15 @@ let highlight_info = false
 		<i class="icon">folder_open</i>
 		Pick
 	</button>
-	<input type="text" bind:value={file.properties.brand_header_image}/>
+	<input type="text" bind:value={options.brand_header_image}/>
 	<div>Header image link</div>
-	<input class="span2" type="text" bind:value={file.properties.brand_header_link}/>
+	<input class="span2" type="text" bind:value={options.brand_header_link}/>
 	<div>Background image ID</div>
 	<button on:click={() => pick_image("brand_background_image")}>
 		<i class="icon">folder_open</i>
 		Pick
 	</button>
-	<input type="text" bind:value={file.properties.brand_background_image}/>
+	<input type="text" bind:value={options.brand_background_image}/>
 </fieldset>
 
 <fieldset disabled={!enabled}>

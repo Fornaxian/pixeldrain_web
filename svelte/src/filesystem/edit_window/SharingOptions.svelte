@@ -3,20 +3,19 @@ import { createEventDispatcher } from "svelte";
 import { domain_url } from "util/Util.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 import { formatDate } from "util/Formatting";
-import type { FSNode } from "filesystem/FilesystemAPI";
+import type { FSNode, NodeOptions } from "filesystem/FilesystemAPI";
 
 let dispatch = createEventDispatcher()
-export let shared: boolean
 export let file: FSNode = {} as FSNode
+export let options: NodeOptions
 
 let embed_html: string
 let preview_area: HTMLDivElement
 
-$: is_shared = file.id !== undefined && file.id !== ""
 $: share_link = window.location.protocol+"//"+window.location.host+"/d/"+file.id
-$: embed_iframe(file)
-let embed_iframe = (file: FSNode) => {
-	if (!is_shared) {
+$: embed_iframe(file, options)
+let embed_iframe = (file: FSNode, options: NodeOptions) => {
+	if (!options.shared) {
 		example = false
 		embed_html = "File is not shared, can't generate embed code"
 		return
@@ -32,7 +31,7 @@ let embed_iframe = (file: FSNode) => {
 
 let example = false
 const toggle_example = () => {
-	if (is_shared) {
+	if (options.shared) {
 		example = !example
 		if (example) {
 			preview_area.innerHTML = embed_html
@@ -47,7 +46,7 @@ const update_shared = () => {
 	// the sharing link. But if the user disables sharing we don't automatically
 	// save so that the user can't accidentally discard a sharing link that's in
 	// use
-	if (shared) {
+	if (options.shared && !file.id) {
 		dispatch("save")
 	}
 }
@@ -68,7 +67,7 @@ const update_shared = () => {
 	<div>
 		<input
 			form="edit_form"
-			bind:checked={shared}
+			bind:checked={options.shared}
 			on:change={update_shared}
 			id="shared"
 			type="checkbox"
@@ -76,8 +75,8 @@ const update_shared = () => {
 		/>
 		<label for="shared">Share this file or directory</label>
 	</div>
-	<div class="form_grid">
-		{#if is_shared}
+	<div class="link_grid">
+		{#if options.shared}
 			<span>Public link: <a href={share_link}>{share_link}</a></span>
 			<CopyButton text={share_link}>Copy</CopyButton>
 		{/if}
@@ -109,7 +108,7 @@ const update_shared = () => {
 		<textarea bind:value={embed_html} style="width: 100%; height: 4em;"></textarea>
 		<br/>
 		<CopyButton text={embed_html}>Copy HTML</CopyButton>
-		<button on:click={toggle_example} class:button_highlight={example} disabled={!is_shared}>
+		<button on:click={toggle_example} class:button_highlight={example} disabled={!options.shared}>
 			<i class="icon">visibility</i> Show example
 		</button>
 	</div>
@@ -118,14 +117,41 @@ const update_shared = () => {
 	<div bind:this={preview_area} style="text-align: center;"></div>
 </fieldset>
 
+<!-- <fieldset>
+	<legend>Custom domain</legend>
+	<p>
+		Experimental options
+	</p>
+	<div class="form_grid">
+		<label for="custom_domain_name">Domain name</label>
+		<input
+			id="custom_domain_name"
+			bind:value={options.custom_domain_name}
+			type="text"
+			disabled={!options.shared}
+		/>
+
+		<label for="custom_domain_cert">Certificate</label>
+		<textarea id="custom_domain_cert" bind:value={options.custom_domain_cert} style="height: 4em;"></textarea>
+
+		<label for="custom_domain_key">Key</label>
+		<textarea id="custom_domain_key" bind:value={options.custom_domain_key} style="height: 4em;"></textarea>
+	</div>
+</fieldset> -->
+
 <style>
 .center {
 	text-align: center;
 }
 
-.form_grid {
+.link_grid {
 	display: grid;
 	grid-template-columns: 10fr auto;
 	align-items: center;
 }
+/* .form_grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	align-items: center;
+} */
 </style>
