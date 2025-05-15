@@ -1,5 +1,5 @@
 <script>
-import CreditDeposit from "layout/CreditDeposit.svelte";
+import Checkout from "layout/checkout/Checkout.svelte";
 import { onMount } from "svelte";
 import Euro from "util/Euro.svelte";
 import { formatDate } from "util/Formatting";
@@ -99,7 +99,7 @@ onMount(() => {
 			</p>
 		</div>
 	{:else}
-		<CreditDeposit/>
+		<Checkout/>
 	{/if}
 
 	<h3 id="invoices">Past invoices</h3>

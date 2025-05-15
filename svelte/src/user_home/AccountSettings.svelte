@@ -4,6 +4,7 @@ import CopyButton from "layout/CopyButton.svelte";
 import Form from "util/Form.svelte";
 import Button from "layout/Button.svelte";
 import OtpSetup from "./OTPSetup.svelte";
+    import { put_user } from "lib/PixeldrainAPI";
 
 let affiliate_link = window.location.protocol+"//"+window.location.host + "?ref=" + encodeURIComponent(window.user.username)
 let affiliate_deny = false
@@ -52,6 +53,22 @@ let account_settings = {
 				log in. If you forget your username you can still log in using
 				your e-mail address if you have one configured`,
 			separator: true,
+		}, {
+			name: "checkout_country",
+			label: "Country code used at checkout",
+			type: "text",
+			default_value: window.user.checkout_country,
+		}, {
+			name: "checkout_provider",
+			label: "Default payment provider used at checkout",
+			type: "text",
+			default_value: window.user.checkout_provider,
+		}, {
+			name: "checkout_name",
+			label: "Full name used at checkout",
+			type: "text",
+			default_value: window.user.checkout_name,
+			separator: true,
 		},
 	],
 	submit_label: `<i class="icon">save</i> Save`,
@@ -67,11 +84,23 @@ let account_settings = {
 		form.append("email", fields.email)
 		form.append("password_new", fields.password_new1)
 		form.append("username", fields.username)
+		form.append("checkout_country", fields.checkout_country)
+		form.append("checkout_provider", fields.checkout_provider)
+		form.append("checkout_name", fields.checkout_name)
 
-		const resp = await fetch(window.api_endpoint+"/user", { method: "PUT", body: form });
-		if(resp.status >= 400) {
-			return {error_json: await resp.json()}
+		try {
+			await put_user({
+				email: fields.email,
+				password_new: fields.password_new1,
+				username: fields.username,
+				checkout_country: fields.checkout_country,
+				checkout_provider: fields.checkout_provider,
+				checkout_name: fields.checkout_name,
+			})
+		} catch (err) {
+			return {error_json: err}
 		}
+
 		return {success: true, message: "Success! Your changes have been saved"}
 	},
 }

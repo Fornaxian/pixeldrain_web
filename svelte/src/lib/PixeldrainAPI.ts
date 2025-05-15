@@ -24,6 +24,9 @@ export type User = {
 	file_embed_domains: string,
 	skip_file_viewer: boolean,
 	affiliate_user_name: string,
+	checkout_country: string,
+	checkout_name: string,
+	checkout_provider: string,
 }
 
 export type Subscription = {

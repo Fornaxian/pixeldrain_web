@@ -35,9 +35,6 @@ type TemplateData struct {
 
 	Other    interface{}
 	URLQuery url.Values
-
-	// Only used for pages containing forms
-	Form Form
 }
 
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {

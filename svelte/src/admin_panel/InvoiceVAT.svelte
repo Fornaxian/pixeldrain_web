@@ -12,6 +12,7 @@ type Invoice = {
 	vat: number
 	processing_fee: number
 	country: string
+	payment_gateway: string
 	payment_method: string
 	status: string
 }
@@ -197,6 +198,7 @@ onMount(() => {
 				<td>VAT</td>
 				<td>Fee</td>
 				<td>Country</td>
+				<td>Gateway</td>
 				<td>Method</td>
 				<td>Status</td>
 			</tr>
@@ -210,6 +212,7 @@ onMount(() => {
 					<td><Euro amount={row.vat}/></td>
 					<td><Euro amount={row.processing_fee}/></td>
 					<td>{row.country}</td>
+					<td>{row.payment_gateway}</td>
 					<td>{row.payment_method}</td>
 					<td>{row.status}</td>
 				</tr>
