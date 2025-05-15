@@ -211,7 +211,7 @@ const video_keydown = e => {
 	</IconBlock>
 
 	{#if file.show_ads}
-		<BandwidthUsage file={file} on:reload/>
+		<BandwidthUsage/>
 	{/if}
 {/if}
 

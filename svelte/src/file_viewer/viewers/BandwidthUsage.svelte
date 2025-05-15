@@ -1,33 +1,20 @@
-<script>
+<script lang="ts">
 import { formatDataVolume } from "util/Formatting";
 import TextBlock from "layout/TextBlock.svelte"
 import ProgressBar from "util/ProgressBar.svelte";
 import { stats } from "lib/StatsSocket"
-
-export let file = {
-	size: 0,
-}
-
-$: transfer_left = $stats.limits.transfer_limit - $stats.limits.transfer_limit_used
 </script>
 
 {#if $stats.limits_init}
 	<TextBlock center={true}>
-		{#if file.size > transfer_left}
-			<div class="highlight_yellow">
-				This file is too large to download completely with your current
-				transfer limit. The first {formatDataVolume(transfer_left, 3)}
-				will download at full speed, but the remaining
-				{formatDataVolume(file.size - transfer_left, 3)} will take
-				longer
-			</div>
-		{/if}
-
 		<p>
-			You have used {formatDataVolume($stats.limits.transfer_limit_used, 3)} of
-			your daily {formatDataVolume($stats.limits.transfer_limit, 3)} transfer
-			limit. When the transfer limit is exceeded your download speed will
-			be reduced.
+			You have used
+			{formatDataVolume($stats.limits.transfer_limit_used, 3)}
+			of your daily
+			{formatDataVolume($stats.limits.transfer_limit, 3)}
+			transfer limit. When the transfer limit is exceeded the download
+			speed for new downloads will be limited. Exceeding the limit no
+			longer affects running downloads.
 		</p>
 
 		<p>

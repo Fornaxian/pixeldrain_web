@@ -109,7 +109,7 @@ export const seek = delta => {
 
 	<br/><br/>
 	{#if file.show_ads}
-		<BandwidthUsage file={file} on:reload/>
+		<BandwidthUsage/>
 	{/if}
 </div>
 

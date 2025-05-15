@@ -83,7 +83,7 @@ export const checkout = async (state: CheckoutState) => {
 	const form = new FormData()
 	form.set("amount", String(state.amount * 1e6))
 	form.set("network", state.provider.name)
-	form.set("country", state.country.alpha2)
+	form.set("country", state.country.alpha3)
 
 	if (state.provider.need_name) {
 		form.set("name", state.name)

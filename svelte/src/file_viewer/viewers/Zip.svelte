@@ -101,7 +101,7 @@ const recursive_set_url = (parent_path, file) => {
 </IconBlock>
 
 {#if file.show_ads}
-	<BandwidthUsage file={file} on:reload/>
+	<BandwidthUsage/>
 {/if}
 
 {#if status === "finished"}
