@@ -6,6 +6,7 @@ import type { FSNavigator } from "./FSNavigator";
 import EditWindow from "./edit_window/EditWindow.svelte";
 import FilePreview from "./viewers/FilePreview.svelte";
 import { fs_share_url } from "./FilesystemAPI";
+import ShareDialog from "./ShareDialog.svelte";
 
 let dispatch = createEventDispatcher()
 
@@ -15,6 +16,7 @@ export let edit_window: EditWindow
 export let edit_visible = false
 export let file_viewer: HTMLDivElement
 export let file_preview: FilePreview
+let share_dialog: ShareDialog
 
 $: share_url = fs_share_url($nav.path)
 let link_copied = false
@@ -27,22 +29,6 @@ export const copy_link = () => {
 	copy_text(share_url)
 	link_copied = true
 	setTimeout(() => {link_copied = false}, 60000)
-}
-let share = async () => {
-	if (share_url === "" || navigator.share === undefined) {
-		edit_window.edit(nav.base, true, "share")
-		return
-	}
-
-	if (navigator.share) {
-		await navigator.share({
-			title: nav.base.name,
-			text: "I would like to share '" + nav.base.name + "' with you",
-			url: share_url
-		})
-	} else {
-		alert("Navigator does not support sharing, use copy link button to copy the link instead")
-	}
 }
 
 let fullscreen = false
@@ -107,13 +93,13 @@ let expand = (e: Event) => {
 		{#if share_url !== ""}
 			<button on:click={copy_link} class:button_highlight={link_copied}>
 				<i class="icon">content_copy</i>
-				<span><u>C</u>opy Link</span>
+				<span><u>C</u>opy link</span>
 			</button>
 		{/if}
 
 		<!-- Share button is enabled when: The browser has a sharing API, or the user can edit the file (to enable sharing)-->
 		{#if $nav.base.id !== "me" && (navigator.share !== undefined || $nav.permissions.write === true)}
-			<button on:click={share}>
+			<button on:click={(e) => share_dialog.open(e, nav.path)}>
 				<i class="icon">share</i>
 				<span>Share</span>
 			</button>
@@ -147,6 +133,8 @@ let expand = (e: Event) => {
 		{/if}
 	</div>
 </div>
+
+<ShareDialog nav={nav} bind:this={share_dialog}/>
 
 <style>
 .toolbar {

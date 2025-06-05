@@ -2,7 +2,7 @@
 import Chart from "util/Chart.svelte";
 import { formatDataVolume, formatDate, formatThousands } from "util/Formatting";
 import Modal from "util/Modal.svelte";
-import { fs_path_url, fs_share_path, fs_share_url, fs_timeseries, type FSNode } from "./FilesystemAPI";
+import { fs_path_url, fs_share_hotlink_url, fs_share_url, fs_timeseries, type FSNode } from "./FilesystemAPI";
 import { color_by_name } from "util/Util.svelte";
 import { tick } from "svelte";
 import CopyButton from "layout/CopyButton.svelte";
@@ -21,7 +21,7 @@ const visibility_change = visible => {
 
 $: direct_url = $nav.base.path ? window.location.origin+fs_path_url($nav.base.path) : ""
 $: share_url = fs_share_url($nav.path)
-$: direct_share_url = $nav.base.path ? window.location.origin+fs_path_url(fs_share_path($nav.path)) : ""
+$: direct_share_url = fs_share_hotlink_url($nav.path)
 
 let chart
 let chart_timespan = 0

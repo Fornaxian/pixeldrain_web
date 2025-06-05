@@ -101,8 +101,10 @@ const download = (href, file_name) => {
 	let a = document.createElement("a")
 	a.href = href
 	a.download = file_name
-	a.click()
-	a.remove()
+
+	// You can't call .click() on an element that is not in the DOM. But
+	// emitting a click event works
+	a.dispatchEvent(new MouseEvent("click"))
 }
 </script>
 

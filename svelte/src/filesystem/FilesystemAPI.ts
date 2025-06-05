@@ -339,6 +339,15 @@ export const fs_share_url = (path: FSNode[]): string => {
 	return share_path
 }
 
+
+export const fs_share_hotlink_url = (path: FSNode[]): string => {
+	let share_path = fs_share_path(path)
+	if (share_path !== "") {
+		share_path = window.location.protocol + "//" + window.location.host + fs_path_url(share_path)
+	}
+	return share_path
+}
+
 export const fs_share_path = (path: FSNode[]): string => {
 	let share_url = ""
 	let bucket_idx = -1
@@ -373,6 +382,7 @@ export const fs_download = (node: FSNode) => {
 		a.download = node.name + ".zip"
 	}
 
-	a.click()
-	a.remove()
+	// You can't call .click() on an element that is not in the DOM. But
+	// emitting a click event works
+	a.dispatchEvent(new MouseEvent("click"))
 }
