@@ -1,20 +1,21 @@
 <script lang="ts">
 let dialog: HTMLDialogElement
 
-export const open = (location: DOMRect) => {
+export const open = (button_rect: DOMRect) => {
 	// Show the window so we can get the location
 	dialog.showModal()
 
-	const edge_offset = 5
+	const edge_offset = 2
 
 	// Get the egdes of the screen, so the window does not spawn off-screen
-	const window_rect = dialog.getBoundingClientRect()
-	const max_left = window.innerWidth - window_rect.width - edge_offset
-	const max_top = window.innerHeight - window_rect.height - edge_offset
+	const dialog_rect = dialog.getBoundingClientRect()
+	const max_left = window.innerWidth - dialog_rect.width - edge_offset
+	const max_top = window.innerHeight - dialog_rect.height - edge_offset
 
-	// Prevent the window from being glued to the edges
-	const min_left = Math.max(location.left, edge_offset)
-	const min_top = Math.max(location.bottom, edge_offset)
+	// Position the dialog in horizontally in the center of the button and
+	// verticially below it
+	const min_left = Math.max((button_rect.left + (button_rect.width/2)) - (dialog_rect.width/2), edge_offset)
+	const min_top = Math.max(button_rect.bottom, edge_offset)
 
 	// Place the window
 	dialog.style.left = Math.round(Math.min(min_left, max_left)) + "px"

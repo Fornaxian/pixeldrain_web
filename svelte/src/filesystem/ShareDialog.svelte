@@ -4,6 +4,7 @@ import { fs_node_icon, fs_share_hotlink_url, fs_share_url, fs_update, type FSNod
 import { copy_text } from "util/Util.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 import Dialog from "layout/Dialog.svelte";
+import { fade } from "svelte/transition";
 
 export let nav: FSNavigator
 
@@ -79,24 +80,9 @@ const share = async () => {
 
 <Dialog bind:this={dialog}>
 	<div class="dialog_inner">
-		{#if toast !== "" && !is_parent}
-			<div class="highlight_green">{toast}</div>
-			<div class="separator"></div>
-		{/if}
-
-		{#if is_parent}
-			<div>
-				By sharing this link you also share the parent directory:
-				<img src={fs_node_icon(parent_node, 64, 64)} class="node_icon" alt="icon"/>
-				{parent_node.name}
-				<br/>
-				<button on:click={async e => {await make_public(); await share()}}>
-					Click here to only share
-					<img src={fs_node_icon(base, 64, 64)} class="node_icon" alt="icon"/>
-					{base.name}
-				</button>
-			</div>
-			<div class="separator"></div>
+		{#if toast !== ""}
+			<div class="highlight_green" transition:fade>{toast}</div>
+			<div class="separator" transition:fade></div>
 		{/if}
 
 		<div>Sharing link</div>
@@ -114,6 +100,21 @@ const share = async () => {
 			</div>
 			<a href="{direct_share_url}">{direct_share_url}</a>
 		</div>
+
+		{#if is_parent}
+			<div class="separator"></div>
+			<div>
+				This link also gives access to
+				<img src={fs_node_icon(parent_node, 64, 64)} class="node_icon" alt="icon"/>
+				{parent_node.name}
+				<br/>
+				<button on:click={async e => {await make_public(); await share()}} style="display: inline;">
+					Only share
+					<img src={fs_node_icon(base, 64, 64)} class="node_icon" alt="icon"/>
+					{base.name}
+				</button>
+			</div>
+		{/if}
 	</div>
 </Dialog>
 
@@ -122,6 +123,7 @@ const share = async () => {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+	max-width: 40em;
 }
 .link_copy {
 	display: flex;
@@ -147,6 +149,7 @@ const share = async () => {
 	height: 1px;
 	border: none;
 	background-color: var(--separator);
-	margin: 0.5em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
 </style>
