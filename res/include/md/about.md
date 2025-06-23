@@ -177,6 +177,26 @@ If you live in any of these locations and are having trouble accessing
 pixeldrain **please contact your ISP**. I am ready to comply with whatever
 demands they have, I just want my website to be accessible again.
 
+### Statement regarding the Italy block
+
+I have been working on the blocking situation in Italy, but there has been no
+progress. I have contacted every phone number or e-mail address I could find.
+All my e-mails are ignored and half of the phone numbers are out of service and
+the other half connect to (very impatient) people who don't speak english.
+
+I do not know what else I can do to make more progress on this situation. I have
+exhausted my options. Is there anyone in Italy or who speaks Italian who would
+be willing to help? I need to get in contact with the Polizia Postale, which has
+been blocking access to pixeldrain.com nationwide for well over a year now.
+
+Not only are they blocking access to the site (which is bad enough), they are
+also spreading a terrifying and misleading image of what pixeldrain is being
+used for. This is seriously affecting the reputation of my business and myself.
+I'd really like to get this resolved. I am also willing to offer a financial
+compensation for anyone who can help me get this resolved. If you think you can
+help, please contact me [on Discord](https://discord.gg/UDjaBGwr4p). My username
+is Fornax.
+
 ## Why can't I find pixeldrain links on Google?
 
 Files on pixeldrain used to be searchable with search engines if they were
