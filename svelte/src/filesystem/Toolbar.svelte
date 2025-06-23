@@ -195,7 +195,7 @@ Toolbar.svelte and the .label max-width in FileStats.svelte */
 		flex-direction: row;
 	}
 	.separator {
-		margin: 2px 0;
+		margin: 0;
 	}
 
 	.hidden_vertical {
