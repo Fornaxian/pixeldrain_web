@@ -56,8 +56,7 @@ let upload_widget
 					<b>Privacy</b> - There is too much tracking on the web
 					nowadays. Pixeldrain goes in the other direction, this site
 					does not contain any advertisements or third party tracking
-					scripts. We don't even require you to enter an e-mail
-					address to register an account
+					scripts
 				</li>
 				<li>
 					Bullet lists
