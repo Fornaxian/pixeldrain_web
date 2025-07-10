@@ -146,7 +146,7 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 
 		templatePaths = append(templatePaths, path)
 		if !silent {
-			log.Info("Template found: %s", path)
+			log.Debug("Template found: %s", path)
 		}
 		return nil
 	}); err != nil {
@@ -186,7 +186,7 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 		}
 
 		if !silent {
-			log.Info("Template parsed: %s", path)
+			log.Debug("Template parsed: %s", path)
 		}
 
 		return nil
