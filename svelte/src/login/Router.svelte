@@ -28,7 +28,14 @@ onMount(async () => {
 		user.username !== ""
 	) {
 		console.debug("User is already logged in, redirecting to user dashboard")
-		window.location.href = "/user"
+
+		let login_redirect = params.get("redirect")
+		if (typeof login_redirect === "string" && login_redirect.startsWith("/")) {
+			console.debug("redirecting user to requested path", login_redirect)
+			window.location.href = window.location.protocol+"//"+window.location.host+login_redirect
+		} else {
+			window.location.href = "/user"
+		}
 	}
 })
 </script>
