@@ -2,6 +2,7 @@
 import { onMount } from "svelte";
 import HotlinkProgressBar from "user_home/HotlinkProgressBar.svelte";
 import StorageProgressBar from "user_home/StorageProgressBar.svelte";
+import ProgressBar from "util/ProgressBar.svelte";
 
 let transfer_cap = 0
 let transfer_used = 0
@@ -59,3 +60,22 @@ Total storage space used:
 Premium data transfer:
 (<a href="/user/sharing/bandwidth">set custom limit</a>)
 <HotlinkProgressBar used={transfer_used} total={transfer_cap}></HotlinkProgressBar>
+
+<br/>
+File count (does not apply to filesystem)
+<ProgressBar total={10000} used={window.user.file_count}></ProgressBar>
+<div class="gauge_labels">
+	<div>{window.user.file_count}</div>
+	<div>10000</div>
+</div>
+
+<style>
+.gauge_labels {
+	display: flex;
+	justify-content: space-between;
+	line-height: 1em;
+}
+.gauge_labels > div {
+	flex: 0 0 auto;
+}
+</style>
