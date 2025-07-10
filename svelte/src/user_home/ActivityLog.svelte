@@ -111,6 +111,8 @@ onMount(() => {
 							Expired
 						{:else if row.event === "file_instance_lost"}
 							File has been lost
+						{:else if row.event === "filesystem_node_lost"}
+							Filesystem node has been lost
 						{/if}
 					</td>
 				</tr>
