@@ -32,6 +32,26 @@ plans there's a monthly limit. If you turn hotlinking off in the account
 settings then other people will use their own daily download limit. Otherwise
 they will use your account's transfer limit.
 
+### Metadata storage cost
+
+Files and directories stored in the filesystem also use space in the database.
+To account for this we added an extra rule when counting space usage. All files
+under 1000 bytes will be rounded up to 1000 bytes. All directories in the
+filesystem will also use 1000 bytes of storage space. There are a couple of
+reasons why this rule was put into place:
+
+* Storing metadata like file names and permissions costs space in the database.
+  Database storage is much more expensive than bulk data storage.
+* If directories were free to store, you could theoretically store unlimited
+  amounts of data in directory names and not pay for it.
+* Accounts with lots of small files and directories slow down database
+  maintenance processes.
+* Directories on other filesystems like ext4 also use storage space. Typically
+  that's 4 KiB, so 1000 bytes is still low in comparison.
+
+To put the pricing into perspective: Storing 1000 bytes on pixeldrain costs
+€0,000000004. For €1 a month you can store 250 million directories.
+
 ## Free download limit
 
 The pixeldrain filesystem uses the same download limit as the regular files on
