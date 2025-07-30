@@ -19,12 +19,11 @@ Keep in mind that these are maximums, you are allowed to go lower.
 |--------------------------|--------------|-------------|
 | Storage price per month  | € 1.50 / TB  | {{ div 1.5 $price | formatSC }} / TB |
 | Download price           | € 2.00 / TB  | {{ div 2.0 $price | formatSC }} / TB |
-| Upload price             | € 1.50 / TB  | {{ div 2.0 $price | formatSC }} / TB |
+| Upload price             | € 0.50 / TB  | {{ div 0.5 $price | formatSC }} / TB |
 | Contract formation price | € 0.10       | {{ div 0.1 $price | formatSC }} |
 
 <sup>
 	Based on exchange rates from Kraken.
-	[Explanation of units](https://siawiki.tech/wallet/siacoin).
 </sup>
 
 This may seem low, but keep in mind that these prices are before redundancy. We

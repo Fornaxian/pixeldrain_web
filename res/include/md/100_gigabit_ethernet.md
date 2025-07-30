@@ -206,7 +206,7 @@ memory pages. A memory page is usually 4096B. Here is what these three values me
    allocate any memory. Needless to say this is terrible for performance.
 
 After a lot of experimentation with these values I have come to the conclusion
-that the best values for these parameters are 60% of RAM, 70% of RAM and 80% of
+that the best values for these parameters are 40% of RAM, 50% of RAM and 60% of
 RAM. This will use most of the RAM for TCP buffers if needed, but also leaves
 plenty for your applications.
 
@@ -216,7 +216,7 @@ I set these values dynamically per host with Ansible:
 {{noescape `- name: configure tcp_mem
   sysctl:
     name: net.ipv4.tcp_mem
-    value: "{{ (mempages|int * 0.6)|int }} {{ (mempages|int * 0.7)|int }} {{ (mempages|int * 0.8)|int }}"
+    value: "{{ (mempages|int * 0.4)|int }} {{ (mempages|int * 0.5)|int }} {{ (mempages|int * 0.6)|int }}"
     state: present
   vars:
     mempages: "{{ ansible_memtotal_mb * 256 }}" # There are 256 mempages in a MiB`}}
