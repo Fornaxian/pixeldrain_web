@@ -96,6 +96,16 @@ export const dict_to_form = (dict: Object) => {
 // API methods
 // ===========
 
+export type UserSession = {
+	auth_key: string,
+	creation_ip_address: string,
+	user_agent: string,
+	app_name: string,
+	creation_time: string,
+	last_used_time: string,
+	valid_domains: string[],
+}
+
 export const get_user = async () => {
 	if ((window as any).user !== undefined) {
 		return (window as any).user as User

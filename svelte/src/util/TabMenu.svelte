@@ -17,18 +17,16 @@ import Footer from "layout/Footer.svelte";
 export let title = ""
 export let pages: Tab[] = []
 
-let navigate = (path: string, title: string) => {
-	window.document.title = title+" ~ pixeldrain"
-	window.history.pushState({}, window.document.title, path)
-
+const navigate = (page: Tab) => {
+	window.history.pushState({}, window.document.title, page.path)
 	get_page()
 }
 
-let get_page = () => {
+const get_page = () => {
 	current_page = null
 	current_subpage = null
 
-	pages.forEach(page => {
+	for (const page of pages) {
 		if (window.location.pathname.endsWith(page.path)) {
 			current_page = page
 		}
@@ -41,19 +39,23 @@ let get_page = () => {
 				}
 			})
 		}
-	})
+	}
 
 	// If no page is active, default to home
 	if (!current_page) {
 		current_page = pages[0]
 	}
 
+	// If no subpage is active, default to the first subpage, if there are any
 	if (!current_subpage && current_page.subpages) {
 		current_subpage = current_page.subpages[0]
 	}
 
-	console.log("Page", current_page)
-	console.log("Subpage", current_subpage)
+	title = current_subpage === null ? current_page.title : current_subpage.title
+	window.document.title = title+" ~ pixeldrain"
+
+	console.debug("Page", current_page)
+	console.debug("Subpage", current_subpage)
 
 	pages = pages
 }
@@ -76,7 +78,7 @@ onMount(() => get_page())
 					<a class="button"
 						href="{page.path}"
 						class:button_highlight={current_page && page.path === current_page.path}
-						on:click|preventDefault={() => {navigate(page.path, page.title)}}>
+						on:click|preventDefault={() => {navigate(page)}}>
 						<i class="icon">{page.icon}</i>
 						<span>{page.title}</span>
 					</a>
@@ -95,7 +97,7 @@ onMount(() => get_page())
 						<a class="button"
 							href="{page.path}"
 							class:button_highlight={current_subpage && page.path === current_subpage.path}
-							on:click|preventDefault={() => {navigate(page.path, page.title)}}>
+							on:click|preventDefault={() => {navigate(page)}}>
 							<i class="icon">{page.icon}</i>
 							<span>{page.title}</span>
 						</a>

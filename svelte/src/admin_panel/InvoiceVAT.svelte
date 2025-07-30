@@ -2,27 +2,16 @@
 import { onMount } from "svelte";
 import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
-import Euro from "util/Euro.svelte";
-import { get_endpoint } from "lib/PixeldrainAPI";
-
-type Invoice = {
-	id: string
-	time: string
-	amount: number
-	vat: number
-	processing_fee: number
-	country: string
-	payment_gateway: string
-	payment_method: string
-	status: string
-}
+import Expandable from "util/Expandable.svelte";
+import SortableTable, { FieldType } from "layout/SortableTable.svelte";
+import { country_name, get_admin_invoices, type Invoice } from "lib/AdminAPI";
+import PayPalVat from "./PayPalVAT.svelte";
 
 let loading = true
 let invoices: Invoice[] = []
 
 let year = 0
 let month = 0
-let month_str = ""
 
 type Total = {
 	count: number
@@ -49,19 +38,35 @@ const add_total = (i: Invoice) => {
 	totals_country[i.country].vat += i.vat
 	totals_country[i.country].fee += i.processing_fee
 }
+const obj_to_list = (obj: {[id: string]: Total}) => {
+	let list: ({id: string} & Total)[] = []
+	for (const key in obj) {
+		list.push({id: key, ...obj[key]})
+	}
+	return list
+}
+
+const eu_countries = [
+	"AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR",
+	"DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL",
+	"PL", "PT", "RO", "SK", "SI", "ES", "SE",
+]
+const obj_to_list_eu = (obj: {[id: string]: Total}) => {
+	let list: ({id: string} & Total)[] = []
+	for (const key in obj) {
+		if (eu_countries.includes(key)) {
+			list.push({id: key, ...obj[key]})
+		}
+	}
+	return list
+}
 
 const get_invoices = async () => {
 	loading = true;
-	month_str = year + "-" + ("00"+(month)).slice(-2)
 	try {
-		const resp = await fetch(get_endpoint()+"/admin/invoices/"+month_str);
-		if(resp.status >= 400) {
-			throw new Error(await resp.text());
-		}
+		const resp = await get_admin_invoices(year, month)
 
-		let resp_json = await resp.json() as Invoice[];
-
-		resp_json.sort((a, b) => {
+		resp.sort((a, b) => {
 			if (a.status !== b.status) {
 				return a.status.localeCompare(b.status)
 			}
@@ -73,7 +78,7 @@ const get_invoices = async () => {
 
 		totals_provider = {}
 		totals_country = {}
-		resp_json.forEach(row => {
+		resp.forEach(row => {
 			if (row.status === "paid") {
 				add_total(row)
 			}
@@ -82,7 +87,8 @@ const get_invoices = async () => {
 			}
 		});
 
-		invoices = resp_json
+		invoices = resp
+		filter_invoices()
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -96,7 +102,6 @@ const last_month = () => {
 		month = 12
 		year--
 	}
-
 	get_invoices()
 }
 const next_month = () => {
@@ -105,7 +110,6 @@ const next_month = () => {
 		month = 1
 		year++
 	}
-
 	get_invoices()
 }
 
@@ -115,12 +119,49 @@ onMount(() => {
 	month = now.getMonth()+1
 	get_invoices()
 })
+
+let status_filter = {
+	canceled: {checked: false},
+	expired: {checked: false},
+	open: {checked: false},
+	paid: {checked: true},
+}
+let gateway_filter = {}
+let method_filter = {}
+
+const filter_invoices = () => {
+	records_hidden = 0
+	invoices_filtered = invoices.filter(inv => {
+		if (status_filter[inv.status] === undefined) {
+			status_filter[inv.status] = {checked: true}
+		}
+		if (gateway_filter[inv.payment_gateway] === undefined) {
+			gateway_filter[inv.payment_gateway] = {checked: true}
+		}
+		if (method_filter[inv.payment_method] === undefined) {
+			method_filter[inv.payment_method] = {checked: true}
+		}
+
+		if(
+			status_filter[inv.status].checked === true &&
+			gateway_filter[inv.payment_gateway].checked === true &&
+			method_filter[inv.payment_method].checked === true
+		) {
+			return true
+		}
+
+		records_hidden++
+		return false
+	})
+}
+let records_hidden = 0
+let invoices_filtered: Invoice[] = []
 </script>
 
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h3>{month_str}</h3>
+	<h3>{year + "-" + ("00"+(month)).slice(-2)}</h3>
 	<div class="toolbar">
 		<button on:click={last_month}>
 			<i class="icon">chevron_left</i>
@@ -133,93 +174,123 @@ onMount(() => {
 		</button>
 	</div>
 
-	<h4>Invoices per payment processor</h4>
-	<div class="table_scroll" style="text-align: initial;">
-		<table>
-			<thead>
-				<tr>
-					<td>Provider</td>
-					<td>Count</td>
-					<td>Amount</td>
-					<td>VAT</td>
-					<td>Fee</td>
-				</tr>
-			</thead>
-			<tbody>
-				{#each Object.entries(totals_provider) as [key, tot]}
-					<tr>
-						<td>{key}</td>
-						<td>{tot.count}</td>
-						<td><Euro amount={tot.amount}/></td>
-						<td><Euro amount={tot.vat}/></td>
-						<td><Euro amount={tot.fee}/></td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
+	<Expandable click_expand>
+		<div slot="header" class="header">Per payment processor</div>
+		<SortableTable
+			index_field="id"
+			rows={obj_to_list(totals_provider)}
+			columns={[
+				{field: "id", label: "Provider", type: FieldType.Text},
+				{field: "count", label: "Count", type: FieldType.Number},
+				{field: "amount", label: "Amount", type: FieldType.Euro},
+				{field: "vat", label: "VAT", type: FieldType.Euro},
+				{field: "fee", label: "Fee", type: FieldType.Euro},
+			]}
+			totals
+		/>
+	</Expandable>
 
-	<h4>Invoices per country</h4>
-	<div class="table_scroll" style="text-align: initial;">
-		<table>
-			<thead>
-				<tr>
-					<td>Country</td>
-					<td>Count</td>
-					<td>Amount</td>
-					<td>VAT</td>
-					<td>Fee</td>
-				</tr>
-			</thead>
-			<tbody>
-				{#each Object.entries(totals_country) as [key, tot]}
-					<tr>
-						<td>{key}</td>
-						<td>{tot.count}</td>
-						<td><Euro amount={tot.amount}/></td>
-						<td><Euro amount={tot.vat}/></td>
-						<td><Euro amount={tot.fee}/></td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
+	<Expandable click_expand>
+		<div slot="header" class="header">Per country</div>
+		<SortableTable
+			index_field="id"
+			rows={obj_to_list(totals_country)}
+			columns={[
+				{field: "id", label: "Country", type: FieldType.Func, func: val => country_name(val)},
+				{field: "count", label: "Count", type: FieldType.Number},
+				{field: "amount", label: "Amount", type: FieldType.Euro},
+				{field: "vat", label: "VAT", type: FieldType.Euro},
+				{field: "fee", label: "Fee", type: FieldType.Euro},
+			]}
+			totals
+		/>
+	</Expandable>
+
+	<Expandable click_expand>
+		<div slot="header" class="header">In European Union</div>
+		<SortableTable
+			index_field="id"
+			rows={obj_to_list_eu(totals_country)}
+			columns={[
+				{field: "id", label: "Country", type: FieldType.Func, func: val => country_name(val)},
+				{field: "count", label: "Count", type: FieldType.Number},
+				{field: "amount", label: "Amount", type: FieldType.Euro},
+				{field: "vat", label: "VAT", type: FieldType.Euro},
+				{field: "fee", label: "Fee", type: FieldType.Euro},
+			]}
+			totals
+		/>
+	</Expandable>
+
+	<Expandable click_expand>
+		<div slot="header" class="header">PayPal VAT</div>
+		<PayPalVat invoices={invoices}/>
+	</Expandable>
 
 	<h4>All invoices</h4>
+	<div class="filters">
+		<div class="filter">
+			Status:<br/>
+			{#each Object.keys(status_filter) as filter}
+				<input
+					type="checkbox"
+					id="status_{filter}"
+					bind:checked={status_filter[filter].checked}
+					on:change={filter_invoices}>
+				<label for="status_{filter}">{filter}</label>
+				<br/>
+			{/each}
+		</div>
+		<div class="filter">
+			Gateways:<br/>
+			{#each Object.keys(gateway_filter) as filter}
+				<input
+					type="checkbox"
+					id="gateway_{filter}"
+					bind:checked={gateway_filter[filter].checked}
+					on:change={filter_invoices}>
+				<label for="gateway_{filter}">{filter}</label>
+				<br/>
+			{/each}
+		</div>
+		<div class="filter">
+			Methods:<br/>
+			{#each Object.keys(method_filter) as filter}
+				<input
+					type="checkbox"
+					id="method_{filter}"
+					bind:checked={method_filter[filter].checked}
+					on:change={filter_invoices}>
+				<label for="method_{filter}">{filter}</label>
+				<br/>
+			{/each}
+		</div>
+	</div>
+
+	<br/>
+	Total: {invoices.length}
+	Visible: {invoices.length-records_hidden}
+	Hidden: {records_hidden}
 </section>
 
-<div class="table_scroll" style="text-align: initial;">
-	<table>
-		<thead>
-			<tr>
-				<td>Time</td>
-				<td>ID</td>
-				<td>Amount</td>
-				<td>VAT</td>
-				<td>Fee</td>
-				<td>Country</td>
-				<td>Gateway</td>
-				<td>Method</td>
-				<td>Status</td>
-			</tr>
-		</thead>
-		<tbody>
-			{#each invoices as row (row.id)}
-				<tr>
-					<td>{formatDate(row.time)}</td>
-					<td>{row.id}</td>
-					<td><Euro amount={row.amount}/></td>
-					<td><Euro amount={row.vat}/></td>
-					<td><Euro amount={row.processing_fee}/></td>
-					<td>{row.country}</td>
-					<td>{row.payment_gateway}</td>
-					<td>{row.payment_method}</td>
-					<td>{row.status}</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
-</div>
+
+<SortableTable
+	index_field="id"
+	sort_field="time"
+	rows={invoices_filtered}
+	columns={[
+		{field: "time", label: "Time", type: FieldType.Func, func: val => formatDate(val)},
+		{field: "id", label: "ID", type: FieldType.Text},
+		{field: "amount", label: "Amount", type: FieldType.Euro},
+		{field: "vat", label: "VAT", type: FieldType.Euro},
+		{field: "processing_fee", label: "Fee", type: FieldType.Euro},
+		{field: "country", label: "Country", type: FieldType.Func, func: val => country_name(val)},
+		{field: "payment_gateway", label: "Gateway", type: FieldType.Text},
+		{field: "payment_method", label: "Method", type: FieldType.Text},
+		{field: "status", label: "Status", type: FieldType.Text},
+	]}
+	totals
+/>
 
 <style>
 .toolbar {
@@ -229,4 +300,15 @@ onMount(() => {
 }
 .toolbar > * { flex: 0 0 auto; }
 .toolbar_spacer { flex: 1 1 auto; }
+.header {
+	display: flex;
+	height: 100%;
+	align-items: center;
+	padding-left: 0.5em;
+}
+.filters {
+	display: flex;
+	flex-direction: row;
+	gap: 1em;
+}
 </style>

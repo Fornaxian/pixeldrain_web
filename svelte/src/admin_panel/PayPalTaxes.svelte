@@ -156,16 +156,16 @@ onMount(() => {
 					<td>8040 - Omzet PayPal inkomsten</td>
 				</tr>
 				<tr>
-					<td><Euro amount={totals.vat-per_country.NL.vat}/></td>
-					<td>Geen BTW</td>
-					<td><Euro amount={0}/></td>
-					<td>1651 - BTW OSS</td>
-				</tr>
-				<tr>
 					<td><Euro amount={totals.amount-totals.fee-per_country.NL.amount}/></td>
 					<td>Geen BTW</td>
 					<td><Euro amount={0}/></td>
 					<td>8040 - Omzet PayPal inkomsten</td>
+				</tr>
+				<tr>
+					<td><Euro amount={totals.vat-per_country.NL.vat}/></td>
+					<td>Geen BTW</td>
+					<td><Euro amount={0}/></td>
+					<td>1651 - BTW OSS</td>
 				</tr>
 			</tbody>
 		</table>

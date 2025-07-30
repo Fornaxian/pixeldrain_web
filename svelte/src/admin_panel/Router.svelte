@@ -14,7 +14,7 @@ import InvoiceVat from "./InvoiceVAT.svelte";
 let pages = [
 	{
 		path: "/admin",
-		title: "Status",
+		title: "Admin panel",
 		icon: "home",
 		component: Home,
 	}, {

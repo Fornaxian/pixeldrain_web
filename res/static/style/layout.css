@@ -452,9 +452,8 @@ tr {
 	border-bottom: 1px var(--separator) solid;
 }
 
-tr>td,
-tr>th {
-	padding: 0.2em;
+tr>td {
+	padding: 0.2em 0.5em;
 }
 
 /* API documentation markup */
