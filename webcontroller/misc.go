@@ -24,37 +24,34 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 			return
 		}
 
-		w.Write([]byte(fmt.Sprintf(
+		fmt.Fprintf(w,
 			`{
-	"Version": "12.4.1",
+	"Version": "18.0.1",
 	"DestinationType": "ImageUploader, TextUploader, FileUploader",
-	"RequestMethod": "POST",
-	"RequestURL": "https://pixeldrain.com/api/file",
+	"RequestMethod": "PUT",
+	"RequestURL": "https://pixeldrain.com/api/file/{filename}",
 	"Headers": {
 		"Authorization": "Basic %s"
 	},
-	"Body": "MultipartFormData",
-	"FileFormName": "file",
-	"URL": "https://pixeldrain.com/u/$json:id$",
-	"ThumbnailURL": "https://pixeldrain.com/api/file/$json:id$/thumbnail",
-	"DeletionURL": "https://pixeldrain.com/u/$json:id$"
+	"Body": "Binary",
+	"URL": "https://pixeldrain.com/u/{json:id}",
+	"ThumbnailURL": "https://pixeldrain.com/api/file/{json:id}/thumbnail",
+	"DeletionURL": "https://pixeldrain.com/u/{json:id}"
 }
 `,
 			base64.StdEncoding.EncodeToString([]byte(
 				templateData.User.Username+":"+sess.AuthKey.String(),
-			)),
-		)))
+			)))
 	} else {
 		w.Write([]byte(
 			`{
-	"Version": "12.4.1",
+	"Version": "18.0.1",
 	"DestinationType": "ImageUploader, TextUploader, FileUploader",
-	"RequestMethod": "POST",
-	"RequestURL": "https://pixeldrain.com/api/file",
-	"Body": "MultipartFormData",
-	"FileFormName": "file",
-	"URL": "https://pixeldrain.com/u/$json:id$",
-	"ThumbnailURL": "https://pixeldrain.com/api/file/$json:id$/thumbnail"
+	"RequestMethod": "PUT",
+	"RequestURL": "https://pixeldrain.com/api/file/{filename}",
+	"Body": "Binary",
+	"URL": "https://pixeldrain.com/u/{json:id}",
+	"ThumbnailURL": "https://pixeldrain.com/api/file/{json:id}/thumbnail"
 }
 `,
 		))
