@@ -83,11 +83,11 @@ let upload_widget
 			</div>
 			<div>
 				<div>Minimum fee *</div>
-				<div>€1 / month</div>
+				<div>€0.01 / day</div>
 			</div>
 		</div>
 		<p style="text-align: center;">
-			* The minimum fee is only charged when usage is less than €1
+			* The minimum fee is only charged when daily usage is less than €0.01
 		</p>
 
 		<h2>What you get</h2>
@@ -108,8 +108,8 @@ let upload_widget
 				server failures
 			</li>
 			<li>
-				<span class="bold">1.8 Terabits per second</span> of total bandwidth
-				capacity
+				<span class="bold">1.6 Terabits per second</span> of total
+				bandwidth capacity
 			</li>
 			<li>
 				Twenty-three high-performance caching servers optimized for data

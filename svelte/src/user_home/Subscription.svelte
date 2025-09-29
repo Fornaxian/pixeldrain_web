@@ -174,8 +174,8 @@ const update = async (plan) => {
 				</p>
 				<ul>
 					<li>
-						€1 / month minimum price (only charged when usage is
-						below €1)
+						€0.01 / day minimum price (only charged when usage is
+						below €0.01)
 					</li>
 					<li>
 						€4 per TB per month for storage
