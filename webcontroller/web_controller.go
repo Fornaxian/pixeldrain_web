@@ -187,10 +187,10 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 func middleware(handle httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		// Redirect the user to the correct domain
-		if strings.HasPrefix(r.Host, "www.") {
+		if hostname, found := strings.CutPrefix(r.Host, "www."); found {
 			http.Redirect(
 				w, r,
-				"https://"+strings.TrimPrefix(r.Host, "www.")+r.URL.String(),
+				"https://"+hostname+r.URL.String(),
 				http.StatusMovedPermanently,
 			)
 			return
