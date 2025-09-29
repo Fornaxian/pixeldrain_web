@@ -217,9 +217,9 @@ your [user settings page](/user/settings).
 
 Here is a summary of all the rules and limitations:
 
-* Each paying customer using your affiliate code will earn you €0.50 in prepaid
-  credit every month. The credit is added to your account on a daily basis, as
-  you can see on the [transactions page](/user/prepaid/transactions).
+* Each paying customer using your affiliate code will earn you €0.01 in prepaid
+  credit every day. The credit is added to your account on a daily basis, as you
+  can see on the [transactions page](/user/prepaid/transactions).
 * Sponsoring someone with an affiliate code does not cost you any extra money.
   The resulting fee comes out of pixeldrain's pockets.
 * You can only earn pixeldrain credit with the affiliate program. There is no

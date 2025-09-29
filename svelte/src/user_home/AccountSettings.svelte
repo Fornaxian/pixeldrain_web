@@ -115,9 +115,8 @@ const affiliate_settings = {
 			default_value: window.user.affiliate_user_name,
 			description: `The affiliate user name can be the name of a
 				pixeldrain account you wish to support with your subscription.
-				The account will receive a fee of €0.50 for every month that
-				your premium plan is active. This does not cost you anything
-				extra.`,
+				The account will receive a fee of €0.01 for every day that your
+				premium plan is active. This does not cost you anything extra.`,
 		},
 	],
 	submit_label: `<i class="icon">save</i> Save`,

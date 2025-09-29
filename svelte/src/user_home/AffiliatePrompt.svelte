@@ -74,7 +74,7 @@ const deny = () => {
 	<section>
 		<p>
 			Hi! {referral} wants you to sponsor their pixeldrain account. This
-			will give them €0.50 every month in pixeldrain prepaid credit. They
+			will give them €0.01 every day in pixeldrain prepaid credit. They
 			can use this credit to get a discount on their file storage and
 			sharing costs. Here is a short summary of what this entails:
 		</p>
