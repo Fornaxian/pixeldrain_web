@@ -58,11 +58,11 @@ export const payment_providers: PaymentProvider[] = [
 		name: "btc",
 		label: "Bitcoin",
 		crypto: true,
-		// }, {
-		// 	icon: "dogecoin",
-		// 	name: "doge",
-		// 	label: "Dogecoin",
-		// 	crypto: true,
+	}, {
+		icon: "dogecoin",
+		name: "doge",
+		label: "Dogecoin",
+		crypto: true,
 	}, {
 		icon: "monero",
 		name: "xmr",
