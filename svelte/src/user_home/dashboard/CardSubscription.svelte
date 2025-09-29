@@ -55,6 +55,15 @@ import { formatDataVolume } from "util/Formatting";
 			Files never expire
 		{/if}
 	</li>
+
+	{#if window.user.subscription.id !== ""}
+		<li>
+			Support: For questions related to your account you can send a
+			message to <a
+			href="mailto:support@pixeldrain.com">support@pixeldrain.com</a>.
+			Make sure to include your username.
+		</li>
+	{/if}
 </ul>
 
 <style>
