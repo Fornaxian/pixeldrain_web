@@ -104,6 +104,11 @@ receive:
 * Do not repeatedly send reports about files which have already been removed in
   the past. We will block your e-mail address if this happens.
 
+If you are not sure if your mailserver is configured correctly, then you can try
+the spam test at [mail-tester.com](https://www.mail-tester.com/). Send an e-mail
+to the address listed on this site and it will tell you if your mailserver is
+configured right. Pay attention to the SPF, DKIM and DMARC results.
+
 If your abuse report is rejected for one of the above reasons then you will
 receive a reply with instructions on how to fix it.
 
