@@ -47,12 +47,10 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<Tooltip>
-				<span slot="label" class="bold">€1 / month minimum</span>
+				<span slot="label" class="bold">€0.01 / day minimum</span>
 				<p>
-					The minimum fee is only charged when usage is less than €1.
-					This calculation is per day, the €1 amount is divided by the
-					number of days in the month and if your usage is lower than
-					that, you will be charged the minimum fee.
+					The minimum fee is only charged when daily usage is less
+					than €0.01.
 				</p>
 			</Tooltip>
 		</div>
