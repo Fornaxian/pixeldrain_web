@@ -36,8 +36,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 		} else if err.Error() == "permission_denied" {
 			wc.serveForbidden(w, r)
 		} else {
-			log.Error("Failed to get path: %s", err)
-			wc.templates.Run(w, r, "500", td)
+			wc.templates.Run(w, r, apiErrorTemplate(err, w), td)
 		}
 		return
 	}

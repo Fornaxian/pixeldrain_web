@@ -1,0 +1,24 @@
+{{define "429"}}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "meta_tags" "429 - Too Many Requests"}}
+	</head>
+
+	<body>
+		{{template "page_top" .}}
+		<header>
+			<h1>429 - Too Many Requests</h1>
+		</header>
+		<div id="page_content" class="page_content">
+			<section>
+				<p>
+					You have made too many requests in too little time. Please
+					calm down.
+				</p>
+			</section>
+		</div>
+		{{template "page_bottom" .}}
+		{{template "analytics"}}
+	</body>
+</html>
+{{end}}

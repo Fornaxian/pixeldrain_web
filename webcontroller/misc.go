@@ -4,8 +4,10 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"fornaxian.tech/log"
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -56,4 +58,25 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 `,
 		))
 	}
+}
+
+func apiErrorTemplate(err error, w http.ResponseWriter) (templateName string) {
+	if apiErr, ok := err.(pixelapi.Error); ok {
+		switch apiErr.Status {
+		case http.StatusNotFound:
+			w.WriteHeader(http.StatusNotFound)
+			return "404"
+		case http.StatusTooManyRequests:
+			w.WriteHeader(http.StatusTooManyRequests)
+			return "428"
+		}
+	} else if strings.HasSuffix(err.Error(), "invalid control character in URL") {
+		w.WriteHeader(http.StatusNotFound)
+		return "404"
+	} else {
+		log.Error("API request error occurred: %s", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return "500"
+	}
+	return ""
 }
