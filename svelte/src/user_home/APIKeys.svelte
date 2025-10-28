@@ -1,4 +1,5 @@
 <script>
+import CopyButton from "layout/CopyButton.svelte";
 import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 
@@ -129,7 +130,10 @@ const logout = async (key) => {
 		<tbody>
 			{#each rows as row (row.auth_key)}
 				<tr style="border-bottom: none;">
-					<td>{row.auth_key}</td>
+					<td>
+						<CopyButton text={row.auth_key} small_icon>Copy</CopyButton>
+						{row.auth_key}
+					</td>
 					<td>{formatDate(row.creation_time, true, true, false)}</td>
 					<td>{formatDate(row.last_used_time, true, true, false)}</td>
 					<td>{row.creation_ip_address}</td>
