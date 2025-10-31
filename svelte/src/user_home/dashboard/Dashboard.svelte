@@ -215,12 +215,25 @@ onMount(() => {
 	overflow: auto;
 	padding: 6px;
 }
-.size_1 { width: 400px; }
-.size_1 > .card_component { max-height: 400px; }
-.size_2 { width: 800px; }
-.size_2 > .card_component { max-height: 600px; }
-.size_3 { width: 1200px; }
-.size_3 > .card_component { max-height: 800px; }
+
+.size_1 {
+	width: 400px;
+}
+.size_1 > .card_component {
+	max-height: 400px;
+}
+.size_2 {
+	width: 808px; /* Add 8px to account for gap between cards */
+}
+.size_2 > .card_component {
+	max-height: 600px;
+}
+.size_3 {
+	width: 1216px; /* Add 16px to account for two gaps between cards */
+}
+.size_3 > .card_component {
+	max-height: 800px;
+}
 
 .title_box {
 	flex: 0 0 auto;
