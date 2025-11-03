@@ -540,7 +540,7 @@ const keyboard_event = evt => {
 				<span>Report</span>
 			</button>
 
-			{#if !disable_download_button}
+			{#if file.can_edit}
 				<button
 					class="toolbar_button"
 					title="Include this file in your own webpages"

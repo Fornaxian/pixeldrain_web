@@ -8,10 +8,18 @@ let loading = false
 let success_message
 
 // Embedding settings
+let allow_all = false
 let embed_domains = ""
 
 const save_embed = async () => {
 	loading = true
+
+	if (allow_all === true) {
+		embed_domains = "*"
+	} else if (allow_all === false && embed_domains === "*") {
+		embed_domains = ""
+	}
+
 	const form = new FormData()
 	form.append("embed_domains", embed_domains)
 
@@ -35,6 +43,7 @@ const save_embed = async () => {
 }
 
 onMount(() => {
+	allow_all = window.user.file_embed_domains === "*"
 	embed_domains = window.user.file_embed_domains
 })
 </script>
@@ -59,20 +68,28 @@ onMount(() => {
 	<p>
 		Here you can control which websites are allowed to embed your files in
 		their web pages. If a website that is not on this list tries to embed
-		one of your files the request will be blocked.
+		one of your files the request will be blocked. This applies to both
+		hotlink and iframe embeds. The list should be formatted as a list of
+		domain names separated by a space. Like this: 'pixeldrain.com google.com
+		twitter.com'.
 	</p>
-	<p>
-		The list should be formatted as a list of domain names separated by a
-		space. Like this: 'pixeldrain.com google.com twitter.com'
-	</p>
-	Domain names:<br/>
-	<form class="form_row" on:submit|preventDefault={save_embed}>
-		<input class="grow" bind:value={embed_domains} type="text"/>
-		<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
+	<form on:submit|preventDefault={save_embed} class="highlight_border">
+		<input id="allow_all" type="checkbox" bind:checked={allow_all}/>
+		<label for="allow_all">Allow all domains</label>
+		<br/>
+		Domain names:
+		<br/>
+		<div class="form_row">
+			<input class="grow" bind:value={embed_domains} type="text"/>
+			<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
+		</div>
 	</form>
 </section>
 
 <style>
+form {
+	text-align: initial;
+}
 .form_row {
 	display: inline-flex;
 	flex-direction: row;

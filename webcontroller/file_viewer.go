@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -51,6 +52,44 @@ func (vd *fileViewerData) themeOverride(r *http.Request, files []pixelapi.ListFi
 	}
 }
 
+func setEmbedHeaders(w http.ResponseWriter, files []pixelapi.ListFile) {
+	var headerSet = false
+	for _, file := range files {
+		if len(file.EmbedDomains) != 0 {
+			// Parse the domains and convert to URL
+			var urls []string
+			for _, domain := range file.EmbedDomains {
+				// If the domain is a wildcard, we don't set any header at all.
+				// This allows any site to embed the files
+				if domain == "*" {
+					return
+				}
+
+				if u, err := url.Parse("https://" + domain); err != nil {
+					log.Debug("Failed to parse URL: %s", err)
+					continue
+				} else {
+					urls = append(urls, u.String())
+				}
+			}
+
+			w.Header().Add(
+				"Content-Security-Policy",
+				fmt.Sprintf("frame-ancestors '%s'", strings.Join(urls, "; ")),
+			)
+			headerSet = true
+			break
+		}
+	}
+
+	if !headerSet {
+		w.Header().Add(
+			"Content-Security-Policy",
+			"frame-ancestors 'self'",
+		)
+	}
+}
+
 // ServeFileViewer controller for GET /u/:id
 func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	// If the user agent is Wget we redirect it to the API so that the file can
@@ -90,6 +129,9 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 		http.Redirect(w, r, "/api/file/"+p.ByName("id"), http.StatusSeeOther)
 		return
 	}
+
+	// Restrict embedding
+	setEmbedHeaders(w, files)
 
 	templateData.OGData = wc.metadataFromFile(r, files[0].FileInfo)
 
@@ -163,6 +205,9 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 		wc.templates.Run(w, r, "list_not_found", templateData)
 		return
 	}
+
+	// Restrict embedding
+	setEmbedHeaders(w, list.Files)
 
 	templateData.Title = fmt.Sprintf("%s ~ pixeldrain", list.Title)
 	templateData.OGData = wc.metadataFromList(r, list)
