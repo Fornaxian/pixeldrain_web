@@ -6,6 +6,8 @@ import Expandable from "util/Expandable.svelte";
 import SortableTable, { FieldType } from "layout/SortableTable.svelte";
 import { country_name, get_admin_invoices, type Invoice } from "lib/AdminAPI";
 import PayPalVat from "./PayPalVAT.svelte";
+import Chart from "util/Chart.svelte";
+import { color_by_name } from "util/Util.svelte";
 
 let loading = true
 let invoices: Invoice[] = []
@@ -89,6 +91,7 @@ const get_invoices = async () => {
 
 		invoices = resp
 		filter_invoices()
+		render_earnings_graph()
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -156,6 +159,40 @@ const filter_invoices = () => {
 }
 let records_hidden = 0
 let invoices_filtered: Invoice[] = []
+
+let chart: Chart
+const render_earnings_graph = () => {
+	let labels: string[] = []
+	let amounts: number[] = []
+
+	for (const inv of invoices) {
+		if (inv.status !== "paid") {
+			continue
+		}
+
+		let date = new Date(inv.time)
+
+		if (labels[date.getDate()-1] === undefined) {
+			labels[date.getDate()-1] = date.getDate().toString()
+			amounts[date.getDate()-1] = 0
+		}
+
+		amounts[date.getDate()-1] += (inv.amount - inv.processing_fee)
+	}
+
+	chart.data().datasets = [
+		{
+			label: "Earnings",
+			data: amounts,
+			borderWidth: 2,
+			pointRadius: 0,
+			borderColor: color_by_name("highlight_color"),
+			backgroundColor: color_by_name("highlight_color"),
+		},
+	]
+	chart.data().labels = labels
+	chart.update()
+}
 </script>
 
 <LoadingIndicator loading={loading}/>
@@ -173,6 +210,8 @@ let invoices_filtered: Invoice[] = []
 			<i class="icon">chevron_right</i>
 		</button>
 	</div>
+
+	<Chart bind:this={chart} data_type="euro"/>
 
 	<Expandable click_expand>
 		<div slot="header" class="header">Per payment processor</div>

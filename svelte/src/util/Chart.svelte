@@ -94,6 +94,8 @@ onMount(() => {
 							callback: function (value, index, values) {
 								if (data_type == "bytes") {
 									return formatDataVolume(value, 3);
+								} else if (data_type === "euro") {
+									return "€ " + (value/1e6).toFixed(2)
 								}
 								return formatNumber(value, 3);
 							},

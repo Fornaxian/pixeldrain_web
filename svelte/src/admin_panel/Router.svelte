@@ -54,6 +54,11 @@ let pages = [
 		component: MollieSettlements,
 		subpages: [
 			{
+				path: "/admin/invoices",
+				title: "Invoices",
+				icon: "receipt",
+				component: InvoiceVat,
+			}, {
 				path: "/admin/mollie_settlements",
 				title: "Mollie Settlements",
 				icon: "paid",
@@ -63,11 +68,6 @@ let pages = [
 				title: "Paypal Taxes",
 				icon: "paypal",
 				component: PayPalTaxes,
-			}, {
-				path: "/admin/invoices",
-				title: "Invoices",
-				icon: "receipt",
-				component: InvoiceVat,
 			},
 		],
 	},
