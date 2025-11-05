@@ -174,6 +174,25 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 
 		<div class="left_col">
+			File embedding
+		</div>
+		<div class="feature_cell span2 left pro_feat">
+			<span class="bold">No</span>
+		</div>
+		<div class="feature_cell prepaid_feat">
+			<Tooltip>
+				<span slot="label" class="bold">Yes</span>
+				<p>
+					You can embed files on your website either with an iframe
+					tag or directly with video or image elements. You can
+					control which domain names are allowed to embed your files
+					on the <a href="/user/sharing/embedding">embedding
+					controls</a> page.
+				</p>
+			</Tooltip>
+		</div>
+
+		<div class="left_col">
 			Max file size
 		</div>
 		<div class="feature_cell free_feat">

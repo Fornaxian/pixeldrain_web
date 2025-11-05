@@ -3,6 +3,7 @@ import CopyButton from "layout/CopyButton.svelte";
 import ThemePicker from "util/ThemePicker.svelte";
 import { domain_url } from "util/Util.svelte";
 import { file_type } from "./FileUtilities.svelte";
+import Persistence from "icons/Persistence.svelte";
 
 export let file = {
 	id: "",
@@ -117,8 +118,8 @@ const update_example = () => {
 			it.
 		</p>
 		<p>
-			Embedding is a premium-only feature. To use it you must configure a
-			list of domains which are allowed to embed your files in the <a
+			<Persistence/> Embedding is a premium-only feature. You can control
+			which domains which are allowed to embed your files on the <a
 			href="/user/sharing/embedding">embedding controls</a> page. To use
 			the hotlink embed you must also enable hotlinking on the <a
 			href="/user/sharing/bandwidth">sharing settings page</a>.

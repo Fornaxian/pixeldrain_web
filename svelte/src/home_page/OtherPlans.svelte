@@ -23,6 +23,10 @@
 				footer and background images on the download pages
 				for your files
 			</div>
+			<div>
+				<span class="text_highlight">File embedding</span>: You can
+				embed files in your own website
+			</div>
 		</div>
 	</div>
 	<div>
@@ -44,6 +48,7 @@
 			<div><span class="text_highlight">16 TB</span> transfer limit</div>
 			<div><span class="text_highlight">8 TB</span> storage space</div>
 			<div><span class="text_highlight">File viewer branding</span></div>
+			<div><span class="text_highlight">File embedding</span></div>
 		</div>
 	</div>
 	<div>
@@ -65,6 +70,7 @@
 			<div><span class="text_highlight">32 TB</span> transfer limit</div>
 			<div><span class="text_highlight">16 TB</span> storage space</div>
 			<div><span class="text_highlight">File viewer branding</span></div>
+			<div><span class="text_highlight">File embedding</span></div>
 		</div>
 	</div>
 	<div>
@@ -86,6 +92,7 @@
 			<div><span class="text_highlight">64 TB</span> transfer limit</div>
 			<div><span class="text_highlight">32 TB</span> storage space</div>
 			<div><span class="text_highlight">File viewer branding</span></div>
+			<div><span class="text_highlight">File embedding</span></div>
 		</div>
 	</div>
 </div>
