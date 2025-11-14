@@ -134,7 +134,7 @@ pixeldrain's end of the connection.
   on Linux, check the guide below).
 * Your router or firewall are misconfigured (I have seen issues where the
   firewall caused large delays in uploading because it was inspecting network
-  packets). This can also explain cases there uploading to pixeldrain is slower
+  packets). This can also explain cases where uploading to pixeldrain is slower
   than Google Drive for example, as Google Drive is such a popular product that
   many firewalls have built in exclusions for uploads to these servers.
 * Your network provider is experiencing network congestion.
