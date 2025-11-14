@@ -234,4 +234,4 @@ case-sensitive. The password must be left empty
 There is a public filesystem REST API, but it is not documented currently. The
 best reference for how to use the API would be the TypeScript client which the
 website uses as well. That can be found [on
-GitHub](https://github.com/Fornaxian/pixeldrain_web/blob/master/svelte/src/filesystem/FilesystemAPI.mts).
+GitHub](https://github.com/Fornaxian/pixeldrain_web/blob/master/svelte/src/filesystem/FilesystemAPI.ts).

@@ -118,6 +118,85 @@ That means that the quality of our network is not always the best. It's possible
 that your ISP has a bad connection to our ISP which can cause bottlenecks. We
 are always working on improving our connectivity.
 
+## My upload speed to pixeldrain is low. What causes this?
+
+The simple answer is that there's no way to know. There are lots of things that
+can affect upload speed. Pixeldrain's servers are optimized to make downloads as
+fast as possible, because that is something I can control. With uploads, it's
+your computer and your network which control the speed. I can't change that.
+
+Here is a list of things that can cause low upload speeds to pixeldrain. The
+list is ordered from issues on your end of the connection to issues on
+pixeldrain's end of the connection.
+
+* The software you're using is not optimized for uploading.
+* Your operating system is not optimized for uploading (this can be configured
+  on Linux, check the guide below).
+* Your router or firewall are misconfigured (I have seen issues where the
+  firewall caused large delays in uploading because it was inspecting network
+  packets). This can also explain cases there uploading to pixeldrain is slower
+  than Google Drive for example, as Google Drive is such a popular product that
+  many firewalls have built in exclusions for uploads to these servers.
+* Your network provider is experiencing network congestion.
+* The internet backbone is experiencing issues. This can happen whenever a
+  [submarine cable](https://www.submarinecablemap.com/) is destroyed in a
+  miliary conflict for example.
+* Pixeldrain's network provider is having an outage. In order to reduce costs,
+  pixeldrain uses the cheapest bandwidth available. For this reason outages can
+  occur more frequently than with more premium connections.
+* Pixeldrain's caching servers are overloaded. When there is a large surge in
+  traffic to pixeldrain, the cache servers can overload which causes things to
+  slow down. You can see the status of the caching servers on the [status
+  page](/status).
+* Pixeldrain's storage servers are overloaded. When this is the case you'll see
+  that the upload hangs at 100% progress for a while. Then the file was
+  successfully uploaded to the caching server, but for the upload to complete it
+  needs to be transferred to the storage cluster which can take time too.
+
+Here are a few things that you might be able to change in order to make uploads
+faster:
+
+### Upload concurrency
+
+Uploading more files at the same time often helps with increasing the speed,
+especially when uploading small files.
+
+* Using FTP: With FTP clients you can often choose how many files you would like
+  to transfer concurrently. In FileZilla you can set the "Maximum simultaneous
+  transfers" to 10 in the settings for example.
+
+* Using rclone: With rclone you can set the number of concurrent transfers with
+  the `--transfers 10` command line option. The option to disable HTTP2
+  (`--disable-http2`) also improves performance in some cases. This performance
+  degradation is caused by [a bug](https://github.com/golang/go/issues/47840) in
+  the language rclone is written in.
+
+### TCP buffer size
+
+When uploading files, your computer needs to keep the sent data in memory to
+verify that it was received on the other side of the link. The buffers used to
+hold this data are set to 16 MiB by default on Linux. Unforunately that is often
+too small when sending files over a high latency or high loss connection. The
+optimal size for these buffers can be calculated using the [bandwidth-delay
+product](https://en.wikipedia.org/wiki/Bandwidth-delay_product) formula. On
+pixeldrain servers the buffers are set to 256 MiB, this is a good value for high
+speed connections. You can increase the buffer sizes by adding these lines to
+`/etc/sysctl.d/sysctl.conf`:
+
+```
+net.ipv4.tcp_congestion_control=bbr
+net.ipv4.tcp_shrink_window=1
+net.ipv4.tcp_wmem=4096 65536 268435456
+net.core.wmem_max=268435456
+net.ipv4.tcp_rmem=4096 65536 268435456
+net.core.rmem_max=268435456
+```
+
+After adding the lines, run `sudo sysctl -p` to apply the settings.
+
+For information on what these do, and more network optimization tricks on Linux,
+refer to my [network optimization guide](/100_gigabit_ethernet).
+
 ## Is pixeldrain available in every country?
 
 I strive to make pixeldrain as accessible as possible to everyone. Pixeldrain
