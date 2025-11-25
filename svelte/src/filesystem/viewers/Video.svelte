@@ -69,6 +69,7 @@ onMount(() => {
 		navigator.mediaSession.setActionHandler('previoustrack', () => dispatch("open_sibling", -1));
 		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("open_sibling", 1));
 	}
+	get_autoplay()
 })
 
 const video_keydown = (e: KeyboardEvent) => {
@@ -79,6 +80,22 @@ const video_keydown = (e: KeyboardEvent) => {
 		e.stopPropagation()
 	}
 }
+
+let autoplay: boolean
+const get_autoplay = () => {
+	autoplay = localStorage.getItem("video_autoplay") === "1"
+	return autoplay
+}
+const toggle_autoplay = () => {
+	autoplay = !autoplay
+	localStorage.setItem("video_autoplay", autoplay ? "1":"0")
+}
+const on_end = () => {
+	if (autoplay) {
+		nav.open_sibling(1)
+	}
+}
+
 </script>
 
 <div class="container">
@@ -107,6 +124,7 @@ const video_keydown = (e: KeyboardEvent) => {
 					on:pause={() => playing = false }
 					on:play={() => playing = true }
 					on:keydown={video_keydown}
+					on:ended={on_end}
 					use:video_position={() => $nav.base.sha256_sum.substring(0, 8)}
 				>
 					<source src={fs_path_url($nav.base.path)} type={$nav.base.file_type} />
@@ -134,6 +152,9 @@ const video_keydown = (e: KeyboardEvent) => {
 			</button>
 			<button on:click={() => dispatch("open_sibling", 1) }>
 				<i class="icon">skip_next</i>
+			</button>
+			<button on:click={() => toggle_autoplay() } class:button_highlight={autoplay} title="Play next video when the video ends">
+				<i class="icon">queue_play_next</i>
 			</button>
 			<div style="width: 16px; height: 8px;"></div>
 			<button on:click={toggle_mute} class:button_red={player && player.muted}>
