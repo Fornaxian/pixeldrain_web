@@ -13,8 +13,7 @@ import { stats } from "lib/StatsSocket"
 			of your daily
 			{formatDataVolume($stats.limits.transfer_limit, 3)}
 			transfer limit. When the transfer limit is exceeded the download
-			speed for new downloads will be limited. Exceeding the limit no
-			longer affects running downloads.
+			speed for new downloads will be limited.
 		</p>
 
 		<p>

@@ -51,7 +51,7 @@ let pages = [
 		path: "/admin/mollie_settlements",
 		title: "Prepaid accounting",
 		icon: "paid",
-		component: MollieSettlements,
+		component: InvoiceVat,
 		subpages: [
 			{
 				path: "/admin/invoices",

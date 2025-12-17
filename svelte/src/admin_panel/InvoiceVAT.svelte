@@ -198,7 +198,7 @@ const render_earnings_graph = () => {
 <LoadingIndicator loading={loading}/>
 
 <section>
-	<h3>{year + "-" + ("00"+(month)).slice(-2)}</h3>
+	<h2>{year + "-" + ("00"+(month)).slice(-2)}</h2>
 	<div class="toolbar">
 		<button on:click={last_month}>
 			<i class="icon">chevron_left</i>
@@ -266,7 +266,7 @@ const render_earnings_graph = () => {
 		<PayPalVat invoices={invoices}/>
 	</Expandable>
 
-	<h4>All invoices</h4>
+	<h3>All invoices</h3>
 	<div class="filters">
 		<div class="filter">
 			Status:<br/>
