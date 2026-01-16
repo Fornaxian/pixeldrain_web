@@ -4,8 +4,8 @@
 
 ## For how long will my files be stored?
 
-Files will be removed if they have not been accessed for 120 days. When a file
-is downloaded the expiry time is reset to 120 days from the current day. This
+Files will be removed if they have not been accessed for 60 days. When a file
+is downloaded the expiry time is reset to 60 days from the current day. This
 only happens when someone downloads more than 10% of the whole file in a single
 request. So if you have a 5 GB file the timer is only extended when you download
 at least 500 MB. The expiry timer is not updated when it was already updated

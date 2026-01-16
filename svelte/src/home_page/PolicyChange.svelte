@@ -5,48 +5,34 @@ import Expandable from "util/Expandable.svelte";
 <section>
 	<Expandable click_expand>
 		<div slot="header" class="header">
-			Important policy change! Click to expand
+			Pixeldrain's file expiry rules are changing! Click for more details
 		</div>
 		<p>
-			Sometime this summer pixeldrain will start requiring you to be
-			logged in to an account in order to upload new files. This is
-			necessary due to the large amount of regional blockings that have
-			been implemented against pixeldrain recently.
-		</p>
-		<p>
-			None of the countries that have blocked pixeldrain have specified a
-			valid reason, nor have I been able to contact them to ask what's
-			going on. But I can only guess that it has something to do with
-			abusive content being uploaded. Pixeldrain currently uses an IP
-			address banning system for restricting uploads from users who have
-			violated the content policy, but at the scale the site operates at
-			now that has proven to not be effective anymore. For that reason
-			pixeldrain will be switching to an account ban system.
-		</p>
-		<p>
-			The account ban system will restrict file uploads to your account
-			for a certain amount of time which depends on the type of the
-			offence. Serious violations might get your account banned for up to
-			a year, minor violations maybe a day or a week per file. It will
-			depend on the amount of abuse that slips through. Once the account
-			ban system is activated the IP ban system will be disabled.
-		</p>
-		<p>
-			Account banning is only effective if there is some system in place
-			to prevent the automated creation of accounts. There is already a
-			CAPTCHA in place on the registration page. I might start requiring
-			e-mail addresses for new accounts as well. The lack of an e-mail
-			address requirement has caused many issues with lost accounts as
-			well, so it had to happen anyway. I will also be looking into
-			integrating with OAuth providers (Google, Microsoft, Facebook,
-			Patreon, etc) to make the login flow simpler for newcomers.
-		</p>
-		<p>
-			After the site has been cleaned up it might take a long time before
-			all the regional blocking issues are resolved. Because of that I
-			will be adding alternative domain names for premium subscribers to
-			use. Most of the blocks are only on DNS level, which means they can
-			be circumvented by using a different domain name.
+			Pixeldrain is getting pretty close to running out of storage space.
+			If the rate of growth holds on, the site will be full in about two
+			months. I can't order more storage capacity because I'm still
+			financially recovering from the last storage expansion. And the cost
+			of server hardware has absolutely exploded over the past few months.
+		</p><p>
+			For this reason I will be reducing the expiry time for files
+			uploaded on free and Pro accounts. The file expiry for free users
+			will be reduced from 120 days to 60 days. And, to keep the 2x ratio
+			with the free plan, the expiry time for Pro accounts will be reduced
+			from 240 days to 120 days. The new file expiry times will affect all
+			files on Pixeldrain, even those uploaded before the new limits are
+			imposed.
+		</p><p>
+			File expiry only happens for files uploaded on the home page or
+			dashboard of the site, these are the files which show up on the My
+			Files page. This mechanism does not apply for files uploaded to the
+			premium Filesystem, files uploaded there do not expire at all.
+		</p><p>
+			The maximum size for files on free accounts will also be reduced
+			from 20 GB to 10 GB. Files which are larger than the new limit of 10
+			GB and were uploaded before the change are unaffected. The file size
+			limit of 100 GB for all premium users will not change.
+		</p><p>
+			These changes will be applied on <b>26 january 2026</b>.
 		</p>
 	</Expandable>
 </section>
@@ -58,6 +44,6 @@ import Expandable from "util/Expandable.svelte";
 	justify-content: center;
 	height: 100%;
 	border-radius: 6px;
-	background-color: rgba(0, 0, 255, 0.2);
+	background-color: rgba(255, 255, 0, 0.2);
 }
 </style>

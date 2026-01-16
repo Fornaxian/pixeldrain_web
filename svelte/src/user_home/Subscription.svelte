@@ -146,7 +146,7 @@ const update = async (plan) => {
 					<li>4 TB transfer limit (higher plans available)</li>
 					<li>Access to the <a href="/filesystem">filesystem</a></li>
 					<li>2 TB filesytem storage limit (higher plans available)</li>
-					<li>File expire after 240 days for Pro, and never on the other plans</li>
+					<li>File expire after 120 days for Pro, and never on the other plans</li>
 				</ul>
 			</div>
 		</div>
@@ -208,7 +208,7 @@ const update = async (plan) => {
 			</div>
 			<div class="feat_normal round_br" class:feat_highlight={subscription === ""}>
 				<ul>
-					<li>Standard free plan, files expire after 120 days.</li>
+					<li>Standard free plan, files expire after 60 days.</li>
 					<li>Download limit of 6 GB per day</li>
 				</ul>
 			</div>

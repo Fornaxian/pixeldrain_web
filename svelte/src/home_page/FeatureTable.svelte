@@ -130,21 +130,23 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell free_feat">
 			<Tooltip>
-				<span slot="label" class="bold">120 days (4 months)</span>
+				<span slot="label" class="bold">60 days (2 months)</span>
 				<p>
 					Files expire when they have not been downloaded in the last
-					120 days. A download is counted when more than 10% of the
+					60 days. A download is counted when more than 10% of the
 					whole file was downloaded in a single request.
 				</p>
 			</Tooltip>
 		</div>
 		<div class="feature_cell pro_feat">
 			<Tooltip>
-				<span slot="label" class="bold">240 days (8 months)</span>
+				<span slot="label" class="bold">120 days (4 months)</span>
 				<p>
-					The Pro plan has 240 day file expiry. The same rules apply
-					as the free plan. Higher Patreon subscription plans are
-					available where files do not expire at all.
+					Files expire when they have not been downloaded in the last
+					120 days. A download is counted when more than 10% of the
+					whole file was downloaded in a single request. Higher
+					Patreon subscription plans are available where files do not
+					expire at all.
 				</p>
 			</Tooltip>
 		</div>
@@ -196,7 +198,7 @@ import OtherPlans from "./OtherPlans.svelte";
 			Max file size
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">20 GB</span> per file
+			<span class="bold">10 GB</span> per file
 		</div>
 		<div class="feature_cell span2 right pro_feat">
 			<span class="bold">100 GB</span> per file
