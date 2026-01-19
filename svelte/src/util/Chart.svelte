@@ -1,6 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { formatDataVolume, formatNumber } from "./Formatting";
+import { formatDataVolume, formatDuration, formatNumber } from "./Formatting";
 import { color_by_name } from "./Util.svelte";
 import {
 	Chart,
@@ -30,6 +30,7 @@ export let data_type = ""
 export let legend = true
 export let tooltips = true
 export let ticks = true
+export let animations = true
 export let height = "300px"
 
 export const chart = () => {
@@ -77,7 +78,10 @@ onMount(() => {
 					},
 					tooltip: {
 						enabled: tooltips,
-					},
+						itemSort: (a, b) => {
+							return b.raw - a.raw
+						},
+					}
 				},
 				layout: {
 					padding: {
@@ -96,6 +100,8 @@ onMount(() => {
 									return formatDataVolume(value, 3);
 								} else if (data_type === "euro") {
 									return "€ " + (value/1e6).toFixed(2)
+								} else if (data_type === "duration") {
+									return formatDuration(value, 2);
 								}
 								return formatNumber(value, 3);
 							},
@@ -125,6 +131,11 @@ onMount(() => {
 			}
 		}
 	);
+
+	if (!animations) {
+		chart_object.options.animation = false
+		chart_object.options.transitions.active.animation.duration = 0
+	}
 })
 </script>
 

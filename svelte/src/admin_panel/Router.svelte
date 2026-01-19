@@ -9,6 +9,7 @@ import EmailReporters from "./EmailReporters.svelte";
 import MollieSettlements from "./MollieSettlements.svelte";
 import PayPalTaxes from "./PayPalTaxes.svelte";
 import UserBans from "./user_bans/UserBans.svelte";
+import HostMetrics from "./HostMetrics.svelte";
 import InvoiceVat from "./InvoiceVAT.svelte";
 
 let pages = [
@@ -47,6 +48,11 @@ let pages = [
 		title: "User Management",
 		icon: "person",
 		component: UserManagement,
+	}, {
+		path: "/admin/host_metrics",
+		title: "Host Metrics",
+		icon: "area_chart",
+		component: HostMetrics,
 	}, {
 		path: "/admin/mollie_settlements",
 		title: "Prepaid accounting",

@@ -54,11 +54,24 @@ const hour = minute * 60
 const day = hour * 24
 
 export const formatDuration = (ms: number, decimals: number) => {
+	let remainingDecimals = decimals
 	let res = ""
-	if (ms >= day) { res += Math.floor(ms / day) + "d " }
-	if (ms >= hour) { res += Math.floor((ms % day) / hour) + "h " }
-	if (ms >= minute) { res += Math.floor((ms % hour) / minute) + "m " }
-	return res + ((ms % minute) / second).toFixed(decimals) + "s"
+	if (ms >= day && remainingDecimals > 0) {
+		res += Math.floor(ms / day) + "d "
+		remainingDecimals--
+	}
+	if (ms >= hour && remainingDecimals > 0) {
+		res += Math.floor((ms % day) / hour) + "h "
+		remainingDecimals--
+	}
+	if (ms >= minute && remainingDecimals > 0) {
+		res += Math.floor((ms % hour) / minute) + "m "
+		remainingDecimals--
+	}
+	if (remainingDecimals > 0) {
+		res += ((ms % minute) / second).toFixed(remainingDecimals) + "s"
+	}
+	return res
 }
 
 export const formatDate = (
