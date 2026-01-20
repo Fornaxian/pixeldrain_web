@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import HostMetricsGraph from "./HostMetricsGraph.svelte";
 import { load_host_names } from "./HostMetricsLib";
 import Expandable from "util/Expandable.svelte";
+import ToggleButton from "layout/ToggleButton.svelte";
 
 const groups: {
 	title: string,
@@ -47,6 +48,9 @@ const groups: {
 			{metric: "pixelstore_cache_fetch", data_type: "number"},
 			{metric: "pixelstore_cache_fetch_size", data_type: "bytes"},
 			{metric: "pixelstore_cache_delete", data_type: "number"},
+			{metric: "pixelstore_connection_error", data_type: "number"},
+			{metric: "pixelstore_peer_down", data_type: "number"},
+			{metric: "pixelstore_peer_up", data_type: "number"},
 		],
 	}, {
 		title: "Pixelstore reads",
@@ -57,7 +61,6 @@ const groups: {
 			{metric: "pixelstore_neighbour_read_size", data_type: "bytes"},
 			{metric: "pixelstore_reed_solomon_read", data_type: "number"},
 			{metric: "pixelstore_reed_solomon_read_size", data_type: "bytes"},
-			{metric: "pixelstore_connection_error", data_type: "number"},
 			{metric: "pixelstore_read_retry_success", data_type: "number"},
 			{metric: "pixelstore_read_retry_error", data_type: "number"},
 		],
@@ -74,8 +77,9 @@ const groups: {
 	},
 ]
 
-let dataWindow: number = 1440
+let dataWindow: number = 60
 let dataInterval: number = 1
+let showAggregate: boolean = false
 
 const setWindow = (window: number, interval: number) => {
 	dataWindow = window
@@ -90,20 +94,19 @@ onMount(async () => {
 </script>
 
 {#if loaded}
-	<section>
-		<h3>Bandwidth usage and file views</h3>
-	</section>
 	<div class="highlight_border" style="margin-bottom: 6px;">
 		<button on:click={() => setWindow(60, 1)}>Hour 1m</button>
 		<button on:click={() => setWindow(720, 1)}>Half Day 1m</button>
-		<button on:click={() => setWindow(1440, 1)}>Day 1m</button>
-		<button on:click={() => setWindow(10080, 10)}>Week 10m</button>
+		<button on:click={() => setWindow(1440, 60)}>Day 1h</button>
+		<button on:click={() => setWindow(10080, 60)}>Week 1h</button>
 		<button on:click={() => setWindow(43200, 60)}>Month 1h</button>
 		<button on:click={() => setWindow(131400, 1440)}>Quarter 1d</button>
 		<button on:click={() => setWindow(262800, 1440)}>Half-year 1d</button>
 		<button on:click={() => setWindow(525600, 1440)}>Year 1d</button>
 		<button on:click={() => setWindow(1051200, 1440)}>Two Years 1d</button>
 		<button on:click={() => setWindow(2628000, 1440)}>Five Years 1d</button>
+		<br/>
+		<ToggleButton bind:on={showAggregate}>Aggregate</ToggleButton>
 	</div>
 
 	{#each groups as group (group.title)}
@@ -119,6 +122,7 @@ onMount(async () => {
 						interval={dataInterval}
 						metric={graph.metric}
 						data_type={graph.data_type}
+						aggregate={showAggregate}
 					/>
 				{/each}
 			</div>

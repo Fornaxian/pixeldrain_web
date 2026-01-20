@@ -27,3 +27,20 @@ export const get_admin_invoices = async (year: number, month: number) => {
 		)
 	) as Invoice[]
 };
+
+export type HostMetrics = {
+	timestamps: string[]
+	host_amounts: { [key: string]: number[] }
+}
+
+export const get_host_metrics = async (start: Date, end: Date, metric: string, interval: number): Promise<HostMetrics> => {
+	return await check_response(
+		await fetch(
+			get_endpoint() + "/admin/host_metrics" +
+			"?start=" + start.toISOString() +
+			"&end=" + end.toISOString() +
+			"&metric=" + metric +
+			"&interval=" + interval
+		)
+	) as HostMetrics
+};

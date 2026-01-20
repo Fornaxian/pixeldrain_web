@@ -11,11 +11,18 @@ export const host_colour = (id: string): string => {
 		return host_colours[id]
 	}
 
-	const colour_interval = 360 / (host_count + 1)
+	// Divide the colour wheel by the number of hosts we need to colour. We cap
+	// the steps at 24 hue, which allows for 15 colours
+	const colour_interval = Math.max(360 / (host_count + 1), 24)
 
 	var i = 0
 	for (const host of Object.keys(host_colours).sort()) {
-		host_colours[host] = rgb2hex(hsl2rgb([i * colour_interval, 100, 70]))
+		const hue = (i * colour_interval) % 360
+
+		// Lightness decreases with 10 for each cycle of the colour wheel
+		const lightness = 80 - (Math.floor((i * colour_interval) / 360) * 10)
+
+		host_colours[host] = rgb2hex(hsl2rgb([hue, 100, lightness]))
 		i++
 	}
 
