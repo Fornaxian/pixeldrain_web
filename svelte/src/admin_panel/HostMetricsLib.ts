@@ -1,6 +1,24 @@
-import { get_endpoint } from "lib/PixeldrainAPI";
+import { check_response, get_endpoint } from "lib/PixeldrainAPI";
 import hsl2rgb from "pure-color/convert/hsl2rgb";
 import rgb2hex from "pure-color/convert/rgb2hex";
+
+export type HostMetrics = {
+	timestamps: string[]
+	// First key is the requested metric, second key is the host ID
+	metrics: { [key: string]: { [key: string]: number[] } }
+}
+
+export const get_host_metrics = async (start: Date, end: Date, metrics: string[], interval: number): Promise<HostMetrics> => {
+	return await check_response(
+		await fetch(
+			get_endpoint() + "/admin/host_metrics" +
+			"?start=" + start.toISOString() +
+			"&end=" + end.toISOString() +
+			"&metrics=" + metrics.join(",") +
+			"&interval=" + interval
+		)
+	) as HostMetrics
+}
 
 let host_colours: { [key: string]: string } = {}
 export const host_colour = (id: string): string => {
