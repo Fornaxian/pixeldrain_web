@@ -21,7 +21,8 @@ const groups: {
 			{metric: "api_request", data_type: "number"},
 			{metric: "api_request_duration", data_type: "duration"},
 			{metric: "api_request_duration_avg", agg_base: "api_request_duration", agg_divisor: "api_request", data_type: "duration"},
-			{metric: "api_error", data_type: "number"},
+			{metric: "api_error_400", data_type: "number"},
+			{metric: "api_error_500", data_type: "number"},
 			{metric: "api_panic", data_type: "number"},
 		],
 	}, {
