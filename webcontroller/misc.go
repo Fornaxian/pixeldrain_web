@@ -2,6 +2,7 @@ package webcontroller
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -60,8 +61,20 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 	}
 }
 
+func searchAPIError(err error) *pixelapi.Error {
+	for {
+		if e, ok := err.(pixelapi.Error); ok {
+			return &e
+		}
+
+		if err = errors.Unwrap(err); err == nil {
+			return nil
+		}
+	}
+}
+
 func apiErrorTemplate(err error, w http.ResponseWriter) (templateName string) {
-	if apiErr, ok := err.(pixelapi.Error); ok {
+	if apiErr := searchAPIError(err); apiErr != nil {
 		switch apiErr.Status {
 		case http.StatusNotFound:
 			w.WriteHeader(http.StatusNotFound)
