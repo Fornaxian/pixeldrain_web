@@ -186,6 +186,13 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 
 func middleware(handle httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		defer func() {
+			// Recover from panics in handler functions
+			if err := recover(); err != nil {
+				log.Error("Panic in route handler for '%s': %v", r.URL.String(), err)
+			}
+		}()
+
 		// Redirect the user to the correct domain
 		if hostname, found := strings.CutPrefix(r.Host, "www."); found {
 			http.Redirect(

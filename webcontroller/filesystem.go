@@ -19,24 +19,32 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
 
 	if path == "" {
-		wc.templates.Run(w, r, "404", td)
+		err = wc.templates.Run(w, r, "404", td)
+		if err != nil && !util.IsNetError(err) {
+			log.Error("Error executing 404 template: %s", err)
+		}
 		return
 	}
 
 	node, err := td.PixelAPI.GetFilesystemPath(path)
-	if err != nil {
-		if err.Error() == "not_found" || err.Error() == "path_not_found" {
+	if apierr := searchAPIError(err); apierr != nil {
+		switch apierr.StatusCode {
+		case "not_found", "path_not_found":
 			wc.serveNotFound(w, r)
-		} else if err.Error() == "forbidden" {
+		case "forbidden":
 			wc.serveForbidden(w, r)
-		} else if err.Error() == "authentication_required" {
+		case "authentication_required":
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
-		} else if err.Error() == "unavailable_for_legal_reasons" {
+		case "unavailable_for_legal_reasons":
 			wc.serveUnavailableForLegalReasons(w, r)
-		} else if err.Error() == "permission_denied" {
+		case "permission_denied":
 			wc.serveForbidden(w, r)
-		} else {
-			wc.templates.Run(w, r, apiErrorTemplate(err, w), td)
+		}
+		return
+	} else if err != nil {
+		err = wc.templates.Run(w, r, apiErrorTemplate(err, w), td)
+		if err != nil && !util.IsNetError(err) {
+			log.Error("Error executing api error template: %s", err)
 		}
 		return
 	}
