@@ -19,9 +19,9 @@ export const upload_file = (
 	on_success: (id: string) => void,
 	on_error: (code: string, message: string) => void,
 ) => {
-	// Check the file size limit. For free accounts it's 20 GB
+	// Check the file size limit. For free accounts it's 10 GB
 	if (window["user"].subscription.file_size_limit === 0) {
-		window["user"].subscription.file_size_limit = 20e9
+		window["user"].subscription.file_size_limit = 10e9
 	}
 
 	if (file.size > window["user"].subscription.file_size_limit) {

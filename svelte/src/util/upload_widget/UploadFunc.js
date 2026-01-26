@@ -10,9 +10,9 @@
 // on_error is called when the upload has failed. The parameters are the error
 // code and an error message
 export const upload_file = (file, name, on_progress, on_success, on_error) => {
-	// Check the file size limit. For free accounts it's 20 GB
+	// Check the file size limit. For free accounts it's 10 GB
 	if (window.user.subscription.file_size_limit === 0) {
-		window.user.subscription.file_size_limit = 20e9
+		window.user.subscription.file_size_limit = 10e9
 	}
 
 	if (file.size > window.user.subscription.file_size_limit) {

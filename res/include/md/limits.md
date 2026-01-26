@@ -4,15 +4,16 @@ We need to limit the features of pixeldrain to avoid abuse and encourage you to
 get a subscription. Here's an overview of all limits which are currently in
 place on pixeldrain.
 
-|                       | Anonymous    | Registered      | Pro           | Prepaid             |
-|-----------------------|--------------|-----------------|---------------|---------------------|
-| Download speed        | 2 MiB/s      | 2 MiB/s         | Unlimited     | Unlimited           |
-| File storage          | Unlimited    | 500 GB          | 1 TB          | Unlimited (€4 / TB) |
-| File expiry           | 30 days      | 30 days         | 90 days       | Unlimited           |
-| File size             | 10 GB        | 10 GB           | 20 GB         | 20 GB               |
-| File downloads        | 1000 / day   | Unlimited       | Unlimited     | Unlimited           |
-| Free data transfer    | 100 GB / day | Unlimited       | Unlimited     | Unlimited           |
-| Premium data transfer | No           | 10 GB / month   | 1 TB / month  | Unlimited (€1 / TB) |
-| Video streaming       | No           | Within data cap | Yes           | Yes                 |
-| Ad-free file viewing  | No           | No              | Yes           | Yes                 |
-| File viewer branding  | No           | No              | From €8/month | Yes                 |
+|                             | Free         | Pro              | Persistence      | Prepaid             |
+|-----------------------------|--------------|------------------|------------------|---------------------|
+| Download limit              | 6 GB / day   | 4 TB / month     | 8 TB / month     | Unlimited (€1 / TB) |
+| Download speed after limit  | 1 MiB/s      | 1 MiB/s          | 1 MiB/s          | 1 MiB/s             |
+| Hotlinking                  | No           | Yes (4 TB limit) | Yes (8 TB limit) | Yes (€1 / TB)       |
+| File storage                | Unlimited    | Unlimited        | 4 TB             | Unlimited (€4 / TB) |
+| File expiry                 | 60 days      | 120 days         | None             | None                |
+| File size                   | 10 GB        | 100 GB           | 100 GB           | 100 GB              |
+| File downloads              | 10000 / day  | Unlimited        | Unlimited        | Unlimited           |
+| Video streaming             | Yes          | Yes              | Yes              | Yes                 |
+| Ad-free file viewing        | Yes          | Yes              | Yes              | Yes                 |
+| Download page customization | No           | No               | Yes              | Yes                 |
+| File embedding              | No           | No               | Yes              | Yes                 |
