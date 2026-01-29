@@ -8,8 +8,8 @@ import { formatDataVolume } from "util/Formatting";
 		Supporter level: {window.user.subscription.name}<br/>
 		<i class="icon">shopping_cart</i>
 		<a href="/user/subscription">Manage subscriptions</a><br/>
-		<i class="icon">add_link</i>
-		<a href="/api/patreon_auth/start">Link Patreon subscription</a>
+		<i class="icon">star</i>
+		<a href="/api/patreon_auth/start">Activate Patreon subscription</a>
 	</li>
 
 	{#if window.user.balance_micro_eur !== 0}
