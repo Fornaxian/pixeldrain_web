@@ -7,16 +7,17 @@ import ToggleButton from "layout/ToggleButton.svelte";
 import { formatDate } from "util/Formatting";
 
 const groups: {
-	title: string,
+	title: string
+	expanded: boolean
 	graphs: {
-		metric: string,
-		agg_base?: string,
-		agg_divisor?: string,
-		data_type: string,
-	}[],
+		metric: string
+		agg_base?: string
+		agg_divisor?: string
+		data_type: string
+	}[]
 }[] = [
 	{
-		title: "API",
+		title: "API", expanded: false,
 		graphs: [
 			{metric: "api_request", data_type: "number"},
 			{metric: "api_request_duration", data_type: "duration"},
@@ -26,18 +27,28 @@ const groups: {
 			{metric: "api_panic", data_type: "number"},
 		],
 	}, {
-		title: "Task scheduler",
+		title: "Task scheduler", expanded: false,
 		graphs: [
 			{metric: "scheduler_file_instance_expire", data_type: "number"},
 			{metric: "scheduler_file_instance_expire_size", data_type: "bytes"},
 			{metric: "scheduler_file_reference_delete", data_type: "number"},
 			{metric: "scheduler_timeseries_delete", data_type: "number"},
 			{metric: "scheduler_thumbnail_delete", data_type: "number"},
-			{metric: "abuse_file_instance_blocked", data_type: "number"},
-			{metric: "abuse_filesystem_blocked", data_type: "number"},
 		],
 	}, {
-		title: "Database",
+		title: "Abuse reports", expanded: false,
+		graphs: [
+			{metric: "abuse_file_instance_blocked", data_type: "number"},
+			{metric: "abuse_file_instance_blocked_copyright", data_type: "number"},
+			{metric: "abuse_file_instance_blocked_child_abuse", data_type: "number"},
+			{metric: "abuse_file_instance_blocked_revenge_porn", data_type: "number"},
+			{metric: "abuse_filesystem_blocked", data_type: "number"},
+			{metric: "abuse_filesystem_blocked_copyright", data_type: "number"},
+			{metric: "abuse_filesystem_blocked_child_abuse", data_type: "number"},
+			{metric: "abuse_filesystem_blocked_revenge_porn", data_type: "number"},
+		],
+	}, {
+		title: "Database", expanded: false,
 		graphs: [
 			{metric: "database_query", data_type: "number"},
 			{metric: "database_query_duration", data_type: "duration"},
@@ -48,7 +59,7 @@ const groups: {
 			{metric: "database_query_error", data_type: "number"},
 		],
 	}, {
-		title: "Pixelstore",
+		title: "Pixelstore", expanded: false,
 		graphs: [
 			{metric: "pixelstore_write", data_type: "number"},
 			{metric: "pixelstore_write_size", data_type: "bytes"},
@@ -60,7 +71,7 @@ const groups: {
 			{metric: "pixelstore_peer_up", data_type: "number"},
 		],
 	}, {
-		title: "Pixelstore reads",
+		title: "Pixelstore reads", expanded: false,
 		graphs: [
 			{metric: "pixelstore_cache_read", data_type: "number"},
 			{metric: "pixelstore_neighbour_read", data_type: "number"},
@@ -72,7 +83,7 @@ const groups: {
 			{metric: "pixelstore_read_retry_error", data_type: "number"},
 		],
 	}, {
-		title: "Pixelstore shards",
+		title: "Pixelstore shards", expanded: false,
 		graphs: [
 			{metric: "pixelstore_shard_delete", data_type: "number"},
 			{metric: "pixelstore_shard_delete_size", data_type: "bytes"},
@@ -82,7 +93,7 @@ const groups: {
 			{metric: "pixelstore_shard_move_size", data_type: "bytes"},
 		],
 	}, {
-		title: "Pixelstore API",
+		title: "Pixelstore API", expanded: false,
 		graphs: [
 			{metric: "pixelstore_api_error_400", data_type: "number"},
 			{metric: "pixelstore_api_error_500", data_type: "number"},
@@ -111,11 +122,16 @@ const load_metrics = async (window: number, interval: number) => {
 
 	let metrics_list: string[] = []
 	for (const group of groups) {
-		for (const graph of group.graphs) {
-			if (graph.metric !== undefined) {
-				metrics_list.push(graph.metric)
+		if (group.expanded === true) {
+			for (const graph of group.graphs) {
+				if (graph.metric !== undefined) {
+					metrics_list.push(graph.metric)
+				}
 			}
 		}
+	}
+	if (metrics_list.length === 0) {
+		return
 	}
 
 	try {
@@ -200,7 +216,7 @@ onDestroy(() => {
 	</div>
 
 	{#each groups as group (group.title)}
-		<Expandable click_expand expanded>
+		<Expandable click_expand bind:expanded={group.expanded} on_expand={(expanded) => load_metrics(dataWindow, dataInterval)}>
 			<div slot="header">
 				<div class="title">{group.title}</div>
 			</div>

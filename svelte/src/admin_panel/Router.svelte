@@ -54,10 +54,9 @@ let pages = [
 		icon: "area_chart",
 		component: HostMetrics,
 	}, {
-		path: "/admin/mollie_settlements",
+		path: "/admin/invoices",
 		title: "Prepaid accounting",
 		icon: "paid",
-		component: InvoiceVat,
 		subpages: [
 			{
 				path: "/admin/invoices",

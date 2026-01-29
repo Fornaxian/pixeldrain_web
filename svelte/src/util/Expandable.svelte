@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 // Whether the Expandable is expanded by default
 export let expanded = false
 export const toggle = () => {
@@ -9,9 +9,13 @@ export const toggle = () => {
 // stopPropagation if you want to use other interactive elements in the title
 // bar
 export let click_expand = false
+export let on_expand: (expanded: boolean) => void = undefined
 const header_click = () => {
 	if (click_expand) {
 		toggle()
+		if (on_expand !== undefined) {
+			on_expand(expanded)
+		}
 	}
 }
 
