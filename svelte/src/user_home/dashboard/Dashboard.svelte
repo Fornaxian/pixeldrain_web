@@ -11,7 +11,6 @@ import CardPrepaidTransactions from "./CardPrepaidTransactions.svelte";
 import CardFsHome from "./CardFSHome.svelte";
 import AddressReputation from "home_page/AddressReputation.svelte";
 import { flip } from "svelte/animate";
-import PolicyChange from "home_page/PolicyChange.svelte";
 
 let cards = []
 
@@ -145,7 +144,6 @@ onMount(() => {
 <div class="separator"></div>
 
 <AddressReputation/>
-<PolicyChange/>
 
 <div class="cards">
 	{#each cards as card, i (card.id)}

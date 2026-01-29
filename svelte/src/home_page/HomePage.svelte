@@ -6,7 +6,6 @@ import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
 import GetStarted from "./GetStarted.svelte";
 import UploadWidget from "./UploadWidget.svelte";
-import PolicyChange from "./PolicyChange.svelte";
 
 let upload_widget
 </script>
@@ -16,8 +15,6 @@ let upload_widget
 		<Menu no_login_label="Not logged in" hide_name={false} hide_logo style="border-radius: 0 0 0 8px; margin: 0"/>
 	</div>
 	<div class="header_image_container"></div>
-
-	<PolicyChange/>
 </header>
 
 <AddressReputation/>
