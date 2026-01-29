@@ -1,13 +1,15 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import AbuseReport from "./AbuseReport.svelte";
+import { get_abuse_reports, type UserReport } from "lib/AdminAPI";
+import { get_endpoint } from "lib/PixeldrainAPI";
 
 let loading = true
-let reports = []
+let reports: UserReport[] = []
 
-let startPicker
-let endPicker
+let startPicker: HTMLInputElement
+let endPicker: HTMLInputElement
 
 let tab = "pending"
 
@@ -18,35 +20,25 @@ const get_reports = async () => {
 	clearTimeout(refresh_timeout)
 
 	try {
-		const resp = await fetch(
-			window.api_endpoint+
-				"/admin/abuse_report"+
-				"?start="+(new Date(startPicker.value)).toISOString()+
-				"&end="+(new Date(endPicker.value)).toISOString()+
-				"&status="+tab
-		);
-		if(resp.status >= 400) {
-			throw new Error(resp.text());
-		}
-
-		reports = await resp.json();
+		reports = await get_abuse_reports(new Date(startPicker.value), new Date(endPicker.value), tab)
 
 		// Sort files by number of reports. If the number of reports is equal we
 		// sort by number of views. If the number of views is equal we sort by
 		// date of the first report received
 		reports.sort((a, b) => {
-			if (a.reports.length > b.reports.length) {
-				return -1
-			} else if (a.reports.length < b.reports.length) {
-				return 1
-			} else if (a.file.views > b.file.views) {
-				return -1
-			} else if (a.file.views < b.file.views) {
-				return 1
+			// Get the largest number of views or downloads
+			const view_download_a = Math.max(a.file.views, Math.round(a.file.bandwidth_used / a.file.size))
+			const view_download_b = Math.max(b.file.views, Math.round(b.file.bandwidth_used / b.file.size))
+
+			if (a.reports.length !== b.reports.length) {
+				// Sort descending
+				return b.reports.length - a.reports.length
+			} else if (view_download_a !== view_download_b) {
+				// Sort descending
+				return view_download_b-view_download_a
 			} else if (a.first_report_time > b.first_report_time) {
-				return -1
-			} else if (a.first_report_time < b.first_report_time) {
-				return 1
+				// Sort ascending
+				return Date.parse(a.first_report_time) - Date.parse(b.first_report_time)
 			} else {
 				return 0
 			}
@@ -67,6 +59,7 @@ const get_reports = async () => {
 		})
 
 		count_ip_reports()
+		filter_reports()
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -74,7 +67,7 @@ const get_reports = async () => {
 	}
 };
 
-let ip_report_count = {}
+let ip_report_count: {[key: string]: number} = {}
 const count_ip_reports = () => {
 	ip_report_count = {}
 	reports.forEach(v => {
@@ -88,7 +81,40 @@ const count_ip_reports = () => {
 	})
 }
 
-const resolve_report = async (report_id, action, report_type) => {
+const report_display_limit = 100
+let type_filter: {
+	[key: string]: {
+		checked: boolean
+		count: number
+	}
+} = {}
+let repords_hidden = 0
+let reports_filtered: UserReport[] = []
+
+const filter_reports = () => {
+	// Reset counter
+	repords_hidden = 0
+	for (let filter in type_filter) {
+		type_filter[filter].count=0
+	}
+
+	reports_filtered = reports.filter(report => {
+		if (type_filter[report.type] === undefined) {
+			type_filter[report.type] = {checked: true, count: 1}
+		} else {
+			type_filter[report.type].count++
+		}
+
+		if(type_filter[report.type].checked === true) {
+			return true
+		}
+
+		repords_hidden++
+		return false
+	})
+}
+
+const resolve_report = async (report_id: string, action: string, report_type: string) => {
 	const form = new FormData()
 	form.append("action", action)
 	if (action === "grant") {
@@ -97,11 +123,11 @@ const resolve_report = async (report_id, action, report_type) => {
 
 	try {
 		const resp = await fetch(
-			window.api_endpoint+"/admin/abuse_report/"+report_id,
+			get_endpoint()+"/admin/abuse_report/"+report_id,
 			{ method: "POST", body: form }
 		);
 		if(resp.status >= 400) {
-			throw new Error(resp.text())
+			throw new Error(await resp.text())
 		}
 
 		remove_report(report_id)
@@ -160,13 +186,30 @@ onMount(() => {
 
 <section>
 	<div class="toolbar" style="text-align: left;">
-		<div>Reports: {reports.length}</div>
-		<div class="toolbar_spacer"></div>
 		<div>Range:</div>
 		<input type="date" bind:this={startPicker}/>
 		<input type="date" bind:this={endPicker}/>
 		<button on:click={get_reports}>Go</button>
 	</div>
+
+	<div class="filters">
+		<div class="filter">
+			Type filters:<br/>
+			{#each Object.keys(type_filter) as filter}
+				<input
+					type="checkbox"
+					id="status_{filter}"
+					bind:checked={type_filter[filter].checked}
+					on:change={filter_reports}>
+				<label for="status_{filter}">{filter} ({type_filter[filter].count})</label>
+				<br/>
+			{/each}
+		</div>
+	</div>
+
+	Total: {reports.length}<br/>
+	Visible: {Math.min(reports.length-repords_hidden, report_display_limit)}<br/>
+	Hidden: {repords_hidden}<br/>
 
 	<div class="tab_bar">
 		<button on:click={() => {tab = "pending"; get_reports()}} class:button_highlight={tab === "pending"}>
@@ -183,7 +226,7 @@ onMount(() => {
 		</button>
 	</div>
 
-	{#each reports.slice(0, 100) as report (report.id)}
+	{#each reports_filtered.slice(0, report_display_limit) as report (report.id)}
 		<AbuseReport
 			report={report}
 			ip_report_count={ip_report_count}
@@ -201,7 +244,6 @@ onMount(() => {
 	align-items: center;
 }
 .toolbar > * { flex: 0 0 auto; }
-.toolbar_spacer { flex: 1 1 auto; }
 
 .tab_bar {
 	border-bottom: 2px solid var(--separator);

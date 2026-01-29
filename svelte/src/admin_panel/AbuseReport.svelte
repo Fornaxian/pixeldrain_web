@@ -1,17 +1,18 @@
-<script>
+<script lang="ts">
 import { formatDate, formatNumber } from "util/Formatting";
 import Expandable from "util/Expandable.svelte";
 import { createEventDispatcher } from "svelte";
+import type { UserReport } from "lib/AdminAPI";
 let dispatch = createEventDispatcher()
 
-export let report
-export let ip_report_count
+export let report: UserReport
+export let ip_report_count: {[key:string]: number}
 let preview = false
 
 $: can_grant = report.status !== "granted"
 $: can_reject = report.status !== "rejected"
 
-let set_status = async (action, report_type) => {
+let set_status = async (action: string, report_type: string) => {
 	dispatch("resolve_report", {action: action, report_type: report_type})
 }
 </script>
