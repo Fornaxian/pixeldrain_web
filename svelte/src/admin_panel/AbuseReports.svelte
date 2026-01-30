@@ -59,7 +59,6 @@ const get_reports = async () => {
 		})
 
 		count_ip_reports()
-		filter_reports()
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -82,36 +81,42 @@ const count_ip_reports = () => {
 }
 
 const report_display_limit = 100
-let type_filter: {
+
+type Filter = {
 	[key: string]: {
 		checked: boolean
 		count: number
 	}
-} = {}
+}
+let type_filter: Filter = {}
 let repords_hidden = 0
-let reports_filtered: UserReport[] = []
+$: reports_filtered = filter_reports(reports, type_filter)
 
-const filter_reports = () => {
+const filter_reports = (reports: UserReport[], filter: Filter): UserReport[] => {
 	// Reset counter
 	repords_hidden = 0
-	for (let filter in type_filter) {
-		type_filter[filter].count=0
+	for (let f in filter) {
+		filter[f].count=0
 	}
 
-	reports_filtered = reports.filter(report => {
-		if (type_filter[report.type] === undefined) {
-			type_filter[report.type] = {checked: true, count: 1}
+	const reports_filtered = reports.filter(report => {
+		if (filter[report.type] === undefined) {
+			filter[report.type] = {checked: true, count: 1}
 		} else {
-			type_filter[report.type].count++
+			filter[report.type].count++
 		}
 
-		if(type_filter[report.type].checked === true) {
+		if(filter[report.type].checked === true) {
 			return true
 		}
 
 		repords_hidden++
 		return false
 	})
+
+	// Make filter reactive
+	type_filter = type_filter
+	return reports_filtered
 }
 
 const resolve_report = async (report_id: string, action: string, report_type: string) => {
@@ -196,11 +201,7 @@ onMount(() => {
 		<div class="filter">
 			Type filters:<br/>
 			{#each Object.keys(type_filter) as filter}
-				<input
-					type="checkbox"
-					id="status_{filter}"
-					bind:checked={type_filter[filter].checked}
-					on:change={filter_reports}>
+				<input type="checkbox" id="status_{filter}" bind:checked={type_filter[filter].checked}>
 				<label for="status_{filter}">{filter} ({type_filter[filter].count})</label>
 				<br/>
 			{/each}
