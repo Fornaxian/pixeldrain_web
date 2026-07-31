@@ -101,6 +101,7 @@ const on_end = () => {
 <div class="container">
 	{#if
 		$nav.base.file_type === "video/x-matroska" ||
+		$nav.base.file_type === "video/matroska" ||
 		$nav.base.file_type === "video/quicktime" ||
 		$nav.base.file_type === "video/x-ms-asf"
 	}

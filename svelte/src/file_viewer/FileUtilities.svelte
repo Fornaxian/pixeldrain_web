@@ -51,7 +51,8 @@ export const file_type = file => {
 		return "image"
 	} else if (
 		file.mime_type.startsWith("video") &&
-		file.mime_type !== "video/x-matroska"
+		file.mime_type !== "video/x-matroska" &&
+		file.mime_type !== "video/matroska"
 	) {
 		return "video"
 	} else if (

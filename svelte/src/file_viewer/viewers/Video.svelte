@@ -119,6 +119,7 @@ const video_keydown = e => {
 
 			{#if
 				file.mime_type === "video/x-matroska" ||
+				file.mime_type === "video/matroska" ||
 				file.mime_type === "video/quicktime" ||
 				file.mime_type === "video/x-ms-asf"
 			}
