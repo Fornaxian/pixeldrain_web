@@ -97,7 +97,7 @@ const update = async (plan) => {
 	</p>
 	<p>
 		The Patreon subscription is managed by Patreon. Pixeldrain cannot modify
-		or end your subsciption. If you would like to cancel your Patreon plan
+		or end your subscription. If you would like to cancel your Patreon plan
 		you can do that <a
 		href="https://www.patreon.com/settings/memberships/pixeldrain"
 		target="_blank">on Patreon</a>.
@@ -145,7 +145,7 @@ const update = async (plan) => {
 					<li>No storage limit for file sharing</li>
 					<li>4 TB transfer limit (higher plans available)</li>
 					<li>Access to the <a href="https://docs.pixeldrain.com/filesystem/">filesystem</a></li>
-					<li>2 TB filesytem storage limit (higher plans available)</li>
+					<li>2 TB filesystem storage limit (higher plans available)</li>
 					<li>File expire after 120 days for Pro, and never on the other plans</li>
 				</ul>
 			</div>
