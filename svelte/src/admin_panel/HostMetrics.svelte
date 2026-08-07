@@ -45,6 +45,11 @@ const groups: {
 			{metric: "filesystem_write_size", data_type: "bytes"},
 			{metric: "filesystem_read", data_type: "number"},
 			{metric: "filesystem_read_size", data_type: "bytes"},
+			{metric: "filesystem_mkdir", data_type: "number"},
+			{metric: "filesystem_readdir", data_type: "number"},
+			{metric: "filesystem_rename", data_type: "number"},
+			{metric: "filesystem_remove", data_type: "number"},
+			{metric: "filesystem_remove_all", data_type: "number"},
 		]
 	}, {
 		title: "Task scheduler", expanded: false,
