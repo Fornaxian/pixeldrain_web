@@ -88,7 +88,12 @@ const login = async (e?: SubmitEvent) => {
 			{
 				method: "POST",
 				body: fd,
-				credentials: "omit", // Dont send existing session cookies
+				// The API sets the session cookie in the response. This has to
+				// be done by the server because the cookie is HttpOnly, which
+				// means JS is not allowed to write it. If we would set the
+				// cookie with document.cookie the write would silently fail
+				// when a session cookie already exists
+				credentials: "same-origin",
 			},
 		))
 
@@ -99,8 +104,6 @@ const login = async (e?: SubmitEvent) => {
 			}
 		}
 
-		// Save the session cookie
-		document.cookie = "pd_auth_key="+resp.auth_key+"; Max-Age=31536000;"
 
 		dispatch("login", {key: resp.auth_key})
 

@@ -19,5 +19,10 @@ func (wc *WebController) serveLogout(
 		}
 	}
 
+	// Remove the session cookie from the browser. If we leave it here the
+	// browser keeps sending the deleted session key, which can shadow the
+	// cookie of the next session the user creates
+	wc.deleteSessionCookie(w, r)
+
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

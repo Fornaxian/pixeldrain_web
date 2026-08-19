@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -37,6 +38,42 @@ type TemplateData struct {
 	URLQuery url.Values
 }
 
+// deleteSessionCookie removes the session cookie from the client's browser.
+// Browsers key cookies on the combination of name, domain and path, so a cookie
+// with a different domain or path is a completely separate cookie which is sent
+// to us in the same Cookie header. http.Request.Cookie only returns the first
+// one, so a leftover cookie from an old session can shadow a valid session and
+// make it look like the user is logged out. To prevent that we delete every
+// variant we have ever created.
+func (wc *WebController) deleteSessionCookie(w http.ResponseWriter, r *http.Request) {
+	// The domain attribute of a cookie can't contain a port number
+	var host = r.Host
+	if h, _, err := net.SplitHostPort(host); err == nil {
+		host = h
+	}
+
+	var cookies = []*http.Cookie{
+		{Path: "/"},
+		{Path: "/api"},
+		{Path: "/", Domain: host},
+		{Path: "/api", Domain: host},
+		{Path: "/", Domain: ".pixeldrain.com"},
+	}
+	if wc.config.SessionCookieDomain != "" {
+		cookies = append(cookies, &http.Cookie{
+			Path:   "/",
+			Domain: wc.config.SessionCookieDomain,
+		})
+	}
+
+	for _, c := range cookies {
+		c.Name = "pd_auth_key"
+		c.Expires = time.Unix(0, 0)
+		c.MaxAge = -1
+		http.SetCookie(w, c)
+	}
+}
+
 func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData, err error) {
 	t = &TemplateData{
 		tpm:           wc.templates,
@@ -67,20 +104,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 
 				// Remove the authentication cookie
 				log.Debug("Deleting invalid API key")
-				http.SetCookie(w, &http.Cookie{
-					Name:    "pd_auth_key",
-					Value:   "",
-					Path:    "/",
-					Expires: time.Unix(0, 0),
-					Domain:  wc.config.SessionCookieDomain,
-				})
-				http.SetCookie(w, &http.Cookie{
-					Name:    "pd_auth_key",
-					Value:   "",
-					Path:    "/",
-					Expires: time.Unix(0, 0),
-					Domain:  ".pixeldrain.com",
-				})
+				wc.deleteSessionCookie(w, r)
 				return t, nil
 			}
 
