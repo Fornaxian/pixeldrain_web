@@ -1,5 +1,5 @@
 <script>
-import { add_upload_history, domain_url } from "util/Util.svelte"
+import { domain_url } from "util/Util.svelte"
 import { formatDataVolume, formatDuration } from "util/Formatting"
 import Spinner from "util/Spinner.svelte";
 
@@ -53,8 +53,6 @@ const on_success = (resp) => {
 	job.id = resp.id
 	job.status = "finished"
 	job.on_finished(job)
-
-	add_upload_history(resp.id)
 
 	href = "/u/"+resp.id
 	target = "_blank"

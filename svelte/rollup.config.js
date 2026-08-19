@@ -18,7 +18,6 @@ export default [
 	"home_page",
 	"text_upload",
 	"speedtest",
-	"upload_history",
 	"login",
 ].map((name, index) => ({
 	input: `src/${name}.js`,

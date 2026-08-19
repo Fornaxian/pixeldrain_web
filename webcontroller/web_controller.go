@@ -140,7 +140,6 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		{GET, "" /*                */, wc.serveLandingPage()},
 		{GET, "home" /*            */, wc.serveTemplate("home", handlerOpts{})},
 		{GET, "api" /*             */, wc.serveMarkdown("api.md", handlerOpts{})},
-		{GET, "history" /*         */, wc.serveTemplate("upload_history", handlerOpts{})},
 		{GET, "u/:id" /*           */, wc.serveFileViewer},
 		{GET, "u/:id/preview" /*   */, wc.serveFilePreview},
 		{GET, "l/:id" /*           */, wc.serveListViewer},

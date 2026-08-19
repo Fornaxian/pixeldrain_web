@@ -2,7 +2,6 @@
 import { onMount } from "svelte";
 import Modal from "util/Modal.svelte";
 import Behave from "behave-js";
-import { add_upload_history } from "util/Util.svelte";
 
 let textarea
 let help
@@ -45,8 +44,6 @@ const upload_text = async () => {
 		}
 
 		let id = (await resp.json()).id
-		add_upload_history(id)
-
 		window.location.href = "/u/" + id
 	} catch (err) {
 		alert("File upload failed: " + err)
