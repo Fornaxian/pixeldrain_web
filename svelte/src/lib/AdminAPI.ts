@@ -1,5 +1,5 @@
 import { countries } from "country-data-list"
-import { check_response, get_endpoint } from "./PixeldrainAPI"
+import { check_response, get_endpoint, type GenericResponse } from "./PixeldrainAPI"
 
 export const country_name = (country: string) => {
 	if (country !== "" && countries[country] !== undefined) {
@@ -95,4 +95,16 @@ export const get_abuse_reports = async (start: Date, end: Date, status: string):
 			"&status=" + status
 		)
 	) as UserReport[]
+};
+
+export const admin_decommission_node = async (peer_id: string) => {
+	let form = new FormData()
+	form.set("peer_id", peer_id)
+
+	return await check_response(
+		await fetch(
+			get_endpoint() + "/admin/decommission_node",
+			{ method: "POST", body: form }
+		)
+	) as GenericResponse
 };

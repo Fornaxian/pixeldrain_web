@@ -1,18 +1,47 @@
-<script>
+<script lang="ts">
 import { flip } from "svelte/animate";
 import { formatDataVolume } from "util/Formatting";
 import SortButton from "layout/SortButton.svelte";
+import { admin_decommission_node } from "lib/AdminAPI";
 
-export let peers = [];
+type Peer = {
+	id: string
+	ip: string
+	port: number
+	hostname: string
+	role: string
+	reachable: boolean
+	unreachable_count: number
+	latency: number
+	last_seen: string
+	free_space: number
+	min_free_space: number
+	load_1_min: number
+	load_5_min: number
+	load_15_min: number
+	avg_network_tx: number
+	avg_network_rx: number
+	port_speed: number
+	cache_threshold: number
+
+	// Our props
+	avg_network_total?: number
+	usage_percent?: number
+	network_ratio?: number
+}
+
+export let peers: Peer[] = [];
+
+$: all_reachable = peers.reduce((acc, val) => {
+	return val.reachable ? acc : false
+}, true)
+
 $: update_peers(peers)
-let update_peers = (peers) => {
+let update_peers = (peers: Peer[]) => {
 	for (let peer of peers) {
 		peer.avg_network_total = peer.avg_network_tx + peer.avg_network_rx
 		peer.usage_percent = (peer.avg_network_tx / peer.port_speed) * 100
 		peer.network_ratio = Math.max(peer.avg_network_tx, peer.avg_network_rx) / Math.min(peer.avg_network_tx, peer.avg_network_rx)
-		if (peer.network_ratio === NaN) {
-			peer.network_ratio = 1
-		}
 	}
 
 	sort("")
@@ -21,7 +50,7 @@ let update_peers = (peers) => {
 // Expand an IPv6 address into eight zero-padded groups of four hex digits so
 // that it sorts numerically when compared as a string. Handles the "::"
 // shorthand and an optional embedded IPv4 address in the final 32 bits.
-let expand_ipv6 = (addr) => {
+let expand_ipv6 = (addr: string) => {
 	addr = addr.toLowerCase()
 
 	// An embedded IPv4 address (e.g. "::ffff:192.0.2.1") fills the last two
@@ -84,6 +113,14 @@ let sort = (field) => {
 	})
 	peers = peers
 }
+
+const decommission = async (id: string) => {
+	try {
+		await admin_decommission_node(id)
+	} catch (err) {
+		alert(JSON.stringify(err))
+	}
+}
 </script>
 
 <div class="table_scroll">
@@ -102,6 +139,7 @@ let sort = (field) => {
 				<td><SortButton field="cache_threshold" active_field={sort_field} asc={asc} sort_func={sort}>CThresh</SortButton></td>
 				<td><SortButton field="free_space" active_field={sort_field} asc={asc} sort_func={sort}>Free</SortButton></td>
 				<td><SortButton field="min_free_space" active_field={sort_field} asc={asc} sort_func={sort}>Min free</SortButton></td>
+				{#if !all_reachable}<td></td>{/if}
 			</tr>
 		</thead>
 		<tbody>
@@ -125,6 +163,13 @@ let sort = (field) => {
 					<td>{formatDataVolume(peer.cache_threshold, 3)}</td>
 					<td>{formatDataVolume(peer.free_space, 3)}</td>
 					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
+					{#if !all_reachable}
+						<td>
+							<button class="button flat delete" on:click={() => decommission(peer.id)}>
+								<i class="icon small">delete</i>
+							</button>
+						</td>
+					{/if}
 				</tr>
 			{/each}
 
@@ -145,6 +190,7 @@ let sort = (field) => {
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.cache_threshold, 0), 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.free_space, 0), 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0), 3)}</td>
+				{#if !all_reachable}<td></td>{/if}
 			</tr>
 			<tr>
 				<td>Average</td>
@@ -163,6 +209,7 @@ let sort = (field) => {
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.cache_threshold, 0) / peers.length, 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.free_space, 0) / peers.length, 4)}</td>
 				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0) / peers.length, 3)}</td>
+				{#if !all_reachable}<td></td>{/if}
 			</tr>
 		</tbody>
 	</table>
