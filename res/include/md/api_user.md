@@ -22,15 +22,27 @@ There are two ways to log in:
 
  - **Password login**: send the `username` and `password` fields. The
    `username` field accepts both a username and an e-mail address.
- - **E-mail login**: send only the `username` field with an e-mail address as
-   value and leave the password empty. A login link is e-mailed to the address,
-   the response will be login_link_sent (HTTP 202). The link contains the
-   `link_login_user_id` and `link_login_id` parameters, which are sent to this
-   same endpoint to complete the login.
+ - **E-mail login**: send only the `username` field and leave the password
+   empty. A login link is e-mailed to the account, the response will be
+   login_link_sent (HTTP 202). The link contains the `link_login_user_id` and
+   `link_login_id` parameters, which are sent to this same endpoint to complete
+   the login. When the `username` field contains an e-mail address the link is
+   sent to that address, this also works with an address which is still waiting
+   for verification and using the link verifies it. When it contains a username
+   the link is sent to the first address on the account. This is how a lost
+   password is recovered.
 
-If the account has two-factor authentication enabled the `totp` field is
-required. When it's missing the otp_required error is returned, request the
-current six digit code from the user and try again.
+Accounts with two-factor authentication enabled need two of these three proofs
+of identity, any combination will do:
+
+ - A login link, sent by e-mail (`link_login_user_id` + `link_login_id`)
+ - The account password (`password`)
+ - A one-time password from the authenticator app (`totp`)
+
+When only one of them is sent the otp_required error is returned. This means an
+account can still be recovered when the authenticator app is lost, by
+requesting a login link and sending it together with the password. Accounts
+without two-factor authentication need only one of the three.
 
 Logins are rate limited per IP address, when logging in too often the
 ip_rate_limit_reached error is returned.
@@ -40,9 +52,9 @@ ip_rate_limit_reached error is returned.
 Param              | Type   | Required             | Description
 -------------------|--------|----------------------|----------------------------
 username           | string | true                 | Username or e-mail address of the account
-password           | string | for password login   | Password of the account, leave empty to receive a login link by e-mail
+password           | string | for password login   | Password of the account, leave empty to receive a login link by e-mail. Can be combined with a login link as second factor
 totp               | string | if 2FA is enabled    | Six digit time-based one-time password
-app_name           | string | false                | Name of your application, will be shown on the API keys page
+app_name           | string | false                | Name of your application, will be shown on the API keys page. The name 'website login' is reserved and returns the app_name_reserved error
 redirect           | string | false                | Path the user is sent to after using the e-mailed login link
 link_login_user_id | UUID   | for link login       | User ID from the e-mailed login link
 link_login_id      | UUID   | for link login       | Single-use login ID from the e-mailed login link
@@ -81,10 +93,11 @@ Value                     | HTTP status | Description
 --------------------------|-------------|----------------------------------------------------------------
 user_not_found            | 404         | No account exists with this username or e-mail address
 password_incorrect        | 400         | The entered password is not correct for this account
-no_login_method_available | 400         | No password was entered and the entered username is not an e-mail address
-otp_required              | 400         | The account has two-factor authentication enabled, send the `totp` field
+no_login_method_available | 400         | No password was entered and the account has no e-mail address to send a login link to
+otp_required              | 400         | The account has two-factor authentication enabled, a second proof of identity is required
 otp_incorrect             | 400         | The entered one-time password is not correct
 login_link_sent           | 202         | Not an error, a login link was e-mailed to the user
+app_name_reserved         | 400         | The requested app name is reserved for the pixeldrain website
 login_link_already_sent   | 400         | The account already has an active login link, wait for it to expire
 invalid_login_link        | 400         | The login link is not valid for this account, it may have expired
 invalid_email_address     | 400         | A login link could not be sent because the e-mail address is invalid
@@ -108,7 +121,17 @@ HTTP 200: OK
 {
 	"id": "8e08a626-040e-417e-8713-a0f43737a235",
 	"username": "some_user",
+	// All verified e-mail addresses on the account. Account notifications are
+	// sent to all of them. An account can have at most 5 addresses
+	"email_addresses": ["user@example.com"],
+	// Address which is waiting for its verification link to be clicked
+	"email_address_pending": "",
+	// Accounts registered after 2026-09-01 need a verified e-mail address
+	// before they are allowed to upload files
+	"can_upload": true,
+	// Deprecated: use email_addresses instead. Contains the first address
 	"email": "user@example.com",
+	// Deprecated: use email_addresses instead
 	"email_verified": true,
 	// Whether two-factor authentication is enabled
 	"otp_enabled": false,
@@ -167,8 +190,8 @@ updated.
 Param               | Type    | Description
 --------------------|---------|----------------------------
 username            | string  | New username of the account
-email               | string  | New e-mail address. A verification link is sent to the new address, the change only takes effect when the link is used. Sending an empty value removes the e-mail address from the account
-password_new        | string  | New password of the account, between 5 and 50 characters
+email               | string  | E-mail address to add to the account, up to a maximum of 5 addresses. A verification link is sent to the address, it's only added to the account when the link is used. Sending an address which is already pending verification sends a new link
+password_new        | string  | New password of the account, between 5 and 50 characters. Only sessions which were created by logging in on the website can change the password
 subscription        | enum    | Activate a prepaid plan, can be 'prepaid' or 'prepaid_lite'. Requires at least €1 of account credit
 hotlinking_enabled  | boolean | Whether other people are allowed to use your account's data transfer when downloading your files
 transfer_cap        | integer | Custom monthly transfer cap in bytes, cannot exceed the cap of your subscription plan
@@ -190,8 +213,8 @@ HTTP 200: OK
 }
 ```
 
-When the e-mail address was changed the response is login_link_sent (HTTP
-202), see POST /user/login.
+When an e-mail address was added the response is login_link_sent (HTTP 202),
+see POST /user/login.
 
 #### Possible errors
 
@@ -200,10 +223,50 @@ Value                            | HTTP status | Description
 username_already_registered      | 400         | An account with the new username already exists
 email_address_already_registered | 400         | An account with the new e-mail address already exists
 invalid_email_address            | 400         | The new e-mail address is not valid
+too_many_email_addresses         | 400         | The account already has the maximum of 5 e-mail addresses
+website_login_required           | 403         | Changing the password requires a session which was created by logging in on the website
 login_link_already_sent          | 400         | The account already has an active verification link, wait for it to expire
 not_enough_credit_for_prepaid    | 400         | Activating a prepaid plan requires at least €1 of account credit
 invalid_domain_name              | 400         | One of the embed domains does not contain a period
 user_not_found                   | 404         | The affiliate username does not exist
+</div>
+</details>
+
+<details class="api_doc_details request_delete">
+<summary><span class="method">DELETE</span>/user/email</summary>
+<div>
+
+### Description
+
+Removes an e-mail address from the account. This also works for the address
+which is still waiting for verification.
+
+An account always keeps at least one address, the last one can't be removed.
+
+### Parameters
+
+Param | Type   | Required | Description
+------|--------|----------|---------------
+email | string | true     | The e-mail address to remove
+
+### Returns
+
+HTTP 200: OK
+```
+{
+	"success": true,
+	"value": "ok",
+	"message": "The requested action was successfully performed"
+}
+```
+
+#### Possible errors
+
+Value                 | HTTP status | Description
+----------------------|-------------|----------------------------------------------------------------
+invalid_email_address | 400         | The e-mail address is not valid
+last_email_address    | 400         | This is the last address on the account, accounts need at least one
+not_found             | 404         | The address is not on the account
 </div>
 </details>
 
@@ -218,6 +281,9 @@ scheduled for deletion in 7 days. If the account logs in again within those 7
 days the deletion is cancelled. If the account has an e-mail address configured
 a message is sent to explain the deletion procedure.
 
+Only sessions which were created by logging in on the website can delete the
+account.
+
 ### Returns
 
 HTTP 200: OK
@@ -228,6 +294,12 @@ HTTP 200: OK
 	"message": "The requested action was successfully performed"
 }
 ```
+
+#### Possible errors
+
+Value                  | HTTP status | Description
+-----------------------|-------------|----------------------------------------------------------------
+website_login_required | 403         | The request was not made by a session which was created by logging in on the website
 </div>
 </details>
 
@@ -570,11 +642,14 @@ Creates a new API key for the account. This is the same kind of key that POST
 /user/login returns, but this endpoint can be used to create extra keys for
 different applications without logging in again.
 
+Only sessions which were created by logging in on the website can create new
+keys, an API key can't create more keys.
+
 ### Parameters
 
 Param    | Type   | Required | Description
 ---------|--------|----------|----------------------------
-app_name | string | false    | Name of your application, will be shown on the API keys page
+app_name | string | false    | Name of your application, will be shown on the API keys page. The name 'website login' is reserved
 
 ### Returns
 
@@ -590,6 +665,13 @@ HTTP 201: Created
 	"valid_domains": ["pixeldrain.com"]
 }
 ```
+
+#### Possible errors
+
+Value                  | HTTP status | Description
+-----------------------|-------------|----------------------------------------------------------------
+website_login_required | 403         | The request was not made by a session which was created by logging in on the website
+app_name_reserved      | 400         | The requested app name is reserved for the pixeldrain website
 </div>
 </details>
 
@@ -601,6 +683,9 @@ HTTP 201: Created
 
 Returns all the active sessions of the account. Use this to check for sessions
 which should not be there.
+
+Only sessions which were created by logging in on the website can list the
+account's keys.
 
 ### Returns
 
@@ -617,6 +702,12 @@ HTTP 200: OK
 	}
 ]
 ```
+
+#### Possible errors
+
+Value                  | HTTP status | Description
+-----------------------|-------------|----------------------------------------------------------------
+website_login_required | 403         | The request was not made by a session which was created by logging in on the website
 </div>
 </details>
 
@@ -689,6 +780,9 @@ invalid_key_ip        | 401         | The request came from a different IP addre
 Manages two-factor authentication on the account. The form parameter `action`
 selects the operation to perform.
 
+Only sessions which were created by logging in on the website can manage
+two-factor authentication, an API key can't enable or disable it.
+
 ### Action generate
 
 Generates a new TOTP secret. The secret is not saved to the account yet, use
@@ -731,9 +825,10 @@ HTTP 200: OK
 
 #### Possible errors
 
-Value             | HTTP status | Description
-------------------|-------------|----------------------------------------------------------------
-otp_incorrect     | 400         | The entered one-time password does not match the secret
-enum_parse_failed | 422         | The action is not 'generate', 'verify' or 'delete'
+Value                  | HTTP status | Description
+-----------------------|-------------|----------------------------------------------------------------
+otp_incorrect          | 400         | The entered one-time password does not match the secret
+enum_parse_failed      | 422         | The action is not 'generate', 'verify' or 'delete'
+website_login_required | 403         | The request was not made by a session which was created by logging in on the website
 </div>
 </details>

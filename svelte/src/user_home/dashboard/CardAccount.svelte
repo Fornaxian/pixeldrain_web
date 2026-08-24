@@ -1,6 +1,6 @@
 <ul>
 	<li>Username: {window.user.username}</li>
-	{#if window.user.email === ""}
+	{#if window.user.email_addresses.length === 0}
 		<li class="highlight_blue" style="text-align: initial;">
 			No e-mail address configured. You will not be able to recover your
 			account if you lose your password. Set an e-mail address on the <a
@@ -8,7 +8,12 @@
 		</li>
 	{:else}
 		<li>
-			E-mail address: {window.user.email}
+			E-mail addresses:
+			<ul>
+				{#each window.user.email_addresses as addr}
+					<li>{addr}</li>
+				{/each}
+			</ul>
 		</li>
 	{/if}
 	<li>

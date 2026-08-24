@@ -231,7 +231,7 @@ case-sensitive. The password must be left empty
 
 ## Filesystem API
 
-There is a public filesystem REST API, but it is not documented currently. The
-best reference for how to use the API would be the TypeScript client which the
-website uses as well. That can be found [on
+The filesystem has a public REST API, it's documented on the [API documentation
+page](/api#filesystem-methods). Another good reference for how to use the API
+is the TypeScript client which the website uses as well. That can be found [on
 GitHub](https://github.com/Fornaxian/pixeldrain_web/blob/master/svelte/src/filesystem/FilesystemAPI.ts).

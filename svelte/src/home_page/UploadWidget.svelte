@@ -10,6 +10,7 @@ import StorageProgressBar from "user_home/StorageProgressBar.svelte"
 import Konami from "util/Konami.svelte"
 import UploadStats from "./UploadStats.svelte";
 import CopyButton from "layout/CopyButton.svelte";
+import VerifyEmailWarning from "layout/VerifyEmailWarning.svelte";
 
 // === UPLOAD LOGIC ===
 
@@ -280,6 +281,8 @@ const keydown = (e) => {
 		<StorageProgressBar used={window.user.storage_space_used} total={window.user.subscription.storage_space}></StorageProgressBar>
 	</section>
 {/if}
+
+<VerifyEmailWarning/>
 
 <section class="instruction" style="border-top: none;">
 	<span class="big_number">1</span>

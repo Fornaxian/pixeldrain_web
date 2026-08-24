@@ -15,6 +15,9 @@ export type FormField = {
 	radio_values?: string[], // Options to choose from when type is "radio"
 	pattern?: string, // Used for pattern matching on input fields
 	binding?: any
+	// Called when the value of the field changes. Used for fields which change
+	// the shape of the form, like a checkbox which hides other fields
+	on_change?: (value: string) => void
 }
 export type SubmitResult = {
 	success: boolean,
@@ -24,18 +27,23 @@ export type SubmitResult = {
 }
 </script>
 <script lang="ts">
-import { onMount } from "svelte";
 import Spinner from "./Spinner.svelte";
+import ToggleButton from "layout/ToggleButton.svelte";
 import type { GenericResponse } from "lib/PixeldrainAPI";
 
 export let config: FormConfig
 
-onMount(() => {
-	config.fields.forEach(field => {
-		if(field.default_value === undefined) {
-			field.default_value = ""
-		}
-	})
+// Password fields have a button which reveals the entered password. Keyed by
+// field name because the field objects themselves are not reactive
+let revealed: {[key: string]: boolean} = {}
+
+// Runs for every config, not only the one we mounted with. Forms which swap
+// their fields around get new field objects, without a default value those
+// would render as "undefined"
+$: config.fields.forEach(field => {
+	if (field.default_value === undefined) {
+		field.default_value = ""
+	}
 })
 
 let loading = false
@@ -55,6 +63,8 @@ const submit = async (event: SubmitEvent) => {
 			} else {
 				field_values[field.name] = field.binding
 			}
+		} else if (field.type === "checkbox") {
+			field_values[field.name] = field.binding.checked ? "true" : ""
 		} else if (field.type === "description") {
 			field_values[field.name] = ""
 		} else {
@@ -138,9 +148,11 @@ const handle_errors = (response: GenericResponse) => {
 	<div class="form">
 		{#each config.fields as field}
 			{#if field.type !== "description"}
-				<label for="input_{field.name}">
-					{field.label}
-				</label>
+				{#if field.type !== "checkbox"}
+					<label for="input_{field.name}">
+						{field.label}
+					</label>
+				{/if}
 				{#if field.type === "text"}
 					<input bind:this={field.binding}
 						id="input_{field.name}"
@@ -205,36 +217,45 @@ const handle_errors = (response: GenericResponse) => {
 						autocomplete="email"
 						class="form_input"
 					/>
-				{:else if field.type === "current_password"}
-					<input bind:this={field.binding}
-						id="input_{field.name}"
-						name="{field.name}"
-						value="{field.default_value}"
-						pattern={field.pattern}
-						type="password"
-						autocomplete="current-password"
-						class="form_input"
-					/>
-				{:else if field.type === "new_password"}
-					<input bind:this={field.binding}
-						id="input_{field.name}"
-						name="{field.name}"
-						value="{field.default_value}"
-						pattern={field.pattern}
-						type="password"
-						autocomplete="new-password"
-						class="form_input"
-					/>
+				{:else if field.type === "current_password" || field.type === "new_password"}
+					<div class="password_field">
+						<input bind:this={field.binding}
+							id="input_{field.name}"
+							name="{field.name}"
+							value="{field.default_value}"
+							pattern={field.pattern}
+							type={revealed[field.name] ? "text" : "password"}
+							autocomplete={field.type === "new_password" ? "new-password" : "current-password"}
+							class="form_input"
+						/>
+						<ToggleButton
+							bind:on={revealed[field.name]}
+							icon_on="visibility"
+							icon_off="visibility_off"
+							label={revealed[field.name] ? "Hide password" : "Show password"}
+						/>
+					</div>
 				{:else if field.type === "totp"}
 					<input bind:this={field.binding}
 						id="input_{field.name}"
 						name="{field.name}"
-						value="{field.default_value?field.default_value:""}"
+						value="{field.default_value}"
 						type="text"
 						autocomplete="one-time-code"
 						pattern={"[0-9]{6}"}
 						class="form_input"
 					/>
+				{:else if field.type === "checkbox"}
+					<div>
+						<input bind:this={field.binding}
+							id="input_{field.name}"
+							name="{field.name}"
+							type="checkbox"
+							checked={field.default_value === "true"}
+							on:change={e => field.on_change?.(e.currentTarget.checked ? "true" : "")}
+						/>
+						<label for="input_{field.name}">{field.label}</label>
+					</div>
 				{:else if field.type === "radio"}
 					<div>
 						{#each field.radio_values as val}
@@ -275,6 +296,14 @@ const handle_errors = (response: GenericResponse) => {
 </form>
 
 <style>
+.password_field {
+	display: flex;
+	flex-direction: row;
+}
+.password_field > input {
+	flex: 1 1 auto;
+	min-width: 0;
+}
 .spinner_container {
 	position: absolute;
 	top: 10px;

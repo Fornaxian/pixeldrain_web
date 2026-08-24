@@ -125,8 +125,9 @@ onMount(async () => {
 
 		<p>
 			Please save the secret key in your password manager or another safe
-			place. If you lose your authenticator app then the secret key is the
-			only way to gain access to your account.
+			place. If you lose your authenticator app you can still log in by
+			requesting a login link on the login page and entering your account
+			password when you open the link.
 		</p>
 		<p>
 			Now enter the generated password to verify that the authenticator

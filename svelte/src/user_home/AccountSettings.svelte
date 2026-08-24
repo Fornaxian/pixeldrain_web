@@ -4,7 +4,8 @@ import CopyButton from "layout/CopyButton.svelte";
 import Form from "util/Form.svelte";
 import Button from "layout/Button.svelte";
 import OtpSetup from "./OTPSetup.svelte";
-    import { put_user } from "lib/PixeldrainAPI";
+import EmailAddresses from "./EmailAddresses.svelte";
+import { put_user } from "lib/PixeldrainAPI";
 
 let affiliate_link = window.location.protocol+"//"+window.location.host + "?ref=" + encodeURIComponent(window.user.username)
 let affiliate_deny = false
@@ -20,17 +21,6 @@ let account_settings = {
 	name: "account_settings",
 	fields: [
 		{
-			name: "email",
-			label: "E-mail address",
-			type: "email",
-			default_value: window.user.email,
-			description: `We will send an e-mail to the new address to verify
-				that it's real. The address will be saved once the link in the
-				message is clicked. If the e-mail doesn't arrive right away
-				please check your spam box too. Leave the field empty to remove
-				your current e-mail address from your account`,
-			separator: true
-		}, {
 			name: "password_new1",
 			label: "New password",
 			type: "new_password",
@@ -81,7 +71,6 @@ let account_settings = {
 		}
 
 		const form = new FormData()
-		form.append("email", fields.email)
 		form.append("password_new", fields.password_new1)
 		form.append("username", fields.username)
 		form.append("checkout_country", fields.checkout_country)
@@ -90,7 +79,6 @@ let account_settings = {
 
 		try {
 			await put_user({
-				email: fields.email,
 				password_new: fields.password_new1,
 				username: fields.username,
 				checkout_country: fields.checkout_country,
@@ -184,6 +172,11 @@ let delete_account = {
 	<fieldset>
 		<legend>Account settings</legend>
 		<Form config={account_settings}></Form>
+	</fieldset>
+
+	<fieldset>
+		<legend>E-mail addresses</legend>
+		<EmailAddresses/>
 	</fieldset>
 
 	<fieldset>

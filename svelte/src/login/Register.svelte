@@ -6,9 +6,10 @@ let form: FormConfig = {
 	fields: [
 		{
 			name: "username",
-			label: "Username",
+			label: "Username (optional)",
 			type: "username",
-			description: "Used for logging into your account",
+			description: "Used for logging into your account. If you leave " +
+				"this empty we will pick a name based on your e-mail address",
 		}, {
 			name: "email",
 			label: "E-mail address",
@@ -41,17 +42,27 @@ let form: FormConfig = {
 		}
 
 		const form = new FormData()
-		form.append("username", fields.username)
+		if (fields.username !== "") {
+			form.append("username", fields.username)
+		}
 		form.append("email", fields.email)
 		form.append("password", fields.password)
 
 		const resp = await fetch(
 			get_endpoint()+"/user/register",
-			{ method: "POST", body: form }
+			{
+				method: "POST",
+				body: form,
+				// The API sets the session cookie in the response, so the user
+				// is logged in as soon as the account is created
+				credentials: "same-origin",
+			}
 		);
 		if(resp.status >= 400) {
 			return {success: false, error_json: await resp.json()}
 		}
+
+		window.location.href = "/user"
 
 		return {
 			success: true,

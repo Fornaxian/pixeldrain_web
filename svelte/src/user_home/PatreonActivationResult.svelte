@@ -34,6 +34,16 @@ onMount(() => {
 			Please press "Allow" when asked if pixeldrain can access your
 			profile.
 		</div>
+	{:else if patreon_error === "patreon_state_invalid"}
+		<div class="highlight_yellow">
+			<p>
+				Your Patreon authentication session has expired. These sessions
+				are valid for 30 minutes.
+			</p>
+			<p>
+				<a href="/api/patreon_auth/start">Click here to try again</a>.
+			</p>
+		</div>
 	{:else if patreon_result === "error"}
 		<div class="highlight_red">
 			<p>

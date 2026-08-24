@@ -10,7 +10,9 @@ export type GenericResponse = {
 
 export type User = {
 	username: string,
-	email: string,
+	email_addresses: string[],
+	email_address_pending: string,
+	can_upload: boolean,
 	otp_enabled: boolean,
 	subscription: Subscription,
 	storage_space_used: number,
@@ -117,7 +119,7 @@ export const get_user = async () => {
 }
 
 export const put_user = async (data: Object) => {
-	check_response(await fetch(
+	await check_response(await fetch(
 		get_endpoint() + "/user",
 		{ method: "PUT", body: dict_to_form(data) },
 	))
@@ -135,6 +137,22 @@ export type VATRate = {
 	alpha2: string,
 	alpha3: string,
 }
+// Sends a verification link to the address. The address is added to the
+// account when the link is clicked
+export const put_user_email = async (email: string) => {
+	await check_response(await fetch(
+		get_endpoint() + "/user",
+		{ method: "PUT", body: dict_to_form({ email: email }) },
+	))
+}
+
+export const delete_user_email = async (email: string) => {
+	await check_response(await fetch(
+		get_endpoint() + "/user/email",
+		{ method: "DELETE", body: dict_to_form({ email: email }) },
+	))
+}
+
 export const get_misc_vat_rate = async (country_code: string) => {
 	return await check_response(await fetch(get_endpoint() + "/misc/vat_rate/" + country_code)) as VATRate
 }

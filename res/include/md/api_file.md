@@ -54,6 +54,7 @@ name_contains_illegal_character   | 422         | The file name contains charact
 error_reading_input               | 400         | The upload was interrupted before it completed
 too_many_files                    | 400         | Your account holds more files than the per-account limit
 user_out_of_space                 | 400         | Your account has run out of storage space
+email_address_not_verified        | 403         | Your account does not have a verified e-mail address yet
 ip_banned                         | 403         | Your IP address has been banned for violating the content policy
 account_banned                    | 403         | Your account has been banned for violating the content policy
 writing                           | 500         | Failed to write the file to disk, the server may be out of storage space
@@ -121,6 +122,7 @@ name_contains_illegal_character   | 422         | The file name contains charact
 error_reading_input               | 400         | The upload was interrupted before it completed
 too_many_files                    | 400         | Your account holds more files than the per-account limit
 user_out_of_space                 | 400         | Your account has run out of storage space
+email_address_not_verified        | 403         | Your account does not have a verified e-mail address yet
 ip_banned                         | 403         | Your IP address has been banned for violating the content policy
 account_banned                    | 403         | Your account has been banned for violating the content policy
 writing                           | 500         | Failed to write the file to disk, the server may be out of storage space

@@ -1,11 +1,14 @@
 <script>
 import UploadLib from "./UploadLib.svelte";
+import VerifyEmailWarning from "layout/VerifyEmailWarning.svelte";
 import { drop_target } from "lib/DropTarget.ts"
 
 let upload_widget
 </script>
 
 <div class="wrapper" use:drop_target={{upload: (files) => upload_widget.upload_files(files)}}>
+	<VerifyEmailWarning/>
+
 	<div class="upload_buttons">
 		<button on:click={() => upload_widget.pick_files() } class="big_button button_highlight">
 			<i class="icon small">cloud_upload</i>

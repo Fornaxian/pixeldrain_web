@@ -6,6 +6,8 @@ export let group_first = false
 export let group_middle = false
 export let group_last = false
 export let action = (e: MouseEvent) => {}
+// Accessible name for buttons which only contain an icon
+export let label = ""
 
 const click = (e: MouseEvent) => {
 	on = !on
@@ -19,6 +21,9 @@ const click = (e: MouseEvent) => {
 	on:click={click}
 	type="button"
 	class="button"
+	title={label !== "" ? label : null}
+	aria-label={label !== "" ? label : null}
+	aria-pressed={on}
 	class:button_highlight={on}
 	class:group_first
 	class:group_middle

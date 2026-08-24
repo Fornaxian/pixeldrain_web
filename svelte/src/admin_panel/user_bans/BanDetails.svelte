@@ -17,7 +17,7 @@ export let row = {}
 		</tr>
 		<tr>
 			<td>Email</td>
-			<td>{row.user.email}</td>
+			<td>{row.user.email_addresses.join(", ")}</td>
 		</tr>
 		<tr>
 			<td>Subscription</td>
