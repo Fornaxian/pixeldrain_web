@@ -137,6 +137,19 @@ export type VATRate = {
 	alpha2: string,
 	alpha3: string,
 }
+export type Captcha = {
+	site_key: string,
+	hcaptcha_site_key: string,
+}
+
+// Site keys of the captcha providers. A key is empty when that provider is not
+// configured on the server
+export const get_misc_captcha = async () => {
+	return await check_response(
+		await fetch(get_endpoint() + "/misc/recaptcha")
+	) as Captcha
+}
+
 // Sends a verification link to the address. The address is added to the
 // account when the link is clicked
 export const put_user_email = async (email: string) => {
