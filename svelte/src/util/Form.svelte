@@ -72,13 +72,23 @@ const submit = async (event: SubmitEvent) => {
 		}
 	})
 
-	submit_result = await config.on_submit(field_values)
-	if (submit_result && submit_result.error_json) {
-		submit_result = handle_errors(submit_result.error_json)
+	try {
+		submit_result = await config.on_submit(field_values)
+		if (submit_result && submit_result.error_json) {
+			submit_result = handle_errors(submit_result.error_json)
+		}
+	} catch (err) {
+		console.error("Form submission failed", err)
+		submit_result = {
+			success: false,
+			message: "Something went wrong while submitting the form. Please try again",
+		}
+	} finally {
+		// The submit button stays disabled until this runs
+		submitted = true
+		loading = false
 	}
-	submitted = true
 
-	loading = false
 	return false
 }
 
@@ -282,9 +292,9 @@ const handle_errors = (response: GenericResponse) => {
 
 		<!-- Submit button -->
 		{#if config.submit_red}
-			<button type="submit" class="button_red">{@html config.submit_label}</button>
+			<button type="submit" disabled={loading} class="button_red">{@html config.submit_label}</button>
 		{:else}
-			<button type="submit" class="button_highlight">{@html config.submit_label}</button>
+			<button type="submit" disabled={loading} class="button_highlight">{@html config.submit_label}</button>
 		{/if}
 	</div>
 
