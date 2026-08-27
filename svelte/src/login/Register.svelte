@@ -37,12 +37,6 @@ onMount(async () => {
 let form: FormConfig = {
 	fields: [
 		{
-			name: "username",
-			label: "Username (optional)",
-			type: "username",
-			description: "Used for logging into your account. If you leave " +
-				"this empty we will pick a name based on your e-mail address",
-		}, {
 			name: "email",
 			label: "E-mail address",
 			type: "email",
@@ -77,10 +71,8 @@ let form: FormConfig = {
 			}
 		}
 
+		// No username is sent, the server generates one from the e-mail address
 		const form = new FormData()
-		if (fields.username !== "") {
-			form.append("username", fields.username)
-		}
 		form.append("email", fields.email)
 		form.append("password", fields.password)
 
