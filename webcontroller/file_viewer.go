@@ -100,7 +100,7 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	// Prevent search engines from indexing this page for privacy reasons
-	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
+	w.Header().Set("X-Robots-Tag", "noindex, nofollow, noimageindex")
 
 	var ids = strings.Split(p.ByName("id"), ",")
 	templateData, err := wc.newTemplateData(w, r)
@@ -191,7 +191,7 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 	}
 
 	// Prevent search engines from indexing this page for privacy reasons
-	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
+	w.Header().Set("X-Robots-Tag", "noindex, nofollow, noimageindex")
 	templateData, err := wc.newTemplateData(w, r)
 	if tpl := apiErrorTemplate(err, w); tpl != "" {
 		wc.templates.Run(w, r, tpl, templateData)

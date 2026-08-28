@@ -19,7 +19,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	var path = strings.TrimPrefix(p.ByName("path"), "/")
 
 	// Prevent search engines from indexing this page for privacy reasons
-	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
+	w.Header().Set("X-Robots-Tag", "noindex, nofollow, noimageindex")
 
 	if path == "" {
 		err = wc.templates.Run(w, r, "404", td)
