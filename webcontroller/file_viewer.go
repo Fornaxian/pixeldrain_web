@@ -75,7 +75,7 @@ func setEmbedHeaders(w http.ResponseWriter, files []pixelapi.ListFile) {
 
 			w.Header().Add(
 				"Content-Security-Policy",
-				fmt.Sprintf("frame-ancestors '%s'", strings.Join(urls, "; ")),
+				"frame-ancestors "+strings.Join(urls, " "),
 			)
 			headerSet = true
 			break

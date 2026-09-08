@@ -1,6 +1,6 @@
 module fornaxian.tech/pixeldrain_web
 
-go 1.25.0
+go 1.26.0
 
 replace (
 	fornaxian.tech/pixeldrain_api_client => ../pixeldrain_api_client

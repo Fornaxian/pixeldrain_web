@@ -2,6 +2,7 @@ package webcontroller
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"html/template"
 	"io"
@@ -98,7 +99,11 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 			// cannot be authenticated
 			log.Debug("Session check for key '%s' failed: %s", key, err)
 
-			if err.Error() == "authentication_required" || err.Error() == "authentication_failed" {
+			// Errors are wrapped by the API client, so we have to unwrap
+			// them to find the status code
+			apiErr, _ := errors.AsType[pixelapi.Error](err)
+			if apiErr.StatusCode == "authentication_required" ||
+				apiErr.StatusCode == "authentication_failed" {
 				// Disable API authentication
 				t.PixelAPI = wc.api.RealIP(util.RemoteAddress(r)).RealAgent(r.UserAgent())
 

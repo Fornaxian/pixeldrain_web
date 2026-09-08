@@ -37,6 +37,9 @@ const groups: {
 			{metric: "api_user_register", data_type: "number"},
 			{metric: "api_user_login", data_type: "number"},
 			{metric: "api_user_delete", data_type: "number"},
+			{metric: "api_user_files_get", data_type: "number"},
+			{metric: "api_user_lists_get", data_type: "number"},
+			{metric: "api_user_activity_get", data_type: "number"},
 		],
 	}, {
 		title: "Filesystem API", expanded: false,

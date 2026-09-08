@@ -346,7 +346,7 @@ onDestroy(() => {
 						<td>{q.query_name}</td>
 						<td>{q.calls}</td>
 						<td>{q.average_duration}ms</td>
-						<td>{formatDuration(q.total_duration, 0)}</td>
+						<td>{formatDuration(q.total_duration, 2)}</td>
 						<td>
 							{#each q.callers as caller}
 								{caller.count}x {caller.name}<br/>

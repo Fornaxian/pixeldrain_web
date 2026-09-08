@@ -1,11 +1,13 @@
 package webcontroller
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
 
 	"fornaxian.tech/log"
+	"fornaxian.tech/pixeldrain_api_client/pixelapi"
 	"fornaxian.tech/util"
 	"github.com/julienschmidt/httprouter"
 )
@@ -30,7 +32,7 @@ func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, 
 	}
 
 	node, err := td.PixelAPI.GetFilesystemPath(path)
-	if apierr := searchAPIError(err); apierr != nil {
+	if apierr, ok := errors.AsType[pixelapi.Error](err); ok {
 		switch apierr.StatusCode {
 		case "not_found", "path_not_found":
 			wc.serveNotFound(w, r)

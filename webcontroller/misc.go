@@ -65,41 +65,34 @@ func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Reques
 	}
 }
 
-func searchAPIError(err error) *pixelapi.Error {
-	for {
-		if e, ok := err.(pixelapi.Error); ok {
-			return &e
-		}
-
-		if err = errors.Unwrap(err); err == nil {
-			return nil
-		}
-	}
-}
-
 func apiErrorTemplate(err error, w http.ResponseWriter) (templateName string) {
 	if err == nil {
 		return ""
 	}
-	if apiErr := searchAPIError(err); apiErr != nil {
-		switch apiErr.Status {
-		case http.StatusNotFound:
-			w.WriteHeader(http.StatusNotFound)
-			return "404"
-		case http.StatusTooManyRequests:
-			w.WriteHeader(http.StatusTooManyRequests)
-			return "428"
-		case http.StatusInternalServerError:
-			w.WriteHeader(http.StatusInternalServerError)
-			return "500"
-		}
+
+	var status = http.StatusInternalServerError
+	if apiErr, ok := errors.AsType[pixelapi.Error](err); ok {
+		status = apiErr.Status
 	} else if strings.HasSuffix(err.Error(), "invalid control character in URL") {
-		w.WriteHeader(http.StatusNotFound)
-		return "404"
+		status = http.StatusNotFound
 	} else {
 		log.Error("API request error occurred: %s", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return "500"
 	}
-	return ""
+
+	w.WriteHeader(status)
+
+	switch status {
+	case http.StatusNotFound:
+		return "404"
+	case http.StatusForbidden:
+		return "403"
+	case http.StatusUnavailableForLegalReasons:
+		return "451"
+	case http.StatusTooManyRequests:
+		return "429"
+	}
+
+	// Any other status gets the generic error page. Never return an empty
+	// template name here, that renders a blank page
+	return "500"
 }
