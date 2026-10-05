@@ -92,10 +92,10 @@ onMount(() => {
 		<div class="highlight_yellow">
 			<p>
 				You still have an unpaid invoice open. Please pay that one
-				before requesting a new invoice. You can find unpaid
-				invoices at the bottom of this page. You can cancel an
-				invoice by clicking Pay, and then clicking the Back link at
-				the bottom of the page.
+				before requesting a new invoice. You can find unpaid invoices at
+				the bottom of this page. There is no way to cancel an invoice.
+				You can either pay it or wait for it to expire, which usually
+				takes 24 hours.
 			</p>
 		</div>
 	{:else}

@@ -73,6 +73,16 @@ export const payment_providers: PaymentProvider[] = [
 		name: "ltc",
 		label: "Litecoin",
 		crypto: true,
+	}, {
+		icon: "tether_ethereum",
+		name: "usdt_ethereum",
+		label: "USD₮ Ethereum",
+		crypto: true,
+	}, {
+		icon: "tether_tron",
+		name: "usdt_tron",
+		label: "USD₮ TRON",
+		crypto: true,
 	},
 ]
 

@@ -720,6 +720,9 @@ website_login_required | 403         | The request was not made by a session whi
 Invalidates the API key which was used to make this request. This is the
 logout endpoint.
 
+Not every session is invalidated by this request. When the response value is
+not 'ok' the session is still usable and should be kept.
+
 ### Returns
 
 HTTP 200: OK
