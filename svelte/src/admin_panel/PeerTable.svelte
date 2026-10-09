@@ -9,7 +9,7 @@ type Peer = {
 	ip: string
 	port: number
 	hostname: string
-	role: string
+	services: string[] | null
 	reachable: boolean
 	unreachable_count: number
 	latency: number

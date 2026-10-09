@@ -305,11 +305,11 @@ onDestroy(() => {
 
 	<h3>Cache nodes</h3>
 </section>
-	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "cache") {acc.push(val)}; return acc}, [])}/>
+	<PeerTable peers={status.peers.filter(peer => peer.services?.includes("cache"))}/>
 <section>
 	<h3>Storage nodes</h3>
 </section>
-	<PeerTable peers={status.peers.reduce((acc, val) => {if (val.role === "storage") {acc.push(val)}; return acc}, [])}/>
+	<PeerTable peers={status.peers.filter(peer => peer.services?.includes("storage"))}/>
 <section>
 
 	<h3>Query statistics</h3>
