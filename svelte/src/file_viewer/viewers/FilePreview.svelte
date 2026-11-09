@@ -13,6 +13,7 @@ import RateLimit from "./RateLimit.svelte";
 import Torrent from "./Torrent.svelte";
 import { stats } from "lib/StatsSocket"
 import Zip from "./Zip.svelte";
+import Email from "./Email.svelte";
 import SlowDown from "layout/SlowDown.svelte";
 import TextBlock from "layout/TextBlock.svelte";
 
@@ -112,6 +113,8 @@ export const seek = delta => {
 	<Torrent bind:this={viewer} on:loading on:download />
 {:else if viewer_type === "zip"}
 	<Zip bind:this={viewer} on:loading on:download />
+{:else if viewer_type === "email"}
+	<Email src={current_file.get_href} />
 {:else if viewer_type === "file"}
 	<File bind:this={viewer} on:download on:reload></File>
 {/if}

@@ -274,6 +274,12 @@ export const fs_node_type = (node: FSNode) => {
 	} else if (node.file_type === "application/bittorrent" || node.file_type === "application/x-bittorrent") {
 		return "torrent"
 	} else if (
+		// The email is parsed in the browser, large ones are too slow for that
+		(node.file_type === "message/rfc822" || node.name.endsWith(".eml")) &&
+		node.file_size < 1 << 24
+	) {
+		return "email"
+	} else if (
 		node.file_type === "application/zip" ||
 		node.file_type === "application/x-7z-compressed" ||
 		node.file_type === "application/x-tar" ||

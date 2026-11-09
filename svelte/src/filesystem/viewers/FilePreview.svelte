@@ -1,7 +1,7 @@
 <script lang="ts">
 import { onMount, tick } from "svelte";
 import Spinner from "util/Spinner.svelte";
-import { fs_node_type, fs_thumbnail_url } from "filesystem/FilesystemAPI";
+import { fs_node_type, fs_path_url, fs_thumbnail_url } from "filesystem/FilesystemAPI";
 import FileManager from "filesystem/filemanager/FileManager.svelte";
 import Audio from "./Audio.svelte";
 import File from "./File.svelte";
@@ -11,6 +11,7 @@ import Text from "./Text.svelte";
 import Video from "./Video.svelte";
 import Torrent from "./Torrent.svelte";
 import Zip from "./Zip.svelte";
+import Email from "file_viewer/viewers/Email.svelte";
 import CustomBanner from "./CustomBanner.svelte";
 import { stats } from "lib/StatsSocket"
 import SlowDown from "layout/SlowDown.svelte";
@@ -112,6 +113,10 @@ export const seek = (delta: number) => {
 	<Zip nav={nav} bind:this={viewer} on:download>
 		<CustomBanner path={$nav.path}/>
 	</Zip>
+{:else if viewer_type === "email"}
+	<Email src={fs_path_url($nav.base.path)}>
+		<CustomBanner path={$nav.path}/>
+	</Email>
 {:else}
 	<File nav={nav} on:download on:details>
 		<CustomBanner path={$nav.path}/>

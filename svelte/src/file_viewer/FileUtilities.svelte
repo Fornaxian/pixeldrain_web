@@ -39,6 +39,12 @@ export const file_type = file => {
 	if (file.mime_type === "application/bittorrent" || file.mime_type === "application/x-bittorrent") {
 		return "torrent"
 	} else if (
+		// The email is parsed in the browser, large ones are too slow for that
+		(file.mime_type === "message/rfc822" || file.name.endsWith(".eml")) &&
+		file.size < 1 << 24
+	) {
+		return "email"
+	} else if (
 		file.mime_type === "application/zip" ||
 		file.mime_type === "application/x-7z-compressed" ||
 		file.mime_type === "application/x-tar" ||
