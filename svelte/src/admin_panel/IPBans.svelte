@@ -15,14 +15,14 @@ const abuse_types = [
 	"revenge_porn",
 ]
 
-let loading = true
-let rows = []
-let total_offences = 0
+let loading = $state(true)
+let rows = $state([])
+let total_offences = $state(0)
 
-let expanded = false
-let creating = false
-let new_ban_address
-let new_ban_reason = abuse_types[0]
+let expanded = $state(false)
+let creating = $state(false)
+let new_ban_address = $state()
+let new_ban_reason = $state(abuse_types[0])
 
 const get_bans = async () => {
 	loading = true;
@@ -106,20 +106,20 @@ onMount(get_bans);
 			Offences {total_offences}
 		</div>
 		<div class="toolbar_spacer"></div>
-		<button class:button_highlight={expanded} on:click={() => {expanded = !expanded}}>
+		<button class:button_highlight={expanded} onclick={() => {expanded = !expanded}}>
 			{#if expanded}
 				<i class="icon">unfold_less</i> Collapse all
 			{:else}
 				<i class="icon">unfold_more</i> Expand all
 			{/if}
 		</button>
-		<button class:button_highlight={creating} on:click={() => {creating = !creating}}>
+		<button class:button_highlight={creating} onclick={() => {creating = !creating}}>
 			<i class="icon">create</i> Add IP ban
 		</button>
 	</div>
 	{#if creating}
 		<div class="highlight_shaded">
-			<form on:submit|preventDefault={create_ban}>
+			<form onsubmit={e => {e.preventDefault(); create_ban()}}>
 				<div class="form">
 					<label for="field_address">IP address</label>
 					<input id="field_address" type="text" bind:this={new_ban_address}/>
@@ -141,20 +141,22 @@ onMount(get_bans);
 
 	{#each rows as row (row.address)}
 		<Expandable expanded={expanded} click_expand>
-			<div slot="header" class="header">
-				<div class="title">{row.address}</div>
-				<div class="stats">
-					Offences<br/>
-					{row.offences.length}
+			{#snippet header()}
+				<div class="header">
+					<div class="title">{row.address}</div>
+					<div class="stats">
+						Offences<br/>
+						{row.offences.length}
+					</div>
+					<div class="stats">
+						Date<br/>
+						{formatDate(row.offences[0].ban_time, false, false, false)}
+					</div>
+					<button onclick={e => {e.stopPropagation(); delete_ban(row.address)}} class="button button_red" style="align-self: center;">
+						<i class="icon">delete</i>
+					</button>
 				</div>
-				<div class="stats">
-					Date<br/>
-					{formatDate(row.offences[0].ban_time, false, false, false)}
-				</div>
-				<button on:click|stopPropagation={() => {delete_ban(row.address)}} class="button button_red" style="align-self: center;">
-					<i class="icon">delete</i>
-				</button>
-			</div>
+			{/snippet}
 			<div class="table_scroll">
 				<table>
 					<thead>

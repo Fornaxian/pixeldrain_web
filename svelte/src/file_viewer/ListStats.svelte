@@ -1,13 +1,11 @@
-<script>
+<script lang="ts">
 import { formatDataVolume, formatThousands } from "util/Formatting"
 
-export let list = {
-	files: [],
-}
+let { list }: { list: any } = $props();
 
-$: size = list.files.reduce((acc, file) => acc += file.size, 0)
-$: views = list.files.reduce((acc, file) => acc += file.views, 0)
-$: downloads = list.files.reduce(
+let size = $derived(list.files.reduce((acc, file) => acc += file.size, 0))
+let views = $derived(list.files.reduce((acc, file) => acc += file.views, 0))
+let downloads = $derived(list.files.reduce(
 	(acc, file) => {
 		if (file.size === 0) {
 			acc += file.downloads
@@ -17,7 +15,7 @@ $: downloads = list.files.reduce(
 		return acc
 	},
 	0,
-)
+))
 
 </script>
 

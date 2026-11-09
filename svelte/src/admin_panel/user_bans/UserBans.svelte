@@ -8,10 +8,10 @@ import UserFiles from "./UserFiles.svelte";
 import BanDetails from "./BanDetails.svelte";
 import UserLists from "./UserLists.svelte";
 
-let loading = true
-let rows = []
-let total_offences = 0
-let expanded = false
+let loading = $state(true)
+let rows = $state([])
+let total_offences = $state(0)
+let expanded = $state(false)
 
 const get_bans = async () => {
 	loading = true;
@@ -116,7 +116,7 @@ onMount(get_bans);
 			Offences {total_offences}
 		</div>
 		<div class="toolbar_spacer"></div>
-		<button class:button_highlight={expanded} on:click={() => {expanded = !expanded}}>
+		<button class:button_highlight={expanded} onclick={() => {expanded = !expanded}}>
 			{#if expanded}
 				<i class="icon">unfold_less</i> Collapse all
 			{:else}
@@ -127,26 +127,28 @@ onMount(get_bans);
 
 	{#each rows as row (row.user_id)}
 		<Expandable expanded={expanded} click_expand>
-			<div slot="header" class="header">
-				<div class="title">
-					{row.user.username}
+			{#snippet header()}
+				<div class="header">
+					<div class="title">
+						{row.user.username}
+					</div>
+					<div class="stats">
+						Type<br/>
+						{row.offences[0].reason}
+					</div>
+					<div class="stats">
+						Count<br/>
+						{row.offences.length}
+					</div>
+					<div class="stats">
+						Date<br/>
+						{formatDate(row.offences[0].ban_time, false, false, false)}
+					</div>
+					<button onclick={e => {e.stopPropagation(); delete_ban(row.user_id)}} class="button button_red" style="align-self: center;">
+						<i class="icon">delete</i>
+					</button>
 				</div>
-				<div class="stats">
-					Type<br/>
-					{row.offences[0].reason}
-				</div>
-				<div class="stats">
-					Count<br/>
-					{row.offences.length}
-				</div>
-				<div class="stats">
-					Date<br/>
-					{formatDate(row.offences[0].ban_time, false, false, false)}
-				</div>
-				<button on:click|stopPropagation={() => {delete_ban(row.user_id)}} class="button button_red" style="align-self: center;">
-					<i class="icon">delete</i>
-				</button>
-			</div>
+			{/snippet}
 
 			<div class="toolbar">
 				<Button click={() => impersonate(row.user_id)} icon="login" label="Impersonate user"/>

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 export enum FieldType {
 	Text,
 	Bytes,
@@ -20,24 +20,29 @@ import SortButton from "layout/SortButton.svelte";
 import Euro from "util/Euro.svelte";
 import { formatDataVolume, formatDataVolumeBits, formatThousands } from "util/Formatting";
 
-export let index_field = ""
-export let rows = [];
-export let columns: SortColumn[] = []
-export let sort_field = index_field
-export let totals = false
+let {
+	index_field = "",
+	rows = [],
+	columns = [],
+	sort_field = index_field,
+	totals = false
+}: {
+	index_field?: string;
+	rows?: any[];
+	columns?: SortColumn[];
+	sort_field?: string;
+	totals?: boolean;
+} = $props();
 
-let asc = true
+let asc = $state(true)
 const sort = (field: string) => {
-	if (field !== "" && field === sort_field) {
+	if (field === sort_field) {
 		asc = !asc
-	}
-	if (field === "") {
-		field = sort_field
 	}
 	sort_field = field
 
 	console.log("sorting by", field, "asc", asc)
-	rows.sort((a, b) => {
+	rows = [...rows].sort((a, b) => {
 		if (typeof (a[field]) === "number") {
 			// Sort ints from high to low
 			if (asc) {
@@ -54,7 +59,6 @@ const sort = (field: string) => {
 			}
 		}
 	})
-	rows = rows
 }
 </script>
 

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 export type ZipEntry = {
 	size: number,
 	children?: {[index: string]: ZipEntry},
@@ -8,7 +8,6 @@ export type ZipEntry = {
 };
 </script>
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import { formatDataVolume, formatDate } from "util/Formatting"
 import ZipItem from "file_viewer/viewers/ZipItem.svelte";
 import IconBlock from "layout/IconBlock.svelte";
@@ -16,17 +15,20 @@ import TextBlock from "layout/TextBlock.svelte"
 import { fs_node_icon, fs_path_url } from "filesystem/FilesystemAPI";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-let dispatch = createEventDispatcher()
 
-export let nav: FSNavigator
+let { nav, on_download, children }: {
+	nav: FSNavigator;
+	on_download: () => void;
+	children?: import('svelte').Snippet;
+} = $props();
 
-let status = "loading"
+let status = $state("loading")
 
-let zip: ZipEntry = {size: 0} as ZipEntry
+let zip: ZipEntry = $state({size: 0} as ZipEntry)
 let uncomp_size = 0
-let comp_ratio = 0
-let archive_type = ""
-let truncated = false
+let comp_ratio = $state(0)
+let archive_type = $state("")
+let truncated = $state(false)
 
 export const update = async () => {
 	if (nav.base.file_type === "application/x-7z-compressed") {
@@ -45,19 +47,22 @@ export const update = async () => {
 			return
 		}
 
-		zip = await resp.json() as ZipEntry
+		const z = await resp.json() as ZipEntry
 
 		// Check if the zip has the property which allows separate files to be
-		// downloaded. If so then we set the download URL for each file
-		if (zip.properties !== undefined) {
-			if (zip.properties.includes("read_individual_files")) {
+		// downloaded. If so then we set the download URL for each file. This
+		// happens before the zip becomes state, else every file in the archive
+		// would get a state proxy instead of only the ones which are rendered
+		if (z.properties !== undefined) {
+			if (z.properties.includes("read_individual_files")) {
 				// Set the download URL for each file in the zip
-				recursive_set_url(fs_path_url(nav.base.path)+"?zip_file=", zip)
+				recursive_set_url(fs_path_url(nav.base.path)+"?zip_file=", z)
 			}
-			truncated = zip.properties.includes("truncated")
+			truncated = z.properties.includes("truncated")
 		}
 
-		uncomp_size = recursive_size(zip)
+		uncomp_size = recursive_size(z)
+		zip = z
 		comp_ratio = (uncomp_size / nav.base.file_size)
 		status = "finished"
 	} catch (err) {
@@ -92,7 +97,7 @@ const recursive_size = (file: ZipEntry) => {
 }
 </script>
 
-<slot></slot>
+{@render children?.()}
 
 <h1>{$nav.base.name}</h1>
 
@@ -109,7 +114,7 @@ const recursive_size = (file: ZipEntry) => {
 	{/if}
 	Uploaded on: {formatDate($nav.base.created, true, true, true)}
 	<br/>
-	<button class="button_highlight" on:click={() => {dispatch("download")}}>
+	<button class="button_highlight" onclick={on_download}>
 		<i class="icon">download</i>
 		<span>Download</span>
 	</button>

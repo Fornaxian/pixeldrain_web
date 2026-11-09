@@ -2,7 +2,9 @@
 import { put_user } from "lib/PixeldrainAPI";
 import { payment_providers, type CheckoutState, type PaymentProvider } from "./CheckoutLib";
 
-export let state: CheckoutState
+let { status = $bindable() }: {
+	status: CheckoutState;
+} = $props();
 
 const set_provider = async (p: PaymentProvider) => {
 	try {
@@ -11,7 +13,7 @@ const set_provider = async (p: PaymentProvider) => {
 		alert("Failed to update user:"+ err)
 	}
 
-	state.provider = p
+	status.provider = p
 }
 </script>
 
@@ -19,8 +21,8 @@ const set_provider = async (p: PaymentProvider) => {
 
 <div class="providers">
 	{#each payment_providers as p (p.name)}
-		{#if p.country_filter === undefined || p.country_filter.includes(state.country.alpha2)}
-			<button on:click={() => set_provider(p)}>
+		{#if p.country_filter === undefined || p.country_filter.includes(status.country.alpha2)}
+			<button onclick={() => set_provider(p)}>
 				<img src="/res/img/payment_providers/{p.icon}.svg" alt={p.label} title={p.label}/>
 				{p.label}
 			</button>

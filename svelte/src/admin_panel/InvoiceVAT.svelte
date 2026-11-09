@@ -9,11 +9,11 @@ import PayPalVat from "./PayPalVAT.svelte";
 import Chart from "util/Chart.svelte";
 import { color_by_name } from "util/Util.svelte";
 
-let loading = true
-let invoices: Invoice[] = []
+let loading = $state(true)
+let invoices: Invoice[] = $state([])
 
-let year = 0
-let month = 0
+let year = $state(0)
+let month = $state(0)
 
 type Total = {
 	count: number
@@ -21,8 +21,8 @@ type Total = {
 	vat: number
 	fee: number
 }
-let totals_provider: { [id: string]: Total } = {}
-let totals_country: { [id: string]: Total } = {}
+let totals_provider: { [id: string]: Total } = $state({})
+let totals_country: { [id: string]: Total } = $state({})
 const add_total = (i: Invoice) => {
 	if (totals_provider[i.payment_method] === undefined) {
 		totals_provider[i.payment_method] = {count: 0, amount: 0, vat: 0, fee: 0}
@@ -123,14 +123,14 @@ onMount(() => {
 	get_invoices()
 })
 
-let status_filter = {
+let status_filter = $state({
 	canceled: {checked: false},
 	expired: {checked: false},
 	open: {checked: false},
 	paid: {checked: true},
-}
-let gateway_filter = {}
-let method_filter = {}
+})
+let gateway_filter = $state({})
+let method_filter = $state({})
 
 const filter_invoices = () => {
 	records_hidden = 0
@@ -157,10 +157,10 @@ const filter_invoices = () => {
 		return false
 	})
 }
-let records_hidden = 0
-let invoices_filtered: Invoice[] = []
+let records_hidden = $state(0)
+let invoices_filtered: Invoice[] = $state([])
 
-let chart: Chart
+let chart: Chart = $state()
 const render_earnings_graph = () => {
 	let labels: string[] = []
 	let amounts: number[] = []
@@ -200,12 +200,12 @@ const render_earnings_graph = () => {
 <section>
 	<h2>{year + "-" + ("00"+(month)).slice(-2)}</h2>
 	<div class="toolbar">
-		<button on:click={last_month}>
+		<button onclick={last_month}>
 			<i class="icon">chevron_left</i>
 			Previous month
 		</button>
 		<div class="toolbar_spacer"></div>
-		<button on:click={next_month}>
+		<button onclick={next_month}>
 			Next month
 			<i class="icon">chevron_right</i>
 		</button>
@@ -214,7 +214,9 @@ const render_earnings_graph = () => {
 	<Chart bind:this={chart} data_type="euro"/>
 
 	<Expandable click_expand>
-		<div slot="header" class="header">Per payment processor</div>
+		{#snippet header()}
+			<div class="header">Per payment processor</div>
+		{/snippet}
 		<SortableTable
 			index_field="id"
 			rows={obj_to_list(totals_provider)}
@@ -230,7 +232,9 @@ const render_earnings_graph = () => {
 	</Expandable>
 
 	<Expandable click_expand>
-		<div slot="header" class="header">Per country</div>
+		{#snippet header()}
+			<div class="header">Per country</div>
+		{/snippet}
 		<SortableTable
 			index_field="id"
 			rows={obj_to_list(totals_country)}
@@ -246,7 +250,9 @@ const render_earnings_graph = () => {
 	</Expandable>
 
 	<Expandable click_expand>
-		<div slot="header" class="header">In European Union</div>
+		{#snippet header()}
+			<div class="header">In European Union</div>
+		{/snippet}
 		<SortableTable
 			index_field="id"
 			rows={obj_to_list_eu(totals_country)}
@@ -262,7 +268,9 @@ const render_earnings_graph = () => {
 	</Expandable>
 
 	<Expandable click_expand>
-		<div slot="header" class="header">PayPal VAT</div>
+		{#snippet header()}
+			<div class="header">PayPal VAT</div>
+		{/snippet}
 		<PayPalVat invoices={invoices}/>
 	</Expandable>
 
@@ -275,7 +283,7 @@ const render_earnings_graph = () => {
 					type="checkbox"
 					id="status_{filter}"
 					bind:checked={status_filter[filter].checked}
-					on:change={filter_invoices}>
+					onchange={filter_invoices}>
 				<label for="status_{filter}">{filter}</label>
 				<br/>
 			{/each}
@@ -287,7 +295,7 @@ const render_earnings_graph = () => {
 					type="checkbox"
 					id="gateway_{filter}"
 					bind:checked={gateway_filter[filter].checked}
-					on:change={filter_invoices}>
+					onchange={filter_invoices}>
 				<label for="gateway_{filter}">{filter}</label>
 				<br/>
 			{/each}
@@ -299,7 +307,7 @@ const render_earnings_graph = () => {
 					type="checkbox"
 					id="method_{filter}"
 					bind:checked={method_filter[filter].checked}
-					on:change={filter_invoices}>
+					onchange={filter_invoices}>
 				<label for="method_{filter}">{filter}</label>
 				<br/>
 			{/each}

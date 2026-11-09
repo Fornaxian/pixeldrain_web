@@ -1,31 +1,42 @@
-<script context="module">
+<script module>
 // This makes sure new modals always show up on top of older modals. It is
 // incremented every time a modal is shown
 let global_index = 10000;
 </script>
 
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import { fade } from "svelte/transition";
 import Button from "layout/Button.svelte";
 
-// Form can be used to turn the modal into a save dialog. Enter the ID of a form
-// inside the modal and the modal will provide a submit button for that form
-export let form = ""
-
-export let title = "";
-export let width = "800px";
-export let height = "auto";
-export let padding = false;
-export let visible = false;
-export let style = "";
+let {
+	form = "",
+	title = "",
+	width = "800px",
+	height = "auto",
+	padding = false,
+	visible = $bindable(false),
+	style = "",
+	header,
+	children
+}: {
+	// Form can be used to turn the modal into a save dialog. Enter the ID of a
+	// form inside the modal and the modal will provide a submit button for that
+	// form
+	form?: string;
+	title?: string;
+	width?: string;
+	height?: string;
+	padding?: boolean;
+	visible?: boolean;
+	style?: string;
+	header?: import('svelte').Snippet;
+	children?: import('svelte').Snippet;
+} = $props();
 
 const load_bg = background => {
 	background.style.zIndex = global_index.valueOf();
 	global_index++;
 }
-
-const dispatch = createEventDispatcher();
 
 export const show = () => { set_visible(true) }
 export const hide = () => { set_visible(false) }
@@ -33,11 +44,10 @@ export const toggle = () => { set_visible(!visible) }
 export const is_visible = () => { return visible }
 export const set_visible = vis => {
 	visible = vis
-	dispatch("is_visible", visible)
 }
 
 const keydown = e => {
-	if (document.activeElement.type && document.activeElement.type === "text") {
+	if ((document.activeElement as any).type && (document.activeElement as any).type === "text") {
 		return // Prevent shortcuts from interfering with input fields
 	}
 	if (e.key === "Escape" && visible) {
@@ -49,43 +59,45 @@ const keydown = e => {
 };
 </script>
 
-<svelte:window on:keydown={keydown}/>
+<svelte:window onkeydown={keydown}/>
 
 {#if visible}
-	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<!-- svelte-ignore a11y_interactive_supports_focus -->
 	<div
 		class="background"
 		style={style}
 		use:load_bg
-		on:click={hide}
+		onclick={hide}
 		transition:fade={{duration: 200}}
-		on:keydown={keydown}
+		onkeydown={keydown}
 		role="dialog"
 	>
 		<div class="top_padding"></div>
-		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+		<!-- svelte-ignore a11y_interactive_supports_focus -->
 		<div
 			class="window"
-			on:click|stopPropagation
+			onclick={e => e.stopPropagation()}
 			role="dialog"
 			aria-modal="true"
 			style="width: {width}; height: {height};"
-			on:keydown={keydown}
+			onkeydown={keydown}
 		>
 			<div class="header">
-				<slot name="title">
-					{#if form !== ""}
-						<Button round click={hide} icon="close"/>
-						<span class="title">{title}</span>
-						<Button round highlight type="submit" form={form} click={hide} icon="save" label="Save"/>
-					{:else}
-						<span class="title">{title}</span>
-						<Button round click={hide} icon="close" />
-					{/if}
-				</slot>
+				{#if header}
+					{@render header()}
+				{:else if form !== ""}
+					<Button round click={hide} icon="close"/>
+					<span class="title">{title}</span>
+					<Button round highlight type="submit" form={form} click={hide} icon="save" label="Save"/>
+				{:else}
+					<span class="title">{title}</span>
+					<Button round click={hide} icon="close" />
+				{/if}
 			</div>
 			<div class="body" class:padding>
-				<slot></slot>
+				{@render children?.()}
 			</div>
 		</div>
 		<div class="bottom_padding"></div>

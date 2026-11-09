@@ -2,23 +2,25 @@
 import Euro from "util/Euro.svelte";
 import { checkout, type CheckoutState } from "./CheckoutLib";
 
-export let state: CheckoutState
-export let loading: boolean
+let { status = $bindable(), loading = $bindable() }: {
+	status: CheckoutState;
+	loading: boolean;
+} = $props();
 
 const amounts = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000]
-let amount = 20
+let amount = $state(20)
 
 const submit = async (e: SubmitEvent) => {
 	e.preventDefault()
 
 	loading = true
-	state.amount = amount
-	await checkout(state)
+	status.amount = amount
+	await checkout(status)
 	loading = false
 }
 </script>
 
-{#if state.provider.crypto === true}
+{#if status.provider.crypto === true}
 	<p style="text-align: initial;" class="highlight_blue">
 		When paying with cryptocurrencies it is important that you pay
 		the <b>exact amount</b> stated on the order. If you pay too
@@ -30,11 +32,11 @@ const submit = async (e: SubmitEvent) => {
 	</p>
 {/if}
 
-<form class="amount_grid" on:submit={submit}>
+<form class="amount_grid" onsubmit={submit}>
 	<div class="span3">Please choose an amount</div>
 	{#each amounts as a}
 		<button
-			on:click|preventDefault={() => amount = a}
+			onclick={e => {e.preventDefault(); amount = a}}
 			class="amount_button"
 			class:button_highlight={amount === a}
 		>
@@ -49,7 +51,7 @@ const submit = async (e: SubmitEvent) => {
 
 	<div class="span2" style="text-align: initial;">
 		Total including VAT:
-		<Euro amount={(amount*1e6) + (amount*1e6)*(state.vat/100)}/>
+		<Euro amount={(amount*1e6) + (amount*1e6)*(status.vat/100)}/>
 	</div>
 
 	<button type="submit" class="button_highlight">

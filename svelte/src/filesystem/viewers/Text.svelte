@@ -3,8 +3,11 @@ import { tick } from "svelte";
 import { fs_path_url, type FSNode } from "filesystem/FilesystemAPI";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav: FSNavigator
-let text_type = "text"
+let { nav, children }: {
+	nav: FSNavigator;
+	children?: import('svelte').Snippet;
+} = $props();
+let text_type = $state("text")
 
 export const update = () => {
 	console.debug("Loading text file", nav.base.name)
@@ -25,7 +28,7 @@ export const update = () => {
 	}
 }
 
-let text_pre: HTMLPreElement
+let text_pre: HTMLPreElement = $state()
 const text = async (file: FSNode) => {
 	text_type = "text"
 	await tick()
@@ -42,7 +45,7 @@ const text = async (file: FSNode) => {
 	})
 }
 
-let md_container: HTMLElement
+let md_container: HTMLElement = $state()
 const markdown = async (file: FSNode) => {
 	text_type = "markdown"
 	await tick()
@@ -61,7 +64,7 @@ const markdown = async (file: FSNode) => {
 </script>
 
 <div class="container">
-	<slot></slot>
+	{@render children?.()}
 
 	{#if text_type === "markdown"}
 		<section bind:this={md_container} class="md">

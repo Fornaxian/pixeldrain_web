@@ -3,9 +3,9 @@ import { onMount } from "svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 
-let loading = false
-let app_name = ""
-let api_key = ""
+let loading = $state(false)
+let app_name = $state("")
+let api_key = $state("")
 const create_key = async () => {
 	loading = true
 	try {
@@ -31,7 +31,7 @@ const create_key = async () => {
 	}
 }
 
-let show_key = ""
+let show_key = $state("")
 const toggle_show_key = () => {
 	if (show_key === "") {
 		show_key = api_key
@@ -93,7 +93,7 @@ onMount(() => {
 
 		{#if !api_key}
 			<div class="center">
-				<button class="button_highlight" on:click={create_key}>
+				<button class="button_highlight" onclick={create_key}>
 					<i class="icon">add</i>
 					Generate key
 				</button>
@@ -103,7 +103,7 @@ onMount(() => {
 
 			<div class="copy_container">
 				<CopyButton text={api_key}>Copy key to clipboard</CopyButton>
-				<button on:click={toggle_show_key} class="copy_button" class:button_highlight={show_key !== ""}>
+				<button onclick={toggle_show_key} class="copy_button" class:button_highlight={show_key !== ""}>
 					<i class="icon">visibility</i>
 					{#if show_key === ""}
 						Show key

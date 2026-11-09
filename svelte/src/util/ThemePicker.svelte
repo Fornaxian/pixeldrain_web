@@ -1,56 +1,56 @@
-<script>
-import { createEventDispatcher } from "svelte";
-let dispatch = createEventDispatcher()
-
-export let theme = ""
+<script lang="ts">
+let { theme = "", on_theme_change }: {
+	theme?: string;
+	on_theme_change: (theme: string) => void;
+} = $props();
 let set = s => {
 	theme = s
-	dispatch("theme_change", theme)
+	on_theme_change(theme)
 }
 
 </script>
 
 <div class="center">
-	<button class:button_highlight={theme===""} on:click={() => {set("")}}>
+	<button class:button_highlight={theme===""} onclick={() => {set("")}}>
 		None
 	</button>
-	<button class="group_first" class:button_highlight={theme==="nord"} on:click={() => {set("nord")}}>
+	<button class="group_first" class:button_highlight={theme==="nord"} onclick={() => {set("nord")}}>
 		Nord
 	</button>
-	<button class="group_middle" class:button_highlight={theme==="nord_dark"} on:click={() => {set("nord_dark")}}>
+	<button class="group_middle" class:button_highlight={theme==="nord_dark"} onclick={() => {set("nord_dark")}}>
 		dark
 	</button>
-	<button class="group_last" class:button_highlight={theme==="nord_light"} on:click={() => {set("nord_light")}}>
+	<button class="group_last" class:button_highlight={theme==="nord_light"} onclick={() => {set("nord_light")}}>
 		light
 	</button>
-	<button class="group_first" class:button_highlight={theme==="solarized"} on:click={() => {set("solarized")}}>
+	<button class="group_first" class:button_highlight={theme==="solarized"} onclick={() => {set("solarized")}}>
 		Solarized
 	</button>
-	<button class="group_middle" class:button_highlight={theme==="solarized_dark"} on:click={() => {set("solarized_dark")}}>
+	<button class="group_middle" class:button_highlight={theme==="solarized_dark"} onclick={() => {set("solarized_dark")}}>
 		dark
 	</button>
-	<button class="group_last" class:button_highlight={theme==="solarized_light"} on:click={() => {set("solarized_light")}}>
+	<button class="group_last" class:button_highlight={theme==="solarized_light"} onclick={() => {set("solarized_light")}}>
 		light
 	</button>
-	<button class:button_highlight={theme==="purple_drain"} on:click={() => {set("purple_drain")}}>
+	<button class:button_highlight={theme==="purple_drain"} onclick={() => {set("purple_drain")}}>
 		Purple drain
 	</button>
-	<button class:button_highlight={theme==="classic"} on:click={() => {set("classic")}}>
+	<button class:button_highlight={theme==="classic"} onclick={() => {set("classic")}}>
 		Classic
 	</button>
-	<button class:button_highlight={theme==="maroon"} on:click={() => {set("maroon")}}>
+	<button class:button_highlight={theme==="maroon"} onclick={() => {set("maroon")}}>
 		Maroon
 	</button>
-	<button class:button_highlight={theme==="hacker"} on:click={() => {set("hacker")}}>
+	<button class:button_highlight={theme==="hacker"} onclick={() => {set("hacker")}}>
 		Hacker
 	</button>
-	<button class:button_highlight={theme==="canta"} on:click={() => {set("canta")}}>
+	<button class:button_highlight={theme==="canta"} onclick={() => {set("canta")}}>
 		Canta
 	</button>
-	<button class:button_highlight={theme==="skeuos"} on:click={() => {set("skeuos")}}>
+	<button class:button_highlight={theme==="skeuos"} onclick={() => {set("skeuos")}}>
 		Skeuos
 	</button>
-	<button class:button_highlight={theme==="sweet"} on:click={() => {set("sweet")}}>
+	<button class:button_highlight={theme==="sweet"} onclick={() => {set("sweet")}}>
 		Sweet
 	</button>
 </div>

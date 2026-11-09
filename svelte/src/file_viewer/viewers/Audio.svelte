@@ -1,24 +1,27 @@
-<script>
-import { createEventDispatcher, tick } from "svelte";
+<script lang="ts">
+import { tick } from "svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
 import FileTitle from "layout/FileTitle.svelte";
-let dispatch = createEventDispatcher()
 
-export let is_list = false
-let file = {
+let { is_list = false, on_prev, on_next }: {
+	is_list?: boolean;
+	on_prev: () => void;
+	on_next: () => void;
+} = $props();
+let file = $state({
 	id: "",
 	name: "",
 	mime_type: "",
 	get_href: "",
 	show_ads: false,
 	download_speed_limit: 0,
-}
+})
 
-$: loop = file.name.includes(".loop.")
+let loop = $derived(file.name.includes(".loop."))
 
-let player
-let playing = false
-let audio_reload = false
+let player: HTMLAudioElement = $state()
+let playing = $state(false)
+let audio_reload = $state(false)
 
 export const set_file = async f => {
 	let same_file = f.id == file.id
@@ -27,9 +30,9 @@ export const set_file = async f => {
 	if ('mediaSession' in navigator) {
 		navigator.mediaSession.setActionHandler('play', () => player.play());
 		navigator.mediaSession.setActionHandler('pause', () => player.pause());
-		navigator.mediaSession.setActionHandler('stop', () => player.stop());
-		navigator.mediaSession.setActionHandler('previoustrack', () => dispatch("prev", {}));
-		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("next", {}));
+		navigator.mediaSession.setActionHandler('stop', () => player.pause());
+		navigator.mediaSession.setActionHandler('previoustrack', () => on_prev());
+		navigator.mediaSession.setActionHandler('nexttrack', () => on_next());
 		navigator.mediaSession.metadata = new MediaMetadata({
 			title: file.name,
 			artist: "pixeldrain",
@@ -66,32 +69,32 @@ export const seek = delta => {
 	<FileTitle title={file.name}/>
 
 	{#if is_list}
-		<button on:click={() => dispatch("prev") }>
+		<button onclick={on_prev}>
 			<i class="icon">skip_previous</i>
 		</button>
 	{/if}
-	<button on:click={() => player.currentTime -= 10 }>
+	<button onclick={() => player.currentTime -= 10}>
 		<i class="icon">replay_10</i>
 	</button>
-	<button on:click={toggle_playback}>
+	<button onclick={toggle_playback}>
 		{#if playing}
 			<i class="icon">pause</i>
 		{:else}
 			<i class="icon">play_arrow</i>
 		{/if}
 	</button>
-	<button on:click={() => player.currentTime += 10 }>
+	<button onclick={() => player.currentTime += 10}>
 		<i class="icon">forward_10</i>
 	</button>
 	{#if is_list}
-		<button on:click={() => dispatch("next") }>
+		<button onclick={on_next}>
 			<i class="icon">skip_next</i>
 		</button>
 	{/if}
 	<br/><br/>
 
 	{#if file.id && !audio_reload}
-		<!-- svelte-ignore a11y-media-has-caption -->
+		<!-- svelte-ignore a11y_media_has_caption -->
 		<audio
 			bind:this={player}
 			class="player"
@@ -99,9 +102,9 @@ export const seek = delta => {
 			playsinline
 			autoplay
 			loop={loop}
-			on:pause={() => playing = false }
-			on:play={() => playing = true }
-			on:ended={() => {dispatch("next", {})}}
+			onpause={() => playing = false}
+			onplay={() => playing = true}
+			onended={on_next}
 		>
 			<source src={file.get_href} type={file.mime_type} />
 		</audio>

@@ -1,12 +1,15 @@
 <script lang="ts">
-export let icon_href = ""
-export let width = "750px"
+let { icon_href = "", width = "750px", children }: {
+	icon_href?: string;
+	width?: string;
+	children?: import('svelte').Snippet;
+} = $props();
 </script>
 
 <div class="block" style="width: {width}; max-width: 100%">
 	<img src={icon_href} alt="File icon" class="icon">
 	<div class="description">
-		<slot></slot>
+		{@render children?.()}
 	</div>
 </div>
 

@@ -9,7 +9,7 @@ export const pick_files = () => {
 
 // === UPLOAD LOGIC ===
 
-let file_input_field
+let file_input_field = $state()
 const file_input_change = (event) => {
 	// Start uploading the files async
 	upload_files(event.target.files)
@@ -26,9 +26,9 @@ const paste = (e) => {
 }
 
 let active_uploads = 0
-let upload_queue = []
-let state = "idle" // idle, uploading, finished
-let upload_stats
+let upload_queue = $state([])
+let status = $state("idle") // idle, uploading, finished
+let upload_stats = $state()
 
 export const upload_files = async (files) => {
 	if (files.length === 0) {
@@ -53,9 +53,8 @@ export const upload_files = async (files) => {
 		})
 	}
 
-	// Reassign array and wait for tick to complete. After the tick is completed
-	// each upload progress bar will have bound itself to its array item
-	upload_queue = upload_queue
+	// Wait for tick to complete. After the tick is completed each upload
+	// progress bar will have bound itself to its array item
 	await tick()
 
 	start_upload()
@@ -77,10 +76,10 @@ const start_upload = () => {
 	}
 
 	if (active_uploads === 0 && finished_count != 0) {
-		state = "finished"
+		status = "finished"
 		upload_stats.finish()
 	} else {
-		state = "uploading"
+		status = "uploading"
 		upload_stats.start()
 	}
 }
@@ -91,7 +90,7 @@ const finish_upload = (file) => {
 }
 
 const leave_confirmation = e => {
-	if (state === "uploading") {
+	if (status === "uploading") {
 		e.preventDefault()
 		e.returnValue = "If you close the page your files will stop uploading. Do you want to continue?"
 		return e.returnValue
@@ -103,7 +102,7 @@ const leave_confirmation = e => {
 // === SHARING BUTTONS ===
 
 let share_link = ""
-let input_album_name = ""
+let input_album_name = $state("")
 
 let btn_create_list
 
@@ -172,27 +171,27 @@ const keydown = (e) => {
 }
 </script>
 
-<svelte:window on:paste={paste} on:keydown={keydown} on:beforeunload={leave_confirmation} />
+<svelte:window onpaste={paste} onkeydown={keydown} onbeforeunload={leave_confirmation} />
 
-<input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple" class="hide"/>
+<input bind:this={file_input_field} onchange={file_input_change} type="file" name="file" multiple="multiple" class="hide"/>
 
 <UploadStats bind:this={upload_stats} upload_queue={upload_queue}/>
 
 {#if upload_queue.length > 1}
 	<div class="album_widget">
 		Create an album<br/>
-		<form class="album_name_form" on:submit|preventDefault={create_album}>
+		<form class="album_name_form" onsubmit={e => {e.preventDefault(); create_album()}}>
 			<div>Name:</div>
 			<input bind:value={input_album_name} type="text" placeholder="My album"/>
-			<button type="submit" disabled={state !== "finished"}>
+			<button type="submit" disabled={status !== "finished"}>
 				<i class="icon">create_new_folder</i> Create
 			</button>
 		</form>
 	</div>
 {/if}
 
-{#each upload_queue as file}
-	<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>
+{#each upload_queue as file, i}
+	<UploadProgressBar bind:this={file.component} bind:job={upload_queue[i]}></UploadProgressBar>
 {/each}
 
 <style>

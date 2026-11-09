@@ -1,15 +1,22 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import { formatDataVolume, formatDuration } from "util/Formatting";
 import { stats } from "lib/StatsSocket"
 import TextBlock from "./TextBlock.svelte"
 import IconBlock from "./IconBlock.svelte";
-let dispatch = createEventDispatcher()
 
-export let file_size = 0
-export let file_name = ""
-export let file_type = ""
-export let icon_href = ""
+let {
+	file_size = 0,
+	file_name = "",
+	file_type = "",
+	icon_href = "",
+	on_download
+}: {
+	file_size?: number;
+	file_name?: string;
+	file_type?: string;
+	icon_href?: string;
+	on_download: () => void;
+} = $props();
 </script>
 
 <TextBlock>
@@ -57,7 +64,7 @@ export let icon_href = ""
 			<tr><td>Size</td><td>{formatDataVolume(file_size, 3)}</td></tr>
 		</tbody>
 	</table>
-	<button on:click={() => {dispatch("download")}}>
+	<button onclick={on_download}>
 		<i class="icon">download</i> Download
 	</button>
 </IconBlock>

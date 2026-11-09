@@ -1,32 +1,41 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import { formatDataVolume } from "util/Formatting";
 import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI"
 import type { FSNavigator } from "filesystem/FSNavigator";
 import SortButton from "layout/SortButton.svelte";
-import { FileAction } from "./FileManagerLib";
+import { FileAction, type FileEvent } from "./FileManagerLib";
 
-let dispatch = createEventDispatcher()
-
-export let nav: FSNavigator
-export let show_hidden = false
-export let large_icons = false
-export let hide_edit = false
-export let hide_branding = false
+let {
+	nav,
+	on_file,
+	show_hidden = false,
+	large_icons = false,
+	hide_edit = false,
+	hide_branding = false
+}: {
+	nav: FSNavigator;
+	on_file: (e: FileEvent) => void;
+	show_hidden?: boolean;
+	large_icons?: boolean;
+	hide_edit?: boolean;
+	hide_branding?: boolean;
+} = $props();
 </script>
 
-<div class="directory">
-	<tr>
-		<td></td>
-		<td><SortButton active_field={$nav.sort_last_field} asc={$nav.sort_asc} sort_func={nav.sort_children} field="name">Name</SortButton></td>
-		<td><SortButton active_field={$nav.sort_last_field} asc={$nav.sort_asc} sort_func={nav.sort_children} field="file_size">Size</SortButton></td>
-		<td></td>
-	</tr>
+<table class="directory">
+	<thead>
+		<tr>
+			<td></td>
+			<td><SortButton active_field={$nav.sort_last_field} asc={$nav.sort_asc} sort_func={nav.sort_children} field="name">Name</SortButton></td>
+			<td><SortButton active_field={$nav.sort_last_field} asc={$nav.sort_asc} sort_func={nav.sort_children} field="file_size">Size</SortButton></td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
 	{#each $nav.children as child, index (child.path)}
-		<a
-			href={"/d"+fs_encode_path(child.path)}
-			on:click={e => dispatch("file", {index: index, action: FileAction.Click, original: e})}
-			on:contextmenu={e => dispatch("file", {index: index, action: FileAction.Context, original: e})}
+		<tr
+			onclick={e => on_file({index: index, action: FileAction.Click, original: e})}
+			oncontextmenu={e => on_file({index: index, action: FileAction.Context, original: e})}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
@@ -35,7 +44,7 @@ export let hide_branding = false
 				<img src={fs_node_icon(child, 64, 64)} class="node_icon" class:large_icons alt="icon"/>
 			</td>
 			<td class="node_name">
-				{child.name}
+				<a href={"/d"+fs_encode_path(child.path)}>{child.name}</a>
 			</td>
 			<td class="node_size hide_small">
 				{#if child.type === "file"}
@@ -49,34 +58,34 @@ export let hide_branding = false
 					{:else if child.id}
 						<a
 							href="/d/{child.id}"
-							on:click={e => dispatch("file", {index: index, action: FileAction.Share, original: e})}
+							onclick={e => on_file({index: index, action: FileAction.Share, original: e})}
 							class="button action_button"
 						>
 							<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 						</a>
 					{/if}
 					{#if child.properties !== undefined && child.properties.branding_enabled === "true" && !hide_branding}
-						<button class="action_button" on:click={e => dispatch("file", {index: index, action: FileAction.Branding, original: e})}>
+						<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Branding, original: e})}>
 							<i class="icon">palette</i>
 						</button>
 					{/if}
 					{#if $nav.permissions.write && !hide_edit}
-						<button class="action_button" on:click={e => dispatch("file", {index: index, action: FileAction.Edit, original: e})}>
+						<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Edit, original: e})}>
 							<i class="icon">edit</i>
 						</button>
 					{/if}
-					<button class="action_button" on:click={e => dispatch("file", {index: index, action: FileAction.Download, original: e})}>
+					<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Download, original: e})}>
 						<i class="icon">save</i>
 					</button>
 				</div>
 			</td>
-		</a>
+		</tr>
 	{/each}
-</div>
+	</tbody>
+</table>
 
 <style>
 .directory {
-	display: table;
 	margin: 8px auto 16px auto;
 	background: var(--shaded_background);
 	border-collapse: collapse;
@@ -85,20 +94,12 @@ export let hide_branding = false
 	max-width: 99%;
 	width: 1200px;
 }
-.directory > * {
-	display: table-row;
-}
-.directory > * > * {
-	display: table-cell;
-}
 .node {
-	display: table-row;
-	text-decoration: none;
 	color: var(--body_text-color);
-	padding: 6px;
+	cursor: pointer;
 }
-.node:not(:last-child) {
-	border-bottom: 1px solid var(--separator);
+.node:last-child {
+	border-bottom: none;
 }
 .node:hover:not(.node_selected) {
 	background: var(--input_hover_background);
@@ -112,6 +113,9 @@ export let hide_branding = false
 td {
 	vertical-align: middle;
 }
+.node > td {
+	padding: 1px;
+}
 .node_icon {
 	height: 32px;
 	width: 32px;
@@ -123,6 +127,11 @@ td {
 	width: 100%;
 	line-height: 1.2em;
 	word-break: break-all;
+}
+.node_name > a {
+	display: block;
+	color: inherit;
+	text-decoration: none;
 }
 .node_size {
 	min-width: 5em;

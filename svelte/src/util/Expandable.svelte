@@ -1,16 +1,31 @@
 <script lang="ts">
-// Whether the Expandable is expanded by default
-export let expanded = false
-export let nopad = false
+let {
+	expanded = $bindable(false),
+	nopad = false,
+	click_expand = false,
+	on_expand,
+	highlight = false,
+	header,
+	children
+}: {
+	// Whether the Expandable is expanded by default
+	expanded?: boolean;
+	nopad?: boolean;
+	// Allow the user to expand the Expandable by clicking the title. Use
+	// stopPropagation if you want to use other interactive elements in the
+	// title bar
+	click_expand?: boolean;
+	on_expand?: (expanded: boolean) => void;
+	// Highlight the title bar if the user moves their mouse over it
+	highlight?: boolean;
+	header?: import('svelte').Snippet;
+	children?: import('svelte').Snippet;
+} = $props();
+
 export const toggle = () => {
 	expanded = !expanded
 }
 
-// Allow the user to expand the Expandable by clicking the title. Use
-// stopPropagation if you want to use other interactive elements in the title
-// bar
-export let click_expand = false
-export let on_expand: (expanded: boolean) => void = undefined
 const header_click = () => {
 	if (click_expand) {
 		toggle()
@@ -27,9 +42,6 @@ const keypress = e => {
 		}
 	}
 }
-
-// Highlight the title bar if the user moves their mouse over it
-export let highlight = false
 </script>
 
 <div class="expandable">
@@ -39,14 +51,14 @@ export let highlight = false
 		class:highlight
 		role="button"
 		tabindex="0"
-		on:click={header_click}
-		on:keypress={keypress}
+		onclick={header_click}
+		onkeypress={keypress}
 	>
 		<div class="title">
-			<slot name="header"></slot>
+			{@render header?.()}
 		</div>
 
-		<button class="bucket_expand" on:click|stopPropagation={toggle}>
+		<button class="bucket_expand" onclick={e => {e.stopPropagation(); toggle()}}>
 			{#if expanded}
 				<i class="icon">expand_less</i>
 			{:else}
@@ -56,7 +68,7 @@ export let highlight = false
 	</div>
 	{#if expanded}
 		<div class="body" class:nopad>
-			<slot></slot>
+			{@render children?.()}
 		</div>
 	{/if}
 </div>

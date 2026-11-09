@@ -1,5 +1,4 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import Magnet from "icons/Magnet.svelte";
 import { formatDate } from "util/Formatting"
 import IconBlock from "layout/IconBlock.svelte";
@@ -8,13 +7,16 @@ import TorrentItem from "./TorrentItem.svelte"
 import FileTitle from "layout/FileTitle.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 
-let dispatch = createEventDispatcher()
+let { on_loading, on_download }: {
+	on_loading: (loading: boolean) => void;
+	on_download: () => void;
+} = $props();
 
-let status = "loading"
+let status = $state("loading")
 export const set_file = async f => {
 	file = f
 
-	dispatch("loading", true)
+	on_loading(true)
 
 	try {
 		let resp = await fetch(f.info_href+"/torrent")
@@ -43,29 +45,29 @@ export const set_file = async f => {
 	} catch (err) {
 		console.error(err)
 	} finally {
-		dispatch("loading", false)
+		on_loading(false)
 	}
 
 	status = "finished"
 }
-let file = {
+let file = $state({
 	id: "",
 	size: 0,
 	name: "",
 	mime_type: "",
 	icon_href: "",
 	show_ads: false,
-}
-let torrent = {
+})
+let torrent = $state({
 	trackers: [],
 	comment: "",
 	created_by: "",
 	created_at: "",
 	info_hash: "",
 	files: null,
-}
+})
 
-let magnet = ""
+let magnet = $state("")
 </script>
 
 <FileTitle title={file.name}/>
@@ -91,7 +93,7 @@ let magnet = ""
 			Torrent file could not be parsed. It may be corrupted.
 		</p>
 	{/if}
-	<button on:click={() => {dispatch("download")}} class="button">
+	<button onclick={on_download} class="button">
 		<i class="icon">download</i>
 		<span>Download torrent file</span>
 	</button>

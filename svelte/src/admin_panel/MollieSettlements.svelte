@@ -7,9 +7,9 @@ import Euro from "util/Euro.svelte";
 import MollieSettlement from "./MollieSettlement.svelte";
 import { mollie_proxy_call } from "./MollieAPI";
 
-let loading = true
+let loading = $state(true)
 let response = {}
-let settlements = []
+let settlements = $state([])
 
 const get_settlements = async () => {
 	loading = true;
@@ -35,21 +35,23 @@ onMount(get_settlements);
 <section>
 	{#each settlements as row (row.id)}
 		<Expandable click_expand>
-			<div slot="header" class="header">
-				<div class="title">{row.id}</div>
-				<div class="stats">
-					Date<br/>
-					{formatDate(row.createdAt, false, false, false)}
+			{#snippet header()}
+				<div class="header">
+					<div class="title">{row.id}</div>
+					<div class="stats">
+						Date<br/>
+						{formatDate(row.createdAt, false, false, false)}
+					</div>
+					<div class="stats">
+						Amount<br/>
+						<Euro amount={row.amount.value*1e6}/>
+					</div>
+					<div class="stats">
+						Status<br/>
+						{row.status}
+					</div>
 				</div>
-				<div class="stats">
-					Amount<br/>
-					<Euro amount={row.amount.value*1e6}/>
-				</div>
-				<div class="stats">
-					Status<br/>
-					{row.status}
-				</div>
-			</div>
+			{/snippet}
 
 			<MollieSettlement settlement={row}/>
 		</Expandable>

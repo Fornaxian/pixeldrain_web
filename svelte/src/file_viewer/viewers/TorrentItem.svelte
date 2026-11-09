@@ -1,10 +1,9 @@
-<script>
+<script lang="ts">
+import TorrentItem from "./TorrentItem.svelte";
 import { formatDataVolume } from "util/Formatting";
+import type { TorrentFile } from "filesystem/viewers/Torrent.svelte";
 
-export let item = {
-	size: 0,
-	children: null,
-}
+let { item }: { item: TorrentFile } = $props();
 </script>
 
 <ul class="list_open">
@@ -12,7 +11,7 @@ export let item = {
 		<li class:list_closed={!child.children}>
 			{name} ({formatDataVolume(child.size, 3)})<br/>
 			{#if child.children}
-				<svelte:self item={child}></svelte:self>
+				<TorrentItem item={child}></TorrentItem>
 			{/if}
 		</li>
 	{/each}

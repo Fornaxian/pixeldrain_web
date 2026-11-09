@@ -1,5 +1,4 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import { formatDataVolume, formatDate } from "util/Formatting"
 import IconBlock from "layout/IconBlock.svelte";
 import TextBlock from "layout/TextBlock.svelte"
@@ -7,30 +6,34 @@ import ZipItem from "./ZipItem.svelte";
 import BandwidthUsage from "./BandwidthUsage.svelte";
 import FileTitle from "layout/FileTitle.svelte";
 
-let dispatch = createEventDispatcher()
+let { on_loading, on_download }: {
+	on_loading: (loading: boolean) => void;
+	on_download: () => void;
+} = $props();
 
-let status = "loading"
+let status = $state("loading")
 
-let file = {
+let file = $state({
 	name: "",
 	mime_type: "",
 	size: 0,
 	date_upload: "",
-	icon_href: ""
-}
-let zip = {
+	icon_href: "",
+	show_ads: false,
+})
+let zip = $state({
 	download_url: "",
 	size: 0,
 	children: null,
-}
-let comp_ratio = 0
-let archive_type = ""
-let truncated = false
+})
+let comp_ratio = $state(0)
+let archive_type = $state("")
+let truncated = $state(false)
 
 export const set_file = async f => {
 	file = f
 
-	dispatch("loading", true)
+	on_loading(true)
 
 	if (f.mime_type === "application/zip") {
 		archive_type = "zip"
@@ -46,23 +49,26 @@ export const set_file = async f => {
 			return
 		}
 
-		zip = await resp.json()
+		const z = await resp.json()
 
 		// Check if the zip has the property which allows separate files to be
-		// downloaded. If so then we set the download URL for each file
-		if (zip.properties !== undefined) {
-			if (zip.properties.includes("read_individual_files")) {
+		// downloaded. If so then we set the download URL for each file. This
+		// happens before the zip becomes state, else every file in the archive
+		// would get a state proxy instead of only the ones which are rendered
+		if (z.properties !== undefined) {
+			if (z.properties.includes("read_individual_files")) {
 				// Set the download URL for each file in the zip
-				recursive_set_url(f.info_href+"/zip", zip)
+				recursive_set_url(f.info_href+"/zip", z)
 			}
-			truncated = zip.properties.includes("truncated")
+			truncated = z.properties.includes("truncated")
 		}
+		zip = z
 
 		comp_ratio = (zip.size / file.size)
 	} catch (err) {
 		console.error(err)
 	} finally {
-		dispatch("loading", false)
+		on_loading(false)
 	}
 
 	status = "finished"
@@ -94,7 +100,7 @@ const recursive_set_url = (parent_path, file) => {
 	{/if}
 	Uploaded on: {formatDate(file.date_upload, true, true, true)}
 	<br/>
-	<button class="button_highlight" on:click={() => {dispatch("download")}}>
+	<button class="button_highlight" onclick={on_download}>
 		<i class="icon">download</i>
 		<span>Download</span>
 	</button>

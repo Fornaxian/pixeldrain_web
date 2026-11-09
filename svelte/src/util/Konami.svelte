@@ -28,4 +28,4 @@ const keypress = e => {
 }
 </script>
 
-<svelte:window on:keydown={keypress} />
+<svelte:window onkeydown={keypress} />

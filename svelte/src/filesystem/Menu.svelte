@@ -6,23 +6,30 @@ import { formatDataVolume } from "util/Formatting";
 import { user } from "lib/UserStore";
 import Dialog from "layout/Dialog.svelte";
 
-let button: HTMLButtonElement
-let dialog: Dialog
+let button: HTMLButtonElement = $state()
+let dialog: Dialog = $state()
 
-export let no_login_label = "Pixeldrain"
-
-// Hide the label if the screen is smaller than 800px
-export let hide_name = true
-export let hide_logo = false
-export let style = ""
-export let embedded = false
-$: target = embedded ? "_blank" : "_self"
+let {
+	no_login_label = "Pixeldrain",
+	hide_name = true,
+	hide_logo = false,
+	style = "",
+	embedded = false
+}: {
+	no_login_label?: string;
+	// Hide the label if the screen is smaller than 800px
+	hide_name?: boolean;
+	hide_logo?: boolean;
+	style?: string;
+	embedded?: boolean;
+} = $props();
+let target = $derived(embedded ? "_blank" : "_self")
 
 const open = () => dialog.open(button.getBoundingClientRect())
 </script>
 
 <div class="wrapper">
-	<button bind:this={button} on:click={open} class="button round" title="Menu" style={style}>
+	<button bind:this={button} onclick={open} class="button round" title="Menu" style={style}>
 		{#if !hide_logo}
 			<PixeldrainLogo style="height: 1.6em; width: 1.6em;"/>
 		{/if}

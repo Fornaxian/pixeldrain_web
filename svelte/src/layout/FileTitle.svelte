@@ -1,5 +1,7 @@
 <script lang="ts">
-export let title = ""
+let { title = "" }: {
+	title?: string;
+} = $props();
 </script>
 
 <h1>{title}</h1>

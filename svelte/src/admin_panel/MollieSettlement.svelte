@@ -1,20 +1,20 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import { formatDate } from "util/Formatting";
 import { mollie_proxy_call } from "./MollieAPI";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import Euro from "util/Euro.svelte";
 
-export let settlement = {}
-let loading = true
-let payments = []
+let { settlement = {} }: { settlement?: any } = $props();
+let loading = $state(true)
+let payments = $state([])
 
-let per_country = {}
-let totals = {
+let per_country: {[country: string]: any} = $state({})
+let totals = $state({
 	count: 0,
 	vat: 0,
 	amount: 0,
-}
+})
 
 const load_all_payments = async (settlement_id) => {
 	let payments = []
@@ -80,7 +80,7 @@ const get_payments = async () => {
 			{}
 		)
 
-		console.log(per_country)
+		console.log($state.snapshot(per_country))
 	} catch (err) {
 		alert(err);
 	} finally {

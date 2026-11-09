@@ -1,20 +1,22 @@
 <script lang="ts">
-import { onMount, createEventDispatcher, tick } from "svelte";
+import { onMount, tick } from "svelte";
 import { video_position } from "lib/VideoPosition";
 import { fs_path_url } from "filesystem/FilesystemAPI";
 import type { FSNavigator } from "filesystem/FSNavigator";
-let dispatch = createEventDispatcher()
 
-export let nav: FSNavigator
+let { nav, on_open_sibling }: {
+	nav: FSNavigator;
+	on_open_sibling: (offset: number) => void;
+} = $props();
 
 // Used to detect when the file path changes
 let last_path = ""
-let loaded = false
+let loaded = $state(false)
 
-let player: HTMLVideoElement
-let playing = false
+let player: HTMLVideoElement = $state()
+let playing = $state(false)
 let media_session = false
-let loop = false
+let loop = $state(false)
 
 export const update = async () => {
 	if (media_session) {
@@ -66,8 +68,8 @@ onMount(() => {
 		navigator.mediaSession.setActionHandler('play', () => player.play());
 		navigator.mediaSession.setActionHandler('pause', () => player.pause());
 		navigator.mediaSession.setActionHandler('stop', () => player.pause());
-		navigator.mediaSession.setActionHandler('previoustrack', () => dispatch("open_sibling", -1));
-		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("open_sibling", 1));
+		navigator.mediaSession.setActionHandler('previoustrack', () => on_open_sibling(-1));
+		navigator.mediaSession.setActionHandler('nexttrack', () => on_open_sibling(1));
 	}
 	get_autoplay()
 })
@@ -81,7 +83,7 @@ const video_keydown = (e: KeyboardEvent) => {
 	}
 }
 
-let autoplay: boolean
+let autoplay: boolean = $state()
 const get_autoplay = () => {
 	autoplay = localStorage.getItem("video_autoplay") === "1"
 	return autoplay
@@ -103,8 +105,7 @@ const on_end = () => {
 		$nav.base.file_type === "video/x-matroska" ||
 		$nav.base.file_type === "video/matroska" ||
 		$nav.base.file_type === "video/quicktime" ||
-		$nav.base.file_type === "video/x-ms-asf"
-	}
+		$nav.base.file_type === "video/x-ms-asf"}
 		<div class="compatibility_warning">
 			This video file type is not compatible with every web
 			browser. If the video fails to play you can try downloading
@@ -114,7 +115,7 @@ const on_end = () => {
 	<div class="player_and_controls">
 		<div class="player">
 			{#if loaded}
-				<!-- svelte-ignore a11y-media-has-caption -->
+				<!-- svelte-ignore a11y_media_has_caption -->
 				<video
 					bind:this={player}
 					controls
@@ -122,10 +123,10 @@ const on_end = () => {
 					autoplay
 					loop={loop}
 					class="video"
-					on:pause={() => playing = false }
-					on:play={() => playing = true }
-					on:keydown={video_keydown}
-					on:ended={on_end}
+					onpause={() => playing = false}
+					onplay={() => playing = true}
+					onkeydown={video_keydown}
+					onended={on_end}
 					use:video_position={() => $nav.base.sha256_sum.substring(0, 8)}
 				>
 					<source src={fs_path_url($nav.base.path)} type={$nav.base.file_type} />
@@ -135,37 +136,37 @@ const on_end = () => {
 
 		<div class="controls">
 			<div class="spacer"></div>
-			<button on:click={() => dispatch("open_sibling", -1) }>
+			<button onclick={() => on_open_sibling(-1)}>
 				<i class="icon">skip_previous</i>
 			</button>
-			<button on:click={() => seek(-10)}>
+			<button onclick={() => seek(-10)}>
 				<i class="icon">replay_10</i>
 			</button>
-			<button on:click={toggle_playback} class="button_highlight">
+			<button onclick={toggle_playback} class="button_highlight">
 				{#if playing}
 					<i class="icon">pause</i>
 				{:else}
 					<i class="icon">play_arrow</i>
 				{/if}
 			</button>
-			<button on:click={() => seek(10)}>
+			<button onclick={() => seek(10)}>
 				<i class="icon">forward_10</i>
 			</button>
-			<button on:click={() => dispatch("open_sibling", 1) }>
+			<button onclick={() => on_open_sibling(1)}>
 				<i class="icon">skip_next</i>
 			</button>
-			<button on:click={() => toggle_autoplay() } class:button_highlight={autoplay} title="Play next video when the video ends">
+			<button onclick={() => toggle_autoplay()} class:button_highlight={autoplay} title="Play next video when the video ends">
 				<i class="icon">queue_play_next</i>
 			</button>
 			<div style="width: 16px; height: 8px;"></div>
-			<button on:click={toggle_mute} class:button_red={player && player.muted}>
+			<button onclick={toggle_mute} class:button_red={player && player.muted}>
 				{#if player && player.muted}
 					<i class="icon">volume_off</i>
 				{:else}
 					<i class="icon">volume_up</i>
 				{/if}
 			</button>
-			<button on:click={toggle_fullscreen}>
+			<button onclick={toggle_fullscreen}>
 				<i class="icon">fullscreen</i>
 			</button>
 			<div class="spacer"></div>

@@ -30,22 +30,9 @@ type Peer = {
 	network_ratio?: number
 }
 
-export let peers: Peer[] = [];
-
-$: all_reachable = peers.reduce((acc, val) => {
-	return val.reachable ? acc : false
-}, true)
-
-$: update_peers(peers)
-let update_peers = (peers: Peer[]) => {
-	for (let peer of peers) {
-		peer.avg_network_total = peer.avg_network_tx + peer.avg_network_rx
-		peer.usage_percent = (peer.avg_network_tx / peer.port_speed) * 100
-		peer.network_ratio = Math.max(peer.avg_network_tx, peer.avg_network_rx) / Math.min(peer.avg_network_tx, peer.avg_network_rx)
-	}
-
-	sort("")
-}
+let { peers = [] }: {
+	peers?: Peer[];
+} = $props();
 
 // Expand an IPv6 address into eight zero-padded groups of four hex digits so
 // that it sorts numerically when compared as a string. Handles the "::"
@@ -84,35 +71,37 @@ let sort_key = (hostname) => {
 	return expand_ipv6(addr) + ":" + port.padStart(5, "0")
 }
 
-let sort_field = "hostname"
-let asc = true
+let sort_field = $state("hostname")
+let asc = $state(true)
 let sort = (field) => {
-	if (field !== "" && field === sort_field) {
+	if (field === sort_field) {
 		asc = !asc
 	}
-	if (field === "") {
-		field = sort_field
-	}
 	sort_field = field
-
 	console.log("sorting by", field, "asc", asc)
-	peers.sort((a, b) => {
-		let av = a[field]
-		let bv = b[field]
-		if (typeof av === "number") {
-			// Sort ints from high to low
-			return asc ? av - bv : bv - av
-		}
-		if (field === "hostname") {
-			// Normalize so IPv6 addresses sort numerically
-			av = sort_key(av)
-			bv = sort_key(bv)
-		}
-		// Sort strings alphabetically
-		return asc ? av.localeCompare(bv) : bv.localeCompare(av)
-	})
-	peers = peers
 }
+
+// The peers belong to the parent, so our own props are added to copies
+let rows: Peer[] = $derived(peers.map(peer => ({
+	...peer,
+	avg_network_total: peer.avg_network_tx + peer.avg_network_rx,
+	usage_percent: (peer.avg_network_tx / peer.port_speed) * 100,
+	network_ratio: Math.max(peer.avg_network_tx, peer.avg_network_rx) / Math.min(peer.avg_network_tx, peer.avg_network_rx),
+})).sort((a, b) => {
+	let av = a[sort_field]
+	let bv = b[sort_field]
+	if (typeof av === "number") {
+		// Sort ints from high to low
+		return asc ? av - bv : bv - av
+	}
+	if (sort_field === "hostname") {
+		// Normalize so IPv6 addresses sort numerically
+		av = sort_key(av)
+		bv = sort_key(bv)
+	}
+	// Sort strings alphabetically
+	return asc ? av.localeCompare(bv) : bv.localeCompare(av)
+}))
 
 const decommission = async (id: string) => {
 	try {
@@ -121,6 +110,9 @@ const decommission = async (id: string) => {
 		alert(JSON.stringify(err))
 	}
 }
+let all_reachable = $derived(peers.reduce((acc, val) => {
+	return val.reachable ? acc : false
+}, true))
 </script>
 
 <div class="table_scroll">
@@ -143,7 +135,7 @@ const decommission = async (id: string) => {
 			</tr>
 		</thead>
 		<tbody>
-			{#each peers as peer (peer.id)}
+			{#each rows as peer (peer.id)}
 				<tr style="border: none;"
 					class:highlight_red={!peer.reachable}
 					class:highlight_yellow={peer.free_space < peer.min_free_space / 2}
@@ -165,7 +157,7 @@ const decommission = async (id: string) => {
 					<td>{formatDataVolume(peer.min_free_space, 3)}</td>
 					{#if !all_reachable}
 						<td>
-							<button class="button flat delete" on:click={() => decommission(peer.id)}>
+							<button class="button flat delete" onclick={() => decommission(peer.id)}>
 								<i class="icon small">delete</i>
 							</button>
 						</td>
@@ -174,41 +166,41 @@ const decommission = async (id: string) => {
 			{/each}
 
 			<tr>
-				<td>Total ({peers.length})</td>
-				<td>{peers.reduce((acc, val) => acc += val.unreachable_count, 0)}</td>
+				<td>Total ({rows.length})</td>
+				<td>{rows.reduce((acc, val) => acc += val.unreachable_count, 0)}</td>
 				<td>
-					{peers.reduce((acc, val) => acc += val.load_1_min, 0).toFixed(1)} /
-					{peers.reduce((acc, val) => acc += val.load_5_min, 0).toFixed(1)} /
-					{peers.reduce((acc, val) => acc += val.load_15_min, 0).toFixed(1)}
+					{rows.reduce((acc, val) => acc += val.load_1_min, 0).toFixed(1)} /
+					{rows.reduce((acc, val) => acc += val.load_5_min, 0).toFixed(1)} /
+					{rows.reduce((acc, val) => acc += val.load_15_min, 0).toFixed(1)}
 				</td>
-				<td>{(peers.reduce((acc, val) => acc += val.latency, 0)/1000).toFixed(0)}</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_tx, 0), 3)}/s</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_rx, 0), 3)}/s</td>
-				<td>{peers.reduce((acc, val) => acc += val.network_ratio, 0).toFixed(2)}</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_total, 0), 3)}/s</td>
-				<td>{Math.round(peers.reduce((acc, val) => acc += val.usage_percent, 0))}%</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.cache_threshold, 0), 4)}</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.free_space, 0), 4)}</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0), 3)}</td>
+				<td>{(rows.reduce((acc, val) => acc += val.latency, 0)/1000).toFixed(0)}</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.avg_network_tx, 0), 3)}/s</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.avg_network_rx, 0), 3)}/s</td>
+				<td>{rows.reduce((acc, val) => acc += val.network_ratio, 0).toFixed(2)}</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.avg_network_total, 0), 3)}/s</td>
+				<td>{Math.round(rows.reduce((acc, val) => acc += val.usage_percent, 0))}%</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.cache_threshold, 0), 4)}</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.free_space, 0), 4)}</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.min_free_space, 0), 3)}</td>
 				{#if !all_reachable}<td></td>{/if}
 			</tr>
 			<tr>
 				<td>Average</td>
 				<td></td>
 				<td>
-					{(peers.reduce((acc, val) => acc += val.load_1_min, 0) / peers.length).toFixed(1)} /
-					{(peers.reduce((acc, val) => acc += val.load_5_min, 0) / peers.length).toFixed(1)} /
-					{(peers.reduce((acc, val) => acc += val.load_15_min, 0) / peers.length).toFixed(1)}
+					{(rows.reduce((acc, val) => acc += val.load_1_min, 0) / rows.length).toFixed(1)} /
+					{(rows.reduce((acc, val) => acc += val.load_5_min, 0) / rows.length).toFixed(1)} /
+					{(rows.reduce((acc, val) => acc += val.load_15_min, 0) / rows.length).toFixed(1)}
 				</td>
-				<td>{(peers.reduce((acc, val) => acc += val.latency, 0) / 1000 / peers.length).toFixed(0)}</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_tx, 0) / peers.length, 3)}/s</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_rx, 0) / peers.length, 3)}/s</td>
-				<td>{(peers.reduce((acc, val) => acc += val.network_ratio, 0) / peers.length).toFixed(2)}</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.avg_network_total, 3) / peers.length, 4)}/s</td>
-				<td>{Math.round(peers.reduce((acc, val) => acc += val.usage_percent, 0) / peers.length)}%</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.cache_threshold, 0) / peers.length, 4)}</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.free_space, 0) / peers.length, 4)}</td>
-				<td>{formatDataVolume(peers.reduce((acc, val) => acc += val.min_free_space, 0) / peers.length, 3)}</td>
+				<td>{(rows.reduce((acc, val) => acc += val.latency, 0) / 1000 / rows.length).toFixed(0)}</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.avg_network_tx, 0) / rows.length, 3)}/s</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.avg_network_rx, 0) / rows.length, 3)}/s</td>
+				<td>{(rows.reduce((acc, val) => acc += val.network_ratio, 0) / rows.length).toFixed(2)}</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.avg_network_total, 3) / rows.length, 4)}/s</td>
+				<td>{Math.round(rows.reduce((acc, val) => acc += val.usage_percent, 0) / rows.length)}%</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.cache_threshold, 0) / rows.length, 4)}</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.free_space, 0) / rows.length, 4)}</td>
+				<td>{formatDataVolume(rows.reduce((acc, val) => acc += val.min_free_space, 0) / rows.length, 3)}</td>
 				{#if !all_reachable}<td></td>{/if}
 			</tr>
 		</tbody>

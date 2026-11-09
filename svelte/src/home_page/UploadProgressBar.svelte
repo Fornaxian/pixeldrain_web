@@ -1,18 +1,18 @@
-<script>
+<script lang="ts">
 import { domain_url } from "util/Util.svelte"
 import { formatDataVolume, formatDuration } from "util/Formatting"
 import Spinner from "util/Spinner.svelte";
 
-export let job = {}
-let file_button
-let progress_bar
+let { job = $bindable() }: { job: any } = $props();
+let file_button: HTMLAnchorElement = $state()
+let progress_bar: HTMLDivElement = $state()
 let tries = 0
 let start_time = 0
-let remaining_time = 0
+let remaining_time = $state(0)
 
 let last_update_time = 0
-let progress = 0
-let transfer_rate = 0
+let progress = $state(0)
+let transfer_rate = $state(0)
 const on_progress = (loaded, total) => {
 	job.loaded_size = loaded
 	job.total_size = total
@@ -43,8 +43,8 @@ const on_progress = (loaded, total) => {
 	}
 }
 
-let href = null
-let target = null
+let href = $state(null)
+let target = $state(null)
 const on_success = (resp) => {
 	transfer_rate = 0
 	job.loaded_size = job.total_size
@@ -61,8 +61,8 @@ const on_success = (resp) => {
 	progress_bar.style.opacity = "0"
 }
 
-let error_id = ""
-let error_reason = ""
+let error_id = $state("")
+let error_reason = $state("")
 const on_failure = (status, message) => {
 	transfer_rate = 0
 	job.loaded_size = job.total_size
@@ -118,7 +118,7 @@ export const start = () => {
 			// Request failed
 			console.log("Upload error. status: " + xhr.status + " response: " + xhr.response);
 
-			let resp = {}
+			let resp: any = {}
 			if (xhr.status === 429) {
 				resp = {
 					value: "too_many_requests",

@@ -4,12 +4,12 @@ import { formatDataVolume, formatDate } from "util/Formatting";
 import Euro from "util/Euro.svelte"
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 
-let loading = false
+let loading = $state(false)
 
 let year = 0
 let month = 0
-let month_str = ""
-let transactions = {
+let month_str = $state("")
+let transactions = $state({
 	rows: [],
 	total_subscription_charge: 0,
 	total_storage_used: 0,
@@ -19,7 +19,7 @@ let transactions = {
 	total_affiliate_amount: 0,
 	total_deposited: 0,
 	total_deducted: 0,
-}
+})
 
 const load_transactions = async () => {
 	loading = true
@@ -117,12 +117,12 @@ onMount(() => {
 
 	<h3>{month_str}</h3>
 	<div class="toolbar">
-		<button on:click={last_month}>
+		<button onclick={last_month}>
 			<i class="icon">chevron_left</i>
 			Previous month
 		</button>
 		<div class="toolbar_spacer"></div>
-		<button on:click={next_month}>
+		<button onclick={next_month}>
 			Next month
 			<i class="icon">chevron_right</i>
 		</button>

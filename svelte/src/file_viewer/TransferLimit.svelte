@@ -1,25 +1,19 @@
-<script>
+<script lang="ts">
 import { formatDataVolume } from "util/Formatting";
 import { stats } from "lib/StatsSocket"
 
-let percent = 0
-let title = ""
-$: {
-	if ($stats.limits_init === true) {
-		if ($stats.limits.transfer_limit === 0) {
-			percent = 0 // Avoid division by 0
-		} else if ($stats.limits.transfer_limit_used / $stats.limits.transfer_limit > 1) {
-			percent = 100
-		} else {
-			percent = ($stats.limits.transfer_limit_used / $stats.limits.transfer_limit) * 100
-		}
-
-		title = "Download limit used: " +
-			formatDataVolume($stats.limits.transfer_limit_used, 3) +
-			" of " +
-			formatDataVolume($stats.limits.transfer_limit, 3);
+let percent = $derived.by(() => {
+	if (!$stats.limits_init || $stats.limits.transfer_limit === 0) {
+		return 0 // Avoid division by 0
 	}
-}
+	return Math.min($stats.limits.transfer_limit_used / $stats.limits.transfer_limit, 1) * 100
+})
+let title = $derived(!$stats.limits_init ? "" :
+	"Download limit used: " +
+	formatDataVolume($stats.limits.transfer_limit_used, 3) +
+	" of " +
+	formatDataVolume($stats.limits.transfer_limit, 3)
+)
 </script>
 
 <!-- Always show the outer bar to prevent layout shift -->

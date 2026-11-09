@@ -1,17 +1,17 @@
-<script>
+<script lang="ts">
 import { formatDataVolume, formatDate } from "util/Formatting";
 
 // Main elements
-let directoryArea
-let nodeContainer
-let statusBar = "Loading..."
+let directoryArea: HTMLDivElement = $state()
+let nodeContainer: HTMLDivElement = $state()
+let statusBar = $state("Loading...")
 
 // Internal state, contains a list of all files in the directory, visible
 // files in the directory and the last scroll position. These are used for
 // rendering the file list correctly
 
 // type: {icon, name, href, type, size, sizeLabel, dateCreated, selected}
-let allFiles = []
+let allFiles = $state([])
 
 export const reset = () => {
 	allFiles = []
@@ -96,12 +96,12 @@ export const searchSubmit = () => {
 // order (new to old)
 let currentSortField = "dateCreated"
 let currentSortAscending = false
-let tableColumns = [
+let tableColumns = $state([
 	{ name: "Name", field: "name", width: "" },
 	{ name: "Creation date", field: "dateCreated", width: "160px" },
 	{ name: "Size", field: "size", width: "90px" },
 	{ name: "Type", field: "type", width: "200px" },
-]
+])
 const sortBy = (field) => {
 	if (field === "") {
 		// If no sort field is provided we use the last used sort field
@@ -126,7 +126,7 @@ const sortBy = (field) => {
 
 	for (let i in tableColumns) {
 		if (tableColumns[i].field == field) {
-			colIdx = i
+			colIdx = Number(i)
 		}
 		tableColumns[i].name = tableColumns[i].name.replace("▲ ", "").replace("▼ ", "")
 	}
@@ -137,8 +137,6 @@ const sortBy = (field) => {
 	} else {
 		tableColumns[colIdx].name = "▲ " + tableColumns[colIdx].name
 	}
-
-	tableColumns = tableColumns
 
 	let fieldA, fieldB
 	allFiles.sort((a, b) => {
@@ -246,7 +244,9 @@ const detect_shift = (e) => {
 	shift_pressed = e.type === "keydown"
 }
 
-export let multi_select = true
+let { multi_select = true }: {
+	multi_select?: boolean;
+} = $props();
 let last_selected_node = -1
 const node_click = (index) => {
 	if (selectionMode) {
@@ -284,17 +284,17 @@ const node_click = (index) => {
 }
 </script>
 
-<svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
+<svelte:window onkeydown={detect_shift} onkeyup={detect_shift} />
 
 <div id="directory_element">
 	<div class="directory_sorters">
 		{#each tableColumns as col}
-			<button style="min-width: {col.width}" on:click={sortBy(col.field)} class="sorter_button">
+			<button style="min-width: {col.width}" onclick={() => sortBy(col.field)} class="sorter_button">
 				{col.name}
 			</button>
 		{/each}
 	</div>
-	<div bind:this={directoryArea} on:scroll={onScroll} id="directory_area" class="directory_area">
+	<div bind:this={directoryArea} onscroll={onScroll} id="directory_area" class="directory_area">
 		<div bind:this={nodeContainer} id="node_container" class="directory_node_container">
 			{#each allFiles as file, index}
 				{#if file.visible && !file.filtered}
@@ -304,7 +304,7 @@ const node_click = (index) => {
 						rel="noreferrer"
 						title="{file.name}"
 						class:node_selected={file.selected}
-						on:click|preventDefault={() => {node_click(index)}}
+						onclick={e => {e.preventDefault(); node_click(index)}}
 					>
 						<div>
 							<img src={file.icon} alt="thumbnail" />

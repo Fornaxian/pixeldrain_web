@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { tick } from "svelte";
 import Spinner from "util/Spinner.svelte";
 import Video from "./Video.svelte";
@@ -17,11 +17,17 @@ import Email from "./Email.svelte";
 import SlowDown from "layout/SlowDown.svelte";
 import TextBlock from "layout/TextBlock.svelte";
 
-let viewer
-let viewer_type = "loading"
-export let is_list = false
-let current_file
-let premium_download = false
+let viewer: any = $state()
+let viewer_type = $state("loading")
+let { is_list = false, on_download, on_prev, on_next, on_loading }: {
+	is_list?: boolean;
+	on_download: () => void;
+	on_prev: () => void;
+	on_next: () => void;
+	on_loading: (loading: boolean) => void;
+} = $props();
+let current_file: any = $state()
+let premium_download = $state(false)
 
 export const set_file = async file => {
 	if (file.id === "") {
@@ -40,7 +46,7 @@ export const set_file = async file => {
 		viewer_type = file_type(file)
 	}
 
-	console.log("opening file", file)
+	console.log("opening file", $state.snapshot(file))
 	current_file = file
 	premium_download = !file.show_ads
 
@@ -77,17 +83,17 @@ export const seek = delta => {
 		<Spinner></Spinner>
 	</div>
 {:else if viewer_type === "abuse"}
-	<Abuse bind:this={viewer} on:download></Abuse>
+	<Abuse bind:this={viewer} {on_download}></Abuse>
 {:else if !premium_download && $stats.limits.transfer_limit_used > $stats.limits.transfer_limit}
 	<SlowDown
-		on:download
+		{on_download}
 		file_size={current_file.size}
 		file_name={current_file.name}
 		file_type={current_file.mime_type}
 		icon_href={current_file.icon_href}
 	/>
 {:else if viewer_type === "overload"}
-	<File bind:this={viewer} on:download on:reload>
+	<File bind:this={viewer} {on_download}>
 		<TextBlock><div class="highlight_yellow">
 			<p>
 				Pixeldrain's servers are currently overloaded. There are too
@@ -98,25 +104,25 @@ export const seek = delta => {
 		</div></TextBlock>
 	</File>
 {:else if viewer_type === "rate_limit"}
-	<RateLimit bind:this={viewer} on:download></RateLimit>
+	<RateLimit bind:this={viewer} {on_download}></RateLimit>
 {:else if viewer_type === "image"}
-	<Image bind:this={viewer} is_list={is_list} on:prev on:next on:loading></Image>
+	<Image bind:this={viewer} is_list={is_list} {on_prev} {on_next} {on_loading}></Image>
 {:else if viewer_type === "video"}
-	<Video bind:this={viewer} is_list={is_list} on:loading on:download on:prev on:next on:reload></Video>
+	<Video bind:this={viewer} is_list={is_list} {on_download} {on_prev} {on_next}></Video>
 {:else if viewer_type === "audio"}
-	<Audio bind:this={viewer} is_list={is_list} on:loading on:prev on:next on:reload></Audio>
+	<Audio bind:this={viewer} is_list={is_list} {on_prev} {on_next}></Audio>
 {:else if viewer_type === "pdf"}
 	<PDF bind:this={viewer}></PDF>
 {:else if viewer_type === "text"}
 	<Text bind:this={viewer}></Text>
 {:else if viewer_type === "torrent"}
-	<Torrent bind:this={viewer} on:loading on:download />
+	<Torrent bind:this={viewer} {on_loading} {on_download} />
 {:else if viewer_type === "zip"}
-	<Zip bind:this={viewer} on:loading on:download />
+	<Zip bind:this={viewer} {on_loading} {on_download} />
 {:else if viewer_type === "email"}
 	<Email src={current_file.get_href} />
 {:else if viewer_type === "file"}
-	<File bind:this={viewer} on:download on:reload></File>
+	<File bind:this={viewer} {on_download}></File>
 {/if}
 
 <style>

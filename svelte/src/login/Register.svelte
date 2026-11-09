@@ -8,7 +8,7 @@ import { get_endpoint, get_misc_captcha } from "lib/PixeldrainAPI";
 // defines window.hcaptcha, so we wait for it before rendering the widget. It's
 // rendered explicitly into a container which the form renders as its last
 // field, so it ends up right above the submit button
-let captcha_site_key = ""
+let captcha_site_key = $state("")
 let captcha_widget = null
 onMount(async () => {
 	try {

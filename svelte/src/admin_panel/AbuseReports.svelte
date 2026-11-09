@@ -5,13 +5,13 @@ import AbuseReport from "./AbuseReport.svelte";
 import { get_abuse_reports, type UserReport } from "lib/AdminAPI";
 import { get_endpoint } from "lib/PixeldrainAPI";
 
-let loading = true
-let reports: UserReport[] = []
+let loading = $state(true)
+let reports: UserReport[] = $state([])
 
-let startPicker: HTMLInputElement
-let endPicker: HTMLInputElement
+let startPicker: HTMLInputElement = $state()
+let endPicker: HTMLInputElement = $state()
 
-let tab = "pending"
+let tab = $state("pending")
 
 const get_reports = async () => {
 	loading = true;
@@ -59,6 +59,7 @@ const get_reports = async () => {
 		})
 
 		count_ip_reports()
+		count_types()
 	} catch (err) {
 		alert(err);
 	} finally {
@@ -66,7 +67,7 @@ const get_reports = async () => {
 	}
 };
 
-let ip_report_count: {[key: string]: number} = {}
+let ip_report_count: {[key: string]: number} = $state({})
 const count_ip_reports = () => {
 	ip_report_count = {}
 	reports.forEach(v => {
@@ -88,36 +89,23 @@ type Filter = {
 		count: number
 	}
 }
-let type_filter: Filter = {}
-let repords_hidden = 0
-$: reports_filtered = filter_reports(reports, type_filter)
+let type_filter: Filter = $state({})
 
-const filter_reports = (reports: UserReport[], filter: Filter): UserReport[] => {
-	// Reset counter
-	repords_hidden = 0
-	for (let f in filter) {
-		filter[f].count=0
+// Counts the reports per type. Types which were not seen before are visible
+const count_types = () => {
+	for (let f in type_filter) {
+		type_filter[f].count = 0
 	}
-
-	const reports_filtered = reports.filter(report => {
-		if (filter[report.type] === undefined) {
-			filter[report.type] = {checked: true, count: 1}
-		} else {
-			filter[report.type].count++
+	reports.forEach(report => {
+		if (type_filter[report.type] === undefined) {
+			type_filter[report.type] = {checked: true, count: 0}
 		}
-
-		if(filter[report.type].checked === true) {
-			return true
-		}
-
-		repords_hidden++
-		return false
+		type_filter[report.type].count++
 	})
-
-	// Make filter reactive
-	type_filter = type_filter
-	return reports_filtered
 }
+
+let reports_filtered = $derived(reports.filter(report => type_filter[report.type]?.checked !== false))
+let repords_hidden = $derived(reports.length - reports_filtered.length)
 
 const resolve_report = async (report_id: string, action: string, report_type: string) => {
 	const form = new FormData()
@@ -160,10 +148,10 @@ const remove_report = (id = "") => {
 		if (reports[i].id === id) {
 			console.debug("removing item", id)
 			reports.splice(i, 1)
-			reports = reports
 
-			// Update the report counts per IP address
+			// Update the report counts per IP address and type
 			count_ip_reports()
+			count_types()
 			break
 		}
 	}
@@ -194,7 +182,7 @@ onMount(() => {
 		<div>Range:</div>
 		<input type="date" bind:this={startPicker}/>
 		<input type="date" bind:this={endPicker}/>
-		<button on:click={get_reports}>Go</button>
+		<button onclick={get_reports}>Go</button>
 	</div>
 
 	<div class="filters">
@@ -213,15 +201,15 @@ onMount(() => {
 	Hidden: {repords_hidden}<br/>
 
 	<div class="tab_bar">
-		<button on:click={() => {tab = "pending"; get_reports()}} class:button_highlight={tab === "pending"}>
+		<button onclick={() => {tab = "pending"; get_reports()}} class:button_highlight={tab === "pending"}>
 			<i class="icon">flag</i>
 			Pending
 		</button>
-		<button on:click={() => {tab = "granted"; get_reports()}} class:button_highlight={tab === "granted"}>
+		<button onclick={() => {tab = "granted"; get_reports()}} class:button_highlight={tab === "granted"}>
 			<i class="icon">flag</i>
 			Granted
 		</button>
-		<button on:click={() => {tab = "rejected"; get_reports()}} class:button_highlight={tab === "rejected"}>
+		<button onclick={() => {tab = "rejected"; get_reports()}} class:button_highlight={tab === "rejected"}>
 			<i class="icon">flag</i>
 			Rejected
 		</button>
@@ -231,8 +219,8 @@ onMount(() => {
 		<AbuseReport
 			report={report}
 			ip_report_count={ip_report_count}
-			on:resolve_report={e => resolve_report(report.id, e.detail.action, e.detail.report_type)}
-			on:resolve_by_ip={e => resolve_by_ip(e.detail.ip, e.detail.action)}
+			on_resolve_report={(action, report_type) => resolve_report(report.id, action, report_type)}
+			on_resolve_by_ip={resolve_by_ip}
 		/>
 	{/each}
 </section>

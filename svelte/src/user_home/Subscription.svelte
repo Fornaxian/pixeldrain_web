@@ -4,10 +4,10 @@ import LoadingIndicator from "util/LoadingIndicator.svelte";
 import SuccessMessage from "util/SuccessMessage.svelte";
 import PatreonActivationResult from "./PatreonActivationResult.svelte";
 
-let loading = false
-let subscription = window.user.subscription.id
-let subscription_type = window.user.subscription.type
-let success_message
+let loading = $state(false)
+let subscription = $state(window.user.subscription.id)
+let subscription_type = $state(window.user.subscription.type)
+let success_message = $state()
 
 const update = async (plan) => {
 	loading = true
@@ -157,7 +157,7 @@ const update = async (plan) => {
 				{#if subscription === "prepaid"}
 					Currently active
 				{:else}
-					<button on:click={() => update("prepaid")}>
+					<button onclick={() => update("prepaid")}>
 						<i class="icon">attach_money</i>
 						Activate
 					</button>

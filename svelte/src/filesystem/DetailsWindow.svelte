@@ -4,28 +4,26 @@ import { formatDataVolume, formatDate, formatThousands } from "util/Formatting";
 import Modal from "util/Modal.svelte";
 import { fs_path_url, fs_share_hotlink_url, fs_share_url, fs_timeseries, type FSNode } from "./FilesystemAPI";
 import { color_by_name } from "util/Util.svelte";
-import { tick } from "svelte";
+import { tick, untrack } from "svelte";
 import CopyButton from "layout/CopyButton.svelte";
 import type { FSNavigator } from "./FSNavigator";
 
-export let nav: FSNavigator
-export let visible = false
+let { nav, visible = $bindable(false) }: {
+	nav: FSNavigator;
+	visible?: boolean;
+} = $props();
 export const toggle = () => visible = !visible
 
-$: visibility_change(visible)
-const visibility_change = visible => {
+// Opening the window resets the graph to the default timespan
+$effect(() => {
 	if (visible) {
-		update_chart(nav.base, 0, 0)
+		untrack(() => update_chart(nav.base, 0, 0))
 	}
-}
+})
 
-$: direct_url = $nav.base.path ? window.location.origin+fs_path_url($nav.base.path) : ""
-$: share_url = fs_share_url($nav.path)
-$: direct_share_url = fs_share_hotlink_url($nav.path)
-
-let chart
-let chart_timespan = 0
-let chart_interval = 0
+let chart: Chart = $state()
+let chart_timespan = $state(0)
+let chart_interval = $state(0)
 let chart_timespans = [
 	{label: "Day (1m)", span: 1440, interval: 1},
 	{label: "Week (1h)", span: 10080, interval: 60},
@@ -36,10 +34,9 @@ let chart_timespans = [
 	{label: "Five Years (1d)", span: 2628000, interval: 1440},
 ]
 
-let total_downloads = 0
-let total_transfer = 0
+let total_downloads = $state(0)
+let total_transfer = $state(0)
 
-$: update_chart($nav.base, chart_timespan, chart_interval)
 let update_chart = async (base: FSNode, timespan: number, interval: number) => {
 	if (chart === undefined) {
 		// Wait for the chart element to render, if it's not rendered already
@@ -141,6 +138,15 @@ let update_chart = async (base: FSNode, timespan: number, interval: number) => {
 		console.error("Failed to get time series data:", err)
 	}
 }
+let direct_url = $derived($nav.base.path ? window.location.origin+fs_path_url($nav.base.path) : "")
+let share_url = $derived(fs_share_url($nav.path))
+let direct_share_url = $derived(fs_share_hotlink_url($nav.path))
+
+// Navigating to another file updates the graph
+$effect(() => {
+	const base = $nav.base
+	untrack(() => update_chart(base, chart_timespan, chart_interval))
+})
 </script>
 
 <Modal bind:visible={visible} title="Details" width={($nav.base.type === "file" ? 1000 : 750) + "px"}>
@@ -231,7 +237,7 @@ let update_chart = async (base: FSNode, timespan: number, interval: number) => {
 		<div class="button_bar">
 			{#each chart_timespans as ts}
 				<button
-					on:click={() => update_chart($nav.base, ts.span, ts.interval)}
+					onclick={() => update_chart($nav.base, ts.span, ts.interval)}
 					class:button_highlight={chart_timespan == ts.span}>
 					{ts.label}
 				</button>

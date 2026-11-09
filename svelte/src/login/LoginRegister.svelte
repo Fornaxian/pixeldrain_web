@@ -6,15 +6,15 @@ const finish_login = async () => {
 	location.reload()
 }
 
-let page = "login"
+let page = $state("login")
 </script>
 <div class="tab_bar">
-	<button on:click={() => page = "login"} class:button_highlight={page === "login"}>
+	<button onclick={() => page = "login"} class:button_highlight={page === "login"}>
 		<i class="icon small">login</i>
 		<span>Login</span>
 	</button>
 
-	<button on:click={() => page = "register"} class:button_highlight={page === "register"}>
+	<button onclick={() => page = "register"} class:button_highlight={page === "register"}>
 		<i class="icon small">how_to_reg</i>
 		<span>Register</span>
 	</button>
@@ -22,9 +22,9 @@ let page = "login"
 
 <div class="page_content">
 	{#if page === "login"}
-		<Login on:login={finish_login}/>
+		<Login on_login={finish_login}/>
 	{:else if page === "register"}
-		<Register on:login={finish_login}/>
+		<Register/>
 	{/if}
 </div>
 

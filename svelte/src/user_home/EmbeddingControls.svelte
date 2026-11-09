@@ -5,11 +5,11 @@ import LoadingIndicator from "util/LoadingIndicator.svelte";
 import SuccessMessage from "util/SuccessMessage.svelte";
 import { get_endpoint, get_user, type User } from "lib/PixeldrainAPI";
 
-let loading = false
-let success_message: SuccessMessage
+let loading = $state(false)
+let success_message: SuccessMessage = $state()
 
 // Embedding settings
-let embed_domains: string[] = []
+let embed_domains: string[] = $state([])
 
 const save_embed = async () => {
 	loading = true
@@ -37,21 +37,19 @@ const save_embed = async () => {
 	}
 }
 
-let new_domain: string = ""
+let new_domain: string = $state("")
 const add = () => {
 	console.debug("Adding domain", new_domain)
 	embed_domains.push(new_domain)
-	embed_domains = embed_domains
 	new_domain = ""
 	save_embed()
 }
 const remove = (index: number) => {
 	embed_domains.splice(index, 1)
-	embed_domains = embed_domains
 	save_embed()
 }
 
-let user: User
+let user: User = $state()
 onMount(async () => {
 	user = await get_user()
 	if (user.file_embed_domains !== "") {
@@ -85,7 +83,7 @@ onMount(async () => {
 		to embed your files.
 	</p>
 	<div class="highlight_border">
-		<form on:submit|preventDefault={() => add()}>
+		<form onsubmit={e => {e.preventDefault(); add()}}>
 			<div class="form_row">
 				<span>Add domain name</span>
 				<input class="grow" bind:value={new_domain} type="text"/>
@@ -100,7 +98,7 @@ onMount(async () => {
 		{/if}
 		{#each embed_domains as domain, index}
 			<div class="form_row">
-				<button class="shrink" type="button" on:click={() => remove(index)}>
+				<button class="shrink" type="button" onclick={() => remove(index)}>
 					<i class="icon">delete</i>
 				</button>
 				<div>{domain}</div>

@@ -4,13 +4,15 @@ import { formatDataVolume, formatThousands } from "util/Formatting"
 import { fs_path_url } from "./FilesystemAPI";
 import type { FSNavigator } from "./FSNavigator";
 
-export let nav: FSNavigator
+let { nav }: {
+	nav: FSNavigator;
+} = $props();
 
-let loading = true
-let downloads = 0
-let transfer_used = 0
+let loading = $state(true)
+let downloads = $state(0)
+let transfer_used = $state(0)
 let socket = null
-let error_msg = ""
+let error_msg = $state("")
 
 let connected_to = ""
 
@@ -22,9 +24,9 @@ onMount(() => {
 	}
 })
 
-let total_directories = 0
-let total_files = 0
-let total_file_size = 0
+let total_directories = $state(0)
+let total_files = $state(0)
+let total_file_size = $state(0)
 
 const update_base = async () => {
 	if (!nav.initialized) {

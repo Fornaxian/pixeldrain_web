@@ -1,17 +1,14 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import UploadWidget from "util/upload_widget/UploadWidget.svelte";
 
-let dispatch = createEventDispatcher()
-
-export let list = {
-	title: "",
-	files: [],
-	info_href: "",
-}
+let { list, on_loading, on_reload }: {
+	list: any;
+	on_loading: (loading: boolean) => void;
+	on_reload: () => void;
+} = $props();
 
 export const update = async new_files => {
-	dispatch("loading", true)
+	on_loading(true)
 
 	// If the list is empty we simply delete it
 	if (list.files.length === 0) {
@@ -24,7 +21,7 @@ export const update = async new_files => {
 		} catch (err) {
 			alert("Failed to delete album: "+err)
 		} finally {
-			dispatch("loading", false)
+			on_loading(false)
 		}
 		return
 	}
@@ -50,12 +47,12 @@ export const update = async new_files => {
 	} catch (err) {
 		alert("Failed to update album: "+err)
 	} finally {
-		dispatch("loading", false)
-		dispatch("reload")
+		on_loading(false)
+		on_reload()
 	}
 }
 
-let upload_widget
+let upload_widget: UploadWidget = $state()
 export const pick_files = () => upload_widget.pick_files()
 export const upload_files = files => upload_widget.upload_files(files)
 
@@ -77,6 +74,6 @@ const paste = (e) => {
 }
 </script>
 
-<svelte:window on:paste={paste}/>
+<svelte:window onpaste={paste}/>
 
-<UploadWidget bind:this={upload_widget} on:uploads_finished={e => uploads_finished(e.detail)}/>
+<UploadWidget bind:this={upload_widget} on_uploads_finished={uploads_finished}/>

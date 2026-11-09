@@ -3,9 +3,9 @@ import CopyButton from "layout/CopyButton.svelte";
 import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 
-let loading = false
-let loaded = false
-let rows = []
+let loading = $state(false)
+let loaded = $state(false)
+let rows = $state([])
 
 const load_keys = async () => {
 	loading = true
@@ -94,14 +94,14 @@ const logout = async (key) => {
 				full control over your account. Do not show your API keys to
 				someone or something you don't trust!
 			</p>
-			<button class="button_red" on:click={load_keys}>
+			<button class="button_red" onclick={load_keys}>
 				<i class="icon">lock_open</i> Show API keys
 			</button>
 		</div>
 	{:else}
 		<div class="toolbar" style="text-align: left;">
 			<div class="toolbar_spacer"></div>
-			<button on:click={create_key}>
+			<button onclick={create_key}>
 				<i class="icon">add</i> Create new API key
 			</button>
 		</div>
@@ -138,7 +138,7 @@ const logout = async (key) => {
 					<td>{formatDate(row.last_used_time, true, true, false)}</td>
 					<td>{row.creation_ip_address}</td>
 					<td>
-						<button on:click|preventDefault={() => {logout(row.auth_key)}} class="button button_red round">
+						<button onclick={e => {e.preventDefault(); logout(row.auth_key)}} class="button button_red round">
 							<i class="icon">delete</i>
 						</button>
 					</td>

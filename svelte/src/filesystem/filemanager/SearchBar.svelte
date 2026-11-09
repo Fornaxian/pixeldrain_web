@@ -3,16 +3,18 @@ import { onMount } from "svelte";
 import { fs_search, fs_encode_path, fs_thumbnail_url } from "filesystem/FilesystemAPI";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav: FSNavigator
+let { nav }: {
+	nav: FSNavigator;
+} = $props();
 
-let search_bar: HTMLInputElement
-let error = ""
-let search_term = ""
-let search_results: string[] = []
-let selected_result = 0
+let search_bar: HTMLInputElement = $state()
+let error = $state("")
+let search_term = $state("")
+let search_results: string[] = $state([])
+let selected_result = $state(0)
 let searching = false
 let last_searched_term = ""
-let last_limit = 10
+let last_limit = $state(10)
 
 onMount(() => {
 	// Clear results when the user moves to a new directory
@@ -142,7 +144,7 @@ const window_keydown = (e: KeyboardEvent) => {
 }
 </script>
 
-<svelte:window on:keydown={window_keydown} />
+<svelte:window onkeydown={window_keydown} />
 
 {#if error === "path_not_found" || error === "node_is_a_directory"}
 	<div class="highlight_yellow center">
@@ -158,7 +160,7 @@ const window_keydown = (e: KeyboardEvent) => {
 {/if}
 
 <div class="center">
-	<form class="search_form" on:submit|preventDefault={submit_search}>
+	<form class="search_form" onsubmit={e => {e.preventDefault(); submit_search()}}>
 		<i class="icon">search</i>
 		<input
 			bind:this={search_bar}
@@ -167,12 +169,12 @@ const window_keydown = (e: KeyboardEvent) => {
 			placeholder="Press / to search in {$nav.base.name}"
 			style="width: 100%;"
 			bind:value={search_term}
-			on:keydown={input_keydown}
-			on:keyup={input_keyup}
+			onkeydown={input_keydown}
+			onkeyup={input_keyup}
 		/>
 		{#if search_term !== ""}
 			<!-- Button needs to be of button type in order to not submit the form -->
-			<button on:click={() => clear_search(false)} type="button">
+			<button onclick={() => clear_search(false)} type="button">
 				<i class="icon">close</i>
 			</button>
 		{/if}
@@ -186,7 +188,7 @@ const window_keydown = (e: KeyboardEvent) => {
 		{#each search_results as result, index}
 			<a
 				href={"/d"+fs_encode_path(result)}
-				on:click|preventDefault={() => open_result(index)}
+				onclick={e => {e.preventDefault(); open_result(index)}}
 				class="node"
 				class:node_selected={selected_result === index}
 			>
@@ -201,7 +203,7 @@ const window_keydown = (e: KeyboardEvent) => {
 		{#if search_results.length === last_limit}
 			<div class="node">
 				<div class="node_name" style="text-align: center;">
-					<button on:click={() => {search(last_limit + 100)}}>
+					<button onclick={() => {search(last_limit + 100)}}>
 						<i class="icon">expand_more</i>
 						More results
 					</button>

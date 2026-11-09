@@ -1,9 +1,9 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 export type Tab = {
 	path: string,
 	title: string,
 	icon: string,
-	component?: ComponentType,
+	component?: Component,
 	hidden?: boolean,
 	hide_background?: boolean,
 	hide_frame?: boolean,
@@ -11,11 +11,13 @@ export type Tab = {
 }
 </script>
 <script lang="ts">
-import { onMount, type ComponentType } from "svelte";
+import { onMount, type Component } from "svelte";
 import Footer from "layout/Footer.svelte";
 
-export let title = ""
-export let pages: Tab[] = []
+let { title = "", pages = [] }: {
+	title?: string;
+	pages?: Tab[];
+} = $props();
 
 const navigate = (page: Tab) => {
 	window.history.pushState({}, window.document.title, page.path)
@@ -56,17 +58,15 @@ const get_page = () => {
 
 	console.debug("Page", current_page)
 	console.debug("Subpage", current_subpage)
-
-	pages = pages
 }
 
-let current_page: Tab = null
-let current_subpage: Tab = null
+let current_page: Tab = $state.raw(null)
+let current_subpage: Tab = $state.raw(null)
 
 onMount(() => get_page())
 </script>
 
-<svelte:window on:popstate={get_page} />
+<svelte:window onpopstate={get_page} />
 
 {#if current_page !== null && current_page.hide_frame !== true}
 	<header>
@@ -78,7 +78,7 @@ onMount(() => get_page())
 					<a class="button"
 						href="{page.path}"
 						class:button_highlight={current_page && page.path === current_page.path}
-						on:click|preventDefault={() => {navigate(page)}}>
+						onclick={e => {e.preventDefault(); navigate(page)}}>
 						<i class="icon">{page.icon}</i>
 						<span>{page.title}</span>
 					</a>
@@ -97,7 +97,7 @@ onMount(() => get_page())
 						<a class="button"
 							href="{page.path}"
 							class:button_highlight={current_subpage && page.path === current_subpage.path}
-							on:click|preventDefault={() => {navigate(page)}}>
+							onclick={e => {e.preventDefault(); navigate(page)}}>
 							<i class="icon">{page.icon}</i>
 							<span>{page.title}</span>
 						</a>
@@ -106,10 +106,10 @@ onMount(() => get_page())
 			</div>
 
 			{#if current_subpage}
-				<svelte:component this={current_subpage.component} />
+				<current_subpage.component />
 			{/if}
 		{:else}
-			<svelte:component this={current_page.component} />
+			<current_page.component />
 		{/if}
 	</div>
 {/if}

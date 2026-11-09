@@ -25,10 +25,12 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell pro_feat">
 			<Tooltip>
-				<span slot="label">
-					<span class="bold">€4 / month</span> or
-					<span class="bold">€40 / year</span>
-				</span>
+				{#snippet label()}
+					<span>
+						<span class="bold">€4 / month</span> or
+						<span class="bold">€40 / year</span>
+					</span>
+				{/snippet}
 				The Pro subscription is managed by Patreon. Patreon's own fees
 				and sales tax will be added to this price. After paying you need
 				to link your pixeldrain account to Patreon to activate the plan.
@@ -36,7 +38,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<Tooltip>
-				<span slot="label" class="bold">€0.01 / day minimum</span>
+				{#snippet label()}
+					<span class="bold">€0.01 / day minimum</span>
+				{/snippet}
 				<p>
 					The minimum fee is only charged when daily usage is less
 					than €0.01.
@@ -66,7 +70,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell free_feat">
 			<Tooltip>
-				<span slot="label" class="bold">6 GB per day</span>
+				{#snippet label()}
+					<span class="bold">6 GB per day</span>
+				{/snippet}
 				<p>
 					Free users are limited to downloading 6 GB per day, this
 					limit is linked to your IP address, even if you are logged
@@ -81,7 +87,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell pro_feat">
 			<Tooltip>
-				<span slot="label" class="bold">4 TB per 30 days</span>
+				{#snippet label()}
+					<span class="bold">4 TB per 30 days</span>
+				{/snippet}
 				<p>
 					The transfer limit is used for downloading, sharing and
 					hotlinking files.
@@ -93,7 +101,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<Tooltip>
-				<span slot="label" class="bold">€1 per TB transferred</span>
+				{#snippet label()}
+					<span class="bold">€1 per TB transferred</span>
+				{/snippet}
 				<p>
 					Prepaid does not have a transfer limit, instead you are
 					charged for what you use at a rate of €1 per terabyte
@@ -112,7 +122,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell free_feat">
 			<Tooltip>
-				<span slot="label" class="bold">Hotlinking not supported</span>
+				{#snippet label()}
+					<span class="bold">Hotlinking not supported</span>
+				{/snippet}
 				<p>
 					This means that you cannot embed your files in other
 					websites or download files without passing through the
@@ -127,7 +139,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell span2 right pro_feat">
 			<Tooltip>
-				<span slot="label" class="bold">Hotlinking supported</span>
+				{#snippet label()}
+					<span class="bold">Hotlinking supported</span>
+				{/snippet}
 				<p>
 					With hotlinking you can directly embed your videos, images
 					and other files into your own website. You also don't need
@@ -147,7 +161,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell free_feat">
 			<Tooltip>
-				<span slot="label" class="bold">60 days (2 months)</span>
+				{#snippet label()}
+					<span class="bold">60 days (2 months)</span>
+				{/snippet}
 				<p>
 					Files expire when they have not been downloaded in the last
 					60 days. A download is counted when more than 10% of the
@@ -157,7 +173,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell pro_feat">
 			<Tooltip>
-				<span slot="label" class="bold">120 days (4 months)</span>
+				{#snippet label()}
+					<span class="bold">120 days (4 months)</span>
+				{/snippet}
 				<p>
 					Files expire when they have not been downloaded in the last
 					120 days. A download is counted when more than 10% of the
@@ -169,7 +187,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<Tooltip>
-				<span slot="label" class="bold">Files do not expire</span>
+				{#snippet label()}
+					<span class="bold">Files do not expire</span>
+				{/snippet}
 				<p>
 					Files don't expire while your Prepaid plan is active. If
 					your credit runs out you have one week to top up your
@@ -200,7 +220,9 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<Tooltip>
-				<span slot="label" class="bold">Yes</span>
+				{#snippet label()}
+					<span class="bold">Yes</span>
+				{/snippet}
 				<p>
 					You can embed files on your website either with an iframe
 					tag or directly with video or image elements. You can

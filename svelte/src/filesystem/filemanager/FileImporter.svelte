@@ -3,8 +3,10 @@ import FilePicker from "file_viewer/FilePicker.svelte";
 import { fs_import } from "filesystem/FilesystemAPI";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav: FSNavigator
-let file_picker: FilePicker
+let { nav }: {
+	nav: FSNavigator;
+} = $props();
+let file_picker: FilePicker = $state()
 
 export const open = () => file_picker.open()
 
@@ -35,7 +37,7 @@ const import_files = async (files: any) => {
 
 <FilePicker
 	bind:this={file_picker}
-	on:files={e => {import_files(e.detail)}}
+	on_files={import_files}
 	multi_select={true}
 	title="Import files from file list">
 </FilePicker>

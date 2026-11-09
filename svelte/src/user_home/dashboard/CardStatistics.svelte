@@ -1,13 +1,15 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import Chart from "util/Chart.svelte";
 import { color_by_name } from "util/Util.svelte";
 import { formatDataVolume, formatThousands } from "util/Formatting";
 
-export let card_size = 1
-$: chart_height = (80 + (card_size * 60)) + "px"
-let graph_views_downloads = null
-let graph_bandwidth = null
+let { card_size = 1 }: {
+	card_size?: number;
+} = $props();
+let chart_height = $derived((80 + (card_size * 60)) + "px")
+let graph_views_downloads = $state(null)
+let graph_bandwidth = $state(null)
 
 let load_graphs = async (minutes, interval) => {
 	let end = new Date()
@@ -15,14 +17,12 @@ let load_graphs = async (minutes, interval) => {
 	start.setMinutes(start.getMinutes() - minutes)
 
 	try {
-		let views = get_graph_data("views", start, end, interval);
-		let downloads = get_graph_data("downloads", start, end, interval);
-		let bandwidth = get_graph_data("bandwidth", start, end, interval);
-		let transfer_paid = get_graph_data("transfer_paid", start, end, interval);
-		views = await views
-		downloads = await downloads
-		bandwidth = await bandwidth
-		transfer_paid = await transfer_paid
+		let [views, downloads, bandwidth, transfer_paid] = await Promise.all([
+			get_graph_data("views", start, end, interval),
+			get_graph_data("downloads", start, end, interval),
+			get_graph_data("bandwidth", start, end, interval),
+			get_graph_data("transfer_paid", start, end, interval),
+		])
 
 		graph_views_downloads.data().labels = views.timestamps;
 		graph_views_downloads.data().datasets[0].data = views.amounts
@@ -39,24 +39,23 @@ let load_graphs = async (minutes, interval) => {
 	}
 }
 
-let total_views = 0
-let total_downloads = 0
-let total_bandwidth = 0
-let total_transfer_paid = 0
+let total_views = $state(0)
+let total_downloads = $state(0)
+let total_bandwidth = $state(0)
+let total_transfer_paid = $state(0)
 
 let get_graph_data = async (stat, start, end, interval) => {
-	let resp = await fetch(
+	let resp = await (await fetch(
 		window.api_endpoint + "/user/time_series/" + stat +
 		"?start=" + start.toISOString() +
 		"&end=" + end.toISOString() +
 		"&interval=" + interval
-	)
-	resp = await resp.json()
+	)).json()
 
 	// Convert the timestamps to a human-friendly format
 	resp.timestamps.forEach((val, idx) => {
 		let date = new Date(val);
-		let str = date.getFullYear();
+		let str = String(date.getFullYear());
 		str += "-" + ("00" + (date.getMonth() + 1)).slice(-2);
 		str += "-" + ("00" + date.getDate()).slice(-2);
 		str += " " + ("00" + date.getHours()).slice(-2);
@@ -81,7 +80,7 @@ let get_graph_data = async (stat, start, end, interval) => {
 	return resp
 }
 
-let graph_timespan = 0
+let graph_timespan = $state(0)
 let update_graphs = (minutes, interval) => {
 	graph_timespan = minutes
 	load_graphs(minutes, interval)
@@ -127,37 +126,37 @@ onMount(() => {
 
 <div class="time_buttons">
 	<button
-		on:click={() => update_graphs(1440, 1)}
+		onclick={() => update_graphs(1440, 1)}
 		class:button_highlight={graph_timespan == 1440}
 		class="group_first">
 		Day
 	</button>
 	<button
-		on:click={() => update_graphs(10080, 60)}
+		onclick={() => update_graphs(10080, 60)}
 		class:button_highlight={graph_timespan == 10080}
 		class="group_middle">
 		Week
 	</button>
 	<button
-		on:click={() => update_graphs(43200, 1440)}
+		onclick={() => update_graphs(43200, 1440)}
 		class:button_highlight={graph_timespan == 43200}
 		class="group_middle">
 		Month
 	</button>
 	<button
-		on:click={() => update_graphs(131400, 1440)}
+		onclick={() => update_graphs(131400, 1440)}
 		class:button_highlight={graph_timespan == 131400}
 		class="group_middle">
 		Quarter
 	</button>
 	<button
-		on:click={() => update_graphs(525600, 1440)}
+		onclick={() => update_graphs(525600, 1440)}
 		class:button_highlight={graph_timespan == 525600}
 		class="group_middle">
 		Year
 	</button>
 	<button
-		on:click={() => update_graphs(1051200, 1440)}
+		onclick={() => update_graphs(1051200, 1440)}
 		class:button_highlight={graph_timespan == 1051200}
 		class="group_last">
 		Two Years

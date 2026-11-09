@@ -1,33 +1,40 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import { fade } from "svelte/transition";
 
-let dispatch = createEventDispatcher()
-let dragging = false
+let { on_upload }: {
+	on_upload: (files: FileList) => void;
+} = $props();
+let dragging = $state(false)
+
+const drag = (e: DragEvent, active: boolean) => {
+	e.preventDefault()
+	e.stopPropagation()
+	dragging = active
+}
 
 const drop = (e) => {
 	dragging = false;
 	if (e.dataTransfer && e.dataTransfer.items.length > 0) {
 		e.preventDefault()
 		e.stopPropagation()
-		dispatch("upload", e.dataTransfer.files)
+		on_upload(e.dataTransfer.files)
 	}
 }
 const paste = (e) => {
 	if (e.clipboardData.files.length !== 0) {
 		e.preventDefault();
 		e.stopPropagation();
-		dispatch("upload", e.clipboardData.files)
+		on_upload(e.clipboardData.files)
 	}
 }
 </script>
 
 <svelte:window
-	on:dragover|preventDefault|stopPropagation={() => { dragging = true }}
-	on:dragenter|preventDefault|stopPropagation={() => { dragging = true }}
-	on:dragleave|preventDefault|stopPropagation={() => { dragging = false }}
-	on:drop={drop}
-	on:paste={paste}
+	ondragover={e => drag(e, true)}
+	ondragenter={e => drag(e, true)}
+	ondragleave={e => drag(e, false)}
+	ondrop={drop}
+	onpaste={paste}
 />
 
 {#if dragging}

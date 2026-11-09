@@ -1,42 +1,27 @@
-<script>
+<script lang="ts">
 import { formatDataVolume, formatThousands } from "util/Formatting"
 import { set_file, stats } from "lib/StatsSocket"
 
-export let file = {
-	id: "",
-	views: 0,
-	size: 0,
-	downloads: 0,
-	bandwidth_used: 0,
-	bandwidth_used_paid: 0,
-}
+let { file }: { file: any } = $props();
 
-let views = 0
-let downloads = 0
-let size = 0
-$: {
-	size = file.size
-
+let views = $derived($stats.file_stats_init ? $stats.file_stats.views : file.views)
+let downloads = $derived.by(() => {
 	if ($stats.file_stats_init) {
-		views = $stats.file_stats.views
-
 		if (file.size === 0) {
-			downloads = $stats.file_stats.downloads
-		} else {
-			downloads = Math.round(($stats.file_stats.bandwidth + $stats.file_stats.bandwidth_paid) / file.size)
+			return $stats.file_stats.downloads
 		}
-	} else {
-		views = file.views
-
-		if (file.size === 0) {
-			downloads = file.downloads
-		} else {
-			downloads = Math.round((file.bandwidth_used + file.bandwidth_used_paid) / file.size)
-		}
+		return Math.round(($stats.file_stats.bandwidth + $stats.file_stats.bandwidth_paid) / file.size)
 	}
-}
 
-$: set_file(file.id)
+	if (file.size === 0) {
+		return file.downloads
+	}
+	return Math.round((file.bandwidth_used + file.bandwidth_used_paid) / file.size)
+})
+
+$effect(() => {
+	set_file(file.id)
+})
 </script>
 
 <div>
@@ -45,7 +30,7 @@ $: set_file(file.id)
 	<div class="label">Downloads</div>
 	<div class="stat">{formatThousands(downloads)}</div>
 	<div class="label">Size</div>
-	<div class="stat">{formatDataVolume(size, 3)}</div>
+	<div class="stat">{formatDataVolume(file.size, 3)}</div>
 </div>
 
 <style>

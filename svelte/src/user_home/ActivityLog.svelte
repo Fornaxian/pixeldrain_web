@@ -3,12 +3,12 @@ import { onMount } from "svelte";
 import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 
-let loading = false
+let loading = $state(false)
 
 let year = 0
 let month = 0
-let month_str = ""
-let data = []
+let month_str = $state("")
+let data = $state([])
 
 const load_activity = async () => {
 	loading = true
@@ -70,12 +70,12 @@ onMount(() => {
 
 	<h3>{month_str}</h3>
 	<div class="toolbar">
-		<button on:click={last_month}>
+		<button onclick={last_month}>
 			<i class="icon">chevron_left</i>
 			Previous month
 		</button>
 		<div class="toolbar_spacer"></div>
-		<button on:click={next_month}>
+		<button onclick={next_month}>
 			Next month
 			<i class="icon">chevron_right</i>
 		</button>
@@ -122,12 +122,12 @@ onMount(() => {
 
 	{#if data.length > 100}
 		<div class="toolbar">
-			<button on:click={last_month}>
+			<button onclick={last_month}>
 				<i class="icon">chevron_left</i>
 				Previous month
 			</button>
 			<div class="toolbar_spacer"></div>
-			<button on:click={next_month}>
+			<button onclick={next_month}>
 				Next month
 				<i class="icon">chevron_right</i>
 			</button>

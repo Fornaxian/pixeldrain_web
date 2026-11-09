@@ -9,8 +9,8 @@ import { get_misc_vat_rate, get_user } from "lib/PixeldrainAPI";
 import { countries } from "country-data-list";
 import PickProvider from "./PickProvider.svelte";
 
-let loading = false
-let state: CheckoutState = {country: null, provider: null, amount: 0, vat: 0, name: ""}
+let loading = $state(false)
+let status: CheckoutState = $state({country: null, provider: null, amount: 0, vat: 0, name: ""})
 
 onMount(async () => {
 	try {
@@ -19,21 +19,21 @@ onMount(async () => {
 		// Get the country from the user profile
 		if (user.checkout_country !== "" && countries[user.checkout_country] !== undefined) {
 			const vat_rate = await get_misc_vat_rate(user.checkout_country)
-			state.vat = vat_rate.vat*100
-			state.country = countries[user.checkout_country]
+			status.vat = vat_rate.vat*100
+			status.country = countries[user.checkout_country]
 		}
 
 		// Get the provider from the user profile
 		for (const p of payment_providers) {
 			if (p.name === user.checkout_provider) {
-				state.provider = p
+				status.provider = p
 				break
 			}
 		}
 
 		// Get the checkout name from the user profile
 		if (user.checkout_name !== "") {
-			state.name = user.checkout_name
+			status.name = user.checkout_name
 		}
 	}catch (err) {
 		alert("Failed to get user:"+err)
@@ -44,45 +44,45 @@ onMount(async () => {
 <div class="highlight_border">
 	<LoadingIndicator loading={loading}/>
 
-	{#if state.country !== null}
+	{#if status.country !== null}
 		<div class="navbar">
-			{#if state.country !== null}
-				<button on:click={() => state.country = null}>
+			{#if status.country !== null}
+				<button onclick={() => status.country = null}>
 					Country:
-					<span style="font-size: 1.5em; line-height: 1em;">{state.country.emoji}</span>
-					{state.country.name}
+					<span style="font-size: 1.5em; line-height: 1em;">{status.country.emoji}</span>
+					{status.country.name}
 				</button>
 			{/if}
 
-			{#if state.provider !== null}
-				<button on:click={() => state.provider = null}>
+			{#if status.provider !== null}
+				<button onclick={() => status.provider = null}>
 					Provider:
 					<img
 						class="provider_icon"
-						src="/res/img/payment_providers/{state.provider.icon}.svg"
-						alt={state.provider.label}
-						title={state.provider.label}/>
-					{state.provider.label}
+						src="/res/img/payment_providers/{status.provider.icon}.svg"
+						alt={status.provider.label}
+						title={status.provider.label}/>
+					{status.provider.label}
 				</button>
 			{/if}
 
-			{#if state.name !== ""}
-				<button on:click={() => state.name = ""}>
-					Name: {state.name}
+			{#if status.name !== ""}
+				<button onclick={() => status.name = ""}>
+					Name: {status.name}
 				</button>
 			{/if}
 		</div>
 		<hr/>
 	{/if}
 
-	{#if state.country === null}
-		<PickCountry bind:state bind:loading={loading}/>
-	{:else if state.provider === null}
-		<PickProvider bind:state/>
-	{:else if state.provider.need_name === true && state.name === ""}
-		<PickName bind:state/>
+	{#if status.country === null}
+		<PickCountry bind:status bind:loading={loading}/>
+	{:else if status.provider === null}
+		<PickProvider bind:status/>
+	{:else if status.provider.need_name === true && status.name === ""}
+		<PickName bind:status/>
 	{:else}
-		<PickAmount bind:state bind:loading/>
+		<PickAmount bind:status bind:loading/>
 	{/if}
 </div>
 

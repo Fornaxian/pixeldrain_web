@@ -1,11 +1,13 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import { formatDate } from "util/Formatting";
 
-export let user_id = ""
-let lists = []
-let loading = true
+let { user_id = "" }: {
+	user_id?: string;
+} = $props();
+let lists = $state([])
+let loading = $state(true)
 
 onMount(() => reload())
 

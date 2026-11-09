@@ -1,25 +1,24 @@
-<script>
-export let total = 0
-export let used = 0
-export let animation = "ease"
-export let speed = 1000
-export let no_animation = false
-export let no_margin = false
-export let style = ""
-let percent = 0
-$: {
-	// Avoid division by 0
-	if (total === 0) {
-		total = 1
-	}
+<script lang="ts">
+let {
+	total = 0,
+	used = 0,
+	animation = "ease",
+	speed = 1000,
+	no_animation = false,
+	no_margin = false,
+	style = ""
+}: {
+	total?: number;
+	used?: number;
+	animation?: string;
+	speed?: number;
+	no_animation?: boolean;
+	no_margin?: boolean;
+	style?: string;
+} = $props();
 
-	// Don't allow more than 100% progress
-	if (used / total > 1) {
-		percent = 100
-	} else {
-		percent = (used / total) * 100
-	}
-}
+// Avoid division by 0, and don't allow more than 100% progress
+let percent = $derived(Math.min(used / (total || 1), 1) * 100)
 </script>
 
 <div class="progress_bar_outer" style={style} class:no_margin>

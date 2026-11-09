@@ -1,16 +1,23 @@
 <script lang="ts">
-import { createEventDispatcher, onMount } from "svelte";
+import { onMount } from "svelte";
 import Form, { type FormConfig } from "util/Form.svelte"
 import { check_response, get_endpoint, get_user } from "lib/PixeldrainAPI";
 
-let dispatch = createEventDispatcher()
+let { on_login }: {
+	on_login?: (login: {key: string}) => void;
+} = $props();
 
 // Form state. When the user is recovering a lost password we hide the password
 // field, that way only an e-mail address is sent and the API replies with a
 // login link
-let recover = false
-let otp_required = false
-let otp_lost = false
+let recover = $state(false)
+let otp_required = $state(false)
+let otp_lost = $state(false)
+
+// Link login
+let link_login_user_id = ""
+let link_login_id = $state("")
+let login_redirect = ""
 
 // Switching between the login and recovery form re-renders the inputs, so we
 // carry the entered username over to the form we're switching to
@@ -67,7 +74,7 @@ const form_recover: FormConfig = {
 // The one-time password form. When the user lost their authenticator app they
 // can log in with the two factors they do have: a login link combined with
 // their password. If they don't have a login link yet we send them one
-$: form_otp = {
+let form_otp = $derived({
 	fields: [
 		...(otp_lost ? [] : [{
 			name: "totp",
@@ -106,19 +113,14 @@ $: form_otp = {
 		}
 		return await login()
 	},
-} as FormConfig
+} as FormConfig)
 
 // The currently rendered form
-$: form = otp_required ? form_otp : (recover ? form_recover : form_login)
+let form = $derived(otp_required ? form_otp : (recover ? form_recover : form_login))
 
 let username = ""
 let password = ""
 let totp = ""
-
-// Link login
-let link_login_user_id = ""
-let link_login_id = ""
-let login_redirect = ""
 
 // Sends the user to the path they were trying to reach before they ended up on
 // the login page, or to their dashboard when there is no such path
@@ -176,7 +178,7 @@ const login = async (e?: SubmitEvent) => {
 		}
 
 
-		dispatch("login", {key: resp.auth_key})
+		on_login?.({key: resp.auth_key})
 
 		leave_login_page()
 

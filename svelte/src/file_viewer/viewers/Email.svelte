@@ -2,12 +2,15 @@
 import { parse_email, type Email } from "lib/EmailParser";
 import { formatDataVolume } from "util/Formatting";
 
-export let src = ""
+let { src = "", children }: {
+	src?: string;
+	children?: import('svelte').Snippet;
+} = $props();
 
-let mail: Email = null
-let error = ""
+let mail: Email = $state(null)
+let error = $state("")
 
-$: load(src)
+$effect(() => { load(src) })
 const load = async (src: string) => {
 	mail = null
 	error = ""
@@ -39,7 +42,7 @@ const attachment_url = (data: string) => URL.createObjectURL(new Blob(
 </script>
 
 <div class="container">
-	<slot></slot>
+	{@render children?.()}
 
 	{#if mail !== null}
 		<div class="headers">
@@ -53,7 +56,7 @@ const attachment_url = (data: string) => URL.createObjectURL(new Blob(
 				<a
 					href="#attachment"
 					download={a.name}
-					on:click={e => e.currentTarget.href = attachment_url(a.data)}
+					onclick={e => e.currentTarget.href = attachment_url(a.data)}
 				>
 					<i class="icon">attachment</i>
 					{a.name} ({formatDataVolume(a.data.length, 3)})

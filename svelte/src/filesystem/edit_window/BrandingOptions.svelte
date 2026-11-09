@@ -1,38 +1,33 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import ThemePresets from "./ThemePresets.svelte";
 import { fs_update, fs_node_type, type FSNode, type NodeOptions } from "filesystem/FilesystemAPI";
 import CustomBanner from "filesystem/viewers/CustomBanner.svelte";
 import HelpButton from "layout/HelpButton.svelte";
 import FilePicker from "filesystem/filemanager/FilePicker.svelte";
-let dispatch = createEventDispatcher()
 
-export let file: FSNode
-export let options: NodeOptions
-export let enabled: boolean
+let { file, options = $bindable(), enabled = $bindable() }: {
+	file: FSNode;
+	options: NodeOptions;
+	enabled: boolean;
+} = $props();
 
-$: update_colors(options)
-const update_colors = (options: NodeOptions) => {
-	if (enabled) {
-		options.branding_enabled = "true"
-		dispatch("style_change")
-	} else {
-		options.branding_enabled = ""
-	}
-}
+// The edit window previews the branding while it's being edited
+$effect(() => {
+	options.branding_enabled = enabled ? "true" : ""
+})
 
-let picker: FilePicker
+let picker: FilePicker = $state()
 let picking = ""
 const pick_image = (type: string) => {
 	picking = type
 	picker.open(file.path)
 }
-const handle_picker = async (e: CustomEvent<FSNode[]>) => {
-	if (e.detail.length !== 1) {
+const handle_picker = async (files: FSNode[]) => {
+	if (files.length !== 1) {
 		alert("Please select one file")
 		return
 	}
-	const f = e.detail[0]
+	const f = files[0]
 	let file_id = f.id
 
 	if (fs_node_type(f) !== "image") {
@@ -46,7 +41,7 @@ const handle_picker = async (e: CustomEvent<FSNode[]>) => {
 	// If this image is not public, it will be made public
 	if (file_id === undefined || file_id === "") {
 		try {
-			let new_file = await fs_update(e.detail[0].path, {shared: true})
+			let new_file = await fs_update(f.path, {shared: true})
 			file_id = new_file.id
 		} catch (err) {
 			alert(err)
@@ -60,7 +55,7 @@ const handle_picker = async (e: CustomEvent<FSNode[]>) => {
 	}
 }
 
-let highlight_info = false
+let highlight_info = $state(false)
 </script>
 
 <fieldset>
@@ -126,7 +121,7 @@ let highlight_info = false
 		working. Recommended dimensions for the header image are 1000x90 px.
 	</p>
 	<div>Header image ID</div>
-	<button on:click={() => pick_image("brand_header_image")}>
+	<button onclick={() => pick_image("brand_header_image")}>
 		<i class="icon">folder_open</i>
 		Pick
 	</button>
@@ -134,7 +129,7 @@ let highlight_info = false
 	<div>Header image link</div>
 	<input class="span2" type="text" bind:value={options.brand_header_link}/>
 	<div>Background image ID</div>
-	<button on:click={() => pick_image("brand_background_image")}>
+	<button onclick={() => pick_image("brand_background_image")}>
 		<i class="icon">folder_open</i>
 		Pick
 	</button>
@@ -176,7 +171,7 @@ let highlight_info = false
 	</div>
 </fieldset>
 
-<FilePicker bind:this={picker} on:files={handle_picker}/>
+<FilePicker bind:this={picker} on_files={handle_picker}/>
 
 <style>
 input[type="color"] {

@@ -2,7 +2,7 @@
 import ToggleButton from "layout/ToggleButton.svelte";
 import type { FSPermissions } from "filesystem/FilesystemAPI";
 
-export let permissions = <FSPermissions>{}
+let { permissions = $bindable(<FSPermissions>{}) }: { permissions?: FSPermissions } = $props();
 </script>
 
 <ToggleButton group_first bind:on={permissions.read}>Read</ToggleButton>

@@ -1,8 +1,11 @@
 <script lang="ts">
+import ZipItem from "./ZipItem.svelte";
 import type { ZipEntry } from "filesystem/viewers/Zip.svelte";
 import { formatDataVolume } from "util/Formatting";
 
-export let item: ZipEntry = {} as ZipEntry
+let { item = {} as ZipEntry }: {
+	item?: ZipEntry;
+} = $props();
 </script>
 
 <!-- First get directories and render them as details collapsibles -->
@@ -23,7 +26,7 @@ export let item: ZipEntry = {} as ZipEntry
 
 			<!-- Performance optimization, only render children if details is expanded -->
 			{#if child.details_open}
-				<svelte:self item={child}></svelte:self>
+				<ZipItem item={child}></ZipItem>
 			{/if}
 		</details>
 	{/if}

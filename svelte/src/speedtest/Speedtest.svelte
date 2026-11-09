@@ -5,8 +5,8 @@ import { formatDataVolume, formatDataVolumeBits } from "util/Formatting";
 import ProgressBar from "util/ProgressBar.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 
-let running = false
-let data_received = 0
+let running = $state(false)
+let data_received = $state(0)
 const update_interval = 100
 const start = async (dur = 10000) => {
 	if (running) {
@@ -39,7 +39,7 @@ const start = async (dur = 10000) => {
 	running = false
 }
 
-let latency = 0
+let latency = $state(0)
 const measure_latency = async () => {
 	// We request one byte from the server ten times. If the latency of one
 	// request is lower than the last one then that latency is saved in the
@@ -68,12 +68,12 @@ const measure_latency = async () => {
 }
 
 // Average speed for the whole test
-let speed = 0
-let result_link = ""
-let server = ""
+let speed = $state(0)
+let result_link = $state("")
+let server = $state("")
 
-let progress_duration = 0
-let progress_unchanged = 0
+let progress_duration = $state(0)
+let progress_unchanged = $state(0)
 
 const measure_speed = (stop, test_duration) => {
 	speed = 0

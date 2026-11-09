@@ -1,49 +1,47 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import { formatDate } from "util/Formatting";
 import Modal from "util/Modal.svelte"
 import SortButton from "layout/SortButton.svelte";
 import { flip } from "svelte/animate";
 
-const dispatch = createEventDispatcher()
+let { reporters = [], on_edit, on_approve, on_spam, on_delete }: {
+	reporters?: any[];
+	on_edit: (reporter: any) => void;
+	on_approve: (reporter: any) => void;
+	on_spam: (reporter: any) => void;
+	on_delete: (reporter: any) => void;
+} = $props();
 
-export let reporters = []
-
-$: update_table(reporters)
-const update_table = (reporters) => sort("")
-
-let sort_field = "last_used"
-let asc = false
-const sort = (field) => {
-	if (field !== "" && field === sort_field) asc = !asc
-	if (field === "") field = sort_field
+let sort_field = $state("last_used")
+let asc = $state(false)
+const sort = (field: string) => {
+	if (field === sort_field) asc = !asc
 	sort_field = field
-
 	console.log("sorting by", field, "asc", asc)
-	reporters.sort((a, b) => {
-		if (typeof (a[field]) === "number") {
-			// Sort ints from high to low
-			if (asc) {
-				return a[field] - b[field]
-			} else {
-				return b[field] - a[field]
-			}
-		} else {
-			// Sort strings alphabetically
-			if (asc) {
-				return a[field].localeCompare(b[field])
-			} else {
-				return b[field].localeCompare(a[field])
-			}
-		}
-	})
-	reporters = reporters
 }
 
-let modal
-let preview_subject = ""
-let preview_html = ""
-let preview_text = ""
+let sorted = $derived([...reporters].sort((a, b) => {
+	if (typeof (a[sort_field]) === "number") {
+		// Sort ints from high to low
+		if (asc) {
+			return a[sort_field] - b[sort_field]
+		} else {
+			return b[sort_field] - a[sort_field]
+		}
+	} else {
+		// Sort strings alphabetically
+		if (asc) {
+			return a[sort_field].localeCompare(b[sort_field])
+		} else {
+			return b[sort_field].localeCompare(a[sort_field])
+		}
+	}
+}))
+
+let modal: Modal = $state()
+let preview_subject = $state("")
+let preview_html = $state("")
+let preview_text = $state("")
 const toggle_preview = (rep) => {
 	preview_subject = rep.last_message_subject
 	preview_text = rep.last_message_text
@@ -66,7 +64,7 @@ const toggle_preview = (rep) => {
 			</tr>
 		</thead>
 		<tbody>
-			{#each reporters as rep (rep.from_address)}
+			{#each sorted as rep (rep.from_address)}
 				<tr animate:flip={{duration: 500}}>
 					<td>{rep.from_address}</td>
 					<td>{rep.name}</td>
@@ -75,23 +73,23 @@ const toggle_preview = (rep) => {
 					<td>{formatDate(rep.last_used, true, true, false)}</td>
 					<td>{formatDate(rep.created, false, false, false)}</td>
 					<td>
-						<button on:click|preventDefault={() => toggle_preview(rep)} class="button round">
+						<button onclick={e => {e.preventDefault(); toggle_preview(rep)}} class="button round">
 							<i class="icon">email</i>
 						</button>
-						<button on:click|preventDefault={() => {dispatch("edit", rep)}} class="button round">
+						<button onclick={e => {e.preventDefault(); on_edit(rep)}} class="button round">
 							<i class="icon">edit</i>
 						</button>
 						{#if rep.status !== "trusted"}
-							<button on:click|preventDefault={() => {dispatch("approve", rep)}} class="button button_highlight round">
+							<button onclick={e => {e.preventDefault(); on_approve(rep)}} class="button button_highlight round">
 								<i class="icon">check</i>
 							</button>
 						{/if}
 						{#if rep.status !== "rejected"}
-							<button on:click|preventDefault={() => {dispatch("spam", rep)}} class="button button_red round">
+							<button onclick={e => {e.preventDefault(); on_spam(rep)}} class="button button_red round">
 								<i class="icon">block</i>
 							</button>
 						{/if}
-						<button on:click|preventDefault={() => {dispatch("delete", rep)}} class="button button_red round">
+						<button onclick={e => {e.preventDefault(); on_delete(rep)}} class="button button_red round">
 							<i class="icon">delete</i>
 						</button>
 					</td>

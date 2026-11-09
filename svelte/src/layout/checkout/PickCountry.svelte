@@ -3,9 +3,11 @@ import { countries } from "country-data-list";
 import { get_misc_vat_rate, put_user } from "lib/PixeldrainAPI";
 import { payment_providers, type CheckoutState } from "./CheckoutLib";
 
-export let state: CheckoutState
-export let loading: boolean
-let country_input = ""
+let { status = $bindable(), loading = $bindable() }: {
+	status: CheckoutState;
+	loading: boolean;
+} = $props();
+let country_input = $state("")
 
 const set_country = async (e?: Event) => {
 	loading = true
@@ -22,15 +24,15 @@ const set_country = async (e?: Event) => {
 	// We always clear the provider field after picking a country, as providers
 	// vary per country. If we did not clear the provider then we may end up
 	// with an invalid combination
-	state.provider = null
+	status.provider = null
 
 	try {
 		// Save the user's country for later use
 		await put_user({checkout_country: c.alpha3})
 
 		const vat_rate = await get_misc_vat_rate(c.alpha3)
-		state.vat = vat_rate.vat*100
-		state.country = c
+		status.vat = vat_rate.vat*100
+		status.country = c
 	} catch (err) {
 		alert(err)
 	} finally {
@@ -56,7 +58,7 @@ const format_country = (c: typeof countries.all[0]) => {
 	Please pick your country of residence
 </div>
 <div>
-	<form on:submit|preventDefault={set_country} class="country_form">
+	<form onsubmit={set_country} class="country_form">
 		<div class="country_search">
 			<datalist id="country_picker">
 				{#each countries.all.filter(c => c.status === "assigned") as c}
@@ -74,7 +76,7 @@ const format_country = (c: typeof countries.all[0]) => {
 				Continue
 			</button>
 		</div>
-		<select bind:value={country_input} on:dblclick={set_country} style="padding: 0;" size="10">
+		<select bind:value={country_input} ondblclick={set_country} style="padding: 0;" size="10">
 			{#each countries.all.filter(c => c.status === "assigned") as c}
 				<option value={c.alpha2}>{format_country(c)}</option>
 			{/each}

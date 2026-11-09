@@ -4,11 +4,13 @@ import { fs_mkdir } from "filesystem/FilesystemAPI";
 import Button from "layout/Button.svelte";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav: FSNavigator
+let { nav }: {
+	nav: FSNavigator;
+} = $props();
 
-let name_input: HTMLInputElement;
-let new_dir_name = ""
-let error_msg = ""
+let name_input: HTMLInputElement = $state();
+let new_dir_name = $state("")
+let error_msg = $state("")
 let create_dir = async () => {
 	let form = new FormData()
 	form.append("type", "dir")
@@ -41,7 +43,7 @@ onMount(() => {
 	</div>
 {/if}
 
-<form id="create_dir_form" class="create_dir" on:submit|preventDefault={create_dir}>
+<form id="create_dir_form" class="create_dir" onsubmit={e => {e.preventDefault(); create_dir()}}>
 	<img src="/res/img/mime/folder.png" class="icon" alt="icon"/>
 	<input class="dirname" type="text" bind:this={name_input} bind:value={new_dir_name} />
 	<Button form="create_dir_form" type="submit" icon="create_new_folder" label="Create"/>

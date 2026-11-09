@@ -5,11 +5,14 @@ import FileTitle from "layout/FileTitle.svelte";
 import TextBlock from "layout/TextBlock.svelte"
 import type { FSNavigator } from 'filesystem/FSNavigator';
 
-export let nav: FSNavigator
-let player: HTMLAudioElement
-let playing = false
+let { nav, children }: {
+	nav: FSNavigator;
+	children?: import('svelte').Snippet;
+} = $props();
+let player: HTMLAudioElement = $state()
+let playing = $state(false)
 let media_session = false
-let siblings = []
+let siblings = $state([])
 
 export const toggle_playback = () => playing ? player.pause() : player.play()
 export const toggle_mute = () => player.muted = !player.muted
@@ -48,7 +51,7 @@ onMount(() => {
 })
 </script>
 
-<slot></slot>
+{@render children?.()}
 
 <FileTitle title={$nav.base.name}/>
 
@@ -59,30 +62,30 @@ onMount(() => {
 		src={fs_path_url($nav.base.path)}
 		autoplay
 		controls
-		on:pause={() => playing = false }
-		on:play={() => playing = true }
-		on:ended={() => nav.open_sibling(1) }>
+		onpause={() => playing = false}
+		onplay={() => playing = true}
+		onended={() => nav.open_sibling(1)}>
 		<track kind="captions"/>
 	</audio>
 	<div style="text-align: center;">
-		<button on:click={() => nav.open_sibling(-1) }><i class="icon">skip_previous</i></button>
-		<button on:click={() => seek(-10) }><i class="icon">replay_10</i></button>
-		<button on:click={toggle_playback}>
+		<button onclick={() => nav.open_sibling(-1)}><i class="icon">skip_previous</i></button>
+		<button onclick={() => seek(-10)}><i class="icon">replay_10</i></button>
+		<button onclick={toggle_playback}>
 			{#if playing}
 				<i class="icon">pause</i>
 			{:else}
 				<i class="icon">play_arrow</i>
 			{/if}
 		</button>
-		<button on:click={() => seek(10) }><i class="icon">forward_10</i></button>
-		<button on:click={() => nav.open_sibling(1) }><i class="icon">skip_next</i></button>
+		<button onclick={() => seek(10)}><i class="icon">forward_10</i></button>
+		<button onclick={() => nav.open_sibling(1)}><i class="icon">skip_next</i></button>
 	</div>
 
 	<h2>Tracklist</h2>
 	{#each siblings as sibling (sibling.path)}
 		<a
 			href={"/d"+fs_encode_path(sibling.path)}
-			on:click|preventDefault={() => nav.navigate(sibling.path, true)}
+			onclick={e => {e.preventDefault(); nav.navigate(sibling.path, true)}}
 			class="node"
 		>
 			{#if sibling.path === $nav.base.path}

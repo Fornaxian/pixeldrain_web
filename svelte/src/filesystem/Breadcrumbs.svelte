@@ -2,7 +2,9 @@
 import { fs_encode_path } from "./FilesystemAPI";
 import type { FSNavigator } from "./FSNavigator";
 
-export let nav: FSNavigator
+let { nav }: {
+	nav: FSNavigator;
+} = $props();
 </script>
 
 <div class="breadcrumbs">
@@ -12,7 +14,7 @@ export let nav: FSNavigator
 			href={"/d"+fs_encode_path(node.path)}
 			class="breadcrumb button"
 			class:button_highlight={$nav.base_index === i}
-			on:click|preventDefault={() => {nav.navigate(node.path, true)}}
+			onclick={e => {e.preventDefault(); nav.navigate(node.path, true)}}
 		>
 			{#if node.abuse_type !== undefined}
 				<i class="icon small">block</i>

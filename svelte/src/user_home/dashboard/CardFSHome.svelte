@@ -8,9 +8,9 @@ import FSUploadWidget from "filesystem/upload_widget/FSUploadWidget.svelte";
 import { drop_target } from "lib/DropTarget.ts"
 
 const nav = new FSNavigator(false)
-let upload_widget
-var show_hidden = false
-var creating_dir = false
+let upload_widget = $state()
+var show_hidden = $state(false)
+var creating_dir = $state(false)
 
 onMount(() => nav.navigate("/me", false))
 </script>
@@ -67,6 +67,7 @@ onMount(() => nav.navigate("/me", false))
 				</div>
 
 				{#if child.id}
+					<!-- svelte-ignore node_invalid_placement_ssr -->
 					<a href="/d/{child.id}" class="button action_button">
 						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
 					</a>

@@ -6,17 +6,19 @@ import CopyButton from "layout/CopyButton.svelte";
 import Dialog from "layout/Dialog.svelte";
 import { fade } from "svelte/transition";
 
-export let nav: FSNavigator
+let { nav }: {
+	nav: FSNavigator;
+} = $props();
 
 let path: FSNode[]
-let base: FSNode
-let toast = ""
-let share_url = ""
-let direct_share_url = ""
-let is_parent = false
-let parent_node: FSNode
+let base: FSNode = $state()
+let toast = $state("")
+let share_url = $state("")
+let direct_share_url = $state("")
+let is_parent = $state(false)
+let parent_node: FSNode = $state()
 
-let dialog: Dialog
+let dialog: Dialog = $state()
 export const open = async (e: MouseEvent, p: FSNode[]) => {
 	path = p
 	base = path[path.length-1]
@@ -108,7 +110,7 @@ const share = async () => {
 				<img src={fs_node_icon(parent_node, 64, 64)} class="node_icon" alt="icon"/>
 				{parent_node.name}
 				<br/>
-				<button on:click={async e => {await make_public(); await share()}} style="display: inline;">
+				<button onclick={async e => {await make_public(); await share()}} style="display: inline;">
 					Only share
 					<img src={fs_node_icon(base, 64, 64)} class="node_icon" alt="icon"/>
 					{base.name}

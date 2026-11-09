@@ -2,7 +2,9 @@
 import { fs_path_url } from "filesystem/FilesystemAPI";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav: FSNavigator
+let { nav }: {
+	nav: FSNavigator;
+} = $props();
 </script>
 
 <iframe

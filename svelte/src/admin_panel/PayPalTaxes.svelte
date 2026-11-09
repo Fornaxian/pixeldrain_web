@@ -5,17 +5,17 @@ import Expandable from "util/Expandable.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import Euro from "util/Euro.svelte";
 
-let loading = true
+let loading = $state(true)
 let response = {}
-let payments = []
+let payments = $state([])
 
-let per_country = {}
-let totals = {}
+let per_country = $state({})
+let totals = $state({})
 
-let datePicker
-let rangeMonths = 1
-let startDate = 0
-let endDate = 0
+let datePicker = $state()
+let rangeMonths = $state(1)
+let startDate = $state(0)
+let endDate = $state(0)
 
 const get_payments = async () => {
 	if (!datePicker.valueAsDate) {
@@ -103,8 +103,6 @@ const get_page = async (url) => {
 		}
 	})
 
-	payments = payments
-
 	let lastDate = new Date(response._embedded.payments[response._embedded.payments.length-1].createdAt)
 	console.log("last payment date", lastDate)
 	console.log("start date", new Date(startDate))
@@ -128,7 +126,7 @@ onMount(() => {
 		<input type="date" bind:this={datePicker}/>
 		<div>Months</div>
 		<input type="number" bind:value={rangeMonths}/>
-		<button on:click={get_payments}>Go</button>
+		<button onclick={get_payments}>Go</button>
 	</div>
 
 	<div>
@@ -230,29 +228,31 @@ onMount(() => {
 	<h2>Payments</h2>
 	{#each payments as row (row.id)}
 		<Expandable click_expand>
-			<div slot="header" class="header">
-				<div class="title">{row.id}</div>
-				<div class="stats">
-					Date<br/>
-					{formatDate(row.createdAt, false, false, false)}
+			{#snippet header()}
+				<div class="header">
+					<div class="title">{row.id}</div>
+					<div class="stats">
+						Date<br/>
+						{formatDate(row.createdAt, false, false, false)}
+					</div>
+					<div class="stats">
+						Total<br/>
+						<Euro amount={row.amount.value*1e6}/>
+					</div>
+					<div class="stats">
+						Amount<br/>
+						<Euro amount={row.metadata.amount}/>
+					</div>
+					<div class="stats">
+						VAT<br/>
+						<Euro amount={row.metadata.vat}/>
+					</div>
+					<div class="stats">
+						Status<br/>
+						{row.status}
+					</div>
 				</div>
-				<div class="stats">
-					Total<br/>
-					<Euro amount={row.amount.value*1e6}/>
-				</div>
-				<div class="stats">
-					Amount<br/>
-					<Euro amount={row.metadata.amount}/>
-				</div>
-				<div class="stats">
-					VAT<br/>
-					<Euro amount={row.metadata.vat}/>
-				</div>
-				<div class="stats">
-					Status<br/>
-					{row.status}
-				</div>
-			</div>
+			{/snippet}
 			<div>
 				Amount: <Euro amount={row.metadata.amount} /><br/>
 				VAT: <Euro amount={row.metadata.vat} /><br/>

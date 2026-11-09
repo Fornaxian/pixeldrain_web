@@ -2,8 +2,10 @@
 import { put_user } from "lib/PixeldrainAPI";
 import { type CheckoutState } from "./CheckoutLib";
 
-export let state: CheckoutState
-let name: string
+let { status = $bindable() }: {
+	status: CheckoutState;
+} = $props();
+let name: string = $state()
 
 const submit = async (e: SubmitEvent) => {
 	e.preventDefault()
@@ -14,11 +16,11 @@ const submit = async (e: SubmitEvent) => {
 		alert("Failed to update user:"+ err)
 	}
 
-	state.name = name
+	status.name = name
 }
 </script>
 
-<form class="name_form" on:submit={submit}>
+<form class="name_form" onsubmit={submit}>
 	<div>
 		This payment provider requires a name for checkout. Please enter your
 		full name below

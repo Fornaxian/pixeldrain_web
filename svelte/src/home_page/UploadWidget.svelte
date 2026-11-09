@@ -14,7 +14,7 @@ import VerifyEmailWarning from "layout/VerifyEmailWarning.svelte";
 
 // === UPLOAD LOGIC ===
 
-let file_input_field
+let file_input_field = $state()
 const file_input_change = (event) => {
 	// Start uploading the files async
 	upload_files(event.target.files)
@@ -31,9 +31,9 @@ const paste = (e) => {
 }
 
 let active_uploads = 0
-let upload_queue = []
-let state = "idle" // idle, uploading, finished
-let upload_stats
+let upload_queue = $state([])
+let status = $state("idle") // idle, uploading, finished
+let upload_stats = $state()
 
 export const upload_files = async (files) => {
 	if (files.length === 0) {
@@ -58,9 +58,8 @@ export const upload_files = async (files) => {
 		})
 	}
 
-	// Reassign array and wait for tick to complete. After the tick is completed
-	// each upload progress bar will have bound itself to its array item
-	upload_queue = upload_queue
+	// Wait for tick to complete. After the tick is completed each upload
+	// progress bar will have bound itself to its array item
 	await tick()
 
 	start_upload()
@@ -82,11 +81,11 @@ const start_upload = () => {
 	}
 
 	if (active_uploads === 0 && finished_count != 0) {
-		state = "finished"
+		status = "finished"
 		upload_stats.finish()
 		uploads_finished()
 	} else {
-		state = "uploading"
+		status = "uploading"
 		upload_stats.start()
 	}
 }
@@ -97,7 +96,7 @@ const finish_upload = (file) => {
 }
 
 const leave_confirmation = e => {
-	if (state === "uploading") {
+	if (status === "uploading") {
 		e.preventDefault()
 		e.returnValue = "If you close the page your files will stop uploading. Do you want to continue?"
 		return e.returnValue
@@ -110,22 +109,22 @@ const leave_confirmation = e => {
 
 let navigator_share = !!(window.navigator && window.navigator.share)
 let share_title = ""
-let share_link = ""
-let input_album_name = ""
+let share_link = $state("")
+let input_album_name = $state("")
 
-let btn_upload_text
-let btn_copy_link
-let btn_open_link
-let btn_show_qr
-let btn_share_email
-let btn_share_twitter
-let btn_share_facebook
-let btn_share_reddit
-let btn_share_tumblr
+let btn_upload_text = $state()
+let btn_copy_link = $state()
+let btn_open_link = $state()
+let btn_show_qr = $state()
+let btn_share_email = $state()
+let btn_share_twitter = $state()
+let btn_share_facebook = $state()
+let btn_share_reddit = $state()
+let btn_share_tumblr = $state()
 let btn_create_list
-let btn_copy_links
-let btn_copy_markdown
-let btn_copy_bbcode
+let btn_copy_links = $state()
+let btn_copy_markdown = $state()
+let btn_copy_bbcode = $state()
 
 const uploads_finished = async () => {
 	let count = upload_queue.reduce(
@@ -178,7 +177,7 @@ async function create_list(title, anonymous) {
 	return await resp.json()
 }
 
-let qr_visible = false
+let qr_visible = $state(false)
 const open_link = () => window.open(share_link, "_blank")
 const show_qr_code = () => qr_visible = !qr_visible
 const share_mail = () => window.open("mailto:please@set.address?subject=File%20on%20pixeldrain&body=" + share_link)
@@ -213,9 +212,9 @@ const get_finished_files = () => {
 	)
 }
 
-let link_list = ""
-let bbcode = ""
-let markdown = ""
+let link_list = $state("")
+let bbcode = $state("")
+let markdown = $state("")
 const generate_link_list = () => {
 	// Add the text to the textarea
 	link_list = ""
@@ -271,7 +270,7 @@ const keydown = (e) => {
 
 </script>
 
-<svelte:window on:paste={paste} on:keydown={keydown} on:beforeunload={leave_confirmation} />
+<svelte:window onpaste={paste} onkeydown={keydown} onbeforeunload={leave_confirmation} />
 
 <Konami/>
 
@@ -292,8 +291,8 @@ const keydown = (e) => {
 	paste an image from your clipboard
 </section>
 
-<input bind:this={file_input_field} on:change={file_input_change} type="file" name="file" multiple="multiple"/>
-<button on:click={() => { file_input_field.click() }} class="big_button button_highlight">
+<input bind:this={file_input_field} onchange={file_input_change} type="file" name="file" multiple="multiple"/>
+<button onclick={() => { file_input_field.click() }} class="big_button button_highlight">
 	<i class="icon small">cloud_upload</i>
 	<span><u>U</u>pload Files</span>
 </button>
@@ -306,7 +305,7 @@ const keydown = (e) => {
 <p>
 	By uploading files to pixeldrain you acknowledge and accept our
 	<a href="https://docs.pixeldrain.com/content_policy/">content policy</a>.
-<p>
+</p>
 <br/>
 <section class="instruction" style="margin-bottom: 0;">
 	<span class="big_number">2</span>
@@ -316,8 +315,8 @@ const keydown = (e) => {
 	<UploadStats bind:this={upload_stats} upload_queue={upload_queue}/>
 </section>
 
-{#each upload_queue as file}
-	<UploadProgressBar bind:this={file.component} job={file}></UploadProgressBar>
+{#each upload_queue as file, i}
+	<UploadProgressBar bind:this={file.component} bind:job={upload_queue[i]}></UploadProgressBar>
 {/each}
 
 <br/>
@@ -330,9 +329,9 @@ const keydown = (e) => {
 {#if upload_queue.length > 1}
 	You can create an album to group your files together into one link<br/>
 	Name:
-	<form class="album_name_form" on:submit|preventDefault={create_album}>
-		<input bind:value={input_album_name} type="text" disabled={state !== "finished"} placeholder="My album"/>
-		<button type="submit" disabled={state !== "finished"}>
+	<form class="album_name_form" onsubmit={e => {e.preventDefault(); create_album()}}>
+		<input bind:value={input_album_name} type="text" disabled={status !== "finished"} placeholder="My album"/>
+		<button type="submit" disabled={status !== "finished"}>
 			<i class="icon">create_new_folder</i> Create
 		</button>
 	</form>
@@ -342,38 +341,38 @@ const keydown = (e) => {
 {/if}
 
 <div class="social_buttons" class:hide={!navigator_share}>
-	<button id="btn_social_share" on:click={share_navigator} class="social_buttons" disabled={state !== "finished"}>
+	<button id="btn_social_share" onclick={share_navigator} class="social_buttons" disabled={status !== "finished"}>
 		<i class="icon">share</i><br/>
 		Share
 	</button>
 </div>
 <CopyButton bind:this={btn_copy_link} text={share_link} large_icon><u>C</u>opy link</CopyButton>
-<button bind:this={btn_open_link} on:click={open_link} class="social_buttons" disabled={state !== "finished"}>
+<button bind:this={btn_open_link} onclick={open_link} class="social_buttons" disabled={status !== "finished"}>
 	<i class="icon">open_in_new</i>
 	<span><u>O</u>pen link</span>
 </button>
-<button bind:this={btn_show_qr} on:click={show_qr_code} class="social_buttons" disabled={state !== "finished"} class:button_highlight={qr_visible}>
+<button bind:this={btn_show_qr} onclick={show_qr_code} class="social_buttons" disabled={status !== "finished"} class:button_highlight={qr_visible}>
 	<i class="icon">qr_code</i>
 	<span><u>Q</u>R code</span>
 </button>
 <div style="display: inline-block;" class:hide={navigator_share}>
-	<button bind:this={btn_share_email} on:click={share_mail} class="social_buttons" disabled={state !== "finished"}>
+	<button bind:this={btn_share_email} onclick={share_mail} class="social_buttons" disabled={status !== "finished"}>
 		<i class="icon">email</i>
 		<span><u>E</u>-Mail</span>
 	</button>
-	<button bind:this={btn_share_twitter} on:click={share_twitter} class="social_buttons" disabled={state !== "finished"}>
+	<button bind:this={btn_share_twitter} onclick={share_twitter} class="social_buttons" disabled={status !== "finished"}>
 		<Twitter style="width: 40px; height: 40px;"></Twitter>
 		<span>T<u>w</u>itter</span>
 	</button>
-	<button bind:this={btn_share_facebook} on:click={share_facebook} class="social_buttons" disabled={state !== "finished"}>
+	<button bind:this={btn_share_facebook} onclick={share_facebook} class="social_buttons" disabled={status !== "finished"}>
 		<Facebook style="width: 40px; height: 40px;"></Facebook>
 		<span><u>F</u>acebook</span>
 	</button>
-	<button bind:this={btn_share_reddit} on:click={share_reddit} class="social_buttons" disabled={state !== "finished"}>
+	<button bind:this={btn_share_reddit} onclick={share_reddit} class="social_buttons" disabled={status !== "finished"}>
 		<Reddit style="width: 40px; height: 40px;"></Reddit>
 		<span><u>R</u>eddit</span>
 	</button>
-	<button bind:this={btn_share_tumblr} on:click={share_tumblr} class="social_buttons" disabled={state !== "finished"}>
+	<button bind:this={btn_share_tumblr} onclick={share_tumblr} class="social_buttons" disabled={status !== "finished"}>
 		<Tumblr style="width: 40px; height: 40px;"></Tumblr>
 		<span>Tu<u>m</u>blr</span>
 	</button>

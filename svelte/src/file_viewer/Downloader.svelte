@@ -1,28 +1,18 @@
-<script>
+<script lang="ts">
 import { tick } from "svelte"
 import Modal from "util/Modal.svelte"
 
-export let file = {
-	id: "",
-	name: "",
-	availability: "",
-	download_href: "",
-}
-export let list = {
-	id: "",
-	title: "",
-	download_href: "",
-}
+let { file, list }: { file: any; list: any } = $props();
 
-let load_captcha_script = false
-let download_captcha_window
-let captcha_type = "" // rate_limit or malware
-let captcha_window_title = ""
-let captcha_container
+let load_captcha_script = $state(false)
+let download_captcha_window: Modal = $state()
+let captcha_type = $state("") // rate_limit or malware
+let captcha_window_title = $state("")
+let captcha_container: HTMLDivElement = $state()
 
-let error_window = null
-let error_code = ""
-let error_message = ""
+let error_window = $state(null)
+let error_code = $state("")
+let error_message = $state("")
 export const download_file = () => {
 	if (!window.viewer_data.captcha_key) {
 		console.debug("Server doesn't support captcha, starting download", file.download_href)
@@ -85,7 +75,7 @@ export const download_file = () => {
 
 	if (load_captcha_script) {
 		console.debug("Captcha script is already loaded. Show the modal")
-		captcha_script_loaded()
+		window.captcha_script_loaded()
 	} else {
 		console.debug("Captcha script has not been loaded yet. Embedding now")
 		load_captcha_script = true

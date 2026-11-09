@@ -1,8 +1,8 @@
 <script>
 import { tick } from "svelte";
 
-let container
-let text_type = ""
+let container = $state()
+let text_type = $state("")
 
 export const set_file = file => {
 	console.log("loading text file", file.id)
@@ -18,7 +18,7 @@ export const set_file = file => {
 	}
 }
 
-let md_container
+let md_container = $state()
 const markdown = async file => {
 	text_type = "markdown"
 	await tick()
@@ -33,7 +33,7 @@ const markdown = async file => {
 	})
 }
 
-let text_pre
+let text_pre = $state()
 const text = async file => {
 	text_type = "text"
 	await tick()
@@ -53,7 +53,7 @@ const text = async file => {
 	})
 }
 
-let code_pre
+let code_pre = $state()
 let prettyprint = false
 const code = async file => {
 	text_type = "code"

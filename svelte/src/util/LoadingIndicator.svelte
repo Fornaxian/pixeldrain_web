@@ -1,7 +1,9 @@
-<script>
+<script lang="ts">
 import Spinner from "./Spinner.svelte";
 
-export let loading = false
+let { loading = false }: {
+	loading?: boolean;
+} = $props();
 </script>
 
 {#if loading}

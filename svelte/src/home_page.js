@@ -1,8 +1,4 @@
 import App from './home_page/HomePage.svelte';
+import { mount } from "svelte";
 
-const app = new App({
-	target: document.getElementById("page_body"),
-	props: {}
-});
-
-export default app;
+mount(App, { target: document.getElementById("page_body") });

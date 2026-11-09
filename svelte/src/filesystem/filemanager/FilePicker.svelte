@@ -1,5 +1,5 @@
 <script lang="ts">
-import { createEventDispatcher, onMount } from "svelte"
+import { onMount } from "svelte"
 import ListView from "./ListView.svelte"
 import GalleryView from "./GalleryView.svelte"
 import CompactView from "./CompactView.svelte"
@@ -11,34 +11,36 @@ import type { FSNode } from "filesystem/FilesystemAPI";
 import { FileAction, type FileEvent } from "./FileManagerLib";
 
 let nav = new FSNavigator(false)
-let modal: Modal
-let dispatch = createEventDispatcher()
-let directory_view = ""
+let modal: Modal = $state()
+let directory_view = $state("")
 let loading = false
-let large_icons = false
-let show_hidden = false
-export let select_multiple = false
+let large_icons = $state(false)
+let show_hidden = $state(false)
+let { select_multiple = false, on_files }: {
+	select_multiple?: boolean;
+	on_files: (files: FSNode[]) => void;
+} = $props();
 
 export const open = (path: string) => {
 	modal.show()
 	nav.navigate(path, false)
 }
 
-$: selected_files = $nav.children.reduce((acc, file) => {
+let selected_files = $derived($nav.children.reduce((acc, file) => {
 	if (file.fm_selected) {
 		acc++
 	}
 	return acc
-}, 0)
+}, 0))
 
 // Navigation functions
 
-const file_event = (e: CustomEvent<FileEvent>) => {
-	const index = e.detail.index
+const file_event = (e: FileEvent) => {
+	const index = e.index
 
-	switch (e.detail.action) {
+	switch (e.action) {
 	case FileAction.Click:
-		e.detail.original.preventDefault()
+		e.original.preventDefault()
 		if (nav.children[index].type === "dir") {
 			nav.navigate(nav.children[index].path, true)
 		} else {
@@ -48,13 +50,14 @@ const file_event = (e: CustomEvent<FileEvent>) => {
 	case FileAction.Context:
 		// If this is a touch event we will select the item
 		if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
-			e.detail.original.preventDefault()
+			e.original.preventDefault()
 			select_node(index)
 		}
 		break
 	case FileAction.Select:
-		e.detail.original.preventDefault()
+		e.original.preventDefault()
 		nav.children[index].fm_selected = !nav.children[index].fm_selected
+		nav.notify_subscribers()
 		break
 	}
 }
@@ -103,6 +106,9 @@ const select_node = (index: number) => {
 	}
 
 	last_selected_node = index
+
+	// The nodes are not reactive. This makes the views read the selection again
+	nav.notify_subscribers()
 }
 
 let done = () => {
@@ -114,7 +120,7 @@ let done = () => {
 	}
 
 	if (selected_files.length > 0) {
-		dispatch("files", selected_files)
+		on_files(selected_files)
 	}
 	modal.hide()
 }
@@ -130,42 +136,44 @@ onMount(() => {
 })
 </script>
 
-<svelte:window on:keydown={detect_shift} on:keyup={detect_shift} />
+<svelte:window onkeydown={detect_shift} onkeyup={detect_shift} />
 
 <Modal bind:this={modal} width="900px">
-	<div class="header" slot="title">
-		<button class="button round" on:click={modal.hide}>
-			<i class="icon">close</i>
-		</button>
-		<button on:click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
-			<i class="icon">north</i>
-		</button>
-		<button on:click={() => nav.reload()} title="Refresh directory listing">
-			<i class="icon">refresh</i>
-		</button>
+	{#snippet header()}
+		<div class="header">
+			<button class="button round" onclick={modal.hide}>
+				<i class="icon">close</i>
+			</button>
+			<button onclick={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
+				<i class="icon">north</i>
+			</button>
+			<button onclick={() => nav.reload()} title="Refresh directory listing">
+				<i class="icon">refresh</i>
+			</button>
 
-		<div class="title">
-			Selected {selected_files} files
+			<div class="title">
+				Selected {selected_files} files
+			</div>
+
+			<button onclick={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
+				{#if show_hidden}
+					<i class="icon">visibility_off</i>
+				{:else}
+					<i class="icon">visibility</i>
+				{/if}
+			</button>
+
+			<button onclick={() => toggle_view()} title="Switch between gallery, list and compact view">
+				<i class="icon" class:button_highlight={directory_view === "list"}>list</i>
+				<i class="icon" class:button_highlight={directory_view === "gallery"}>collections</i>
+				<i class="icon" class:button_highlight={directory_view === "compact"}>view_compact</i>
+			</button>
+
+			<button class="button button_highlight round" onclick={done}>
+				<i class="icon">done</i> Pick
+			</button>
 		</div>
-
-		<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
-			{#if show_hidden}
-				<i class="icon">visibility_off</i>
-			{:else}
-				<i class="icon">visibility</i>
-			{/if}
-		</button>
-
-		<button on:click={() => toggle_view()} title="Switch between gallery, list and compact view">
-			<i class="icon" class:button_highlight={directory_view === "list"}>list</i>
-			<i class="icon" class:button_highlight={directory_view === "gallery"}>collections</i>
-			<i class="icon" class:button_highlight={directory_view === "compact"}>view_compact</i>
-		</button>
-
-		<button class="button button_highlight round" on:click={done}>
-			<i class="icon">done</i> Pick
-		</button>
-	</div>
+	{/snippet}
 
 	<Breadcrumbs nav={nav}/>
 
@@ -176,14 +184,14 @@ onMount(() => {
 			large_icons={large_icons}
 			hide_edit
 			hide_branding
-			on:file={file_event}
+			on_file={file_event}
 		/>
 	{:else if directory_view === "gallery"}
 		<GalleryView
 			nav={nav}
 			show_hidden={show_hidden}
 			large_icons={large_icons}
-			on:file={file_event}
+			on_file={file_event}
 		/>
 	{:else if directory_view === "compact"}
 		<CompactView
@@ -191,7 +199,7 @@ onMount(() => {
 			show_hidden={show_hidden}
 			large_icons={large_icons}
 			hide_edit
-			on:file={file_event}
+			on_file={file_event}
 		/>
 	{/if}
 

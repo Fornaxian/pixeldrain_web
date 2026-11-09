@@ -3,34 +3,34 @@ import Button from "layout/Button.svelte";
 import type { FSPermissions, NodeOptions } from "filesystem/FilesystemAPI";
 import PermissionButton from "./PermissionButton.svelte";
 
-export let options: NodeOptions
+let { options = $bindable() }: {
+	options: NodeOptions;
+} = $props();
 
-let new_user_id = ""
-let new_user_perms = <FSPermissions>{read: true}
+let new_user_id = $state("")
+let new_user_perms = $state(<FSPermissions>{read: true})
 const add_user = (e: SubmitEvent) => {
 	e.preventDefault()
 	if (options.user_permissions === undefined) {
 		options.user_permissions = {} as {[index: string]: FSPermissions}
 	}
-	options.user_permissions[new_user_id] = structuredClone(new_user_perms)
+	options.user_permissions[new_user_id] = $state.snapshot(new_user_perms)
 }
 const del_user = (id: string) => {
 	delete options.user_permissions[id]
-	options.user_permissions = options.user_permissions
 }
 
-let new_password = ""
-let new_password_perms = <FSPermissions>{read: true}
+let new_password = $state("")
+let new_password_perms = $state(<FSPermissions>{read: true})
 const add_password = (e: SubmitEvent) => {
 	e.preventDefault()
 	if (options.password_permissions === undefined) {
 		options.password_permissions = {} as {[index: string]: FSPermissions}
 	}
-	options.password_permissions[new_password] = structuredClone(new_password_perms)
+	options.password_permissions[new_password] = $state.snapshot(new_password_perms)
 }
 const del_password = (pass: string) => {
 	delete options.password_permissions[pass]
-	options.password_permissions = options.password_permissions
 }
 </script>
 
@@ -64,7 +64,7 @@ const del_password = (pass: string) => {
 		not receive an e-mail invite. Giving write access to a user without giving
 		read access as well does not actually allow them to write anything.
 	</p>
-	<form on:submit={add_user} class="row">
+	<form onsubmit={add_user} class="row">
 		<input type="text" bind:value={new_user_id} placeholder="Username" class="grow" size="1">
 		<Button type="submit" icon="add" label="Add"/>
 		<div class="perms">
@@ -94,7 +94,7 @@ const del_password = (pass: string) => {
 	<p>
 		<b>This feature is not implemented currently!</b>
 	</p>
-	<form on:submit={add_password} class="row">
+	<form onsubmit={add_password} class="row">
 		<input type="text" bind:value={new_password} placeholder="Password" class="grow" size="1">
 		<Button type="submit" icon="add" label="Add"/>
 		<div class="perms">

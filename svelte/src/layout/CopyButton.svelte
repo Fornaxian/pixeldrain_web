@@ -1,12 +1,21 @@
 <script lang="ts">
 import { copy_text } from "util/Util.svelte";
 
-export let text = ""
-export let style = ""
-export let large_icon = false
-export let small_icon = false
-let failed = false
-let success = false
+let {
+	text = "",
+	style = "",
+	large_icon = false,
+	small_icon = false,
+	children
+}: {
+	text?: string;
+	style?: string;
+	large_icon?: boolean;
+	small_icon?: boolean;
+	children?: import('svelte').Snippet;
+} = $props();
+let failed = $state(false)
+let success = $state(false)
 
 // Exported so it can be called manually
 export const copy = () => {
@@ -26,7 +35,7 @@ export const copy = () => {
 </script>
 
 <button
-	on:click={copy}
+	onclick={copy}
 	style={style}
 	class="button"
 	class:button_highlight={success}
@@ -43,7 +52,7 @@ export const copy = () => {
 		{:else if failed}
 			Copy failed
 		{:else}
-			<slot></slot>
+			{@render children?.()}
 		{/if}
 	</span>
 </button>

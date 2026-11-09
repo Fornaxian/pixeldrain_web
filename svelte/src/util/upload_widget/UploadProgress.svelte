@@ -1,20 +1,16 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import { fade } from "svelte/transition";
 import ProgressBar from "util/ProgressBar.svelte";
 import { upload_file } from "./UploadFunc";
 
-let dispatch = createEventDispatcher()
-export let job = {
-	file: null,
-	name: "",
-	id: "",
-	status: "",
-}
-export let total = 0
-export let loaded = 0
-let error_code = ""
-let error_message = ""
+let { job = $bindable(), on_finished }: {
+	job: any;
+	on_finished: () => void;
+} = $props();
+let total = $state(0)
+let loaded = $state(0)
+let error_code = $state("")
+let error_message = $state("")
 
 export const start = () => {
 	upload_file(
@@ -28,14 +24,14 @@ export const start = () => {
 			console.log("finsished", id)
 			job.status = "finished"
 			job.id = id
-			dispatch("finished")
+			on_finished()
 		},
 		(code, message) => {
 			console.log("error", code, message)
 			error_code = code
 			error_message = message
 			job.status = "error"
-			dispatch("finished")
+			on_finished()
 		},
 	)
 

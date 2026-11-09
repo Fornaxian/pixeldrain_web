@@ -1,7 +1,9 @@
-<script>
-export let symbol = "€"
-export let amount = 0
-export let precision = 2
+<script lang="ts">
+let { symbol = "€", amount = 0, precision = 2 }: {
+	symbol?: string;
+	amount?: number;
+	precision?: number;
+} = $props();
 </script>
 
 <span>

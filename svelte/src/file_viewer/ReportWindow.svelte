@@ -1,16 +1,7 @@
-<script>
+<script lang="ts">
 import Spinner from "util/Spinner.svelte"
 
-export let file = {
-	id: "",
-	name: "",
-	get_href: "",
-	mime_type: "",
-}
-export let list = {
-	id: "",
-	files: [],
-}
+let { file, list }: { file: any; list: any } = $props();
 
 const filter_visual = type => {
 	return type.startsWith("image/") ||
@@ -71,10 +62,10 @@ const abuse_categories = [
 	},
 ]
 
-let abuse_type = ""
-let single_or_all = "single"
-let loading = false
-let results = []
+let abuse_type = $state("")
+let single_or_all = $state("single")
+let loading = $state(false)
+let results = $state([])
 
 let submit = async e => {
 	e.preventDefault()
@@ -135,15 +126,13 @@ let submit = async e => {
 		} catch (err) {
 			results.push({success: false, text: "Failed to send report: "+err})
 		}
-
-		results = results
 	}
 
 	loading = false
 }
 
-let description = ""
-let child_abuse_password = ""
+let description = $state("")
+let child_abuse_password = $state("")
 
 const report_description = () => {
 	if (abuse_type === "child_abuse") {
@@ -165,7 +154,7 @@ const report_description = () => {
 		href="https://docs.pixeldrain.com/content_policy/reporting_abuse/#e-mail-reporting">abuse
 		e-mail address</a>.
 	</p>
-	<form on:submit={submit} style="width: 100%" class="report_form">
+	<form onsubmit={submit} style="width: 100%" class="report_form">
 		<h3>Abuse type</h3>
 		<p>
 			Which type of abuse is shown in this file? Pick the most
@@ -173,7 +162,7 @@ const report_description = () => {
 		</p>
 
 		{#each abuse_categories as cat}
-			{#if cat.filter === undefined || cat.filter(file.mime_type) }
+			{#if cat.filter === undefined || cat.filter(file.mime_type)}
 				<label for="type_{cat.type}">
 					<input type="radio" bind:group={abuse_type} id="type_{cat.type}" name="abuse_type" value="{cat.type}">
 					<div>

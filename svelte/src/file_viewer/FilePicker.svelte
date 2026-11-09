@@ -1,15 +1,17 @@
-<script>
-import { createEventDispatcher, tick } from "svelte";
+<script lang="ts">
+import { tick } from "svelte";
 import { formatDataVolume } from "util/Formatting";
 import DirectoryElement from "user_home/filemanager/DirectoryElement.svelte";
 import Modal from "util/Modal.svelte";
-let dispatch = createEventDispatcher()
 
-export let multi_select = true
-export let title = ""
-let modal;
-let directory_element;
-let input_search;
+let { multi_select = true, title = "", on_files }: {
+	multi_select?: boolean;
+	title?: string;
+	on_files: (files: any[]) => void;
+} = $props();
+let modal: Modal = $state()
+let directory_element: DirectoryElement = $state()
+let input_search: HTMLInputElement = $state()
 
 export const open = async () => {
 	modal.show()
@@ -59,7 +61,7 @@ const search = (e) => {
 let done = () => {
 	let selected_files = directory_element.getSelectedFiles()
 	if (selected_files.length > 0) {
-		dispatch("files", selected_files)
+		on_files(selected_files)
 	}
 	modal.hide()
 }
@@ -69,7 +71,7 @@ const keydown = (e) => {
 		return // Prevent a closed window from catching key events
 	} else if (e.ctrlKey || e.altKey || e.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
-	} else if (document.activeElement.type && document.activeElement.type === "text") {
+	} else if ((document.activeElement as any).type && (document.activeElement as any).type === "text") {
 		return // Prevent shortcuts from interfering with input fields
 	}
 	if (e.key === "/") {
@@ -79,21 +81,23 @@ const keydown = (e) => {
 }
 </script>
 
-<svelte:window on:keydown={keydown} />
+<svelte:window onkeydown={keydown} />
 
 <Modal bind:this={modal} width="1400px" height="1200px">
-	<div class="header" slot="title">
-		<button class="button round" on:click={modal.hide}>
-			<i class="icon">close</i> Cancel
-		</button>
-		<div class="title">
-			{title}
+	{#snippet header()}
+		<div class="header">
+			<button class="button round" onclick={modal.hide}>
+				<i class="icon">close</i> Cancel
+			</button>
+			<div class="title">
+				{title}
+			</div>
+			<input bind:this={input_search} onkeyup={search} class="search" type="text" placeholder="press / to search"/>
+			<button class="button button_highlight round" onclick={done}>
+				<i class="icon">done</i> Add
+			</button>
 		</div>
-		<input bind:this={input_search} on:keyup={search} class="search" type="text" placeholder="press / to search"/>
-		<button class="button button_highlight round" on:click={done}>
-			<i class="icon">done</i> Add
-		</button>
-	</div>
+	{/snippet}
 	<div class="dir_container">
 		<DirectoryElement bind:this={directory_element} multi_select={multi_select}></DirectoryElement>
 	</div>

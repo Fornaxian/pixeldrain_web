@@ -5,7 +5,7 @@ import Euro from "util/Euro.svelte";
 import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 
-let loading = false
+let loading = $state(false)
 let credit_amount = 10
 
 const checkout = async (network = "", amount = 0, country = "") => {
@@ -39,8 +39,8 @@ const checkout = async (network = "", amount = 0, country = "") => {
 	}
 }
 
-let invoices = []
-let unpaid_invoice = 0
+let invoices = $state([])
+let unpaid_invoice = $state(0)
 const load_invoices = async () => {
 	loading = true
 	try {

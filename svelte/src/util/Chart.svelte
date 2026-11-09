@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import { formatDataVolume, formatDuration, formatNumber } from "./Formatting";
 import { color_by_name } from "./Util.svelte";
@@ -12,6 +12,7 @@ import {
 	Filler,
 	Tooltip,
 	Legend,
+	type AnimationSpec,
 } from "chart.js"
 Chart.register(
 	PointElement,
@@ -24,14 +25,23 @@ Chart.register(
 	Legend,
 )
 
-let chart_element
+let chart_element: HTMLCanvasElement = $state()
 let chart_object
-export let data_type = ""
-export let legend = true
-export let tooltips = true
-export let ticks = true
-export let animations = true
-export let height = "300px"
+let {
+	data_type = "",
+	legend = true,
+	tooltips = true,
+	ticks = true,
+	animations = true,
+	height = "300px"
+}: {
+	data_type?: string;
+	legend?: boolean;
+	tooltips?: boolean;
+	ticks?: boolean;
+	animations?: boolean;
+	height?: string;
+} = $props();
 
 export const chart = () => {
 	return chart_object
@@ -50,8 +60,9 @@ Chart.defaults.maintainAspectRatio = false;
 Chart.defaults.plugins.tooltip.mode = "index";
 Chart.defaults.plugins.tooltip.axis = "x";
 Chart.defaults.plugins.tooltip.intersect = false;
-Chart.defaults.animation.duration = 500;
-Chart.defaults.animation.easing = "linear";
+const animation = Chart.defaults.animation as AnimationSpec<"line">
+animation.duration = 500;
+animation.easing = "linear";
 
 onMount(() => {
 	chart_object = new Chart(
@@ -79,7 +90,7 @@ onMount(() => {
 					tooltip: {
 						enabled: tooltips,
 						itemSort: (a, b) => {
-							return b.raw - a.raw
+							return <number>b.raw - <number>a.raw
 						},
 					}
 				},
@@ -95,7 +106,7 @@ onMount(() => {
 						display: true,
 						position: "left",
 						ticks: {
-							callback: function (value, index, values) {
+							callback: function (value: number, index, values) {
 								if (data_type == "bytes") {
 									return formatDataVolume(value, 3);
 								} else if (data_type === "euro") {
@@ -109,7 +120,6 @@ onMount(() => {
 						beginAtZero: true,
 						grid: {
 							display: true,
-							drawBorder: false,
 							color: color_by_name("separator"),
 						},
 					},
@@ -124,7 +134,6 @@ onMount(() => {
 						},
 						grid: {
 							display: false,
-							drawBorder: false,
 						}
 					}
 				},

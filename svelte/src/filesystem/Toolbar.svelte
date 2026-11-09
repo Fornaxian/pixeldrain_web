@@ -1,5 +1,4 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import { copy_text } from "util/Util.svelte";
 import FileStats from "./FileStats.svelte";
 import type { FSNavigator } from "./FSNavigator";
@@ -8,18 +7,27 @@ import FilePreview from "./viewers/FilePreview.svelte";
 import { fs_share_url } from "./FilesystemAPI";
 import ShareDialog from "./ShareDialog.svelte";
 
-let dispatch = createEventDispatcher()
+let {
+	nav,
+	details_visible = $bindable(false),
+	edit_window,
+	edit_visible = false,
+	file_viewer,
+	file_preview,
+	on_download,
+}: {
+	nav: FSNavigator;
+	details_visible?: boolean;
+	edit_window: EditWindow;
+	edit_visible?: boolean;
+	file_viewer: HTMLDivElement;
+	file_preview: FilePreview;
+	on_download: () => void;
+} = $props();
+let share_dialog: ShareDialog = $state()
 
-export let nav: FSNavigator
-export let details_visible = false
-export let edit_window: EditWindow
-export let edit_visible = false
-export let file_viewer: HTMLDivElement
-export let file_preview: FilePreview
-let share_dialog: ShareDialog
-
-$: share_url = fs_share_url($nav.path)
-let link_copied = false
+let share_url = $derived(fs_share_url($nav.path))
+let link_copied = $state(false)
 export const copy_link = () => {
 	if (share_url === "") {
 		edit_window.edit(nav.base, true, "share")
@@ -31,7 +39,13 @@ export const copy_link = () => {
 	setTimeout(() => {link_copied = false}, 60000)
 }
 
-let fullscreen = false
+// The navigator's shuffle flag is not reactive, so we keep a copy
+let shuffle = $state(false)
+export const toggle_shuffle = () => {
+	nav.shuffle = shuffle = !shuffle
+}
+
+let fullscreen = $state(false)
 export const toggle_fullscreen = () => {
 	if (document.fullscreenElement !== null) {
 		try {
@@ -48,7 +62,7 @@ export const toggle_fullscreen = () => {
 	}
 }
 
-let expanded = true
+let expanded = $state(true)
 let expand = (e: Event) => {
 	e.preventDefault()
 	e.stopPropagation()
@@ -57,8 +71,8 @@ let expand = (e: Event) => {
 </script>
 
 <div class="toolbar" class:expanded>
-	<div class="stats_container" on:click={expand} on:keypress={expand} role="button" tabindex="0">
-		<button class="button_expand hidden_vertical" on:click={expand}>
+	<div class="stats_container" onclick={expand} onkeypress={expand} role="button" tabindex="0">
+		<button class="button_expand hidden_vertical" onclick={expand}>
 			{#if expanded}
 				<i class="icon">expand_more</i>
 			{:else}
@@ -72,26 +86,26 @@ let expand = (e: Event) => {
 	<div class="grid">
 
 		<div class="button_row">
-			<button on:click={() => {nav.open_sibling(-1)}}>
+			<button onclick={() => {nav.open_sibling(-1)}}>
 				<i class="icon">skip_previous</i>
 			</button>
-			<button on:click={() => {nav.shuffle = !nav.shuffle}} class:button_highlight={nav.shuffle}>
+			<button onclick={toggle_shuffle} class:button_highlight={shuffle}>
 				<i class="icon">shuffle</i>
 			</button>
-			<button on:click={() => {nav.open_sibling(1)}}>
+			<button onclick={() => {nav.open_sibling(1)}}>
 				<i class="icon">skip_next</i>
 			</button>
 		</div>
 
 		<div class="separator hidden_horizontal"></div>
 
-		<button on:click={() => dispatch("download")}>
+		<button onclick={on_download}>
 			<i class="icon">save</i>
 			<span>Download</span>
 		</button>
 
 		{#if share_url !== ""}
-			<button on:click={copy_link} class:button_highlight={link_copied}>
+			<button onclick={copy_link} class:button_highlight={link_copied}>
 				<i class="icon">content_copy</i>
 				<span><u>C</u>opy link</span>
 			</button>
@@ -99,7 +113,7 @@ let expand = (e: Event) => {
 
 		<!-- Share button is enabled when: The browser has a sharing API, or the user can edit the file (to enable sharing)-->
 		{#if $nav.base.id !== "me" && (navigator.share !== undefined || $nav.permissions.write === true)}
-			<button on:click={(e) => share_dialog.open(e, nav.path)}>
+			<button onclick={(e) => share_dialog.open(e, nav.path)}>
 				<i class="icon">share</i>
 				<span>Share</span>
 			</button>
@@ -107,7 +121,7 @@ let expand = (e: Event) => {
 
 		<button
 			class="toolbar_button"
-			on:click={toggle_fullscreen}
+			onclick={toggle_fullscreen}
 			class:button_highlight={fullscreen}
 			title="Open page in full screen mode">
 			{#if fullscreen}
@@ -120,13 +134,13 @@ let expand = (e: Event) => {
 
 		<div class="separator hidden_horizontal"></div>
 
-		<button on:click={() => details_visible = !details_visible} class:button_highlight={details_visible}>
+		<button onclick={() => details_visible = !details_visible} class:button_highlight={details_visible}>
 			<i class="icon">help</i>
 			<span>Deta<u>i</u>ls</span>
 		</button>
 
 		{#if $nav.base.id !== "me" && $nav.permissions.write === true}
-			<button on:click={() => edit_window.edit(nav.base, true, "file")} class:button_highlight={edit_visible}>
+			<button onclick={() => edit_window.edit(nav.base, true, "file")} class:button_highlight={edit_visible}>
 				<i class="icon">edit</i>
 				<span><u>E</u>dit</span>
 			</button>

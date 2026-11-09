@@ -22,21 +22,21 @@ import CopyButton from "layout/CopyButton.svelte";
 import Menu from "filesystem/Menu.svelte"
 import AffiliatePrompt from "user_home/AffiliatePrompt.svelte";
 
-let loading = true
-let embedded = false
-let ads_enabled = false
+let loading = $state(true)
+let embedded = $state(false)
+let ads_enabled = $state(false)
 
-let view = "" // file or gallery
-let file = file_struct
-let list = list_struct
-let is_list = false
-let list_downloadable = false
-let file_viewer
-let file_preview
-let list_navigator
-let sharebar
-let sharebar_visible = false
-let fullscreen = false
+let view = $state("") // file or gallery
+let file = $state(file_struct)
+let list = $state(list_struct)
+let is_list = $state(false)
+let list_downloadable = $state(false)
+let file_viewer = $state()
+let file_preview = $state()
+let list_navigator = $state()
+let sharebar = $state()
+let sharebar_visible = $state(false)
+let fullscreen = $state(false)
 let toggle_sharebar = () => {
 	if (navigator.share) {
 		let name = file.name
@@ -59,7 +59,7 @@ let toggle_sharebar = () => {
 		sharebar.hide()
 	}
 }
-let toolbar_visible = (window.innerWidth > 600)
+let toolbar_visible = $state(window.innerWidth > 600)
 let toolbar_toggle = () => {
 	toolbar_visible = !toolbar_visible
 	if (!toolbar_visible && sharebar_visible) {
@@ -67,19 +67,19 @@ let toolbar_toggle = () => {
 	}
 }
 
-let downloader
-let list_updater
-let details_window
-let affiliate_prompt
-let details_visible = false
-let qr_window
-let qr_visible = false
-let edit_window
-let edit_visible = false
-let report_window
-let report_visible = false
-let embed_window
-let embed_visible = false
+let downloader = $state()
+let list_updater = $state()
+let details_window = $state()
+let affiliate_prompt = $state()
+let details_visible = $state(false)
+let qr_window = $state()
+let qr_visible = $state(false)
+let edit_window = $state()
+let edit_visible = $state(false)
+let report_window = $state()
+let report_visible = $state(false)
+let embed_window = $state()
+let embed_visible = $state(false)
 
 onMount(() => {
 	let viewer_data = window.viewer_data
@@ -233,14 +233,14 @@ const toggle_fullscreen = () => {
 // customizations for the first file in the list, else we simply use the
 // selected file. In most cases they are all the same so the user won't notice
 // any change
-let file_preview_background
-let custom_header = ""
-let custom_header_link = ""
-let custom_background = ""
-let custom_footer = ""
-let custom_footer_link = ""
-let disable_download_button = false
-let disable_share_button = false
+let file_preview_background = $state()
+let custom_header = $state("")
+let custom_header_link = $state("")
+let custom_background = $state("")
+let custom_footer = $state("")
+let custom_footer_link = $state("")
+let disable_download_button = $state(false)
+let disable_share_button = $state(false)
 const apply_customizations = file => {
 	if (!file.branding) {
 		return
@@ -299,7 +299,7 @@ const grab_file = async () => {
 	}
 }
 
-let copy_btn
+let copy_btn = $state()
 const keyboard_event = evt => {
 	if (evt.ctrlKey || evt.altKey || evt.metaKey) {
 		return // prevent custom shortcuts from interfering with system shortcuts
@@ -391,12 +391,12 @@ const keyboard_event = evt => {
 }
 </script>
 
-<svelte:window on:keydown={keyboard_event} on:hashchange={hash_change}/>
+<svelte:window onkeydown={keyboard_event} onhashchange={hash_change}/>
 
 <div class="file_viewer" bind:this={file_viewer}>
 	<div class="headerbar">
 		<button
-			on:click={toolbar_toggle}
+			onclick={toolbar_toggle}
 			class="round"
 			class:button_highlight={toolbar_visible}
 			style="line-height: 1em;"
@@ -421,8 +421,8 @@ const keyboard_event = evt => {
 		<ListNavigator
 			bind:this={list_navigator}
 			files={list.files}
-			on:set_file={e => open_file_index(e.detail)}
-			on:toggle_gallery={toggle_gallery}
+			on_set_file={open_file_index}
+			on_toggle_gallery={toggle_gallery}
 		>
 		</ListNavigator>
 	{/if}
@@ -441,7 +441,7 @@ const keyboard_event = evt => {
 
 			{#if view === "file" && !disable_download_button}
 				<button
-					on:click={downloader.download_file}
+					onclick={downloader.download_file}
 					class="toolbar_button"
 					class:button_red={file.can_download === false}
 					title="Save this file to your computer">
@@ -452,7 +452,7 @@ const keyboard_event = evt => {
 
 			{#if is_list && list_downloadable && !disable_download_button}
 				<button
-					on:click={downloader.download_list}
+					onclick={downloader.download_list}
 					class="toolbar_button"
 					title="Download all files in this album as a zip archive">
 					<i class="icon">download</i>
@@ -466,7 +466,7 @@ const keyboard_event = evt => {
 
 			{#if !disable_share_button}
 				<button
-					on:click={toggle_sharebar}
+					onclick={toggle_sharebar}
 					class="toolbar_button"
 					class:button_highlight={sharebar_visible}
 					title="Share this file on social media">
@@ -477,7 +477,7 @@ const keyboard_event = evt => {
 
 			<button
 				class="toolbar_button"
-				on:click={qr_window.toggle}
+				onclick={qr_window.toggle}
 				class:button_highlight={qr_visible}
 				title="Show a QR code with a link to this page. Useful for sharing files in-person">
 				<i class="icon">qr_code</i>
@@ -486,7 +486,7 @@ const keyboard_event = evt => {
 
 			<button
 				class="toolbar_button"
-				on:click={toggle_fullscreen}
+				onclick={toggle_fullscreen}
 				class:button_highlight={fullscreen}
 				title="Open page in full screen mode">
 				{#if fullscreen}
@@ -500,7 +500,7 @@ const keyboard_event = evt => {
 			{#if view === "file"}
 				<button
 					class="toolbar_button"
-					on:click={details_window.toggle}
+					onclick={details_window.toggle}
 					class:button_highlight={details_visible}
 					title="Information and statistics about this file">
 					<i class="icon">help</i>
@@ -513,7 +513,7 @@ const keyboard_event = evt => {
 			{#if file.can_edit || list.can_edit}
 				<button
 					class="toolbar_button"
-					on:click={edit_window.toggle}
+					onclick={edit_window.toggle}
 					class:button_highlight={edit_visible}
 					title="Edit or delete this file or album">
 					<i class="icon">edit</i>
@@ -523,7 +523,7 @@ const keyboard_event = evt => {
 
 			{#if view === "file" && window.user_authenticated && !disable_download_button}
 				<button
-					on:click={grab_file}
+					onclick={grab_file}
 					class="toolbar_button"
 					title="Copy this file to your own pixeldrain account">
 					<i class="icon">save_alt</i>
@@ -534,7 +534,7 @@ const keyboard_event = evt => {
 			<button
 				class="toolbar_button"
 				title="Report this file as abusive"
-				on:click={report_window.toggle}
+				onclick={report_window.toggle}
 				class:button_highlight={report_visible}>
 				<i class="icon">flag</i>
 				<span>Report</span>
@@ -544,7 +544,7 @@ const keyboard_event = evt => {
 				<button
 					class="toolbar_button"
 					title="Include this file in your own webpages"
-					on:click={embed_window.toggle}
+					onclick={embed_window.toggle}
 					class:button_highlight={embed_visible}>
 					<i class="icon">code</i>
 					<span>Embed</span>
@@ -562,19 +562,17 @@ const keyboard_event = evt => {
 				<FilePreview
 					bind:this={file_preview}
 					is_list={is_list}
-					on:download={downloader.download_file}
-					on:prev={() => { if (list_navigator) { list_navigator.prev() }}}
-					on:next={() => { if (list_navigator) { list_navigator.next() }}}
-					on:loading={e => {loading = e.detail}}
-					on:reload={reload}
+					on_download={downloader.download_file}
+					on_prev={() => { if (list_navigator) { list_navigator.prev() }}}
+					on_next={() => { if (list_navigator) { list_navigator.next() }}}
+					on_loading={l => {loading = l}}
 				/>
 			{:else if view === "gallery"}
 				<GalleryView
 					list={list}
-					on:reload={reload}
-					on:update_list={e => list_updater.update(e.detail)}
-					on:pick_files={() => list_updater.pick_files()}
-					on:upload_files={e => list_updater.upload_files(e.detail)}
+					on_update_list={files => list_updater.update(files)}
+					on_pick_files={() => list_updater.pick_files()}
+					on_upload_files={files => list_updater.upload_files(files)}
 				/>
 			{/if}
 		</div>
@@ -589,23 +587,23 @@ const keyboard_event = evt => {
 		<CustomBanner src={custom_footer} link={custom_footer_link}></CustomBanner>
 	{/if}
 
-	<Modal bind:this={details_window} on:is_visible={e => {details_visible = e.detail}} title="File details" width="1000px">
+	<Modal bind:this={details_window} bind:visible={details_visible} title="File details" width="1000px">
 		<DetailsWindow file={file}></DetailsWindow>
 	</Modal>
 
-	<Modal bind:this={qr_window} on:is_visible={e => {qr_visible = e.detail}} title="QR code" width="500px">
+	<Modal bind:this={qr_window} bind:visible={qr_visible} title="QR code" width="500px">
 		<img src="{window.api_endpoint}/misc/qr?text={encodeURIComponent(window.location.href)}" alt="QR code" style="display: block; width: 100%;"/>
 	</Modal>
 
-	<Modal bind:this={edit_window} on:is_visible={e => {edit_visible = e.detail}} title={"Editing "+file.name}>
-		<EditWindow file={file} list={list} on:reload={reload}></EditWindow>
+	<Modal bind:this={edit_window} bind:visible={edit_visible} title={"Editing "+file.name}>
+		<EditWindow file={file} list={list} on_reload={reload}></EditWindow>
 	</Modal>
 
-	<Modal bind:this={embed_window} on:is_visible={e => {embed_visible = e.detail}} title="Embed file" width="820px">
+	<Modal bind:this={embed_window} bind:visible={embed_visible} title="Embed file" width="820px">
 		<EmbedWindow file={file} list={list}></EmbedWindow>
 	</Modal>
 
-	<Modal bind:this={report_window} on:is_visible={e => {report_visible = e.detail}} title="Report abuse" width="800px">
+	<Modal bind:this={report_window} bind:visible={report_visible} title="Report abuse" width="800px">
 		<ReportWindow file={file} list={list}></ReportWindow>
 	</Modal>
 
@@ -615,8 +613,8 @@ const keyboard_event = evt => {
 		<ListUpdater
 			bind:this={list_updater}
 			list={list}
-			on:reload={reload}
-			on:loading={e => {loading = e.detail}}
+			on_reload={reload}
+			on_loading={l => {loading = l}}
 		/>
 	{/if}
 

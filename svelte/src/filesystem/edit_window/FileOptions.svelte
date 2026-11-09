@@ -4,13 +4,21 @@ import { fs_delete_all, type FSNode } from "filesystem/FilesystemAPI";
 import PathLink from "filesystem/util/PathLink.svelte";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav: FSNavigator
-export let file: FSNode = {} as FSNode
-export let new_name: string
-export let visible: boolean
-export let open_after_edit: boolean
+let {
+	nav,
+	file = {} as FSNode,
+	new_name = $bindable(),
+	visible = $bindable(),
+	open_after_edit
+}: {
+	nav: FSNavigator;
+	file?: FSNode;
+	new_name: string;
+	visible: boolean;
+	open_after_edit: boolean;
+} = $props();
 
-$: is_root_dir = file.path === "/"+file.id
+let is_root_dir = $derived(file.path === "/"+file.id)
 
 const delete_file = async (e: MouseEvent) => {
 	e.preventDefault()

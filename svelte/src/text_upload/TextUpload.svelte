@@ -3,8 +3,8 @@ import { onMount } from "svelte";
 import Modal from "util/Modal.svelte";
 import Behave from "behave-js";
 
-let textarea
-let help
+let textarea = $state()
+let help = $state()
 
 onMount(() => {
 	new Behave({
@@ -61,7 +61,7 @@ const keydown = e => {
 }
 </script>
 
-<svelte:window on:keydown={keydown}></svelte:window>
+<svelte:window onkeydown={keydown}></svelte:window>
 
 <div id="text_editor" class="text_editor">
 	<div id="headerbar" class="headerbar">
@@ -69,15 +69,15 @@ const keydown = e => {
 			<i class="icon">arrow_back</i>
 		</a>
 		<div id="headerbar_spacer" class="headerbar_spacer"></div>
-		<button class="button toolbar_button round" on:click={help.toggle}>
+		<button class="button toolbar_button round" onclick={help.toggle}>
 			<i class="icon">info</i> Information
 		</button>
-		<button class="button toolbar_button round button_highlight" on:click={upload_text}>
+		<button class="button toolbar_button round button_highlight" onclick={upload_text}>
 			<i class="icon">save</i> Save
 		</button>
 	</div>
 	<div class="textarea_container">
-		<!-- svelte-ignore a11y-autofocus -->
+		<!-- svelte-ignore a11y_autofocus -->
 		<textarea bind:this={textarea} class="textarea" placeholder="Your text here..." autofocus="autofocus"></textarea>
 	</div>
 </div>

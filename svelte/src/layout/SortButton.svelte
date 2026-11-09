@@ -1,15 +1,24 @@
 <script lang="ts">
-export let field = ""
-export let active_field = ""
-export let asc = true
-export let sort_func: (field: string) => void
+let {
+	field = "",
+	active_field = "",
+	asc = true,
+	sort_func,
+	children
+}: {
+	field?: string;
+	active_field?: string;
+	asc?: boolean;
+	sort_func: (field: string) => void;
+	children?: import('svelte').Snippet;
+} = $props();
 </script>
 
-<button class:button_highlight={active_field === field} on:click={() => sort_func(field)}>
+<button class:button_highlight={active_field === field} onclick={() => sort_func(field)}>
 	{#if active_field === field}
 		{#if asc}↓{:else}↑{/if}
 	{/if}
-	<slot></slot>
+	{@render children?.()}
 </button>
 
 <style>

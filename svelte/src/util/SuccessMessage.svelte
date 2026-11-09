@@ -1,6 +1,6 @@
 <script>
-let s = false
-let m = ""
+let s = $state(false)
+let m = $state("")
 
 export const set = (success, message) => {
 	s = success

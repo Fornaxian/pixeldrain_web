@@ -1,32 +1,13 @@
-<script>
-import { onMount } from "svelte";
+<script lang="ts">
+import { onMount, untrack } from "svelte";
 import { formatDataVolume, formatDate, formatThousands } from "util/Formatting"
 import { color_by_name, domain_url } from "util/Util.svelte";
 import Chart from "util/Chart.svelte";
 
-export let file = {
-	id: "",
-	name: "",
-	mime_type: "",
-	date_upload: "",
-	size: 0,
-	downloads: 0,
-	bandwidth_used: 0,
-	bandwidth_used_paid: 0,
-	description: "",
-	hash_sha256: "",
-	timeseries_href: "",
-}
+let { file }: { file: any } = $props();
 
-$: update_file(file.id)
-let update_file = id => {
-	if (id) {
-		update_chart(0, 0)
-	}
-}
-
-let chart
-let chart_timespan = 0
+let chart: Chart = $state()
+let chart_timespan = $state(0)
 let chart_interval = 0
 let chart_timespans = [
 	{label: "Day (1m)", span: 1440, interval: 1},
@@ -93,7 +74,7 @@ let update_chart = (timespan, interval) => {
 	})
 }
 
-let download_info = false
+let download_info = $state(false)
 
 onMount(() => {
 	chart.data().datasets = [
@@ -112,6 +93,13 @@ onMount(() => {
 			backgroundColor: color_by_name("danger_color"),
 		},
 	];
+})
+
+// Load the graph when another file is opened
+$effect(() => {
+	if (file.id) {
+		untrack(() => update_chart(0, 0))
+	}
 })
 </script>
 
@@ -160,7 +148,7 @@ onMount(() => {
 					<button class="button small_button round"
 						class:button_highlight={download_info}
 						style="margin: 0;"
-						on:click={() => download_info = !download_info}
+						onclick={() => download_info = !download_info}
 					>
 						<i class="icon">help</i>
 					</button>
@@ -201,7 +189,7 @@ onMount(() => {
 	<div class="button_bar">
 		{#each chart_timespans as ts}
 			<button
-				on:click={() => { update_chart(ts.span, ts.interval) }}
+				onclick={() => { update_chart(ts.span, ts.interval) }}
 				class:button_highlight={chart_timespan == ts.span}>
 				{ts.label}
 			</button>

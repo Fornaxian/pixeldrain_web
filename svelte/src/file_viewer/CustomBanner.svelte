@@ -1,7 +1,9 @@
-<script>
-export let src = ""
-export let link = ""
-export let border_top = false;
+<script lang="ts">
+let { src = "", link = "", border_top = false }: {
+	src?: string;
+	link?: string;
+	border_top?: boolean;
+} = $props();
 </script>
 
 {#if src}

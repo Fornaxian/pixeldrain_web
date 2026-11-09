@@ -3,7 +3,7 @@ import { onMount } from "svelte";
 import Expandable from "util/Expandable.svelte";
 import { formatDate } from "util/Formatting";
 
-let result = null;
+let result = $state(null);
 
 onMount(async () => {
 	try {
@@ -21,9 +21,11 @@ onMount(async () => {
 {#if result !== null && result.user_banned}
 	<section>
 		<Expandable click_expand>
-			<div slot="header" class="header red">
-				Your account has been banned, click for details
-			</div>
+			{#snippet header()}
+				<div class="header red">
+					Your account has been banned, click for details
+				</div>
+			{/snippet}
 			<p>
 				Your user account has been banned from uploading to
 				pixeldrain due to violation of the
@@ -73,13 +75,15 @@ onMount(async () => {
 {:else if result !== null && result.ip_offences.length > 0}
 	<section>
 		<Expandable click_expand>
-			<div slot="header" class="header" class:red={result.ip_banned} class:yellow={!result.ip_banned}>
-				{#if result.ip_banned}
-					Your IP address has been banned, click for details
-				{:else}
-					Your IP address has received a copyright strike, click for details
-				{/if}
-			</div>
+			{#snippet header()}
+				<div class="header" class:red={result.ip_banned} class:yellow={!result.ip_banned}>
+					{#if result.ip_banned}
+						Your IP address has been banned, click for details
+					{:else}
+						Your IP address has received a copyright strike, click for details
+					{/if}
+				</div>
+			{/snippet}
 			{#if result.ip_banned}
 				<p>
 					Your IP address ({result.address}) has been banned from

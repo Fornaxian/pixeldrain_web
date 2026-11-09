@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
 export const file_struct = {
 	id: "",
 	name: "",

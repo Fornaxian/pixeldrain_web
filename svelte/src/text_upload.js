@@ -1,8 +1,4 @@
 import App from './text_upload/TextUpload.svelte';
+import { mount } from "svelte";
 
-const app = new App({
-	target: document.getElementById("body"),
-	props: {}
-});
-
-export default app;
+mount(App, { target: document.getElementById("body") });

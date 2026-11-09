@@ -12,7 +12,7 @@ import CardFsHome from "./CardFSHome.svelte";
 import AddressReputation from "home_page/AddressReputation.svelte";
 import { flip } from "svelte/animate";
 
-let cards = []
+let cards = $state([])
 
 const save = () => {
 	let storage = {
@@ -181,7 +181,7 @@ onMount(() => {
 
 			{#if !card.hidden && card.size > 0}
 				<div class="card_component">
-					<svelte:component this={card.elem} card_size={card.size}/>
+					<card.elem card_size={card.size}/>
 				</div>
 			{/if}
 		</div>

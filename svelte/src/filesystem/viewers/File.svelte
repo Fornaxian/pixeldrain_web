@@ -1,17 +1,19 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import IconBlock from "layout/IconBlock.svelte";
 import { fs_thumbnail_url } from "filesystem/FilesystemAPI";
 import TextBlock from "layout/TextBlock.svelte"
 import { formatDataVolume, formatDate } from "util/Formatting";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-let dispatch = createEventDispatcher()
-
-export let nav: FSNavigator
+let { nav, on_download, on_details, children }: {
+	nav: FSNavigator;
+	on_download: () => void;
+	on_details: () => void;
+	children?: import('svelte').Snippet;
+} = $props();
 </script>
 
-<slot></slot>
+{@render children?.()}
 
 <h1>{$nav.base.name}</h1>
 
@@ -20,11 +22,11 @@ export let nav: FSNavigator
 	Size: {formatDataVolume($nav.base.file_size, 3)}<br/>
 	Upload date: {formatDate($nav.base.created, true, true, false)}
 	<hr/>
-	<button class="button_highlight" on:click={() => {dispatch("download")}}>
+	<button class="button_highlight" onclick={on_download}>
 		<i class="icon">download</i>
 		<span>Download</span>
 	</button>
-	<button on:click={() => {dispatch("details")}}>
+	<button onclick={on_details}>
 		<i class="icon">help</i>
 		<span>Details</span>
 	</button>

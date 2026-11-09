@@ -1,19 +1,18 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import { domain_url } from "util/Util.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 import { formatDate } from "util/Formatting";
 import type { FSNode, NodeOptions } from "filesystem/FilesystemAPI";
 
-let dispatch = createEventDispatcher()
-export let file: FSNode = {} as FSNode
-export let options: NodeOptions
+let { file = {} as FSNode, options = $bindable(), on_save }: {
+	file?: FSNode;
+	options: NodeOptions;
+	on_save: () => void;
+} = $props();
 
-let embed_html: string
-let preview_area: HTMLDivElement
+let embed_html: string = $state()
+let preview_area: HTMLDivElement = $state()
 
-$: share_link = window.location.protocol+"//"+window.location.host+"/d/"+file.id
-$: embed_iframe(file, options)
 let embed_iframe = (file: FSNode, options: NodeOptions) => {
 	if (!options.shared) {
 		example = false
@@ -29,7 +28,7 @@ let embed_iframe = (file: FSNode, options: NodeOptions) => {
 		`></iframe>`
 }
 
-let example = false
+let example = $state(false)
 const toggle_example = () => {
 	if (options.shared) {
 		example = !example
@@ -47,9 +46,13 @@ const update_shared = () => {
 	// save so that the user can't accidentally discard a sharing link that's in
 	// use
 	if (options.shared && !file.id) {
-		dispatch("save")
+		on_save()
 	}
 }
+let share_link = $derived(window.location.protocol+"//"+window.location.host+"/d/"+file.id)
+$effect(() => {
+	embed_iframe(file, options)
+})
 </script>
 
 <fieldset>
@@ -68,7 +71,7 @@ const update_shared = () => {
 		<input
 			form="edit_form"
 			bind:checked={options.shared}
-			on:change={update_shared}
+			onchange={update_shared}
 			id="shared"
 			type="checkbox"
 			class="form_input"
@@ -108,7 +111,7 @@ const update_shared = () => {
 		<textarea bind:value={embed_html} style="width: 100%; height: 4em;"></textarea>
 		<br/>
 		<CopyButton text={embed_html}>Copy HTML</CopyButton>
-		<button on:click={toggle_example} class:button_highlight={example} disabled={!options.shared}>
+		<button onclick={toggle_example} class:button_highlight={example} disabled={!options.shared}>
 			<i class="icon">visibility</i> Show example
 		</button>
 	</div>

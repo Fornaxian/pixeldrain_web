@@ -1,11 +1,13 @@
 <script lang="ts">
-export let toggle = false;
+let { toggle = $bindable(false) }: {
+	toggle?: boolean;
+} = $props();
 </script>
 
 <button class="button small_button round"
 	class:button_highlight={toggle}
 	style="margin: 0;"
-	on:click={() => toggle = !toggle}
+	onclick={() => toggle = !toggle}
 >
 	<i class="icon">help</i>
 </button>

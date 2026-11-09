@@ -1,12 +1,14 @@
-<script>
+<script lang="ts">
 import { onMount } from "svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import { formatDataVolume, formatDate } from "util/Formatting";
 import SortButton from "layout/SortButton.svelte";
 
-export let user_id = ""
-let files = []
-let loading = true
+let { user_id = "" }: {
+	user_id?: string;
+} = $props();
+let files = $state([])
+let loading = $state(true)
 
 onMount(() => reload())
 
@@ -34,8 +36,8 @@ export const reload = async () => {
 	}
 }
 
-let sort_field = "date_upload"
-let asc = false
+let sort_field = $state("date_upload")
+let asc = $state(false)
 const sort = (field) => {
 	if (field !== "" && field === sort_field) {
 		asc = !asc
@@ -63,7 +65,6 @@ const sort = (field) => {
 			}
 		}
 	})
-	files = files
 }
 </script>
 

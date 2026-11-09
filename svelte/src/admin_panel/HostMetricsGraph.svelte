@@ -3,16 +3,21 @@ import Chart from "util/Chart.svelte";
 import { host_colour, host_label } from "./HostMetricsLib";
 import { tick } from "svelte";
 
-export let metric = ""
-export let data_type = "number"
-export let timestamps: string[] = []
-export let metrics: {[key: string]: number[]} = {}
-export let aggregate = false
+let {
+	metric = "",
+	data_type = "number",
+	timestamps = [],
+	metrics = {},
+	aggregate = false
+}: {
+	metric?: string;
+	data_type?: string;
+	timestamps?: string[];
+	metrics?: {[key: string]: number[]};
+	aggregate?: boolean;
+} = $props();
 
-// Make load_graph reactive
-$: {update_chart(timestamps, metrics, aggregate)}
-
-let chart: Chart
+let chart: Chart = $state()
 
 const update_chart = async (timestamps: string[], metrics: {[key: string]: number[]}, aggregate: boolean) => {
 	await tick()
@@ -86,6 +91,8 @@ const create_avg_dataset = (hosts: {[key:string]: number[]}): number[] => {
 	}
 	return data
 }
+// Make load_graph reactive
+$effect(() => {update_chart(timestamps, metrics, aggregate)});
 </script>
 
 <div>

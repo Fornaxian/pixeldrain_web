@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 export type TorrentInfo = {
 	trackers: string[]
 	comment: string,
@@ -13,7 +13,6 @@ export type TorrentFile = {
 };
 </script>
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import Magnet from "icons/Magnet.svelte";
 import { formatDate } from "util/Formatting"
 import TorrentItem from "./TorrentItem.svelte"
@@ -23,11 +22,14 @@ import { fs_node_icon, fs_path_url } from "filesystem/FilesystemAPI";
 import CopyButton from "layout/CopyButton.svelte";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-let dispatch = createEventDispatcher()
 
-export let nav: FSNavigator
+let { nav, on_download, children }: {
+	nav: FSNavigator;
+	on_download: () => void;
+	children?: import('svelte').Snippet;
+} = $props();
 
-let status = "loading"
+let status = $state("loading")
 
 export const update = async () => {
 	try {
@@ -63,11 +65,11 @@ export const update = async () => {
 	}
 }
 
-let torrent: TorrentInfo = {} as TorrentInfo
-let magnet = ""
+let torrent: TorrentInfo = $state({} as TorrentInfo)
+let magnet = $state("")
 </script>
 
-<slot></slot>
+{@render children?.()}
 
 <h1>{$nav.base.name}</h1>
 
@@ -92,7 +94,7 @@ let magnet = ""
 			Torrent file could not be parsed. It may be corrupted.
 		</p>
 	{/if}
-	<button on:click={() => {dispatch("download")}} class="button">
+	<button onclick={on_download} class="button">
 		<i class="icon">download</i>
 		<span>Download torrent file</span>
 	</button>

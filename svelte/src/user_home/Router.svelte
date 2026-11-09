@@ -97,7 +97,7 @@ let pages: Tab[] = [
 	},
 ]
 
-let user = {} as User
+let user = $state({} as User)
 onMount(async () => {
 	user = await get_user()
 })

@@ -1,8 +1,8 @@
 <script>
 export const set_file = f => file = f
-let file = {
+let file = $state({
 	get_href: "",
-}
+})
 </script>
 
 <iframe

@@ -1,22 +1,25 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte"
 import { swipe_nav } from "lib/SwipeNavigate";
-let dispatch = createEventDispatcher()
 
 export const set_file = f => {
 	file = f
-	dispatch("loading", true)
+	on_loading(true)
 }
-let file = {
+let file = $state({
 	id: "",
 	name: "",
 	mime_type: "",
 	get_href: "",
-}
-export let is_list = false
+})
+let { is_list = false, on_loading, on_prev, on_next }: {
+	is_list?: boolean;
+	on_loading: (loading: boolean) => void;
+	on_prev: () => void;
+	on_next: () => void;
+} = $props();
 
-let container
-let zoom = false
+let container: HTMLDivElement = $state()
+let zoom = $state(false)
 let x, y = 0
 let dragging = false
 
@@ -65,10 +68,10 @@ const mouseup = (e) => {
 	}
 }
 
-const on_load = () => dispatch("loading", false)
+const on_load = () => on_loading(false)
 </script>
 
-<svelte:window on:mousemove={mousemove} on:mouseup={mouseup} />
+<svelte:window onmousemove={mousemove} onmouseup={mouseup} />
 
 <div
 	bind:this={container}
@@ -78,16 +81,16 @@ const on_load = () => dispatch("loading", false)
 		enabled: !zoom && is_list,
 		prev: true,
 		next: true,
-		on_prev: () => dispatch("prev"),
-		on_next: () => dispatch("prev"),
+		on_prev: on_prev,
+		on_next: on_next,
 	}}
 >
-	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<img
-		on:load={on_load}
-		on:error={on_load}
-		on:dblclick={double_click}
-		on:mousedown={mousedown}
+		onload={on_load}
+		onerror={on_load}
+		ondblclick={double_click}
+		onmousedown={mousedown}
 		class="image"
 		class:zoom
 		src={file.get_href}

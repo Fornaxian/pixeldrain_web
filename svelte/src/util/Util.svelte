@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
 
 export function print_date(date, hours, minutes, seconds) {
 	let dateStr = date.getFullYear()

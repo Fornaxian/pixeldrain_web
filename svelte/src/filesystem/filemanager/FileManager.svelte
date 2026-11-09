@@ -15,29 +15,33 @@ import FsUploadWidget from "filesystem/upload_widget/FSUploadWidget.svelte";
 import EditWindow from "filesystem/edit_window/EditWindow.svelte";
 import { FileAction, type FileEvent } from "./FileManagerLib";
 
-export let nav: FSNavigator
-export let upload_widget: FsUploadWidget
-export let edit_window: EditWindow
-export let directory_view = ""
-let large_icons = false
-let uploader: FsUploadWidget
-let mode = "viewing"
-let creating_dir = false
-let show_hidden = false
-let file_importer: FileImporter
-
-export const upload = (files: File[]) => {
-	return uploader.upload(files)
-}
+let {
+	nav,
+	upload_widget,
+	edit_window,
+	directory_view = "",
+	children
+}: {
+	nav: FSNavigator;
+	upload_widget: FsUploadWidget;
+	edit_window: EditWindow;
+	directory_view?: string;
+	children?: import('svelte').Snippet;
+} = $props();
+let large_icons = $state(false)
+let mode = $state("viewing")
+let creating_dir = $state(false)
+let show_hidden = $state(false)
+let file_importer: FileImporter = $state()
 
 // Navigation functions
-const file_event = (e: CustomEvent<FileEvent>) => {
-	const index = e.detail.index
+const file_event = (e: FileEvent) => {
+	const index = e.index
 
-	switch (e.detail.action) {
+	switch (e.action) {
 	case FileAction.Click:
-		e.detail.original.preventDefault()
-		e.detail.original.stopPropagation()
+		e.original.preventDefault()
+		e.original.stopPropagation()
 		creating_dir = false
 
 		if (mode === "viewing") {
@@ -56,34 +60,34 @@ const file_event = (e: CustomEvent<FileEvent>) => {
 	case FileAction.Context:
 		// If this is a touch event we will select the item
 		if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) {
-			e.detail.original.preventDefault()
+			e.original.preventDefault()
 			select_node(index)
 		}
 		break
 	case FileAction.Edit:
-		e.detail.original.preventDefault()
-		e.detail.original.stopPropagation()
+		e.original.preventDefault()
+		e.original.stopPropagation()
 		edit_window.edit(nav.children[index], false, "file")
 		break
 	case FileAction.Share:
-		e.detail.original.preventDefault()
-		e.detail.original.stopPropagation()
+		e.original.preventDefault()
+		e.original.stopPropagation()
 		creating_dir = false
 		edit_window.edit(nav.children[index], false, "share")
 		break
 	case FileAction.Branding:
-		e.detail.original.preventDefault()
-		e.detail.original.stopPropagation()
+		e.original.preventDefault()
+		e.original.stopPropagation()
 		edit_window.edit(nav.children[index], false, "branding")
 		break
 	case FileAction.Select:
-		e.detail.original.preventDefault()
-		e.detail.original.stopPropagation()
+		e.original.preventDefault()
+		e.original.stopPropagation()
 		select_node(index)
 		break
 	case FileAction.Download:
-		e.detail.original.preventDefault()
-		e.detail.original.stopPropagation()
+		e.original.preventDefault()
+		e.original.stopPropagation()
 		fs_download(nav.children[index])
 		break
 	}
@@ -150,6 +154,7 @@ const viewing_mode = () => {
 		nav.children[i].fm_selected = false
 	}
 	})
+	nav.notify_subscribers()
 	mode = "viewing"
 }
 
@@ -192,6 +197,7 @@ const keypress = (e: KeyboardEvent) => {
 		for (let i = 0; i < nav.children.length; i++) {
 			nav.children[i].fm_selected = true
 		}
+		nav.notify_subscribers()
 		e.preventDefault()
 	} else if (e.type === "keydown" && e.key === "Escape" && (mode !== "viewing" || creating_dir)) {
 		// When escape is pressed we return to viewing mode
@@ -220,12 +226,11 @@ const select_node = (index: number) => {
 	}
 
 	last_selected_node = index
+
+	// The nodes are not reactive. This makes the views read the selection again
+	nav.notify_subscribers()
 }
 
-// When the directory is reloaded we want to keep our selection, so this
-// function watches the children array for changes and updates the selection
-// when it changes
-$: update($nav.children)
 const update = (children: FSNode[]) => {
 	creating_dir = false
 
@@ -239,8 +244,8 @@ const update = (children: FSNode[]) => {
 	}
 }
 
-let moving_files = 0
-let moving_directories = 0
+let moving_files = $state(0)
+let moving_directories = $state(0)
 const move_start = () => {
 	moving_files = 0
 	moving_directories = 0
@@ -290,9 +295,15 @@ onMount(() => {
 		directory_view = "list"
 	}
 })
+// When the directory is reloaded we want to keep our selection, so this
+// function watches the children array for changes and updates the selection
+// when it changes. It runs before the views render so they see the selection
+$effect.pre(() => {
+	update($nav.children)
+})
 </script>
 
-<svelte:window on:keydown={keypress} on:keyup={keypress} />
+<svelte:window onkeydown={keypress} onkeyup={keypress} />
 
 <div
 	class="container"
@@ -307,25 +318,25 @@ onMount(() => {
 
 			<div class="toolbar">
 				<div class="toolbar_left">
-					<button on:click={navigate_back} title="Back">
+					<button onclick={navigate_back} title="Back">
 						<i class="icon">arrow_back</i>
 					</button>
-					<button on:click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
+					<button onclick={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
 						<i class="icon">north</i>
 					</button>
-					<button on:click={() => nav.reload()} title="Refresh directory listing">
+					<button onclick={() => nav.reload()} title="Refresh directory listing">
 						<i class="icon">refresh</i>
 					</button>
 				</div>
 
 				<div class="toolbar_middle">
-					<button on:click={() => toggle_view()} title="Switch between gallery, list and compact view">
+					<button onclick={() => toggle_view()} title="Switch between gallery, list and compact view">
 						<i class="icon" class:button_highlight={directory_view === "list"}>list</i>
 						<i class="icon" class:button_highlight={directory_view === "gallery"}>collections</i>
 						<i class="icon" class:button_highlight={directory_view === "compact"}>view_compact</i>
 					</button>
 
-					<button class="button_large_icons" on:click={() => toggle_large_icons()} title="Switch between large and small icons">
+					<button class="button_large_icons" onclick={() => toggle_large_icons()} title="Switch between large and small icons">
 						{#if large_icons}
 							<i class="icon">zoom_out</i>
 						{:else}
@@ -333,7 +344,7 @@ onMount(() => {
 						{/if}
 					</button>
 
-					<button on:click={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
+					<button onclick={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
 						{#if show_hidden}
 							<i class="icon">visibility_off</i>
 						{:else}
@@ -344,17 +355,17 @@ onMount(() => {
 
 				<div class="toolbar_right">
 					{#if $nav.permissions.write}
-						<button on:click={() => upload_widget.pick_files()} title="Upload files to this directory">
+						<button onclick={() => upload_widget.pick_files()} title="Upload files to this directory">
 							<i class="icon">cloud_upload</i>
 						</button>
 
 						<Button click={() => {creating_dir = !creating_dir}} highlight={creating_dir} icon="create_new_folder" title="Make folder"/>
 
-						<button on:click={() => file_importer.open()} title="Import files from list">
+						<button onclick={() => file_importer.open()} title="Import files from list">
 							<i class="icon">move_to_inbox</i>
 						</button>
 
-						<button on:click={selecting_mode} title="Select and delete files">
+						<button onclick={selecting_mode} title="Select and delete files">
 							<i class="icon">select_all</i>
 						</button>
 					{/if}
@@ -365,7 +376,7 @@ onMount(() => {
 				<Button click={viewing_mode} icon="close"/>
 				<div class="toolbar_spacer">Selecting files</div>
 				<Button click={move_start} icon="drive_file_move" label="Move"/>
-				<button on:click={delete_selected} class="button_red">
+				<button onclick={delete_selected} class="button_red">
 					<i class="icon">delete</i>
 					Delete
 				</button>
@@ -396,14 +407,14 @@ onMount(() => {
 		</div>
 	{/if}
 
-	<slot></slot>
+	{@render children?.()}
 
 	{#if directory_view === "list"}
-		<ListView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on:file={file_event} />
+		<ListView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on_file={file_event} />
 	{:else if directory_view === "gallery"}
-		<GalleryView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on:file={file_event} />
+		<GalleryView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on_file={file_event} />
 	{:else if directory_view === "compact"}
-		<CompactView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on:file={file_event} />
+		<CompactView nav={nav} show_hidden={show_hidden} large_icons={large_icons} on_file={file_event} />
 	{/if}
 </div>
 

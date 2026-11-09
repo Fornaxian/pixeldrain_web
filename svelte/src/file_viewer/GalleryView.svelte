@@ -1,18 +1,18 @@
-<script>
-import { createEventDispatcher } from "svelte"
+<script lang="ts">
 import { flip } from "svelte/animate"
 import FilePicker from "./FilePicker.svelte"
 import { file_type } from "./FileUtilities.svelte";
 import { get_video_position } from "lib/VideoPosition"
 import ProgressBar from "util/ProgressBar.svelte"
-let dispatch = createEventDispatcher()
 
-export let list = {
-	files: [],
-	can_edit: false,
-}
+let { list, on_update_list, on_pick_files, on_upload_files }: {
+	list: any;
+	on_update_list: (files: any[]) => void;
+	on_pick_files: () => void;
+	on_upload_files: (files: FileList) => void;
+} = $props();
 
-let file_picker;
+let file_picker: FilePicker = $state()
 
 const add_files = async files => {
 	let list_files = list.files;
@@ -20,15 +20,13 @@ const add_files = async files => {
 		list_files.push(f)
 	})
 
-	dispatch("update_list", list_files)
+	on_update_list(list_files)
 }
 
 const delete_file = async index => {
 	let list_files = list.files
 	list_files.splice(index, 1)
-
-	list.files = list_files // Update the view (and play animation)
-	dispatch("update_list", list_files)
+	on_update_list(list_files)
 }
 
 const move_left = async index => {
@@ -37,9 +35,7 @@ const move_left = async index => {
 	}
 	let f = list.files;
 	[f[index], f[index-1]] = [f[index-1], f[index]];
-
-	list.files = f // Update the view (and play animation)
-	dispatch("update_list", f)
+	on_update_list(f)
 }
 const move_right = async index => {
 	if (index >= list.files.length-1) {
@@ -47,15 +43,13 @@ const move_right = async index => {
 	}
 	let f = list.files;
 	[f[index], f[index+1]] = [f[index+1], f[index]];
-
-	list.files = f // Update the view (and play animation)
-	dispatch("update_list", f)
+	on_update_list(f)
 }
 
 // Index of the file which is being hovered over. -1 is nothing and -2 is the
 // Add files button
-let hovering = -1
-let dragging = false
+let hovering = $state(-1)
+let dragging = $state(false)
 const drag = (e, index) => {
 	dragging = true
 	e.dataTransfer.effectAllowed = 'move';
@@ -68,7 +62,7 @@ const drop = (e, index) => {
 
 	if (e.dataTransfer.files.length !== 0) {
 		// This is not a rearrangement, this is a file upload
-		dispatch("upload_files", e.dataTransfer.files)
+		on_upload_files(e.dataTransfer.files)
 		return
 	} else if (index === -2) {
 		return
@@ -88,25 +82,25 @@ const drop = (e, index) => {
 		return; // Nothing changed
 	}
 
-	dispatch("update_list", list_files)
+	on_update_list(list_files)
 }
 </script>
 
 <div class="gallery">
 	{#if list.can_edit}
 		<div class="add_button"
-			on:drop|preventDefault={e => drop(e, -2)}
-			on:dragover|preventDefault|stopPropagation
-			on:dragenter={() => hovering = -2}
-			on:dragend={() => {hovering = -1}}
+			ondrop={e => {e.preventDefault(); drop(e, -2)}}
+			ondragover={e => {e.preventDefault(); e.stopPropagation()}}
+			ondragenter={() => hovering = -2}
+			ondragend={() => {hovering = -1}}
 			class:highlight={!dragging && hovering === -2}
 			role="listitem"
 		>
-			<button class="add_button_part" on:click={e => dispatch("pick_files")}>
+			<button class="add_button_part" onclick={on_pick_files}>
 				<i class="icon">cloud_upload</i>
 				Upload files
 			</button>
-			<button class="add_button_part" on:click={file_picker.open}>
+			<button class="add_button_part" onclick={file_picker.open}>
 				<i class="icon">add</i>
 				Add files
 			</button>
@@ -119,11 +113,11 @@ const drop = (e, index) => {
 			href="#item={index}"
 			class="file"
 			draggable={list.can_edit}
-			on:dragstart={e => drag(e, index)}
-			on:drop|preventDefault={e => drop(e, index)}
-			on:dragover|preventDefault|stopPropagation
-			on:dragenter={() => hovering = index}
-			on:dragend={() => {hovering = -1; dragging = false}}
+			ondragstart={e => drag(e, index)}
+			ondrop={e => {e.preventDefault(); drop(e, index)}}
+			ondragover={e => {e.preventDefault(); e.stopPropagation()}}
+			ondragenter={() => hovering = index}
+			ondragend={() => {hovering = -1; dragging = false}}
 			class:highlight={dragging && hovering === index}
 			animate:flip={{duration: 400}}>
 			<div
@@ -137,13 +131,13 @@ const drop = (e, index) => {
 							drag_indicator
 						</i>
 						<div class="separator"></div>
-						<button class="icon" on:click|stopPropagation|preventDefault={() => {move_left(index)}}>
+						<button class="icon" onclick={e => {e.preventDefault(); e.stopPropagation(); move_left(index)}}>
 							chevron_left
 						</button>
-						<button class="icon" on:click|stopPropagation|preventDefault={() => {move_right(index)}}>
+						<button class="icon" onclick={e => {e.preventDefault(); e.stopPropagation(); move_right(index)}}>
 							chevron_right
 						</button>
-						<button class="icon" on:click|stopPropagation|preventDefault={() => {delete_file(index)}}>
+						<button class="icon" onclick={e => {e.preventDefault(); e.stopPropagation(); delete_file(index)}}>
 							delete
 						</button>
 					</div>
@@ -162,7 +156,7 @@ const drop = (e, index) => {
 
 <FilePicker
 	bind:this={file_picker}
-	on:files={e => {add_files(e.detail)}}
+	on_files={add_files}
 	multi_select={true}
 	title="Select files to add to album">
 </FilePicker>

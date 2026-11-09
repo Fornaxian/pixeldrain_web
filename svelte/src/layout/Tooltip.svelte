@@ -1,20 +1,24 @@
 <script lang="ts">
 import Dialog from "./Dialog.svelte";
+let { label, children }: {
+	label?: import('svelte').Snippet;
+	children?: import('svelte').Snippet;
+} = $props();
 
-let button: HTMLButtonElement
-let dialog: Dialog
+let button: HTMLButtonElement = $state()
+let dialog: Dialog = $state()
 
 const open = () => dialog.open(button.getBoundingClientRect())
 </script>
 
-<button bind:this={button} on:click={open} class="button round">
+<button bind:this={button} onclick={open} class="button round">
 	<i class="icon">info</i>
-	<slot name="label"></slot>
+	{@render label?.()}
 </button>
 
 <Dialog bind:this={dialog}>
 	<div class="menu">
-		<slot></slot>
+		{@render children?.()}
 	</div>
 </Dialog>
 

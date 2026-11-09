@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 export type FormConfig = {
 	fields: FormField[],
 	submit_label: string
@@ -31,24 +31,17 @@ import Spinner from "./Spinner.svelte";
 import ToggleButton from "layout/ToggleButton.svelte";
 import type { GenericResponse } from "lib/PixeldrainAPI";
 
-export let config: FormConfig
+let { config }: {
+	config: FormConfig;
+} = $props();
 
 // Password fields have a button which reveals the entered password. Keyed by
 // field name because the field objects themselves are not reactive
-let revealed: {[key: string]: boolean} = {}
+let revealed: {[key: string]: boolean} = $state({})
 
-// Runs for every config, not only the one we mounted with. Forms which swap
-// their fields around get new field objects, without a default value those
-// would render as "undefined"
-$: config.fields.forEach(field => {
-	if (field.default_value === undefined) {
-		field.default_value = ""
-	}
-})
-
-let loading = false
-let submitted = false
-let submit_result: SubmitResult
+let loading = $state(false)
+let submitted = $state(false)
+let submit_result: SubmitResult = $state()
 
 const submit = async (event: SubmitEvent) => {
 	loading = true
@@ -137,7 +130,7 @@ const handle_errors = (response: GenericResponse) => {
 }
 </script>
 
-<form method="POST" on:submit={submit}>
+<form method="POST" onsubmit={submit}>
 	{#if submitted && submit_result !== undefined}
 		{#if submit_result.messages}
 			<div id="submit_result" class:highlight_green={submit_result.success} class:highlight_red={!submit_result.success}>
@@ -156,6 +149,8 @@ const handle_errors = (response: GenericResponse) => {
 	{/if}
 
 	<div class="form">
+		<!-- The fields are not reactive, the bindings only give us the elements -->
+		<!-- svelte-ignore binding_property_non_reactive -->
 		{#each config.fields as field}
 			{#if field.type !== "description"}
 				{#if field.type !== "checkbox"}
@@ -239,7 +234,7 @@ const handle_errors = (response: GenericResponse) => {
 							class="form_input"
 						/>
 						<ToggleButton
-							bind:on={revealed[field.name]}
+							bind:on={() => revealed[field.name] ?? false, on => revealed[field.name] = on}
 							icon_on="visibility"
 							icon_off="visibility_off"
 							label={revealed[field.name] ? "Hide password" : "Show password"}
@@ -262,7 +257,7 @@ const handle_errors = (response: GenericResponse) => {
 							name="{field.name}"
 							type="checkbox"
 							checked={field.default_value === "true"}
-							on:change={e => field.on_change?.(e.currentTarget.checked ? "true" : "")}
+							onchange={e => field.on_change?.(e.currentTarget.checked ? "true" : "")}
 						/>
 						<label for="input_{field.name}">{field.label}</label>
 					</div>

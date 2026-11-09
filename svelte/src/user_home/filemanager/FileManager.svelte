@@ -6,14 +6,14 @@ import Spinner from "util/Spinner.svelte";
 import UploadWidget from "util/upload_widget/UploadWidget.svelte";
 import DirectoryElement from "./DirectoryElement.svelte"
 
-let loading = true
-let contentType = "" // files or lists
-let inputSearch
-let directoryElement
-let downloadFrame
-let help_modal
-let help_modal_visible = false
-let upload_widget
+let loading = $state(true)
+let contentType = $state("") // files or lists
+let inputSearch = $state()
+let directoryElement = $state()
+let downloadFrame = $state()
+let help_modal = $state()
+let help_modal_visible = $state(false)
+let upload_widget = $state()
 
 let getUserFiles = () => {
 	loading = true
@@ -108,7 +108,7 @@ let hashChange = () => {
 	}
 }
 
-let selecting = false
+let selecting = $state(false)
 const toggleSelecting = () => {
 	selecting = !selecting
 	directoryElement.setSelectionMode(selecting)
@@ -255,41 +255,41 @@ onMount(() => {
 })
 </script>
 
-<svelte:window on:keydown={keydown} on:hashchange={hashChange} />
+<svelte:window onkeydown={keydown} onhashchange={hashChange} />
 
 <div id="file_manager" class="file_manager page_margins">
 	<div id="nav_bar" class="nav_bar">
-		<button id="btn_menu" onclick="toggleMenu()"><i class="icon">menu</i></button>
-		<button on:click={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
+		<button id="btn_menu" onclick={() => window.toggleMenu()}><i class="icon">menu</i></button>
+		<button onclick={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
 			<i class="icon">select_all</i> Select
 		</button>
 		<input
 			bind:this={inputSearch}
-			on:keyup={searchHandler}
+			onkeyup={searchHandler}
 			id="input_search"
 			class="input_search"
 			type="text"
 			placeholder="press / to search"
 		/>
 		{#if contentType === "files"}
-			<button on:click={upload_widget.pick_files} id="btn_upload" title="Upload files">
+			<button onclick={upload_widget.pick_files} id="btn_upload" title="Upload files">
 				<i class="icon">cloud_upload</i>
 			</button>
 		{/if}
-		<button on:click={hashChange} id="btn_reload" title="Refresh file list">
+		<button onclick={hashChange} id="btn_reload" title="Refresh file list">
 			<i class="icon">refresh</i>
 		</button>
-		<button on:click={() => help_modal.toggle()} class:button_highlight={help_modal_visible} title="Help">
+		<button onclick={() => help_modal.toggle()} class:button_highlight={help_modal_visible} title="Help">
 			<i class="icon">info</i>
 		</button>
 	</div>
 	{#if selecting}
 		<div class="nav_bar">
 			{#if contentType === "files"}
-				<button on:click={createList}><i class="icon">list</i> Make album</button>
-				<button on:click={downloadFiles}><i class="icon">download</i> Download</button>
+				<button onclick={createList}><i class="icon">list</i> Make album</button>
+				<button onclick={downloadFiles}><i class="icon">download</i> Download</button>
 			{/if}
-			<button on:click={bulkDelete}><i class="icon">delete</i> Delete</button>
+			<button onclick={bulkDelete}><i class="icon">delete</i> Delete</button>
 		</div>
 	{/if}
 
@@ -304,7 +304,7 @@ onMount(() => {
 		bind:this={help_modal}
 		title="File manager help"
 		width="600px"
-		on:is_visible={e => {help_modal_visible = e.detail}}
+		bind:visible={help_modal_visible}
 	>
 		<div class="indent">
 			<p>
@@ -338,7 +338,7 @@ onMount(() => {
 	<iframe bind:this={downloadFrame} title="File download frame" style="display: none; width: 1px; height: 1px;"></iframe>
 </div>
 
-<UploadWidget bind:this={upload_widget} drop_upload on:uploads_finished={hashChange}/>
+<UploadWidget bind:this={upload_widget} drop_upload on_uploads_finished={hashChange}/>
 
 <style>
 :global(#page_body) {

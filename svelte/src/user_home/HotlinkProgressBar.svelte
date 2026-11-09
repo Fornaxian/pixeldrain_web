@@ -1,11 +1,13 @@
-<script>
+<script lang="ts">
 import ProgressBar from "util/ProgressBar.svelte";
 import { formatDataVolume } from "util/Formatting"
 
-export let total = 0
-export let used = 0
+let { total = 0, used = 0 }: {
+	total?: number;
+	used?: number;
+} = $props();
 
-$: frac = used / total
+let frac = $derived(used / total)
 </script>
 
 <ProgressBar total={total} used={used}></ProgressBar>

@@ -1,4 +1,4 @@
-<script>export let style;</script>
+<script lang="ts">let { style }: { style?: string } = $props();</script>
 
 <svg style={style} role="img" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
 	<title>GitHub</title>

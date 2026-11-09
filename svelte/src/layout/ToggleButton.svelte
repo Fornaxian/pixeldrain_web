@@ -1,13 +1,26 @@
 <script lang="ts">
-export let on = false
-export let icon_on = "check"
-export let icon_off = "close"
-export let group_first = false
-export let group_middle = false
-export let group_last = false
-export let action = (e: MouseEvent) => {}
-// Accessible name for buttons which only contain an icon
-export let label = ""
+let {
+	on = $bindable(false),
+	icon_on = "check",
+	icon_off = "close",
+	group_first = false,
+	group_middle = false,
+	group_last = false,
+	action = (e: MouseEvent) => {},
+	label = "",
+	children
+}: {
+	on?: boolean;
+	icon_on?: string;
+	icon_off?: string;
+	group_first?: boolean;
+	group_middle?: boolean;
+	group_last?: boolean;
+	action?: (e: MouseEvent) => void;
+	// Accessible name for buttons which only contain an icon
+	label?: string;
+	children?: import('svelte').Snippet;
+} = $props();
 
 const click = (e: MouseEvent) => {
 	on = !on
@@ -18,7 +31,7 @@ const click = (e: MouseEvent) => {
 </script>
 
 <button
-	on:click={click}
+	onclick={click}
 	type="button"
 	class="button"
 	title={label !== "" ? label : null}
@@ -34,7 +47,7 @@ const click = (e: MouseEvent) => {
 	{:else}
 		<i class="icon">{icon_off}</i>
 	{/if}
-	<slot></slot>
+	{@render children?.()}
 </button>
 
 <style>

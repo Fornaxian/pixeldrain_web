@@ -4,8 +4,8 @@ import HotlinkProgressBar from "user_home/HotlinkProgressBar.svelte";
 import StorageProgressBar from "user_home/StorageProgressBar.svelte";
 import ProgressBar from "util/ProgressBar.svelte";
 
-let transfer_cap = 0
-let transfer_used = 0
+let transfer_cap = $state(0)
+let transfer_used = $state(0)
 let storage_limit = window.user.subscription.storage_space
 let fs_storage_limit = window.user.subscription.filesystem_storage_limit
 let load_direct_bw = () => {

@@ -6,11 +6,11 @@ import LoadingIndicator from "util/LoadingIndicator.svelte";
 import ProgressBar from "util/ProgressBar.svelte";
 import SuccessMessage from "util/SuccessMessage.svelte";
 
-let loading = false
-let success_message
-let hotlinking = window.user.hotlinking_enabled
-let transfer_cap = window.user.monthly_transfer_cap / 1e12
-let skip_viewer = window.user.skip_file_viewer
+let loading = $state(false)
+let success_message = $state()
+let hotlinking = $state(window.user.hotlinking_enabled)
+let transfer_cap = $state(window.user.monthly_transfer_cap / 1e12)
+let skip_viewer = $state(window.user.skip_file_viewer)
 
 const update = async () => {
 	loading = true
@@ -46,7 +46,7 @@ let toggle_hotlinking = () => {
 	update()
 }
 
-let transfer_used = 0
+let transfer_used = $state(0)
 let load_transfer_used = () => {
 	let today = new Date()
 	let start = new Date()
@@ -84,7 +84,7 @@ onMount(() => {
 	<h2><Pro/>Hotlinking (bandwidth sharing)</h2>
 	<SuccessMessage bind:this={success_message}></SuccessMessage>
 
-	<button on:click={toggle_hotlinking}>
+	<button onclick={toggle_hotlinking}>
 		{#if hotlinking}
 			<i class="icon green">check</i> ON (click to turn off)
 		{:else}
@@ -105,7 +105,7 @@ onMount(() => {
 		Billshock limit in terabytes per month (1 TB = 1000 GB). Set to 0 to
 		disable.
 	</p>
-	<form on:submit|preventDefault={update} class="billshock_container">
+	<form onsubmit={e => {e.preventDefault(); update()}} class="billshock_container">
 		<input type="number" bind:value={transfer_cap} step="0.1" min="0" style="width: 5em;"/>
 		<div style="margin: 0.5em;">TB</div>
 		<button type="submit">
@@ -127,7 +127,7 @@ onMount(() => {
 	</p>
 
 	<h2><Pro/>Skip download page</h2>
-	<button on:click={toggle_skip_viewer}>
+	<button onclick={toggle_skip_viewer}>
 		{#if skip_viewer}
 			<i class="icon green">check</i> ON (click to turn off)
 		{:else}

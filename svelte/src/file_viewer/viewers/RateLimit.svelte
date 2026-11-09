@@ -1,17 +1,18 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import { formatDataVolume } from "util/Formatting";
 import { stats } from "lib/StatsSocket"
 import IconBlock from "layout/IconBlock.svelte";
 import TextBlock from "layout/TextBlock.svelte"
-let dispatch = createEventDispatcher()
+
+let { on_download }: { on_download: () => void } = $props();
 
 export const set_file = f => file = f
-let file = {
+let file = $state({
 	name: "",
 	mime_type: "",
 	availability: "",
-}
+	icon_href: "",
+})
 </script>
 
 <TextBlock>
@@ -68,7 +69,7 @@ let file = {
 <IconBlock icon_href={file.icon_href}>
 	Name: {file.name}<br/>
 	Type: {file.mime_type}<br/>
-	<button on:click={() => {dispatch("download")}}>
+	<button onclick={on_download}>
 		<i class="icon">download</i> Download
 	</button>
 	<a href="/user/prepaid/deposit" target="_blank" class="button button_highlight">

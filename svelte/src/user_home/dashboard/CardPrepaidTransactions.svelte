@@ -5,12 +5,12 @@ import Euro from "util/Euro.svelte"
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import Button from "layout/Button.svelte";
 
-let loading = false
+let loading = $state(false)
 
 let year = 0
 let month = 0
-let month_str = ""
-let transactions = {
+let month_str = $state("")
+let transactions = $state({
 	rows: [],
 	total_subscription_charge: 0,
 	total_storage_used: 0,
@@ -22,7 +22,7 @@ let transactions = {
 	total_deducted: 0,
 	balance_start: 0,
 	balance_end: 0,
-}
+})
 
 const load_transactions = async () => {
 	loading = true

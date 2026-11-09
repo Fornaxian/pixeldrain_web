@@ -9,7 +9,7 @@ import UploadWidget from "./UploadWidget.svelte";
 import PrepaidPricing from "./PrepaidPricing.svelte";
 import Map from "icons/Map.svelte";
 
-let upload_widget
+let upload_widget = $state()
 </script>
 
 <header class="logo_header">

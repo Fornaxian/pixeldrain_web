@@ -1,8 +1,4 @@
 import App from './filesystem/Filesystem.svelte';
+import { mount } from "svelte";
 
-const app = new App({
-	target: document.body,
-	props: {}
-});
-
-export default app;
+mount(App, { target: document.body });

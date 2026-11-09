@@ -19,12 +19,17 @@ import type { FSNavigator } from "filesystem/FSNavigator";
 import FsUploadWidget from "filesystem/upload_widget/FSUploadWidget.svelte";
 import EditWindow from "filesystem/edit_window/EditWindow.svelte";
 
-export let nav: FSNavigator
-export let upload_widget: FsUploadWidget
-export let edit_window: EditWindow
+let { nav, upload_widget, edit_window, on_open_sibling, on_download, on_details }: {
+	nav: FSNavigator;
+	upload_widget: FsUploadWidget;
+	edit_window: EditWindow;
+	on_open_sibling: (offset: number) => void;
+	on_download: () => void;
+	on_details: () => void;
+} = $props();
 
-let viewer: any
-let viewer_type = ""
+let viewer: any = $state()
+let viewer_type = $state("")
 let last_path = ""
 
 onMount(() => nav.subscribe(state_update))
@@ -85,7 +90,7 @@ export const seek = (delta: number) => {
 	</FileManager>
 {:else if $nav.context.premium_transfer === false && $stats.limits.transfer_limit_used > $stats.limits.transfer_limit}
 	<SlowDown
-		on:download
+		{on_download}
 		file_size={$nav.base.file_size}
 		file_name={$nav.base.name}
 		file_type={$nav.base.file_type}
@@ -98,7 +103,7 @@ export const seek = (delta: number) => {
 {:else if viewer_type === "image"}
 	<Image nav={nav} bind:this={viewer}/>
 {:else if viewer_type === "video"}
-	<Video nav={nav} bind:this={viewer} on:open_sibling/>
+	<Video nav={nav} bind:this={viewer} {on_open_sibling}/>
 {:else if viewer_type === "pdf"}
 	<Pdf nav={nav}/>
 {:else if viewer_type === "text"}
@@ -106,11 +111,11 @@ export const seek = (delta: number) => {
 		<CustomBanner path={$nav.path}/>
 	</Text>
 {:else if viewer_type === "torrent"}
-	<Torrent nav={nav} bind:this={viewer} on:download>
+	<Torrent nav={nav} bind:this={viewer} {on_download}>
 		<CustomBanner path={$nav.path}/>
 	</Torrent>
 {:else if viewer_type === "zip"}
-	<Zip nav={nav} bind:this={viewer} on:download>
+	<Zip nav={nav} bind:this={viewer} {on_download}>
 		<CustomBanner path={$nav.path}/>
 	</Zip>
 {:else if viewer_type === "email"}
@@ -118,7 +123,7 @@ export const seek = (delta: number) => {
 		<CustomBanner path={$nav.path}/>
 	</Email>
 {:else}
-	<File nav={nav} on:download on:details>
+	<File nav={nav} {on_download} {on_details}>
 		<CustomBanner path={$nav.path}/>
 	</File>
 {/if}

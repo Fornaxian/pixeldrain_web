@@ -4,12 +4,14 @@ import Modal from "util/Modal.svelte";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import { get_user, put_user } from "lib/PixeldrainAPI";
 
-// When the always flag is set then the pop-up will also show if the user
-// already has an affiliate ID set
-export let always = false
-let modal: Modal
-let loading: boolean
-let referral: string
+let { always = false }: {
+	// When the always flag is set then the pop-up will also show if the user
+	// already has an affiliate ID set
+	always?: boolean;
+} = $props();
+let modal: Modal = $state()
+let loading: boolean = $state()
+let referral: string = $state()
 let shown = false
 
 export const prompt = async (ref: string) => {
@@ -70,7 +72,7 @@ const deny = () => {
 </script>
 
 <Modal bind:this={modal} title="Affiliate sponsoring request" width="700px">
-	<LoadingIndicator bind:loading={loading} />
+	<LoadingIndicator loading={loading} />
 	<section>
 		<p>
 			Hi! {referral} wants you to sponsor their pixeldrain account. This
@@ -107,10 +109,10 @@ const deny = () => {
 			choose 'Deny' then we will never show this pop-up again.
 		</p>
 		<div class="buttons">
-			<button class="button button_red" on:click={e => deny()}>
+			<button class="button button_red" onclick={e => deny()}>
 				Deny
 			</button>
-			<button class="button button_highlight" on:click={e => allow()}>
+			<button class="button button_highlight" onclick={e => allow()}>
 				Accept
 			</button>
 		</div>

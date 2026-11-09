@@ -6,16 +6,16 @@ import { color_by_name } from "util/Util.svelte";
 import ServerDiagnostics from "./ServerDiagnostics.svelte";
 import PeerTable from "./PeerTable.svelte";
 
-let graphViews
-let graphBandwidth
+let graphViews = $state()
+let graphBandwidth = $state()
 let graphTimeout = null
 
-let start_time = ""
-let end_time = ""
-let total_bandwidth = 0
-let total_bandwidth_paid = 0
-let total_views = 0
-let total_downloads = 0
+let start_time = $state("")
+let end_time = $state("")
+let total_bandwidth = $state(0)
+let total_bandwidth_paid = $state(0)
+let total_views = $state(0)
+let total_downloads = $state(0)
 const loadGraph = (minutes, interval, live) => {
 	if (graphTimeout !== null) { clearTimeout(graphTimeout) }
 	if (live) {
@@ -64,8 +64,8 @@ const loadGraph = (minutes, interval, live) => {
 
 // Load performance statistics
 
-let lastOrder;
-let status = {
+let lastOrder = $state();
+let status = $state({
 	cpu_profile_running_since: "",
 	db_latency: 0,
 	db_time: "",
@@ -93,9 +93,9 @@ let status = {
 	rate_limit_watcher_listeners: 0,
 	download_clients: 0,
 	download_connections: 0,
-}
-$: total_reads = status.local_reads + status.neighbour_reads + status.remote_reads
-$: total_read_size = status.local_read_size + status.neighbour_read_size + status.remote_read_size
+})
+let total_reads = $derived(status.local_reads + status.neighbour_reads + status.remote_reads)
+let total_read_size = $derived(status.local_read_size + status.neighbour_read_size + status.remote_read_size)
 
 function getStats(order) {
 	lastOrder = order
@@ -179,14 +179,14 @@ onDestroy(() => {
 	<h3>Bandwidth usage and file views</h3>
 </section>
 <div class="highlight_border" style="margin-bottom: 6px;">
-	<button on:click={() => loadGraph(1440, 1, true)}>Day 1m</button>
-	<button on:click={() => loadGraph(10080, 10, true)}>Week 10m</button>
-	<button on:click={() => loadGraph(43200, 60, true)}>Month 1h</button>
-	<button on:click={() => loadGraph(131400, 1440, false)}>Quarter 1d</button>
-	<button on:click={() => loadGraph(262800, 1440, false)}>Half-year 1d</button>
-	<button on:click={() => loadGraph(525600, 1440, false)}>Year 1d</button>
-	<button on:click={() => loadGraph(1051200, 1440, false)}>Two Years 1d</button>
-	<button on:click={() => loadGraph(2628000, 1440, false)}>Five Years 1d</button>
+	<button onclick={() => loadGraph(1440, 1, true)}>Day 1m</button>
+	<button onclick={() => loadGraph(10080, 10, true)}>Week 10m</button>
+	<button onclick={() => loadGraph(43200, 60, true)}>Month 1h</button>
+	<button onclick={() => loadGraph(131400, 1440, false)}>Quarter 1d</button>
+	<button onclick={() => loadGraph(262800, 1440, false)}>Half-year 1d</button>
+	<button onclick={() => loadGraph(525600, 1440, false)}>Year 1d</button>
+	<button onclick={() => loadGraph(1051200, 1440, false)}>Two Years 1d</button>
+	<button onclick={() => loadGraph(2628000, 1440, false)}>Five Years 1d</button>
 </div>
 <Chart bind:this={graphBandwidth} data_type="bytes" />
 <Chart bind:this={graphViews} data_type="number" />
@@ -199,7 +199,7 @@ onDestroy(() => {
 </div>
 
 <br/>
-<ServerDiagnostics running_since={status.cpu_profile_running_since} on:refresh={() => getStats(lastOrder)}/>
+<ServerDiagnostics running_since={status.cpu_profile_running_since} on_refresh={() => getStats(lastOrder)}/>
 
 <section>
 	<h3>Process stats</h3>
@@ -318,22 +318,22 @@ onDestroy(() => {
 			<thead>
 				<tr>
 					<td>
-						<button on:click={() => { getStats('query_name') }}>
+						<button onclick={() => { getStats('query_name') }}>
 							Query
 						</button>
 					</td>
 					<td>
-						<button style="cursor: pointer;" on:click={() => { getStats('calls') }}>
+						<button style="cursor: pointer;" onclick={() => { getStats('calls') }}>
 							Calls
 						</button>
 					</td>
 					<td>
-						<button style="cursor: pointer;" on:click={() => { getStats('average_duration') }}>
+						<button style="cursor: pointer;" onclick={() => { getStats('average_duration') }}>
 							Avg
 						</button>
 					</td>
 					<td>
-						<button style="cursor: pointer;" on:click={() => { getStats('total_duration') }}>
+						<button style="cursor: pointer;" onclick={() => { getStats('total_duration') }}>
 							Total
 						</button>
 					</td>

@@ -1,25 +1,17 @@
-<script>
+<script lang="ts">
+import { untrack } from "svelte";
 import CopyButton from "layout/CopyButton.svelte";
 import ThemePicker from "util/ThemePicker.svelte";
 import { domain_url } from "util/Util.svelte";
 import { file_type } from "./FileUtilities.svelte";
 import Persistence from "icons/Persistence.svelte";
 
-export let file = {
-	id: "",
-	mime_type: "",
-	get_href: "",
-	download_href: "",
-}
-export let list = {
-	id: "",
-}
+let { file, list }: { file: any; list: any } = $props();
 
-let tab = "iframe"
-let embed_html = ""
-let preview_area
+let tab = $state("iframe")
+let embed_html = $state("")
+let preview_area: HTMLDivElement = $state()
 
-$: update_file(file.id, list.id)
 let update_file = () => {
 	if (preview_area) {
 		preview_area.innerHTML = ""
@@ -90,7 +82,7 @@ let html_escape = s => {
 		replace(/'/g, "&#039;");
 }
 
-let example = false
+let example = $state(false)
 const toggle_example = () => {
 	example = !example
 	update_example()
@@ -102,6 +94,13 @@ const update_example = () => {
 		preview_area.innerHTML = ""
 	}
 }
+
+// Regenerate the embed code when another file or list is opened
+$effect(() => {
+	file.id
+	list.id
+	untrack(update_file)
+})
 </script>
 
 <div class="container">
@@ -126,12 +125,12 @@ const update_example = () => {
 		</p>
 	</div>
 	<div class="tab_bar">
-		<button on:click={embed_iframe} class:button_highlight={tab === "iframe"}>
+		<button onclick={embed_iframe} class:button_highlight={tab === "iframe"}>
 			<i class="icon">code</i>
 			IFrame
 		</button>
 		{#if file.id}
-			<button on:click={embed_hotlink} class:button_highlight={tab === "hotlink"}>
+			<button onclick={embed_hotlink} class:button_highlight={tab === "hotlink"}>
 				<i class="icon">code</i>
 				Hotlink
 			</button>
@@ -146,7 +145,7 @@ const update_example = () => {
 				available themes <a href="/appearance">here</a>.
 			</p>
 
-			<ThemePicker on:theme_change={e => set_style(e.detail)}></ThemePicker>
+			<ThemePicker on_theme_change={set_style}></ThemePicker>
 		{:else}
 			<h3>Direct link</h3>
 			<p>
@@ -170,7 +169,7 @@ const update_example = () => {
 			<textarea bind:value={embed_html} style="width: 99%; height: 4em;"></textarea>
 			<br/>
 			<CopyButton text={embed_html}>Copy HTML</CopyButton>
-			<button on:click={toggle_example} class:button_highlight={example}>
+			<button onclick={toggle_example} class:button_highlight={example}>
 				<i class="icon">visibility</i> Show example
 			</button>
 		</div>

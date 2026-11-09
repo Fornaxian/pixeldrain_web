@@ -4,12 +4,12 @@ import { formatDate } from "util/Formatting";
 import LoadingIndicator from "util/LoadingIndicator.svelte";
 import Button from "layout/Button.svelte";
 
-let loading = false
+let loading = $state(false)
 
 let year = 0
 let month = 0
-let month_str = ""
-let data = []
+let month_str = $state("")
+let data = $state([])
 
 const load_activity = async () => {
 	loading = true

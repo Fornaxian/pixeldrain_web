@@ -5,15 +5,15 @@ import { delete_user_email, put_user_email } from "lib/PixeldrainAPI";
 
 const max_addresses = 5
 
-let loading = false
-let success_message: SuccessMessage
+let loading = $state(false)
+let success_message: SuccessMessage = $state()
 
-let addresses: string[] = window.user.email_addresses || []
-let pending: string = window.user.email_address_pending || ""
-let new_address = ""
+let addresses: string[] = $state(window.user.email_addresses || [])
+let pending: string = $state(window.user.email_address_pending || "")
+let new_address = $state("")
 
 // An account needs at least one address, so the last one can't be removed
-$: removable = addresses.length > 1
+let removable = $derived(addresses.length > 1)
 
 const add = async () => {
 	loading = true
@@ -62,7 +62,7 @@ const remove = async (address: string) => {
 		please check your spam box.
 	</p>
 	{#if addresses.length < max_addresses}
-		<form on:submit|preventDefault={() => add()}>
+		<form onsubmit={e => {e.preventDefault(); add()}}>
 			<div class="form_row">
 				<span>Add address</span>
 				<input class="grow" bind:value={new_address} type="email"/>
@@ -86,7 +86,7 @@ const remove = async (address: string) => {
 		<div class="form_row">
 			<button class="shrink" type="button" disabled={!removable}
 				title={removable ? "Remove address" : "An account needs at least one e-mail address"}
-				on:click={() => remove(address)}>
+				onclick={() => remove(address)}>
 				<i class="icon">delete</i>
 			</button>
 			<div>{address}</div>
@@ -96,7 +96,7 @@ const remove = async (address: string) => {
 		<div class="form_row">
 			<button class="shrink" type="button"
 				title={removable ? "Remove address" : "An account needs at least one e-mail address"}
-				on:click={() => remove(pending)}>
+				onclick={() => remove(pending)}>
 				<i class="icon">delete</i>
 			</button>
 			<div>{pending} (pending verification)</div>

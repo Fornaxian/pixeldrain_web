@@ -17,26 +17,26 @@ type Reporter = {
 	last_message_html: string,
 }
 
-let loading = true
-let reporters: Reporter[] = []
-$: reporters_pending = reporters.reduce((acc, val) => {
+let loading = $state(true)
+let reporters: Reporter[] = $state([])
+let reporters_pending = $derived(reporters.reduce((acc, val) => {
 	if (val.status === "pending") {
 		acc.push(val)
 	}
 	return acc
-}, [])
-$: reporters_trusted = reporters.reduce((acc, val) => {
+}, []))
+let reporters_trusted = $derived(reporters.reduce((acc, val) => {
 	if (val.status === "trusted") {
 		acc.push(val)
 	}
 	return acc
-}, [])
-$: reporters_rejected = reporters.reduce((acc, val) => {
+}, []))
+let reporters_rejected = $derived(reporters.reduce((acc, val) => {
 	if (val.status === "rejected") {
 		acc.push(val)
 	}
 	return acc
-}, [])
+}, []))
 
 const get_reporters = async () => {
 	loading = true;
@@ -53,11 +53,11 @@ const get_reporters = async () => {
 	}
 };
 
-let edit_button: HTMLButtonElement
-let creating = false
-let new_reporter_from_address: HTMLInputElement
-let new_reporter_name: HTMLInputElement
-let new_reporter_status = "trusted"
+let edit_button: HTMLButtonElement = $state()
+let creating = $state(false)
+let new_reporter_from_address: HTMLInputElement = $state()
+let new_reporter_name: HTMLInputElement = $state()
+let new_reporter_status = $state("trusted")
 
 const create_reporter = async () => {
 	if (!new_reporter_from_address.value) {
@@ -116,7 +116,6 @@ const delete_reporter = async (reporter: Reporter) => {
 	const index = reporters.indexOf(reporter)
 	if (index > -1) {
 		reporters.splice(index, 1)
-		reporters = reporters
 	}
 
 	try {
@@ -142,16 +141,16 @@ onMount(get_reporters);
 <section>
 	<div class="toolbar" style="text-align: left;">
 		<div class="toolbar_spacer"></div>
-		<button on:click={() => get_reporters()}>
+		<button onclick={() => get_reporters()}>
 			<i class="icon">refresh</i>
 		</button>
-		<button bind:this={edit_button} class:button_highlight={creating} on:click={() => {creating = !creating}}>
+		<button bind:this={edit_button} class:button_highlight={creating} onclick={() => {creating = !creating}}>
 			<i class="icon">create</i> Add abuse reporter
 		</button>
 	</div>
 	{#if creating}
 		<div class="highlight_shaded">
-			<form on:submit|preventDefault={create_reporter}>
+			<form onsubmit={e => {e.preventDefault(); create_reporter()}}>
 				<div class="form">
 					<label for="field_from_address">E-mail address</label>
 					<input id="field_from_address" type="text" bind:this={new_reporter_from_address}/>
@@ -177,29 +176,29 @@ onMount(get_reporters);
 <h2>Pending reporters ({reporters_pending.length})</h2>
 <EmailReportersTable
 	reporters={reporters_pending}
-	on:edit={e => edit_reporter(e.detail)}
-	on:approve={e => approve_reporter(e.detail)}
-	on:spam={e => spam_reporter(e.detail)}
-	on:delete={e => delete_reporter(e.detail)}>
+	on_edit={edit_reporter}
+	on_approve={approve_reporter}
+	on_spam={spam_reporter}
+	on_delete={delete_reporter}>
 </EmailReportersTable>
 
 
 <h2>Trusted reporters ({reporters_trusted.length})</h2>
 <EmailReportersTable
 	reporters={reporters_trusted}
-	on:edit={e => edit_reporter(e.detail)}
-	on:approve={e => approve_reporter(e.detail)}
-	on:spam={e => spam_reporter(e.detail)}
-	on:delete={e => delete_reporter(e.detail)}>
+	on_edit={edit_reporter}
+	on_approve={approve_reporter}
+	on_spam={spam_reporter}
+	on_delete={delete_reporter}>
 </EmailReportersTable>
 
 <h2>Rejected reporters ({reporters_rejected.length})</h2>
 <EmailReportersTable
 	reporters={reporters_rejected}
-	on:edit={e => edit_reporter(e.detail)}
-	on:approve={e => approve_reporter(e.detail)}
-	on:spam={e => spam_reporter(e.detail)}
-	on:delete={e => delete_reporter(e.detail)}>
+	on_edit={edit_reporter}
+	on_approve={approve_reporter}
+	on_spam={spam_reporter}
+	on_delete={delete_reporter}>
 </EmailReportersTable>
 <br/>
 

@@ -8,21 +8,21 @@ import { onMount } from "svelte";
 import Persistence from "icons/Persistence.svelte";
 import ToggleButton from "layout/ToggleButton.svelte";
 
-let loading = false
-let success_message
+let loading = $state(false)
+let success_message = $state()
 
-let file_picker
+let file_picker = $state()
 let currently_selecting = "" // header, background or footer
 
-let theme = ""
-let header_image = ""
-let header_link = ""
-let background_image = ""
-let footer_image = ""
-let footer_link = ""
-let affiliate_prompt = false
-let disable_download_button = false
-let disable_share_button = false
+let theme = $state("")
+let header_image = $state("")
+let header_link = $state("")
+let background_image = $state("")
+let footer_image = $state("")
+let footer_link = $state("")
+let affiliate_prompt = $state(false)
+let disable_download_button = $state(false)
+let disable_share_button = $state(false)
 
 let select_file = t => {
 	currently_selecting = t
@@ -134,7 +134,7 @@ onMount(() => {
 		</p>
 		<ThemePicker
 			theme={theme}
-			on:theme_change={e => {theme = e.detail; save()}}>
+			on_theme_change={t => {theme = t; save()}}>
 		</ThemePicker>
 	</fieldset>
 
@@ -145,17 +145,17 @@ onMount(() => {
 			larger. You can also add a link to open when the visitor clicks the
 			image. The link needs to start with 'https://'.
 		</p>
-		<button on:click={() => {select_file("header")}}>
+		<button onclick={() => {select_file("header")}}>
 			<i class="icon">add_photo_alternate</i>
 			Select header image
 		</button>
-		<button on:click={() => {header_image = ""; save()}}>
+		<button onclick={() => {header_image = ""; save()}}>
 			<i class="icon">close</i>
 			Remove
 		</button>
 		<br/>
 		Header image link:<br/>
-		<form class="form_row" on:submit|preventDefault={save}>
+		<form class="form_row" onsubmit={e => {e.preventDefault(); save()}}>
 			<input class="grow" bind:value={header_link} type="text" placeholder="https://"/>
 			<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
 		</form>
@@ -175,11 +175,11 @@ onMount(() => {
 			the file below 1 MB to not harm page loading times. Using a JPEG image
 			with a quality value of 60 is usually good enough.
 		</p>
-		<button on:click={() => {select_file("background")}}>
+		<button onclick={() => {select_file("background")}}>
 			<i class="icon">add_photo_alternate</i>
 			Select background image
 		</button>
-		<button on:click={() => {background_image = ""; save()}}>
+		<button onclick={() => {background_image = ""; save()}}>
 			<i class="icon">close</i>
 			Remove
 		</button>
@@ -196,17 +196,17 @@ onMount(() => {
 			Will be shown below the file. Maximum height is 90px. Will be shrunk if
 			larger.
 		</p>
-		<button on:click={() => {select_file("footer")}}>
+		<button onclick={() => {select_file("footer")}}>
 			<i class="icon">add_photo_alternate</i>
 			Select footer image
 		</button>
-		<button on:click={() => {footer_image = ""; save()}}>
+		<button onclick={() => {footer_image = ""; save()}}>
 			<i class="icon">close</i>
 			Remove
 		</button>
 		<br/>
 		Footer image link:<br/>
-		<form class="form_row" on:submit|preventDefault={save}>
+		<form class="form_row" onsubmit={e => {e.preventDefault(); save()}}>
 			<input class="grow" bind:value={footer_link} type="text" placeholder="https://"/>
 			<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
 		</form>
@@ -258,7 +258,7 @@ onMount(() => {
 
 <FilePicker
 	bind:this={file_picker}
-	on:files={e => {add_file(e.detail)}}
+	on_files={add_file}
 	multi_select={false}
 	title="Select image file"
 />

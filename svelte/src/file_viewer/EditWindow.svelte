@@ -1,37 +1,19 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import Spinner from "util/Spinner.svelte"
-let dispatch = createEventDispatcher()
 
-export let file = {
-	id: "",
-	name: "",
-	get_href: "",
-	can_edit: false,
-}
-export let list = {
-	id: "",
-	title: "",
-	files: [],
-	can_edit: false,
-	info_href: "",
-}
+let { file, list, on_reload }: {
+	file: any;
+	list: any;
+	on_reload: () => void;
+} = $props();
 
-let loading = false
-let result_success = false
-let result_text = ""
+let loading = $state(false)
+let result_success = $state(false)
+let result_text = $state("")
 
-let file_name = ""
-$: update_file(file.id)
-let update_file = () => {
-	file_name = file.name
-}
-
-let list_name = ""
-$: update_list(list.id)
-let update_list = () => {
-	list_name = list.title
-}
+// The inputs reset to the current names when another file or album is opened
+let file_name = $derived(file.name)
+let list_name = $derived(list.title)
 
 let rename_file = async e => {
 	e.preventDefault()
@@ -54,7 +36,7 @@ let rename_file = async e => {
 		result_text = "Could not change file name: " + err
 	} finally {
 		loading = false
-		dispatch("reload")
+		on_reload()
 	}
 }
 
@@ -110,7 +92,7 @@ let rename_list = async e => {
 		result_text = "Could not change album name: " + err
 	} finally {
 		loading = false
-		dispatch("reload")
+		on_reload()
 	}
 }
 
@@ -135,7 +117,6 @@ let delete_list = async e => {
 		loading = false
 	}
 }
-
 </script>
 
 <div class="indent">
@@ -153,7 +134,7 @@ let delete_list = async e => {
 	{#if list.can_edit}
 		<h3>Edit album</h3>
 		Name:<br/>
-		<form on:submit={rename_list} style="display: flex;">
+		<form onsubmit={rename_list} style="display: flex;">
 			<input bind:value={list_name} type="text" style="flex: 1 1 auto"/>
 			<button type="submit" style="flex: 0 0 auto" class="button_highlight">
 				<i class="icon">save</i> Save
@@ -164,7 +145,7 @@ let delete_list = async e => {
 			When you delete an album the files in the album will not be deleted,
 			only the album itself.
 		</p>
-		<button on:click={delete_list} class="button_red">
+		<button onclick={delete_list} class="button_red">
 			<i class="icon small">delete</i> Delete album
 		</button>
 	{/if}
@@ -172,7 +153,7 @@ let delete_list = async e => {
 	{#if file.can_edit}
 		<h3>Edit file</h3>
 		Name:<br/>
-		<form on:submit={rename_file} style="display: flex;">
+		<form onsubmit={rename_file} style="display: flex;">
 			<input bind:value={file_name} type="text" style="flex: 1 1 auto"/>
 			<button type="submit" style="flex: 0 0 auto" class="button_highlight">
 				<i class="icon">save</i> Save
@@ -185,7 +166,7 @@ let delete_list = async e => {
 			stop working. The file will also disappear from any
 			lists it's contained in.
 		</p>
-		<button on:click={delete_file} class="button_red">
+		<button onclick={delete_file} class="button_red">
 			<i class="icon small">delete</i> Delete file
 		</button>
 	{/if}

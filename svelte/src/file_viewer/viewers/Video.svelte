@@ -1,12 +1,16 @@
-<script>
-import { onMount, createEventDispatcher, tick } from "svelte";
+<script lang="ts">
+import { onMount, tick } from "svelte";
 import { video_position } from "lib/VideoPosition";
 import BandwidthUsage from "./BandwidthUsage.svelte";
 import IconBlock from "layout/IconBlock.svelte";
-let dispatch = createEventDispatcher()
 
-export let is_list = false
-let file = {
+let { is_list = false, on_prev, on_next, on_download }: {
+	is_list?: boolean;
+	on_prev: () => void;
+	on_next: () => void;
+	on_download: () => void;
+} = $props();
+let file = $state({
 	id: "",
 	size: 0,
 	name: "",
@@ -16,13 +20,13 @@ let file = {
 	allow_video_player: true,
 	show_ads: false,
 	download_speed_limit: 0,
-}
+})
 
-$: loop = file.name.includes(".loop.")
+let loop = $derived(file.name.includes(".loop."))
 
-let player
-let playing = false
-let video_reload = false
+let player: HTMLVideoElement = $state()
+let playing = $state(false)
+let video_reload = $state(false)
 let media_session = false
 
 export const set_file = async f => {
@@ -66,14 +70,11 @@ onMount(() => {
 		media_session = true
 		navigator.mediaSession.setActionHandler('play', () => player.play());
 		navigator.mediaSession.setActionHandler('pause', () => player.pause());
-		navigator.mediaSession.setActionHandler('stop', () => player.stop());
-		navigator.mediaSession.setActionHandler('previoustrack', () => dispatch("prev", {}));
-		navigator.mediaSession.setActionHandler('nexttrack', () => dispatch("next", {}));
+		navigator.mediaSession.setActionHandler('stop', () => player.pause());
+		navigator.mediaSession.setActionHandler('previoustrack', () => on_prev());
+		navigator.mediaSession.setActionHandler('nexttrack', () => on_next());
 	}
 })
-
-const download = () => { dispatch("download", {}) }
-
 
 const fullscreen = () => {
 	if (document.fullscreenElement === null) {
@@ -86,10 +87,10 @@ const fullscreen = () => {
 const keypress = e => {
 	if (
 		(e.ctrlKey || e.altKey || e.metaKey) ||
-		(document.activeElement.type && (
-			document.activeElement.type === "text" ||
-			document.activeElement.type === "email" ||
-			document.activeElement.type === "textarea"))
+		((document.activeElement as any).type && (
+			(document.activeElement as any).type === "text" ||
+			(document.activeElement as any).type === "email" ||
+			(document.activeElement as any).type === "textarea"))
 	) {
 		// The first check is to prevent our keybindings from triggering then
 		// the user uses a global keybind. The second check is to prevent the
@@ -111,7 +112,7 @@ const video_keydown = e => {
 }
 </script>
 
-<svelte:window on:keypress={keypress} />
+<svelte:window onkeypress={keypress} />
 
 {#if file.allow_video_player}
 	{#if !video_reload}
@@ -121,8 +122,7 @@ const video_keydown = e => {
 				file.mime_type === "video/x-matroska" ||
 				file.mime_type === "video/matroska" ||
 				file.mime_type === "video/quicktime" ||
-				file.mime_type === "video/x-ms-asf"
-			}
+				file.mime_type === "video/x-ms-asf"}
 				<div class="compatibility_warning">
 					This video file type is not compatible with every web
 					browser. If the video fails to play you can try downloading
@@ -131,17 +131,17 @@ const video_keydown = e => {
 			{/if}
 
 			<div class="player_and_controls">
-				<!-- svelte-ignore a11y-media-has-caption -->
+				<!-- svelte-ignore a11y_media_has_caption -->
 				<video
 					bind:this={player}
 					controls
 					playsinline
 					loop={loop}
 					class="player"
-					on:pause={() => playing = false }
-					on:play={() => playing = true }
-					on:ended={() => dispatch("next", {})}
-					on:keydown={video_keydown}
+					onpause={() => playing = false}
+					onplay={() => playing = true}
+					onended={on_next}
+					onkeydown={video_keydown}
 					use:video_position={() => file.id}
 				>
 					<source src={file.get_href} type={file.mime_type} />
@@ -150,37 +150,37 @@ const video_keydown = e => {
 				<div class="controls">
 					<div class="spacer"></div>
 					{#if is_list}
-						<button on:click={() => dispatch("prev") }>
+						<button onclick={on_prev}>
 							<i class="icon">skip_previous</i>
 						</button>
 					{/if}
-					<button on:click={() => seek(-10)}>
+					<button onclick={() => seek(-10)}>
 						<i class="icon">replay_10</i>
 					</button>
-					<button on:click={toggle_playback} class="button_highlight">
+					<button onclick={toggle_playback} class="button_highlight">
 						{#if playing}
 							<i class="icon">pause</i>
 						{:else}
 							<i class="icon">play_arrow</i>
 						{/if}
 					</button>
-					<button on:click={() => seek(10)}>
+					<button onclick={() => seek(10)}>
 						<i class="icon">forward_10</i>
 					</button>
 					{#if is_list}
-						<button on:click={() => dispatch("next") }>
+						<button onclick={on_next}>
 							<i class="icon">skip_next</i>
 						</button>
 					{/if}
 					<div style="width: 16px; height: 8px;"></div>
-					<button on:click={toggle_mute} class:button_red={player && player.muted}>
+					<button onclick={toggle_mute} class:button_red={player && player.muted}>
 						{#if player && player.muted}
 							<i class="icon">volume_off</i>
 						{:else}
 							<i class="icon">volume_up</i>
 						{/if}
 					</button>
-					<button on:click={fullscreen}>
+					<button onclick={fullscreen}>
 						<i class="icon">fullscreen</i>
 					</button>
 					<div class="spacer"></div>
@@ -200,7 +200,7 @@ const video_keydown = e => {
 		computer without an account.
 
 		<br/>
-		<button on:click={download}>
+		<button onclick={on_download}>
 			<i class="icon">download</i> Download
 		</button>
 		<a href="/login" class="button">

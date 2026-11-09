@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 import Euro from "util/Euro.svelte";
 import { formatDataVolume, formatDate } from "util/Formatting";
 
-export let row = {}
+let { row = {} }: { row?: any } = $props();
 </script>
 
 <table>

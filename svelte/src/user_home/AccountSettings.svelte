@@ -8,7 +8,7 @@ import EmailAddresses from "./EmailAddresses.svelte";
 import { put_user } from "lib/PixeldrainAPI";
 
 let affiliate_link = window.location.protocol+"//"+window.location.host + "?ref=" + encodeURIComponent(window.user.username)
-let affiliate_deny = false
+let affiliate_deny = $state(false)
 onMount(() => {
 	affiliate_deny = localStorage.getItem("affiliate_deny") === "1"
 })

@@ -1,15 +1,15 @@
-<script>
-import { createEventDispatcher } from "svelte";
-
-let dispatch = createEventDispatcher()
-
-export let files = []
-let file_list_div
+<script lang="ts">
+let { files = [], on_set_file, on_toggle_gallery }: {
+	files?: any[];
+	on_set_file: (index: number) => void;
+	on_toggle_gallery: () => void;
+} = $props();
+let file_list_div: HTMLDivElement = $state()
 let selected_file_index = 0
 
-export const next = () => dispatch("set_file", selected_file_index+1)
-export const prev = () => dispatch("set_file", selected_file_index-1)
-export const toggle_gallery = () => dispatch("toggle_gallery")
+export const next = () => on_set_file(selected_file_index+1)
+export const prev = () => on_set_file(selected_file_index-1)
+export const toggle_gallery = () => on_toggle_gallery()
 
 let history = []
 export const rand_item = () => {
@@ -20,7 +20,7 @@ export const rand_item = () => {
 		console.log("rand is " + rand)
 	} while(history.indexOf(rand) > -1)
 
-	dispatch("set_file", rand)
+	on_set_file(rand)
 }
 
 export const set_item = idx => {
@@ -29,7 +29,6 @@ export const set_item = idx => {
 	files.forEach((f, i) => {
 		f.selected = selected_file_index === i
 	})
-	files = files
 
 	// Add item to history
 	if(history.length >= (files.length - 6)){
@@ -38,7 +37,7 @@ export const set_item = idx => {
 	history.push(idx)
 
 	// Smoothly scroll the navigator to the correct element
-	let selected_file = file_list_div.children[idx]
+	let selected_file = file_list_div.children[idx] as HTMLElement
 	let cst = window.getComputedStyle(selected_file)
 	let itemWidth = selected_file.offsetWidth + parseInt(cst.marginLeft) + parseInt(cst.marginRight)
 
@@ -61,7 +60,7 @@ export const set_item = idx => {
 </script>
 
 <div class="nav_container">
-	<button class="nav_button" on:click={toggle_gallery} title="Opens a gallery view of the album">
+	<button class="nav_button" onclick={toggle_gallery} title="Opens a gallery view of the album">
 		<i class="icon">photo_library</i>
 		Gallery
 	</button>

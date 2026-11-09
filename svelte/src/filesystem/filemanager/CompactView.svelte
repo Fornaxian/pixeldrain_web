@@ -1,23 +1,29 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import { fs_encode_path, fs_node_icon } from "filesystem/FilesystemAPI"
 import type { FSNavigator } from "filesystem/FSNavigator";
-import { FileAction } from "./FileManagerLib";
+import { FileAction, type FileEvent } from "./FileManagerLib";
 
-let dispatch = createEventDispatcher()
-
-export let nav: FSNavigator
-export let show_hidden = false
-export let large_icons = false
-export let hide_edit = false
+let {
+	nav,
+	on_file,
+	show_hidden = false,
+	large_icons = false,
+	hide_edit = false
+}: {
+	nav: FSNavigator;
+	on_file: (e: FileEvent) => void;
+	show_hidden?: boolean;
+	large_icons?: boolean;
+	hide_edit?: boolean;
+} = $props();
 </script>
 
 <div class="directory">
 	{#each $nav.children as child, index (child.path)}
 		<a
 			href={"/d"+fs_encode_path(child.path)}
-			on:click={e => dispatch("file", {index: index, action: FileAction.Click, original: e})}
-			on:contextmenu={e => dispatch("file", {index: index, action: FileAction.Context, original: e})}
+			onclick={e => on_file({index: index, action: FileAction.Click, original: e})}
+			oncontextmenu={e => on_file({index: index, action: FileAction.Context, original: e})}
 			class="node"
 			class:node_selected={child.fm_selected}
 			class:hidden={child.name.startsWith(".") && !show_hidden}
@@ -27,9 +33,10 @@ export let hide_edit = false
 				{child.name}
 			</div>
 			{#if child.id}
+				<!-- svelte-ignore node_invalid_placement_ssr -->
 				<a
 					href="/d/{child.id}"
-					on:click={e => dispatch("file", {index: index, action: FileAction.Share, original: e})}
+					onclick={e => on_file({index: index, action: FileAction.Share, original: e})}
 					class="button flat action_button"
 				>
 					<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
@@ -39,7 +46,7 @@ export let hide_edit = false
 			{#if $nav.permissions.write && !hide_edit}
 				<button
 					class="action_button flat"
-					on:click={e => dispatch("file", {index: index, action: FileAction.Edit, original: e})}
+					onclick={e => on_file({index: index, action: FileAction.Edit, original: e})}
 				>
 					<i class="icon">edit</i>
 				</button>
@@ -47,7 +54,7 @@ export let hide_edit = false
 
 			<button
 				class="action_button flat"
-				on:click={e => dispatch("file", {index: index, action: FileAction.Download, original: e})}
+				onclick={e => on_file({index: index, action: FileAction.Download, original: e})}
 			>
 				<i class="icon">save</i>
 			</button>

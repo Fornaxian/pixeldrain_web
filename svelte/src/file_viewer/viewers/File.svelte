@@ -1,13 +1,15 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import BandwidthUsage from "./BandwidthUsage.svelte";
 import IconBlock from "layout/IconBlock.svelte";
 import FileTitle from "layout/FileTitle.svelte";
 import { formatDataVolume } from "util/Formatting";
-let dispatch = createEventDispatcher()
+let { on_download, children }: {
+	on_download: () => void;
+	children?: import('svelte').Snippet;
+} = $props();
 
 export const set_file = f => file = f
-let file = {
+let file = $state({
 	id: "",
 	size: 0,
 	name: "",
@@ -15,19 +17,19 @@ let file = {
 	icon_href: "",
 	show_ads: false,
 	download_speed_limit: 0,
-}
+})
 </script>
 
 <FileTitle title={file.name}/>
 
-<slot></slot>
+{@render children?.()}
 
 <IconBlock icon_href={file.icon_href}>
 	Type: {file.mime_type}<br/>
 	Size: {formatDataVolume(file.size, 3)}<br/>
 	No preview is available for this file type. Download to view it locally.
 	<br/>
-	<button class="button_highlight" on:click={() => {dispatch("download")}}>
+	<button class="button_highlight" onclick={on_download}>
 		<i class="icon">download</i>
 		<span>Download</span>
 	</button>

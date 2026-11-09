@@ -1,10 +1,13 @@
-<script>
-export let width = "750px"
-export let center = false
+<script lang="ts">
+let { width = "750px", center = false, children }: {
+	width?: string;
+	center?: boolean;
+	children?: import('svelte').Snippet;
+} = $props();
 </script>
 
 <div class="block" class:center style="width: {width};">
-	<slot></slot>
+	{@render children?.()}
 </div>
 
 <style>

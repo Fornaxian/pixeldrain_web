@@ -2,7 +2,9 @@
 import { country_name, type Invoice } from "lib/AdminAPI";
 import Euro from "util/Euro.svelte";
 
-export let invoices: Invoice[] = []
+let { invoices = [] }: {
+	invoices?: Invoice[];
+} = $props();
 
 type Country = {
 	vat: number,
@@ -11,15 +13,6 @@ type Country = {
 	count: number,
 	vat_fraction: number,
 }
-
-let totals: {
-	count: number,
-	vat: number,
-	amount: number,
-	fee: number,
-}
-
-$: per_country = update_countries(invoices)
 
 const update_countries = (invoices: Invoice[]) => {
 	let per_country: {[id: string]: Country} = {
@@ -31,7 +24,7 @@ const update_countries = (invoices: Invoice[]) => {
 			vat_fraction: .21,
 		}
 	}
-	totals = {
+	let totals = {
 		count: 0,
 		vat: 0,
 		amount: 0,
@@ -70,26 +63,29 @@ const update_countries = (invoices: Invoice[]) => {
 		{}
 	)
 
-	return per_country
+	return {per_country, totals}
 }
+let { per_country, totals } = $derived(update_countries(invoices))
 </script>
 
 <section>
 	{#if per_country["NL"] && totals}
 		<h2>Summary</h2>
 		<table style="width: auto;">
-			<tr>
-				<td>Total PayPal earnings -fees</td>
-				<td><Euro amount={totals.vat+totals.amount-totals.fee}/></td>
-			</tr>
-			<tr>
-				<td>Total VAT NL</td>
-				<td><Euro amount={per_country["NL"].vat}/></td>
-			</tr>
-			<tr>
-				<td>Total VAT OSS</td>
-				<td><Euro amount={totals.vat-per_country["NL"].vat}/></td>
-			</tr>
+			<tbody>
+				<tr>
+					<td>Total PayPal earnings -fees</td>
+					<td><Euro amount={totals.vat+totals.amount-totals.fee}/></td>
+				</tr>
+				<tr>
+					<td>Total VAT NL</td>
+					<td><Euro amount={per_country["NL"].vat}/></td>
+				</tr>
+				<tr>
+					<td>Total VAT OSS</td>
+					<td><Euro amount={totals.vat-per_country["NL"].vat}/></td>
+				</tr>
+			</tbody>
 		</table>
 
 		<h2>Accounting information</h2>

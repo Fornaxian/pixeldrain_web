@@ -1,9 +1,11 @@
 <script lang="ts">
 import type { FSNodeProperties } from "filesystem/FilesystemAPI";
 
-export let properties: FSNodeProperties = {} as FSNodeProperties
+let { properties = $bindable({} as FSNodeProperties) }: {
+	properties?: FSNodeProperties;
+} = $props();
 
-let current_theme = -1
+let current_theme = $state(-1)
 
 const set_theme = (index: number) => {
 	current_theme = index
@@ -71,7 +73,7 @@ const themes = [
 </script>
 
 {#each themes as theme, index (theme.name)}
-	<button class:button_highlight={current_theme === index} on:click={() => {set_theme(index)}}>
+	<button class:button_highlight={current_theme === index} onclick={() => {set_theme(index)}}>
 		{theme.name}
 	</button>
 {/each}

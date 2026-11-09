@@ -1,9 +1,9 @@
 <script>
 import { onMount } from "svelte";
 
-let patreon_result = ""
-let patreon_message = ""
-let patreon_error = ""
+let patreon_result = $state("")
+let patreon_message = $state("")
+let patreon_error = $state("")
 
 onMount(() => {
 	if (window.location.hash.startsWith("#")) {
@@ -67,7 +67,7 @@ onMount(() => {
 				cause issues with the authentication process. Try linking your
 				subscription in <a
 				href="https://www.mozilla.org/firefox/">Firefox</a> for example.
-			<p/>
+			</p>
 			<p>
 				If the information above does not solve your issue then please
 				contact me on <a

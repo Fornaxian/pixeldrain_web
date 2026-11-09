@@ -8,10 +8,12 @@ import Reddit from "icons/Reddit.svelte";
 import { formatDataVolumeBits } from "util/Formatting";
 import { get_endpoint, get_hostname } from "lib/PixeldrainAPI";
 
-export let nobg = false
-let server_tx = 0
-let cache_tx = 0
-let storage_tx = 0
+let { nobg = false }: {
+	nobg?: boolean;
+} = $props();
+let server_tx = $state(0)
+let cache_tx = $state(0)
+let storage_tx = $state(0)
 onMount(async () => {
 	try {
 		const resp = await fetch(get_endpoint()+"/misc/cluster_speed")

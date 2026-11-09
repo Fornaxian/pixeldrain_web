@@ -8,13 +8,13 @@ import SharingOptions from "./SharingOptions.svelte";
 import AccessControl from "./AccessControl.svelte";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-export let nav: FSNavigator
-let file: FSNode = {} as FSNode
-let options: NodeOptions = {} as NodeOptions
+let file: FSNode = $state({} as FSNode)
+let options: NodeOptions = $state({} as NodeOptions)
 
-let custom_css = ""
-
-export let visible: boolean
+let { nav, visible = $bindable() }: {
+	nav: FSNavigator;
+	visible: boolean;
+} = $props();
 
 // Open the edit window. Argument 1 is the file to edit, 2 is whether the file
 // should be opened after the user finishes editing and 3 is the default tab
@@ -26,7 +26,7 @@ export const edit = (f: FSNode, oae = false, open_tab = "") => {
 		tab = open_tab
 	}
 
-	console.log("Editing file", file)
+	console.log("Editing file", $state.snapshot(file))
 
 	// We save the name in a separate field because we need both the original
 	// name and the new name for the rename operation
@@ -53,20 +53,16 @@ export const edit = (f: FSNode, oae = false, open_tab = "") => {
 	}
 
 	branding_enabled = options.branding_enabled === "true"
-	if (branding_enabled) {
-		custom_css = branding_from_node(file)
-	} else {
-		custom_css = ""
-	}
 
 	visible = true
 }
 
-let tab = "file"
-let open_after_edit = false
+let tab = $state("file")
+let open_after_edit = $state(false)
 
-let new_name = ""
-let branding_enabled = false
+let new_name = $state("")
+let branding_enabled = $state(false)
+let custom_css = $derived(branding_enabled ? branding_from_node(file) : "")
 
 const save = async (keep_editing = false) => {
 	console.debug("Saving file", file.path)
@@ -114,47 +110,46 @@ const save = async (keep_editing = false) => {
 
 <Modal bind:visible={visible} title="Edit {file.name}" width="800px" form="edit_form" style="color: var(--body_text_color); {custom_css}">
 	<div class="tab_bar">
-		<button class:button_highlight={tab === "file"} on:click={() => tab = "file"}>
+		<button class:button_highlight={tab === "file"} onclick={() => tab = "file"}>
 			<i class="icon">edit</i>
 			Properties
 		</button>
-		<button class:button_highlight={tab === "share"} on:click={() => tab = "share"}>
+		<button class:button_highlight={tab === "share"} onclick={() => tab = "share"}>
 			<i class="icon">share</i>
 			Sharing
 		</button>
 		{#if options.shared && $nav.permissions.owner}
-			<button class:button_highlight={tab === "access"} on:click={() => tab = "access"}>
+			<button class:button_highlight={tab === "access"} onclick={() => tab = "access"}>
 				<i class="icon">key</i>
 				Access control
 			</button>
 		{/if}
-		<button class:button_highlight={tab === "branding"} on:click={() => tab = "branding"}>
+		<button class:button_highlight={tab === "branding"} onclick={() => tab = "branding"}>
 			<i class="icon">palette</i>
 			Branding
 		</button>
 	</div>
 
-	<form id="edit_form" on:submit|preventDefault={() => save(false)}></form>
+	<form id="edit_form" onsubmit={e => {e.preventDefault(); save(false)}}></form>
 
 	<div class="tab_content">
 		{#if tab === "file"}
 			<FileOptions
 				nav={nav}
-				bind:file
+				{file}
 				bind:new_name
 				bind:visible
-				bind:open_after_edit
+				{open_after_edit}
 			/>
 		{:else if tab === "share"}
-			<SharingOptions bind:file bind:options on:save={() => save(true)} />
+			<SharingOptions {file} bind:options on_save={() => save(true)} />
 		{:else if tab === "access"}
 			<AccessControl bind:options />
 		{:else if tab === "branding"}
 			<BrandingOptions
 				bind:enabled={branding_enabled}
 				bind:options={options}
-				bind:file
-				on:style_change={e => custom_css = branding_from_node(file)}
+				{file}
 			/>
 		{/if}
 	</div>

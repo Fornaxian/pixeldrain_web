@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"lib": [
-			"es2017",
+			"es2020",
 			"dom"
 		],
 		"paths": {
@@ -10,7 +10,7 @@
 			]
 		},
 		"verbatimModuleSyntax": true,
-		"target": "ES2017",
+		"target": "ES2020",
 		"noUnusedLocals": true,
 		"module": "preserve",
 		"moduleResolution": "bundler",

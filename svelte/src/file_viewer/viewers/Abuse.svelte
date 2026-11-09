@@ -1,20 +1,19 @@
-<script>
-import { createEventDispatcher } from "svelte";
+<script lang="ts">
 import IconBlock from "layout/IconBlock.svelte";
 import TextBlock from "layout/TextBlock.svelte"
 import FileTitle from "layout/FileTitle.svelte";
 
-let dispatch = createEventDispatcher()
+let { on_download }: { on_download: () => void } = $props();
 
 export const set_file = f => file = f
-let file = {
+let file = $state({
 	id: "",
 	name: "",
 	abuse_type: "",
 	abuse_reporter_name: "",
 	can_download: false,
 	icon_href: "",
-}
+})
 </script>
 
 <FileTitle title={file.name}/>
@@ -51,7 +50,7 @@ let file = {
 		This file cannot be shared, but since you are the uploader of the file
 		you can still download it.
 		<br/>
-		<button class="button_highlight" on:click={() => {dispatch("download")}}>
+		<button class="button_highlight" onclick={on_download}>
 			<i class="icon">download</i>
 			<span>Download</span>
 		</button>

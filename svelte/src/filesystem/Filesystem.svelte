@@ -16,13 +16,13 @@ import { stats } from "lib/StatsSocket"
 import { css_from_path } from "filesystem/edit_window/Branding";
 import AffiliatePrompt from "user_home/AffiliatePrompt.svelte";
 
-let file_viewer: HTMLDivElement
-let file_preview: FilePreview
-let toolbar: Toolbar
-let upload_widget: FSUploadWidget
-let details_visible = false
-let edit_window: EditWindow
-let edit_visible = false
+let file_viewer: HTMLDivElement = $state()
+let file_preview: FilePreview = $state()
+let toolbar: Toolbar = $state()
+let upload_widget: FSUploadWidget = $state()
+let details_visible = $state(false)
+let edit_window: EditWindow = $state()
+let edit_visible = $state(false)
 
 const loading = writable(true)
 const nav = new FSNavigator(true)
@@ -71,7 +71,7 @@ const keydown = (e: KeyboardEvent) => {
 			fs_download(nav.base)
 			break;
 		case "r":
-			nav.shuffle = !nav.shuffle
+			toolbar.toggle_shuffle()
 			break;
 		case "f": // F fullscreen
 			if (toolbar) {
@@ -127,7 +127,7 @@ const keydown = (e: KeyboardEvent) => {
 };
 </script>
 
-<svelte:window on:keydown={keydown} />
+<svelte:window onkeydown={keydown} />
 
 <div bind:this={file_viewer} class="file_viewer">
 	<div class="headerbar">
@@ -143,8 +143,8 @@ const keydown = (e: KeyboardEvent) => {
 			file_preview={file_preview}
 			bind:details_visible={details_visible}
 			edit_window={edit_window}
-			bind:edit_visible={edit_visible}
-			on:download={() => fs_download(nav.base)}
+			edit_visible={edit_visible}
+			on_download={() => fs_download(nav.base)}
 		/>
 
 		<div class="file_preview">
@@ -153,9 +153,9 @@ const keydown = (e: KeyboardEvent) => {
 				nav={nav}
 				upload_widget={upload_widget}
 				edit_window={edit_window}
-				on:open_sibling={e => nav.open_sibling(e.detail)}
-				on:download={() => fs_download(nav.base)}
-				on:details={() => details_visible = !details_visible}
+				on_open_sibling={offset => nav.open_sibling(offset)}
+				on_download={() => fs_download(nav.base)}
+				on_details={() => details_visible = !details_visible}
 			/>
 		</div>
 	</div>

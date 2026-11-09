@@ -1,12 +1,11 @@
 <script lang="ts">
-export let path = []
+import type { FSNode } from "filesystem/FilesystemAPI";
 
-let image_uri: string
-let image_link: string
-$: update_links(path)
-const update_links = (path) => {
-	image_uri = null
-	image_link = null
+let { path = [] }: { path?: FSNode[] } = $props();
+
+let { image_uri, image_link } = $derived.by(() => {
+	let image_uri: string = null
+	let image_link: string = null
 	for (let node of path) {
 		if (node.properties && node.properties.branding_enabled === "true") {
 			if (node.properties.brand_header_image) {
@@ -17,7 +16,8 @@ const update_links = (path) => {
 			}
 		}
 	}
-}
+	return { image_uri, image_link }
+})
 </script>
 
 {#if image_uri}

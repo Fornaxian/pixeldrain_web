@@ -1,74 +1,78 @@
 <script lang="ts">
 import { formatDate, formatNumber } from "util/Formatting";
 import Expandable from "util/Expandable.svelte";
-import { createEventDispatcher } from "svelte";
 import type { UserReport } from "lib/AdminAPI";
-let dispatch = createEventDispatcher()
 
-export let report: UserReport
-export let ip_report_count: {[key:string]: number}
-let preview = false
+let { report, ip_report_count, on_resolve_report, on_resolve_by_ip }: {
+	report: UserReport;
+	ip_report_count: {[key:string]: number};
+	on_resolve_report: (action: string, report_type: string) => void;
+	on_resolve_by_ip: (ip: string, action: string) => void;
+} = $props();
+let preview = $state(false)
 
-$: can_grant = report.status !== "granted"
-$: can_reject = report.status !== "rejected"
+let can_grant = $derived(report.status !== "granted")
+let can_reject = $derived(report.status !== "rejected")
 
 let set_status = async (action: string, report_type: string) => {
-	dispatch("resolve_report", {action: action, report_type: report_type})
+	on_resolve_report(action, report_type)
 }
 </script>
 
 <Expandable expanded={report.status === "pending"} click_expand>
-	<div slot="header" class="header">
-		<div class="icon_cell">
-			<img class="file_icon" src={"/api/file/"+report.file.id+"/thumbnail"} alt="File thumbnail"/>
-		</div>
-
-		<div class="title">
-			{report.file.name}
-		</div>
-		<div class="stats">
-			Type<br/>
-			{report.file.abuse_type === "" ? report.type : report.file.abuse_type}
-		</div>
-		{#if report.status !== "pending"}
-			<div class="stats">
-				Status<br/>
-				{report.status}
+	{#snippet header()}
+		<div class="header">
+			<div class="icon_cell">
+				<img class="file_icon" src={"/api/file/"+report.file.id+"/thumbnail"} alt="File thumbnail"/>
 			</div>
-		{/if}
-		<div class="stats">R<br/>{report.reports.length}</div>
-		<div class="stats">V<br/>{formatNumber(report.file.views, 3)}</div>
-		<div class="stats">DL<br/>{formatNumber(report.file.bandwidth_used / report.file.size, 3)}</div>
-	</div>
+
+			<div class="title">
+				{report.file.name}
+			</div>
+			<div class="stats">
+				Type<br/>
+				{report.file.abuse_type === "" ? report.type : report.file.abuse_type}
+			</div>
+			{#if report.status !== "pending"}
+				<div class="stats">
+					Status<br/>
+					{report.status}
+				</div>
+			{/if}
+			<div class="stats">R<br/>{report.reports.length}</div>
+			<div class="stats">V<br/>{formatNumber(report.file.views, 3)}</div>
+			<div class="stats">DL<br/>{formatNumber(report.file.bandwidth_used / report.file.size, 3)}</div>
+		</div>
+	{/snippet}
 	<div class="details">
 		<div class="toolbar">
 			<div class="action_list">
 				<a class="button" target="_blank" href={"/u/"+report.file.id} rel="noreferrer">
 					<i class="icon">open_in_new</i> Open file
 				</a>
-				<button class:button_highlight={preview} on:click={() => {preview = !preview}}>
+				<button class:button_highlight={preview} onclick={() => {preview = !preview}}>
 					<i class="icon">visibility</i> Preview
 				</button>
 				{#if can_grant}
-					<button class="button_highlight" on:click={() => {set_status("grant", report.type)}}>
+					<button class="button_highlight" onclick={() => {set_status("grant", report.type)}}>
 						<i class="icon">done</i> Block ({report.type})
 					</button>
 				{/if}
 				{#if can_reject}
-					<button class="button_red" on:click={() => {set_status("reject", "")}}>
+					<button class="button_red" onclick={() => {set_status("reject", "")}}>
 						<i class="icon">delete</i> Ignore
 					</button>
 				{/if}
 			</div>
 			<div class="type_list">
-				<button on:click={() => {set_status("grant", "copyright")}}>copyright</button>
-				<button on:click={() => {set_status("grant", "terrorism")}}>terrorism</button>
-				<button on:click={() => {set_status("grant", "gore")}}>gore</button>
-				<button on:click={() => {set_status("grant", "child_abuse")}}>child_abuse</button>
-				<button on:click={() => {set_status("grant", "zoophilia")}}>zoophilia</button>
-				<button on:click={() => {set_status("grant", "malware")}}>malware</button>
-				<button on:click={() => {set_status("grant", "doxing")}}>doxing</button>
-				<button on:click={() => {set_status("grant", "revenge_porn")}}>revenge_porn</button>
+				<button onclick={() => {set_status("grant", "copyright")}}>copyright</button>
+				<button onclick={() => {set_status("grant", "terrorism")}}>terrorism</button>
+				<button onclick={() => {set_status("grant", "gore")}}>gore</button>
+				<button onclick={() => {set_status("grant", "child_abuse")}}>child_abuse</button>
+				<button onclick={() => {set_status("grant", "zoophilia")}}>zoophilia</button>
+				<button onclick={() => {set_status("grant", "malware")}}>malware</button>
+				<button onclick={() => {set_status("grant", "doxing")}}>doxing</button>
+				<button onclick={() => {set_status("grant", "revenge_porn")}}>revenge_porn</button>
 			</div>
 		</div>
 		<div style="text-align: center;">
@@ -102,12 +106,12 @@ let set_status = async (action: string, report_type: string) => {
 							<td>{ip_report_count[user_report.ip_address]}</td>
 							<td>
 								{#if can_grant}
-									<button on:click={() => dispatch("resolve_by_ip", {ip: user_report.ip_address, action: "grant"})}>
+									<button onclick={() => on_resolve_by_ip(user_report.ip_address, "grant")}>
 										Accept all
 									</button>
 								{/if}
 								{#if can_reject}
-									<button on:click={() => dispatch("resolve_by_ip", {ip: user_report.ip_address, action: "reject"})}>
+									<button onclick={() => on_resolve_by_ip(user_report.ip_address, "reject")}>
 										Ignore all
 									</button>
 								{/if}

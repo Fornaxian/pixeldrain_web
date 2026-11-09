@@ -15,7 +15,7 @@ const groups: {
 		agg_divisor?: string
 		data_type: string
 	}[]
-}[] = [
+}[] = $state([
 	{
 		title: "API", expanded: false,
 		graphs: [
@@ -148,12 +148,12 @@ const groups: {
 			{metric: "pixelstore_api_status", data_type: "number"},
 		],
 	},
-]
+])
 
-let dataWindow: number = 60
-let dataInterval: number = 1
-let showAggregate: boolean = false
-let metrics: HostMetrics = {timestamps: [], metrics: {}}
+let dataWindow: number = $state(60)
+let dataInterval: number = $state(1)
+let showAggregate: boolean = $state(false)
+let metrics: HostMetrics = $state({timestamps: [], metrics: {}})
 let metrics_timeout: number = null
 
 const load_metrics = async (window: number, interval: number) => {
@@ -233,7 +233,7 @@ const setWindow = (window: number, interval: number) => {
 	load_metrics(dataWindow, dataInterval);
 }
 
-let loaded = false
+let loaded = $state(false)
 onMount(async () => {
 	await load_host_names()
 	await load_metrics(dataWindow, dataInterval);
@@ -248,25 +248,27 @@ onDestroy(() => {
 
 {#if loaded}
 	<div class="highlight_border" style="margin-bottom: 6px;">
-		<button on:click={() => setWindow(60, 1)} class:button_highlight={dataWindow === 60}>Hour 1m</button>
-		<button on:click={() => setWindow(720, 1)} class:button_highlight={dataWindow === 720}>Half Day 1m</button>
-		<button on:click={() => setWindow(1440, 60)} class:button_highlight={dataWindow === 1440}>Day 1h</button>
-		<button on:click={() => setWindow(10080, 60)} class:button_highlight={dataWindow === 10080}>Week 1h</button>
-		<button on:click={() => setWindow(43200, 60)} class:button_highlight={dataWindow === 43200}>Month 1h</button>
-		<button on:click={() => setWindow(131400, 1440)} class:button_highlight={dataWindow === 131400}>Quarter 1d</button>
-		<button on:click={() => setWindow(262800, 1440)} class:button_highlight={dataWindow === 262800}>Half-year 1d</button>
-		<button on:click={() => setWindow(525600, 1440)} class:button_highlight={dataWindow === 525600}>Year 1d</button>
-		<button on:click={() => setWindow(1051200, 1440)} class:button_highlight={dataWindow === 1051200}>Two Years 1d</button>
-		<button on:click={() => setWindow(2628000, 1440)} class:button_highlight={dataWindow === 2628000}>Five Years 1d</button>
+		<button onclick={() => setWindow(60, 1)} class:button_highlight={dataWindow === 60}>Hour 1m</button>
+		<button onclick={() => setWindow(720, 1)} class:button_highlight={dataWindow === 720}>Half Day 1m</button>
+		<button onclick={() => setWindow(1440, 60)} class:button_highlight={dataWindow === 1440}>Day 1h</button>
+		<button onclick={() => setWindow(10080, 60)} class:button_highlight={dataWindow === 10080}>Week 1h</button>
+		<button onclick={() => setWindow(43200, 60)} class:button_highlight={dataWindow === 43200}>Month 1h</button>
+		<button onclick={() => setWindow(131400, 1440)} class:button_highlight={dataWindow === 131400}>Quarter 1d</button>
+		<button onclick={() => setWindow(262800, 1440)} class:button_highlight={dataWindow === 262800}>Half-year 1d</button>
+		<button onclick={() => setWindow(525600, 1440)} class:button_highlight={dataWindow === 525600}>Year 1d</button>
+		<button onclick={() => setWindow(1051200, 1440)} class:button_highlight={dataWindow === 1051200}>Two Years 1d</button>
+		<button onclick={() => setWindow(2628000, 1440)} class:button_highlight={dataWindow === 2628000}>Five Years 1d</button>
 		<br/>
 		<ToggleButton bind:on={showAggregate}>Aggregate</ToggleButton>
 	</div>
 
 	{#each groups as group (group.title)}
 		<Expandable click_expand bind:expanded={group.expanded} on_expand={(expanded) => load_metrics(dataWindow, dataInterval)} nopad>
-			<div slot="header">
-				<div class="title">{group.title}</div>
-			</div>
+			{#snippet header()}
+				<div>
+					<div class="title">{group.title}</div>
+				</div>
+			{/snippet}
 
 			<div class="grid">
 				{#each group.graphs as graph (graph.metric)}

@@ -1,17 +1,18 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import { fade } from "svelte/transition";
 import { upload_file } from "./UploadFunc";
 import ProgressBar from "util/ProgressBar.svelte";
 import Button from "layout/Button.svelte"
 import type { UploadJob } from "./FSUploadWidget.svelte";
 
-let dispatch = createEventDispatcher()
-export let job: UploadJob
-export let total = 0
-export let loaded = 0
-let error_code = ""
-let error_message = ""
+let { job = $bindable(), on_finished }: {
+	job: UploadJob;
+	on_finished: () => void;
+} = $props();
+let total = $state(0)
+let loaded = $state(0)
+let error_code = $state("")
+let error_message = $state("")
 let xhr: XMLHttpRequest = null
 
 export const start = () => {
@@ -24,7 +25,7 @@ export const start = () => {
 		},
 		async () => {
 			job.status = "finished"
-			dispatch("finished")
+			on_finished()
 		},
 		(code, message) => {
 			if (job.status === "finished") {
@@ -52,7 +53,7 @@ const cancel = () => {
 	}
 
 	xhr = null
-	dispatch("finished")
+	on_finished()
 }
 </script>
 

@@ -1,22 +1,19 @@
 <script lang="ts">
-import { createEventDispatcher } from "svelte";
 import { swipe_nav } from "lib/SwipeNavigate";
 import { fs_path_url } from "filesystem/FilesystemAPI";
 import type { FSNavigator } from "filesystem/FSNavigator";
 
-let dispatch = createEventDispatcher();
-
-export let nav: FSNavigator
-let container: HTMLDivElement
-let zoom = false
+let { nav }: {
+	nav: FSNavigator;
+} = $props();
+let container: HTMLDivElement = $state()
+let zoom = $state(false)
 let x = 0, y = 0
 let dragging = false
-let swipe_prev = true
-let swipe_next = true
+let swipe_prev = $state(true)
+let swipe_next = $state(true)
 
 export const update = async () => {
-	dispatch("loading", true)
-
 	// Figure out if there are previous or next files. If not then we disable
 	// swiping controls in that direction
 	const siblings = await nav.get_siblings()
@@ -28,8 +25,6 @@ export const update = async () => {
 		}
 	}
 }
-
-const on_load = () => dispatch("loading", false)
 
 const mousedown = (e: MouseEvent) => {
 	if (!dragging && e.which === 1 && zoom) {
@@ -66,7 +61,7 @@ const mouseup = (e: MouseEvent) => {
 }
 </script>
 
-<svelte:window on:mousemove={mousemove} on:mouseup={mouseup} />
+<svelte:window onmousemove={mousemove} onmouseup={mouseup} />
 
 <div
 	bind:this={container}
@@ -80,12 +75,10 @@ const mouseup = (e: MouseEvent) => {
 		on_next: () => nav.open_sibling(1),
 	}}
 >
-	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<img
-		on:dblclick={() => {zoom = !zoom}}
-		on:mousedown={mousedown}
-		on:load={on_load}
-		on:error={on_load}
+		ondblclick={() => {zoom = !zoom}}
+		onmousedown={mousedown}
 		class="image"
 		class:zoom
 		src={fs_path_url($nav.base.path)}

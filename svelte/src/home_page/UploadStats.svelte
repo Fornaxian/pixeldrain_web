@@ -1,12 +1,12 @@
-<script>
+<script lang="ts">
 import { formatDataVolume, formatDuration } from "util/Formatting";
 import ProgressBar from "util/ProgressBar.svelte";
 
-export let upload_queue = []
+let { upload_queue = [] }: { upload_queue?: any[] } = $props();
 
 let stats_interval = null
 let stats_interval_ms = 1000
-let finished = false
+let finished = $state(false)
 
 export const start = () => {
 	if (stats_interval === null) {
@@ -34,14 +34,14 @@ export const finish = () => {
 }
 
 let start_time = 0
-let total_progress = 0
-let total_size = 0
-let total_loaded = 0
+let total_progress = $state(0)
+let total_size = $state(0)
+let total_loaded = $state(0)
 let previously_loaded = 0
 let last_total_loaded = 0
-let total_rate = 0
-let elapsed_time = 0
-let remaining_time = 0
+let total_rate = $state(0)
+let elapsed_time = $state(0)
+let remaining_time = $state(0)
 
 const stats_update = () => {
 	if (start_time === 0) {

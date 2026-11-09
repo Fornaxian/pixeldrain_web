@@ -1,12 +1,10 @@
-<script>
-import { createEventDispatcher, tick } from "svelte";
+<script lang="ts">
+import { tick } from "svelte";
 import { fade } from "svelte/transition";
 import DropUpload from "./DropUpload.svelte";
 import UploadProgress from "./UploadProgress.svelte";
-let dispatch = createEventDispatcher()
 
-
-let file_input_field;
+let file_input_field: HTMLInputElement = $state();
 let file_input_change = e => {
 	// Start uploading the files async
 	upload_files(e.target.files)
@@ -18,9 +16,12 @@ export const pick_files = () => {
 	file_input_field.click()
 }
 
-export let drop_upload = false
-let visible = false
-let upload_queue = [];
+let { drop_upload = false, on_uploads_finished }: {
+	drop_upload?: boolean;
+	on_uploads_finished: (file_ids: string[]) => void;
+} = $props();
+let visible = $state(false)
+let upload_queue = $state([]);
 let task_id_counter = 0
 
 export const upload_files = async (files) => {
@@ -47,9 +48,8 @@ export const upload_files = async (files) => {
 		task_id_counter++
 	}
 
-	// Reassign array and wait for tick to complete. After the tick is completed
-	// each upload progress bar will have bound itself to its array item
-	upload_queue = upload_queue
+	// Wait for tick to complete. After the tick is completed each upload
+	// progress bar will have bound itself to its array item
 	visible = true
 	await tick()
 
@@ -57,7 +57,7 @@ export const upload_files = async (files) => {
 }
 
 let active_uploads = 0
-let state = "idle"
+let status = $state("idle")
 
 const start_upload = () => {
 	for (let i = 0; i < upload_queue.length && active_uploads < 3; i++) {
@@ -71,7 +71,7 @@ const start_upload = () => {
 	}
 
 	if (active_uploads === 0) {
-		state = "finished"
+		status = "finished"
 
 		let file_ids = []
 		upload_queue.forEach(job => {
@@ -80,24 +80,23 @@ const start_upload = () => {
 			}
 		})
 
-		dispatch("uploads_finished", file_ids)
+		on_uploads_finished(file_ids)
 
 		upload_queue = []
 		visible = false
 	} else {
-		state = "uploading"
+		status = "uploading"
 	}
 
 }
 
-const finish_upload = (e) => {
+const finish_upload = () => {
 	active_uploads--
-	upload_queue = upload_queue
 	start_upload()
 }
 
 const leave_confirmation = e => {
-	if (state === "uploading") {
+	if (status === "uploading") {
 		e.preventDefault()
 		e.returnValue = "If you close this page your files will stop uploading. Do you want to continue?"
 		return e.returnValue
@@ -107,29 +106,29 @@ const leave_confirmation = e => {
 }
 </script>
 
-<svelte:window on:beforeunload={leave_confirmation} />
+<svelte:window onbeforeunload={leave_confirmation} />
 
 <input
 	bind:this={file_input_field}
-	on:change={file_input_change}
-	class="upload_input" type="file" name="file" multiple="multiple"
+	onchange={file_input_change}
+	class="upload_input" type="file" name="file" multiple
 />
 
 {#if visible}
 	<div class="upload_widget" transition:fade={{duration: 200}}>
 		<div class="header">
-			{#if state === "idle"}
+			{#if status === "idle"}
 				Waiting for files
-			{:else if state === "uploading"}
+			{:else if status === "uploading"}
 				Uploading files...
-			{:else if state === "finished"}
+			{:else if status === "finished"}
 				Done
 			{/if}
 		</div>
 		<div class="body">
-			{#each upload_queue as job}
+			{#each upload_queue as job, i}
 				{#if job.status !== "finished"}
-					<UploadProgress bind:this={job.component} job={job} on:finished={finish_upload}/>
+					<UploadProgress bind:this={job.component} bind:job={upload_queue[i]} on_finished={finish_upload}/>
 				{/if}
 			{/each}
 		</div>
@@ -137,7 +136,7 @@ const leave_confirmation = e => {
 {/if}
 
 {#if drop_upload}
-	<DropUpload on:upload={e => upload_files(e.detail)}/>
+	<DropUpload on_upload={upload_files}/>
 {/if}
 
 <style>

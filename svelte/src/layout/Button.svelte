@@ -1,20 +1,39 @@
 <script lang="ts">
-export let highlight = false;
-export let highlight_on_click = false
-export let red = false;
-export let round = false;
-export let flat = false;
-export let disabled = false;
-export let icon = ""
-export let icon_small = false;
-export let label = ""
-export let title = null
-export let link_href = ""
-export let link_target = "_self"
-export let click: (e?: MouseEvent) => void = null
-export let style = null
-export let type = null
-export let form = null
+let {
+	highlight = false,
+	highlight_on_click = false,
+	red = false,
+	round = false,
+	flat = false,
+	disabled = false,
+	icon = "",
+	icon_small = false,
+	label = "",
+	title = null,
+	link_href = "",
+	link_target = "_self",
+	click = null,
+	style = null,
+	type = null,
+	form = null
+}: {
+	highlight?: boolean;
+	highlight_on_click?: boolean;
+	red?: boolean;
+	round?: boolean;
+	flat?: boolean;
+	disabled?: boolean;
+	icon?: string;
+	icon_small?: boolean;
+	label?: string;
+	title?: any;
+	link_href?: string;
+	link_target?: string;
+	click?: (e?: MouseEvent) => void;
+	style?: any;
+	type?: any;
+	form?: any;
+} = $props();
 
 let click_int = (e: MouseEvent) => {
 	if (highlight_on_click) {
@@ -33,7 +52,7 @@ let click_int = (e: MouseEvent) => {
 
 {#if link_href === ""}
 	<button
-		on:click={click_int}
+		onclick={click_int}
 		class="button"
 		class:button_highlight={highlight}
 		class:button_red={red}

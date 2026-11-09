@@ -1,5 +1,8 @@
 <script lang="ts">
-let dialog: HTMLDialogElement
+let { children }: {
+	children?: import('svelte').Snippet;
+} = $props();
+let dialog: HTMLDialogElement = $state()
 
 export const open = (button_rect: DOMRect) => {
 	// Show the window so we can get the location
@@ -33,10 +36,10 @@ const click = (e: MouseEvent) => {
 }
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<dialog bind:this={dialog} on:click={click}>
-	<slot></slot>
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<dialog bind:this={dialog} onclick={click}>
+	{@render children?.()}
 </dialog>
 
 <style>

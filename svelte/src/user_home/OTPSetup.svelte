@@ -5,11 +5,11 @@ import CopyButton from "layout/CopyButton.svelte";
 import ToggleButton from "layout/ToggleButton.svelte";
 import { check_response, get_endpoint, get_user, type User } from "lib/PixeldrainAPI";
 
-let user: User = null
-let secret = ""
-let uri = ""
-let qr = ""
-let reveal_key = false
+let user: User = $state(null)
+let secret = $state("")
+let uri = $state("")
+let qr = $state("")
+let reveal_key = $state(false)
 const generate_key = async () => {
 	try {
 		let form = new FormData()
@@ -28,7 +28,7 @@ const generate_key = async () => {
 	}
 }
 
-let otp = ""
+let otp = $state("")
 const verify = async (e: SubmitEvent) => {
 	e.preventDefault()
 
@@ -134,7 +134,7 @@ onMount(async () => {
 			app is working properly. This step enables two-factor authentication
 			on your account.
 		</p>
-		<form id="otp_verify" on:submit={verify} class="otp_form">
+		<form id="otp_verify" onsubmit={verify} class="otp_form">
 			<input bind:value={otp} type="text" autocomplete="one-time-code" pattern={"[0-9]{6}"} required>
 			<Button form="otp_verify" label="Verify OTP"/>
 		</form>
