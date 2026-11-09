@@ -184,7 +184,7 @@ const keydown = (e) => {
 			<div>Name:</div>
 			<input bind:value={input_album_name} type="text" placeholder="My album"/>
 			<button type="submit" disabled={status !== "finished"}>
-				<i class="icon">create_new_folder</i> Create
+				<i class="icon i_create_new_folder"></i> Create
 			</button>
 		</form>
 	</div>

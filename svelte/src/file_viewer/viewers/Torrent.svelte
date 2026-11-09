@@ -94,7 +94,7 @@ let magnet = $state("")
 		</p>
 	{/if}
 	<button onclick={on_download} class="button">
-		<i class="icon">download</i>
+		<i class="icon i_download"></i>
 		<span>Download torrent file</span>
 	</button>
 </IconBlock>

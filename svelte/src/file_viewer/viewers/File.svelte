@@ -30,7 +30,7 @@ let file = $state({
 	No preview is available for this file type. Download to view it locally.
 	<br/>
 	<button class="button_highlight" onclick={on_download}>
-		<i class="icon">download</i>
+		<i class="icon i_download"></i>
 		<span>Download</span>
 	</button>
 </IconBlock>

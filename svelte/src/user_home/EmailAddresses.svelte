@@ -66,7 +66,7 @@ const remove = async (address: string) => {
 			<div class="form_row">
 				<span>Add address</span>
 				<input class="grow" bind:value={new_address} type="email"/>
-				<button class="shrink" type="submit"><i class="icon">add</i> Add</button>
+				<button class="shrink" type="submit"><i class="icon i_add"></i> Add</button>
 			</div>
 		</form>
 	{:else}
@@ -87,7 +87,7 @@ const remove = async (address: string) => {
 			<button class="shrink" type="button" disabled={!removable}
 				title={removable ? "Remove address" : "An account needs at least one e-mail address"}
 				onclick={() => remove(address)}>
-				<i class="icon">delete</i>
+				<i class="icon i_delete"></i>
 			</button>
 			<div>{address}</div>
 		</div>
@@ -97,7 +97,7 @@ const remove = async (address: string) => {
 			<button class="shrink" type="button"
 				title={removable ? "Remove address" : "An account needs at least one e-mail address"}
 				onclick={() => remove(pending)}>
-				<i class="icon">delete</i>
+				<i class="icon i_delete"></i>
 			</button>
 			<div>{pending} (pending verification)</div>
 		</div>

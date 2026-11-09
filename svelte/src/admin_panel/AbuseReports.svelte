@@ -202,15 +202,15 @@ onMount(() => {
 
 	<div class="tab_bar">
 		<button onclick={() => {tab = "pending"; get_reports()}} class:button_highlight={tab === "pending"}>
-			<i class="icon">flag</i>
+			<i class="icon i_flag"></i>
 			Pending
 		</button>
 		<button onclick={() => {tab = "granted"; get_reports()}} class:button_highlight={tab === "granted"}>
-			<i class="icon">flag</i>
+			<i class="icon i_flag"></i>
 			Granted
 		</button>
 		<button onclick={() => {tab = "rejected"; get_reports()}} class:button_highlight={tab === "rejected"}>
-			<i class="icon">flag</i>
+			<i class="icon i_flag"></i>
 			Rejected
 		</button>
 	</div>

@@ -246,7 +246,7 @@ const report_description = () => {
 		</p>
 		<div style="text-align: center;">
 			<button class="button_highlight abuse_report_submit" type="submit" style="justify-content: center; width: 100%; max-width: 200px">
-				<i class="icon">send</i>
+				<i class="icon i_send"></i>
 				<span>Submit report</span>
 			</button>
 		</div>

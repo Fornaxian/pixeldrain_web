@@ -65,7 +65,7 @@ let click_int = (e: MouseEvent) => {
 		disabled={disabled ? true:null}
 	>
 		{#if icon !== ""}
-			<i class="icon" class:small={icon_small}>{icon}</i>
+			<i class="icon i_{icon}" class:small={icon_small}></i>
 		{/if}
 		{#if label !== ""}
 			<span>{label}</span>
@@ -84,7 +84,7 @@ let click_int = (e: MouseEvent) => {
 		style={style}
 	>
 		{#if icon !== ""}
-			<i class="icon" class:small={icon_small}>{icon}</i>
+			<i class="icon i_{icon}" class:small={icon_small}></i>
 		{/if}
 		{#if label !== ""}
 			<span>{label}</span>

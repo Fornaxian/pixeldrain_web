@@ -286,12 +286,12 @@ import OtherPlans from "./OtherPlans.svelte";
 				<!-- User is not logged in -->
 				Account required<br/>
 				<a href="/login?redirect=/user/prepaid/deposit" class="button button_highlight round">
-					<i class="icon">login</i>
+					<i class="icon i_login"></i>
 					Log in
 				</a>
 				or
 				<a href="/register?redirect=/user/prepaid/deposit" class="button button_highlight round">
-					<i class="icon">how_to_reg</i>
+					<i class="icon i_how_to_reg"></i>
 					Register
 				</a>
 				<br/>

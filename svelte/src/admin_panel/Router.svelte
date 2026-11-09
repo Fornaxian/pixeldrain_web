@@ -71,7 +71,7 @@ let pages = [
 			}, {
 				path: "/admin/paypal_taxes",
 				title: "Paypal Taxes",
-				icon: "paypal",
+				icon: "payments",
 				component: PayPalTaxes,
 			},
 		],

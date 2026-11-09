@@ -108,13 +108,13 @@ onMount(get_bans);
 		<div class="toolbar_spacer"></div>
 		<button class:button_highlight={expanded} onclick={() => {expanded = !expanded}}>
 			{#if expanded}
-				<i class="icon">unfold_less</i> Collapse all
+				<i class="icon i_unfold_less"></i> Collapse all
 			{:else}
-				<i class="icon">unfold_more</i> Expand all
+				<i class="icon i_unfold_more"></i> Expand all
 			{/if}
 		</button>
 		<button class:button_highlight={creating} onclick={() => {creating = !creating}}>
-			<i class="icon">create</i> Add IP ban
+			<i class="icon i_create"></i> Add IP ban
 		</button>
 	</div>
 	{#if creating}
@@ -132,7 +132,7 @@ onMount(get_bans);
 						{/each}
 					</div>
 					<button class="button_highlight" type="submit" style="float: right;">
-						<i class="icon">save</i> Save
+						<i class="icon i_save"></i> Save
 					</button>
 				</div>
 			</form>
@@ -153,7 +153,7 @@ onMount(get_bans);
 						{formatDate(row.offences[0].ban_time, false, false, false)}
 					</div>
 					<button onclick={e => {e.stopPropagation(); delete_ban(row.address)}} class="button button_red" style="align-self: center;">
-						<i class="icon">delete</i>
+						<i class="icon i_delete"></i>
 					</button>
 				</div>
 			{/snippet}

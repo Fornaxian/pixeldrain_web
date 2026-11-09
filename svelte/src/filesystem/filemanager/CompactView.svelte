@@ -39,7 +39,7 @@ let {
 					onclick={e => on_file({index: index, action: FileAction.Share, original: e})}
 					class="button flat action_button"
 				>
-					<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
+					<i class="icon i_share" title="This file / directory is shared. Click to open public link"></i>
 				</a>
 			{/if}
 
@@ -48,7 +48,7 @@ let {
 					class="action_button flat"
 					onclick={e => on_file({index: index, action: FileAction.Edit, original: e})}
 				>
-					<i class="icon">edit</i>
+					<i class="icon i_edit"></i>
 				</button>
 			{/if}
 
@@ -56,7 +56,7 @@ let {
 				class="action_button flat"
 				onclick={e => on_file({index: index, action: FileAction.Download, original: e})}
 			>
-				<i class="icon">save</i>
+				<i class="icon i_save"></i>
 			</button>
 		</a>
 	{/each}

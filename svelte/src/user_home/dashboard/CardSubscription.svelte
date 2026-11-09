@@ -6,9 +6,9 @@ import { formatDataVolume } from "util/Formatting";
 <ul>
 	<li>
 		Supporter level: {window.user.subscription.name}<br/>
-		<i class="icon">shopping_cart</i>
+		<i class="icon i_shopping_cart"></i>
 		<a href="/user/subscription">Manage subscriptions</a><br/>
-		<i class="icon">star</i>
+		<i class="icon i_star"></i>
 		<a href="/api/patreon_auth/start">Activate Patreon subscription</a>
 	</li>
 
@@ -16,10 +16,10 @@ import { formatDataVolume } from "util/Formatting";
 		<li>
 			Current account balance: <Euro amount={window.user.balance_micro_eur}></Euro><br/>
 
-			<i class="icon">account_balance_wallet</i>
+			<i class="icon i_account_balance_wallet"></i>
 			<a href="/user/prepaid/deposit">Deposit credit</a><br/>
 
-			<i class="icon">receipt</i>
+			<i class="icon i_receipt"></i>
 			<a href="/user/prepaid/transactions">Transaction log</a>
 
 			{#if window.user.balance_micro_eur > 0 && window.user.subscription.id === ""}

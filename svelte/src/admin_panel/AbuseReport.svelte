@@ -48,19 +48,19 @@ let set_status = async (action: string, report_type: string) => {
 		<div class="toolbar">
 			<div class="action_list">
 				<a class="button" target="_blank" href={"/u/"+report.file.id} rel="noreferrer">
-					<i class="icon">open_in_new</i> Open file
+					<i class="icon i_open_in_new"></i> Open file
 				</a>
 				<button class:button_highlight={preview} onclick={() => {preview = !preview}}>
-					<i class="icon">visibility</i> Preview
+					<i class="icon i_visibility"></i> Preview
 				</button>
 				{#if can_grant}
 					<button class="button_highlight" onclick={() => {set_status("grant", report.type)}}>
-						<i class="icon">done</i> Block ({report.type})
+						<i class="icon i_done"></i> Block ({report.type})
 					</button>
 				{/if}
 				{#if can_reject}
 					<button class="button_red" onclick={() => {set_status("reject", "")}}>
-						<i class="icon">delete</i> Ignore
+						<i class="icon i_delete"></i> Ignore
 					</button>
 				{/if}
 			</div>

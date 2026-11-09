@@ -36,7 +36,7 @@ let frac = $derived(used / total)
 				supports the volume of storage which you need.
 			</p>
 			<a class="button button_highlight" href="/#pro">
-				<i class="icon">bolt</i> Upgrade options
+				<i class="icon i_bolt"></i> Upgrade options
 			</a>
 		</div>
 	{:else if frac > 1.0}
@@ -47,7 +47,7 @@ let frac = $derived(used / total)
 				tier to continue uploading files.
 			</p>
 			<a class="button button_highlight" href="/#pro">
-				<i class="icon">bolt</i> Upgrade options
+				<i class="icon i_bolt"></i> Upgrade options
 			</a>
 			<p>
 				Your files will not be deleted any sooner than normal at this
@@ -64,7 +64,7 @@ let frac = $derived(used / total)
 				tier to continue uploading files.
 			</p>
 			<a class="button button_highlight" href="/#pro">
-				<i class="icon">bolt</i> Upgrade options
+				<i class="icon i_bolt"></i> Upgrade options
 			</a>
 		</div>
 	{/if}

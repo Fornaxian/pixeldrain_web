@@ -10,12 +10,12 @@ let page = $state("login")
 </script>
 <div class="tab_bar">
 	<button onclick={() => page = "login"} class:button_highlight={page === "login"}>
-		<i class="icon small">login</i>
+		<i class="icon small i_login"></i>
 		<span>Login</span>
 	</button>
 
 	<button onclick={() => page = "register"} class:button_highlight={page === "register"}>
-		<i class="icon small">how_to_reg</i>
+		<i class="icon small i_how_to_reg"></i>
 		<span>Register</span>
 	</button>
 </div>

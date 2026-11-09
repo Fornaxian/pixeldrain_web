@@ -79,7 +79,7 @@ onMount(() => get_page())
 						href="{page.path}"
 						class:button_highlight={current_page && page.path === current_page.path}
 						onclick={e => {e.preventDefault(); navigate(page)}}>
-						<i class="icon">{page.icon}</i>
+						<i class="icon i_{page.icon}"></i>
 						<span>{page.title}</span>
 					</a>
 				{/if}
@@ -98,7 +98,7 @@ onMount(() => get_page())
 							href="{page.path}"
 							class:button_highlight={current_subpage && page.path === current_subpage.path}
 							onclick={e => {e.preventDefault(); navigate(page)}}>
-							<i class="icon">{page.icon}</i>
+							<i class="icon i_{page.icon}"></i>
 							<span>{page.title}</span>
 						</a>
 					{/if}

@@ -87,7 +87,7 @@ onMount(async () => {
 			<div class="form_row">
 				<span>Add domain name</span>
 				<input class="grow" bind:value={new_domain} type="text"/>
-				<button class="shrink" type="submit"><i class="icon">add</i> Add</button>
+				<button class="shrink" type="submit"><i class="icon i_add"></i> Add</button>
 			</div>
 		</form>
 		<hr/>
@@ -99,7 +99,7 @@ onMount(async () => {
 		{#each embed_domains as domain, index}
 			<div class="form_row">
 				<button class="shrink" type="button" onclick={() => remove(index)}>
-					<i class="icon">delete</i>
+					<i class="icon i_delete"></i>
 				</button>
 				<div>{domain}</div>
 			</div>

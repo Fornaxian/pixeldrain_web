@@ -55,7 +55,7 @@ const submit = async (e: SubmitEvent) => {
 	</div>
 
 	<button type="submit" class="button_highlight">
-		<i class="icon">paid</i> Checkout
+		<i class="icon i_paid"></i> Checkout
 	</button>
 </form>
 <hr/>

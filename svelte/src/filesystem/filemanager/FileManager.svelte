@@ -319,36 +319,36 @@ $effect.pre(() => {
 			<div class="toolbar">
 				<div class="toolbar_left">
 					<button onclick={navigate_back} title="Back">
-						<i class="icon">arrow_back</i>
+						<i class="icon i_arrow_back"></i>
 					</button>
 					<button onclick={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
-						<i class="icon">north</i>
+						<i class="icon i_north"></i>
 					</button>
 					<button onclick={() => nav.reload()} title="Refresh directory listing">
-						<i class="icon">refresh</i>
+						<i class="icon i_refresh"></i>
 					</button>
 				</div>
 
 				<div class="toolbar_middle">
 					<button onclick={() => toggle_view()} title="Switch between gallery, list and compact view">
-						<i class="icon" class:button_highlight={directory_view === "list"}>list</i>
-						<i class="icon" class:button_highlight={directory_view === "gallery"}>collections</i>
-						<i class="icon" class:button_highlight={directory_view === "compact"}>view_compact</i>
+						<i class="icon i_list" class:button_highlight={directory_view === "list"}></i>
+						<i class="icon i_collections" class:button_highlight={directory_view === "gallery"}></i>
+						<i class="icon i_view_compact" class:button_highlight={directory_view === "compact"}></i>
 					</button>
 
 					<button class="button_large_icons" onclick={() => toggle_large_icons()} title="Switch between large and small icons">
 						{#if large_icons}
-							<i class="icon">zoom_out</i>
+							<i class="icon i_zoom_out"></i>
 						{:else}
-							<i class="icon">zoom_in</i>
+							<i class="icon i_zoom_in"></i>
 						{/if}
 					</button>
 
 					<button onclick={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
 						{#if show_hidden}
-							<i class="icon">visibility_off</i>
+							<i class="icon i_visibility_off"></i>
 						{:else}
-							<i class="icon">visibility</i>
+							<i class="icon i_visibility"></i>
 						{/if}
 					</button>
 				</div>
@@ -356,17 +356,17 @@ $effect.pre(() => {
 				<div class="toolbar_right">
 					{#if $nav.permissions.write}
 						<button onclick={() => upload_widget.pick_files()} title="Upload files to this directory">
-							<i class="icon">cloud_upload</i>
+							<i class="icon i_cloud_upload"></i>
 						</button>
 
 						<Button click={() => {creating_dir = !creating_dir}} highlight={creating_dir} icon="create_new_folder" title="Make folder"/>
 
 						<button onclick={() => file_importer.open()} title="Import files from list">
-							<i class="icon">move_to_inbox</i>
+							<i class="icon i_move_to_inbox"></i>
 						</button>
 
 						<button onclick={selecting_mode} title="Select and delete files">
-							<i class="icon">select_all</i>
+							<i class="icon i_select_all"></i>
 						</button>
 					{/if}
 				</div>
@@ -377,7 +377,7 @@ $effect.pre(() => {
 				<div class="toolbar_spacer">Selecting files</div>
 				<Button click={move_start} icon="drive_file_move" label="Move"/>
 				<button onclick={delete_selected} class="button_red">
-					<i class="icon">delete</i>
+					<i class="icon i_delete"></i>
 					Delete
 				</button>
 			</div>

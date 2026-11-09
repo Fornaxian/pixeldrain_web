@@ -146,18 +146,18 @@ onMount(() => {
 			image. The link needs to start with 'https://'.
 		</p>
 		<button onclick={() => {select_file("header")}}>
-			<i class="icon">add_photo_alternate</i>
+			<i class="icon i_add_photo_alternate"></i>
 			Select header image
 		</button>
 		<button onclick={() => {header_image = ""; save()}}>
-			<i class="icon">close</i>
+			<i class="icon i_close"></i>
 			Remove
 		</button>
 		<br/>
 		Header image link:<br/>
 		<form class="form_row" onsubmit={e => {e.preventDefault(); save()}}>
 			<input class="grow" bind:value={header_link} type="text" placeholder="https://"/>
-			<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
+			<button class="shrink" action="submit"><i class="icon i_save"></i> Save</button>
 		</form>
 
 		{#if header_image}
@@ -176,11 +176,11 @@ onMount(() => {
 			with a quality value of 60 is usually good enough.
 		</p>
 		<button onclick={() => {select_file("background")}}>
-			<i class="icon">add_photo_alternate</i>
+			<i class="icon i_add_photo_alternate"></i>
 			Select background image
 		</button>
 		<button onclick={() => {background_image = ""; save()}}>
-			<i class="icon">close</i>
+			<i class="icon i_close"></i>
 			Remove
 		</button>
 		{#if background_image}
@@ -197,18 +197,18 @@ onMount(() => {
 			larger.
 		</p>
 		<button onclick={() => {select_file("footer")}}>
-			<i class="icon">add_photo_alternate</i>
+			<i class="icon i_add_photo_alternate"></i>
 			Select footer image
 		</button>
 		<button onclick={() => {footer_image = ""; save()}}>
-			<i class="icon">close</i>
+			<i class="icon i_close"></i>
 			Remove
 		</button>
 		<br/>
 		Footer image link:<br/>
 		<form class="form_row" onsubmit={e => {e.preventDefault(); save()}}>
 			<input class="grow" bind:value={footer_link} type="text" placeholder="https://"/>
-			<button class="shrink" action="submit"><i class="icon">save</i> Save</button>
+			<button class="shrink" action="submit"><i class="icon i_save"></i> Save</button>
 		</form>
 		{#if footer_image}
 			<div class="highlight_shaded">

@@ -68,17 +68,17 @@ onMount(() => {
 		<track kind="captions"/>
 	</audio>
 	<div style="text-align: center;">
-		<button onclick={() => nav.open_sibling(-1)}><i class="icon">skip_previous</i></button>
-		<button onclick={() => seek(-10)}><i class="icon">replay_10</i></button>
+		<button onclick={() => nav.open_sibling(-1)}><i class="icon i_skip_previous"></i></button>
+		<button onclick={() => seek(-10)}><i class="icon i_replay_10"></i></button>
 		<button onclick={toggle_playback}>
 			{#if playing}
-				<i class="icon">pause</i>
+				<i class="icon i_pause"></i>
 			{:else}
-				<i class="icon">play_arrow</i>
+				<i class="icon i_play_arrow"></i>
 			{/if}
 		</button>
-		<button onclick={() => seek(10)}><i class="icon">forward_10</i></button>
-		<button onclick={() => nav.open_sibling(1)}><i class="icon">skip_next</i></button>
+		<button onclick={() => seek(10)}><i class="icon i_forward_10"></i></button>
+		<button onclick={() => nav.open_sibling(1)}><i class="icon i_skip_next"></i></button>
 	</div>
 
 	<h2>Tracklist</h2>
@@ -89,7 +89,7 @@ onMount(() => {
 			class="node"
 		>
 			{#if sibling.path === $nav.base.path}
-				<i class="play_arrow icon">play_arrow</i>
+				<i class="play_arrow icon i_play_arrow"></i>
 			{:else}
 				<img src={fs_node_icon(sibling, 64, 64)} class="node_icon" alt="icon"/>
 			{/if}

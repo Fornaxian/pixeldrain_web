@@ -18,7 +18,7 @@ let file = $state({
 <TextBlock>
 	{#if file.availability === "file_rate_limited_captcha_required"}
 		<h1>
-			<i class="icon">file_download_off</i>
+			<i class="icon i_file_download_off"></i>
 			Hotlink protection enabled
 		</h1>
 		<p>
@@ -29,7 +29,7 @@ let file = $state({
 		</p>
 	{:else if file.availability === "ip_download_limited_captcha_required"}
 		<h1>
-			<i class="icon">file_download_off</i>
+			<i class="icon i_file_download_off"></i>
 			Download limit reached
 		</h1>
 		<p>
@@ -70,9 +70,9 @@ let file = $state({
 	Name: {file.name}<br/>
 	Type: {file.mime_type}<br/>
 	<button onclick={on_download}>
-		<i class="icon">download</i> Download
+		<i class="icon i_download"></i> Download
 	</button>
 	<a href="/user/prepaid/deposit" target="_blank" class="button button_highlight">
-		<i class="icon">bolt</i> Upgrade your account
+		<i class="icon i_bolt"></i> Upgrade your account
 	</a>
 </IconBlock>

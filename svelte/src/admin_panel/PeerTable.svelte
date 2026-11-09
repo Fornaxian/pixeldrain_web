@@ -158,7 +158,7 @@ let all_reachable = $derived(peers.reduce((acc, val) => {
 					{#if !all_reachable}
 						<td>
 							<button class="button flat delete" onclick={() => decommission(peer.id)}>
-								<i class="icon small">delete</i>
+								<i class="icon small i_delete"></i>
 							</button>
 						</td>
 					{/if}

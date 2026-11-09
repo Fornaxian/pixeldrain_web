@@ -45,7 +45,7 @@ export const copy = () => {
 	title="Copy text to clipboard"
 	disabled={text === ""}
 >
-	<i class="icon">content_copy</i>
+	<i class="icon i_content_copy"></i>
 	<span>
 		{#if success}
 			Copied!

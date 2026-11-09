@@ -87,14 +87,14 @@ const keydown = (e) => {
 	{#snippet header()}
 		<div class="header">
 			<button class="button round" onclick={modal.hide}>
-				<i class="icon">close</i> Cancel
+				<i class="icon i_close"></i> Cancel
 			</button>
 			<div class="title">
 				{title}
 			</div>
 			<input bind:this={input_search} onkeyup={search} class="search" type="text" placeholder="press / to search"/>
 			<button class="button button_highlight round" onclick={done}>
-				<i class="icon">done</i> Add
+				<i class="icon i_done"></i> Add
 			</button>
 		</div>
 	{/snippet}

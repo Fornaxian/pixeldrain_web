@@ -71,13 +71,13 @@ onMount(() => {
 	<h3>{month_str}</h3>
 	<div class="toolbar">
 		<button onclick={last_month}>
-			<i class="icon">chevron_left</i>
+			<i class="icon i_chevron_left"></i>
 			Previous month
 		</button>
 		<div class="toolbar_spacer"></div>
 		<button onclick={next_month}>
 			Next month
-			<i class="icon">chevron_right</i>
+			<i class="icon i_chevron_right"></i>
 		</button>
 	</div>
 
@@ -123,13 +123,13 @@ onMount(() => {
 	{#if data.length > 100}
 		<div class="toolbar">
 			<button onclick={last_month}>
-				<i class="icon">chevron_left</i>
+				<i class="icon i_chevron_left"></i>
 				Previous month
 			</button>
 			<div class="toolbar_spacer"></div>
 			<button onclick={next_month}>
 				Next month
-				<i class="icon">chevron_right</i>
+				<i class="icon i_chevron_right"></i>
 			</button>
 		</div>
 	{/if}

@@ -45,7 +45,7 @@ let {
 		</li>
 		<li>
 			<a href="/user/prepaid/deposit" target="_blank" class="button button_highlight">
-				<i class="icon">bolt</i> Get Premium
+				<i class="icon i_bolt"></i> Get Premium
 			</a>
 			and earn my eternal gratitude
 			{#if !window.user_authenticated}
@@ -65,7 +65,7 @@ let {
 		</tbody>
 	</table>
 	<button onclick={on_download}>
-		<i class="icon">download</i> Download
+		<i class="icon i_download"></i> Download
 	</button>
 </IconBlock>
 

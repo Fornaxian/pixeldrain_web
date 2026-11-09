@@ -17,9 +17,9 @@ let { nav }: {
 			onclick={e => {e.preventDefault(); nav.navigate(node.path, true)}}
 		>
 			{#if node.abuse_type !== undefined}
-				<i class="icon small">block</i>
+				<i class="icon small i_block"></i>
 			{:else if shared}
-				<i class="icon small">share</i>
+				<i class="icon small i_share"></i>
 			{/if}
 			<div class="node_name" class:base={$nav.base_index === i}>
 				{node.name}

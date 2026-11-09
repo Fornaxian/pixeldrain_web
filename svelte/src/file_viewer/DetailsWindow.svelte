@@ -150,7 +150,7 @@ $effect(() => {
 						style="margin: 0;"
 						onclick={() => download_info = !download_info}
 					>
-						<i class="icon">help</i>
+						<i class="icon i_help"></i>
 					</button>
 				</td>
 				<td>{formatThousands(file.downloads)}</td>

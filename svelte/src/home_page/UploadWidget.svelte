@@ -293,12 +293,12 @@ const keydown = (e) => {
 
 <input bind:this={file_input_field} onchange={file_input_change} type="file" name="file" multiple="multiple"/>
 <button onclick={() => { file_input_field.click() }} class="big_button button_highlight">
-	<i class="icon small">cloud_upload</i>
+	<i class="icon small i_cloud_upload"></i>
 	<span><u>U</u>pload Files</span>
 </button>
 
 <a bind:this={btn_upload_text} href="/t" id="upload_text_button" class="button big_button button_highlight">
-	<i class="icon small">text_fields</i>
+	<i class="icon small i_text_fields"></i>
 	<span>Upload <u>T</u>ext</span>
 </a>
 <br/>
@@ -332,7 +332,7 @@ const keydown = (e) => {
 	<form class="album_name_form" onsubmit={e => {e.preventDefault(); create_album()}}>
 		<input bind:value={input_album_name} type="text" disabled={status !== "finished"} placeholder="My album"/>
 		<button type="submit" disabled={status !== "finished"}>
-			<i class="icon">create_new_folder</i> Create
+			<i class="icon i_create_new_folder"></i> Create
 		</button>
 	</form>
 	<br/><br/>
@@ -342,22 +342,22 @@ const keydown = (e) => {
 
 <div class="social_buttons" class:hide={!navigator_share}>
 	<button id="btn_social_share" onclick={share_navigator} class="social_buttons" disabled={status !== "finished"}>
-		<i class="icon">share</i><br/>
+		<i class="icon i_share"></i><br/>
 		Share
 	</button>
 </div>
 <CopyButton bind:this={btn_copy_link} text={share_link} large_icon><u>C</u>opy link</CopyButton>
 <button bind:this={btn_open_link} onclick={open_link} class="social_buttons" disabled={status !== "finished"}>
-	<i class="icon">open_in_new</i>
+	<i class="icon i_open_in_new"></i>
 	<span><u>O</u>pen link</span>
 </button>
 <button bind:this={btn_show_qr} onclick={show_qr_code} class="social_buttons" disabled={status !== "finished"} class:button_highlight={qr_visible}>
-	<i class="icon">qr_code</i>
+	<i class="icon i_qr_code"></i>
 	<span><u>Q</u>R code</span>
 </button>
 <div style="display: inline-block;" class:hide={navigator_share}>
 	<button bind:this={btn_share_email} onclick={share_mail} class="social_buttons" disabled={status !== "finished"}>
-		<i class="icon">email</i>
+		<i class="icon i_email"></i>
 		<span><u>E</u>-Mail</span>
 	</button>
 	<button bind:this={btn_share_twitter} onclick={share_twitter} class="social_buttons" disabled={status !== "finished"}>
@@ -410,9 +410,9 @@ const keydown = (e) => {
 		<br/>
 		<div style="text-align: center;">
 			<a href="#pro" class="button big_button" style="min-width: 350px;">
-				<i class="icon">arrow_downward</i>
+				<i class="icon i_arrow_downward"></i>
 				Check out Pro
-				<i class="icon">arrow_downward</i>
+				<i class="icon i_arrow_downward"></i>
 			</a>
 		</div>
 	</section>

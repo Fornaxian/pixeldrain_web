@@ -163,15 +163,15 @@ export const start = () => {
 	<div class="top_half">
 		<div class="thumbnail">
 			{#if job.status === "queued"}
-				<i class="icon">cloud_queue</i>
+				<i class="icon i_cloud_queue"></i>
 			{:else if job.status === "uploading"}
-				<i class="icon">cloud_upload</i>
+				<i class="icon i_cloud_upload"></i>
 			{:else if job.status === "processing"}
 				<Spinner></Spinner>
 			{:else if job.status === "finished"}
 				<img src="/api/file/{job.id}/thumbnail" alt="file thumbnail" />
 			{:else if job.status === "error"}
-				<i class="icon">error</i>
+				<i class="icon i_error"></i>
 			{/if}
 		</div>
 		<div class="queue_body">

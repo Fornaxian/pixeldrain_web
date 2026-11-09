@@ -86,9 +86,9 @@ onMount(() => {
 
 	<button onclick={toggle_hotlinking}>
 		{#if hotlinking}
-			<i class="icon green">check</i> ON (click to turn off)
+			<i class="icon green i_check"></i> ON (click to turn off)
 		{:else}
-			<i class="icon red">close</i> OFF (click to turn on)
+			<i class="icon red i_close"></i> OFF (click to turn on)
 		{/if}
 	</button>
 	<p>
@@ -109,7 +109,7 @@ onMount(() => {
 		<input type="number" bind:value={transfer_cap} step="0.1" min="0" style="width: 5em;"/>
 		<div style="margin: 0.5em;">TB</div>
 		<button type="submit">
-			<i class="icon">save</i> Save
+			<i class="icon i_save"></i> Save
 		</button>
 	</form>
 
@@ -129,9 +129,9 @@ onMount(() => {
 	<h2><Pro/>Skip download page</h2>
 	<button onclick={toggle_skip_viewer}>
 		{#if skip_viewer}
-			<i class="icon green">check</i> ON (click to turn off)
+			<i class="icon green i_check"></i> ON (click to turn off)
 		{:else}
-			<i class="icon red">close</i> OFF (click to turn on)
+			<i class="icon red i_close"></i> OFF (click to turn on)
 		{/if}
 	</button>
 	<p>

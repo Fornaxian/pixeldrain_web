@@ -112,7 +112,7 @@ $effect(() => {
 		<br/>
 		<CopyButton text={embed_html}>Copy HTML</CopyButton>
 		<button onclick={toggle_example} class:button_highlight={example} disabled={!options.shared}>
-			<i class="icon">visibility</i> Show example
+			<i class="icon i_visibility"></i> Show example
 		</button>
 	</div>
 	<hr/>

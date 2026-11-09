@@ -74,23 +74,23 @@ const toggle_preview = (rep) => {
 					<td>{formatDate(rep.created, false, false, false)}</td>
 					<td>
 						<button onclick={e => {e.preventDefault(); toggle_preview(rep)}} class="button round">
-							<i class="icon">email</i>
+							<i class="icon i_email"></i>
 						</button>
 						<button onclick={e => {e.preventDefault(); on_edit(rep)}} class="button round">
-							<i class="icon">edit</i>
+							<i class="icon i_edit"></i>
 						</button>
 						{#if rep.status !== "trusted"}
 							<button onclick={e => {e.preventDefault(); on_approve(rep)}} class="button button_highlight round">
-								<i class="icon">check</i>
+								<i class="icon i_check"></i>
 							</button>
 						{/if}
 						{#if rep.status !== "rejected"}
 							<button onclick={e => {e.preventDefault(); on_spam(rep)}} class="button button_red round">
-								<i class="icon">block</i>
+								<i class="icon i_block"></i>
 							</button>
 						{/if}
 						<button onclick={e => {e.preventDefault(); on_delete(rep)}} class="button button_red round">
-							<i class="icon">delete</i>
+							<i class="icon i_delete"></i>
 						</button>
 					</td>
 				</tr>

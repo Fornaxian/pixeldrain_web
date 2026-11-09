@@ -69,7 +69,7 @@ onMount(() => nav.navigate("/me", false))
 				{#if child.id}
 					<!-- svelte-ignore node_invalid_placement_ssr -->
 					<a href="/d/{child.id}" class="button action_button">
-						<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
+						<i class="icon i_share" title="This file / directory is shared. Click to open public link"></i>
 					</a>
 				{/if}
 			</a>

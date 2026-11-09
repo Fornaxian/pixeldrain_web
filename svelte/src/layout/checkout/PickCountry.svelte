@@ -72,7 +72,7 @@ const format_country = (c: typeof countries.all[0]) => {
 				placeholder="Search for country"
 				style="flex: 1 1 auto;">
 			<button type="submit" class="button_highlight" style="flex: 0 0 auto;">
-				<i class="icon">send</i>
+				<i class="icon i_send"></i>
 				Continue
 			</button>
 		</div>

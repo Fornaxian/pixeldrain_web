@@ -58,7 +58,7 @@ const attachment_url = (data: string) => URL.createObjectURL(new Blob(
 					download={a.name}
 					onclick={e => e.currentTarget.href = attachment_url(a.data)}
 				>
-					<i class="icon">attachment</i>
+					<i class="icon i_attachment"></i>
 					{a.name} ({formatDataVolume(a.data.length, 3)})
 				</a><br/>
 			{/each}

@@ -17,7 +17,7 @@
 		</li>
 	{/if}
 	<li>
-		<i class="icon">settings</i>
+		<i class="icon i_settings"></i>
 		<a href="/user/settings">Account settings</a>
 	</li>
 </ul>
@@ -26,21 +26,21 @@
 
 <div class="button_row">
 	<a href="/user/filemanager#files" class="button">
-		<i class="icon">image</i>
+		<i class="icon i_image"></i>
 		My Files
 	</a>
 	<a href="/user/filemanager#lists" class="button">
-		<i class="icon">photo_library</i>
+		<i class="icon i_photo_library"></i>
 		My Albums
 	</a>
 	{#if window.user.subscription.filesystem_access}
 		<a href="/d/me" class="button">
-			<i class="icon">folder</i>
+			<i class="icon i_folder"></i>
 			Filesystem
 		</a>
 	{/if}
 	<a href="/logout" class="button">
-		<i class="icon">logout</i>
+		<i class="icon i_logout"></i>
 		Log out
 	</a>
 </div>
@@ -49,11 +49,11 @@
 
 <div class="button_row">
 	<a href="/api/user/files?format=csv" class="button">
-		<i class="icon">list</i>
+		<i class="icon i_list"></i>
 		Export files to CSV
 	</a>
 	<a href="/api/user/lists?format=csv" class="button">
-		<i class="icon">list</i>
+		<i class="icon i_list"></i>
 		Export albums to CSV
 	</a>
 </div>

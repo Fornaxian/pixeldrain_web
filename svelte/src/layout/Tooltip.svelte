@@ -12,7 +12,7 @@ const open = () => dialog.open(button.getBoundingClientRect())
 </script>
 
 <button bind:this={button} onclick={open} class="button round">
-	<i class="icon">info</i>
+	<i class="icon i_info"></i>
 	{@render label?.()}
 </button>
 

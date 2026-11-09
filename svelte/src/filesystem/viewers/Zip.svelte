@@ -115,7 +115,7 @@ const recursive_size = (file: ZipEntry) => {
 	Uploaded on: {formatDate($nav.base.created, true, true, true)}
 	<br/>
 	<button class="button_highlight" onclick={on_download}>
-		<i class="icon">download</i>
+		<i class="icon i_download"></i>
 		<span>Download</span>
 	</button>
 </IconBlock>

@@ -66,14 +66,14 @@ const keydown = e => {
 <div id="text_editor" class="text_editor">
 	<div id="headerbar" class="headerbar">
 		<a href="/" class="button round">
-			<i class="icon">arrow_back</i>
+			<i class="icon i_arrow_back"></i>
 		</a>
 		<div id="headerbar_spacer" class="headerbar_spacer"></div>
 		<button class="button toolbar_button round" onclick={help.toggle}>
-			<i class="icon">info</i> Information
+			<i class="icon i_info"></i> Information
 		</button>
 		<button class="button toolbar_button round button_highlight" onclick={upload_text}>
-			<i class="icon">save</i> Save
+			<i class="icon i_save"></i> Save
 		</button>
 	</div>
 	<div class="textarea_container">

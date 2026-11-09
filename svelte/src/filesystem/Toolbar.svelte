@@ -74,9 +74,9 @@ let expand = (e: Event) => {
 	<div class="stats_container" onclick={expand} onkeypress={expand} role="button" tabindex="0">
 		<button class="button_expand hidden_vertical" onclick={expand}>
 			{#if expanded}
-				<i class="icon">expand_more</i>
+				<i class="icon i_expand_more"></i>
 			{:else}
-				<i class="icon">expand_less</i>
+				<i class="icon i_expand_less"></i>
 			{/if}
 		</button>
 		<FileStats nav={nav}/>
@@ -87,26 +87,26 @@ let expand = (e: Event) => {
 
 		<div class="button_row">
 			<button onclick={() => {nav.open_sibling(-1)}}>
-				<i class="icon">skip_previous</i>
+				<i class="icon i_skip_previous"></i>
 			</button>
 			<button onclick={toggle_shuffle} class:button_highlight={shuffle}>
-				<i class="icon">shuffle</i>
+				<i class="icon i_shuffle"></i>
 			</button>
 			<button onclick={() => {nav.open_sibling(1)}}>
-				<i class="icon">skip_next</i>
+				<i class="icon i_skip_next"></i>
 			</button>
 		</div>
 
 		<div class="separator hidden_horizontal"></div>
 
 		<button onclick={on_download}>
-			<i class="icon">save</i>
+			<i class="icon i_save"></i>
 			<span>Download</span>
 		</button>
 
 		{#if share_url !== ""}
 			<button onclick={copy_link} class:button_highlight={link_copied}>
-				<i class="icon">content_copy</i>
+				<i class="icon i_content_copy"></i>
 				<span><u>C</u>opy link</span>
 			</button>
 		{/if}
@@ -114,7 +114,7 @@ let expand = (e: Event) => {
 		<!-- Share button is enabled when: The browser has a sharing API, or the user can edit the file (to enable sharing)-->
 		{#if $nav.base.id !== "me" && (navigator.share !== undefined || $nav.permissions.write === true)}
 			<button onclick={(e) => share_dialog.open(e, nav.path)}>
-				<i class="icon">share</i>
+				<i class="icon i_share"></i>
 				<span>Share</span>
 			</button>
 		{/if}
@@ -125,9 +125,9 @@ let expand = (e: Event) => {
 			class:button_highlight={fullscreen}
 			title="Open page in full screen mode">
 			{#if fullscreen}
-				<i class="icon">fullscreen_exit</i>
+				<i class="icon i_fullscreen_exit"></i>
 			{:else}
-				<i class="icon">fullscreen</i>
+				<i class="icon i_fullscreen"></i>
 			{/if}
 			<span>Fullscreen</span>
 		</button>
@@ -135,13 +135,13 @@ let expand = (e: Event) => {
 		<div class="separator hidden_horizontal"></div>
 
 		<button onclick={() => details_visible = !details_visible} class:button_highlight={details_visible}>
-			<i class="icon">help</i>
+			<i class="icon i_help"></i>
 			<span>Deta<u>i</u>ls</span>
 		</button>
 
 		{#if $nav.base.id !== "me" && $nav.permissions.write === true}
 			<button onclick={() => edit_window.edit(nav.base, true, "file")} class:button_highlight={edit_visible}>
-				<i class="icon">edit</i>
+				<i class="icon i_edit"></i>
 				<span><u>E</u>dit</span>
 			</button>
 		{/if}

@@ -61,7 +61,7 @@ export const set_item = idx => {
 
 <div class="nav_container">
 	<button class="nav_button" onclick={toggle_gallery} title="Opens a gallery view of the album">
-		<i class="icon">photo_library</i>
+		<i class="icon i_photo_library"></i>
 		Gallery
 	</button>
 	<div bind:this={file_list_div} class="list_navigator">

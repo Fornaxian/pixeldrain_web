@@ -26,7 +26,7 @@ onMount(() => {
 			No ads today. Pixeldrain is currently funded by our subscribers!
 		</span>
 		<a href="/#pro" rel="noreferrer" class="button button_highlight" target="_blank">
-			<i class="icon">bolt</i>
+			<i class="icon i_bolt"></i>
 			Support Pixeldrain to help keep the project going
 		</a>
 	</div>
@@ -38,23 +38,23 @@ onMount(() => {
 			Pixeldrain on social media<br/>
 
 			<a href="https://mastodon.social/@fornax" rel="noreferrer" class="button" target="_blank" style="background-color: #595aff; color: #ffffff;">
-				<i class="icon small">people</i>
+				<i class="icon small i_people"></i>
 				Mastodon
 			</a>
 			<a href="https://bsky.app/profile/fornax.bsky.social"
 				rel="noreferrer" class="button" target="_blank" style="background-color: #208bfe; color: #ffffff;"
 			>
-				<i class="icon small">people</i>
+				<i class="icon small i_people"></i>
 				Bluesky
 			</a>
 			<a href="https://discord.gg/TWKGvYAFvX" rel="noreferrer" class="button" target="_blank" style="background-color: #5b5eee; color: #ffffff;">
-				<i class="icon small">people</i>
+				<i class="icon small i_people"></i>
 				Discord
 			</a>
 			<a href="https://www.reddit.com/r/PixelDrain"
 				rel="noreferrer" class="button" target="_blank" style="background-color: #ff4500; color: #ffffff;"
 			>
-				<i class="icon small">people</i>
+				<i class="icon small i_people"></i>
 				Reddit
 			</a>
 		</div>
@@ -69,13 +69,13 @@ onMount(() => {
 		<a href="https://alternativeto.net/software/pixeldrain/about/"
 			rel="noreferrer" class="button" target="_blank" style="background-color: #0C9EF0; color: #FFFFFF; font-weight: bold;"
 		>
-			<i class="icon">rate_review</i>
+			<i class="icon i_rate_review"></i>
 			AlternativeTo
 		</a>
 		<a href="https://www.trustpilot.com/review/pixeldrain.com"
 			rel="noreferrer" class="button" target="_blank" style="background-color: #00B67A; color: #FFFFFF; font-weight: bold;"
 		>
-			<i class="icon">rate_review</i>
+			<i class="icon i_rate_review"></i>
 			Trustpilot
 		</a>
 	</div>
@@ -89,7 +89,7 @@ onMount(() => {
 		<a href="https://ublockorigin.com/"
 			rel="noreferrer" class="button" target="_blank" style="background-color: #800000; color: #FFFFFF; font-weight: bold;"
 		>
-			<i class="icon">security</i>
+			<i class="icon i_security"></i>
 			Get uBlock Origin
 		</a>
 	</div>

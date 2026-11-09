@@ -13,6 +13,7 @@ let { item = {} as ZipEntry }: {
 	{#if child.children}
 		<details bind:open={child.details_open}>
 			<summary>
+				<i class="icon {child.details_open ? 'i_folder_open' : 'i_folder'}"></i>
 				<div class="filename">
 					{name}
 					(
@@ -37,6 +38,7 @@ let { item = {} as ZipEntry }: {
 	{#each Object.entries(item.children) as [name, child]}
 		{#if !child.children}
 			<li>
+				<i class="icon i_description"></i>
 				<div class="filename">
 					{name}
 					(
@@ -59,19 +61,13 @@ details {
 }
 details > summary {
 	list-style-type: none;
+}
+details > summary, li {
 	display: flex;
+	align-items: center;
 }
-details > summary::before {
-	font-family: 'Material Icons';
-	content: 'folder';
-}
-details[open] > summary::before {
-	font-family: 'Material Icons';
-	content: 'folder_open';
-}
-li::before {
-	font-family: 'Material Icons';
-	content: 'description';
+.icon {
+	font-size: 1em;
 }
 ul {
 	list-style-type: none;
@@ -80,7 +76,6 @@ ul {
 	border-left: 2px solid var(--separator);
 }
 .filename {
-	display: inline;
 	margin-left: 0.5em;
 }
 </style>

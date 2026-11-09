@@ -111,21 +111,21 @@ const save = async (keep_editing = false) => {
 <Modal bind:visible={visible} title="Edit {file.name}" width="800px" form="edit_form" style="color: var(--body_text_color); {custom_css}">
 	<div class="tab_bar">
 		<button class:button_highlight={tab === "file"} onclick={() => tab = "file"}>
-			<i class="icon">edit</i>
+			<i class="icon i_edit"></i>
 			Properties
 		</button>
 		<button class:button_highlight={tab === "share"} onclick={() => tab = "share"}>
-			<i class="icon">share</i>
+			<i class="icon i_share"></i>
 			Sharing
 		</button>
 		{#if options.shared && $nav.permissions.owner}
 			<button class:button_highlight={tab === "access"} onclick={() => tab = "access"}>
-				<i class="icon">key</i>
+				<i class="icon i_key"></i>
 				Access control
 			</button>
 		{/if}
 		<button class:button_highlight={tab === "branding"} onclick={() => tab = "branding"}>
-			<i class="icon">palette</i>
+			<i class="icon i_palette"></i>
 			Branding
 		</button>
 	</div>

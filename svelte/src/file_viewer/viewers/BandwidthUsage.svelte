@@ -19,7 +19,7 @@ import { stats } from "lib/StatsSocket"
 		<p>
 			<strong>
 				<a href="/user/prepaid/deposit" target="_blank" class="button button_highlight" rel="noreferrer">
-					<i class="icon">bolt</i> Upgrade your account
+					<i class="icon i_bolt"></i> Upgrade your account
 				</a>
 				to disable the transfer limit
 			</strong>

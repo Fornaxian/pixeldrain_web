@@ -43,9 +43,9 @@ const click = (e: MouseEvent) => {
 	class:group_last
 >
 	{#if on}
-		<i class="icon">{icon_on}</i>
+		<i class="icon i_{icon_on}"></i>
 	{:else}
-		<i class="icon">{icon_off}</i>
+		<i class="icon i_{icon_off}"></i>
 	{/if}
 	{@render children?.()}
 </button>

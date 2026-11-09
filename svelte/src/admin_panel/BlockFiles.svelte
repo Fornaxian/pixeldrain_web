@@ -31,7 +31,7 @@ let block_form = {
 			default_value: "Anonymous",
 		},
 	],
-	submit_label: `<i class="icon">send</i> Submit`,
+	submit_label: `<i class="icon i_send"></i> Submit`,
 	on_submit: async fields => {
 		const form = new FormData()
 		form.append("text", fields.text)

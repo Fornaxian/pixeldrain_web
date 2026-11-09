@@ -60,9 +60,9 @@ const keypress = e => {
 
 		<button class="bucket_expand" onclick={e => {e.stopPropagation(); toggle()}}>
 			{#if expanded}
-				<i class="icon">expand_less</i>
+				<i class="icon i_expand_less"></i>
 			{:else}
-				<i class="icon">expand_more</i>
+				<i class="icon i_expand_more"></i>
 			{/if}
 		</button>
 	</div>

@@ -161,7 +161,7 @@ const window_keydown = (e: KeyboardEvent) => {
 
 <div class="center">
 	<form class="search_form" onsubmit={e => {e.preventDefault(); submit_search()}}>
-		<i class="icon">search</i>
+		<i class="icon i_search"></i>
 		<input
 			bind:this={search_bar}
 			class="term"
@@ -175,7 +175,7 @@ const window_keydown = (e: KeyboardEvent) => {
 		{#if search_term !== ""}
 			<!-- Button needs to be of button type in order to not submit the form -->
 			<button onclick={() => clear_search(false)} type="button">
-				<i class="icon">close</i>
+				<i class="icon i_close"></i>
 			</button>
 		{/if}
 	</form>
@@ -204,7 +204,7 @@ const window_keydown = (e: KeyboardEvent) => {
 			<div class="node">
 				<div class="node_name" style="text-align: center;">
 					<button onclick={() => {search(last_limit + 100)}}>
-						<i class="icon">expand_more</i>
+						<i class="icon i_expand_more"></i>
 						More results
 					</button>
 				</div>

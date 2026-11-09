@@ -142,10 +142,10 @@ onMount(get_reporters);
 	<div class="toolbar" style="text-align: left;">
 		<div class="toolbar_spacer"></div>
 		<button onclick={() => get_reporters()}>
-			<i class="icon">refresh</i>
+			<i class="icon i_refresh"></i>
 		</button>
 		<button bind:this={edit_button} class:button_highlight={creating} onclick={() => {creating = !creating}}>
-			<i class="icon">create</i> Add abuse reporter
+			<i class="icon i_create"></i> Add abuse reporter
 		</button>
 	</div>
 	{#if creating}
@@ -165,7 +165,7 @@ onMount(get_reporters);
 						<label for="reporter_status_2">Rejected</label>
 					</div>
 					<button class="button_highlight" type="submit">
-						<i class="icon">save</i> Save
+						<i class="icon i_save"></i> Save
 					</button>
 				</div>
 			</form>

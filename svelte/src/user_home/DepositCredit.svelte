@@ -147,7 +147,7 @@ onMount(() => {
 						<td>
 							{#if row.status === "open"}
 								<a href="/api/user/pay_invoice/{row.id}" class="button button_highlight">
-									<i class="icon">paid</i> Pay
+									<i class="icon i_paid"></i> Pay
 								</a>
 							{/if}
 						</td>

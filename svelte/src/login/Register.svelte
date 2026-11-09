@@ -58,7 +58,7 @@ let form: FormConfig = {
 			description: `<div id="captcha_container"></div>`,
 		},
 	],
-	submit_label: `<i class="icon">send</i> Register`,
+	submit_label: `<i class="icon i_send"></i> Register`,
 	on_submit: async fields => {
 		if (fields.password !== fields.password2) {
 			return {

@@ -23,11 +23,11 @@ let { nav, on_download, on_details, children }: {
 	Upload date: {formatDate($nav.base.created, true, true, false)}
 	<hr/>
 	<button class="button_highlight" onclick={on_download}>
-		<i class="icon">download</i>
+		<i class="icon i_download"></i>
 		<span>Download</span>
 	</button>
 	<button onclick={on_details}>
-		<i class="icon">help</i>
+		<i class="icon i_help"></i>
 		<span>Details</span>
 	</button>
 </IconBlock>

@@ -70,25 +70,25 @@ export const seek = delta => {
 
 	{#if is_list}
 		<button onclick={on_prev}>
-			<i class="icon">skip_previous</i>
+			<i class="icon i_skip_previous"></i>
 		</button>
 	{/if}
 	<button onclick={() => player.currentTime -= 10}>
-		<i class="icon">replay_10</i>
+		<i class="icon i_replay_10"></i>
 	</button>
 	<button onclick={toggle_playback}>
 		{#if playing}
-			<i class="icon">pause</i>
+			<i class="icon i_pause"></i>
 		{:else}
-			<i class="icon">play_arrow</i>
+			<i class="icon i_play_arrow"></i>
 		{/if}
 	</button>
 	<button onclick={() => player.currentTime += 10}>
-		<i class="icon">forward_10</i>
+		<i class="icon i_forward_10"></i>
 	</button>
 	{#if is_list}
 		<button onclick={on_next}>
-			<i class="icon">skip_next</i>
+			<i class="icon i_skip_next"></i>
 		</button>
 	{/if}
 	<br/><br/>

@@ -29,7 +29,7 @@ const submit = async (e: SubmitEvent) => {
 
 	<button type="submit" class="button_highlight" style="align-self: end;">
 		Continue
-		<i class="icon">chevron_right</i>
+		<i class="icon i_chevron_right"></i>
 	</button>
 </form>
 <hr/>

@@ -118,9 +118,9 @@ onMount(get_bans);
 		<div class="toolbar_spacer"></div>
 		<button class:button_highlight={expanded} onclick={() => {expanded = !expanded}}>
 			{#if expanded}
-				<i class="icon">unfold_less</i> Collapse all
+				<i class="icon i_unfold_less"></i> Collapse all
 			{:else}
-				<i class="icon">unfold_more</i> Expand all
+				<i class="icon i_unfold_more"></i> Expand all
 			{/if}
 		</button>
 	</div>
@@ -145,7 +145,7 @@ onMount(get_bans);
 						{formatDate(row.offences[0].ban_time, false, false, false)}
 					</div>
 					<button onclick={e => {e.stopPropagation(); delete_ban(row.user_id)}} class="button button_red" style="align-self: center;">
-						<i class="icon">delete</i>
+						<i class="icon i_delete"></i>
 					</button>
 				</div>
 			{/snippet}
@@ -154,7 +154,7 @@ onMount(get_bans);
 				<Button click={() => impersonate(row.user_id)} icon="login" label="Impersonate user"/>
 				<div class="toolbar_spacer"></div>
 				<div class="toolbar_label">
-					<i class="icon">block</i> Block all files
+					<i class="icon i_block"></i> Block all files
 					<select bind:value={row.select_abuse_type}>
 						<option>copyright</option>
 						<option>child_abuse</option>

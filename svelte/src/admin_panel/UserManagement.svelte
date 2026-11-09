@@ -26,7 +26,7 @@ let credit_form = {
 			default_value: 0,
 		},
 	],
-	submit_label: `<i class="icon">send</i> Submit`,
+	submit_label: `<i class="icon i_send"></i> Submit`,
 	on_submit: async fields => {
 		const form = new FormData()
 		form.append("id", fields.user_id)
@@ -71,7 +71,7 @@ let impersonate_form = {
 			default_value: "",
 		},
 	],
-	submit_label: `<i class="icon">send</i> Submit`,
+	submit_label: `<i class="icon i_send"></i> Submit`,
 	on_submit: async fields => {
 		const form = new FormData()
 		form.append("id", fields.user_id)

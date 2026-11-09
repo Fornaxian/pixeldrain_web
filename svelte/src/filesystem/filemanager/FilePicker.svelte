@@ -142,13 +142,13 @@ onMount(() => {
 	{#snippet header()}
 		<div class="header">
 			<button class="button round" onclick={modal.hide}>
-				<i class="icon">close</i>
+				<i class="icon i_close"></i>
 			</button>
 			<button onclick={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">
-				<i class="icon">north</i>
+				<i class="icon i_north"></i>
 			</button>
 			<button onclick={() => nav.reload()} title="Refresh directory listing">
-				<i class="icon">refresh</i>
+				<i class="icon i_refresh"></i>
 			</button>
 
 			<div class="title">
@@ -157,20 +157,20 @@ onMount(() => {
 
 			<button onclick={() => {show_hidden = !show_hidden}} title="Toggle hidden files">
 				{#if show_hidden}
-					<i class="icon">visibility_off</i>
+					<i class="icon i_visibility_off"></i>
 				{:else}
-					<i class="icon">visibility</i>
+					<i class="icon i_visibility"></i>
 				{/if}
 			</button>
 
 			<button onclick={() => toggle_view()} title="Switch between gallery, list and compact view">
-				<i class="icon" class:button_highlight={directory_view === "list"}>list</i>
-				<i class="icon" class:button_highlight={directory_view === "gallery"}>collections</i>
-				<i class="icon" class:button_highlight={directory_view === "compact"}>view_compact</i>
+				<i class="icon i_list" class:button_highlight={directory_view === "list"}></i>
+				<i class="icon i_collections" class:button_highlight={directory_view === "gallery"}></i>
+				<i class="icon i_view_compact" class:button_highlight={directory_view === "compact"}></i>
 			</button>
 
 			<button class="button button_highlight round" onclick={done}>
-				<i class="icon">done</i> Pick
+				<i class="icon i_done"></i> Pick
 			</button>
 		</div>
 	{/snippet}

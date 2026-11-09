@@ -151,37 +151,37 @@ const video_keydown = e => {
 					<div class="spacer"></div>
 					{#if is_list}
 						<button onclick={on_prev}>
-							<i class="icon">skip_previous</i>
+							<i class="icon i_skip_previous"></i>
 						</button>
 					{/if}
 					<button onclick={() => seek(-10)}>
-						<i class="icon">replay_10</i>
+						<i class="icon i_replay_10"></i>
 					</button>
 					<button onclick={toggle_playback} class="button_highlight">
 						{#if playing}
-							<i class="icon">pause</i>
+							<i class="icon i_pause"></i>
 						{:else}
-							<i class="icon">play_arrow</i>
+							<i class="icon i_play_arrow"></i>
 						{/if}
 					</button>
 					<button onclick={() => seek(10)}>
-						<i class="icon">forward_10</i>
+						<i class="icon i_forward_10"></i>
 					</button>
 					{#if is_list}
 						<button onclick={on_next}>
-							<i class="icon">skip_next</i>
+							<i class="icon i_skip_next"></i>
 						</button>
 					{/if}
 					<div style="width: 16px; height: 8px;"></div>
 					<button onclick={toggle_mute} class:button_red={player && player.muted}>
 						{#if player && player.muted}
-							<i class="icon">volume_off</i>
+							<i class="icon i_volume_off"></i>
 						{:else}
-							<i class="icon">volume_up</i>
+							<i class="icon i_volume_up"></i>
 						{/if}
 					</button>
 					<button onclick={fullscreen}>
-						<i class="icon">fullscreen</i>
+						<i class="icon i_fullscreen"></i>
 					</button>
 					<div class="spacer"></div>
 				</div>
@@ -201,13 +201,13 @@ const video_keydown = e => {
 
 		<br/>
 		<button onclick={on_download}>
-			<i class="icon">download</i> Download
+			<i class="icon i_download"></i> Download
 		</button>
 		<a href="/login" class="button">
-			<i class="icon">login</i> Log in
+			<i class="icon i_login"></i> Log in
 		</a>
 		<a href="/register" class="button">
-			<i class="icon">how_to_reg</i> Sign up
+			<i class="icon i_how_to_reg"></i> Sign up
 		</a>
 	</IconBlock>
 

@@ -61,7 +61,7 @@ let account_settings = {
 			separator: true,
 		},
 	],
-	submit_label: `<i class="icon">save</i> Save`,
+	submit_label: `<i class="icon i_save"></i> Save`,
 	on_submit: async fields => {
 		if (fields.password_new1 != fields.password_new2) {
 			return {
@@ -107,7 +107,7 @@ const affiliate_settings = {
 				premium plan is active. This does not cost you anything extra.`,
 		},
 	],
-	submit_label: `<i class="icon">save</i> Save`,
+	submit_label: `<i class="icon i_save"></i> Save`,
 	on_submit: async fields => {
 		const form = new FormData()
 		form.append("affiliate_user_name", fields.affiliate_user_name)
@@ -153,7 +153,7 @@ let delete_account = {
 		},
 	],
 	submit_red: true,
-	submit_label: `<i class="icon">delete</i> Delete`,
+	submit_label: `<i class="icon i_delete"></i> Delete`,
 	on_submit: async fields => {
 		const resp = await fetch(
 			window.api_endpoint+"/user",

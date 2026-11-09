@@ -401,7 +401,7 @@ const keyboard_event = evt => {
 			class:button_highlight={toolbar_visible}
 			style="line-height: 1em;"
 			title="Open or close the toolbar">
-			<i class="icon">menu</i>
+			<i class="icon i_menu"></i>
 		</button>
 
 		<Menu embedded={embedded}/>
@@ -412,7 +412,7 @@ const keyboard_event = evt => {
 		</div>
 		{#if embedded}
 			<a href={window.location.pathname} target="_blank" class="button round" title="Open this page in a new tab" rel="noreferrer">
-				<i class="icon" id="btn_fullscreen_icon">open_in_new</i>
+				<i class="icon i_open_in_new" id="btn_fullscreen_icon"></i>
 			</a>
 		{/if}
 	</div>
@@ -445,7 +445,7 @@ const keyboard_event = evt => {
 					class="toolbar_button"
 					class:button_red={file.can_download === false}
 					title="Save this file to your computer">
-					<i class="icon">download</i>
+					<i class="icon i_download"></i>
 					<span>Download</span>
 				</button>
 			{/if}
@@ -455,7 +455,7 @@ const keyboard_event = evt => {
 					onclick={downloader.download_list}
 					class="toolbar_button"
 					title="Download all files in this album as a zip archive">
-					<i class="icon">download</i>
+					<i class="icon i_download"></i>
 					<span>DL all files</span>
 				</button>
 			{/if}
@@ -470,7 +470,7 @@ const keyboard_event = evt => {
 					class="toolbar_button"
 					class:button_highlight={sharebar_visible}
 					title="Share this file on social media">
-					<i class="icon">share</i>
+					<i class="icon i_share"></i>
 					<span>Share</span>
 				</button>
 			{/if}
@@ -480,7 +480,7 @@ const keyboard_event = evt => {
 				onclick={qr_window.toggle}
 				class:button_highlight={qr_visible}
 				title="Show a QR code with a link to this page. Useful for sharing files in-person">
-				<i class="icon">qr_code</i>
+				<i class="icon i_qr_code"></i>
 				<span>QR code</span>
 			</button>
 
@@ -490,9 +490,9 @@ const keyboard_event = evt => {
 				class:button_highlight={fullscreen}
 				title="Open page in full screen mode">
 				{#if fullscreen}
-					<i class="icon">fullscreen_exit</i>
+					<i class="icon i_fullscreen_exit"></i>
 				{:else}
-					<i class="icon">fullscreen</i>
+					<i class="icon i_fullscreen"></i>
 				{/if}
 				<span>Fullscreen</span>
 			</button>
@@ -503,7 +503,7 @@ const keyboard_event = evt => {
 					onclick={details_window.toggle}
 					class:button_highlight={details_visible}
 					title="Information and statistics about this file">
-					<i class="icon">help</i>
+					<i class="icon i_help"></i>
 					<span>Deta<u>i</u>ls</span>
 				</button>
 			{/if}
@@ -516,7 +516,7 @@ const keyboard_event = evt => {
 					onclick={edit_window.toggle}
 					class:button_highlight={edit_visible}
 					title="Edit or delete this file or album">
-					<i class="icon">edit</i>
+					<i class="icon i_edit"></i>
 					<span><u>E</u>dit</span>
 				</button>
 			{/if}
@@ -526,7 +526,7 @@ const keyboard_event = evt => {
 					onclick={grab_file}
 					class="toolbar_button"
 					title="Copy this file to your own pixeldrain account">
-					<i class="icon">save_alt</i>
+					<i class="icon i_save_alt"></i>
 					<span><u>G</u>rab file</span>
 				</button>
 			{/if}
@@ -536,7 +536,7 @@ const keyboard_event = evt => {
 				title="Report this file as abusive"
 				onclick={report_window.toggle}
 				class:button_highlight={report_visible}>
-				<i class="icon">flag</i>
+				<i class="icon i_flag"></i>
 				<span>Report</span>
 			</button>
 
@@ -546,7 +546,7 @@ const keyboard_event = evt => {
 					title="Include this file in your own webpages"
 					onclick={embed_window.toggle}
 					class:button_highlight={embed_visible}>
-					<i class="icon">code</i>
+					<i class="icon i_code"></i>
 					<span>Embed</span>
 				</button>
 			{/if}

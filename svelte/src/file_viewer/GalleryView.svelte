@@ -97,11 +97,11 @@ const drop = (e, index) => {
 			role="listitem"
 		>
 			<button class="add_button_part" onclick={on_pick_files}>
-				<i class="icon">cloud_upload</i>
+				<i class="icon i_cloud_upload"></i>
 				Upload files
 			</button>
 			<button class="add_button_part" onclick={file_picker.open}>
-				<i class="icon">add</i>
+				<i class="icon i_add"></i>
 				Add files
 			</button>
 		</div>
@@ -127,19 +127,11 @@ const drop = (e, index) => {
 				style="background-image: url('{file.icon_href}?width=256&height=256');">
 				{#if list.can_edit}
 					<div class="button_row">
-						<i class="icon" style="cursor: grab;">
-							drag_indicator
-						</i>
+						<i class="icon i_drag_indicator" style="cursor: grab;"></i>
 						<div class="separator"></div>
-						<button class="icon" onclick={e => {e.preventDefault(); e.stopPropagation(); move_left(index)}}>
-							chevron_left
-						</button>
-						<button class="icon" onclick={e => {e.preventDefault(); e.stopPropagation(); move_right(index)}}>
-							chevron_right
-						</button>
-						<button class="icon" onclick={e => {e.preventDefault(); e.stopPropagation(); delete_file(index)}}>
-							delete
-						</button>
+						<button class="icon i_chevron_left" onclick={e => {e.preventDefault(); e.stopPropagation(); move_left(index)}}></button>
+						<button class="icon i_chevron_right" onclick={e => {e.preventDefault(); e.stopPropagation(); move_right(index)}}></button>
+						<button class="icon i_delete" onclick={e => {e.preventDefault(); e.stopPropagation(); delete_file(index)}}></button>
 					</div>
 				{/if}
 

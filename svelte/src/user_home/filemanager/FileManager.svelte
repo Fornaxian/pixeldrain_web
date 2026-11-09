@@ -259,9 +259,9 @@ onMount(() => {
 
 <div id="file_manager" class="file_manager page_margins">
 	<div id="nav_bar" class="nav_bar">
-		<button id="btn_menu" onclick={() => window.toggleMenu()}><i class="icon">menu</i></button>
+		<button id="btn_menu" onclick={() => window.toggleMenu()}><i class="icon i_menu"></i></button>
 		<button onclick={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
-			<i class="icon">select_all</i> Select
+			<i class="icon i_select_all"></i> Select
 		</button>
 		<input
 			bind:this={inputSearch}
@@ -273,23 +273,23 @@ onMount(() => {
 		/>
 		{#if contentType === "files"}
 			<button onclick={upload_widget.pick_files} id="btn_upload" title="Upload files">
-				<i class="icon">cloud_upload</i>
+				<i class="icon i_cloud_upload"></i>
 			</button>
 		{/if}
 		<button onclick={hashChange} id="btn_reload" title="Refresh file list">
-			<i class="icon">refresh</i>
+			<i class="icon i_refresh"></i>
 		</button>
 		<button onclick={() => help_modal.toggle()} class:button_highlight={help_modal_visible} title="Help">
-			<i class="icon">info</i>
+			<i class="icon i_info"></i>
 		</button>
 	</div>
 	{#if selecting}
 		<div class="nav_bar">
 			{#if contentType === "files"}
-				<button onclick={createList}><i class="icon">list</i> Make album</button>
-				<button onclick={downloadFiles}><i class="icon">download</i> Download</button>
+				<button onclick={createList}><i class="icon i_list"></i> Make album</button>
+				<button onclick={downloadFiles}><i class="icon i_download"></i> Download</button>
 			{/if}
-			<button onclick={bulkDelete}><i class="icon">delete</i> Delete</button>
+			<button onclick={bulkDelete}><i class="icon i_delete"></i> Delete</button>
 		</div>
 	{/if}
 

@@ -122,7 +122,7 @@ let highlight_info = $state(false)
 	</p>
 	<div>Header image ID</div>
 	<button onclick={() => pick_image("brand_header_image")}>
-		<i class="icon">folder_open</i>
+		<i class="icon i_folder_open"></i>
 		Pick
 	</button>
 	<input type="text" bind:value={options.brand_header_image}/>
@@ -130,7 +130,7 @@ let highlight_info = $state(false)
 	<input class="span2" type="text" bind:value={options.brand_header_link}/>
 	<div>Background image ID</div>
 	<button onclick={() => pick_image("brand_background_image")}>
-		<i class="icon">folder_open</i>
+		<i class="icon i_folder_open"></i>
 		Pick
 	</button>
 	<input type="text" bind:value={options.brand_background_image}/>
@@ -153,9 +153,9 @@ let highlight_info = $state(false)
 			<hr/>
 
 			<div class="example_button_row">
-				<button type="button"><i class="icon">touch_app</i>Normal</button>
-				<button type="button" class="button_highlight"><i class="icon">priority_high</i>Important</button>
-				<button type="button" class="button_red"><i class="icon">warning</i>Dangerous</button>
+				<button type="button"><i class="icon i_touch_app"></i>Normal</button>
+				<button type="button" class="button_highlight"><i class="icon i_priority_high"></i>Important</button>
+				<button type="button" class="button_red"><i class="icon i_warning"></i>Dangerous</button>
 			</div>
 
 			<div class="example_button_row">

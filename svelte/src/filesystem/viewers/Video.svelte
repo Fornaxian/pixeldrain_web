@@ -137,37 +137,37 @@ const on_end = () => {
 		<div class="controls">
 			<div class="spacer"></div>
 			<button onclick={() => on_open_sibling(-1)}>
-				<i class="icon">skip_previous</i>
+				<i class="icon i_skip_previous"></i>
 			</button>
 			<button onclick={() => seek(-10)}>
-				<i class="icon">replay_10</i>
+				<i class="icon i_replay_10"></i>
 			</button>
 			<button onclick={toggle_playback} class="button_highlight">
 				{#if playing}
-					<i class="icon">pause</i>
+					<i class="icon i_pause"></i>
 				{:else}
-					<i class="icon">play_arrow</i>
+					<i class="icon i_play_arrow"></i>
 				{/if}
 			</button>
 			<button onclick={() => seek(10)}>
-				<i class="icon">forward_10</i>
+				<i class="icon i_forward_10"></i>
 			</button>
 			<button onclick={() => on_open_sibling(1)}>
-				<i class="icon">skip_next</i>
+				<i class="icon i_skip_next"></i>
 			</button>
 			<button onclick={() => toggle_autoplay()} class:button_highlight={autoplay} title="Play next video when the video ends">
-				<i class="icon">queue_play_next</i>
+				<i class="icon i_queue_play_next"></i>
 			</button>
 			<div style="width: 16px; height: 8px;"></div>
 			<button onclick={toggle_mute} class:button_red={player && player.muted}>
 				{#if player && player.muted}
-					<i class="icon">volume_off</i>
+					<i class="icon i_volume_off"></i>
 				{:else}
-					<i class="icon">volume_up</i>
+					<i class="icon i_volume_up"></i>
 				{/if}
 			</button>
 			<button onclick={toggle_fullscreen}>
-				<i class="icon">fullscreen</i>
+				<i class="icon i_fullscreen"></i>
 			</button>
 			<div class="spacer"></div>
 		</div>

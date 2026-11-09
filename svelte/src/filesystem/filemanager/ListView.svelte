@@ -54,28 +54,28 @@ let {
 			<td class="node_icons">
 				<div class="icons_wrap">
 					{#if child.abuse_type !== undefined}
-						<i class="icon" title="This file / directory has received an abuse report. It cannot be shared">block</i>
+						<i class="icon i_block" title="This file / directory has received an abuse report. It cannot be shared"></i>
 					{:else if child.id}
 						<a
 							href="/d/{child.id}"
 							onclick={e => on_file({index: index, action: FileAction.Share, original: e})}
 							class="button action_button"
 						>
-							<i class="icon" title="This file / directory is shared. Click to open public link">share</i>
+							<i class="icon i_share" title="This file / directory is shared. Click to open public link"></i>
 						</a>
 					{/if}
 					{#if child.properties !== undefined && child.properties.branding_enabled === "true" && !hide_branding}
 						<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Branding, original: e})}>
-							<i class="icon">palette</i>
+							<i class="icon i_palette"></i>
 						</button>
 					{/if}
 					{#if $nav.permissions.write && !hide_edit}
 						<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Edit, original: e})}>
-							<i class="icon">edit</i>
+							<i class="icon i_edit"></i>
 						</button>
 					{/if}
 					<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Download, original: e})}>
-						<i class="icon">save</i>
+						<i class="icon i_save"></i>
 					</button>
 				</div>
 			</td>

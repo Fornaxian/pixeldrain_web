@@ -11,11 +11,11 @@ let upload_widget = $state()
 
 	<div class="upload_buttons">
 		<button onclick={() => upload_widget.pick_files()} class="big_button button_highlight">
-			<i class="icon small">cloud_upload</i>
+			<i class="icon small i_cloud_upload"></i>
 			<span><u>U</u>pload Files</span>
 		</button>
 		<a href="/t" id="upload_text_button" class="button big_button button_highlight">
-			<i class="icon small">text_fields</i>
+			<i class="icon small i_text_fields"></i>
 			<span>Upload <u>T</u>ext</span>
 		</a>
 	</div>

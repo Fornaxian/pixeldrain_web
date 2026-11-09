@@ -121,12 +121,12 @@ const update = async (plan) => {
 				{#if subscription_type === "patreon"}
 					Currently active<br/>
 					<a class="button" href="https://www.patreon.com/settings/memberships/pixeldrain" target="_blank">
-						<i class="icon">settings</i>
+						<i class="icon i_settings"></i>
 						Manage
 					</a>
 				{:else}
 					<a class="button" href="/api/patreon_auth/start">
-						<i class="icon">add_link</i>
+						<i class="icon i_add_link"></i>
 						Link Patreon
 					</a>
 				{/if}
@@ -158,7 +158,7 @@ const update = async (plan) => {
 					Currently active
 				{:else}
 					<button onclick={() => update("prepaid")}>
-						<i class="icon">attach_money</i>
+						<i class="icon i_attach_money"></i>
 						Activate
 					</button>
 				{/if}

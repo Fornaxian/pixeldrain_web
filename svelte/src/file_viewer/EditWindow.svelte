@@ -137,7 +137,7 @@ let delete_list = async e => {
 		<form onsubmit={rename_list} style="display: flex;">
 			<input bind:value={list_name} type="text" style="flex: 1 1 auto"/>
 			<button type="submit" style="flex: 0 0 auto" class="button_highlight">
-				<i class="icon">save</i> Save
+				<i class="icon i_save"></i> Save
 			</button>
 		</form>
 		<h4>Delete</h4>
@@ -146,7 +146,7 @@ let delete_list = async e => {
 			only the album itself.
 		</p>
 		<button onclick={delete_list} class="button_red">
-			<i class="icon small">delete</i> Delete album
+			<i class="icon small i_delete"></i> Delete album
 		</button>
 	{/if}
 
@@ -156,7 +156,7 @@ let delete_list = async e => {
 		<form onsubmit={rename_file} style="display: flex;">
 			<input bind:value={file_name} type="text" style="flex: 1 1 auto"/>
 			<button type="submit" style="flex: 0 0 auto" class="button_highlight">
-				<i class="icon">save</i> Save
+				<i class="icon i_save"></i> Save
 			</button>
 		</form>
 		<h4>Delete</h4>
@@ -167,7 +167,7 @@ let delete_list = async e => {
 			lists it's contained in.
 		</p>
 		<button onclick={delete_file} class="button_red">
-			<i class="icon small">delete</i> Delete file
+			<i class="icon small i_delete"></i> Delete file
 		</button>
 	{/if}
 </div>

@@ -54,7 +54,7 @@ onMount(() => {
 	<!-- Show a back button if an app is selected -->
 	{#if app_name}
 		<a href="/user/connect_app" class="button">
-			<i class="icon">arrow_back</i>
+			<i class="icon i_arrow_back"></i>
 			Back to apps
 		</a>
 	{/if}
@@ -94,7 +94,7 @@ onMount(() => {
 		{#if !api_key}
 			<div class="center">
 				<button class="button_highlight" onclick={create_key}>
-					<i class="icon">add</i>
+					<i class="icon i_add"></i>
 					Generate key
 				</button>
 			</div>
@@ -104,7 +104,7 @@ onMount(() => {
 			<div class="copy_container">
 				<CopyButton text={api_key}>Copy key to clipboard</CopyButton>
 				<button onclick={toggle_show_key} class="copy_button" class:button_highlight={show_key !== ""}>
-					<i class="icon">visibility</i>
+					<i class="icon i_visibility"></i>
 					{#if show_key === ""}
 						Show key
 					{:else}
@@ -148,7 +148,7 @@ onMount(() => {
 
 		<div class="center">
 			<a href="/misc/sharex/pixeldrain.com.sxcu" class="button button_highlight">
-				<i class="icon small">save</i>
+				<i class="icon small i_save"></i>
 				Download ShareX Uploader
 			</a>
 		</div>

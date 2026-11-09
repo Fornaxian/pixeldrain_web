@@ -42,7 +42,7 @@ let frac = $derived(used / total)
 		{/if}
 
 		<a class="button button_highlight" href="/#pro">
-			<i class="icon">bolt</i> Upgrade options
+			<i class="icon i_bolt"></i> Upgrade options
 		</a>
 	</div>
 {:else if frac > 0.8}
@@ -64,7 +64,7 @@ let frac = $derived(used / total)
 		{/if}
 
 		<a class="button button_highlight" href="/#pro">
-			<i class="icon">bolt</i> Upgrade options
+			<i class="icon i_bolt"></i> Upgrade options
 		</a>
 	</div>
 {/if}

@@ -9,7 +9,7 @@ let { toggle = $bindable(false) }: {
 	style="margin: 0;"
 	onclick={() => toggle = !toggle}
 >
-	<i class="icon">help</i>
+	<i class="icon i_help"></i>
 </button>
 
 <style>

@@ -1,7 +1,5 @@
 {{define "menu"}}
-<button id="button_toggle_navigation" class="button_toggle_navigation icon" onclick="toggleMenu();">
-	menu
-</button>
+<button id="button_toggle_navigation" class="button_toggle_navigation icon i_menu" onclick="toggleMenu();"></button>
 <nav id="page_navigation" class="page_navigation">
 	<a href="/home#">Home</a>
 	{{if eq .User.Subscription.ID ""}}

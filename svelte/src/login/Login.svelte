@@ -43,7 +43,7 @@ const form_login: FormConfig = {
 			on_change: value => toggle_recover(form_login, form_recover, value),
 		},
 	],
-	submit_label: `<i class="icon">send</i> Login`,
+	submit_label: `<i class="icon i_send"></i> Login`,
 	on_submit: async (fields) => {
 		username = fields.username
 		password = fields.password
@@ -64,7 +64,7 @@ const form_recover: FormConfig = {
 			on_change: value => toggle_recover(form_recover, form_login, value),
 		},
 	],
-	submit_label: `<i class="icon">send</i> Send login link`,
+	submit_label: `<i class="icon i_send"></i> Send login link`,
 	on_submit: async (fields) => {
 		username = fields.username
 		password = ""
@@ -101,8 +101,8 @@ let form_otp = $derived({
 		},
 	],
 	submit_label: otp_lost && link_login_id === "" ?
-		`<i class="icon">send</i> Send login link` :
-		`<i class="icon">send</i> Login`,
+		`<i class="icon i_send"></i> Send login link` :
+		`<i class="icon i_send"></i> Login`,
 	on_submit: async (fields) => {
 		if (otp_lost) {
 			// Without a password the API sends a login link

@@ -7,31 +7,22 @@
 	--highlight_border: inset 0px 0px 5px 1px var(--highlight_color), 0px 0px 1px 0px var(--highlight_color);
 }
 
-@font-face {
-	font-family: 'Material Icons';
-	font-style: normal;
-	font-weight: 400;
-	font-display: block;
-	src: local('Material Icons'),
-		local('MaterialIcons-Regular'),
-		url(/res/misc/MaterialIcons.woff2) format('truetype');
-}
-
+/* Material Symbols, used like <i class="icon i_delete"></i>. The i_ classes
+   are generated into icons.css by svelte/icons.js. The glyph is a mask on a
+   pseudo element so backgrounds and padding on the icon itself still work */
 .icon {
-	font-family: 'Material Icons';
-	font-weight: normal;
-	font-style: normal;
 	font-size: 1.5em;
 	display: inline-block;
-	line-height: 1em;
-	text-transform: none;
-	letter-spacing: normal;
-	word-wrap: normal;
-	white-space: nowrap;
-	direction: ltr;
-	text-rendering: optimizeLegibility;
 	vertical-align: middle;
-	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.icon::before {
+	content: "";
+	display: block;
+	width: 1em;
+	height: 1em;
+	background-color: currentColor;
+	-webkit-mask: var(--icon) center / contain no-repeat;
+	mask: var(--icon) center / contain no-repeat;
 }
 
 .icon_unicode {

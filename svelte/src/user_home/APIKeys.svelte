@@ -95,14 +95,14 @@ const logout = async (key) => {
 				someone or something you don't trust!
 			</p>
 			<button class="button_red" onclick={load_keys}>
-				<i class="icon">lock_open</i> Show API keys
+				<i class="icon i_lock_open"></i> Show API keys
 			</button>
 		</div>
 	{:else}
 		<div class="toolbar" style="text-align: left;">
 			<div class="toolbar_spacer"></div>
 			<button onclick={create_key}>
-				<i class="icon">add</i> Create new API key
+				<i class="icon i_add"></i> Create new API key
 			</button>
 		</div>
 	{/if}
@@ -139,7 +139,7 @@ const logout = async (key) => {
 					<td>{row.creation_ip_address}</td>
 					<td>
 						<button onclick={e => {e.preventDefault(); logout(row.auth_key)}} class="button button_red round">
-							<i class="icon">delete</i>
+							<i class="icon i_delete"></i>
 						</button>
 					</td>
 				</tr>
@@ -149,7 +149,7 @@ const logout = async (key) => {
 							<img src="/res/img/pixeldrain_32.png" alt="Pixeldrain logo" class="app_icon"/>
 							Pixeldrain website
 						{:else if row.app_name === "website keys page"}
-							<i class="icon">vpn_key</i>
+							<i class="icon i_vpn_key"></i>
 							Pixeldrain keys page
 						{:else if row.app_name === "sharex"}
 							<img src="/res/img/sharex.png" alt="ShareX logo" class="app_icon"/>
