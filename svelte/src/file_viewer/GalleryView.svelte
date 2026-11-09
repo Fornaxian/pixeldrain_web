@@ -129,9 +129,9 @@ const drop = (e, index) => {
 					<div class="button_row">
 						<i class="icon i_drag_indicator" style="cursor: grab;"></i>
 						<div class="separator"></div>
-						<button class="icon i_chevron_left" onclick={e => {e.preventDefault(); e.stopPropagation(); move_left(index)}}></button>
-						<button class="icon i_chevron_right" onclick={e => {e.preventDefault(); e.stopPropagation(); move_right(index)}}></button>
-						<button class="icon i_delete" onclick={e => {e.preventDefault(); e.stopPropagation(); delete_file(index)}}></button>
+						<button class="icon i_chevron_left" onclick={e => {e.preventDefault(); e.stopPropagation(); move_left(index)}} title="Move left"></button>
+						<button class="icon i_chevron_right" onclick={e => {e.preventDefault(); e.stopPropagation(); move_right(index)}} title="Move right"></button>
+						<button class="icon i_delete" onclick={e => {e.preventDefault(); e.stopPropagation(); delete_file(index)}} title="Remove"></button>
 					</div>
 				{/if}
 

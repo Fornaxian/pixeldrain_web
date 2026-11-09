@@ -150,37 +150,37 @@ const video_keydown = e => {
 				<div class="controls">
 					<div class="spacer"></div>
 					{#if is_list}
-						<button onclick={on_prev}>
+						<button onclick={on_prev} title="Previous file">
 							<i class="icon i_skip_previous"></i>
 						</button>
 					{/if}
-					<button onclick={() => seek(-10)}>
+					<button onclick={() => seek(-10)} title="Back 10 seconds">
 						<i class="icon i_replay_10"></i>
 					</button>
-					<button onclick={toggle_playback} class="button_highlight">
+					<button onclick={toggle_playback} class="button_highlight" title={playing ? "Pause" : "Play"}>
 						{#if playing}
 							<i class="icon i_pause"></i>
 						{:else}
 							<i class="icon i_play_arrow"></i>
 						{/if}
 					</button>
-					<button onclick={() => seek(10)}>
+					<button onclick={() => seek(10)} title="Forward 10 seconds">
 						<i class="icon i_forward_10"></i>
 					</button>
 					{#if is_list}
-						<button onclick={on_next}>
+						<button onclick={on_next} title="Next file">
 							<i class="icon i_skip_next"></i>
 						</button>
 					{/if}
 					<div style="width: 16px; height: 8px;"></div>
-					<button onclick={toggle_mute} class:button_red={player && player.muted}>
+					<button onclick={toggle_mute} class:button_red={player && player.muted} title="Mute">
 						{#if player && player.muted}
 							<i class="icon i_volume_off"></i>
 						{:else}
 							<i class="icon i_volume_up"></i>
 						{/if}
 					</button>
-					<button onclick={fullscreen}>
+					<button onclick={fullscreen} title="Fullscreen">
 						<i class="icon i_fullscreen"></i>
 					</button>
 					<div class="spacer"></div>

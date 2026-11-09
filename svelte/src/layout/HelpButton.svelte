@@ -8,6 +8,7 @@ let { toggle = $bindable(false) }: {
 	class:button_highlight={toggle}
 	style="margin: 0;"
 	onclick={() => toggle = !toggle}
+	title="Help"
 >
 	<i class="icon i_help"></i>
 </button>

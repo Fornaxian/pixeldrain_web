@@ -67,7 +67,7 @@ const cancel = () => {
 		<ProgressBar total={total} used={loaded}/>
 	</div>
 	<div class="cancel">
-		<Button icon="cancel" click={cancel}/>
+		<Button icon="cancel" click={cancel} title="Cancel"/>
 	</div>
 </div>
 

@@ -74,7 +74,7 @@ const del_password = (pass: string) => {
 	{#if options.user_permissions !== undefined}
 		{#each Object.keys(options.user_permissions) as id (id)}
 			<div class="row">
-				<Button click={() => del_user(id)} icon="delete"/>
+				<Button click={() => del_user(id)} icon="delete" title="Remove"/>
 				<div class="grow id">
 					{id}
 				</div>
@@ -104,7 +104,7 @@ const del_password = (pass: string) => {
 	{#if options.password_permissions !== undefined}
 		{#each Object.keys(options.password_permissions) as password (password)}
 			<div class="row">
-				<Button click={() => del_password(password)} icon="delete"/>
+				<Button click={() => del_password(password)} icon="delete" title="Remove"/>
 				<div class="grow id">
 					{password}
 				</div>

@@ -141,7 +141,7 @@ onMount(get_reporters);
 <section>
 	<div class="toolbar" style="text-align: left;">
 		<div class="toolbar_spacer"></div>
-		<button onclick={() => get_reporters()}>
+		<button onclick={() => get_reporters()} title="Refresh">
 			<i class="icon i_refresh"></i>
 		</button>
 		<button bind:this={edit_button} class:button_highlight={creating} onclick={() => {creating = !creating}}>

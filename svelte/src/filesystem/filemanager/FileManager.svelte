@@ -373,7 +373,7 @@ $effect.pre(() => {
 			</div>
 		{:else if mode === "selecting"}
 			<div class="toolbar toolbar_edit">
-				<Button click={viewing_mode} icon="close"/>
+				<Button click={viewing_mode} icon="close" title="Stop selecting"/>
 				<div class="toolbar_spacer">Selecting files</div>
 				<Button click={move_start} icon="drive_file_move" label="Move"/>
 				<button onclick={delete_selected} class="button_red">
@@ -383,8 +383,8 @@ $effect.pre(() => {
 			</div>
 		{:else if mode === "moving"}
 			<div class="toolbar toolbar_edit">
-				<Button click={viewing_mode} icon="close"/>
-				<Button click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} icon="north"/>
+				<Button click={viewing_mode} icon="close" title="Cancel moving"/>
+				<Button click={() => nav.navigate_up()} disabled={$nav.path.length <= 1} icon="north" title="Up"/>
 				<div class="toolbar_spacer">
 					Moving {moving_files} files and {moving_directories} directories
 				</div>

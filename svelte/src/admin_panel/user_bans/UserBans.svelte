@@ -144,7 +144,7 @@ onMount(get_bans);
 						Date<br/>
 						{formatDate(row.offences[0].ban_time, false, false, false)}
 					</div>
-					<button onclick={e => {e.stopPropagation(); delete_ban(row.user_id)}} class="button button_red" style="align-self: center;">
+					<button onclick={e => {e.stopPropagation(); delete_ban(row.user_id)}} class="button button_red" style="align-self: center;" title="Unban user">
 						<i class="icon i_delete"></i>
 					</button>
 				</div>

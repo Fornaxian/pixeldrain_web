@@ -166,17 +166,17 @@ onMount(() => {
 				{/if}
 
 				{#if i > 0}
-					<Button click={() => swap_card(i, i-1)} icon="chevron_left" flat/>
+					<Button click={() => swap_card(i, i-1)} icon="chevron_left" flat title="Move card left"/>
 				{/if}
 				{#if i < cards.length-1}
-					<Button click={() => swap_card(i, i+1)} icon="chevron_right" flat/>
+					<Button click={() => swap_card(i, i+1)} icon="chevron_right" flat title="Move card right"/>
 				{/if}
 
-				<Button click={() => shrink(i)} icon="zoom_out" flat/>
+				<Button click={() => shrink(i)} icon="zoom_out" flat title="Shrink"/>
 				<span>
 					{card.size === undefined ? 1 : card.size}
 				</span>
-				<Button click={() => expand(i)} icon="zoom_in" flat/>
+				<Button click={() => expand(i)} icon="zoom_in" flat title="Enlarge"/>
 			</div>
 
 			{#if !card.hidden && card.size > 0}

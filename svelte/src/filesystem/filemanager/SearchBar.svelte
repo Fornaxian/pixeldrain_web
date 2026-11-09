@@ -174,7 +174,7 @@ const window_keydown = (e: KeyboardEvent) => {
 		/>
 		{#if search_term !== ""}
 			<!-- Button needs to be of button type in order to not submit the form -->
-			<button onclick={() => clear_search(false)} type="button">
+			<button onclick={() => clear_search(false)} type="button" title="Clear search">
 				<i class="icon i_close"></i>
 			</button>
 		{/if}

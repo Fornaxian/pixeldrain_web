@@ -58,7 +58,7 @@ const keypress = e => {
 			{@render header?.()}
 		</div>
 
-		<button class="bucket_expand" onclick={e => {e.stopPropagation(); toggle()}}>
+		<button class="bucket_expand" onclick={e => {e.stopPropagation(); toggle()}} title={expanded ? "Collapse" : "Expand"}>
 			{#if expanded}
 				<i class="icon i_expand_less"></i>
 			{:else}

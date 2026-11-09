@@ -259,7 +259,7 @@ onMount(() => {
 
 <div id="file_manager" class="file_manager page_margins">
 	<div id="nav_bar" class="nav_bar">
-		<button id="btn_menu" onclick={() => window.toggleMenu()}><i class="icon i_menu"></i></button>
+		<button id="btn_menu" onclick={() => window.toggleMenu()} title="Menu"><i class="icon i_menu"></i></button>
 		<button onclick={toggleSelecting} id="btn_select" class:button_highlight={selecting}>
 			<i class="icon i_select_all"></i> Select
 		</button>

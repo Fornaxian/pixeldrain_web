@@ -149,6 +149,7 @@ $effect(() => {
 						class:button_highlight={download_info}
 						style="margin: 0;"
 						onclick={() => download_info = !download_info}
+						title="Help"
 					>
 						<i class="icon i_help"></i>
 					</button>

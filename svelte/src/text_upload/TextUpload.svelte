@@ -65,7 +65,7 @@ const keydown = e => {
 
 <div id="text_editor" class="text_editor">
 	<div id="headerbar" class="headerbar">
-		<a href="/" class="button round">
+		<a href="/" class="button round" title="Back">
 			<i class="icon i_arrow_back"></i>
 		</a>
 		<div id="headerbar_spacer" class="headerbar_spacer"></div>

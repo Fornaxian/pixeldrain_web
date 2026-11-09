@@ -73,23 +73,23 @@ const toggle_preview = (rep) => {
 					<td>{formatDate(rep.last_used, true, true, false)}</td>
 					<td>{formatDate(rep.created, false, false, false)}</td>
 					<td>
-						<button onclick={e => {e.preventDefault(); toggle_preview(rep)}} class="button round">
+						<button onclick={e => {e.preventDefault(); toggle_preview(rep)}} class="button round" title="Show last message">
 							<i class="icon i_email"></i>
 						</button>
-						<button onclick={e => {e.preventDefault(); on_edit(rep)}} class="button round">
+						<button onclick={e => {e.preventDefault(); on_edit(rep)}} class="button round" title="Edit">
 							<i class="icon i_edit"></i>
 						</button>
 						{#if rep.status !== "trusted"}
-							<button onclick={e => {e.preventDefault(); on_approve(rep)}} class="button button_highlight round">
+							<button onclick={e => {e.preventDefault(); on_approve(rep)}} class="button button_highlight round" title="Trust">
 								<i class="icon i_check"></i>
 							</button>
 						{/if}
 						{#if rep.status !== "rejected"}
-							<button onclick={e => {e.preventDefault(); on_spam(rep)}} class="button button_red round">
+							<button onclick={e => {e.preventDefault(); on_spam(rep)}} class="button button_red round" title="Reject">
 								<i class="icon i_block"></i>
 							</button>
 						{/if}
-						<button onclick={e => {e.preventDefault(); on_delete(rep)}} class="button button_red round">
+						<button onclick={e => {e.preventDefault(); on_delete(rep)}} class="button button_red round" title="Delete">
 							<i class="icon i_delete"></i>
 						</button>
 					</td>

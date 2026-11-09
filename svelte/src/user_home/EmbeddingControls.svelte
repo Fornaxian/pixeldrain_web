@@ -98,7 +98,7 @@ onMount(async () => {
 		{/if}
 		{#each embed_domains as domain, index}
 			<div class="form_row">
-				<button class="shrink" type="button" onclick={() => remove(index)}>
+				<button class="shrink" type="button" onclick={() => remove(index)} title="Remove">
 					<i class="icon i_delete"></i>
 				</button>
 				<div>{domain}</div>

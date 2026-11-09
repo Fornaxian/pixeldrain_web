@@ -141,7 +141,7 @@ onMount(() => {
 <Modal bind:this={modal} width="900px">
 	{#snippet header()}
 		<div class="header">
-			<button class="button round" onclick={modal.hide}>
+			<button class="button round" onclick={modal.hide} title="Close">
 				<i class="icon i_close"></i>
 			</button>
 			<button onclick={() => nav.navigate_up()} disabled={$nav.path.length <= 1} title="Up">

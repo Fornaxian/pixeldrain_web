@@ -72,7 +72,7 @@ let expand = (e: Event) => {
 
 <div class="toolbar" class:expanded>
 	<div class="stats_container" onclick={expand} onkeypress={expand} role="button" tabindex="0">
-		<button class="button_expand hidden_vertical" onclick={expand}>
+		<button class="button_expand hidden_vertical" onclick={expand} title={expanded ? "Collapse" : "Expand"}>
 			{#if expanded}
 				<i class="icon i_expand_more"></i>
 			{:else}
@@ -86,13 +86,13 @@ let expand = (e: Event) => {
 	<div class="grid">
 
 		<div class="button_row">
-			<button onclick={() => {nav.open_sibling(-1)}}>
+			<button onclick={() => {nav.open_sibling(-1)}} title="Previous file">
 				<i class="icon i_skip_previous"></i>
 			</button>
-			<button onclick={toggle_shuffle} class:button_highlight={shuffle}>
+			<button onclick={toggle_shuffle} class:button_highlight={shuffle} title="Shuffle">
 				<i class="icon i_shuffle"></i>
 			</button>
-			<button onclick={() => {nav.open_sibling(1)}}>
+			<button onclick={() => {nav.open_sibling(1)}} title="Next file">
 				<i class="icon i_skip_next"></i>
 			</button>
 		</div>

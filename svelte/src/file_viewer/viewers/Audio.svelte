@@ -69,25 +69,25 @@ export const seek = delta => {
 	<FileTitle title={file.name}/>
 
 	{#if is_list}
-		<button onclick={on_prev}>
+		<button onclick={on_prev} title="Previous track">
 			<i class="icon i_skip_previous"></i>
 		</button>
 	{/if}
-	<button onclick={() => player.currentTime -= 10}>
+	<button onclick={() => player.currentTime -= 10} title="Back 10 seconds">
 		<i class="icon i_replay_10"></i>
 	</button>
-	<button onclick={toggle_playback}>
+	<button onclick={toggle_playback} title={playing ? "Pause" : "Play"}>
 		{#if playing}
 			<i class="icon i_pause"></i>
 		{:else}
 			<i class="icon i_play_arrow"></i>
 		{/if}
 	</button>
-	<button onclick={() => player.currentTime += 10}>
+	<button onclick={() => player.currentTime += 10} title="Forward 10 seconds">
 		<i class="icon i_forward_10"></i>
 	</button>
 	{#if is_list}
-		<button onclick={on_next}>
+		<button onclick={on_next} title="Next track">
 			<i class="icon i_skip_next"></i>
 		</button>
 	{/if}

@@ -88,12 +88,12 @@ const keydown = e => {
 				{#if header}
 					{@render header()}
 				{:else if form !== ""}
-					<Button round click={hide} icon="close"/>
+					<Button round click={hide} icon="close" title="Close"/>
 					<span class="title">{title}</span>
 					<Button round highlight type="submit" form={form} click={hide} icon="save" label="Save"/>
 				{:else}
 					<span class="title">{title}</span>
-					<Button round click={hide} icon="close" />
+					<Button round click={hide} icon="close" title="Close" />
 				{/if}
 			</div>
 			<div class="body" class:padding>

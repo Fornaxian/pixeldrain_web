@@ -138,7 +138,7 @@ const logout = async (key) => {
 					<td>{formatDate(row.last_used_time, true, true, false)}</td>
 					<td>{row.creation_ip_address}</td>
 					<td>
-						<button onclick={e => {e.preventDefault(); logout(row.auth_key)}} class="button button_red round">
+						<button onclick={e => {e.preventDefault(); logout(row.auth_key)}} class="button button_red round" title="Log out">
 							<i class="icon i_delete"></i>
 						</button>
 					</td>

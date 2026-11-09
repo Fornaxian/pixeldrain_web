@@ -68,17 +68,17 @@ onMount(() => {
 		<track kind="captions"/>
 	</audio>
 	<div style="text-align: center;">
-		<button onclick={() => nav.open_sibling(-1)}><i class="icon i_skip_previous"></i></button>
-		<button onclick={() => seek(-10)}><i class="icon i_replay_10"></i></button>
-		<button onclick={toggle_playback}>
+		<button onclick={() => nav.open_sibling(-1)} title="Previous track"><i class="icon i_skip_previous"></i></button>
+		<button onclick={() => seek(-10)} title="Back 10 seconds"><i class="icon i_replay_10"></i></button>
+		<button onclick={toggle_playback} title={playing ? "Pause" : "Play"}>
 			{#if playing}
 				<i class="icon i_pause"></i>
 			{:else}
 				<i class="icon i_play_arrow"></i>
 			{/if}
 		</button>
-		<button onclick={() => seek(10)}><i class="icon i_forward_10"></i></button>
-		<button onclick={() => nav.open_sibling(1)}><i class="icon i_skip_next"></i></button>
+		<button onclick={() => seek(10)} title="Forward 10 seconds"><i class="icon i_forward_10"></i></button>
+		<button onclick={() => nav.open_sibling(1)} title="Next track"><i class="icon i_skip_next"></i></button>
 	</div>
 
 	<h2>Tracklist</h2>

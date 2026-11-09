@@ -63,11 +63,11 @@ onMount(() => {
 <LoadingIndicator loading={loading}/>
 
 <div class="toolbar">
-	<Button click={last_month} icon="chevron_left"/>
+	<Button click={last_month} icon="chevron_left" title="Previous month"/>
 	<div class="toolbar_spacer">
 		{month_str}
 	</div>
-	<Button click={next_month} icon="chevron_right"/>
+	<Button click={next_month} icon="chevron_right" title="Next month"/>
 </div>
 
 {#if data.length === 0}

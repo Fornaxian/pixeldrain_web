@@ -60,21 +60,22 @@ let {
 							href="/d/{child.id}"
 							onclick={e => on_file({index: index, action: FileAction.Share, original: e})}
 							class="button action_button"
+							title="This file / directory is shared. Click to open public link"
 						>
-							<i class="icon i_share" title="This file / directory is shared. Click to open public link"></i>
+							<i class="icon i_share"></i>
 						</a>
 					{/if}
 					{#if child.properties !== undefined && child.properties.branding_enabled === "true" && !hide_branding}
-						<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Branding, original: e})}>
+						<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Branding, original: e})} title="Edit branding">
 							<i class="icon i_palette"></i>
 						</button>
 					{/if}
 					{#if $nav.permissions.write && !hide_edit}
-						<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Edit, original: e})}>
+						<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Edit, original: e})} title="Edit">
 							<i class="icon i_edit"></i>
 						</button>
 					{/if}
-					<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Download, original: e})}>
+					<button class="action_button" onclick={e => on_file({index: index, action: FileAction.Download, original: e})} title="Download">
 						<i class="icon i_save"></i>
 					</button>
 				</div>
