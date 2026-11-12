@@ -75,6 +75,7 @@ let form: FormConfig = {
 		const form = new FormData()
 		form.append("email", fields.email)
 		form.append("password", fields.password)
+		form.append("app_name", "website login")
 
 		if (captcha_site_key !== "" && captcha_widget === null) {
 			return {

@@ -10,7 +10,11 @@ keys can be obtained from your user account's [API keys page](/user/api_keys).
 To use the API key you need to enter it in the password field of [HTTP Basic
 Access
 Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication). The
-username field does not matter, it can be empty or anything else.
+username field does not matter, it can be empty or anything else. A key can
+also be sent as a bearer token: `Authorization: Bearer <api_key>`.
+
+A key has [permissions](#api-key-permissions). An endpoint which needs a
+permission the key does not have fails with `key_permission_denied` (403).
 
 Example usage in JavaScript:
 

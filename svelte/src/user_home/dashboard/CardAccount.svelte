@@ -2,8 +2,8 @@
 	<li>Username: {window.user.username}</li>
 	{#if window.user.email_addresses.length === 0}
 		<li class="highlight_blue" style="text-align: initial;">
-			No e-mail address configured. You will not be able to recover your
-			account if you lose your password. Set an e-mail address on the <a
+			E-mail address not verified. You will not be able to recover your
+			account if you lose your password. Add an e-mail address on the <a
 			href="/user/settings">Settings</a> page.
 		</li>
 	{:else}

@@ -140,6 +140,7 @@ const login = async (e?: SubmitEvent) => {
 
 	let fd = new FormData()
 	fd.set("username", username)
+	fd.set("app_name", "website login")
 
 	if (password !== "") {
 		fd.set("password", password)

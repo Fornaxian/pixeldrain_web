@@ -1,185 +1,386 @@
-<script>
+<script lang="ts">
+import { onMount } from "svelte";
+import LoadingIndicator from "util/LoadingIndicator.svelte";
 import CopyButton from "layout/CopyButton.svelte";
 import { formatDate } from "util/Formatting";
-import LoadingIndicator from "util/LoadingIndicator.svelte";
+import { check_response, dict_to_form, get_endpoint, type UserSession } from "lib/PixeldrainAPI";
+
+// Each part of the API has a read and a write permission
+const components: [string, string, keyof UserSession, keyof UserSession][] = [
+	["Files", "i_description", "file_read", "file_write"],
+	["Filesystem", "i_folder", "filesystem_read", "filesystem_write"],
+	["Account", "i_person", "account_read", "account_write"],
+	["API keys", "i_vpn_key", "session_read", "session_write"],
+	["Billing", "i_receipt", "billing_read", "billing_write"],
+]
 
 let loading = $state(false)
-let loaded = $state(false)
-let rows = $state([])
+let keys: UserSession[] = $state([])
 
-const load_keys = async () => {
+// The keys which are shown in full, the others are masked
+let shown: {[key: string]: boolean} = $state({})
+
+// The keys of which the whole user agent is shown
+let agent_shown: {[key: string]: boolean} = $state({})
+
+// The key which is being edited, and what its permissions are going to be.
+// Nothing changes until it is saved
+let editing = $state("")
+let edit_perms: {[name: string]: boolean} = $state({})
+
+const edit_key = (key: UserSession) => {
+	editing = key.auth_key
+	edit_perms = {}
+	for (const [, , read, write] of components) {
+		edit_perms[read] = key[read] as boolean
+		edit_perms[write] = key[write] as boolean
+	}
+}
+
+const session_request = async (init: RequestInit) => {
 	loading = true
 	try {
-		const resp = await fetch(window.api_endpoint+"/user/session")
-		if(resp.status >= 400) {
-			let json = await resp.json()
-			if (json.value === "authentication_failed") {
-				window.location = "/login"
-				return
-			} else {
-				throw new Error(json.message)
-			}
-		}
-		rows = await resp.json()
-		rows.forEach(row => {
-			row.creation_date = new Date(row.creation_time)
-			row.last_used_date = new Date(row.last_used_time)
-		})
-		rows.sort((a, b) => {
-			return b.last_used_date - a.last_used_date
-		});
-	} catch (err) {
-		alert(err)
+		return await check_response(await fetch(get_endpoint() + "/user/session", init))
 	} finally {
 		loading = false
-		loaded = true
 	}
-};
+}
+
+const save_key = async () => {
+	try {
+		await session_request({
+			method: "PUT",
+			body: dict_to_form({auth_key: editing, ...edit_perms}),
+		})
+	} catch (err) {
+		alert("Failed to change key: " + (err.message ?? err))
+		return
+	}
+
+	editing = ""
+	await load_keys()
+}
+
+// Intl.RelativeTimeFormat is the browser's formatter for "5 minutes ago", it
+// takes care of the plurals
+const relative = new Intl.RelativeTimeFormat("en", {numeric: "always", style: "short"})
+
+// The server records the use of a key once per hour, so for the last used time
+// anything more exact than that would be made up
+const ago = (time: string) => {
+	const seconds = (Date.now() - Date.parse(time)) / 1000
+	if (seconds >= 86400) {
+		return relative.format(-Math.floor(seconds / 86400), "day")
+	} else if (seconds >= 3600) {
+		return relative.format(-Math.floor(seconds / 3600), "hour")
+	} else if (seconds >= 60) {
+		return relative.format(-Math.floor(seconds / 60), "minute")
+	}
+	return "just now"
+}
+
+const load_keys = async () => {
+	try {
+		const resp: UserSession[] = await session_request({})
+
+		// The key of this session goes first, then the most recently used ones
+		keys = resp.sort((a, b) =>
+			Number(b.current) - Number(a.current) ||
+			Date.parse(b.last_used_time) - Date.parse(a.last_used_time)
+		)
+	} catch (err) {
+		alert("Failed to load API keys: " + (err.message ?? err))
+	}
+}
 
 const create_key = async () => {
-	loading = true
 	try {
-		let form = new FormData()
-		form.append("app_name", "website keys page")
-
-		const resp = await fetch(
-			window.api_endpoint+"/user/session",
-			{
-				method: "POST",
-				body: form,
-			}
-		);
-		if(resp.status >= 400) {
-			throw new Error(await resp.text());
-		}
+		// Keys are made to be put in other programs, where they can leak. The
+		// server never gives account write to a key which is made like this,
+		// with it a key could change the password and take the account over
+		const key: UserSession = await session_request({
+			method: "POST",
+			body: dict_to_form({app_name: "website keys page"}),
+		})
+		shown[key.auth_key] = true
 	} catch (err) {
-		alert("Failed to create new API key! "+err)
+		alert("Failed to create new API key: " + (err.message ?? err))
 	}
 
-	load_keys();
+	await load_keys()
 }
 
-const logout = async (key) => {
-	loading = true
-
-	try {
-		const resp = await fetch(
-			window.api_endpoint+"/user/session",
-			{
-				method: "DELETE",
-				headers: {
-					"Authorization": "Basic "+btoa(":"+key),
-				}
-			}
-		);
-		if(resp.status >= 400) {
-			throw new Error(await resp.text());
-		}
-	} catch (err) {
-		alert("Failed to delete key: "+err)
+const delete_key = async (key: UserSession) => {
+	if (key.current && !confirm(
+		"This is the key you are logged in with. Deleting it logs you out. Continue?"
+	)) {
+		return
 	}
 
-	load_keys();
+	try {
+		// A key is deleted by logging out with it
+		await session_request({
+			method: "DELETE",
+			headers: {"Authorization": "Basic " + btoa(":" + key.auth_key)},
+		})
+	} catch (err) {
+		alert("Failed to delete key: " + (err.message ?? err))
+	}
+
+	if (key.current) {
+		window.location.href = "/login"
+	} else {
+		await load_keys()
+	}
 }
+
+onMount(load_keys)
 </script>
 
 <LoadingIndicator loading={loading}/>
 
 <section>
-	{#if !loaded}
-		<div class="highlight_yellow">
-			<h2>Warning</h2>
-			<p>
-				API keys are sensitive information. They can be used to gain
-				full control over your account. Do not show your API keys to
-				someone or something you don't trust!
-			</p>
-			<button class="button_red" onclick={load_keys}>
-				<i class="icon i_lock_open"></i> Show API keys
-			</button>
-		</div>
-	{:else}
-		<div class="toolbar" style="text-align: left;">
-			<div class="toolbar_spacer"></div>
-			<button onclick={create_key}>
-				<i class="icon i_add"></i> Create new API key
-			</button>
-		</div>
-	{/if}
-
 	<p>
-		If you delete the API key that you are currently using you will be
-		logged out of your account. Keys are sorted based on how recently they
-		were used, so your session usually the top one. API keys expire 30 days
-		after the last time they're used. If you think someone is using your
-		account without your authorization it's probably a good idea to delete
-		all your keys.
+		API keys give apps access to your account. Whoever has a key can do
+		everything the key is allowed to do, so don't show them to someone or
+		something you don't trust. A key expires 30 days after it was last used.
+		If you think someone is using your account without your permission,
+		delete all your keys and change your password.
 	</p>
-</section>
-<div class="table_scroll">
-	<table style="text-align: left;">
-		<thead>
-			<tr>
-				<td>Key</td>
-				<td>Created</td>
-				<td>Last used ▼</td>
-				<td>IP address</td>
-				<td></td>
-			</tr>
-		</thead>
-		<tbody>
-			{#each rows as row (row.auth_key)}
-				<tr style="border-bottom: none;">
-					<td>
-						<CopyButton text={row.auth_key} small_icon>Copy</CopyButton>
-						{row.auth_key}
-					</td>
-					<td>{formatDate(row.creation_time, true, true, false)}</td>
-					<td>{formatDate(row.last_used_time, true, true, false)}</td>
-					<td>{row.creation_ip_address}</td>
-					<td>
-						<button onclick={e => {e.preventDefault(); logout(row.auth_key)}} class="button button_red round" title="Log out">
-							<i class="icon i_delete"></i>
+
+	<div class="toolbar">
+		<div class="toolbar_spacer"></div>
+		<button onclick={create_key}>
+			<i class="icon i_add"></i> Create new API key
+		</button>
+	</div>
+
+	{#each keys as key (key.auth_key)}
+		<div class="key" class:current={key.current}>
+			<div class="row">
+				<span class="app">
+					{#if key.app_name === "website login"}
+						<img src="/res/img/pixeldrain_32.png" alt=""/> Pixeldrain website
+					{:else if key.app_name === "website keys page"}
+						<i class="icon i_vpn_key"></i> Created on this page
+					{:else if key.app_name === "sharex"}
+						<img src="/res/img/sharex.png" alt=""/> ShareX
+					{:else if key.app_name === "jdownloader"}
+						<img src="/res/img/jdownloader.png" alt=""/> JDownloader
+					{:else}
+						<i class="icon i_apps"></i> {key.app_name || "Unnamed key"}
+					{/if}
+				</span>
+				{#if key.current}
+					<span class="badge">This session</span>
+				{/if}
+				<div class="toolbar_spacer"></div>
+				<!-- Not the session which is in use. Without its permissions
+				this page and the rest of the website stop working -->
+				{#if !key.current && editing !== key.auth_key}
+					<button onclick={() => edit_key(key)}>
+						<i class="icon i_edit"></i> Edit
+					</button>
+				{/if}
+				<button class="button_red" onclick={() => delete_key(key)}>
+					<i class="icon i_delete"></i> Delete
+				</button>
+			</div>
+
+			<div class="row">
+				<code>
+					{shown[key.auth_key] ? key.auth_key : key.auth_key.slice(0, 8) + "-••••-••••-••••-••••••••••••"}
+				</code>
+				<button
+					class:button_highlight={shown[key.auth_key]}
+					onclick={() => shown[key.auth_key] = !shown[key.auth_key]}
+				>
+					<i class="icon {shown[key.auth_key] ? 'i_visibility_off' : 'i_visibility'}"></i>
+					{shown[key.auth_key] ? "Hide" : "Show"}
+				</button>
+				<CopyButton text={key.auth_key}>Copy</CopyButton>
+			</div>
+
+			{#if editing === key.auth_key}
+				<div class="edit">
+					{#each components as [name, icon, read, write]}
+						<div class="row">
+							<span class="name"><i class="icon small {icon}"></i> {name}</span>
+							<label>
+								<input type="checkbox" bind:checked={edit_perms[read]}/> read
+							</label>
+							<!-- Account write can be taken away from a key, but
+							not given to one -->
+							{#if write !== "account_write" || key.account_write}
+								<label>
+									<input type="checkbox" bind:checked={edit_perms[write]}/> write
+								</label>
+							{/if}
+						</div>
+					{/each}
+
+					<div class="row">
+						<button class="button_highlight" onclick={save_key}>
+							<i class="icon i_save"></i> Save
 						</button>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="1">
-						{#if row.app_name === "website login"}
-							<img src="/res/img/pixeldrain_32.png" alt="Pixeldrain logo" class="app_icon"/>
-							Pixeldrain website
-						{:else if row.app_name === "website keys page"}
-							<i class="icon i_vpn_key"></i>
-							Pixeldrain keys page
-						{:else if row.app_name === "sharex"}
-							<img src="/res/img/sharex.png" alt="ShareX logo" class="app_icon"/>
-							ShareX
-						{:else if row.app_name === "jdownloader"}
-							<img src="/res/img/jdownloader.png" alt="JDownloader logo" class="app_icon"/>
-							JDownloader
-						{:else}
-							Unknown app: {row.app_name}
-						{/if}
-					</td>
-					<td colspan="4">User-Agent: {row.user_agent}</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
-	<br/>
-</div>
+						<button onclick={() => editing = ""}>
+							<i class="icon i_close"></i> Cancel
+						</button>
+					</div>
+				</div>
+			{:else}
+				<div class="row permissions">
+					{#each components as [name, icon, read, write]}
+						<span class:none={!key[read] && !key[write]}>
+							<i class="icon small {icon}"></i>
+							{name}:
+							{#if key[read] && key[write]}
+								read / write
+							{:else if key[read]}
+								read only
+							{:else if key[write]}
+								write only
+							{:else}
+								no access
+							{/if}
+						</span>
+					{/each}
+				</div>
+			{/if}
+
+			<div class="details">
+				<div>
+					<span>Created</span>
+					{formatDate(key.creation_time, true, true, false)}
+					({ago(key.creation_time)})
+				</div>
+				<div>
+					<span>Last used</span>
+					{formatDate(key.last_used_time, true, true, false)}
+					({ago(key.last_used_time)})
+				</div>
+				<div>
+					<span>IP address</span>
+					{key.creation_ip_address}
+				</div>
+				<div class="agent" class:agent_shown={agent_shown[key.auth_key]}>
+					<span>User agent</span>
+					<button
+						aria-expanded={!!agent_shown[key.auth_key]}
+						onclick={() => agent_shown[key.auth_key] = !agent_shown[key.auth_key]}
+					>
+						{key.user_agent}
+					</button>
+				</div>
+			</div>
+		</div>
+	{/each}
+</section>
 
 <style>
 .toolbar {
 	display: flex;
-	flex-direction: row;
-	width: 100%;
 }
-.toolbar > * { flex: 0 0 auto; }
-.toolbar_spacer { flex: 1 1 auto; }
+.toolbar_spacer {
+	flex: 1 1 auto;
+}
 
-.app_icon {
-	height: 1.6em;
-	vertical-align: middle;
+.key {
+	margin: 0.8em 0;
+	padding: 0.4em 0.6em;
+	border-radius: 8px;
+	border-left: 3px solid var(--separator);
+	background: var(--card_color);
+}
+.key.current {
+	border-left-color: var(--highlight_color);
+}
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.2em 0.5em;
+	margin: 0.3em 0;
+}
+
+/* An icon with text next to it. Flex centres the two on each other, inline
+   layout would put the icon on the baseline of the text */
+.app,
+.permissions > span,
+.edit label,
+.edit span {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3em;
+}
+/* The name of a permission, in front of its checkboxes */
+.name {
+	min-width: 6em;
+}
+.app {
+	font-size: 1.1em;
+}
+.app > img {
+	height: 1.5em;
+}
+.badge {
+	padding: 0 0.6em;
+	border-radius: 1em;
+	color: var(--highlight_color);
+	background: var(--input_background);
+}
+
+/* The key takes the space the buttons leave, and is cut off when it doesn't
+   fit. It can still be copied in full */
+code {
+	flex: 1 1 10em;
+	padding: 0.3em 0.5em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.permissions > span {
+	padding: 0.1em 0.5em;
+	border: 1px solid var(--separator);
+	border-radius: 6px;
+}
+.none,
+.details span {
+	opacity: 0.6;
+}
+
+/* Each detail is a label with its value below it */
+.details {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.2em 1.5em;
+	font-size: 0.9em;
+}
+.details > div {
+	display: flex;
+	flex-direction: column;
+}
+
+/* The user agent gets the space which is left, and is cut off until it is
+   clicked. It's a button so it works with a keyboard too, without the looks of
+   one */
+.agent {
+	flex: 1 1 10em;
+	min-width: 0;
+}
+.agent > button {
+	all: unset;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.agent_shown {
+	flex-basis: 100%;
+}
+.agent_shown > button {
+	white-space: normal;
+	overflow-wrap: anywhere;
 }
 </style>

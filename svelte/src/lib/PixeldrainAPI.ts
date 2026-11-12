@@ -106,6 +106,21 @@ export type UserSession = {
 	creation_time: string,
 	last_used_time: string,
 	valid_domains: string[],
+
+	// Whether this is the key the list of sessions was requested with
+	current: boolean,
+
+	// What the key is allowed to do. File covers the file and list APIs
+	file_read: boolean,
+	file_write: boolean,
+	filesystem_read: boolean,
+	filesystem_write: boolean,
+	account_read: boolean,
+	account_write: boolean,
+	session_read: boolean,
+	session_write: boolean,
+	billing_read: boolean,
+	billing_write: boolean,
 }
 
 export const get_user = async () => {

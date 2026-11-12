@@ -163,6 +163,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 		// User account pages
 		{GET, "login" /*            */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
 		{GET, "register" /*         */, wc.serveTemplate("login", handlerOpts{NoEmbed: true})},
+		{GET, "oauth/authorize" /*  */, wc.serveTemplate("login", handlerOpts{Auth: true, NoEmbed: true})},
 		{GET, "logout" /*           */, wc.serveTemplate("logout", handlerOpts{Auth: true, NoEmbed: true})},
 		{PST, "logout" /*           */, wc.serveLogout},
 
@@ -253,7 +254,9 @@ func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.
 		}
 
 		if opts.Auth && !td.Authenticated {
-			http.Redirect(w, r, "/login?redirect="+url.QueryEscape(r.URL.Path), http.StatusSeeOther)
+			// The query goes along, the OAuth page has the request of the app
+			// in it
+			http.Redirect(w, r, "/login?redirect="+url.QueryEscape(r.URL.RequestURI()), http.StatusSeeOther)
 			return
 		}
 

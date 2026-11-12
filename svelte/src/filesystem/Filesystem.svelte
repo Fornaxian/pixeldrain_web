@@ -15,6 +15,7 @@ import TransferLimit from "file_viewer/TransferLimit.svelte";
 import { stats } from "lib/StatsSocket"
 import { css_from_path } from "filesystem/edit_window/Branding";
 import AffiliatePrompt from "user_home/AffiliatePrompt.svelte";
+import VerifyEmailWarning from "layout/VerifyEmailWarning.svelte";
 
 let file_viewer: HTMLDivElement = $state()
 let file_preview: FilePreview = $state()
@@ -148,6 +149,7 @@ const keydown = (e: KeyboardEvent) => {
 		/>
 
 		<div class="file_preview">
+			<VerifyEmailWarning/>
 			<FilePreview
 				bind:this={file_preview}
 				nav={nav}

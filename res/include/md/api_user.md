@@ -54,7 +54,7 @@ Param              | Type   | Required             | Description
 username           | string | true                 | Username or e-mail address of the account
 password           | string | for password login   | Password of the account, leave empty to receive a login link by e-mail. Can be combined with a login link as second factor
 totp               | string | if 2FA is enabled    | Six digit time-based one-time password
-app_name           | string | false                | Name of your application, will be shown on the API keys page. The name 'website login' is reserved and returns the app_name_reserved error
+app_name           | string | false                | Name of your application, will be shown on the API keys page
 redirect           | string | false                | Path the user is sent to after using the e-mailed login link
 link_login_user_id | UUID   | for link login       | User ID from the e-mailed login link
 link_login_id      | UUID   | for link login       | Single-use login ID from the e-mailed login link
@@ -97,7 +97,6 @@ no_login_method_available | 400         | No password was entered and the accoun
 otp_required              | 400         | The account has two-factor authentication enabled, a second proof of identity is required
 otp_incorrect             | 400         | The entered one-time password is not correct
 login_link_sent           | 202         | Not an error, a login link was e-mailed to the user
-app_name_reserved         | 400         | The requested app name is reserved for the pixeldrain website
 login_link_already_sent   | 400         | The account already has an active login link, wait for it to expire
 invalid_login_link        | 400         | The login link is not valid for this account, it may have expired
 invalid_email_address     | 400         | A login link could not be sent because the e-mail address is invalid
@@ -224,7 +223,7 @@ username_already_registered      | 400         | An account with the new usernam
 email_address_already_registered | 400         | An account with the new e-mail address already exists
 invalid_email_address            | 400         | The new e-mail address is not valid
 too_many_email_addresses         | 400         | The account already has the maximum of 5 e-mail addresses
-website_login_required           | 403         | Changing the password requires a session which was created by logging in on the website
+key_permission_denied            | 403         | The key does not have account_write, or billing_write for the billing settings: subscription, transfer_cap, checkout_country, checkout_name and checkout_provider
 login_link_already_sent          | 400         | The account already has an active verification link, wait for it to expire
 not_enough_credit_for_prepaid    | 400         | Activating a prepaid plan requires at least €1 of account credit
 invalid_domain_name              | 400         | One of the embed domains does not contain a period
@@ -295,11 +294,6 @@ HTTP 200: OK
 }
 ```
 
-#### Possible errors
-
-Value                  | HTTP status | Description
------------------------|-------------|----------------------------------------------------------------
-website_login_required | 403         | The request was not made by a session which was created by logging in on the website
 </div>
 </details>
 
@@ -666,12 +660,6 @@ HTTP 201: Created
 }
 ```
 
-#### Possible errors
-
-Value                  | HTTP status | Description
------------------------|-------------|----------------------------------------------------------------
-website_login_required | 403         | The request was not made by a session which was created by logging in on the website
-app_name_reserved      | 400         | The requested app name is reserved for the pixeldrain website
 </div>
 </details>
 
@@ -703,11 +691,6 @@ HTTP 200: OK
 ]
 ```
 
-#### Possible errors
-
-Value                  | HTTP status | Description
------------------------|-------------|----------------------------------------------------------------
-website_login_required | 403         | The request was not made by a session which was created by logging in on the website
 </div>
 </details>
 
@@ -832,6 +815,5 @@ Value                  | HTTP status | Description
 -----------------------|-------------|----------------------------------------------------------------
 otp_incorrect          | 400         | The entered one-time password does not match the secret
 enum_parse_failed      | 422         | The action is not 'generate', 'verify' or 'delete'
-website_login_required | 403         | The request was not made by a session which was created by logging in on the website
 </div>
 </details>

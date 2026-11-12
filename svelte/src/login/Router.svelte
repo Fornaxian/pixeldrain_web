@@ -2,6 +2,7 @@
 import TabMenu from "util/TabMenu.svelte";
 import Register from "./Register.svelte";
 import Login from "./Login.svelte";
+import Authorize from "./Authorize.svelte";
 import { onMount } from "svelte";
 import { get_user } from "lib/PixeldrainAPI";
 
@@ -16,6 +17,15 @@ let pages = [
 		title: "Register",
 		icon: "settings",
 		component: Register,
+	}, {
+		// Apps send users here to ask for access to their account. The user
+		// has to be logged in for it, the web server sends them to the login
+		// page first if they are not
+		path: "/oauth/authorize",
+		title: "Authorize app",
+		icon: "",
+		component: Authorize,
+		hidden: true,
 	},
 ]
 
@@ -23,6 +33,7 @@ onMount(async () => {
 	const params = new URLSearchParams(document.location.search)
 	const user = await get_user()
 	if (
+		window.location.pathname !== "/oauth/authorize" &&
 		params.get("link_login_user_id") === null &&
 		params.get("link_login_id") === null &&
 		user.username !== ""
