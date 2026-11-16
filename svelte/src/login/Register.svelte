@@ -40,7 +40,7 @@ let form: FormConfig = {
 			name: "email",
 			label: "E-mail address",
 			type: "email",
-			description: "Your e-mail address is only used for recovering lost passwords and billing notifications",
+			description: "Your e-mail address must be verified before you can log in",
 		}, {
 			name: "password",
 			label: "Password",
@@ -75,7 +75,6 @@ let form: FormConfig = {
 		const form = new FormData()
 		form.append("email", fields.email)
 		form.append("password", fields.password)
-		form.append("app_name", "website login")
 
 		if (captcha_site_key !== "" && captcha_widget === null) {
 			return {
@@ -105,13 +104,7 @@ let form: FormConfig = {
 
 		const resp = await fetch(
 			get_endpoint()+"/user/register",
-			{
-				method: "POST",
-				body: form,
-				// The API sets the session cookie in the response, so the user
-				// is logged in as soon as the account is created
-				credentials: "same-origin",
-			}
+			{method: "POST", body: form},
 		);
 		if(resp.status >= 400) {
 			// Captcha tokens can only be used once
@@ -121,14 +114,13 @@ let form: FormConfig = {
 			return {success: false, error_json: await resp.json()}
 		}
 
-		window.location.href = "/user"
-
-		return {
-			success: true,
-			message: "Account registration successful. Please check your inbox for an e-mail verification link"
-		}
+		// The message contains the e-mail address, so it's rendered as text
+		// instead of through the form, which renders messages as HTML
+		sent_message = (await resp.json()).message
+		return {success: true}
 	},
 }
+let sent_message = $state("")
 </script>
 
 <svelte:head>
@@ -137,4 +129,8 @@ let form: FormConfig = {
 	{/if}
 </svelte:head>
 
-<Form config={form}></Form>
+{#if sent_message}
+	<div class="highlight_green">{sent_message}</div>
+{:else}
+	<Form config={form}></Form>
+{/if}

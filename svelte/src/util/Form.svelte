@@ -234,7 +234,7 @@ const handle_errors = (response: GenericResponse) => {
 							class="form_input"
 						/>
 						<ToggleButton
-							bind:on={() => revealed[field.name] ?? false, on => revealed[field.name] = on}
+							bind:on={revealed[field.name]}
 							icon_on="visibility"
 							icon_off="visibility_off"
 							label={revealed[field.name] ? "Hide password" : "Show password"}

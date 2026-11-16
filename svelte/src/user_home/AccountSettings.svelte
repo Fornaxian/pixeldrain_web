@@ -39,9 +39,6 @@ let account_settings = {
 			label: "Name",
 			type: "username",
 			default_value: window.user.username,
-			description: `Changing your username also changes the name used to
-				log in. If you forget your username you can still log in using
-				your e-mail address if you have one configured`,
 			separator: true,
 		}, {
 			name: "checkout_country",
