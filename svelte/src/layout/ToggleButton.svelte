@@ -1,6 +1,7 @@
 <script lang="ts">
 let {
-	on = $bindable(false),
+	// No fallback, Svelte throws when binding undefined to a prop with one
+	on = $bindable(),
 	icon_on = "check",
 	icon_off = "close",
 	group_first = false,
@@ -36,7 +37,7 @@ const click = (e: MouseEvent) => {
 	class="button"
 	title={label !== "" ? label : null}
 	aria-label={label !== "" ? label : null}
-	aria-pressed={on}
+	aria-pressed={!!on}
 	class:button_highlight={on}
 	class:group_first
 	class:group_middle

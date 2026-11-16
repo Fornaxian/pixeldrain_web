@@ -42,12 +42,9 @@ export const edit = (f: FSNode, oae = false, open_tab = "") => {
 
 	options.shared = !(file.id === undefined || file.id === "")
 	if (options.shared) {
-		if (file.link_permissions === undefined) {
-			// Default to read-only for public links
-			file.link_permissions = { owner: false, read: true, write: false, delete: false}
-		} else {
-			options.link_permissions = file.link_permissions
-		}
+		// Default to read-only for public links
+		options.link_permissions = file.link_permissions ??
+			{ owner: false, read: true, write: false, delete: false }
 		options.user_permissions = file.user_permissions
 		options.password_permissions = file.password_permissions
 	}
