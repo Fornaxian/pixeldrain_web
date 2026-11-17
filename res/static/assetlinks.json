@@ -1,0 +1,12 @@
+[
+	{
+		"relation": ["delegate_permission/common.handle_all_urls"],
+		"target": {
+			"namespace": "android_app",
+			"package_name": "tech.fornaxian.pixeldrain",
+			"sha256_cert_fingerprints": [
+				"8A:68:28:3A:ED:36:6A:5C:CE:57:EF:A1:DE:7A:05:F1:08:98:4B:3E:63:C5:95:12:0D:90:55:B4:85:34:76:FD"
+			]
+		}
+	}
+]

@@ -19,6 +19,8 @@ const permissions: {[name: string]: string} = {
 	filesystem_write: "Upload, change, share and delete files in your filesystem",
 	account_read: `See your account details, like your e-mail address and how
 		much storage you use`,
+	account_write: `Change your username, password, e-mail addresses and
+		two-factor authentication, and delete your account`,
 	session_read: "See your API keys, except the ones which can do more than its own",
 	session_write: "Create API keys",
 	billing_read: "See your invoices and transactions",

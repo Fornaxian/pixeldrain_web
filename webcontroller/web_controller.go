@@ -87,6 +87,11 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 	r.GET(prefix+"/favicon.ico" /*  */, wc.serveFile("/favicon.ico"))
 	r.GET(prefix+"/robots.txt" /*   */, wc.serveFile("/robots.txt"))
 
+	// Lets the Android app open /u/ and /l/ links without asking. It lists the
+	// certificates the app is signed with, the debug key for now. The release
+	// key and F-Droid's key go here too once they exist
+	r.GET(prefix+"/.well-known/assetlinks.json", wc.serveFile("/assetlinks.json"))
+
 	if conf.MaintenanceMode {
 		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusServiceUnavailable)
